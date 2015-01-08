@@ -1,0 +1,16 @@
+
+.scm-options .form-table td {
+	vertical-align: top;
+	text-align: right;
+}
+
+.scm-options .form-table td label,
+.scm-options .form-table td input[type='number'],
+.scm-options .form-table td input[type='text'],
+.scm-options .form-table td textarea,
+.scm-options .form-table td select{
+	width: 49%;
+	display: inline-block;
+	margin: 0px;
+	text-align: left;
+}

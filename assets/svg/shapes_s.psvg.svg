@@ -1,0 +1,12 @@
+<?php
+    header("Content-type: image/svg+xml");
+    print('<?xml version="1.0" encoding="iso-8859-1"?>');
+?>
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <clipPath id="clipmap" clipPathUnits="objectBoundingBox">
+            <polygon points="0 .02, .33 .04, .66 0, 1 .02, 1 .99, .66 .98, .33 1, 0 .99"/>
+        </clipPath>
+    </defs>
+</svg>

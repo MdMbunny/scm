@@ -1,0 +1,29 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <clipPath id="clipmap" clipPathUnits="objectBoundingBox">
+            <polygon points="0 .02, .33 .04, .66 0, 1 .02, 1 .99, .66 .98, .33 1, 0 .99"/>
+        </clipPath>
+    </defs>
+
+	<filter id="scatola-shadow">
+		<feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+		<feOffset dx="1" dy="2" result="offsetblur"/>
+		<feFlood flood-color="rgba(0,0,0,0.9)"/>
+		<feComposite in2="offsetblur" operator="in"/>
+		<feMerge>
+			<feMergeNode/>
+			<feMergeNode in="SourceGraphic"/>
+		</feMerge>
+	</filter>
+
+	<filter id="mappa-shadow">
+		<feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+		<feOffset dx="2" dy="2" result="offsetblur"/>
+		<feFlood flood-color="rgba(0,0,0,0.85)"/>
+		<feComposite in2="offsetblur" operator="in"/>
+		<feMerge>
+			<feMergeNode/>
+			<feMergeNode in="SourceGraphic"/>
+		</feMerge>
+	</filter>
+</svg>

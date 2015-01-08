@@ -1,0 +1,253 @@
+# Copyright (C) 2014 Automattic
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: scm_1_0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tags/_s\n"
+"POT-Creation-Date: 2015-01-01 12:09+0100\n"
+"PO-Revision-Date: 2015-01-01 12:09+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-SearchPath-0: ../scm/library\n"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:26
+msgid "Tutto"
+msgstr "Tutto"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:27
+msgid "Genitore"
+msgstr "Genitore"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:28
+#: ../scm/library/classes/Custom_Type.php:100
+msgid "Genitore:"
+msgstr "Genitore:"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:29
+#: ../scm/library/classes/Custom_Taxonomy.php:30
+#: ../scm/library/classes/Custom_Type.php:103
+#: ../scm/library/classes/Custom_Type.php:104
+msgid "Aggiungi"
+msgstr "Aggiungi"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:31
+#: ../scm/library/classes/Custom_Type.php:105
+msgid "Modifica"
+msgstr "Modifica"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:32
+#: ../scm/library/classes/Custom_Type.php:106
+msgid "Aggiorna"
+msgstr "Aggiorna"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:33
+msgid "Separa gli elementi con una virgola"
+msgstr "Separa gli elementi con una virgola"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:34
+#: ../scm/library/classes/Custom_Type.php:107
+msgid "Cerca"
+msgstr "Cerca"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:35
+msgid "Aggiungi o Rimuovi"
+msgstr "Aggiungi o Rimuovi"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:36
+msgid "I pi&ugrave; usati"
+msgstr "I pi&ugrave; usati"
+
+#: ../scm/library/classes/Custom_Taxonomy.php:37
+#: ../scm/library/classes/Custom_Type.php:108
+msgid "Non trovato"
+msgstr "Non trovato"
+
+#: ../scm/library/classes/Custom_Type.php:101
+msgid "Tutti"
+msgstr "Tutti"
+
+#: ../scm/library/classes/Custom_Type.php:102
+msgid "Visualizza"
+msgstr "Visualizza"
+
+#: ../scm/library/classes/Custom_Type.php:109
+msgid "Non trovato nel Cestino"
+msgstr "Non trovato nel Cestino"
+
+#: ../scm/library/classes/Custom_Type.php:112
+msgid "Descrizione"
+msgstr "Descrizione"
+
+#: ../scm/library/classes/Custom_Type.php:138
+msgid "ID"
+msgstr "ID"
+
+#: ../scm/library/scm-core.php:101
+msgid "Barra Laterale"
+msgstr "Barra Laterale"
+
+#: ../scm/library/scm-core.php:128
+msgid "Precedente"
+msgstr "&laquo; Precedente"
+
+#: ../scm/library/scm-core.php:129
+msgid "Prossima"
+msgstr ""
+
+#: ../scm/library/scm-core.php:358
+msgid "Inizio Pagina"
+msgstr ""
+
+#: ../scm/library/scm-queries.php:136
+msgid "Sezione in aggiornamento"
+msgstr "Sezione in aggiornamento"
+
+#: ../scm/library/scm-queries.php:146
+msgid "Archivio"
+msgstr "Archivio"
+
+#: ../scm/library/scm-queries.php:371 ../scm/library/scm-shortcodes.php:29
+msgid "Indietro"
+msgstr "Indietro"
+
+#: ../scm/library/scm-queries.php:433
+msgid "Allegati"
+msgstr "Allegati"
+
+#: ../scm/library/scm-queries.php:441
+msgid "Link esterni"
+msgstr "Link esterni"
+
+#: ../scm/library/scm-queries.php:449
+msgid "Link interni"
+msgstr "Link interni"
+
+#: ../scm/library/scm-setup.php:23
+msgid "Menu Principale"
+msgstr "Menu Principale"
+
+#: ../scm/library/scm-setup.php:59
+msgid "The Default Header"
+msgstr ""
+
+#: ../scm/library/sliders/flex.php:70 ../scm/library/sliders/nivo.php:64
+msgid "&laquo; Precedente"
+msgstr "&laquo; Precedente"
+
+#: ../scm/library/sliders/flex.php:71 ../scm/library/sliders/nivo.php:65
+msgid "Successivo &raquo;"
+msgstr "Successivo &raquo;"
+
+#, fuzzy
+#~ msgid "Top of Page"
+#~ msgstr "Torna in cima alla pagina"
+
+#, fuzzy
+#~ msgid "Opzioni Top of Page"
+#~ msgstr "Torna in cima alla pagina"
+
+#, fuzzy
+#~ msgid "Opzioni top-of-page link"
+#~ msgstr "Torna in cima alla pagina"
+
+#, fuzzy
+#~ msgid "Sticky Menu"
+#~ msgstr "Menu Principale"
+
+#, fuzzy
+#~ msgid "Opzioni Sticky Menu"
+#~ msgstr "Menu Principale"
+
+#~ msgid "Edit"
+#~ msgstr "Modifica"
+
+#, fuzzy
+#~ msgid "Module Post"
+#~ msgstr "Invia commento"
+
+#, fuzzy
+#~ msgid "Modules Post"
+#~ msgstr "Invia commento"
+
+#, fuzzy
+#~ msgid "Module List"
+#~ msgstr "Lista pingback"
+
+#, fuzzy
+#~ msgid "Modules List"
+#~ msgstr "Lista pingback"
+
+#, fuzzy
+#~ msgid "Video"
+#~ msgstr "Imposta l'opzione \"Video URL\""
+
+#~ msgid "Non hai i permessi per visualizzare questa sezione."
+#~ msgstr "Non hai i permessi per visualizzare questa sezione."
+
+#~ msgid "Area Privata"
+#~ msgstr "Area Privata"
+
+#~ msgid "Back"
+#~ msgstr "Indietro"
+
+#~ msgid "Sidebar"
+#~ msgstr "Barra Laterale"
+
+#~ msgid "Private Area"
+#~ msgstr "Area Privata"
+
+#~ msgid "Oops! That page can&rsquo;t be found."
+#~ msgstr "Pagina non trovata."
+
+#~ msgid "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
+#~ msgstr "Non ci sono contenuti. Prova con uno dei seguenti link."
+
+#~ msgid "Most Used Categories"
+#~ msgstr "Categorie Blog"
+
+#~ msgid "Try looking in the monthly archives. %1$s"
+#~ msgstr "Ricerca negli Archivi Mensili. %1$s"
+
+#~ msgid "Comment navigation"
+#~ msgstr "Navigazione commenti"
+
+#~ msgid "&larr; Older Comments"
+#~ msgstr "&larr; Commenti più vecchi"
+
+#~ msgid "Newer Comments &rarr;"
+#~ msgstr "Nuovi commenti &rarr;"
+
+#~ msgid "Comments are closed."
+#~ msgstr "Commenti chiusi. Non è possibile aggiungere nuovi commenti."
+
+#~ msgid "Nothing Found"
+#~ msgstr "Nessun risultato"
+
+#~ msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+#~ msgstr "Pronto a pubblicare il tuo primo Post? <a href=\"%1$s\">Comincia da qui</a>."
+
+#~ msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+#~ msgstr "Nessun Risultato"
+
+#~ msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+#~ msgstr "Nessun risultato."
+
+#~ msgid "Pages:"
+#~ msgstr "Pagine:"
+
+#~ msgid "Continue reading %s <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "Continua %s <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "Skip to content"
+#~ msgstr "Salta al contenuto"
+
+#~ msgid "Search Results for: %s"
+#~ msgstr "<span>Risultati per </span>\" %s\""

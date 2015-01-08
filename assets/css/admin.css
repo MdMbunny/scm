@@ -1,0 +1,184 @@
+
+/******************************/
+/*** WP Admin Menu ************/
+/******************************/
+
+#adminmenu a.menu-top {
+	font-size: 13px;
+}
+
+#adminmenu .wp-submenu a {
+	font-size: 12px;
+}
+
+#adminmenu li.wp-menu-separator{
+	background-color: #26292c;
+	height: 2px;
+	margin: 0px;
+}
+
+
+/******************************/
+/*** Advanced Custom Fields ***/
+/******************************/
+
+.toplevel_page_scm-main-settings .acf-tab-wrap {
+	width: 150px;
+	position: absolute;
+	left: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+.toplevel_page_scm-main-settings .acf-tab-wrap > .acf-tab-group{
+	padding: 0px !important;
+	border: 0px !important;
+}
+
+.toplevel_page_scm-main-settings .acf-tab-wrap > .acf-tab-group li{
+	width: 100%;
+}
+
+.toplevel_page_scm-main-settings .acf-tab-wrap > .acf-tab-group li:last-child a {
+	border-bottom: 1px solid #ccc;
+}
+
+.toplevel_page_scm-main-settings #post-body-content .acf-postbox > .inside{
+	padding-left: 150px !important;
+}
+
+
+/******************************/
+/*** Advanced Custom Fields ***/
+/******************************/
+
+.acf-field{
+	max-width: 1920px;
+	padding: 20px 12px 30px !important;
+}
+
+.acf-fields > .acf-field:first-child {
+	border-top-width: 1px;
+}
+
+
+/*** ACF Description ***/
+
+.acf-label p.description {
+	line-height: 1.6em;
+	font-size: 1em;
+	padding: 10px 0px 20px !important;
+}
+
+/*** ACF Message ***/
+
+.acf-field.field_type-message {
+	background-color: #f4f4f4;
+}
+
+.acf-field.field_type-message:first-child {
+	border-top: 0px !important;
+}
+
+.acf-field.field_type-message .acf-label{
+	margin: 0px !important;
+}
+
+.acf-field.field_type-message .acf-label label{
+	margin: 0px;
+	padding: 5px 0px;
+}
+
+
+/*** ACF Flexible Content ***/
+
+/* submit button */
+
+.acf-flexible-content .acf-hl:before{
+	clear: both;
+}
+
+.acf-flexible-content .acf-hl > .acf-fr {
+	float: none;
+	display: block;
+	width: 100%;
+	text-align: center;
+	margin-top: 15px;
+}
+
+.acf-flexible-content .acf-hl > .acf-fr > a{
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+/* flexible_columns */
+
+.acf-field[data-name="flexible_columns"] .acf-label{
+	display: none;
+}
+
+.acf-field[data-name="flexible_columns"] .acf-flexible-content > .values{
+	margin: 0px;
+}
+
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout {
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	margin: 0px !important;
+	float: left;
+}
+
+.acf-flexible-content .layout .acf-fc-layout-handle{
+	border: 0;
+	z-index: 997;
+}
+
+.acf-flexible-content .layout .acf-fc-layout-controlls{
+	z-index: 998;
+}
+
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table{
+	border-top: 1px solid #dfdfdf !important;
+	position: relative;
+	z-index: 999;
+}
+
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table,
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table tbody,
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table tbody tr,
+.acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table tbody tr td{
+	margin: 0px;
+	padding: 0px;
+	display: block;
+	width: 100%;
+}
+
+.acf-flexible-content .layout[data-layout="column-12"] { max-width: 50%; }
+
+.acf-flexible-content .layout[data-layout="column-13"] { max-width: 33.33%; }
+
+.acf-flexible-content .layout[data-layout="column-23"] { max-width: 66.66%; }
+
+.acf-flexible-content .layout[data-layout="column-14"] { max-width: 25%; }
+
+.acf-flexible-content .layout[data-layout="column-34"] { max-width: 75%; }
+
+.acf-flexible-content .layout[data-layout="column-15"] { max-width: 20%; }
+
+.acf-flexible-content .layout[data-layout="column-25"] { max-width: 40%; }
+
+.acf-flexible-content .layout[data-layout="column-35"] { max-width: 60%; }
+
+.acf-flexible-content .layout[data-layout="column-45"] { max-width: 80%; }
+
+.acf-flexible-content .layout[data-layout="column-16"] { max-width: 16.66%; }
+
+.acf-flexible-content .layout[data-layout="column-56"] { max-width: 83.34%; }
+
+.acf-flexible-content .layout[data-layout="column-17"] { max-width: 14.28%; }
+
+.acf-flexible-content .layout[data-layout="column-18"] { max-width: 12.5%; }
+
+.acf-flexible-content .layout[data-layout="column-19"] { max-width: 11.11%; }
