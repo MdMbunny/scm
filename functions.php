@@ -5,6 +5,9 @@
  * @package SCM
  */
 
+if( !function_exists( get_field ) )
+	return;
+
 
 if ( ! isset( $content_width ) ) {
 	$content_width = 940;
