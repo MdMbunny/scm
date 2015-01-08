@@ -6,6 +6,12 @@
  *
  * @package SCM
  */
+
+
+if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
+  return;
+
+
                    
                     $foot_id = ( get_field( 'id_footer', 'option' ) ? get_field( 'id_footer', 'option' ) : 'site-footer' );
                     $foot_row_id = $foot_id . '-row';

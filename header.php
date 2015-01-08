@@ -7,6 +7,11 @@
  * @package SCM
  */
 
+if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+  return;
+}
+
+
 global $is_opera, $is_IE;
 
 $opera      = ( $is_opera ) ? ( ' browser-opera' ) : ( '' );

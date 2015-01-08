@@ -4,6 +4,10 @@
  * @package SCM
  */
 
+if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
+  return;
+
+
 	get_header();
 
 	if ( have_posts() ){

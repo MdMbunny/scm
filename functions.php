@@ -5,8 +5,14 @@
  * @package SCM
  */
 
+if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+  echo '<br/><h3>INSTALLA E ATTIVA IL PLUGIN ADVANCED CUSTOM FIELD PRO PER UTILIZZARE QUESTO TEMA</h3><br/>';
+  return;
+}
+
+/*
 if( !function_exists( get_field ) )
-	return;
+	return;*/
 
 
 if ( ! isset( $content_width ) ) {
