@@ -1,0 +1,2 @@
+# scm
+SCM WP Template
