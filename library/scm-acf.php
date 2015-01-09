@@ -24,7 +24,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	            if( isset( $field['choices'] ) ){
 		        	foreach ( $field['choices'] as $key => $value ) {
 		        		if( $key == 'default' || $key == 'no' )
-		        			$array[$key] = $value;
+		        			$inherit[$key] = $value;
 		        	}
 				}
 	            $field['choices'] = $inherit + $default ;
