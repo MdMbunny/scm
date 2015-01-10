@@ -5,10 +5,10 @@
  * @package SCM
  */
 
-if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
   echo '<br/><h3>INSTALLA E ATTIVA IL PLUGIN ADVANCED CUSTOM FIELD PRO PER UTILIZZARE QUESTO TEMA</h3><br/>';
   return;
-}
+}*/
 
 /*
 if( !function_exists( get_field ) )
@@ -29,8 +29,8 @@ if ( ! isset( $content_width ) ) {
 
 //Getting website data
 
-	/*$SCM_parse			 = parse_url(site_url());
-	$SCM_domain 		 = ( $SCM_parse["host"] == 'localhost' ? get_field( 'localhost', 'option' ) : $SCM_parse["host"] );
+/*	$SCM_parse			 = parse_url(site_url());
+	$SCM_domain 		 = $SCM_parse["host"];
 	$SCM_url			 = 'http://' . $SCM_domain . '/';*/
 
 //Getting theme data
@@ -39,6 +39,7 @@ if ( ! isset( $content_width ) ) {
 	$SCM_name    		 = $SCM_data->Name;
 	$SCM_version 		 = $SCM_data->Version;
 	$SCM_directory		 = get_template_directory();
+	$SCM_uri 			 = get_template_directory_uri();
 	$SCM_page_templates	 = wp_get_theme()->get_page_templates();
 
 	$SCM_shortname = str_replace( '-v' . $SCM_version, '', $SCM_shortname );
@@ -66,72 +67,62 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_VERSION',   			$SCM_version );
 	define( 'SCM_SCRIPTS_VERSION',      trim( SCM_VERSION ) );
 
-// URLs
-	/*define( 'SCM_DOMAIN',		      	$SCM_domain );
-	define( 'SCM_URL',			      	$SCM_url);*/
-
 //Directories
-	define( 'SCM_DIR',			      	$SCM_directory );
-
-	// THEMES - absolute
-	define( 'SCM_THEMES',		      	substr( SCM_DIR, 0,strlen(SCM_DIR)-strlen(SCM_THEME) ) );
-	// WP-CONTENT - absolute
-	define( 'SCM_CONTENT',			    substr( SCM_THEMES, 0,strlen(SCM_THEMES)-1-strlen('themes') ) );
-	// WP-CONTENT - relative
-	define( 'SCM_REL_CONTENT',			'/wp-content/' );
-	// THEMES - relative
-	define( 'SCM_REL_THEMES',		    SCM_REL_CONTENT . 'themes/' );
-
-	// ROOT - absolute
-	define( 'SCM_ROOT',				    substr( SCM_CONTENT, 0,strlen(SCM_CONTENT)-1-strlen('wp-content') ) );
-
-	// THEME - absolute
-	define( 'SCM_DIR_THEME', 			SCM_THEMES . SCM_THEME . '/');
-	// THEME - relative
-	define( 'SCM_REL_THEME', 			SCM_REL_THEMES . SCM_THEME . '/' );
-
-	// LANGUAGES THEME - absolute
-	define( 'SCM_LANG_THEME',      		SCM_DIR_THEME . 'languages/' );
-	// LANGUAGES THEME - relative
-	define( 'SCM_REL_LANG_THEME',      		SCM_REL_THEME . 'languages/' );
 	
-	// CHILD - absolute
-	define( 'SCM_DIR_CHILD', 			SCM_THEMES . SCM_THEME . '-child/' );
-	// CHILD - relative
-	define( 'SCM_REL_CHILD', 				SCM_REL_THEMES . SCM_THEME . '-child/' );
+	// PARENT THEME
+	define( 'SCM_DIR',			      	$SCM_directory . '/');
+	define( 'SCM_URI',			      	$SCM_uri . '/');
+	
+		// LANGUAGES PARENT
+		define( 'SCM_DIR_LANG',      		SCM_DIR . 'languages/' );
+		define( 'SCM_URI_LANG',      		SCM_URI . 'languages/' );
+	
+	// CHILD THEME
+	define( 'SCM_DIR_CHILD', 			get_stylesheet_directory() . '/');
+	define( 'SCM_URI_CHILD', 			get_stylesheet_directory_uri() . '/');
 
-	// LANGUAGES CHILD - absolute
-	define( 'SCM_LANG_CHILD',      		SCM_DIR_CHILD . 'languages/' );
-	// LANGUAGES CHILD - relative
-	define( 'SCM_REL_LANG_CHILD',      		SCM_REL_CHILD . 'languages/' );
+		// LANGUAGES CHILD
+		define( 'SCM_DIR_LANG_CHILD',      	SCM_DIR_CHILD . 'languages/' );
+		define( 'SCM_URI_LANG_CHILD',      	SCM_URI_CHILD . 'languages/' );
 
-	// ASSETS - absolute
-	define( 'SCM_ASSETS',      			SCM_DIR_THEME . 'assets/' );
-		define( 'SCM_CSS',      			SCM_ASSETS . 'css/' );
-		define( 'SCM_JS',      				SCM_ASSETS . 'js/' );
-		define( 'SCM_IMG',      			SCM_ASSETS . 'img/' );
-		define( 'SCM_FONT',      			SCM_ASSETS . 'font/' );
-	// ASSETS - relative
-	define( 'SCM_REL_ASSETS',      			SCM_REL_THEME . 'assets/' );
-		define( 'SCM_REL_CSS',      			SCM_REL_ASSETS . 'css/' );
-		define( 'SCM_REL_JS',      				SCM_REL_ASSETS . 'js/' );
-		define( 'SCM_REL_IMG',      			SCM_REL_ASSETS . 'img/' );
-		define( 'SCM_REL_FONT',      			SCM_REL_ASSETS . 'font/' );
+		// ASSETS
+		define( 'SCM_DIR_ASSETS',      			SCM_DIR . 'assets/' );
+		define( 'SCM_URI_ASSETS',      			SCM_URI . 'assets/' );
+			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
+			define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
+			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
+			define( 'SCM_URI_FONT',      			SCM_URI_ASSETS . 'font/' );
 
-	// LIBRARY - absolute
-	define( 'SCM_LIBRARY',      		SCM_DIR_THEME . 'library/' );
-		define( 'SCM_CLASSES',      		SCM_LIBRARY . 'classes/' );
-		define( 'SCM_SLIDERS',      		SCM_LIBRARY . 'sliders/' );
-	// LIBRARY - relative
-	define( 'SCM_REL_LIBRARY',      		SCM_REL_THEME . 'library/' );
-		define( 'SCM_REL_CLASSES',      		SCM_REL_LIBRARY . 'classes/' );
-		define( 'SCM_REL_SLIDERS',      		SCM_REL_LIBRARY . 'sliders/' );
+		// LIBRARY 
+		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . 'library/' );
+			define( 'SCM_DIR_CLASSES',      		SCM_DIR_LIBRARY . 'classes/' );
+			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_LIBRARY . 'sliders/' );
 
-	// PARTS - absolute
-	define( 'SCM_PARTS',			    	'parts/content' );
-		define( 'SCM_PARTS_SINGLE',		    'parts/single/single' );
-		define( 'SCM_PARTS_ARCHIVE',	    'parts/archive/archive' );
+		// PARTS
+		define( 'SCM_DIR_PARTS',			    	'parts/content' );
+			define( 'SCM_DIR_PARTS_SINGLE',		    'parts/single/single' );
+			define( 'SCM_DIR_PARTS_ARCHIVE',	    'parts/archive/archive' );
 
+// ACF
+
+		// ACF PLUGIN
+		define( 'SCM_DIR_ACF',      		SCM_DIR . '_acf/' );
+		define( 'SCM_URI_ACF',      		SCM_URI . '_acf/' );
+			define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
+			define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
+			define( 'SCM_DIR_ACF_JSON',      		SCM_DIR . '_acf/acf-json' );
+			define( 'SCM_URI_ACF_JSON',      		SCM_URI . '_acf/acf-json' );
+
+		// ACF - fields keys ( modify them when field group LUOGO fields are deleted and recreated )
+		define( 'SCM_ACF_LUOGO_COUNTRY', 	'field_548f253744f97' );
+		define( 'SCM_ACF_LUOGO_REGION', 	'field_548f25f644f98' );
+		define( 'SCM_ACF_LUOGO_PROVINCE', 	'field_548f265644f99' );
+		define( 'SCM_ACF_LUOGO_CODE', 		'field_548ee4b8fd2bc' );
+		define( 'SCM_ACF_LUOGO_CITY', 		'field_548ee4cbfd2bd' );
+		define( 'SCM_ACF_LUOGO_TOWN', 		'field_548ee501fd2bf' );
+		define( 'SCM_ACF_LUOGO_ADDRESS', 	'field_548ee49dfd2bb' );
+		define( 'SCM_ACF_LUOGO_LATITUDE', 	'field_548fe73047972' );
+		define( 'SCM_ACF_LUOGO_LONGITUDE', 	'field_54945fd9fdd3e' );
 
 
 
@@ -153,23 +144,24 @@ if ( ! isset( $content_width ) ) {
 
 
 
+    
+require SCM_DIR_CLASSES . 'Get_Template_Part.php';
+require SCM_DIR_CLASSES . 'Custom_Type.php';
+require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
 
+require SCM_DIR_LIBRARY . 'scm-acf.php';
+include_once( SCM_DIR_ACF_PLUGIN . 'acf.php' );
 
-require SCM_CLASSES . 'Get_Template_Part.php';
-require SCM_CLASSES . 'Custom_Type.php';
-require SCM_CLASSES . 'Custom_Taxonomy.php';
+require SCM_DIR_LIBRARY . 'scm-functions.php';
+require SCM_DIR_LIBRARY . 'scm-core.php';
+require SCM_DIR_LIBRARY . 'scm-front.php';
+require SCM_DIR_LIBRARY . 'scm-style.php';
+require SCM_DIR_LIBRARY . 'scm-admin.php';
+require SCM_DIR_LIBRARY . 'scm-options.php';
 
-require SCM_LIBRARY . 'scm-functions.php';
-require SCM_LIBRARY . 'scm-core.php';
-require SCM_LIBRARY . 'scm-setup.php';
-require SCM_LIBRARY . 'scm-admin.php';
-require SCM_LIBRARY . 'scm-jquery.php';
-require SCM_LIBRARY . 'scm-options.php';
-require SCM_LIBRARY . 'scm-acf.php';
+require SCM_DIR_LIBRARY . 'scm-jquery.php';
 
-require SCM_LIBRARY . 'scm-shortcodes.php';
+require SCM_DIR_LIBRARY . 'scm-shortcodes.php';
 
-require SCM_LIBRARY . 'private.php';			// XXXXX
-
-
+require SCM_DIR_LIBRARY . 'private.php';			// XXXXX
 

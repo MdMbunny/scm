@@ -5,13 +5,92 @@
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
+add_filter('acf/settings/dir', 'scm_acf_settings_dir');
+add_filter('acf/settings/path', 'scm_acf_settings_path');
+
+add_filter('acf/settings/save_json', 'scm_acf_json_save');
+add_filter('acf/settings/load_json', 'scm_acf_json_load');
+
 add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
+
 
 // *****************************************************
 // *      CUSTOM FIELDS ACTIONS
 // *****************************************************
 
+// *** PLUGIN SETTINGS
+
+	// customize ACF plugin path
+	if ( ! function_exists( 'scm_acf_settings_path' ) ) {
+		function scm_acf_settings_path( $path ) {
+		    
+		    $path = SCM_DIR_ACF_PLUGIN;
+		    return $path;
+		    
+		}	
+	}
+	 
+	// customize ACF plugin dir
+	if ( ! function_exists( 'scm_acf_settings_dir' ) ) {
+		function scm_acf_settings_dir( $dir ) {
+		    
+		    $dir = SCM_URI_ACF_PLUGIN;
+		    return $dir;
+		    
+		}
+	}
+
+	// customize ACF json path for saving field groups
+    if ( ! function_exists( 'scm_acf_json_save' ) ) {
+		function scm_acf_json_save( $path ) {
+
+		    $path = SCM_DIR_ACF_JSON;
+		    return $path;
+
+		}
+	}
+
+	// customize ACF json path for loading field groups
+	if ( ! function_exists( 'scm_acf_json_load' ) ) {
+		function scm_acf_json_load( $paths ) {
+		    
+		    //unset($paths[0]);
+		    $paths[] = SCM_DIR_ACF_JSON;
+
+		    $string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json');
+			$json=json_decode($string,true);
+			if($json['title'] && $json['title'] == 'Testi'){
+				$json['title'] .= ' Header';
+				$json['key'] .= '_header';
+				$json['location'] = array (
+		            array (
+		                array (
+		                    'param' => 'options_page',
+		                    'operator' => '==',
+		                    'value' => 'acf-options-header',
+		                ),
+		            )
+		        );
+
+		        for ($i = 0; $i < sizeof($json['fields']); $i++) {
+		        	$json['fields'][$i]['key'] .= '_header';
+		        	$json['fields'][$i]['name'] .= '_header';
+		        }
+
+		        if( function_exists('register_field_group') ):
+					register_field_group( $json );
+				endif;
+
+			}
+			
+
+		    return $paths;
+
+		}
+	}
+
+	// insert default select options from default presets
     if ( ! function_exists( 'scm_acf_select_field' ) ) {
         function scm_acf_select_field( $field ){
 
@@ -28,10 +107,6 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 		        	}
 				}
 	            $field['choices'] = $inherit + $default ;
-	            /*if( $field['type'] == 'radio' )
-	            	$field['default_value'] = (string)current(array_keys($field['choices']));
-	            else
-		            $field['default_value'] = array((string)current(array_keys($field['choices'])) => reset($field['choices']));*/
 	        }
 
             return $field;
@@ -50,25 +125,25 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
             $fields = $_POST['acf'];
             
-            $country = $fields['field_548f253744f97'];
-            $region = $fields['field_548f25f644f98'];
-            $province = $fields['field_548f265644f99'];
-            $code = $fields['field_548ee4b8fd2bc'];
-            $city = $fields['field_548ee4cbfd2bd'];
-            $town = $fields['field_548ee501fd2bf'];
-            $address = $fields['field_548ee49dfd2bb'];
+            $country = $fields[SCM_ACF_LUOGO_COUNTRY];
+            $region = $fields[SCM_ACF_LUOGO_REGION];
+            $province = $fields[SCM_ACF_LUOGO_PROVINCE];
+            $code = $fields[SCM_ACF_LUOGO_CODE];
+            $city = $fields[SCM_ACF_LUOGO_CITY];
+            $town = $fields[SCM_ACF_LUOGO_TOWN];
+            $address = $fields[SCM_ACF_LUOGO_ADDRESS];
 
             $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
             $ll = getGoogleMapsLatLng( $google_address, $country );
             $lat = $ll['lat'];
             $lng = $ll['lng'];
 
-            $fields['field_548fe73047972'] = $lat;
-            $fields['field_54945fd9fdd3e'] = $lng; 
+            $fields[SCM_ACF_LUOGO_LATITUDE] = $lat;
+            $fields[SCM_ACF_LUOGO_LONGITUDE] = $lng; 
         }
     }
 
-    // *****************************************************
+// *****************************************************
 // *      PRESETS
 // *****************************************************
 

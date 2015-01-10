@@ -12,7 +12,7 @@
 		echo '</header><!-- .page-header -->';
 
 		while ( have_posts() ) : the_post();
-			get_template_part( SCM_PARTS, 'search' );
+			get_template_part( SCM_DIR_PARTS, 'search' );
 
 		endwhile;
 
@@ -20,7 +20,7 @@
 
 	else :
 
-		<?php get_template_part( SCM_PARTS, 'none' );
+		<?php get_template_part( SCM_DIR_PARTS, 'none' );
 	endif;
 
 	get_footer();

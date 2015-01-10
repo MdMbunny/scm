@@ -27,6 +27,9 @@
 // ******* ACTIONS AND FILTERS
 // *****************************************************
 
+// +++ todo:	A > if script is needed, then add_action
+//				B > merge everything in one single script as functions (maybe a JS Class with Methods), then call functions/methods only if needed
+
 	add_action('wp_footer', 'scm_jquery_ie_fixes');
 	add_action('wp_footer', 'scm_jquery_youtube_fix');
 	add_action('wp_footer', 'scm_jquery_toggle_menu');

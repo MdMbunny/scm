@@ -8,8 +8,8 @@
  */
 
 
-if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
-  return;
+/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
+  return;*/
 
 
                    
@@ -50,7 +50,7 @@ if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
                         $single_type = $single->post_type;
                         $post = $single;
                         setup_postdata( $post );
-                        get_template_part( SCM_PARTS_SINGLE, 'scm' );   
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );   
                         
                     break;
                 }

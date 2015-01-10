@@ -1,40 +1,34 @@
 <?php
 
+//if( is_admin() ) :
 
 // *****************************************************
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
-add_action( 'admin_head', 'scm_admin_assets' );
+    add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
 
-add_action( 'admin_menu', 'scm_admin_remove_menus' );
-add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
-add_action( 'pre_user_query','scm_admin_hide_from_users');
+    add_action( 'admin_menu', 'scm_admin_remove_menus' );
+    add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
+    add_action( 'pre_user_query','scm_admin_hide_from_users');
 
-//add_filter('wp_handle_upload_prefilter', 'scm_upload_hook_filename', 1, 1);
-//add_filter('wp_read_image_metadata', 'scm_upload_hook_meta', 1, 3);
+    //add_filter('wp_handle_upload_prefilter', 'scm_upload_hook_filename', 1, 1);
+    //add_filter('wp_read_image_metadata', 'scm_upload_hook_meta', 1, 3);
 
-add_filter( 'upload_dir', 'scm_upload_set_directory' );
-add_filter( 'wp_handle_upload', 'scm_upload_set_size' );
-
+    add_filter( 'upload_dir', 'scm_upload_set_directory' );
+    add_filter( 'wp_handle_upload', 'scm_upload_set_size' );
 
 
 // *****************************************************
 // *      ASSETS
 // *****************************************************
 
-
-//Frontend HTML head assets
     if ( ! function_exists( 'scm_admin_assets' ) ) {
         function scm_admin_assets() {
-            if (isset($_GET['page'])) {               
-                wp_enqueue_style('options');
-                wp_enqueue_media();
-            }
 
             wp_enqueue_style('admin');
         }
-    }
+    }    
 
 
 // *****************************************************
@@ -221,5 +215,6 @@ function scm_upload_hook_meta($meta, $file, $sourceImageType) {
         }
     }
 
+//endif;
 
 ?>

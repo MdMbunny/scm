@@ -38,7 +38,7 @@ if( have_rows('flexible_rows') ):
     foreach ($sections as $value) {
     	$post = $value[0];
 		setup_postdata( $post );
-		Get_Template_Part::get_part( SCM_PARTS_SINGLE . '-scm.php', array(
+		Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
 		   'add_class' => $value[1]
 		));	
 	}

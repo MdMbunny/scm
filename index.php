@@ -3,8 +3,8 @@
  * @package SCM
  */
 
-if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
-  return;
+/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
+  return;*/
 
 	get_header();
 
@@ -12,7 +12,7 @@ if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
 
 		while ( have_posts() ) : the_post();
 	
-				get_template_part( SCM_PARTS_SINGLE, 'scm' );
+				get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
 
 		endwhile;
 
@@ -20,7 +20,7 @@ if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
 
 	else :
 
-		get_template_part( SCM_PARTS, 'none' );
+		get_template_part( SCM_DIR_PARTS, 'none' );
 
 	endif; 
 

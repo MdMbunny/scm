@@ -18,7 +18,7 @@ $txt_size = ( get_field( 'select_txt_size' ) != 'default' ? get_field( 'select_t
 $color = ( get_field('text_color') != null ? 'color:rgba(' . hex2rgba( get_field('text_color'), get_field('text_alpha') ) . ');' : '' );
 $opacity = ( get_field('text_opacity') != null ? 'opacity:' . get_field('text_opacity', 'option') . ';' : '' );
 $shadow = ( get_field('text_shadow') ? 'text-shadow:' . get_field('text_shadow_x') . 'px ' . get_field('text_shadow_y') . 'px ' . get_field('text_shadow_size') . 'px rgba(' . hex2rgba( get_field('text_shadow_color'), get_field('text_shadow_alpha') ) . ');' : '' );
-$font = scm_fontsToString( get_field( 'select_webfonts_families' ), get_field( 'select_webfonts_default_families' ), true );
+$font = font2string( get_field( 'select_webfonts_families' ), get_field( 'select_webfonts_default_families' ), true );
 
 $bg_image = ( get_field('background_image') ? 'background-image: url(' . get_field('background_image') . ');' : '' );
 $bg_repeat = ( ( $bg_image && get_field('select_bg_repeat') != 'default' ) ? 'background-repeat:' . get_field('select_bg_repeat') . ';' : '' );
@@ -141,7 +141,7 @@ echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size 
 		echo '<row id="' . $row_id . '" class="' . $row_class . '" style="' . $row_style . '"">';
 
 	// --- Content
-	get_template_part( SCM_PARTS_SINGLE, $type );
+	get_template_part( SCM_DIR_PARTS_SINGLE, $type );
 
 
 	if( $type == 'scm-sections' )

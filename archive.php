@@ -4,8 +4,8 @@
  * @package SCM
  */
 
-if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
-  return;
+/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
+  return;*/
 
 
 	get_header();
@@ -18,14 +18,14 @@ if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
 		//echo '</header><!-- .page-header -->';
 
 		while ( have_posts() ) : the_post();
-			get_template_part( SCM_PARTS_SINGLE, 'scm' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
 		endwhile;
 
 		/*scm_paging_nav();*/
 
 	}else{
 
-		get_template_part( SCM_PARTS, 'none' );
+		get_template_part( SCM_DIR_PARTS, 'none' );
 
 	}
 

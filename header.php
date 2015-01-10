@@ -7,9 +7,9 @@
  * @package SCM
  */
 
-if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
   return;
-}
+}*/
 
 
 global $is_opera, $is_IE;
@@ -48,14 +48,14 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
     <?php /* REDIRECT TO assets/html/old_ie.html IF IE < scm-settings-general['browser-version'] */ ?>
 
     <!--[if lte IE <?php echo get_field('ie_version', 'option'); ?>]>
-    <meta http-equiv="refresh" content="0;url=<?php echo SCM_ASSETS . 'html/old_ie.html'; ?>" />
+    <meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />
     <![endif]-->
 
     <?php /* HTML5 SUPPORT IF IE < 9 */ ?>
 
     <!--[if lt IE 9]>
     <script src="<?php echo $protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <script>window.html5 || document.write('<script src="<?php echo SCM_REL_JS; ?>html5.js"><\/script>')</script>
+    <script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
     <script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
     <![endif]-->
 
@@ -64,13 +64,7 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
-<?php scm_webfonts() ?>
-
-<?php scm_favicon(); ?>
-
 <?php wp_head(); ?><!-- WP Header Hook -->
-
-<?php scm_default_styles() ?>
 
 </head>
 

@@ -43,7 +43,7 @@ echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX
 			if( !$b_mod ) break;
 			$post = $b_mod;
 			setup_postdata( $post );
-			get_template_part( SCM_PARTS_SINGLE, 'scm' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
 
 		break;
 	}

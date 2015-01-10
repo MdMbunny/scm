@@ -26,6 +26,7 @@
 // numberToStyle:       convert a positive number to a string like "450px"
 //                      convert a negative number to a string like "20%" ( -1 = "100%" | -2, -3, -11, ... = "20%", "30%", "110%", ...)
 // hex2rgba:            converts a hexadecimal color to an array containing rgba values
+// font2string:         converts an optional google webfont (eg Open Sans) + an optional default family list to comma separated string (add css font-family attribute if a third argument is true)
 //
 //
 
@@ -75,6 +76,10 @@ function printPre( $arr ){
     echo '<pre>';
     print_r($arr);
     echo '</pre>';
+}
+
+function alert( $str ){
+    echo '<script>alert("' . $str . '");</script>';
 }
 
 /**
@@ -377,6 +382,19 @@ function hex2rgba( $hex, $alpha = 1, $tostr = true ){
     return $rgba; // returns an array with the rgba values
 
 }
+
+    //Get Webfont + Family Font as a correct String (just comma separated families, or css attribute ready)
+    if ( ! function_exists( 'font2string' ) ) {
+        function font2string($webfont = '', $family = 'default', $att = false) {
+            $webfont = ( ( $webfont && $webfont != 'no' ) ? $webfont . ', ' : '' );
+            $family = ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
+            if( $att ){
+                $webfont = 'font-family:' . $webfont;
+                $family .= ';';
+            }
+            return str_replace( '"', '\'', $webfont . $family );
+        }
+    }
 
 
 

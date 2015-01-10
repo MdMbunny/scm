@@ -29,7 +29,7 @@ if( have_rows('flexible_content') ):
 				$single_type = $single->post_type;
 				$post = $single;
 				setup_postdata( $post );
-				Get_Template_Part::get_part( SCM_PARTS_SINGLE . '-' . $single_type . '.php', array(
+				Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
 					'b_init' 	=> get_sub_field( 'module_galleria_init' ),
 					'b_type' 	=> get_sub_field( 'module_galleria_type' ),
 					'b_img' 	=> get_sub_field( 'module_galleria_img_num' ),
@@ -49,7 +49,7 @@ if( have_rows('flexible_content') ):
 				$build = get_sub_field('flexible_soggetto');
 				$post = $single;
 				setup_postdata( $post );
-				Get_Template_Part::get_part( SCM_PARTS_SINGLE . '-' . $single_type . '.php', array(
+				Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
 				   'soggetto_rows' => $build,
 				));
 
@@ -62,13 +62,13 @@ if( have_rows('flexible_content') ):
 				$single_type = $single->post_type;
 				$post = $single;
 				setup_postdata( $post );
-				get_template_part( SCM_PARTS_SINGLE, $single_type );
+				get_template_part( SCM_DIR_PARTS_SINGLE, $single_type );
 
 			break;
 
 			case 'login_form_element':
 
-				get_template_part( SCM_PARTS_SINGLE . 'login-form' );
+				get_template_part( SCM_DIR_PARTS_SINGLE . 'login-form' );
 
 			break;
 			
