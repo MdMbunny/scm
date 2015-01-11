@@ -107,7 +107,7 @@
 
 
 // *********************************************
-// **************************** UPLOAD HOOKS ***                                         <<  todo:  dare nome post + index (post-type-01)
+// **************************** UPLOAD HOOKS ***                                         <<  +++ todo:  dare nome post + index (post-type-01)
 // *********************************************                                                    ottenere ID file e aggiungere {index, ID, nome originale} in tabella database (new post-type Files ?)
 /*                                                                                                  quando carico nuovo file cerca in Files database [nome-originale], se lo trovo sostituisco File [index]
 //Change the Name of the Uploaded File
