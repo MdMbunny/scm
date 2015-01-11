@@ -55,10 +55,10 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	if ( ! function_exists( 'scm_acf_json_load' ) ) {
 		function scm_acf_json_load( $paths ) {
 		    
-		    //unset($paths[0]);
-		    $paths[] = SCM_DIR_ACF_JSON;
+			//unset($paths[0]);
+			$paths[] = SCM_DIR_ACF_JSON;
 
-		    $string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json');
+			$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json');
 			$json=json_decode($string,true);
 			if($json['title'] && $json['title'] == 'Testi'){
 				$json['title'] .= ' Header';
@@ -100,15 +100,15 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
             	$inherit = array();
 	            
-	            if( isset( $field['choices'] ) ){
-		        	foreach ( $field['choices'] as $key => $value ) {
-		        		if( $key == 'default' || $key == 'no' )
-		        			$inherit[$key] = $value;
-		        	}
-				}
-	            $field['choices'] = $inherit + $default ;
-	        }
-
+		if( isset( $field['choices'] ) ){
+		    	foreach ( $field['choices'] as $key => $value ) {
+		        	if( $key == 'default' || $key == 'no' )
+		        		$inherit[$key] = $value;
+		        }
+		}
+	        
+	        $field['choices'] = $inherit + $default ;
+	    }
             return $field;
         }
     }
