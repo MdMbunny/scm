@@ -42,7 +42,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	}
 
 	// customize ACF json path for saving field groups
-    if ( ! function_exists( 'scm_acf_json_save' ) ) {
+	 if ( ! function_exists( 'scm_acf_json_save' ) ) {
 		function scm_acf_json_save( $path ) {
 
 		    $path = SCM_DIR_ACF_JSON;
@@ -57,91 +57,98 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 		    
 			//unset($paths[0]);
 			$paths[] = SCM_DIR_ACF_JSON;
+			
+			// LOOP THROUGH FILE IN A DIRECTORY - TEST IT
+			/*
+			$dir = new DirectoryIterator(dirname(__FILE__));
+			foreach ($dir as $fileinfo) {
+			    if (!$fileinfo->isDot()) {
+			        var_dump($fileinfo->getFilename());
+			    }
+			}
+			*/
 
-			$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json');
+
+			$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json'); // VIA
 			$json=json_decode($string,true);
-			if($json['title'] && $json['title'] == 'Testi'){
-				$json['title'] .= ' Header';
+			if($json['title'] && $json['title'] == 'Testi'){ // FAI ELENCO GRUPPI DA DUPLICARE
+				$json['title'] .= ' Header'; // FAI ELENCO PAGINE DOVE DUPLICARE GRUPPI
 				$json['key'] .= '_header';
 				$json['location'] = array (
-		            array (
-		                array (
-		                    'param' => 'options_page',
-		                    'operator' => '==',
-		                    'value' => 'acf-options-header',
-		                ),
-		            )
-		        );
+			            array (
+			                array (
+			                    'param' => 'options_page',
+			                    'operator' => '==',
+			                    'value' => 'acf-options-header',
+			                ),
+			            )
+			        );
 
-		        for ($i = 0; $i < sizeof($json['fields']); $i++) {
-		        	$json['fields'][$i]['key'] .= '_header';
-		        	$json['fields'][$i]['name'] .= '_header';
-		        }
-
-		        if( function_exists('register_field_group') ):
+			        for ($i = 0; $i < sizeof($json['fields']); $i++) {
+			        	$json['fields'][$i]['key'] .= '_header'; // ...
+			        	$json['fields'][$i]['name'] .= '_header';
+			        }
+	
+			        if( function_exists('register_field_group') )
 					register_field_group( $json );
-				endif;
-
 			}
 			
-
 		    return $paths;
-
 		}
 	}
 
 	// insert default select options from default presets
-    if ( ! function_exists( 'scm_acf_select_field' ) ) {
-        function scm_acf_select_field( $field ){
+    	if ( ! function_exists( 'scm_acf_select_field' ) ) {
+	        function scm_acf_select_field( $field ){
+	
+	            $default = scm_acf_select_preset($field['name']);
+	
+	            if( $default ){
+	
+	            	$inherit = array();
+		            
+			if( isset( $field['choices'] ) ){
+			    	foreach ( $field['choices'] as $key => $value ) {
+			        	if( $key == 'default' || $key == 'no' )
+			        		$inherit[$key] = $value;
+			        }
+			}
+		        
+		        $field['choices'] = $inherit + $default ;
+		    }
+	            return $field;
+	        }
+    	}
 
-            $default = scm_acf_select_preset($field['name']);
 
-            if( $default ){
-
-            	$inherit = array();
+    	if ( ! function_exists( 'scm_acf_google_latlng' ) ) {
+	        function scm_acf_google_latlng( $post_id ) {
+	        	//printPre($_POST);
+	           
+				if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
+					return;
+	            if( $_POST['post_type'] != 'scm-luoghi' )
+	                return;
+	
+	            $fields = $_POST['acf'];
 	            
-		if( isset( $field['choices'] ) ){
-		    	foreach ( $field['choices'] as $key => $value ) {
-		        	if( $key == 'default' || $key == 'no' )
-		        		$inherit[$key] = $value;
-		        }
-		}
-	        
-	        $field['choices'] = $inherit + $default ;
-	    }
-            return $field;
-        }
-    }
-
-
-    if ( ! function_exists( 'scm_acf_google_latlng' ) ) {
-        function scm_acf_google_latlng( $post_id ) {
-        	//printPre($_POST);
-           
-			if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
-				return;
-            if( $_POST['post_type'] != 'scm-luoghi' )
-                return;
-
-            $fields = $_POST['acf'];
-            
-            $country = $fields[SCM_ACF_LUOGO_COUNTRY];
-            $region = $fields[SCM_ACF_LUOGO_REGION];
-            $province = $fields[SCM_ACF_LUOGO_PROVINCE];
-            $code = $fields[SCM_ACF_LUOGO_CODE];
-            $city = $fields[SCM_ACF_LUOGO_CITY];
-            $town = $fields[SCM_ACF_LUOGO_TOWN];
-            $address = $fields[SCM_ACF_LUOGO_ADDRESS];
-
-            $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
-            $ll = getGoogleMapsLatLng( $google_address, $country );
-            $lat = $ll['lat'];
-            $lng = $ll['lng'];
-
-            $fields[SCM_ACF_LUOGO_LATITUDE] = $lat;
-            $fields[SCM_ACF_LUOGO_LONGITUDE] = $lng; 
-        }
-    }
+	            $country = $fields[SCM_ACF_LUOGO_COUNTRY];
+	            $region = $fields[SCM_ACF_LUOGO_REGION];
+	            $province = $fields[SCM_ACF_LUOGO_PROVINCE];
+	            $code = $fields[SCM_ACF_LUOGO_CODE];
+	            $city = $fields[SCM_ACF_LUOGO_CITY];
+	            $town = $fields[SCM_ACF_LUOGO_TOWN];
+	            $address = $fields[SCM_ACF_LUOGO_ADDRESS];
+	
+	            $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
+	            $ll = getGoogleMapsLatLng( $google_address, $country );
+	            $lat = $ll['lat'];
+	            $lng = $ll['lng'];
+	
+	            $fields[SCM_ACF_LUOGO_LATITUDE] = $lat;
+	            $fields[SCM_ACF_LUOGO_LONGITUDE] = $lng; 
+	        }
+    	}
 
 // *****************************************************
 // *      PRESETS
@@ -150,7 +157,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	if ( ! function_exists( 'scm_acf_select_preset' ) ) {
         function scm_acf_select_preset( $list ){
 		        				
-			if( strpos( $list, 'select_types' ) !== false ):
+		if( strpos( $list, 'select_types' ) !== false ):
 	    		global $SCM_types_slug;
 
 	    		$add = array(
