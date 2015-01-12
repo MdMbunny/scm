@@ -45,7 +45,7 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 
 <?php if ( $is_IE ) : ?>
 
-    <?php /* REDIRECT TO assets/html/old_ie.html IF IE < scm-settings-general['browser-version'] */ ?>
+    <?php /* REDIRECT TO _assets/html/old_ie.html IF IE < scm-settings-general['browser-version'] */ ?>
 
     <!--[if lte IE <?php echo get_field('ie_version', 'option'); ?>]>
     <meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />

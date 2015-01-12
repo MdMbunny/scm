@@ -5,18 +5,9 @@
  * @package SCM
  */
 
-/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-  echo '<br/><h3>INSTALLA E ATTIVA IL PLUGIN ADVANCED CUSTOM FIELD PRO PER UTILIZZARE QUESTO TEMA</h3><br/>';
-  return;
-}*/
-
-/*
-if( !function_exists( get_field ) )
-	return;*/
-
 
 if ( ! isset( $content_width ) ) {
-	$content_width = 940;
+	$content_width = 1120;
 }
 
 
@@ -67,6 +58,11 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_VERSION',   			$SCM_version );
 	define( 'SCM_SCRIPTS_VERSION',      trim( SCM_VERSION ) );
 
+//Option Pages
+
+	define( 'SCM_SETTINGS_MAIN',		'scm-main-settings' );
+	define( 'SCM_SETTINGS_TYPES',		'scm-types-settings' );
+
 //Directories
 	
 	// PARENT THEME
@@ -74,8 +70,8 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_URI',			      	$SCM_uri . '/');
 	
 		// LANGUAGES PARENT
-		define( 'SCM_DIR_LANG',      		SCM_DIR . 'languages/' );
-		define( 'SCM_URI_LANG',      		SCM_URI . 'languages/' );
+		define( 'SCM_DIR_LANG',      		SCM_DIR . '_languages/' );
+		define( 'SCM_URI_LANG',      		SCM_URI . '_languages/' );
 	
 	// CHILD THEME
 	define( 'SCM_DIR_CHILD', 			get_stylesheet_directory() . '/');
@@ -86,22 +82,26 @@ if ( ! isset( $content_width ) ) {
 		define( 'SCM_URI_LANG_CHILD',      	SCM_URI_CHILD . 'languages/' );
 
 		// ASSETS
-		define( 'SCM_DIR_ASSETS',      			SCM_DIR . 'assets/' );
-		define( 'SCM_URI_ASSETS',      			SCM_URI . 'assets/' );
+		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
+			define( 'SCM_DIR_IMG',      			SCM_DIR_ASSETS . 'img/' );
+		define( 'SCM_URI_ASSETS',      			SCM_URI . '_assets/' );
 			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
 			define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
 			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
 			define( 'SCM_URI_FONT',      			SCM_URI_ASSETS . 'font/' );
 
 		// LIBRARY 
-		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . 'library/' );
+		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . '_library/' );
 			define( 'SCM_DIR_CLASSES',      		SCM_DIR_LIBRARY . 'classes/' );
 			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_LIBRARY . 'sliders/' );
 
 		// PARTS
-		define( 'SCM_DIR_PARTS',			    	'parts/content' );
-			define( 'SCM_DIR_PARTS_SINGLE',		    'parts/single/single' );
-			define( 'SCM_DIR_PARTS_ARCHIVE',	    'parts/archive/archive' );
+		define( 'SCM_DIR_PARTS',			    	'_parts/content' );
+			define( 'SCM_DIR_PARTS_SINGLE',		    	'_parts/single/single' );
+			define( 'SCM_DIR_PARTS_ARCHIVE',	    	'_parts/archive/archive' );
+
+		// PLUGINS
+		define( 'SCM_DIR_PLUGINS',			    	SCM_DIR . '_plugins/' );
 
 // ACF
 
@@ -110,8 +110,8 @@ if ( ! isset( $content_width ) ) {
 		define( 'SCM_URI_ACF',      		SCM_URI . '_acf/' );
 			define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
 			define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
-			define( 'SCM_DIR_ACF_JSON',      		SCM_DIR . '_acf/acf-json' );
-			define( 'SCM_URI_ACF_JSON',      		SCM_URI . '_acf/acf-json' );
+			define( 'SCM_DIR_ACF_JSON',      		SCM_DIR_ACF . 'acf-json/' );
+			define( 'SCM_URI_ACF_JSON',      		SCM_URI_ACF . 'acf-json/' );
 
 		// ACF - fields keys ( modify them when field group LUOGO fields are deleted and recreated )
 		define( 'SCM_ACF_LUOGO_COUNTRY', 	'field_548f253744f97' );
@@ -126,38 +126,20 @@ if ( ! isset( $content_width ) ) {
 
 
 
-// *****************************************************
-// *  Default Types
-// *****************************************************
-
-	$SCM_default_types = array(
-		'sections'				=> array( 'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 				'categories' => true, 	'tags' => false, 	'icon' => 'f116', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'modules'				=> array( 'active' => 1,		 'singular' => __('Module', SCM_THEME), 				'plural' => __('Modules', SCM_THEME), 				'slug' => 'scm-modules', 				'categories' => true, 	'tags' => true, 	'icon' => 'f119', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'soggetti'				=> array( 'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 				'categories' => true, 	'tags' => false, 	'icon' => 'f338', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'luoghi'				=> array( 'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 				'categories' => true, 	'tags' => false, 	'icon' => 'f230', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'news'					=> array( 'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 					'categories' => true, 	'tags' => false, 	'icon' => 'f488', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => true 	),
-		'documenti'				=> array( 'active' => 0,		 'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'scm-documenti', 				'categories' => true, 	'tags' => false, 	'icon' => 'f109', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'gallerie'				=> array( 'active' => 1,		 'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'scm-gallerie', 				'categories' => true, 	'tags' => false, 	'icon' => 'f161', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => true 	),
-		'video'					=> array( 'active' => 0,		 'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'scm-video', 					'categories' => false, 	'tags' => false, 	'icon' => 'f236', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-		'rassegne-stampa'		=> array( 'active' => 0,		 'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'scm-rassegne-stampa', 		'categories' => false,	'tags' => false, 	'icon' => 'f336', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-	);
-
-
-
     
 require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';
 require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
-
-require SCM_DIR_LIBRARY . 'scm-acf.php';
-include_once( SCM_DIR_ACF_PLUGIN . 'acf.php' );
+require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
 
 require SCM_DIR_LIBRARY . 'scm-functions.php';
+
+require SCM_DIR_LIBRARY . 'scm-install.php';
+require SCM_DIR_LIBRARY . 'scm-acf.php';
 require SCM_DIR_LIBRARY . 'scm-core.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
-require SCM_DIR_LIBRARY . 'scm-style.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';
-require SCM_DIR_LIBRARY . 'scm-options.php';
+
 
 require SCM_DIR_LIBRARY . 'scm-jquery.php';
 

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.3.12
+Version:			v1.4.0
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -72,7 +72,7 @@ html {
 	-webkit-text-size-adjust: 100%; /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
 	-ms-text-size-adjust:     100%; /* www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
 	box-sizing: border-box; /* Apply a natural box layout model to the document; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
-	background: #000 url('assets/img/loading.gif') center center no-repeat;
+	background: #000 url('_assets/img/loading.gif') center center no-repeat;
 	background-attachment: fixed;
 	height: 100%;
 	font-size: 16px;
@@ -1394,7 +1394,7 @@ object {
 	position: fixed;
 	right: 15px;
 	top: 15px;
-	background-image: url('assets/img/fancybox_sprite.png');
+	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
 a.fancybox-prev{
@@ -1408,7 +1408,7 @@ a.fancybox-prev *{
 
 .fancybox-prev span {
 	left: 0px;
-	background-image: url('assets/img/fancybox_sprite.png');
+	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
 .fancybox-next{
@@ -1422,7 +1422,7 @@ a.fancybox-next *{
 
 .fancybox-next span {
 	right: 0px;
-	background-image: url('assets/img/fancybox_sprite.png');
+	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
 
