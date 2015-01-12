@@ -31,8 +31,6 @@ $address = ( get_field('luoghi_indirizzo') ? get_field('luoghi_indirizzo') : '' 
 $lat = ( get_field('luoghi_lat') ? get_field('luoghi_lat') : '' );
 $lng = ( get_field('luoghi_lng') ? get_field('luoghi_lng') : '' );
 
-print('HERE');
-print($lat);
 
 $address = ( $address && ( $town || $city || $code || $province ) ? $address . $address_separator : $address );
 $town = ( ( $town && ( $city || $code || $province ) ) ? $town . ' ' : $town );

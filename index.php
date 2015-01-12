@@ -16,8 +16,6 @@
 
 		endwhile;
 
-		scm_paging_nav();
-
 	else :
 
 		get_template_part( SCM_DIR_PARTS, 'none' );

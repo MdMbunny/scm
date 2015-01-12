@@ -65,7 +65,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 			    }
 			}
 
-			$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json'); // VIA
+			/*$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json'); // VIA
 			$json=json_decode($string,true);
 			if($json['title'] && $json['title'] == 'Testi'){ // FAI ELENCO GRUPPI DA DUPLICARE
 				$json['title'] .= ' Header'; // FAI ELENCO PAGINE DOVE DUPLICARE GRUPPI
@@ -87,7 +87,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	
 			        if( function_exists('register_field_group') )
 					register_field_group( $json );
-			}
+			}*/
 			
 		    return $paths;
 		}

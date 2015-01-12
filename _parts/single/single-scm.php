@@ -29,6 +29,9 @@ $bg_color = ( ( $bg_image && get_field('background_color') != null ) ? 'backgrou
 $margin = ( get_field('margin') != 'default' ? 'margin: ' . get_field('margin') . ';' : '');
 $padding = ( get_field('padding') != 'default' ? 'padding: ' . get_field('padding') . ';' : '');
 
+$add_class = ( isset($this) ? ' ' . $this->add_class : '' );
+$full = ( $type != 'scm-modules' || ( $type == 'scm-modules' && !$add_class ) ? ' full' : $add_class );
+
 // *** Container Styles (sections)
 
 $sc_bg_image = ( get_field('background_image_sc') ? 'background-image: url(' . get_field('background_image_sc') . ');' : '' );
@@ -59,7 +62,7 @@ if( $tag == 'section' ){
 $style = ( $style ? ' style="' . $style . '"' : '' );
 
 
-echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size . ( $type != 'scm-modules' ? ' full' : '' ) . ( isset($this) ? ' ' . $this->add_class : '' ) . ' ' . implode( " ", $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object"' . $style . '>';
+echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size . $full . ' ' . implode( " ", $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object"' . $style . '>';
 
 	if( have_rows('flexible_headers') ):
 

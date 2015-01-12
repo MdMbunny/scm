@@ -83,37 +83,33 @@ if ( ! isset( $content_width ) ) {
 
 		// ASSETS
 		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
+			define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
+			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_ASSETS . 'sliders/' );
 			define( 'SCM_DIR_IMG',      			SCM_DIR_ASSETS . 'img/' );
+			define( 'SCM_DIR_PLUGINS',			    SCM_DIR_ASSETS . 'plugins/' );
+			define( 'SCM_DIR_ACF',      		SCM_DIR_ASSETS . 'acf/' );
+				define( 'SCM_DIR_ACF_JSON',      		SCM_DIR_ACF . 'acf-json/' );
+				define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
 		define( 'SCM_URI_ASSETS',      			SCM_URI . '_assets/' );
 			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
 			define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
 			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
 			define( 'SCM_URI_FONT',      			SCM_URI_ASSETS . 'font/' );
+			define( 'SCM_URI_ACF',      		SCM_URI_ASSETS . 'acf/' );
+				define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
+				define( 'SCM_URI_ACF_JSON',      		SCM_URI_ACF . 'acf-json/' );
 
 		// LIBRARY 
 		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . '_library/' );
-			define( 'SCM_DIR_CLASSES',      		SCM_DIR_LIBRARY . 'classes/' );
-			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_LIBRARY . 'sliders/' );
 
 		// PARTS
 		define( 'SCM_DIR_PARTS',			    	'_parts/content' );
 			define( 'SCM_DIR_PARTS_SINGLE',		    	'_parts/single/single' );
 			define( 'SCM_DIR_PARTS_ARCHIVE',	    	'_parts/archive/archive' );
 
-		// PLUGINS
-		define( 'SCM_DIR_PLUGINS',			    	SCM_DIR . '_plugins/' );
-
 // ACF
 
-		// ACF PLUGIN
-		define( 'SCM_DIR_ACF',      		SCM_DIR . '_acf/' );
-		define( 'SCM_URI_ACF',      		SCM_URI . '_acf/' );
-			define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
-			define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
-			define( 'SCM_DIR_ACF_JSON',      		SCM_DIR_ACF . 'acf-json/' );
-			define( 'SCM_URI_ACF_JSON',      		SCM_URI_ACF . 'acf-json/' );
-
-		// ACF - fields keys ( modify them when field group LUOGO fields are deleted and recreated )
+		// ACF - fields keys ( modify them when field group LUOGO fields are deleted and recreated ) +++ todo: da scm-acf, pesca da nome field, e non da key
 		define( 'SCM_ACF_LUOGO_COUNTRY', 	'field_548f253744f97' );
 		define( 'SCM_ACF_LUOGO_REGION', 	'field_548f25f644f98' );
 		define( 'SCM_ACF_LUOGO_PROVINCE', 	'field_548f265644f99' );

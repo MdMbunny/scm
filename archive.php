@@ -4,9 +4,7 @@
  * @package SCM
  */
 
-/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
-  return;*/
-
+// +++ todo: redirect to NONE || crea elenco di title con link a single, aggiunge Options Page per Type e fields Header, Title...
 
 	get_header();
 
@@ -18,10 +16,9 @@
 		//echo '</header><!-- .page-header -->';
 
 		while ( have_posts() ) : the_post();
+
 			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
 		endwhile;
-
-		/*scm_paging_nav();*/
 
 	}else{
 

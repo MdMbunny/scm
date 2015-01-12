@@ -285,8 +285,7 @@
 
             $css = '
                 *, input, textarea{
-                    font-family: ' . $font . ';
-                    color: ' . $color . ';
+
                 }
 
                 body {
@@ -298,7 +297,8 @@
                     text-shadow: ' . $shadow . ';
                     margin: ' . $margin . ';
                     padding: ' . $padding . ';
-                    
+                    font-family: ' . $font . ';
+                    color: ' . $color . ';                    
                 }
 
                 #page {
