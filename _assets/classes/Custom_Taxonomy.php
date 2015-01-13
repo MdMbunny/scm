@@ -2,7 +2,7 @@
 
 class Custom_Taxonomy {
  
-    function __construct( $singular, $plural, $slug, $types = array(''), $tag = false) {
+    function __construct( $singular, $plural, $slug, $types = array(''), $tag = 0) {
 
     	$this->attributes = array();
         
@@ -11,6 +11,7 @@ class Custom_Taxonomy {
         $this->slug = $slug;
         $this->types = $types;
         $this->tag = $tag;
+        $this->name = ( !$tag ? __( 'Categorie', SCM_THEME ) : __( 'Tag', SCM_THEME ) );
 
         $this->CT_taxonomy();
         register_taxonomy( $this->slug, $this->types, $this->attributes);
@@ -20,10 +21,10 @@ class Custom_Taxonomy {
  	function CT_taxonomy() {
  		$this->attributes = array(
 			'labels' => array(
-				'name'                       => $this->plural,
-				'singular_name'              => $this->singular,
-				'menu_name'                  => $this->plural,
-				'all_items'                  => __( 'Tutto', SCM_THEME ),
+				'name'                       => $this->name . ' ' . $this->plural,
+				'singular_name'              => $this->name . ' ' . $this->singular,
+				'menu_name'                  => $this->name,
+				'all_items'                  => __( 'Elenco', SCM_THEME ),
 				'parent_item'                => __( 'Genitore', SCM_THEME ),
 				'parent_item_colon'          => __( 'Genitore:', SCM_THEME ),
 				'new_item_name'              => __( 'Aggiungi', SCM_THEME ),
@@ -44,9 +45,8 @@ class Custom_Taxonomy {
 			'show_tagcloud'              => false
 		);
 
-		if( isset( $tag ) && $tag == true){
-			$array['hierarchical'] = false;
-		}
+		if( $this->tag )
+			$this->attributes['hierarchical'] = false;
 
  	}
 }

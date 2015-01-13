@@ -6,20 +6,18 @@ class Custom_Type {
     protected $categories;
     protected $tags;
  
-    function __construct( $singular, $plural = '', $slug = '', $categories = 0, $tags = 0, $icon = '', $post = 1, $pagination = -1, $archive = -1, $folder = 0, $editor = 0 ) {
+    function __construct( $singular = '', $plural = '', $singular_short = '', $plural_short = '', $slug = '', $categories = 0, $tags = 0, $icon = '', $folder = 0 ) {
         
         $default = array(
-            'singular'      => null,
-            'plural'        => null,
-            'slug'          => null,
-            'categories'    => 0,
-            'tags'          => 0,
-            'icon'          => '',
-            'post'          => 1,
-            'pagination'    => -1,
-            'archive'       => -1,
-            'folder'        => 0,
-            'editor'        => 0
+            'singular'         => null,
+            'plural'           => null,
+            'singular_short'   => null,
+            'plural_short'     => null,
+            'slug'             => null,
+            'categories'       => 0,
+            'tags'             => 0,
+            'icon'             => '',
+            'folder'           => 0,
         );
 
         if(is_array($singular))
@@ -31,30 +29,33 @@ class Custom_Type {
         if(!$slug)
             $slug = sanitize_title($plural);
 
+        if( !$plural_short )
+            $plural_short = $plural;
+
+        if( !$singular_short )
+            $singular_short = $singular;
+
         $this->attributes = array();
         $this->taxonomies = array();
         
-        $this->singular = $singular;
-        $this->plural = $plural;
+        $this->singular = __( $singular, SCM_THEME );
+        $this->singular_short = __( $singular_short, SCM_THEME );
+        $this->plural = __( $plural, SCM_THEME );
+        $this->plural_short = __( $plural_short, SCM_THEME );
         $this->slug = $slug;
         $this->icon = $icon;
-        $this->post = $post;
-        $this->pagination = $pagination;
-        $this->pagination_short = $archive;
         $this->uploads_post_folder = $folder;
         $this->supports = array( 'title' );
-        if( $editor )
-            $this->supports[] = 'editor';
 
         //$this->menu_pos = 9;
 
-        if($categories){
-            $this->categories = new Custom_Taxonomy('Categoria','Categorie','categories-' . $slug, array($slug), false);
+        if( $categories ) {
+            $this->categories = new Custom_Taxonomy( $this->plural , $this->plural, 'categories-' . $slug, array( $slug ), false );
             $this->taxonomies[] = 'categories-' . $slug;
-            add_action( 'admin_menu', array(&$this, 'CT_remove_cat_metabox') );
+            add_action( 'admin_menu', array( &$this, 'CT_remove_cat_metabox' ) );
         }
-        if( isset( $tags ) ){
-            $this->tags = new Custom_Taxonomy('Tag','Tags','tags-' . $slug, array($slug), true);
+        if( $tags ) {
+            $this->tags = new Custom_Taxonomy( $this->plural, $this->plural, 'tags-' . $slug, array( $slug ), 1 );
             $this->taxonomies[] = 'tags-' . $slug;
             add_action( 'admin_menu', array(&$this, 'CT_remove_tag_metabox') );
         }
@@ -78,9 +79,6 @@ class Custom_Type {
             'categories'    => 0,
             'tags'          => 0,
             'icon'          => '',
-            'post'          => 1,
-            'pagination'    => -1,
-            'archive'       => -1,
             'folder'        => 0,
         );
 
@@ -98,13 +96,13 @@ class Custom_Type {
                 'singular_name'       => $this->singular,
                 'menu_name'           => $this->plural,
                 'parent_item_colon'   => __( 'Genitore:', SCM_THEME ),
-                'all_items'           => __( 'Tutti', SCM_THEME ),
+                'all_items'           => __( 'Elenco', SCM_THEME ),
                 'view_item'           => __( 'Visualizza', SCM_THEME ),
                 'add_new_item'        => __( 'Aggiungi', SCM_THEME ),
                 'add_new'             => __( 'Aggiungi', SCM_THEME ),
                 'edit_item'           => __( 'Modifica', SCM_THEME ),
                 'update_item'         => __( 'Aggiorna', SCM_THEME ),
-                'search_items'        => __( 'Cerca', SCM_THEME ),
+                'search_items'        => __( 'Cerca ', SCM_THEME ) . $this->plural_short,
                 'not_found'           => __( 'Non trovato', SCM_THEME ),
                 'not_found_in_trash'  => __( 'Non trovato nel Cestino', SCM_THEME ),
             ),
@@ -126,11 +124,10 @@ class Custom_Type {
             'capability_type'     => 'post',
         );
 
-        if($this->post == false){
-            //$this->attributes['supports'] = array('title','editor','page-attributes');
+        /*if($this->post == false){
             $this->attributes['capability_type'] = 'page';
             $this->attributes['hierarchical'] = true;
-        }
+        }*/
     }
 
     function CT_admin_columns( $columns ) {

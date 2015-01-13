@@ -18,7 +18,6 @@
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
-	add_action( 'wp_enqueue_scripts', 'scm_site_assets_favicon' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles_inline' );
@@ -159,8 +158,8 @@
             wp_enqueue_style( 'nivo' );
             wp_enqueue_style( 'roundabout' );*/
             
-            wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-            wp_enqueue_style( 'fontawesome' );
+            //wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            //wp_enqueue_style( 'fontawesome' );
 
         }
     }
@@ -221,6 +220,11 @@
 
      if ( ! function_exists( 'scm_admin_assets' ) ) {
         function scm_admin_assets() {
+
+            //alert(SCM_URI_FONT);
+
+            //wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            //wp_enqueue_style( 'fontawesome' );
 
             wp_register_style( 'admin', SCM_URI_CSS . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('admin');

@@ -54,6 +54,8 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	// customize ACF json path for loading field groups
 	if ( ! function_exists( 'scm_acf_json_load' ) ) {
 		function scm_acf_json_load( $paths ) {
+
+			global $SCM_custom_options;
 		    
 			//unset($paths[0]);
 			$paths[] = SCM_DIR_ACF_JSON;
@@ -61,7 +63,39 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 			$dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
 			foreach ($dir as $fileinfo) {
 			    if (!$fileinfo->isDot()) {
-			        //alert($fileinfo->getFilename());
+			    	
+			        $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $fileinfo->getFilename()); // VIA
+					$json=json_decode($string,true);
+					
+					if( $json['title'] ){
+						switch( $json['title'] ){
+							case 'Testata':
+								$SCM_custom_options[] = $json;
+							break;
+						}
+					}
+						
+						
+						/*$json['title'] .= ' Header';
+						$json['key'] .= '_header';
+						$json['location'] = array (
+				            array (
+				                array (
+				                    'param' => 'options_page',
+				                    'operator' => '==',
+				                    'value' => 'acf-options-header',
+				                ),
+				            )
+				        );
+
+				        for ($i = 0; $i < sizeof($json['fields']); $i++) {
+				        	$json['fields'][$i]['key'] .= '_header';
+				        	$json['fields'][$i]['name'] .= '_header';
+				        }
+		
+
+				        if( function_exists('register_field_group') )
+							register_field_group( $json );*/
 			    }
 			}
 
@@ -103,15 +137,16 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	
 	            	$inherit = array();
 		            
-			if( isset( $field['choices'] ) ){
-			    	foreach ( $field['choices'] as $key => $value ) {
-			        	if( $key == 'default' || $key == 'no' )
-			        		$inherit[$key] = $value;
-			        }
-			}
+					if( isset( $field['choices'] ) ){
+				    	foreach ( $field['choices'] as $key => $value ) {
+				        	if( $key == 'default' || $key == 'no' )
+				        		$inherit[$key] = $value;
+				        }
+					}
 		        
-		        $field['choices'] = $inherit + $default ;
-		    }
+		        	$field['choices'] = $inherit + $default ;
+		    	}
+	            
 	            return $field;
 	        }
     	}
@@ -153,14 +188,19 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	if ( ! function_exists( 'scm_acf_select_preset' ) ) {
         function scm_acf_select_preset( $list ){
 		        				
-		if( strpos( $list, 'select_types' ) !== false ):
-	    		global $SCM_types_slug;
+			if( strpos( $list, 'select_types' ) !== false ):
+	    		global $SCM_types;
 
-	    		$add = array(
-	    			'wpcf7_contact_form' => 'Contact Form',
-	    		);
+	    		$arr;
 
-	    		$arr = ( strpos( $list, '_complete') !== false ? array_merge( $SCM_types_slug, $add ) : $SCM_types_slug );
+	    		if( strpos( $list, '_complete') !== false )
+	    			$arr = $SCM_types['complete'];
+	    		else if( strpos( $list, '_private') !== false )
+	    			$arr = $SCM_types['private'];
+	    		else if( strpos( $list, '_public') !== false )
+	    			$arr = $SCM_types['public'];
+	    		else
+	    			$arr = $SCM_types['all'];
 	    		
 	    		return $arr;
 	    	endif;

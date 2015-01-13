@@ -1,0 +1,97 @@
+{
+    "key": "group_54b451f4305cf",
+    "title": "Allegati",
+    "fields": [
+        {
+            "key": "field_54b451f437bfc",
+            "label": "Carica allegati",
+            "name": "side_attachments",
+            "prefix": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "min": "",
+            "max": "",
+            "layout": "block",
+            "button_label": "Aggiungi Allegato",
+            "sub_fields": [
+                {
+                    "key": "field_54b451f4508d7",
+                    "label": "Nome",
+                    "name": "nome_allegato",
+                    "prefix": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "Nuovo Allegato",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": 30,
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_54b451f4508bf",
+                    "label": "File",
+                    "name": "link_allegato",
+                    "prefix": "",
+                    "type": "file",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "library": "all"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "post"
+            }
+        ]
+    ],
+    "menu_order": 3000,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "custom_fields",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "modified": 1421104753
+}

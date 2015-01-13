@@ -251,9 +251,6 @@
         }
     }
 
-//*****************************************************
-//*      CONTENTS
-//*****************************************************
 
 //*****************************************************
 //*      HEADER
@@ -442,6 +439,129 @@
     }
 
 //*****************************************************
+//*      CONTENTS
+//*****************************************************
+
+    //Prints Element Inner Header
+    if ( ! function_exists( 'scm_custom_header' ) ) {
+        function scm_custom_header( $header, $type = 'all', $custom = '', $txt_align = 'left' ) {
+
+            global $post, $SCM_back_query;
+
+            $SCM_back_query = $post;
+
+            if ($header && have_rows( 'flexible_headers' . $custom, $header ) ) {
+
+                echo '<header class="full ' . SCM_PREFIX . 'header ' . $type . '-header">';
+
+                    while ( have_rows( 'flexible_headers' . $custom, $header ) ) : the_row();
+
+                        $layout = get_row_layout();
+
+                        $float = ( ( get_sub_field('select_float_img') && get_sub_field('select_float_img') != 'no' ) ? get_sub_field('select_float_img') : ( $txt_align == 'center' ? 'float-center' : 'no-float' ) );
+                        $float = ( $float == 'float-center' ? 'float-center text-center' : $float );
+
+                        switch ($layout) {
+                            case 'icon_element':
+                                $icon = get_sub_field('icona');
+                                $icon_size = get_sub_field('dimensione');
+
+                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="line-height:0;font-size:' . $icon_size . 'px;">
+                                            <i class="fa ' . $icon . '"></i>
+                                        </div><!-- ' . $type . '-icon -->';
+                            break;
+
+                            case 'image_element':
+                                $image = ( get_sub_field('immagine') ? get_sub_field('immagine') : '' );
+                                $image_fissa = ( get_sub_field('fissa') ? get_sub_field('fissa') : 'norm' );
+                                $image_size = ( get_sub_field('dimensione') ? get_sub_field('dimensione') . 'px' : '' );
+                                $image_width = ( get_sub_field('larghezza') ? get_sub_field('larghezza') . 'px' : 'auto' );
+                                $image_height = ( get_sub_field('altezza') ? get_sub_field('altezza') . 'px' : $image_width );
+
+                                $style = ( $image_fissa == 'quad' ? 'width:' . $image_size . '; height:' . $image_size . ';' : 'width:' . $image_width . '; height:' . $image_height . ';' );
+
+
+
+                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="' . $style . '">
+                                            <img src="' . $image . '">
+                                        </div><!-- ' . $type . '-icon-image -->';
+                            break;
+
+                            case 'full_element':
+                                $image = get_sub_field('immagine');
+                                $image_height = get_sub_field('altezza');
+
+                                $full_style = '';
+                                $full_mask = '';
+                                if($image_height){
+                                    $full_style = ' style="height:' . $image_height . 'px;"';
+                                    $full_mask = ' mask';
+                                }
+
+                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . $full_mask . '"' . $full_style . '>
+                                            <img src="' . $image . '" class="full">
+                                        </div><!-- ' . $type . '-image -->';
+                            break;
+
+                            case 'title_element':
+                                $text = get_sub_field('testo');
+                                $text_tag = ( get_sub_field('select_headings') != 'default' ? get_sub_field('select_headings') : get_field( 'select_headings' . '_1' , 'option') );
+                                $text_align = ( get_sub_field('select_txt_alignment_title') != 'default' ? get_sub_field('select_txt_alignment_title') . ' ' : '' );
+                                
+                                $class = '';
+
+                                if( strpos( $text_tag, '.' ) !== false ){
+                                    $class = ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
+                                    $text_tag = 'h1';
+                                }
+
+                                echo '<' . $text_tag . ' class="' . $text_align . SCM_PREFIX . 'title ' . $type . '-title ' . $layout . ' clear' . $class . '">' . $text . '</' . $text_tag . '><!-- ' . $type . '-title -->';
+                            break;
+                        }
+
+                    endwhile;
+
+                echo '</header><!-- ' . $type . '-header -->';
+            }
+        }
+    }
+
+    //Prints Element Inner Footer
+    if ( ! function_exists( 'scm_custom_footer' ) ) {
+        function scm_custom_footer( $footer, $type = 'all', $custom = '', $txt_align = 'left' ) {
+
+            global $post, $SCM_back_query;
+
+            $post = $SCM_back_query;
+            setup_postdata($post);
+
+            if( $footer && have_rows( 'flexible_footers' . $custom, $footer ) ){
+                
+                echo '<footer class="full ' . SCM_PREFIX . 'footer ' . $type . '-footer">';
+
+                    while ( have_rows( 'flexible_footers' . $custom, $footer ) ) : the_row();
+
+                        $layout = get_row_layout();
+
+                        switch ($layout) {
+                            case 'text_element':
+
+                                $content = get_sub_field('testo');
+                                if(!$content) continue;
+                                echo $content;
+                                    
+                            break;
+                        }
+
+                        endwhile;
+
+                echo '</footer><!-- ' . $type . '-footer -->';
+            }
+        }
+    }
+
+
+//*****************************************************
 //*      FOOTER
 //*****************************************************
 
@@ -449,7 +569,7 @@
     if ( ! function_exists( 'scm_credits' ) ) {
         function scm_credits() {
 
-            $copyText = get_field('branding_footer_credits', 'option');
+            $copyText = get_field('footer_credits', 'option');
             if(!$copyText){
                 return;
             }

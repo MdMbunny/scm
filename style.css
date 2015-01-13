@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.4.2
+Version:			v1.4.3
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -754,7 +754,7 @@ input[type="radio"] {
 
 input[type="search"] {
 	-webkit-appearance: textfield; /* Addresses appearance set to searchfield in S5, Chrome */
-	box-sizing: content-box;
+	box-sizing: border-box;
 }
 
 input[type="search"]::-webkit-search-decoration { /* Corrects inner padding displayed oddly in S5, Chrome on OSX */

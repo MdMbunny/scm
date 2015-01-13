@@ -6,9 +6,12 @@
  *
  * @package SCM
  */
+
+	scm_custom_header( 'options', 'none', '', 'left' );
+
 ?>
 
-<section class="no-results not-found">
+<section class="no-results not-found full">
 	<header class="page-header">
 		<h1 class="page-title"><?php _e( 'Nothing Found', SCM_THEME ); ?></h1>
 	</header><!-- .page-header -->
@@ -31,3 +34,9 @@
 		<?php endif; ?>
 	</div><!-- .page-content -->
 </section><!-- .no-results -->
+
+<?php
+	
+	scm_custom_footer( 'options', 'none', '', 'left' );
+
+?>

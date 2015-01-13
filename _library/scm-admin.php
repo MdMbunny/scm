@@ -141,7 +141,6 @@ function scm_upload_hook_meta($meta, $file, $sourceImageType) {
 //Change the Upload Folder to a Type Folder
     if ( ! function_exists( 'scm_upload_set_directory' ) ) {
         function scm_upload_set_directory($args){
-            global $SCM_types;
             
             $arr = thePost();
 
@@ -150,13 +149,9 @@ function scm_upload_hook_meta($meta, $file, $sourceImageType) {
                 $slug = $arr['slug'];
                 $tax = $arr['taxonomy'];
                 if(gettype($tax) == 'array') $tax = implode('-', $tax);
-
-                /*$postname = $SCM_types[$type]->uploads_post_folder;
-                if(!$postname) return $args;*/
                 
                 $newdir = '/' . $type;
                 if($tax) $newdir .= '/' . $tax;
-                /*if($postname)*/ //$newdir .= '/' . $slug;
                 
                 $args['path']    = str_replace( $args['subdir'], '', $args['path'] );
                 $args['url']     = str_replace( $args['subdir'], '', $args['url'] );      

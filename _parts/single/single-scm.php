@@ -9,6 +9,16 @@ $class = get_post_class();
 
 $custom_id = ( get_field('custom_id') ? get_field('custom_id') : $type . '-' . $id );
 
+$single = ( ( isset($this) && isset($this->single) ) ? ' ' . $this->single : 0 );
+
+$custom = ( ( $type == 'page' || $single ) ? 1 : 0 );
+
+$custom_head = ( ( !get_field( 'flexible_headers' ) && $single && get_field( 'flexible_headers_' . $type, 'option' ) ) ? '_' . $type : '' );
+$custom_foot = ( ( !get_field( 'flexible_footers' ) && $single && get_field( 'flexible_footers_' . $type, 'option' ) ) ? '_' . $type : '' );
+
+$header = ( get_field( 'flexible_headers' ) ? $id : ( $custom && sizeof( get_field( 'flexible_headers' . $custom_head, 'option' ) ) ? 'option' : null ) );
+$footer = ( get_field( 'flexible_footers' ) ? $id : ( $custom && sizeof( get_field( 'flexible_footers' . $custom_foot, 'option' ) ) ? 'option' : null ) );
+
 $tag = ( $type == 'page' ? 'article' : ( $type == 'scm-sections' ? 'section' : 'div' ) );
 
 // *** Content Styles (pages, rows, modules)
@@ -29,7 +39,7 @@ $bg_color = ( ( $bg_image && get_field('background_color') != null ) ? 'backgrou
 $margin = ( get_field('margin') != 'default' ? 'margin: ' . get_field('margin') . ';' : '');
 $padding = ( get_field('padding') != 'default' ? 'padding: ' . get_field('padding') . ';' : '');
 
-$add_class = ( isset($this) ? ' ' . $this->add_class : '' );
+$add_class = ( ( isset($this) && isset($this->add_class) ) ? ' ' . $this->add_class : '' );
 $full = ( $type != 'scm-modules' || ( $type == 'scm-modules' && !$add_class ) ? ' full' : $add_class );
 
 // *** Container Styles (sections)
@@ -61,84 +71,12 @@ if( $tag == 'section' ){
 
 $style = ( $style ? ' style="' . $style . '"' : '' );
 
-
 echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size . $full . ' ' . implode( " ", $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object"' . $style . '>';
+	
+	// --- Header
+	if( $header )
+		scm_custom_header( $header, $type, $custom_head, $txt_align );
 
-	if( have_rows('flexible_headers') ):
-
-		echo '<header class="full ' . SCM_PREFIX . 'header ' . $type . '-header">';
-
-			while ( have_rows('flexible_headers') ) : the_row();
-
-				$layout = get_row_layout();
-
-				$float = ( ( get_sub_field('select_float_img') && get_sub_field('select_float_img') != 'no' ) ? get_sub_field('select_float_img') : ( $txt_align == 'center' ? 'float-center' : 'no-float' ) );
-				$float = ( $float == 'float-center' ? 'float-center text-center' : $float );
-
-				switch ($layout) {
-					case 'icon_element':
-						$icon = get_sub_field('icona');
-						$icon_size = get_sub_field('dimensione');
-
-						echo 	'<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="line-height:0;font-size:' . $icon_size . 'px;">
-									<i class="fa ' . $icon . '"></i>
-								</div><!-- ' . $type . '-icon -->';
-					break;
-
-					case 'image_element':
-						$image = ( get_sub_field('immagine') ? get_sub_field('immagine') : '' );
-						$image_fissa = ( get_sub_field('fissa') ? get_sub_field('fissa') : 'norm' );
-						$image_size = ( get_sub_field('dimensione') ? get_sub_field('dimensione') . 'px' : '' );
-						$image_width = ( get_sub_field('larghezza') ? get_sub_field('larghezza') . 'px' : 'auto' );
-						$image_height = ( get_sub_field('altezza') ? get_sub_field('altezza') . 'px' : $image_width );
-
-						$style = ( $image_fissa == 'quad' ? 'width:' . $image_size . '; height:' . $image_size . ';' : 'width:' . $image_width . '; height:' . $image_height . ';' );
-
-
-
-						echo 	'<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="' . $style . '">
-									<img src="' . $image . '">
-								</div><!-- ' . $type . '-icon-image -->';
-					break;
-
-					case 'full_element':
-						$image = get_sub_field('immagine');
-						$image_height = get_field('altezza');
-
-						$style = '';
-						$mask = '';
-						if($image_height){
-							$style = ' style="height:' . $image_height . 'px;"';
-							$mask = ' mask';
-						}
-
-						echo	'<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . $mask . '"' . $style . '>
-									<img src="' . $image . '" class="full">
-								</div><!-- ' . $type . '-image -->';
-					break;
-
-					case 'title_element':
-						$text = get_sub_field('testo');
-						$text_tag = ( get_sub_field('select_headings') != 'default' ? get_sub_field('select_headings') : get_field( 'select_headings' . '_1' , 'option') );
-						$text_align = ( get_sub_field('select_txt_alignment_title') != 'default' ? get_sub_field('select_txt_alignment_title') . ' ' : '' );
-						
-						$class = '';
-
-						if( strpos( $text_tag, '.' ) !== false ){
-							$class = ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
-							$text_tag = 'h1';
-						}
-
-						echo '<' . $text_tag . ' class="' . $text_align . SCM_PREFIX . 'title ' . $type . '-title ' . $layout . ' clear' . $class . '">' . $text . '</' . $text_tag . '><!-- ' . $type . '-title -->';
-					break;
-				}
-
-			endwhile;
-
-		echo '</header><!-- ' . $type . '-header -->';
-	endif;
-
-	$back_query = $post;
 
 	if( $type == 'scm-sections' )
 		echo '<row id="' . $row_id . '" class="' . $row_class . '" style="' . $row_style . '"">';
@@ -152,33 +90,8 @@ echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size 
 
 
 	// --- Footer
-
-	$post = $back_query;
-	setup_postdata($post);
-
-
-	if( have_rows('flexible_footers') ):
-
-		echo '<footer class="full ' . SCM_PREFIX . 'footer ' . $type . '-footer">';
-
-			while ( have_rows('flexible_footers') ) : the_row();
-
-				$layout = get_row_layout();
-
-				switch ($layout) {
-					case 'text_element':
-
-						$content = get_sub_field('testo');
-						if(!$content) continue;
-						echo $content;
-							
-					break;
-				}
-
-				endwhile;
-
-		echo '</footer><!-- ' . $type . '-footer -->';
-	endif;
+	if( $footer )
+		scm_custom_footer( $footer, $type, $custom_foot, $txt_align );
 
 
 echo '</' . $tag . '><!-- ' . $type . ' -->';

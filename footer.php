@@ -37,23 +37,19 @@
             <row id="<?php echo $foot_row_id; ?>" class="<?php echo $foot_row_class; ?>">
                 <?php
 
-                $type = get_field( 'branding_footer_type', 'option' );
+                $credits = get_field( 'footer_credits_active', 'option' );
+                $sections = ( get_field( 'footer_sections', 'option' ) ? get_field( 'footer_sections', 'option' ) : array() );
 
-                switch ($type) {
-                    case 'credits':
-                        scm_credits();
-                    break;
-                    
-                    case 'section':
-                        $single = get_field( 'branding_footer_sections', 'option' );
-                        if(!$single) continue;
-                        $single_type = $single->post_type;
-                        $post = $single;
+                foreach ( $sections as $section ) {
+                    if( $section['sezione'] ){
+                        $post = $section['sezione'];
                         setup_postdata( $post );
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );   
-                        
-                    break;
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
+                    }
                 }
+
+                if( $credits )
+                    scm_credits();
 
                 scm_top_of_page();
 

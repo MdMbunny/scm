@@ -4,12 +4,12 @@
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
-	add_action( 'after_setup_theme', 'scm_plugins_install' );
-    add_action( 'tgmpa_register', 'scm_reccomended_plugins_install' );
+    add_action( 'tgmpa_register', 'scm_plugins_install' );
 
 	add_action( 'after_setup_theme', 'scm_install' );
-	add_action( 'init', 'scm_types_install' );
-	add_action( 'admin_init', 'scm_option_pages_install' );
+    add_action( 'after_setup_theme', 'scm_types_install' );
+	add_action( 'after_setup_theme', 'scm_option_pages_install' );
+    
 
 // *****************************************************
 // *      THEME INSTALLATION
@@ -30,101 +30,181 @@
 	}
 
 // *****************************************************
-// *      OPTIONS PAGES INSTALLATION
-// *****************************************************
-
-	if ( ! function_exists( 'scm_option_pages_install' ) ) {
-	    function scm_option_pages_install(){
-
-			if( function_exists('acf_add_options_page') ) {
-
-				acf_add_options_page(array(
-					'page_title' 	=> 'SCM Settings',
-					'menu_title'	=> 'SCM',
-					'menu_slug' 	=> SCM_SETTINGS_MAIN,
-					'position'		=> '0.1',
-					'capability'	=> 'administrator',
-					'redirect'		=> false
-				));
-
-				acf_add_options_page(array(
-					'page_title' 	=> 'SCM Types',
-					'menu_title'	=> 'Types',
-					'menu_slug' 	=> SCM_SETTINGS_TYPES,
-					'position'		=> '0.2',
-					'capability'	=> 'administrator',
-					'redirect'		=> false
-				));			
-			}
-
-			if( function_exists('acf_add_options_page') ) {
-
-				acf_add_options_sub_page(array(
-					'page_title' 	=> 'SCM Site Settings',
-					'menu_title'	=> 'Layout',
-					'parent_slug'	=> SCM_SETTINGS_MAIN,
-				));
-
-				acf_add_options_sub_page(array(
-					'page_title' 	=> 'SCM Site Settings',
-					'menu_title'	=> 'Stili',
-					'parent_slug'	=> SCM_SETTINGS_MAIN,
-				));
-
-				acf_add_options_sub_page(array(
-					'page_title' 	=> 'SCM Header Settings',
-					'menu_title'	=> 'Header',
-					'parent_slug'	=> SCM_SETTINGS_MAIN,
-				));
-
-				acf_add_options_sub_page(array(
-					'page_title' 	=> 'SCM Footer Settings',
-					'menu_title'	=> 'Footer',
-					'parent_slug'	=> SCM_SETTINGS_MAIN,
-				));
-
-			}
-		}
-	}
-
-// *****************************************************
 // *      CUSTOM TYPES INSTALLATION
 // *****************************************************
 
     if ( ! function_exists( 'scm_types_install' ) ) {
         function scm_types_install(){
-            global $SCM_types, $SCM_types_slug;
+            global $SCM_types;
 
-            $SCM_types = [];
-            $SCM_types_slug = [];
+            $SCM_types = array(
+                'objects' => array(),
+                'public' => array(
+                    'post'                  => 'Articoli',
+                ),
+                'private' => array(),
+                'all' => array(
+                    'post'                  => 'Articoli',
+                    'wpcf7_contact_form'    => 'Contact Form',
+                ),
+                'complete' => array(
+                    'page'                  => 'Pagine',
+                    'post'                  => 'Articoli',
+                    'wpcf7_contact_form'    => 'Contact Form',
+                ),
+            );
 			
-			$saved_types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
+            $saved_types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
             
 			$default_types = array(
-				'sections'				=> array( 'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 				'categories' => true, 	'tags' => false, 	'icon' => 'f116', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'modules'				=> array( 'active' => 1,		 'singular' => __('Module', SCM_THEME), 				'plural' => __('Modules', SCM_THEME), 				'slug' => 'scm-modules', 				'categories' => true, 	'tags' => true, 	'icon' => 'f119', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'soggetti'				=> array( 'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 				'categories' => true, 	'tags' => false, 	'icon' => 'f338', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'luoghi'				=> array( 'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 				'categories' => true, 	'tags' => false, 	'icon' => 'f230', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'news'					=> array( 'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 					'categories' => true, 	'tags' => false, 	'icon' => 'f488', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => true 	),
-				'documenti'				=> array( 'active' => 0,		 'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'scm-documenti', 				'categories' => true, 	'tags' => false, 	'icon' => 'f109', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'gallerie'				=> array( 'active' => 1,		 'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'scm-gallerie', 				'categories' => true, 	'tags' => false, 	'icon' => 'f161', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => true 	),
-				'video'					=> array( 'active' => 0,		 'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'scm-video', 					'categories' => false, 	'tags' => false, 	'icon' => 'f236', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
-				'rassegne-stampa'		=> array( 'active' => 0,		 'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'scm-rassegne-stampa', 		'categories' => false,	'tags' => false, 	'icon' => 'f336', 	'post' => true, 	'pagination' => -1, 	'archive' => -1, 	'folder' => false 	),
+				'sections'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f116', 	'folder' => 1 	),
+				'modules'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Module', SCM_THEME), 				'plural' => __('Modules', SCM_THEME), 				'slug' => 'scm-modules', 			'categories' => 1, 	'tags' => 1, 	'icon' => 'f119', 	'folder' => 1 	),
+				'soggetti'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f338', 	'folder' => 1 	),
+				'luoghi'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f230', 	'folder' => 1 	),
+				'news'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 				'categories' => 1, 	'tags' => 0, 	'icon' => 'f488', 	'folder' => 1 	),
+				'documenti'				=> array( 'public' => 0,   'active' => 0,		 'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'scm-documenti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f109', 	'folder' => 1 	),
+				'gallerie'				=> array( 'public' => 0,   'active' => 0,		 'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'scm-gallerie', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f161', 	'folder' => 1 	),
+				'video'					=> array( 'public' => 0,   'active' => 0,		 'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'scm-video', 				'categories' => 0, 	'tags' => 0, 	'icon' => 'f236', 	'folder' => 1 	),
+				'rassegne-stampa'		=> array( 'public' => 0,   'active' => 0,		 'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'scm-rassegne-stampa', 	'categories' => 0,	'tags' => 0, 	'icon' => 'f336', 	'folder' => 1,    'singular_short' => __('Rassegna', SCM_THEME),     'plural_short' => __('Rassegne', SCM_THEME), 	),
 			);
 
-            $types = array_merge( $default_types, $saved_types);
-           
+
+            foreach ($default_types as $default => $value) {
+                $elem = getByValueKey( $saved_types, $value['slug'], 'slug' );
+                if( $elem >= 0 ){
+                    if( $default == 'sections' || $default == 'modules'){
+                        $value['active'] = 1;
+                        $saved_types[$elem] = $value;
+                    }
+                }else{
+                    $saved_types[] = $value;
+                }
+            }
+
+            update_field( 'types_list', $saved_types, 'option' );
+
+            $types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
+
             foreach ( $types as $type ) {
 
                 $active = $type['active'];
+                $public = $type['public'];
                 $slug = $type['slug'];
-                if(!$slug)
-                    $slug = 'scm-' . sanitize_title($type['plural']);
+                if( !$slug )
+                    $slug = SCM_PREFIX . sanitize_title($type['plural']);
+                if( substr($slug, 0, 4) != SCM_PREFIX )
+                    $slug = SCM_PREFIX . $slug;
+
                 $type['icon'] = '\\' . $type['icon'];
 
                 if( $active ){
-                    $SCM_types_slug[$slug] = $type['plural'];
-                    $SCM_types[$slug] = new Custom_Type( $type );
+                    if( $public ){
+                        $SCM_types['public'][$slug] = $type['plural'];
+                        $SCM_types['all'][$slug] = $type['plural'];
+                    }else{
+                        $SCM_types['private'][$slug] = $type['plural'];
+                    }
+                    $SCM_types['complete'][$slug] = $type['plural'];
+                    $SCM_types['objects'][$slug] = new Custom_Type( $type );
+                }
+            }
+        }
+    }
+
+// *****************************************************
+// *      OPTIONS PAGES INSTALLATION
+// *****************************************************
+
+    if ( ! function_exists( 'scm_option_pages_install' ) ) {
+        function scm_option_pages_install(){
+
+            global $SCM_types, $SCM_custom_options;
+
+            if( function_exists('acf_add_options_page') ) {
+
+                acf_add_options_page(array(
+                    'page_title'    => 'SCM Settings',
+                    'menu_title'    => 'SCM',
+                    'menu_slug'     => SCM_SETTINGS_MAIN,
+                    'position'      => '0.1',
+                    'capability'    => 'administrator',
+                    'redirect'      => false,
+                ));
+
+                acf_add_options_page(array(
+                    'page_title'    => 'SCM Types',
+                    'menu_title'    => 'Types',
+                    'menu_slug'     => SCM_SETTINGS_TYPES,
+                    'position'      => '0.2',
+                    'capability'    => 'administrator',
+                    'redirect'      => false
+                ));         
+            }
+
+            if( function_exists('acf_add_options_sub_page') ) {
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Site Settings',
+                    'menu_title'    => 'Layout',
+                    'parent_slug'   => SCM_SETTINGS_MAIN,
+                ));
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Site Settings',
+                    'menu_title'    => 'Stili',
+                    'parent_slug'   => SCM_SETTINGS_MAIN,
+                ));
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Header Settings',
+                    'menu_title'    => 'Header',
+                    'parent_slug'   => SCM_SETTINGS_MAIN,
+                ));
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Footer Settings',
+                    'menu_title'    => 'Footer',
+                    'parent_slug'   => SCM_SETTINGS_MAIN,
+                ));
+
+                if( sizeof( $SCM_custom_options ) > 0 ){
+
+                    foreach ($SCM_types['public'] as $slug => $title) {
+
+                        acf_add_options_sub_page(array(
+                            'page_title'    => 'Template ' . $title,
+                            'menu_title'    => 'Template',
+                            'menu_slug'     => 'acf-options-template-' . $slug,
+                            'parent_slug'   => 'edit.php?post_type=' . $slug,
+                        ));
+
+                        foreach ($SCM_custom_options as $group) {
+
+                            if ($group['title'] == 'Testata') {
+
+                                $group['title'] .= ' Archivio ' . $title;
+                                $group['key'] .= '_template_' . $slug;
+                                $group['location'] = array (
+                                    array (
+                                        array (
+                                            'param' => 'options_page',
+                                            'operator' => '==',
+                                            'value' => 'acf-options-template-' . $slug,
+                                        ),
+                                    )
+                                );
+
+                                for ($i = 0; $i < sizeof($group['fields']); $i++) {
+                                    $group['fields'][$i]['key'] .= '_' . $slug;
+                                    $group['fields'][$i]['name'] .= '_' . $slug;
+                                }
+                
+                                if( function_exists('register_field_group') )
+                                    register_field_group( $group );
+                                
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -137,24 +217,43 @@
     if ( ! function_exists( 'scm_plugins_install' ) ) {
         function scm_plugins_install() {
 
-            if (!function_exists('include_field_types_cf7'))
-                include_once( SCM_DIR_PLUGINS . 'default/acf-cf7-master/acf-cf7.php' );
-
-            if (!class_exists('acf_field_paypal_item_plugin'))
-                include_once( SCM_DIR_PLUGINS . 'default/acf-paypal-field-master/acf-paypal.php' );
-
-            if (!function_exists('include_field_types_font_awesome'))
-                include_once( SCM_DIR_PLUGINS . 'default/advanced-custom-fields-font-awesome/acf-font-awesome.php' );
-
-            if (!function_exists('include_field_types_limiter'))
-                include_once( SCM_DIR_PLUGINS . 'default/advanced-custom-fields-limiter-field/acf-limiter.php' );
-        }
-    }
-
-    if ( ! function_exists( 'scm_reccomended_plugins_install' ) ) {
-        function scm_reccomended_plugins_install() {
-
             $plugins = array(
+
+                array(
+                    'name'               => 'ACF CF7', // The plugin name.
+                    'slug'               => 'acf-cf7-master', // The plugin slug (typically the folder name).
+                    'source'             => 'acf-cf7-master.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'ACF PayPal', // The plugin name.
+                    'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
+                    'source'             => 'acf-paypal-field-master.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'ACF Font Awesome', // The plugin name.
+                    'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
+                    'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'ACF Limiter', // The plugin name.
+                    'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
+                    'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
 
                 array(
                     'name'               => 'Contact Form 7', // The plugin name.
@@ -249,7 +348,7 @@
             );
 
             $config = array(
-                'default_path' => SCM_DIR_PLUGINS . 'reccomended/',         // Default absolute path to pre-packaged plugins.
+                'default_path' => SCM_DIR_PLUGINS,         // Default absolute path to pre-packaged plugins.
                 'menu'         => 'scm-install-plugins',   // Menu slug.
                 'has_notices'  => true,                    // Show admin notices or not.
                 'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.

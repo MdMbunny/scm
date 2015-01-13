@@ -195,8 +195,8 @@ function getAllByPrefix( $arr, $prefix, $key = false ){
 */
 
 function getByValueKey( $arr, $value, $key = 'name' ){
-    foreach ($arr as $elem) {
-        if( $elem[$key] == $value ) return $elem;
+    foreach ($arr as $index => $elem) {
+        if( $elem[$key] == $value ) return $index;
     }
     return null;
 }

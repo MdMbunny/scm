@@ -3,17 +3,19 @@
  * @package SCM
  */
 
-/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-  return;
-}*/
-
 get_header();
 
-	while ( have_posts() ) : the_post();
+	if( have_posts() ){
 
-		get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
+		while ( have_posts() ) : the_post();
 
-	endwhile;
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
+
+		endwhile;
+
+	}else{
+		get_template_part( SCM_DIR_PARTS, 'none' );
+	}
 
 get_footer();
 
