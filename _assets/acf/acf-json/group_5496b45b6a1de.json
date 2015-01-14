@@ -5,7 +5,7 @@
         {
             "key": "field_5496b4ae4b8a4",
             "label": "Colonne",
-            "name": "flexible_columns",
+            "name": "flexible_columns_",
             "prefix": "",
             "type": "flexible_content",
             "instructions": "",
@@ -448,5 +448,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421070918
+    "modified": 1421156927
 }

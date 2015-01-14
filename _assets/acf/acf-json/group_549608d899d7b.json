@@ -225,9 +225,7 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "scm-news"
-            }
-        ],
-        [
+            },
             {
                 "param": "post_type",
                 "operator": "!=",
@@ -256,5 +254,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421110019
+    "modified": 1421147495
 }

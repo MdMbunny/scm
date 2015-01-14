@@ -8,6 +8,7 @@ $slug = $post->post_name;
 $class = get_post_class();
 
 $custom_id = ( get_field('custom_id') ? get_field('custom_id') : $type . '-' . $id );
+$custom_classes = ( get_field('custom_classes') ? get_field('custom_classes') . ' ' : '' );
 
 $single = ( ( isset($this) && isset($this->single) ) ? ' ' . $this->single : 0 );
 
@@ -39,6 +40,7 @@ $bg_color = ( ( $bg_image && get_field('background_color') != null ) ? 'backgrou
 $margin = ( get_field('margin') != 'default' ? 'margin: ' . get_field('margin') . ';' : '');
 $padding = ( get_field('padding') != 'default' ? 'padding: ' . get_field('padding') . ';' : '');
 
+
 $add_class = ( ( isset($this) && isset($this->add_class) ) ? ' ' . $this->add_class : '' );
 $full = ( $type != 'scm-modules' || ( $type == 'scm-modules' && !$add_class ) ? ' full' : $add_class );
 
@@ -69,9 +71,10 @@ if( $tag == 'section' ){
 	$align = ( get_field('select_alignment_site', 'option') ? get_field('select_alignment_site', 'option') : 'center' );
 }
 
+$classes =  $custom_classes . $align . ' ' . $txt_size . $full . ' ' . implode( ' ', $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object';
 $style = ( $style ? ' style="' . $style . '"' : '' );
 
-echo '<' . $tag . ' id="' . $custom_id . '" class="' . $align . ' ' . $txt_size . $full . ' ' . implode( " ", $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object"' . $style . '>';
+echo '<' . $tag . ' id="' . $custom_id . '" class="' . $classes . '"' . $style . '>';
 	
 	// --- Header
 	if( $header )

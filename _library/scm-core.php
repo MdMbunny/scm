@@ -221,11 +221,6 @@
      if ( ! function_exists( 'scm_admin_assets' ) ) {
         function scm_admin_assets() {
 
-            //alert(SCM_URI_FONT);
-
-            //wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-            //wp_enqueue_style( 'fontawesome' );
-
             wp_register_style( 'admin', SCM_URI_CSS . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('admin');
             

@@ -16,6 +16,28 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
 
 // *****************************************************
+// *      DUPLICATE GROUP
+// *****************************************************
+
+    if ( ! function_exists( 'scm_acf_fields_group_duplicate' ) ) {
+        function scm_acf_fields_group_duplicate( $group, $title, $slug, $location = array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'post' ) ) ) ) {
+
+            $group['title'] .= ' ' . $title;
+            $group['key'] .= '_' . $slug;
+            $group['location'] = $location;
+
+            for ($i = 0; $i < sizeof($group['fields']); $i++) {
+                $group['fields'][$i]['key'] .= '_' . $slug;
+                $group['fields'][$i]['name'] .= '_' . $slug;
+            }
+
+            if( function_exists('register_field_group') )
+                register_field_group( $group );
+        }
+    }
+
+
+// *****************************************************
 // *      CUSTOM FIELDS ACTIONS
 // *****************************************************
 
@@ -54,74 +76,9 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	// customize ACF json path for loading field groups
 	if ( ! function_exists( 'scm_acf_json_load' ) ) {
 		function scm_acf_json_load( $paths ) {
-
-			global $SCM_custom_options;
-		    
+	    
 			//unset($paths[0]);
 			$paths[] = SCM_DIR_ACF_JSON;
-			
-			$dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
-			foreach ($dir as $fileinfo) {
-			    if (!$fileinfo->isDot()) {
-			    	
-			        $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $fileinfo->getFilename()); // VIA
-					$json=json_decode($string,true);
-					
-					if( $json['title'] ){
-						switch( $json['title'] ){
-							case 'Testata':
-								$SCM_custom_options[] = $json;
-							break;
-						}
-					}
-						
-						
-						/*$json['title'] .= ' Header';
-						$json['key'] .= '_header';
-						$json['location'] = array (
-				            array (
-				                array (
-				                    'param' => 'options_page',
-				                    'operator' => '==',
-				                    'value' => 'acf-options-header',
-				                ),
-				            )
-				        );
-
-				        for ($i = 0; $i < sizeof($json['fields']); $i++) {
-				        	$json['fields'][$i]['key'] .= '_header';
-				        	$json['fields'][$i]['name'] .= '_header';
-				        }
-		
-
-				        if( function_exists('register_field_group') )
-							register_field_group( $json );*/
-			    }
-			}
-
-			/*$string = file_get_contents(SCM_DIR_ACF_JSON . '/group_54a742dac6730.json'); // VIA
-			$json=json_decode($string,true);
-			if($json['title'] && $json['title'] == 'Testi'){ // FAI ELENCO GRUPPI DA DUPLICARE
-				$json['title'] .= ' Header'; // FAI ELENCO PAGINE DOVE DUPLICARE GRUPPI
-				$json['key'] .= '_header';
-				$json['location'] = array (
-			            array (
-			                array (
-			                    'param' => 'options_page',
-			                    'operator' => '==',
-			                    'value' => 'acf-options-header',
-			                ),
-			            )
-			        );
-
-			        for ($i = 0; $i < sizeof($json['fields']); $i++) {
-			        	$json['fields'][$i]['key'] .= '_header'; // ...
-			        	$json['fields'][$i]['name'] .= '_header';
-			        }
-	
-			        if( function_exists('register_field_group') )
-					register_field_group( $json );
-			}*/
 			
 		    return $paths;
 		}

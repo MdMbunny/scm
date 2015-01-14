@@ -63,7 +63,6 @@
 	border-top-width: 1px;
 }
 
-
 /*** ACF Description ***/
 
 .acf-label p.description {
@@ -153,9 +152,10 @@
 .acf-field[data-name="flexible_columns"] .acf-flexible-content .layout table tbody tr td{
 	margin: 0px;
 	padding: 0px;
-	display: block;
+	/*display: block;*/
 	width: 100%;
 }
+
 
 .acf-flexible-content .layout[data-layout="column-12"] { max-width: 50%; }
 

@@ -18,6 +18,47 @@
 	if ( ! function_exists( 'scm_install' ) ) {
 		function scm_install() {
 
+            global $SCM_custom_fields;
+
+            $cont = array();
+
+            $dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+
+                    $name = $fileinfo->getFilename();
+                    $date = $fileinfo->getMTime();
+      
+                    $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $name);
+                    $json=json_decode($string,true);
+                    
+                    if( $json['title'] ){
+                        switch( $json['title'] ){
+                            case 'Testata':
+                                $SCM_custom_fields['header'] = $json;
+                            break;
+                            case 'Contenuti Sezione':
+                                $cont[$date] = $name;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            ksort( $cont );
+            $size = sizeof( $cont );
+
+            if( $size > 1 ){
+                for( $i = 0; $i >= $size; $i++ ){
+                    if( $i > 0 ){
+                        unlink( SCM_DIR_ACF_JSON . "/" . $cont[$i] );
+                    }
+                }
+            }else if( $size === 0){
+                $created = scm_acf_group_contents( 'Contenuti Sezione', 'scm-sections' );
+                alert('Content Section Filed Group created');
+            }
+
 			$themeStatus = get_option( 'scm-settings-installed' );
 
 			if ( ! $themeStatus ) {
@@ -118,7 +159,7 @@
     if ( ! function_exists( 'scm_option_pages_install' ) ) {
         function scm_option_pages_install(){
 
-            global $SCM_types, $SCM_custom_options;
+            global $SCM_types, $SCM_custom_fields;
 
             if( function_exists('acf_add_options_page') ) {
 
@@ -167,7 +208,7 @@
                     'parent_slug'   => SCM_SETTINGS_MAIN,
                 ));
 
-                if( sizeof( $SCM_custom_options ) > 0 ){
+                if( isset( $SCM_custom_fields['header'] ) ){
 
                     foreach ($SCM_types['public'] as $slug => $title) {
 
@@ -178,37 +219,19 @@
                             'parent_slug'   => 'edit.php?post_type=' . $slug,
                         ));
 
-                        foreach ($SCM_custom_options as $group) {
-
-                            if ($group['title'] == 'Testata') {
-
-                                $group['title'] .= ' Archivio ' . $title;
-                                $group['key'] .= '_template_' . $slug;
-                                $group['location'] = array (
-                                    array (
-                                        array (
-                                            'param' => 'options_page',
-                                            'operator' => '==',
-                                            'value' => 'acf-options-template-' . $slug,
-                                        ),
-                                    )
-                                );
-
-                                for ($i = 0; $i < sizeof($group['fields']); $i++) {
-                                    $group['fields'][$i]['key'] .= '_' . $slug;
-                                    $group['fields'][$i]['name'] .= '_' . $slug;
-                                }
-                
-                                if( function_exists('register_field_group') )
-                                    register_field_group( $group );
-                                
-                            }
-                        }
+                        scm_acf_fields_group_duplicate( $SCM_custom_fields['header'], $title, $slug, array( array( array ( 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options-template-' . $slug ) ) ) );
                     }
                 }
             }
         }
     }
+
+// *****************************************************
+// *      CUSTOM FIELDS INSTALLATION
+// *****************************************************
+
+    
+
 
 // *****************************************************
 // *      PLUGIN INSTALLATION

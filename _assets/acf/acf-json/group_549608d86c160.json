@@ -219,9 +219,7 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "scm-luoghi"
-            }
-        ],
-        [
+            },
             {
                 "param": "post_type",
                 "operator": "!=",
@@ -250,5 +248,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421106955
+    "modified": 1421147467
 }

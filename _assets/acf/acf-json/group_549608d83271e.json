@@ -32,9 +32,7 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "scm-video"
-            }
-        ],
-        [
+            },
             {
                 "param": "post_type",
                 "operator": "!=",
@@ -63,5 +61,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421106860
+    "modified": 1421147562
 }

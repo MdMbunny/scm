@@ -2320,9 +2320,7 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "scm-soggetti"
-            }
-        ],
-        [
+            },
             {
                 "param": "post_type",
                 "operator": "!=",
@@ -2351,5 +2349,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421106970
+    "modified": 1421147448
 }
