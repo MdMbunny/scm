@@ -10,6 +10,7 @@
 //
 // thePost:             get current id, post, type, slug and title
 // printPre:            <pre>print_r(%array)</pre>
+// alert:               JS alert - second parameter will be merged to the first one, separated by the third one (default ': ')
 // getByValue:          get array by $value
 // getByValueKey:       get array by $value and $key
 // getByKey:            get array by $key       (exact $key)
@@ -78,8 +79,10 @@ function printPre( $arr ){
     echo '</pre>';
 }
 
-function alert( $str ){
-    echo '<script>alert("' . $str . '");</script>';
+function alert( $str, $more = '', $divider = ': ' ){
+    if( !$more )
+        $divider = '';
+    echo '<script>alert("' . $str . $divider . $more . '");</script>';
 }
 
 /**

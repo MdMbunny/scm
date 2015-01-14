@@ -8,9 +8,7 @@
  */
 
 
-/*if ( !is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) )
-  return;*/
-
+global $post;
 
                    
                     $foot_id = ( get_field( 'id_footer', 'option' ) ? get_field( 'id_footer', 'option' ) : 'site-footer' );

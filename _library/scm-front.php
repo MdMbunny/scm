@@ -444,85 +444,166 @@
 
     //Prints Element Inner Header
     if ( ! function_exists( 'scm_custom_header' ) ) {
-        function scm_custom_header( $header, $type = 'all', $custom = '', $txt_align = 'left' ) {
+        function scm_custom_header( $header, $type = 'all', $custom = '' ) {
 
             global $post, $SCM_back_query;
 
             $SCM_back_query = $post;
 
-            if ($header && have_rows( 'flexible_headers' . $custom, $header ) ) {
+            if ($header && get_field( 'flexible_headers' . $custom, $header ) ) {
 
                 echo '<header class="full ' . SCM_PREFIX . 'header ' . $type . '-header">';
-
-                    while ( have_rows( 'flexible_headers' . $custom, $header ) ) : the_row();
-
-                        $layout = get_row_layout();
-
-                        $float = ( ( get_sub_field('select_float_img') && get_sub_field('select_float_img') != 'no' ) ? get_sub_field('select_float_img') : ( $txt_align == 'center' ? 'float-center' : 'no-float' ) );
-                        $float = ( $float == 'float-center' ? 'float-center text-center' : $float );
-
-                        switch ($layout) {
-                            case 'icon_element':
-                                $icon = get_sub_field('icona');
-                                $icon_size = get_sub_field('dimensione');
-
-                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="line-height:0;font-size:' . $icon_size . 'px;">
-                                            <i class="fa ' . $icon . '"></i>
-                                        </div><!-- ' . $type . '-icon -->';
-                            break;
-
-                            case 'image_element':
-                                $image = ( get_sub_field('immagine') ? get_sub_field('immagine') : '' );
-                                $image_fissa = ( get_sub_field('fissa') ? get_sub_field('fissa') : 'norm' );
-                                $image_size = ( get_sub_field('dimensione') ? get_sub_field('dimensione') . 'px' : '' );
-                                $image_width = ( get_sub_field('larghezza') ? get_sub_field('larghezza') . 'px' : 'auto' );
-                                $image_height = ( get_sub_field('altezza') ? get_sub_field('altezza') . 'px' : $image_width );
-
-                                $style = ( $image_fissa == 'quad' ? 'width:' . $image_size . '; height:' . $image_size . ';' : 'width:' . $image_width . '; height:' . $image_height . ';' );
-
-
-
-                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . '" style="' . $style . '">
-                                            <img src="' . $image . '">
-                                        </div><!-- ' . $type . '-icon-image -->';
-                            break;
-
-                            case 'full_element':
-                                $image = get_sub_field('immagine');
-                                $image_height = get_sub_field('altezza');
-
-                                $full_style = '';
-                                $full_mask = '';
-                                if($image_height){
-                                    $full_style = ' style="height:' . $image_height . 'px;"';
-                                    $full_mask = ' mask';
-                                }
-
-                                echo    '<div class="' . SCM_PREFIX . 'img ' . $layout . ' ' . $float . $full_mask . '"' . $full_style . '>
-                                            <img src="' . $image . '" class="full">
-                                        </div><!-- ' . $type . '-image -->';
-                            break;
-
-                            case 'title_element':
-                                $text = get_sub_field('testo');
-                                $text_tag = ( get_sub_field('select_headings') != 'default' ? get_sub_field('select_headings') : get_field( 'select_headings' . '_1' , 'option') );
-                                $text_align = ( get_sub_field('select_txt_alignment_title') != 'default' ? get_sub_field('select_txt_alignment_title') . ' ' : '' );
-                                
-                                $class = '';
-
-                                if( strpos( $text_tag, '.' ) !== false ){
-                                    $class = ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
-                                    $text_tag = 'h1';
-                                }
-
-                                echo '<' . $text_tag . ' class="' . $text_align . SCM_PREFIX . 'title ' . $type . '-title ' . $layout . ' clear' . $class . '">' . $text . '</' . $text_tag . '><!-- ' . $type . '-title -->';
-                            break;
-                        }
-
-                    endwhile;
-
+                    scm_flexible_content( get_field('flexible_headers' . $custom, $header ) );
                 echo '</header><!-- ' . $type . '-header -->';
             }
+        }
+    }
+
+    //Prints Element Flexible Contents
+    if ( ! function_exists( 'scm_flexible_content' ) ) {
+        function scm_flexible_content( $content ) {
+
+            global $post;
+
+            foreach ($content as $key => $cont) {
+
+                $layout = $cont['acf_fc_layout'];
+
+                switch ($layout) {
+
+                    case 'module_element':
+
+                        $single = $cont[ 'select_module' ];
+                        if(!$single) continue;
+                        $single_type = $single->post_type;
+                        $post = $single;
+                        setup_postdata( $post );
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
+
+                    break;
+
+                    case 'galleria_element':
+
+                        $single = $cont[ 'select_galleria' ];
+                        if(!$single) continue;
+                        $single_type = $single->post_type;
+                        $post = $single;
+                        setup_postdata( $post );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
+                            'b_init'    => $cont[ 'module_galleria_init' ],
+                            'b_type'    => $cont[ 'module_galleria_type' ],
+                            'b_img'     => $cont[ 'module_galleria_img_num' ],
+                            'b_size'    => $cont[ 'module_galleria_img_size' ],
+                            'b_txt'     => $cont[ 'module_galleria_txt' ],
+                            'b_bg'      => $cont[ 'module_galleria_txt_bg' ],
+                            'b_mod'     => $cont[ 'module_galleria_module' ],
+                        ));
+
+                    break;
+
+                    case 'soggetto_element':
+
+                        $single = $cont[ 'select_soggetto' ];
+                        if(!$single) continue;
+                        $single_type = $single->post_type;
+                        $build = $cont['flexible_soggetto'];
+                        $post = $single;
+                        setup_postdata( $post );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
+                           'soggetto_rows' => $build,
+                        ));
+
+                    break;
+
+                    case 'contact_form_element':
+
+                        $single = $cont[ 'select_contact_form' ];
+                        if(!$single) continue;
+                        $single_type = $single->post_type;
+                        $post = $single;
+                        setup_postdata( $post );
+                        get_template_part( SCM_DIR_PARTS_SINGLE, $single_type );
+
+                    break;
+
+                    case 'login_form_element':
+
+                        get_template_part( SCM_DIR_PARTS_SINGLE . 'login-form' );
+
+                    break;
+
+                    case 'icon_element':
+                        $icon_float = ( ( $cont[ 'select_float_img' ] && $cont[ 'select_float_img' ] != 'no' ) ? $cont[ 'select_float_img' ] : 'no-float' );
+                        $icon_float = ( $icon_float == 'float-center' ? 'float-center text-center' : $icon_float );
+                        $icon = $cont[ 'icona' ];
+                        $icon_size = $cont[ 'dimensione' ];
+                        $icon_class = SCM_PREFIX . 'img ' . $icon_float;
+                        $icon_style = 'line-height:0;font-size:' . $icon_size . 'px';
+
+                        echo    '<div class="' . $icon_class . '" style="' . $icon_style . '">
+                                    <i class="fa ' . $icon . '"></i>
+                                </div><!-- icon -->';
+                    break;
+
+                    case 'image_element':
+                        $image_float = ( ( $cont[ 'select_float_img' ] && $cont[ 'select_float_img' ] != 'no' ) ? $cont[ 'select_float_img' ] : 'no-float' );
+                        $image_float = ( $image_float == 'float-center' ? 'float-center text-center' : $image_float );
+
+                        $image = ( $cont[ 'immagine' ] ? $cont[ 'immagine' ] : '' );
+                        $image_fissa = ( $cont[ 'fissa' ] ? $cont[ 'fissa' ] : 'norm' );
+                        $image_size = ( $cont[ 'dimensione' ] ? $cont[ 'dimensione' ] . 'px' : '' );
+                        $image_width = ( $cont[ 'larghezza' ] ? $cont[ 'larghezza' ] . 'px' : 'auto' );
+                        $image_height = ( $cont[ 'altezza' ] ? $cont[ 'altezza' ] . 'px' : $image_width );
+
+                        $image_style = ( $image_fissa == 'quad' ? 'width:' . $image_size . '; height:' . $image_size . ';' : 'width:' . $image_width . '; height:' . $image_height . ';' );
+
+                        $image_class = SCM_PREFIX . 'img ' . $image_float;
+
+                        echo    '<div class="' . $image_class . '" style="' . $image_style . '">
+                                    <img src="' . $image . '">
+                                </div><!-- icon-image -->';
+                    break;
+
+                    case 'full_element':
+                        $full = $cont[ 'immagine' ];
+                        $full_height = $cont[ 'altezza' ];
+
+                        $full_style = ( $full_height ? 'height:' . $full_height . 'px;' : 'height:auto;' );
+                        $full_mask = 'mask';
+
+                        $full_class = SCM_PREFIX . 'full-image ' . $full_mask;
+
+                        echo    '<div class="' . $full_class . '" style="' . $full_style . '">
+                                    <img src="' . $full . '" class="full">
+                                </div><!-- full-image -->';
+                    break;
+
+                    case 'title_element':
+                        $text = $cont[ 'testo' ];
+                        $text_tag = ( $cont[ 'select_headings' ] != 'default' ? $cont[ 'select_headings' ] : get_field( 'select_headings_1' , 'option') );
+                        $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] : '' );
+                        
+                        $text_class = $text_align . SCM_PREFIX . 'title clear';
+
+                        if( strpos( $text_tag, '.' ) !== false ){
+                            $text_class .= ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
+                            $text_tag = 'h1';
+                        }
+
+                        echo '<' . $text_tag . ' class="' . $text_class . '">' . $text . '</' . $text_tag . '><!-- title -->';
+                    break;
+
+                    case 'text_element':
+                        $content = $cont['testo'];
+                        if(!$content) continue;
+                        echo $content;
+
+                    break;
+                    
+                }
+                
+            }
+
         }
     }
 

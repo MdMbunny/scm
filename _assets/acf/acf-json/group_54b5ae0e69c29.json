@@ -31,7 +31,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": 30,
                         "class": "",
                         "id": ""
                     },
@@ -49,9 +49,7 @@
                         "16": "1\/6",
                         "56": "5\/6"
                     },
-                    "default_value": {
-                        "text": "text"
-                    },
+                    "default_value": 11,
                     "allow_null": 0,
                     "multiple": 0,
                     "ui": 1,
@@ -59,6 +57,50 @@
                     "placeholder": "",
                     "disabled": 0,
                     "readonly": 0
+                },
+                {
+                    "key": "field_54b68d637d5de",
+                    "label": "ID",
+                    "name": "column_id",
+                    "prefix": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "id-colonna",
+                    "prepend": "#",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_54b68d927d5df",
+                    "label": "Classi",
+                    "name": "column_classes",
+                    "prefix": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "class1 class2 class3",
+                    "prepend": ".",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
                 },
                 {
                     "key": "field_54b5ae0e69c57",
@@ -1624,7 +1666,7 @@
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 211,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -1645,5 +1687,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421199576
+    "modified": 1421270470
 }

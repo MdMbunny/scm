@@ -1,8 +1,9 @@
 <?php
 
-if( have_rows('flexible_columns') ):
 
-	global $post;
+global $post;
+
+if( have_rows('columns_repeater') ):
 
 	$current_column = 0;
 	$counter = 0;
@@ -11,18 +12,19 @@ if( have_rows('flexible_columns') ):
 	$class = '';
 
 	$modules = array();
+	
+	$total = sizeof( get_field( 'columns_repeater' ) );
 
-	$total = sizeof( get_field( 'flexible_columns' ) );
+    while ( have_rows('columns_repeater') ) : the_row();
 
-    while ( have_rows('flexible_columns') ) : the_row();
-		    	
-    	$layout = get_row_layout();
-    	$sub = substr($layout, 7);
-    	$size = (int)$sub[0] / (int)$sub[1];
+    	$layout = get_sub_field('select_columns_width');
+    	$module = get_sub_field('flexible_build');
+
+    	$size = (int)$layout[0] / (int)$layout[1];
     	$counter += $size;
     	$current_column++;
 
-    	$class = 'column ' . $layout;
+    	$class = 'light-module column column-' . $layout;
 
     	if( $counter == 1 && $size == 1 ){
 
@@ -51,26 +53,27 @@ if( have_rows('flexible_columns') ):
 		$class .= $odd;
 		$class .= ' count-' . ( $current_column );
 
-		$module = get_sub_field('contenuto');
+		$class = ( get_sub_field('column_classes') ? $class . ' ' . get_sub_field('column_classes') : $class);
 
-		if(!$module) continue;
+		$id = ( get_sub_field('column_id') ? get_sub_field('column_id') : uniqid( 'light-module-' ) ) ;
 		
-		$modules[] = array( $module, $class );
+		$modules[] = array( $module, $id, $class );
 
     endwhile;
-
-    foreach ($modules as $value) {
-    	$post = $value[0];
-		setup_postdata( $post );
-		Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
-		   'add_class' => $value[1]
-		));	
-	}
+	
+	    foreach ($modules as $value) {
+	    	echo '<div id="' . $value[1] . '" class="' . $value[2] . '">';	
+				scm_flexible_content( $value[0] );
+			echo '</div>';
+		}
+	
 
 else :
 
     // no layouts found
 
 endif;
+
+
 
 ?>

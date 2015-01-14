@@ -7,7 +7,7 @@
  * @package SCM
  */
 
-	scm_custom_header( 'options', 'none', '', 'left' );
+	scm_custom_header( 'options', 'none', '' );
 
 ?>
 

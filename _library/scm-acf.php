@@ -15,6 +15,7 @@ add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
 
+
 // *****************************************************
 // *      DUPLICATE GROUP
 // *****************************************************
@@ -108,10 +109,13 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	        }
     	}
 
+/*add_filter('acf/update_value/type=select', 'scm_acf_update_value', 10, 3);
+add_filter('acf/format_value/type=select', 'scm_acf_format_value', 10, 3);*/
 
     	if ( ! function_exists( 'scm_acf_google_latlng' ) ) {
 	        function scm_acf_google_latlng( $post_id ) {
 	        	//printPre($_POST);
+	        	//alert('Save Post');
 	           
 				if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
 					return;
@@ -137,6 +141,22 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 	            $fields[SCM_ACF_LUOGO_LONGITUDE] = $lng; 
 	        }
     	}
+
+    	/*if ( ! function_exists( 'scm_acf_format_value' ) ) {
+			function scm_acf_format_value( $value, $post_id, $field ) {
+				alert('Format Value');
+				//printPre($field);
+				return $value;
+			}
+		}
+
+    	if ( ! function_exists( 'scm_acf_update_value' ) ) {
+			function scm_acf_update_value( $value, $post_id, $field ) {
+				alert('Update Field');
+				//printPre($field);
+				return $value;
+			}
+		}*/
 
 // *****************************************************
 // *      PRESETS

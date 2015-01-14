@@ -56,7 +56,7 @@
                 }
             }else if( $size === 0){
                 $created = scm_acf_group_contents( 'Contenuti Sezione', 'scm-sections' );
-                alert('Content Section Filed Group created');
+                alert('Flexible Content for Sections created');
             }
 
 			$themeStatus = get_option( 'scm-settings-installed' );
@@ -112,10 +112,9 @@
 
             foreach ($default_types as $default => $value) {
                 $elem = getByValueKey( $saved_types, $value['slug'], 'slug' );
-                if( $elem >= 0 ){
+                if( isset($elem) ){
                     if( $default == 'sections' || $default == 'modules'){
-                        $value['active'] = 1;
-                        $saved_types[$elem] = $value;
+                        $saved_types[$elem]['active'] = 1;
                     }
                 }else{
                     $saved_types[] = $value;
