@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.5.4
+Version:			v1.5.5
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -1047,7 +1047,7 @@ a:hover{
 	cursor: pointer;
 	max-width: 40%;
 	float: left;
-	padding: 0.4% 25px 0.4% 0px;
+	padding: 0.6% 2.5% 0 0;
 }
 
 .smart .menu-toggle {
