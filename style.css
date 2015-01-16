@@ -1047,7 +1047,7 @@ a:hover{
 	cursor: pointer;
 	max-width: 40%;
 	float: left;
-	padding: 0.6% 2.5% 0 0;
+	padding: 0.4% 25px 0.4% 0px;
 }
 
 .smart .menu-toggle {

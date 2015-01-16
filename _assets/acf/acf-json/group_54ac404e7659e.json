@@ -79,7 +79,7 @@
             "placeholder": 0,
             "prepend": "",
             "append": "px",
-            "min": "",
+            "min": 0,
             "max": "",
             "step": "",
             "readonly": 0,
@@ -179,9 +179,7 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto",
-                "\"Open Sans\"": "Open Sans",
-                "\"Merriweather Sans\"": "Merriweather Sans"
+                "\"Open Sans\"": "Open Sans"
             },
             "default_value": {
                 "default": "default"
@@ -1389,5 +1387,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421383317
+    "modified": 1421328705
 }
