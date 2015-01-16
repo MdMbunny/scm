@@ -207,7 +207,7 @@
 					var sticky_menu = '#' + <?php echo json_encode($sticky_menu); ?>;
 					var sticky = <?php echo json_encode($sticky); ?>;
 					var anim = <?php echo json_encode($anim); ?>;
-					var offset = <?php echo json_encode($offset); ?>;
+					var offset = parseFloat( <?php echo json_encode($offset); ?> );
 					var attach = <?php echo json_encode($attach); ?>;
 					
 					if(sticky){
@@ -225,15 +225,28 @@
 							});
 						}
 
-						if( attach == 'nav-top'){
-							offset += $(menu).offset().top;
-						}else if( attach == 'nav-bottom'){
-							offset += $(menu).offset().top + $(menu).outerHeight();
-						}
+						$( 'body' ).on( 'responsive', function(){
 
-						$(sticky_menu).affix(
-							{ offset: { top: parseInt(offset) } }
-						);
+							var new_offset = 0;
+
+							if( attach == 'nav-top'){
+								new_offset = offset + $(menu).offset().top;
+							}else if( attach == 'nav-bottom'){
+								new_offset = offset + $(menu).offset().top + $(menu).outerHeight();
+							}
+
+							$(window).off('.affix');
+							$(sticky_menu)
+							    .removeClass("affix affix-top affix-bottom")
+							    .removeData("bs.affix");
+							
+							$(sticky_menu).affix(
+								{ offset: { top: parseInt(new_offset) } }
+							);
+
+						} );
+
+						
 
 						var w = $(window).width();
 
@@ -852,10 +865,12 @@
 								a += 'tablet r800 ';
 								if ( !$( 'body' ).hasClass('tablet') || $( 'body' ).hasClass('smart') )
 									$( 'body' ).trigger('responsiveTablet');
+								
 							}else{
 								r += 'tablet r800 ';
 								if ( $( 'body' ).hasClass('tablet') || !$( 'body' ).hasClass('desktop') )
 									$( 'body' ).trigger('responsiveDesktop');
+								
 							}
 
 							if( w < 801 ) a += 'r700 ';
@@ -868,6 +883,7 @@
 
 							if ( !$( 'body' ).hasClass('smart') )
 								$( 'body' ).trigger('responsiveSmart');
+							
 
 							if( w < 401 ) a += 'smartmicro ';
 							else r += 'smartmicro ';
@@ -885,7 +901,10 @@
 
 						$('body').removeClass( r );
 						$('body').addClass( a );
+
+						$( 'body' ).trigger('responsive');
 					}
+					
 
 					responsiveClasses();
 
