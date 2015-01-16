@@ -57,11 +57,14 @@
                 "id": ""
             },
             "choices": {
+                "default": "Default",
                 "no": "No Google font",
-                "\"Open Sans\"": "Open Sans"
+                "Roboto": "Roboto",
+                "\"Open Sans\"": "Open Sans",
+                "\"Merriweather Sans\"": "Merriweather Sans"
             },
             "default_value": {
-                "no": "No Google font"
+                "default": "default"
             },
             "allow_null": 0,
             "multiple": 0,
@@ -99,7 +102,7 @@
                 "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
             },
             "default_value": {
-                "default": "Default"
+                "default": "default"
             },
             "allow_null": 0,
             "multiple": 0,
@@ -157,14 +160,86 @@
             },
             "choices": {
                 "default": "Default",
-                "normal": "Normale",
                 "minion": "Minuscolo",
                 "half": "Met&agrave;",
                 "small": "Piccolo",
+                "normal": "Normale",
                 "medium": "Medio",
                 "big": "Grande",
                 "huge": "Enorme",
                 "double": "Doppio"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b81334ba0a8",
+            "label": "Spessore",
+            "name": "select_font_weight",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "300": "Light",
+                "400": "Normal",
+                "600": "Semi Bold",
+                "700": "Bold",
+                "800": "Extra Bold"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b8170948767",
+            "label": "Interlinea",
+            "name": "select_line_height",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "00": "Nessuno spazio",
+                "0.25": "1 quarto di linea",
+                "0.5": "Mezza linea",
+                "1": "Una linea",
+                "1.25": "Una linea e 1 quarto",
+                "1.5": "Una linea e mezza",
+                "1.75": "Una linea e 3 quarti",
+                "2": "Doppia linea",
+                "2.5": "Doppia linea e mezza",
+                "3": "Tripla linea",
+                "4": "Quadrupla linea"
             },
             "default_value": {
                 "default": "default"
@@ -422,5 +497,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1420886478
+    "modified": 1421379356
 }

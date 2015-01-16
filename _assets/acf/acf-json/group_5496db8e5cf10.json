@@ -1,0 +1,89 @@
+{
+    "key": "group_5496db8e5cf10",
+    "title": "Contenuto Pagina",
+    "fields": [
+        {
+            "key": "field_5496db8e5fcfc",
+            "label": "Righe",
+            "name": "flexible_rows",
+            "prefix": "",
+            "type": "flexible_content",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "button_label": "Aggiungi Elemento",
+            "min": "",
+            "max": "",
+            "layouts": [
+                {
+                    "key": "5496d906456b4",
+                    "name": "sezione",
+                    "label": "Sezione",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_5496db8e617bb",
+                            "label": "Contenuto",
+                            "name": "contenuto",
+                            "prefix": "",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "scm-sections"
+                            ],
+                            "taxonomy": "",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "return_format": "object",
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ]
+    ],
+    "menu_order": 206,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "excerpt",
+        "custom_fields",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "modified": 1421323403
+}

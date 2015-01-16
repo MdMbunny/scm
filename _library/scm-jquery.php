@@ -248,12 +248,14 @@
 						}else{
 							$( '.sticky-toggle' ).css( 'display', 'none' );
 
-							if( $( '.sticky-image' ) ){
+							if( $( '.sticky-image' )[0] ){
 								$( '.sticky-image' ).css( 'display', 'inline-block' );
 								$( '.sticky-icon' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
 							}else{
 								$( '.sticky-icon' ).css( 'display', 'inline-block' );
 								$( '.sticky-image' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
 							}
 						}
 
@@ -271,13 +273,14 @@
 
 						$( 'body' ).on( 'responsiveDesktop', function(){
 							$( '.sticky-toggle' ).css( 'display', 'none' );
-
-							if( $( '.sticky-image' ) ){
+							if( $( '.sticky-image' )[0] ){
 								$( '.sticky-image' ).css( 'display', 'inline-block' );
 								$( '.sticky-icon' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
 							}else{
 								$( '.sticky-icon' ).css( 'display', 'inline-block' );
 								$( '.sticky-image' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
 							}
 
 						} );
@@ -321,9 +324,12 @@
 							var target = $( this.hash );
 							var name = this.hash.slice( 1 );
 							var destination;
+
+							console.log(this);
+
 							target = target.length ? target : $( '[name=' + name +']' );
 
-							if ( name == 'top' ){
+							if ( name == 'top' ){								
 								destination = 0;
 							}else{
 								destination = target.offset().top - parseInt( offset );

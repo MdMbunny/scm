@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.5.0
+Version:			v1.5.1
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -75,7 +75,6 @@ html {
 	background: #000 url('_assets/img/loading.gif') center center no-repeat;
 	background-attachment: fixed;
 	height: 100%;
-	font-size: 16px;
 }
 
 *{
@@ -184,17 +183,21 @@ textarea {
 	line-height: 1.5;
 }
 
+.h0,
 h1,
 h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.h7,
+.h8,
+.h9 {
 	font-weight: bold;
 }
 
 .h0 { font-size: 2.5em; }
-h1, div.logo { font-size: 2.2em; }
+h1 { font-size: 2.2em; }
 h2 { font-size: 2em; }
 h3 { font-size: 1.8em; }
 h4 { font-size: 1.6em; }
@@ -204,9 +207,9 @@ h6 { font-size: 1.2em; }
 .h8 { font-size: 1.1em; }
 .h9 { font-size: 1.05em; }
 
-p {
+/*p {
 	margin-bottom: 1.5em;
-}
+}*/
 
 p:last-child {
 	margin-bottom: 0;
@@ -283,11 +286,11 @@ sup {
 }
 
 .minion {
-	font-size: 30%;
+	font-size: 60%;
 }
 
 .half {
-	font-size: 60%;
+	font-size: 75%;
 }
 
 .small {
@@ -499,29 +502,31 @@ th {
 --------------------------------------------------------------*/
 
 row{
-	padding: 0px 20px;
-}
-
-.site-page.responsive row{
 	padding: 0px;
 }
 
-row.responsive{
-	padding: 0px 80px;
-}
+/*.site-page.responsive row{
+	padding: 0px;
+}*/
 
-.site-page.responsive section row,
-section row{
+section row,
+row.responsive{
 	padding: 40px 80px;
 	clear: both;
 }
+
+/*.site-page.responsive section row,*/
+/*section row{
+	padding: 40px 80px;
+	
+}*/
 
 .smart row{
 	padding: 0px;
 }
 
-.smart section row{
-	padding: 20px;
+.smart section row {
+	padding: 10px 20px;
 }
 
 .smart article section,
@@ -842,7 +847,8 @@ a:active *,
 button,
 button * {
 	cursor: pointer;
-	/*outline: 0;*/
+	outline: 0;
+	color: inherit;
 }
 
 a:hover{
@@ -879,7 +885,7 @@ a:hover{
 	background-color: #333;
 }
 
-.navigation a {
+.navigation li a {
 	display: block;
 	padding: 8px 10px 6px;
 	text-decoration: none;
@@ -887,7 +893,18 @@ a:hover{
 	text-align: center;
 }
 
-.navigation a:hover{
+.navigation li.lang-item{
+	float: right;
+	position: absolute;
+	right: 0;
+}
+/*
+.navigation li.lang-item a {
+	padding-top: 10px;
+	padding-bottom: 0px;
+}*/
+
+.navigation li a:hover{
 	background-color: #555;
 }
 
@@ -947,8 +964,8 @@ a:hover{
 	transition: all 1s;
 }
 
-.sub-menu li,
-.sub-menu a {
+.navigation .sub-menu li,
+.navigation .sub-menu li a {
 	width: 100%;
 	text-align: left;
 }
@@ -1023,15 +1040,20 @@ a:hover{
 /* Toggle Button */
 
 .menu-toggle {
-	font-size: 2em;
-	line-height: 2em;
+	font-size: initial;
+	line-height: initial;
 	text-align: left;
 	background-color: transparent;
 	cursor: pointer;
 	max-width: 40%;
+	float: left;
+	padding: 0.4% 25px 0.4% 0px;
 }
 
 .smart .menu-toggle {
+	padding: 0px;
+	font-size: 2em;
+	line-height: 2em;
 	float: none;
 	display: inline-block;
 	-webkit-transition: transform .2s;

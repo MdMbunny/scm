@@ -31,7 +31,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": 30,
+                        "width": 25,
                         "class": "",
                         "id": ""
                     },
@@ -68,7 +68,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": 30,
+                        "width": 25,
                         "class": "",
                         "id": ""
                     },
@@ -949,7 +949,7 @@
                                 {
                                     "key": "field_54b5ae0e69dc8",
                                     "label": "Tag",
-                                    "name": "select_headings",
+                                    "name": "select_complete_headings",
                                     "prefix": "",
                                     "type": "select",
                                     "instructions": "",
@@ -961,7 +961,9 @@
                                         "id": ""
                                     },
                                     "choices": {
-                                        "default": "Default",
+                                        "select_headings_1": "Primario",
+                                        "select_headings_2": "Secondario",
+                                        "select_headings_3": "Terziario",
                                         "h1": "h1",
                                         "h2": "h2",
                                         "h3": "h3",
@@ -976,7 +978,7 @@
                                         "div": "div"
                                     },
                                     "default_value": {
-                                        "default": "Default"
+                                        "": ""
                                     },
                                     "allow_null": 0,
                                     "multiple": 0,
@@ -1043,8 +1045,8 @@
                                         "id": ""
                                     },
                                     "default_value": "",
-                                    "tabs": "visual",
-                                    "toolbar": "basic",
+                                    "tabs": "all",
+                                    "toolbar": "full",
                                     "media_upload": 1
                                 }
                             ],
@@ -1687,5 +1689,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421270470
+    "modified": 1421379335
 }

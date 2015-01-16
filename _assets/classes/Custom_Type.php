@@ -6,7 +6,7 @@ class Custom_Type {
     protected $categories;
     protected $tags;
  
-    function __construct( $singular = '', $plural = '', $singular_short = '', $plural_short = '', $slug = '', $categories = 0, $tags = 0, $icon = '', $folder = 0 ) {
+    function __construct( $singular = '', $plural = '', $singular_short = '', $plural_short = '', $slug = '', $categories = 0, $tags = 0, $icon = '', $folder = 0, $orderby = 'title', $order = '' ) {
         
         $default = array(
             'singular'         => null,
@@ -18,6 +18,8 @@ class Custom_Type {
             'tags'             => 0,
             'icon'             => '',
             'folder'           => 0,
+            'orderby'          => 'title',
+            'order'            => ''
         );
 
         if(is_array($singular))
@@ -46,6 +48,8 @@ class Custom_Type {
         $this->icon = $icon;
         $this->uploads_post_folder = $folder;
         $this->supports = array( 'title' );
+        $this->orderby = $orderby;
+        $this->order = $order;
 
         //$this->menu_pos = 9;
 
@@ -62,6 +66,7 @@ class Custom_Type {
 
         add_filter( 'manage_edit-' . $this->slug . '_columns', array(&$this, 'CT_admin_columns') ) ;
         add_action( 'manage_' . $this->slug . '_posts_custom_column', array(&$this, 'CT_manage_admin_columns'), 10, 2 );
+        add_action( 'load-edit.php', array(&$this, 'CT_admin_edit_page') );
 
         if($this->icon) { add_action( 'admin_head', array(&$this, 'CT_admin_icon') ); }
 
@@ -142,6 +147,27 @@ class Custom_Type {
             case 'id' : echo $post_id; break;
             default : break;
         }
+    }
+
+    function CT_admin_edit_page() {
+        add_filter( 'request', array(&$this, 'CT_admin_orderby') );
+    }
+
+    function CT_admin_orderby( $vars ) {
+        
+        if ( isset( $vars['post_type'] ) && $this->slug == $vars['post_type'] ) {
+
+            $vars = array_merge(
+                $vars,
+                array(
+                    'orderby' => $this->orderby,
+                    'order' => ( $this->order ? $this->order : ( $this->orderby == 'title' ? 'ASC' : 'DESC' ) )
+                )
+            );
+        }
+
+        return $vars;
+    
     }
 
     function CT_admin_icon(){

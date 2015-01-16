@@ -361,7 +361,7 @@ function numberToStyle( $value ){
 * Converts a hexadecimal color to a rgba array
 */
 
-function hex2rgba( $hex, $alpha = 1, $tostr = true ){
+function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
     $hex = str_replace("#", "", $hex);
 
@@ -379,8 +379,8 @@ function hex2rgba( $hex, $alpha = 1, $tostr = true ){
    
     $rgba = array($r, $g, $b, $a);
     
-    if( $tostr )
-        return implode(",", $rgba); // returns the rgb values separated by commas
+    if( !$toarr )
+        return 'rgba(' . implode(",", $rgba) . ')'; // returns the rgb values separated by commas
 
     return $rgba; // returns an array with the rgba values
 
@@ -389,13 +389,14 @@ function hex2rgba( $hex, $alpha = 1, $tostr = true ){
     //Get Webfont + Family Font as a correct String (just comma separated families, or css attribute ready)
     if ( ! function_exists( 'font2string' ) ) {
         function font2string($webfont = '', $family = 'default', $att = false) {
-            $webfont = ( ( $webfont && $webfont != 'no' ) ? $webfont . ', ' : '' );
-            $family = ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
+
+            $font = ( ( $webfont && $webfont != 'no' && $webfont != 'default' ) ? $webfont . ', ' : '' );
+            $font .= ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
             if( $att ){
-                $webfont = 'font-family:' . $webfont;
-                $family .= ';';
+                $font = 'font-family:' . $font . ';';
             }
-            return str_replace( '"', '\'', $webfont . $family );
+
+            return str_replace( '"', '\'', $font );
         }
     }
 

@@ -41,8 +41,8 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "tabs": "visual",
-                            "toolbar": "basic",
+                            "tabs": "all",
+                            "toolbar": "full",
                             "media_upload": 1
                         }
                     ],
@@ -650,5 +650,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421152470
+    "modified": 1421366506
 }

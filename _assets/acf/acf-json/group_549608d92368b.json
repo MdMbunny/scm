@@ -226,7 +226,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "scm-rassegne-stampa"
+                "value": "post"
             },
             {
                 "param": "post_type",
@@ -256,5 +256,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421147411
+    "modified": 1421323306
 }

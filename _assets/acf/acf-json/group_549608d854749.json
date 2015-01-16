@@ -48,7 +48,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "scm-gallerie"
+                "value": "post"
             },
             {
                 "param": "post_type",
@@ -78,5 +78,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421147518
+    "modified": 1421323338
 }

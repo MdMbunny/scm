@@ -1,0 +1,100 @@
+{
+    "key": "group_549608d803b6d",
+    "title": "Piede",
+    "fields": [
+        {
+            "key": "field_54973f3512042",
+            "label": "Contenuti",
+            "name": "flexible_footers",
+            "prefix": "",
+            "type": "flexible_content",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "button_label": "Aggiungi Elemento",
+            "min": "",
+            "max": "",
+            "layouts": [
+                {
+                    "key": "54973f5315604",
+                    "name": "text_element",
+                    "label": "Testo",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_54973f6712043",
+                            "label": "Inserisci il testo",
+                            "name": "testo",
+                            "prefix": "",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "visual",
+                            "toolbar": "basic",
+                            "media_upload": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "scm-modules"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "scm-sections"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ]
+    ],
+    "menu_order": 299,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "custom_fields",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "modified": 1421323363
+}

@@ -31,17 +31,20 @@ if( have_rows('flexible_rows') ):
 
 		if(!$section) continue;
 		
-		$sections[] = array( $section, $class );
+		$sections[] = array( 'sezione' => $section, 'add_class' => $class );
 
     endwhile;
+   
+    scm_flexible_content( $sections );
 
-    foreach ($sections as $value) {
+    /*foreach ($sections as $value) {
+
     	$post = $value[0];
 		setup_postdata( $post );
 		Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
 		   'add_class' => $value[1]
-		));	
-	}
+		));
+	}*/
 
 else :
 

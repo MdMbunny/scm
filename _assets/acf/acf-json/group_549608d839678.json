@@ -76,7 +76,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "scm-documenti"
+                "value": "post"
             },
             {
                 "param": "post_type",
@@ -106,5 +106,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421147540
+    "modified": 1421323343
 }

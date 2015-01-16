@@ -237,6 +237,64 @@
                     },
                     "message": "",
                     "default_value": 1
+                },
+                {
+                    "key": "field_54b832651470c",
+                    "label": "Order By",
+                    "name": "orderby",
+                    "prefix": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "title": "Titolo",
+                        "date": "Data"
+                    },
+                    "default_value": {
+                        "title": "title"
+                    },
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "disabled": 0,
+                    "readonly": 0
+                },
+                {
+                    "key": "field_54b832ab1470d",
+                    "label": "Ordinamento",
+                    "name": "order",
+                    "prefix": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "ASC": "Ascendente",
+                        "DESC": "Discendente"
+                    },
+                    "default_value": {
+                        "ASC": "ASC"
+                    },
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "disabled": 0,
+                    "readonly": 0
                 }
             ]
         }
@@ -271,5 +329,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421111033
+    "modified": 1421357778
 }

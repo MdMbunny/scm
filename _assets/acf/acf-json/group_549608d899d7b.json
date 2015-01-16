@@ -224,7 +224,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "scm-news"
+                "value": "post"
             },
             {
                 "param": "post_type",
@@ -254,5 +254,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421147495
+    "modified": 1421323311
 }

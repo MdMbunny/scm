@@ -1,10 +1,11 @@
 <?php
 
-
 global $post;
 
-if( have_rows('columns_repeater') ):
+$repeater = ( get_field('columns_repeater') ? get_field('columns_repeater') : 0 );
 
+if( $repeater ):
+	
 	$current_column = 0;
 	$counter = 0;
 
@@ -15,10 +16,13 @@ if( have_rows('columns_repeater') ):
 	
 	$total = sizeof( get_field( 'columns_repeater' ) );
 
-    while ( have_rows('columns_repeater') ) : the_row();
+	foreach ($repeater as $section) {
 
-    	$layout = get_sub_field('select_columns_width');
-    	$module = get_sub_field('flexible_build');
+    	$layout = $section['select_columns_width'];
+    	$module = $section['flexible_build'];
+
+    	if( !$module )
+    		continue;
 
     	$size = (int)$layout[0] / (int)$layout[1];
     	$counter += $size;
@@ -53,19 +57,23 @@ if( have_rows('columns_repeater') ):
 		$class .= $odd;
 		$class .= ' count-' . ( $current_column );
 
-		$class = ( get_sub_field('column_classes') ? $class . ' ' . get_sub_field('column_classes') : $class);
+		$class = ( $section['column_classes'] ? $class . ' ' . $section['column_classes'] : $class);
 
-		$id = ( get_sub_field('column_id') ? get_sub_field('column_id') : uniqid( 'light-module-' ) ) ;
+		$id = ( $section['column_id'] ? $section['column_id'] : uniqid( 'light-module-' ) ) ;
 		
-		$modules[] = array( $module, $id, $class );
+		//$modules[] = array( $module, $id, $class );
 
-    endwhile;
+		echo '<div id="' . $id . '" class="' . $class . '">';	
+			scm_flexible_content( $module );
+		echo '</div>';
+
+    }
 	
-	    foreach ($modules as $value) {
-	    	echo '<div id="' . $value[1] . '" class="' . $value[2] . '">';	
-				scm_flexible_content( $value[0] );
-			echo '</div>';
-		}
+    /*foreach ($modules as $value) {
+    	echo '<div id="' . $value[1] . '" class="' . $value[2] . '">';	
+			scm_flexible_content( $value[0] );
+		echo '</div>';
+	}*/
 	
 
 else :

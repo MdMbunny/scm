@@ -9,6 +9,8 @@
     //add_filter( 'pre_get_posts', 'scm_post_hook_pagination' );
     add_filter('synved_social_skin_image_list', 'scm_custom_social_icons');
 
+    add_filter('wp_get_nav_menu_items','scm_navigation_anchors', 10, 2);
+
 // *****************************************************
 // *      HOOKS
 // *****************************************************
@@ -84,11 +86,11 @@
                 $classes[] = 'lang-' . pll_current_language();
             }
 
-            $SCM_styles['align'] = ( get_field('select_txt_alignment', 'option') != 'default' ? get_field('select_txt_alignment', 'option') : 'left');
+            /*$SCM_styles['align'] = ( get_field('select_txt_alignment', 'option') != 'default' ? get_field('select_txt_alignment', 'option') : 'left');
             $SCM_styles['size'] = ( get_field('select_txt_size', 'option') != 'default' ? get_field('select_txt_size', 'option') : 'normal');
             
             $classes[] = $SCM_styles['align'];
-            $classes[] = $SCM_styles['size'];
+            $classes[] = $SCM_styles['size'];*/
 
 
             return $classes;
@@ -339,6 +341,28 @@
         }
     }
 
+    //Change Navigation Links from # to url and viceversa
+    if ( ! function_exists( 'scm_navigation_anchors' ) ) {
+        function scm_navigation_anchors( $items, $menu ) {
+
+            $current = get_permalink();
+
+            for( $i = 0; $i < sizeof( $items ); $i++) {
+                $url = $items[$i]->url;
+
+                if( $current == $url )
+                    $url = '#top';
+                elseif( strpos( $url, $current ) !== false )
+                    $url = substr( $url, strlen( $current ) );
+                //alert($items[$i]->url);
+                $items[$i]->url = $url;
+
+            }
+
+            return $items;
+        }
+    }
+
     //Prints main menu
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
@@ -378,6 +402,8 @@
     if ( ! function_exists( 'scm_sticky_menu' ) ) {
         function scm_sticky_menu() {
 
+            global $post;
+
             $sticky = ( get_field( 'active_sticky_menu' ) == 'on' ? 1 : 0 );
             $sticky = ( !$sticky ? ( get_field( 'active_sticky_menu', 'option' ) ? 1 : 0 ) : $sticky );
 
@@ -388,9 +414,12 @@
 
             $sticky_layout = ( get_field('select_layout_page', 'option') ? get_field('select_layout_page', 'option') : 'full' );
             $sticky_align = ( get_field('select_alignment_site', 'option') ? get_field('select_alignment_site', 'option') : 'center');
+
+            $perma = get_permalink();
+            $home = get_home_url();
             
             $sticky_menu = ( get_field( 'menu_sticky_menu', 'option' ) ? get_field( 'menu_sticky_menu', 'option' ) : 'primary' );
-            $sticky_link = ( get_field( 'link_sticky_menu', 'option' ) == 'top' ? '#top' : home_url() );
+            $sticky_link = ( strpos($perma, $home)!==false ? '#top' : get_home_url() );
             $sticky_toggle = ( get_field( 'toggle_sticky_menu', 'option' ) ? 'fa ' . get_field( 'toggle_sticky_menu', 'option' ) : 'fa-bars' );
             $sticky_icon = ( get_field( 'icon_sticky_menu', 'option' ) ? 'fa ' . get_field( 'icon_sticky_menu', 'option' ) : 'fa-home' );
             $sticky_image = ( get_field( 'image_sticky_menu', 'option' ) ? get_field( 'image_sticky_menu', 'option' ) : '' );
@@ -398,7 +427,7 @@
             $sticky_class = $sticky_layout . ' ' . $sticky_align . ' navigation sticky';
             
 
-            $row_layout = ( get_field('select_layout_sticky_menu', 'option') ? get_field('select_layout_sticky_menu', 'option') : 'full' );                    
+            $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ? get_field('select_layout_sticky_menu', 'option') : 'full' ) : 'full' );               
             $row_align = ( get_field('select_alignment_sticky', 'option') ? get_field('select_alignment_sticky', 'option') : 'right');
             
             $row_class = $row_layout . ' ' . $row_align;
@@ -446,9 +475,6 @@
     if ( ! function_exists( 'scm_custom_header' ) ) {
         function scm_custom_header( $header, $type = 'all', $custom = '' ) {
 
-            global $post, $SCM_back_query;
-
-            $SCM_back_query = $post;
 
             if ($header && get_field( 'flexible_headers' . $custom, $header ) ) {
 
@@ -462,14 +488,18 @@
     //Prints Element Flexible Contents
     if ( ! function_exists( 'scm_flexible_content' ) ) {
         function scm_flexible_content( $content ) {
+            if( !$content )
+                return;
 
             global $post;
 
-            foreach ($content as $key => $cont) {
+            foreach ($content as $cont) {
 
-                $layout = $cont['acf_fc_layout'];
+                $back_query = $post;
 
-                switch ($layout) {
+                $element = ( isset( $cont['acf_fc_layout'] ) ? $cont['acf_fc_layout'] : '' );
+
+                switch ($element) {
 
                     case 'module_element':
 
@@ -568,7 +598,7 @@
                         $full = $cont[ 'immagine' ];
                         $full_height = $cont[ 'altezza' ];
 
-                        $full_style = ( $full_height ? 'height:' . $full_height . 'px;' : 'height:auto;' );
+                        $full_style = ( $full_height ? 'max-height:' . $full_height . 'px;' : 'max-height:auto;' );
                         $full_mask = 'mask';
 
                         $full_class = SCM_PREFIX . 'full-image ' . $full_mask;
@@ -580,10 +610,13 @@
 
                     case 'title_element':
                         $text = $cont[ 'testo' ];
-                        $text_tag = ( $cont[ 'select_headings' ] != 'default' ? $cont[ 'select_headings' ] : get_field( 'select_headings_1' , 'option') );
-                        $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] : '' );
+                        $text_default = ( $cont[ 'select_complete_headings' ] ? $cont[ 'select_complete_headings' ] : '' );
+                        $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_complete_headings' ] : ( get_field( $text_default , 'option') ? get_field( $text_default , 'option') : 'h1' ) );
+                        $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] . ' ' : '' );
                         
-                        $text_class = $text_align . SCM_PREFIX . 'title clear';
+                        $text_class = scm_acf_select_preset( 'select_default_headings_classes',  $text_default, ' ' );
+                        $text_class .= $text_align . SCM_PREFIX . 'title clear';
+
 
                         if( strpos( $text_tag, '.' ) !== false ){
                             $text_class .= ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
@@ -599,42 +632,32 @@
                         echo $content;
 
                     break;
+
+                    default:
+                        $single = $cont[ 'sezione' ];
+                        if(!$single) continue;
+                        $single_type = $single->post_type;
+                        $post = $single;
+                        setup_postdata( $post );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
+                            'add_class'    => ( isset($cont[ 'add_class' ]) ? $cont[ 'add_class' ] : 0 ),
+                        ));
                     
                 }
                 
             }
-
         }
     }
 
     //Prints Element Inner Footer
     if ( ! function_exists( 'scm_custom_footer' ) ) {
-        function scm_custom_footer( $footer, $type = 'all', $custom = '', $txt_align = 'left' ) {
-
-            global $post, $SCM_back_query;
-
-            $post = $SCM_back_query;
-            setup_postdata($post);
+        function scm_custom_footer( $footer, $type = 'all', $custom = '' ) {
 
             if( $footer && have_rows( 'flexible_footers' . $custom, $footer ) ){
                 
                 echo '<footer class="full ' . SCM_PREFIX . 'footer ' . $type . '-footer">';
 
-                    while ( have_rows( 'flexible_footers' . $custom, $footer ) ) : the_row();
-
-                        $layout = get_row_layout();
-
-                        switch ($layout) {
-                            case 'text_element':
-
-                                $content = get_sub_field('testo');
-                                if(!$content) continue;
-                                echo $content;
-                                    
-                            break;
-                        }
-
-                        endwhile;
+                    scm_flexible_content( get_field('flexible_footers' . $custom, $footer ) );
 
                 echo '</footer><!-- ' . $type . '-footer -->';
             }

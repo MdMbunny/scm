@@ -38,13 +38,15 @@ global $post;
                 $credits = get_field( 'footer_credits_active', 'option' );
                 $sections = ( get_field( 'footer_sections', 'option' ) ? get_field( 'footer_sections', 'option' ) : array() );
 
-                foreach ( $sections as $section ) {
+                scm_flexible_content( $sections );
+
+                /*foreach ( $sections as $section ) {
                     if( $section['sezione'] ){
                         $post = $section['sezione'];
                         setup_postdata( $post );
                         get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
                     }
-                }
+                }*/
 
                 if( $credits )
                     scm_credits();

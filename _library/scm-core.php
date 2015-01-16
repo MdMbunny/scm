@@ -110,11 +110,12 @@
     if ( ! function_exists( 'scm_site_assets_webfonts' ) ) {
         function scm_site_assets_webfonts() {
             $fonts =  ( get_field('webfonts', 'option') ? get_field('webfonts', 'option') : array() );
-            foreach ($fonts as $value) {                
+            foreach ($fonts as $value) {    
+                $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
                 $styles = implode( ',', $value['select_webfonts_styles'] );
-                wp_register_style( 'webfonts', 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_enqueue_style( 'webfonts' );
+                wp_register_style( 'webfonts' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_enqueue_style( 'webfonts' . $slug );
                 
             }
         }
@@ -231,60 +232,75 @@
 // *      DEFAULT STYLES
 // *****************************************************
 
+    if ( ! function_exists( 'scm_site_assets_get_fonts' ) ) {
+        function scm_site_assets_get_fonts( $type ) {
+
+            $target = 'option';
+            if( gettype( $type ) == 'integer' ){
+                $target = $type;
+                $type = '';
+            }else{
+                $type = '_' . $type;
+            }
+
+
+
+            $webfont = ( get_field( 'select_webfonts_families' . $type, $target ) != 'default' ? get_field( 'select_webfonts_families' . $type, $target ) : '' );
+            $family = ( get_field( 'select_webfonts_default_families' . $type, $target ) != 'default' ? get_field( 'select_webfonts_default_families' . $type, $target ) : get_field( 'select_webfonts_default_families', 'option' ) );
+            return ( !$webfont ? '' : font2string( $webfont, $family, false ) );
+        }
+    }
+
     if ( ! function_exists( 'scm_site_assets_styles_inline' ) ) {
         function scm_site_assets_styles_inline() {
 
-            global $SCM_styles;
+            $align = ( get_field('select_txt_alignment', 'option') != 'default' ? get_field('select_txt_alignment', 'option') : 'left');
+            $size = scm_acf_select_preset( 'select_txt_font_size', ( get_field('select_txt_size', 'option') != 'default' ? get_field('select_txt_size', 'option') : 'normal' ) );
 
             $alpha = ( get_field('text_alpha', 'option') != null ? get_field('text_alpha', 'option') : 1 );
-            $color = 'rgba(' . hex2rgba( ( get_field('text_color', 'option') ? get_field('text_color', 'option') : '#000000' ), $alpha ) . ')';
+            $color = hex2rgba( ( get_field('text_color', 'option') ? get_field('text_color', 'option') : '#000000' ), $alpha );
             $opacity = ( get_field('text_opacity', 'option') != null ? get_field('text_opacity', 'option') : 1);
             $shadow = ( get_field('text_shadow', 'option') ? get_field('text_shadow_x', 'option') . 'px ' . get_field('text_shadow_y', 'option') . 'px ' . get_field('text_shadow_size', 'option') . 'px rgba(' . hex2rgba( ( get_field('text_shadow_color', 'option') ? get_field('text_shadow_color', 'option') : '#000000'), ( get_field('text_shadow_alpha', 'option') != null ? get_field('text_shadow_alpha', 'option') : 1 ), true ) . ')' : 'none' );
-            
-            $heading_color = ( get_field('styling_heading_color', 'option') ? get_field('styling_heading_color', 'option') : '#000000');
-            $heading_font = ( get_field( 'select_webfonts_families_heading', 'option' ) != 'no' ? get_field( 'select_webfonts_families_heading', 'option' ) . ',' . str_replace( '_', ', ', get_field( 'select_webfonts_default_families_heading', 'option' ) ) : str_replace( '_', ', ', get_field( 'select_webfonts_default_families_heading', 'option' ) ) );
-            $heading_weight = ( get_field('select_font_weight', 'option') ? get_field('select_font_weight', 'option') : '700');
 
-            $font = font2string( get_field( 'select_webfonts_families', 'option' ), get_field( 'select_webfonts_default_families', 'option' ) );
-            $menu_font = font2string( get_field( 'select_webfonts_families_menu', 'option' ), get_field( 'select_webfonts_default_families_menu', 'option' ) );
-            $sticky_font = font2string( get_field( 'select_webfonts_families_sticky_menu', 'option' ), get_field( 'select_webfonts_default_families_sticky_menu', 'option' ) );
+            $webfont = ( get_field( 'select_webfonts_families', 'option' ) ? get_field( 'select_webfonts_families', 'option' ) : '' );
+            $family = ( get_field( 'select_webfonts_default_families', 'option' ) ? get_field( 'select_webfonts_default_families', 'option' ) : '' );
+            $font = font2string( $webfont, $family );
+
+            //$line_height = (string)(float)substr($size, 0, -2) * (float)( get_field('select_line_height', 'option') != 'default' ? get_field('select_line_height', 'option') : '1.5') . 'px';
+            $line_height = (string)(100 * (float)( get_field('select_line_height', 'option') != 'default' ? get_field('select_line_height', 'option') : '1.5')) . '%';
+            
+            $weight = ( get_field('select_font_weight', 'option') != 'default' ? get_field('select_font_weight', 'option') : '400');
 
             $bg_image = ( get_field('background_image', 'option') ? 'url(' . get_field('background_image', 'option') . ')' : 'none' );
             $bg_repeat = ( get_field('select_bg_repeat', 'option') != 'default' ? get_field('select_bg_repeat', 'option') : 'no-repeat' );
             $bg_position = ( get_field('select_bg_position', 'option') != null ? get_field('select_bg_position', 'option') : 'center center' );
             $bg_size = ( get_field('background_size', 'option') != null ? get_field('background_size', 'option') : 'auto' );
             $bg_alpha = ( get_field('background_alpha', 'option') != null ? get_field('background_alpha', 'option') : 1 );
-            $bg_color = 'rgba(' . hex2rgba( ( get_field('background_color', 'option') != null ? get_field('background_color', 'option') : '#FFFFFF' ), $bg_alpha ) . ')';
+            $bg_color = hex2rgba( ( get_field('background_color', 'option') != null ? get_field('background_color', 'option') : '#FFFFFF' ), $bg_alpha );
             $margin = ( get_field('margin', 'option') != null ? get_field('margin', 'option') : '0');
             $padding = ( get_field('padding', 'option') != null ? get_field('padding', 'option') : '0');
 
-            //$fader = ( get_field('fader_active', 'option') ? get_field('fader_active', 'option') : 0 );
-            //$body_opacity = ( $fader ? 0 : 1 );
-            //$body_pointer = ( $fader ? 'none' : 'all' );
-            //$body_trans = ( $fader ? 'opacity ' . get_field('fader_duration', 'option') . 's' : 'none' );
+            $heading_font_1 = ( scm_site_assets_get_fonts( 'heading_1' ) ? scm_site_assets_get_fonts( 'heading_1' ) : '' );
+            $heading_weight_1 = ( get_field('select_font_weight_heading_1', 'option') != 'default' ? get_field('select_font_weight_heading_1', 'option') : '700');
+            $heading_color_1 = ( get_field('color_heading_1', 'option') !=null ? hex2rgba( get_field('color_heading_1', 'option'), $alpha ) : $color );
+            $heading_after_1 = ( get_field('select_line_height_heading_1', 'option') != 'default' ? get_field('select_line_height_heading_1', 'option') . 'em' : '0em');
 
-            array_merge( $SCM_styles, array(
-                'alpha' => $alpha,
-                'color' => $color,
-                'opacity' => $opacity,
-                'shadow' => $shadow,
-                'font' => $font,
-                'heading_color' => $heading_color,
-                'heading_font' => $heading_font,
-                'heading_weight' => $heading_weight,
-                'menu_font' => $menu_font,
-                'background-image' => $bg_image,
-                'background-repeat' => $bg_repeat,
-                'background-position' => $bg_position,
-                'background-size' => $bg_size,
-                'background-color' => $bg_color,
-                'margin' => $margin,
-                'padding' => $padding,
-            ));
+            $heading_font_2 = ( scm_site_assets_get_fonts( 'heading_2' ) ? scm_site_assets_get_fonts( 'heading_2' ) : '' );
+            $heading_weight_2 = ( get_field('select_font_weight_heading_2', 'option') != 'default' ? get_field('select_font_weight_heading_2', 'option') : '700');
+            $heading_color_2 = ( get_field('color_heading_2', 'option') !=null ? hex2rgba( get_field('color_heading_2', 'option'), $alpha ) : $color );
+            $heading_after_2 = ( get_field('select_line_height_heading_2', 'option') != 'default' ? get_field('select_line_height_heading_2', 'option') . 'em' : '0em');
+
+            $heading_font_3 = ( scm_site_assets_get_fonts( 'heading_3' ) ? scm_site_assets_get_fonts( 'heading_3' ) : '' );
+            $heading_weight_3 = ( get_field('select_font_weight_heading_3', 'option') != 'default' ? get_field('select_font_weight_heading_3', 'option') : '700');
+            $heading_color_3 = ( get_field('color_heading_3', 'option') !=null ? hex2rgba( get_field('color_heading_3', 'option'), $alpha ) : $color );
+            $heading_after_3 = ( get_field('select_line_height_heading_3', 'option') != 'default' ? get_field('select_line_height_heading_3', 'option') . 'em' : '0em');
+
+            $menu_font = ( scm_site_assets_get_fonts( 'menu' ) ? scm_site_assets_get_fonts( 'menu' ) : '' );
+            $sticky_font = ( scm_site_assets_get_fonts( 'sticky_menu' ) ? scm_site_assets_get_fonts( 'sticky_menu' ) : '' );
 
             $css = '
                 *, input, textarea{
-
+                    font-family: ' . $font . ';
                 }
 
                 body {
@@ -296,31 +312,54 @@
                     text-shadow: ' . $shadow . ';
                     margin: ' . $margin . ';
                     padding: ' . $padding . ';
-                    font-family: ' . $font . ';
-                    color: ' . $color . ';                    
+                    text-align: ' . $align . ';
+                    
+                    font-size: ' . $size . ';
+                    font-weight: ' . $weight . ';
+                    color: ' . $color . ';
                 }
 
-                #page {
+                .site-page {
                     opacity: ' . $opacity . ';
                 }
 
-                h1, h2, h3, h4, h5, h6, .h7, .h8, .h9, .h0 {
-                    font-family: ' . $heading_font . ';
-                    color: ' . $heading_color . ';
-                    font-weight: ' . $heading_weight . ';
+                .site-content,
+                .site-footer{
+                    line-height: ' . $line_height . ';
                 }
 
-                header i {
-                    color: ' . $heading_color . ';
+                .primary,
+                .primary i {' .
+                    ( $heading_font_1 ? 'font-family: ' . $heading_font_1 . ';' : '' )
+                . ' font-weight: ' . $heading_weight_1 . ';
+                    color: ' . $heading_color_1 . ';
+                    margin-bottom: ' . $heading_after_1 . ';
                 }
 
-                #site-navigation {
-                    font-family: ' . $menu_font . ';
+                .secondary,
+                .secondary i {' .
+                    ( $heading_font_2 ? 'font-family: ' . $heading_font_2 . ';' : '' )
+                . ' font-weight: ' . $heading_weight_2 . ';
+                    color: ' . $heading_color_2 . ';
+                    margin-bottom: ' . $heading_after_2 . ';
                 }
 
-                #site-navigation-sticky row {
-                    font-family: ' . $sticky_font . ';
-                }';
+                .tertiary,
+                .tertiary i {' .
+                    ( $heading_font_3 ? 'font-family: ' . $heading_font_3 . ';' : '' )
+                . ' font-weight: ' . $heading_weight_3 . ';
+                    color: ' . $heading_color_3 . ';
+                    margin-bottom: ' . $heading_after_3 . ';
+                }
+
+                .navigation {' .
+                    ( $menu_font ? 'font-family: ' . $menu_font . ';' : '' )
+                . '}
+
+                .navigation.sticky row {' .
+                    ( $sticky_font ? 'font-family: ' . $sticky_font . ';' : '' )
+                . '}';
+
             
             if( !empty( $css ) )
                 wp_add_inline_style( 'global', $css );

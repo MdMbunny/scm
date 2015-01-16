@@ -1,0 +1,174 @@
+{
+    "key": "group_54ac7b2aa09b1",
+    "title": "Header Social Menu",
+    "fields": [
+        {
+            "key": "field_54ac7b2aad9ac",
+            "label": "Attiva",
+            "name": "active_social_follow",
+            "prefix": "",
+            "type": "true_false",
+            "instructions": "Installare Plugin: Social Media Feather",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0
+        },
+        {
+            "key": "field_54ac81c0211c1",
+            "label": "Posizione",
+            "name": "position_social_follow",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 40,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "top": "Sopra al menu (se menu inline)",
+                "bottom": "Sotto al menu (se menu inline)"
+            },
+            "default_value": {
+                "top": "top"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54ac7b9c706a3",
+            "label": "Allineamento",
+            "name": "select_alignment_social_follow",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 40,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "left": "Sinistra",
+                "right": "Destra",
+                "center": "Centrato"
+            },
+            "default_value": {
+                "right": "right"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54ac7b2aad9be",
+            "label": "Forma",
+            "name": "social_follow_shape",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "square": "Quadrati",
+                "square_neg": "Quadrati, negativo",
+                "circle": "Cerchi",
+                "rounded": "Arrotondati"
+            },
+            "default_value": {
+                "circle": "circle"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54ac7b2aad9d1",
+            "label": "Dimensione",
+            "name": "social_follow_size",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "16": "16x16",
+                "32": "32x32",
+                "64": "64x64",
+                "128": "128x128",
+                "256": "256x256"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-header"
+            }
+        ]
+    ],
+    "menu_order": 1024,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "custom_fields",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "modified": 1421323235
+}

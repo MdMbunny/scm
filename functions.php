@@ -39,7 +39,6 @@ if ( ! isset( $content_width ) ) {
 		$SCM_version = '';
 	}
 
-	$SCM_styles = array();
 	$SCM_types = array();
 	$SCM_custom_fields = array();
 	$SCM_back_query;

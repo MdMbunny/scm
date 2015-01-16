@@ -3,21 +3,12 @@
  * @package SCM
  */
 
+global $post;
+$elements = ( get_field('flexible_content') ? get_field('flexible_content') : 0 );
 
+if( $elements ):
 
-if( have_rows('flexible_content') ):
-
-	global $post;
-
-	scm_flexible_content( get_field('flexible_content') );
-
-/*    while ( have_rows('flexible_content') ) : the_row();
-		
-		$layout = get_row_layout();
-
-		 the_row() );
-
-    endwhile;*/
+	scm_flexible_content( $elements );
 
 else :
 

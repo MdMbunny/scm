@@ -177,10 +177,13 @@
                 "id": ""
             },
             "choices": {
+                "default": "Default",
                 "no": "No Google font",
                 "\"Open Sans\"": "Open Sans"
             },
-            "default_value": [],
+            "default_value": {
+                "default": "default"
+            },
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -204,6 +207,7 @@
                 "id": ""
             },
             "choices": {
+                "default": "Default",
                 "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
                 "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
                 "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
@@ -215,7 +219,9 @@
                 "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
                 "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
             },
-            "default_value": [],
+            "default_value": {
+                "default": "default"
+            },
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -1381,5 +1387,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421147326
+    "modified": 1421328705
 }

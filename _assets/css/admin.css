@@ -184,6 +184,7 @@
 	float: left;
 	vertical-align: top !important;
 	border: none !important;
+	background-color: transparent;
 }
 
 .post-type-scm-sections div[data-name="columns_repeater"] tr.acf-row > td {
@@ -197,6 +198,11 @@
 .post-type-scm-sections div[data-name="columns_repeater"] tr.acf-row > td > div {
 	border: none !important;
 	padding: 15px 5px 5px 0px !important;
+	z-index: 2;
+}
+
+.post-type-scm-sections div[data-name="columns_repeater"] tr.acf-row > td > div:first-child {
+	margin-left: 40px;
 }
 
 .post-type-scm-sections div[data-name="columns_repeater"] tr.acf-row > td > div:hover {
@@ -209,15 +215,22 @@
 }
 
 .post-type-scm-sections div[data-name="columns_repeater"] tr.acf-row > td.order{
-	display: none;
+	margin-top: 12px;
+	position: absolute;
+	width: 24px !important;
+	padding: 0 0 0 16px;
+	height: 37px;
+	line-height: 3em;
+	text-align: left !important;
+	z-index: 1;
 }
 
 .post-type-scm-sections div[data-name="columns_repeater"] .acf-input-table > tbody > tr > td.remove{
-	width: auto !important;
+	width: 52px !important;
 	position: absolute;
 	float: left;
 	display: inline-block;
-	margin-left: -30px;
+	margin-left: -65px;
 	margin-top: 19px;
 	padding: 0px;
 	background: transparent;
@@ -237,7 +250,7 @@
 
 .acf-icon.acf-repeater-add-row,
 .acf-icon.acf-fc-add{
-	display: none !important;
+	/*display: none !important;*/
 }
 
 .post-type-scm-sections div[data-name="columns_repeater"] .acf-input-table td.remove .acf-icon i{
