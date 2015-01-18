@@ -63,6 +63,23 @@
             "readonly": 0
         },
         {
+            "key": "field_54baee55327bb",
+            "label": "Overlay",
+            "name": "overlay_menu",
+            "prefix": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0
+        },
+        {
             "key": "field_54ab54ecb1203",
             "label": "Font Menu",
             "name": "select_webfonts_families_menu",
@@ -72,14 +89,16 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 33,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "\"Open Sans\"": "Open Sans"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -102,22 +121,22 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 66,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "choices": {
                 "default": "Default",
                 "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
-                "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-                "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+                "Lucida Sans Unicode_Lucida Grande_sans-serif": "Lucida Sans Unicode, Lucida Grande, sans-serif",
+                "Trebuchet MS_Helvetica_sans-serif": "Trebuchet MS, Helvetica, sans-serif",
                 "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
                 "Georgia_serif": "Georgia, serif",
-                "\"Times New Roman\"_Times_serif": "\"Times New Roman\", Times, serif",
-                "\"Palatino Linotype\"_\"Book Antiqua\"_Palatino_serif": "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
+                "Times New Roman_Times_serif": "Times New Roman, Times, serif",
+                "Palatino Linotype_Book Antiqua_Palatino_serif": "Palatino Linotype, Book Antiqua, Palatino, serif",
                 "cursive_serif": "cursive, serif",
-                "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
-                "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
+                "Courier New_Courier_monospace": "Courier New, Courier, monospace",
+                "Lucida Console_Monaco_monospace": "Lucida Console, Monaco, monospace"
             },
             "default_value": {
                 "default": "default"
@@ -161,5 +180,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421328688
+    "modified": 1421536884
 }

@@ -12,7 +12,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 20,
+                "width": "",
                 "class": "",
                 "id": ""
             },
@@ -27,9 +27,17 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54ac7b2aad9ac",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
-                "width": 40,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -56,9 +64,17 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54ac7b2aad9ac",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
-                "width": 40,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -86,7 +102,15 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54ac7b2aad9ac",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": 50,
                 "class": "",
@@ -117,7 +141,15 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54ac7b2aad9ac",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": 50,
                 "class": "",
@@ -130,7 +162,9 @@
                 "128": "128x128",
                 "256": "256x256"
             },
-            "default_value": [],
+            "default_value": {
+                "": ""
+            },
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -170,5 +204,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323235
+    "modified": 1421425620
 }

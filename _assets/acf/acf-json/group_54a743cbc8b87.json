@@ -104,7 +104,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "default",
+            "placeholder": "center center",
             "prepend": "",
             "append": "",
             "maxlength": "",
@@ -126,7 +126,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "default",
+            "placeholder": "auto",
             "prepend": "",
             "append": "",
             "maxlength": "",
@@ -185,5 +185,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323439
+    "modified": 1421460951
 }

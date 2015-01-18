@@ -21,9 +21,9 @@ global $post;
                     $foot_row_class = $foot_layout . ' row scm-row';
 
                      // If comments are open or we have at least one comment, load up the comment template
-                        if ( comments_open() || get_comments_number() ) :
+                        /*if ( comments_open() || get_comments_number() ) :
                             comments_template();
-                        endif;
+                        endif;*/
                     ?>
 
                     </main><!-- #main -->
@@ -39,14 +39,6 @@ global $post;
                 $sections = ( get_field( 'footer_sections', 'option' ) ? get_field( 'footer_sections', 'option' ) : array() );
 
                 scm_flexible_content( $sections );
-
-                /*foreach ( $sections as $section ) {
-                    if( $section['sezione'] ){
-                        $post = $section['sezione'];
-                        setup_postdata( $post );
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
-                    }
-                }*/
 
                 if( $credits )
                     scm_credits();

@@ -1,0 +1,814 @@
+{
+    "key": "group_54b9377b98c18",
+    "title": "Opzioni Stili",
+    "fields": [
+        {
+            "key": "field_54babf06882d2",
+            "label": "Loading Page",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_54bac005882d3",
+            "label": "Colore Sfondo",
+            "name": "background_color_loading",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#000000"
+        },
+        {
+            "key": "field_54bac08e882d4",
+            "label": "Immagine caricamento",
+            "name": "background_image_loading",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all"
+        },
+        {
+            "key": "field_54bac5065e9e5",
+            "label": "Dimensione immagine",
+            "name": "background_size_loading",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "auto",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54b9377ba7d5f",
+            "label": "Fonts",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_54b9377ba7d72",
+            "label": "Includi Google Web Fonts",
+            "name": "webfonts",
+            "prefix": "",
+            "type": "repeater",
+            "instructions": "Visita <a href=\"https:\/\/www.google.com\/fonts#\">https:\/\/www.google.com\/fonts#<\/a>, scegli la famiglia e gli stili da includere.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "min": "",
+            "max": "",
+            "layout": "block",
+            "button_label": "Aggiungi Font",
+            "sub_fields": [
+                {
+                    "key": "field_54b9377bb4d06",
+                    "label": "Family",
+                    "name": "family",
+                    "prefix": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "Open Sans",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
+                },
+                {
+                    "key": "field_54b9377bb4d1d",
+                    "label": "Styles",
+                    "name": "select_webfonts_styles",
+                    "prefix": "",
+                    "type": "checkbox",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "300": "Light",
+                        "300italic": "Light Italic",
+                        "400": "Normal",
+                        "400italic": "Normal Italic",
+                        "600": "Semi Bold",
+                        "600italic": "Semi Bold Italic",
+                        "700": "Bold",
+                        "700italic": "Bold Italic",
+                        "800": "Extra Bold",
+                        "800italic": "Extra Bold Italic"
+                    },
+                    "default_value": [],
+                    "layout": "horizontal"
+                }
+            ]
+        },
+        {
+            "key": "field_54b9377ba7d84",
+            "label": "Styling",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_54b9377ba7d97",
+            "label": "Heading",
+            "name": "",
+            "prefix": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54b9377ba7da9",
+            "label": "Primario",
+            "name": "select_headings_1",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "h1": "h1",
+                "h2": "h2",
+                "h3": "h3",
+                "h4": "h4",
+                "h5": "h5",
+                "h6": "h6",
+                ".h7": ".h7",
+                ".h8": ".h8",
+                ".h9": ".h9",
+                ".h0": ".h0",
+                "strong": "strong",
+                "div": "div"
+            },
+            "default_value": {
+                "h1": "h1"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7dbc",
+            "label": "Secondario",
+            "name": "select_headings_2",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "h1": "h1",
+                "h2": "h2",
+                "h3": "h3",
+                "h4": "h4",
+                "h5": "h5",
+                "h6": "h6",
+                ".h7": ".h7",
+                ".h8": ".h8",
+                ".h9": ".h9",
+                ".h0": ".h0",
+                "strong": "strong",
+                "div": "div"
+            },
+            "default_value": {
+                "h2": "h2"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7dce",
+            "label": "Terziario",
+            "name": "select_headings_3",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "h1": "h1",
+                "h2": "h2",
+                "h3": "h3",
+                "h4": "h4",
+                "h5": "h5",
+                "h6": "h6",
+                ".h7": ".h7",
+                ".h8": ".h8",
+                ".h9": ".h9",
+                ".h0": ".h0",
+                "strong": "strong",
+                "div": "div"
+            },
+            "default_value": {
+                "h3": "h3"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7de1",
+            "label": "Google Font",
+            "name": "select_webfonts_families_heading_1",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "no": "No Google font",
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7df3",
+            "label": "Google Font",
+            "name": "select_webfonts_families_heading_2",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "no": "No Google font",
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e06",
+            "label": "Google Font",
+            "name": "select_webfonts_families_heading_3",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "no": "No Google font",
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e1a",
+            "label": "Font",
+            "name": "select_webfonts_default_families_heading_1",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
+                "Lucida Sans Unicode_Lucida Grande_sans-serif": "Lucida Sans Unicode, Lucida Grande, sans-serif",
+                "Trebuchet MS_Helvetica_sans-serif": "Trebuchet MS, Helvetica, sans-serif",
+                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
+                "Georgia_serif": "Georgia, serif",
+                "Times New Roman_Times_serif": "Times New Roman, Times, serif",
+                "Palatino Linotype_Book Antiqua_Palatino_serif": "Palatino Linotype, Book Antiqua, Palatino, serif",
+                "cursive_serif": "cursive, serif",
+                "Courier New_Courier_monospace": "Courier New, Courier, monospace",
+                "Lucida Console_Monaco_monospace": "Lucida Console, Monaco, monospace"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e2c",
+            "label": "Font",
+            "name": "select_webfonts_default_families_heading_2",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
+                "Lucida Sans Unicode_Lucida Grande_sans-serif": "Lucida Sans Unicode, Lucida Grande, sans-serif",
+                "Trebuchet MS_Helvetica_sans-serif": "Trebuchet MS, Helvetica, sans-serif",
+                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
+                "Georgia_serif": "Georgia, serif",
+                "Times New Roman_Times_serif": "Times New Roman, Times, serif",
+                "Palatino Linotype_Book Antiqua_Palatino_serif": "Palatino Linotype, Book Antiqua, Palatino, serif",
+                "cursive_serif": "cursive, serif",
+                "Courier New_Courier_monospace": "Courier New, Courier, monospace",
+                "Lucida Console_Monaco_monospace": "Lucida Console, Monaco, monospace"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e3f",
+            "label": "Font",
+            "name": "select_webfonts_default_families_heading_3",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
+                "Lucida Sans Unicode_Lucida Grande_sans-serif": "Lucida Sans Unicode, Lucida Grande, sans-serif",
+                "Trebuchet MS_Helvetica_sans-serif": "Trebuchet MS, Helvetica, sans-serif",
+                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
+                "Georgia_serif": "Georgia, serif",
+                "Times New Roman_Times_serif": "Times New Roman, Times, serif",
+                "Palatino Linotype_Book Antiqua_Palatino_serif": "Palatino Linotype, Book Antiqua, Palatino, serif",
+                "cursive_serif": "cursive, serif",
+                "Courier New_Courier_monospace": "Courier New, Courier, monospace",
+                "Lucida Console_Monaco_monospace": "Lucida Console, Monaco, monospace"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e51",
+            "label": "Colore",
+            "name": "text_color_heading_1",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": ""
+        },
+        {
+            "key": "field_54b9377ba7e63",
+            "label": "Colore",
+            "name": "text_color_heading_2",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": ""
+        },
+        {
+            "key": "field_54b9377ba7e76",
+            "label": "Colore",
+            "name": "text_color_heading_3",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": ""
+        },
+        {
+            "key": "field_54b9377ba7e88",
+            "label": "Spessore",
+            "name": "select_font_weight_heading_1",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "300": "Light",
+                "400": "Normal",
+                "600": "Semi Bold",
+                "700": "Bold",
+                "800": "Extra Bold"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7e9b",
+            "label": "Spessore",
+            "name": "select_font_weight_heading_2",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "300": "Light",
+                "400": "Normal",
+                "600": "Semi Bold",
+                "700": "Bold",
+                "800": "Extra Bold"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7ead",
+            "label": "Spessore",
+            "name": "select_font_weight_heading_3",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "300": "Light",
+                "400": "Normal",
+                "600": "Semi Bold",
+                "700": "Bold",
+                "800": "Extra Bold"
+            },
+            "default_value": {
+                "default": "default"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7ec0",
+            "label": "Spazio Dopo",
+            "name": "select_line_height_heading_1",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "0.0": "Nessuno spazio",
+                "0.25": "1 quarto di linea",
+                "0.5": "Mezza linea",
+                "1": "Una linea",
+                "1.25": "Una linea e 1 quarto",
+                "1.5": "Una linea e mezza",
+                "1.75": "Una linea e 3 quarti",
+                "2": "Doppia linea",
+                "2.5": "Doppia linea e mezza",
+                "3": "Tripla linea",
+                "4": "Quadrupla linea"
+            },
+            "default_value": {
+                "": ""
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7ed2",
+            "label": "Spazio Dopo",
+            "name": "select_line_height_heading_2",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "0.0": "Nessuno spazio",
+                "0.25": "1 quarto di linea",
+                "0.5": "Mezza linea",
+                "1": "Una linea",
+                "1.25": "Una linea e 1 quarto",
+                "1.5": "Una linea e mezza",
+                "1.75": "Una linea e 3 quarti",
+                "2": "Doppia linea",
+                "2.5": "Doppia linea e mezza",
+                "3": "Tripla linea",
+                "4": "Quadrupla linea"
+            },
+            "default_value": {
+                "": ""
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54b9377ba7ee4",
+            "label": "Spazio Dopo",
+            "name": "select_line_height_heading_3",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "0.0": "Nessuno spazio",
+                "0.25": "1 quarto di linea",
+                "0.5": "Mezza linea",
+                "1": "Una linea",
+                "1.25": "Una linea e 1 quarto",
+                "1.5": "Una linea e mezza",
+                "1.75": "Una linea e 3 quarti",
+                "2": "Doppia linea",
+                "2.5": "Doppia linea e mezza",
+                "3": "Tripla linea",
+                "4": "Quadrupla linea"
+            },
+            "default_value": {
+                "": ""
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-stili"
+            }
+        ]
+    ],
+    "menu_order": 1001,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "custom_fields",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "modified": 1421526333
+}

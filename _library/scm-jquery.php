@@ -8,6 +8,8 @@
 //	Sticky Menu
 //	Smooth Scroll
 //	Single Page Nav
+//  Top Of Page
+//  Overlay
 //	Tabs
 //	Accordions
 //	Toggles
@@ -36,6 +38,8 @@
 	add_action('wp_footer', 'scm_jquery_sticky_menu');
 	add_action('wp_footer', 'scm_jquery_smooth_scroll');
 	add_action('wp_footer', 'scm_jquery_single_page_nav');
+	add_action('wp_footer', 'scm_jquery_top_of_page');
+	add_action('wp_footer', 'scm_jquery_overlay');
 	add_action('wp_footer', 'scm_jquery_tabs');
 	add_action('wp_footer', 'scm_jquery_accordion');
 	add_action('wp_footer', 'scm_jquery_toggle');
@@ -190,11 +194,11 @@
 	if ( ! function_exists( 'scm_jquery_sticky_menu' ) ) {
 		function scm_jquery_sticky_menu(){
 
-			$sticky = ( get_field('active_sticky_menu', 'option') ? 1 : 0 );
-			$anim = ( get_field('anim_sticky_menu', 'option') ? 1 : 0 );
-			$offset = ( get_field('offset_sticky_menu', 'option') ? get_field('offset_sticky_menu', 'option') : 0 );
-			$attach = ( get_field('attach_sticky_menu', 'option') ? get_field('attach_sticky_menu', 'option') : 'nav-top' );
-			$menu = ( get_field('id_menu', 'option') ? get_field('id_menu', 'option') : 'site-navigation' );
+			$sticky = ( get_field('active_sticky_menu', 'option') ?: 0 );
+			$anim = ( get_field('anim_sticky_menu', 'option') ?: 0 );
+			$offset = ( get_field('offset_sticky_menu', 'option') ?: 0 );
+			$attach = ( get_field('attach_sticky_menu', 'option') ?: 'nav-top' );
+			$menu = ( get_field('id_menu', 'option') ?: 'site-navigation' );
 			$sticky_menu = $menu . '-sticky';
 
 		?>
@@ -239,7 +243,6 @@
 							$(sticky_menu)
 							    .removeClass("affix affix-top affix-bottom")
 							    .removeData("bs.affix");
-							
 							$(sticky_menu).affix(
 								{ offset: { top: parseInt(new_offset) } }
 							);
@@ -379,7 +382,7 @@
 	if ( ! function_exists( 'scm_jquery_single_page_nav' ) ) {
 		function scm_jquery_single_page_nav(){
 
-			$active = get_field( 'tools_singlepagenav_active', 'option' );
+			$active = get_field( 'tools_singlepagenav_activeclass', 'option' );
 			$interval = get_field( 'tools_singlepagenav_interval', 'option' );
 			$offset = get_field( 'tools_singlepagenav_offset', 'option' );
 
@@ -399,6 +402,69 @@
 				        interval: interval
 					});
 
+				});
+			</script>
+		<?php
+		}
+	}
+
+// *****************************************************
+// *      TOP OF PAGE
+// *****************************************************
+
+	// Top Of Page
+	if ( ! function_exists( 'scm_jquery_top_of_page' ) ) {
+		function scm_jquery_top_of_page(){
+
+			$offset = ( get_field('tools_topofpage_offset', 'option') ?: '0' );
+			$topofpage = ( get_field('id_topofpage', 'option') ?: 'site-topofpage' );
+
+		?>
+			<script type="text/javascript">
+				
+				jQuery(document).ready(function($){
+					
+					var topofpage = '#' + <?php echo json_encode($topofpage); ?>;
+					var offset = parseFloat( <?php echo json_encode($offset); ?> );
+
+					$( 'body' ).on( 'responsive', function(){
+						$(topofpage)
+						    .removeClass("affix affix-top affix-bottom")
+						    .removeData("bs.affix");
+						$(topofpage).affix(
+							{ offset: { top: parseInt(offset) } }
+						);
+					});
+				
+				});
+			</script>
+		<?php
+		}
+	}
+
+// *****************************************************
+// *      OVERLAY
+// *****************************************************
+
+	// Overlay
+	if ( ! function_exists( 'scm_jquery_overlay' ) ) {
+		function scm_jquery_overlay(){
+
+		?>
+			<script type="text/javascript">
+				
+				jQuery(document).ready(function($){
+					
+					var overlay = $('.overlay');
+
+					$( 'body' ).on( 'responsive', function(){
+						overlay.each(function(){
+							var h = $(this).outerHeight();
+							$(this).css( 'margin-bottom', - h );
+						});
+						
+					});
+				
 				});
 			</script>
 		<?php
@@ -1102,13 +1168,22 @@
 	//Prettyphoto
     if ( ! function_exists( 'scm_jquery_prettyphoto' ) ) {
         function scm_jquery_prettyphoto(){
+        	
+        	if( get_field( 'tools_fancybox_active', 'option' ) )
+        		return;
+
         	global $SCM_galleries;
+
         ?>
             <script type="text/javascript">
 
             jQuery(document).ready(function($){
 
             	var elements = $('.scm-gallerie');
+            	
+            	if( !elements.length )
+            		return false;
+
 				var galleries = <?php echo json_encode( $SCM_galleries ); ?>;
 
 				function addLinks() {

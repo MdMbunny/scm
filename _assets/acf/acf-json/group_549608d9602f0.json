@@ -27,13 +27,13 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 25,
                 "class": "",
                 "id": ""
             },
-            "preview_size": "thumbnail",
-            "library": "all",
-            "return_format": "url"
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all"
         },
         {
             "key": "field_548f730b0d5a3",
@@ -45,13 +45,49 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 25,
                 "class": "",
                 "id": ""
             },
-            "preview_size": "thumbnail",
-            "library": "all",
-            "return_format": "url"
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all"
+        },
+        {
+            "key": "field_54b91d62a4206",
+            "label": "Icona",
+            "name": "soggetti_icona",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 25,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all"
+        },
+        {
+            "key": "field_54b91d75a4207",
+            "label": "Icona Negativo",
+            "name": "soggetti_icona_negativo",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 25,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all"
         },
         {
             "key": "field_548f539a3b6d9",
@@ -591,6 +627,65 @@
                 "fa-youtube-play": "&#xf16a; fa-youtube-play",
                 "fa-youtube-square": "&#xf166; fa-youtube-square"
             }
+        },
+        {
+            "key": "field_54b91db1a4208",
+            "label": "Dati",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_54b91dc7a4209",
+            "label": "Intestazione",
+            "name": "soggetti_Intestazione",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "Nome Completo Azienda S.p.a.",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54b91e11a420a",
+            "label": "P.IVA",
+            "name": "soggetti_piva",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "0123456789101112",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
         },
         {
             "key": "field_548f5132562b7",
@@ -2349,5 +2444,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323294
+    "modified": 1421418059
 }

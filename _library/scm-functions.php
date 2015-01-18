@@ -369,12 +369,12 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
         $r = hexdec(substr($hex,0,1).substr($hex,0,1));
         $g = hexdec(substr($hex,1,1).substr($hex,1,1));
         $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-        $a = $alpha;
+        $a = (float)$alpha;
     } else {
         $r = hexdec(substr($hex,0,2));
         $g = hexdec(substr($hex,2,2));
         $b = hexdec(substr($hex,4,2));
-        $a = $alpha;
+        $a = (float)$alpha;
     }
    
     $rgba = array($r, $g, $b, $a);
@@ -388,11 +388,12 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
     //Get Webfont + Family Font as a correct String (just comma separated families, or css attribute ready)
     if ( ! function_exists( 'font2string' ) ) {
-        function font2string($webfont = '', $family = 'default', $att = false) {
+        function font2string($webfont = '', $family = 'default', $add = false) {
 
-            $font = ( ( $webfont && $webfont != 'no' && $webfont != 'default' ) ? $webfont . ', ' : '' );
-            $font .= ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
-            if( $att ){
+            $webfont = ( ( $webfont && $webfont != 'no' && $webfont != 'default' ) ? $webfont : '' );
+            $family = ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
+            $font = ( $webfont ? $webfont . ( $family ? ', ' : '' ) : '' ) . $family;
+            if( $add ){
                 $font = 'font-family:' . $font . ';';
             }
 

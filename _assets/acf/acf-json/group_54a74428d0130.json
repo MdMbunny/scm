@@ -1,10 +1,10 @@
 {
     "key": "group_54a74428d0130",
-    "title": "Margini",
+    "title": "Box",
     "fields": [
         {
             "key": "field_54a74428d68d6",
-            "label": "Esterno",
+            "label": "Margin",
             "name": "margin",
             "prefix": "",
             "type": "text",
@@ -26,7 +26,7 @@
         },
         {
             "key": "field_54a74428d68e9",
-            "label": "Interno",
+            "label": "Padding",
             "name": "padding",
             "prefix": "",
             "type": "text",
@@ -43,6 +43,30 @@
             "prepend": "",
             "append": "",
             "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54b947a562f66",
+            "label": "Opacity",
+            "name": "opacity",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": 1,
+            "prepend": "",
+            "append": "",
+            "min": 0,
+            "max": 1,
+            "step": "0.1",
             "readonly": 0,
             "disabled": 0
         }
@@ -98,5 +122,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323428
+    "modified": 1421471505
 }

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.5.6
+Version:			v1.5.7
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -72,7 +72,8 @@ html {
 	-webkit-text-size-adjust: 100%; /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
 	-ms-text-size-adjust:     100%; /* www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
 	box-sizing: border-box; /* Apply a natural box layout model to the document; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
-	background: #000 url('_assets/img/loading.gif') center center no-repeat;
+	background-position: center center;
+	background-repeat: no-repeat;
 	background-attachment: fixed;
 	height: 100%;
 }
@@ -106,8 +107,8 @@ body {
 	pointer-events: none;
 }
 
-#page{
-	background-color: transparent;
+.site-page{
+	overflow: hidden;
 }
 
 #site-content{
@@ -177,7 +178,7 @@ input,
 select,
 textarea {
 	color: #404040;
-	font-family: sans-serif;
+	/*font-family: sans-serif;*/
 	font-size: 16px;
 	font-size: 1.6rem;
 	line-height: 1.5;
@@ -596,98 +597,6 @@ row.responsive{
 	padding-right: 0px;
 }
 
-
-/*--------------------------------------------------------------
-15.0 SCM Elements
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-15.1 Scroll To Top
---------------------------------------------------------------*/
-.scroll-to-top {
-	background: #444444;
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	text-align: center;
-	border-radius: 4px;
-	z-index: 8000;
-	opacity: 0;
-	filter: alpha(opacity=0);
-	-webkit-transition: all 0.5s;
-	transition: all 0.5s;
-	visibility: hidden;
-}
-
-.scroll-to-top.affix {
-	visibility: visible;
-	opacity: 0.5;
-	filter: alpha(opacity=50);
-}
-.scroll-to-top:hover {
-	opacity: 1;
-	filter: alpha(opacity=100);
-}
-.scroll-to-top a {
-	color: #fff;
-	display: inline-block;
-	line-height: 40px;
-	width: 40px;
-	height: 40px;
-}
-
-.scroll-to-top a i{
-	color: #fff;
-	vertical-align: initial;
-}
-
-/*--------------------------------------------------------------
-15.2 Google Map
---------------------------------------------------------------*/
-
-.scm-map{
-	height: 400px;
-}
-
-.scm-map + * {
-	margin-top: 20px;
-}
-
-.scm-map img{
-	max-width: none;
-}
-
-/*--------------------------------------------------------------
-16.0 SCM Types
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-16.1 Pages
---------------------------------------------------------------*/
-.scm-page {}
-
-/*--------------------------------------------------------------
-16.2 Sections
---------------------------------------------------------------*/
-.scm-section {}
-
-/*--------------------------------------------------------------
-16.3 Rows
---------------------------------------------------------------*/
-.scm-row {}
-
-/*--------------------------------------------------------------
-16.4 Modules
---------------------------------------------------------------*/
-.scm-module {}
-
-
-
-
-
-
-
-
-
-
 /*--------------------------------------------------------------
 4.0 Forms
 --------------------------------------------------------------*/
@@ -874,6 +783,7 @@ a:hover{
 
 .navigation{
 	position: relative;
+	display: block;
 }
 
 .navigation,
@@ -908,8 +818,8 @@ a:hover{
 	background-color: #555;
 }
 
-.navigation li.active a,
-.navigation li.active a:hover{
+.navigation li.active > a,
+.navigation li.active > a:hover{
 	background-color: #FFF;
 	color: #333;
 	cursor: default;
@@ -999,25 +909,15 @@ a:hover{
 /* Sticky Menu */
 
 .navigation.sticky {
-	/*visibility: hidden;*/
 	position: fixed;
 	left: auto;
-	box-shadow: 0px 0px 7px 0px rgba(0,0,0,.5);
-	/*-webkit-transition: none;
-	transition: none;*/
 	z-index: 8000;
 }
 
 .navigation.sticky.affix {
 	visibility: visible !important;
 	top: 0px !important;
-	/*-webkit-transition: none;
-	transition: none;*/
 }
-
-/*.navigation.sticky row {
-	text-align: right;
-}*/
 
 .smart .navigation.sticky row {
 	text-align: center;
@@ -1349,6 +1249,67 @@ object {
 }
 
 
+
+/*--------------------------------------------------------------
+15.0 SCM Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+15.1 Scroll To Top
+--------------------------------------------------------------*/
+.topofpage {
+	background: #444444;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	text-align: center;
+	border-radius: 4px;
+	z-index: 8000;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.topofpage.affix {
+	visibility: visible;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	pointer-events: inherit;
+}
+.topofpage:hover {
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+.topofpage a {
+	color: #fff;
+	display: inline-block;
+	line-height: 40px;
+	width: 40px;
+	height: 40px;
+}
+
+.topofpage a i{
+	color: #fff;
+	vertical-align: initial;
+}
+
+/*--------------------------------------------------------------
+15.2 Google Map
+--------------------------------------------------------------*/
+
+.scm-map{
+	height: 400px;
+}
+
+.scm-map + * {
+	margin-top: 20px;
+}
+
+.scm-map img{
+	max-width: none;
+}
 
 
 /*--------------------------------------------------------------

@@ -369,7 +369,7 @@
 
             $menu_id = ( get_field( 'id_menu', 'option' ) ? get_field( 'id_menu', 'option' ) : 'site-navigation' );
             
-            $menu_class = 'navigation ';
+            $menu_class = ( get_field( 'overlay_menu', 'option' ) ? 'overlay ' : '' ) . 'navigation ';
             $menu_class .= ( ( $align == 'center' || $position != 'inline' ) ? 'full ' : 'half-width ' );
             $menu_class .= $align;
 
@@ -642,9 +642,8 @@
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
                             'add_class'    => ( isset($cont[ 'add_class' ]) ? $cont[ 'add_class' ] : 0 ),
                         ));
-                    
+                    break;                    
                 }
-                
             }
         }
     }
@@ -706,12 +705,13 @@
     if ( ! function_exists( 'scm_top_of_page' ) ) {
         function scm_top_of_page() {
             
-            $offset = get_field('tools_topofpage_offset', 'option');
+            $id = get_field('id_topofpage', 'option');
             $icon = get_field('tools_topofpage_icon', 'option');
-            $title = __( 'Inizio Pagina', SCM_THEME );
+            $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
+            $title = __( $text, SCM_THEME );
 
-            $output =   '<div class="scroll-to-top" data-spy="affix" data-offset-top="' . $offset . '">';
-            $output .=      '<a href="#top" class="smooth-scroll" title="' . $title . '" alt="' . $title . '">';
+            $output =   '<div id="' . $id . '" class="topofpage"">';
+            $output .=      '<a href="#top" title="' . $title . '" alt="' . $title . '">';
             $output .=          '<i class="fa ' . $icon . '"></i>';
             $output .=      '</a>';
             $output .=  '</div>';

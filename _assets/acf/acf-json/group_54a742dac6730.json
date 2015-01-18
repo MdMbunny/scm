@@ -60,8 +60,8 @@
                 "default": "Default",
                 "no": "No Google font",
                 "Roboto": "Roboto",
-                "\"Open Sans\"": "Open Sans",
-                "\"Merriweather Sans\"": "Merriweather Sans"
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -91,15 +91,15 @@
             "choices": {
                 "default": "Default",
                 "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
-                "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-                "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+                "Lucida Sans Unicode_Lucida Grande_sans-serif": "Lucida Sans Unicode, Lucida Grande, sans-serif",
+                "Trebuchet MS_Helvetica_sans-serif": "Trebuchet MS, Helvetica, sans-serif",
                 "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
                 "Georgia_serif": "Georgia, serif",
-                "\"Times New Roman\"_Times_serif": "\"Times New Roman\", Times, serif",
-                "\"Palatino Linotype\"_\"Book Antiqua\"_Palatino_serif": "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
+                "Times New Roman_Times_serif": "Times New Roman, Times, serif",
+                "Palatino Linotype_Book Antiqua_Palatino_serif": "Palatino Linotype, Book Antiqua, Palatino, serif",
                 "cursive_serif": "cursive, serif",
-                "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
-                "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
+                "Courier New_Courier_monospace": "Courier New, Courier, monospace",
+                "Lucida Console_Monaco_monospace": "Lucida Console, Monaco, monospace"
             },
             "default_value": {
                 "default": "default"
@@ -160,14 +160,22 @@
             },
             "choices": {
                 "default": "Default",
-                "minion": "Minuscolo",
-                "half": "Met&agrave;",
-                "small": "Piccolo",
-                "normal": "Normale",
-                "medium": "Medio",
-                "big": "Grande",
-                "huge": "Enorme",
-                "double": "Doppio"
+                "60": "XXX-Small",
+                "70": "XX-Small",
+                "80": "X-Small",
+                "90": "Smaller",
+                "95": "Small",
+                "100": "Normal",
+                "105": "Medium",
+                "110": "Large",
+                "120": "X-Large",
+                "130": "XX-Large",
+                "140": "XXX-Large",
+                "150": "Big",
+                "160": "X-Big",
+                "170": "XX-Big",
+                "180": "XXX-Big",
+                "200": "Huge"
             },
             "default_value": {
                 "default": "default"
@@ -251,30 +259,6 @@
             "placeholder": "",
             "disabled": 0,
             "readonly": 0
-        },
-        {
-            "key": "field_54a742dacc9bc",
-            "label": "Trasparenza",
-            "name": "text_opacity",
-            "prefix": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "default",
-            "prepend": "",
-            "append": "",
-            "min": 0,
-            "max": 1,
-            "step": "0.1",
-            "readonly": 0,
-            "disabled": 0
         },
         {
             "key": "field_54a742efc041b",
@@ -497,5 +481,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421379356
+    "modified": 1421474259
 }

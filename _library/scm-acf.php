@@ -238,26 +238,42 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 				);
 			elseif( strpos( $list, 'select_txt_size' ) !== false ):
 				$arr = array(
-					'minion' => 'Minuscolo',
-					'half' => 'Met&agrave;',
-					'small' => 'Piccolo',
-					'normal' => 'Normale',
-					'medium' => 'Medio',
-					'big' => 'Grande',
-					'huge' => 'Enorme',
-					'double' => 'Doppio',
+					'60' => 'XXX-Small',
+					'70' => 'XX-Small',
+					'80' => 'X-Small',
+					'90' => 'Smaller',
+					'95' => 'Small',
+					'100' => 'Normal',
+					'105' => 'Medium',
+					'110' => 'Large',
+					'120' => 'X-Large',
+					'130' => 'XX-Large',
+					'140' => 'XXX-Large',
+					'150' => 'Big',
+					'160' => 'X-Big',
+					'170' => 'XX-Big',
+					'180' => 'XXX-Big',
+					'200' => 'Huge',
 				);
 
 			elseif( strpos( $list, 'select_txt_font_size' ) !== false ):
 				$arr = array(
-					'minion' => '6px',
-					'half' => '8px',
-					'small' => '12px',
-					'normal' => '16px',
-					'medium' => '18px',
-					'big' => '20px',
-					'huge' => '22px',
-					'double' => '24px',
+					'10px' => 'XXX-Small',
+					'11px' => 'XX-Small',
+					'12px' => 'X-Small',
+					'13px' => 'Smaller',
+					'15px' => 'Small',
+					'16px' => 'Normal',
+					'17px' => 'Medium',
+					'18px' => 'Large',
+					'19px' => 'X-Large',
+					'20px' => 'XX-Large',
+					'21px' => 'XXX-Large',
+					'22px' => 'Big',
+					'23px' => 'X-Big',
+					'24px' => 'XX-Big',
+					'25px' => 'XXX-Big',
+					'26px' => 'Huge',
 				);
 
 			elseif( strpos( $list, 'select_layout' ) !== false ):
@@ -295,21 +311,21 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 				$fonts = get_field( 'webfonts', 'option' );
 				if( $fonts ):
 					foreach ( $fonts as $font):
-						$arr['"' . $font['family'] . '"'] = $font['family'];
+						$arr[$font['family']] = $font['family'];
 					endforeach;
 				endif;
 			elseif( strpos( $list, 'select_webfonts_default_families' ) !== false ):
 				$arr = array(
 					'Helvetica_Arial_sans-serif'							=> 'Helvetica, Arial, sans-serif',
-					'"Lucida Sans Unicode"_"Lucida Grande"_sans-serif'		=> '"Lucida Sans Unicode", "Lucida Grande", sans-serif',
-					'"Trebuchet MS"_Helvetica_sans-serif'					=> '"Trebuchet MS", Helvetica, sans-serif',
+					'Lucida Sans Unicode_Lucida Grande_sans-serif'		=> 'Lucida Sans Unicode, Lucida Grande, sans-serif',
+					'Trebuchet MS_Helvetica_sans-serif'					=> 'Trebuchet MS, Helvetica, sans-serif',
 					'Verdana_Geneva_sans-serif'								=> 'Verdana, Geneva, sans-serif',
 					'Georgia_serif'											=> 'Georgia, serif',
-					'"Times New Roman"_Times_serif'							=> '"Times New Roman", Times, serif',
-					'"Palatino Linotype"_"Book Antiqua"_Palatino_serif'		=> '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+					'Times New Roman_Times_serif'							=> 'Times New Roman, Times, serif',
+					'Palatino Linotype_Book Antiqua_Palatino_serif'		=> 'Palatino Linotype, Book Antiqua, Palatino, serif',
 					'cursive_serif'											=> 'cursive, serif',
-					'"Courier New"_Courier_monospace'						=> '"Courier New", Courier, monospace',
-					'"Lucida Console"_Monaco_monospace'						=> '"Lucida Console", Monaco, monospace',
+					'Courier New_Courier_monospace'						=> 'Courier New, Courier, monospace',
+					'Lucida Console_Monaco_monospace'						=> 'Lucida Console, Monaco, monospace',
 				);
 			elseif( strpos( $list, 'select_webfonts_styles' ) !== false ):
 				$arr = array(
@@ -334,7 +350,7 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 				);
 			elseif( strpos( $list, 'select_line_height' ) !== false ):
 				$arr = array(
-					'00' => 'Nessuno spazio',
+					'0.0' => 'Nessuno spazio',
 					'0.25' => '1 quarto di linea',
 					'0.5' => 'Mezza linea',
 					'1' => 'Una linea',

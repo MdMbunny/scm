@@ -1,6 +1,6 @@
 {
     "key": "group_54b5ae0e69c29",
-    "title": "Contenuti Sezione",
+    "title": "Contenuti",
     "fields": [
         {
             "key": "field_54b5ae0e69c35",
@@ -1388,6 +1388,57 @@
                                             "max": ""
                                         },
                                         {
+                                            "key": "54b91eec53e4d",
+                                            "name": "icona",
+                                            "label": "Icona",
+                                            "display": "block",
+                                            "sub_fields": [
+                                                {
+                                                    "key": "field_54b91eec53e4e",
+                                                    "label": "Negativo",
+                                                    "name": "negativo",
+                                                    "prefix": "",
+                                                    "type": "true_false",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": 50,
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "message": "",
+                                                    "default_value": 0
+                                                },
+                                                {
+                                                    "key": "field_54b91eec53e4f",
+                                                    "label": "Dimensione",
+                                                    "name": "dimensione",
+                                                    "prefix": "",
+                                                    "type": "number",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": 50,
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "default_value": "",
+                                                    "placeholder": "auto",
+                                                    "prepend": "",
+                                                    "append": "px",
+                                                    "min": "",
+                                                    "max": "",
+                                                    "step": "",
+                                                    "readonly": 0,
+                                                    "disabled": 0
+                                                }
+                                            ],
+                                            "min": "",
+                                            "max": ""
+                                        },
+                                        {
                                             "key": "54b5ae0e69eff",
                                             "name": "map",
                                             "label": "Mappa",
@@ -1689,5 +1740,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421379335
+    "modified": 1421475069
 }

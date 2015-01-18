@@ -133,6 +133,7 @@ require SCM_DIR_LIBRARY . 'scm-functions.php';
 require SCM_DIR_LIBRARY . 'scm-acf.php';
 require SCM_DIR_LIBRARY . 'scm-acf-contents.php';
 require SCM_DIR_LIBRARY . 'scm-install.php';
+require SCM_DIR_LIBRARY . 'scm-options.php';
 require SCM_DIR_LIBRARY . 'scm-core.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';

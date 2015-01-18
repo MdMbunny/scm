@@ -20,14 +20,14 @@
 
             global $SCM_custom_fields;
 
-            $cont = array();
+            //$cont = array();
 
             $dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
             foreach ($dir as $fileinfo) {
                 if (!$fileinfo->isDot()) {
 
                     $name = $fileinfo->getFilename();
-                    $date = $fileinfo->getMTime();
+                    //$date = $fileinfo->getMTime();
       
                     $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $name);
                     $json=json_decode($string,true);
@@ -35,17 +35,20 @@
                     if( $json['title'] ){
                         switch( $json['title'] ){
                             case 'Testata':
+                                // Salvo in un array globale il JSON del gruppo Testata che duplicherò per ogni Type
                                 $SCM_custom_fields['header'] = $json;
                             break;
-                            case 'Contenuti Sezione':
+                            /*case 'Contenuti':
                                 $cont[$date] = $name;
-                            break;
+                            break;*/
                         }
                     }
                 }
             }
 
-            ksort( $cont );
+            // Probabilmente ti serve per creare il Flexible Content da mettere in Module al posto di Contenuto Modulo
+
+            /*ksort( $cont );
             $size = sizeof( $cont );
 
             if( $size > 1 ){
@@ -57,12 +60,12 @@
             }else if( $size === 0){
                 $created = scm_acf_group_contents( 'Contenuti Sezione', 'scm-sections' );
                 alert('Flexible Content for Sections created');
-            }
+            }*/
 
 			$themeStatus = get_option( 'scm-settings-installed' );
 
 			if ( ! $themeStatus ) {
-
+                alert('SCM theme installed');
 				update_option( 'scm-settings-installed', 1 );
 				header( 'Location: themes.php?page=' . SCM_SETTINGS_MAIN );		// Redirect alla pagina del Tema
 				die;

@@ -1,6 +1,6 @@
 {
     "key": "group_549813ed2846c",
-    "title": "Options",
+    "title": "Opzioni",
     "fields": [
         {
             "key": "field_549d74f8aa049",
@@ -27,25 +27,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "full",
-            "library": "all"
-        },
-        {
-            "key": "field_549d78807ed32",
-            "label": "PNG 16",
-            "name": "branding_favicon_png",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
+                "width": 33,
                 "class": "",
                 "id": ""
             },
@@ -63,25 +45,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "thumbnail",
-            "library": "all"
-        },
-        {
-            "key": "field_549d78f97ed36",
-            "label": "Icon 72",
-            "name": "branding_icon_72",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
+                "width": 33,
                 "class": "",
                 "id": ""
             },
@@ -99,7 +63,43 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all"
+        },
+        {
+            "key": "field_549d78807ed32",
+            "label": "PNG 16",
+            "name": "branding_favicon_png",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all"
+        },
+        {
+            "key": "field_549d78f97ed36",
+            "label": "Icon 72",
+            "name": "branding_icon_72",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
                 "class": "",
                 "id": ""
             },
@@ -117,719 +117,13 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 33,
                 "class": "",
                 "id": ""
             },
             "return_format": "url",
             "preview_size": "thumbnail",
             "library": "all"
-        },
-        {
-            "key": "field_54a758890316b",
-            "label": "Fonts",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_549eb252eeeb8",
-            "label": "Includi Google Web Fonts",
-            "name": "webfonts",
-            "prefix": "",
-            "type": "repeater",
-            "instructions": "Visita <a href=\"https:\/\/www.google.com\/fonts#\">https:\/\/www.google.com\/fonts#<\/a>, scegli la famiglia e gli stili da includere.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "min": "",
-            "max": "",
-            "layout": "block",
-            "button_label": "Aggiungi Font",
-            "sub_fields": [
-                {
-                    "key": "field_54b7c06d691b6",
-                    "label": "Family",
-                    "name": "family",
-                    "prefix": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "Open Sans",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": "",
-                    "readonly": 0,
-                    "disabled": 0
-                },
-                {
-                    "key": "field_549eb59959b1c",
-                    "label": "Styles",
-                    "name": "select_webfonts_styles",
-                    "prefix": "",
-                    "type": "checkbox",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "300": "Light",
-                        "300italic": "Light Italic",
-                        "400": "Normal",
-                        "400italic": "Normal Italic",
-                        "600": "Semi Bold",
-                        "600italic": "Semi Bold Italic",
-                        "700": "Bold",
-                        "700italic": "Bold Italic",
-                        "800": "Extra Bold",
-                        "800italic": "Extra Bold Italic"
-                    },
-                    "default_value": [],
-                    "layout": "horizontal"
-                }
-            ]
-        },
-        {
-            "key": "field_54981a87701bd",
-            "label": "Styling",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_549df309fe52f",
-            "label": "Heading",
-            "name": "",
-            "prefix": "",
-            "type": "message",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": ""
-        },
-        {
-            "key": "field_54981a9c701be",
-            "label": "Primario",
-            "name": "select_headings_1",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "h1": "h1",
-                "h2": "h2",
-                "h3": "h3",
-                "h4": "h4",
-                "h5": "h5",
-                "h6": "h6",
-                ".h7": ".h7",
-                ".h8": ".h8",
-                ".h9": ".h9",
-                ".h0": ".h0",
-                "strong": "strong",
-                "div": "div"
-            },
-            "default_value": {
-                "h1": "h1"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54981aed701bf",
-            "label": "Secondario",
-            "name": "select_headings_2",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "h1": "h1",
-                "h2": "h2",
-                "h3": "h3",
-                "h4": "h4",
-                "h5": "h5",
-                "h6": "h6",
-                ".h7": ".h7",
-                ".h8": ".h8",
-                ".h9": ".h9",
-                ".h0": ".h0",
-                "strong": "strong",
-                "div": "div"
-            },
-            "default_value": {
-                "h2": "h2"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54981b5783e9b",
-            "label": "Terziario",
-            "name": "select_headings_3",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "h1": "h1",
-                "h2": "h2",
-                "h3": "h3",
-                "h4": "h4",
-                "h5": "h5",
-                "h6": "h6",
-                ".h7": ".h7",
-                ".h8": ".h8",
-                ".h9": ".h9",
-                ".h0": ".h0",
-                "strong": "strong",
-                "div": "div"
-            },
-            "default_value": {
-                "h3": "h3"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_549ebc53ffeed",
-            "label": "Google Font",
-            "name": "select_webfonts_families_heading_1",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "no": "No Google font",
-                "Roboto": "Roboto",
-                "\"Open Sans\"": "Open Sans",
-                "\"Merriweather Sans\"": "Merriweather Sans"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b86023d8cb6",
-            "label": "Google Font",
-            "name": "select_webfonts_families_heading_2",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "no": "No Google font",
-                "Roboto": "Roboto",
-                "\"Open Sans\"": "Open Sans",
-                "\"Merriweather Sans\"": "Merriweather Sans"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b8602ad8cb7",
-            "label": "Google Font",
-            "name": "select_webfonts_families_heading_3",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "no": "No Google font",
-                "Roboto": "Roboto",
-                "\"Open Sans\"": "Open Sans",
-                "\"Merriweather Sans\"": "Merriweather Sans"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_549ec583db2be",
-            "label": "Font",
-            "name": "select_webfonts_default_families_heading_1",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
-                "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-                "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
-                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
-                "Georgia_serif": "Georgia, serif",
-                "\"Times New Roman\"_Times_serif": "\"Times New Roman\", Times, serif",
-                "\"Palatino Linotype\"_\"Book Antiqua\"_Palatino_serif": "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
-                "cursive_serif": "cursive, serif",
-                "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
-                "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b8604cd8cb8",
-            "label": "Font",
-            "name": "select_webfonts_default_families_heading_2",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
-                "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-                "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
-                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
-                "Georgia_serif": "Georgia, serif",
-                "\"Times New Roman\"_Times_serif": "\"Times New Roman\", Times, serif",
-                "\"Palatino Linotype\"_\"Book Antiqua\"_Palatino_serif": "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
-                "cursive_serif": "cursive, serif",
-                "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
-                "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b86053d8cb9",
-            "label": "Font",
-            "name": "select_webfonts_default_families_heading_3",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "Helvetica_Arial_sans-serif": "Helvetica, Arial, sans-serif",
-                "\"Lucida Sans Unicode\"_\"Lucida Grande\"_sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-                "\"Trebuchet MS\"_Helvetica_sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
-                "Verdana_Geneva_sans-serif": "Verdana, Geneva, sans-serif",
-                "Georgia_serif": "Georgia, serif",
-                "\"Times New Roman\"_Times_serif": "\"Times New Roman\", Times, serif",
-                "\"Palatino Linotype\"_\"Book Antiqua\"_Palatino_serif": "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
-                "cursive_serif": "cursive, serif",
-                "\"Courier New\"_Courier_monospace": "\"Courier New\", Courier, monospace",
-                "\"Lucida Console\"_Monaco_monospace": "\"Lucida Console\", Monaco, monospace"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54a7583f0316a",
-            "label": "Colore",
-            "name": "color_heading_1",
-            "prefix": "",
-            "type": "color_picker",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "default_value": ""
-        },
-        {
-            "key": "field_54b85d3168d23",
-            "label": "Colore",
-            "name": "color_heading_2",
-            "prefix": "",
-            "type": "color_picker",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "default_value": ""
-        },
-        {
-            "key": "field_54b85d3868d24",
-            "label": "Colore",
-            "name": "color_heading_3",
-            "prefix": "",
-            "type": "color_picker",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "default_value": ""
-        },
-        {
-            "key": "field_54a75e202e464",
-            "label": "Spessore",
-            "name": "select_font_weight_heading_1",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "300": "Light",
-                "400": "Normal",
-                "600": "Semi Bold",
-                "700": "Bold",
-                "800": "Extra Bold"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b85cf968d21",
-            "label": "Spessore",
-            "name": "select_font_weight_heading_2",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "300": "Light",
-                "400": "Normal",
-                "600": "Semi Bold",
-                "700": "Bold",
-                "800": "Extra Bold"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b85d0d68d22",
-            "label": "Spessore",
-            "name": "select_font_weight_heading_3",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "300": "Light",
-                "400": "Normal",
-                "600": "Semi Bold",
-                "700": "Bold",
-                "800": "Extra Bold"
-            },
-            "default_value": {
-                "default": "default"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b85a6bc0cdb",
-            "label": "Spazio Dopo",
-            "name": "select_line_height_heading_1",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "00": "Nessuno spazio",
-                "0.25": "1 quarto di linea",
-                "0.5": "Mezza linea",
-                "1": "Una linea",
-                "1.25": "Una linea e 1 quarto",
-                "1.5": "Una linea e mezza",
-                "1.75": "Una linea e 3 quarti",
-                "2": "Doppia linea",
-                "2.5": "Doppia linea e mezza",
-                "3": "Tripla linea",
-                "4": "Quadrupla linea"
-            },
-            "default_value": {
-                "": ""
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b85aa1c0cdc",
-            "label": "Spazio Dopo",
-            "name": "select_line_height_heading_2",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "00": "Nessuno spazio",
-                "0.25": "1 quarto di linea",
-                "0.5": "Mezza linea",
-                "1": "Una linea",
-                "1.25": "Una linea e 1 quarto",
-                "1.5": "Una linea e mezza",
-                "1.75": "Una linea e 3 quarti",
-                "2": "Doppia linea",
-                "2.5": "Doppia linea e mezza",
-                "3": "Tripla linea",
-                "4": "Quadrupla linea"
-            },
-            "default_value": {
-                "": ""
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54b85aaec0cdd",
-            "label": "Spazio Dopo",
-            "name": "select_line_height_heading_3",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 33,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "00": "Nessuno spazio",
-                "0.25": "1 quarto di linea",
-                "0.5": "Mezza linea",
-                "1": "Una linea",
-                "1.25": "Una linea e 1 quarto",
-                "1.5": "Una linea e mezza",
-                "1.75": "Una linea e 3 quarti",
-                "2": "Doppia linea",
-                "2.5": "Doppia linea e mezza",
-                "3": "Tripla linea",
-                "4": "Quadrupla linea"
-            },
-            "default_value": {
-                "": ""
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
         },
         {
             "key": "field_5498143910982",
@@ -951,7 +245,7 @@
         },
         {
             "key": "field_54abcf4583681",
-            "label": "Fader Attivo",
+            "label": "Attivo",
             "name": "fader_active",
             "prefix": "",
             "type": "true_false",
@@ -1540,6 +834,60 @@
             }
         },
         {
+            "key": "field_54bae20f317e0",
+            "label": "Titolo",
+            "name": "tools_topofpage_title",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Inizio pagina",
+            "placeholder": "Inizio pagina",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54bad4b722a2d",
+            "label": "Colore",
+            "name": "text_color_topofpage",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#FFFFFF"
+        },
+        {
+            "key": "field_54bad50422a2e",
+            "label": "Sfondo",
+            "name": "background_color_topofpage",
+            "prefix": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#DDDDDD"
+        },
+        {
             "key": "field_5498473792c5b",
             "label": "Smooth Scroll",
             "name": "",
@@ -1681,7 +1029,7 @@
         {
             "key": "field_54a9886dc3e68",
             "label": "Class",
-            "name": "tools_singlepagenav_active",
+            "name": "tools_singlepagenav_activeclass",
             "prefix": "",
             "type": "text",
             "instructions": "",
@@ -1747,6 +1095,39 @@
             "step": "",
             "readonly": 0,
             "disabled": 0
+        },
+        {
+            "key": "field_54b9cd81f58ad",
+            "label": "Fancybox",
+            "name": "",
+            "prefix": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54b9cd97f58ae",
+            "label": "Attivo",
+            "name": "tools_fancybox_active",
+            "prefix": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 52,
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0
         },
         {
             "key": "field_5498490192c64",
@@ -1990,6 +1371,28 @@
             "disabled": 0
         },
         {
+            "key": "field_54bade64522eb",
+            "label": "Top Of Page ID",
+            "name": "id_topofpage",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "site-topofpage",
+            "placeholder": "site-topofpage",
+            "prepend": "#",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_549815bd09d75",
             "label": "IE",
             "name": "",
@@ -2059,5 +1462,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421379377
+    "modified": 1421533766
 }
