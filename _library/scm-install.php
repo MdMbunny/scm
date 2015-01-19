@@ -244,7 +244,7 @@
                     'slug'               => 'acf-cf7-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-cf7-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -253,7 +253,7 @@
                     'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-paypal-field-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -262,7 +262,7 @@
                     'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -271,7 +271,7 @@
                     'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -280,7 +280,7 @@
                     'slug'               => 'contact-form-7', // The plugin slug (typically the folder name).
                     'source'             => 'contact-form-7.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -289,7 +289,7 @@
                     'slug'               => 'really-simple-captcha', // The plugin slug (typically the folder name).
                     'source'             => 'really-simple-captcha.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -316,7 +316,7 @@
                     'slug'               => 'social-media-feather', // The plugin slug (typically the folder name).
                     'source'             => 'social-media-feather.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -334,7 +334,7 @@
                     'slug'               => 'admin-menu-editor', // The plugin slug (typically the folder name).
                     'source'             => 'admin-menu-editor.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -343,7 +343,7 @@
                     'slug'               => 'rvg-optimize-database', // The plugin slug (typically the folder name).
                     'source'             => 'rvg-optimize-database.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
                 
@@ -352,7 +352,7 @@
                     'slug'               => 'theme-check', // The plugin slug (typically the folder name).
                     'source'             => 'theme-check.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -361,7 +361,7 @@
                     'slug'               => 'github-updater-develop', // The plugin slug (typically the folder name).
                     'source'             => 'github-updater-develop.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 

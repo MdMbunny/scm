@@ -14,6 +14,16 @@ add_filter('acf/settings/load_json', 'scm_acf_json_load');
 add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
+add_filter( 'bfa_force_fallback', 'my_force_fallback' );
+
+// *****************************************************
+// *      FONT AWESOME FALLBACK FIX
+// *****************************************************
+
+function my_force_fallback( $force_fallback ) {
+	return true;
+}
+
 
 // *****************************************************
 // *      CUSTOM FIELDS ACTIONS
