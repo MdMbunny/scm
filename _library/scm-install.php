@@ -20,14 +20,13 @@
 
             global $SCM_custom_fields;
 
-            //$cont = array();
+            $cont = array();
 
             $dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
             foreach ($dir as $fileinfo) {
                 if (!$fileinfo->isDot()) {
 
                     $name = $fileinfo->getFilename();
-                    //$date = $fileinfo->getMTime();
       
                     $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $name);
                     $json=json_decode($string,true);
@@ -38,36 +37,17 @@
                                 // Salvo in un array globale il JSON del gruppo Testata che duplicherò per ogni Type
                                 $SCM_custom_fields['header'] = $json;
                             break;
-                            /*case 'Contenuti':
-                                $cont[$date] = $name;
-                            break;*/
                         }
                     }
                 }
             }
-
-            // Probabilmente ti serve per creare il Flexible Content da mettere in Module al posto di Contenuto Modulo
-
-            /*ksort( $cont );
-            $size = sizeof( $cont );
-
-            if( $size > 1 ){
-                for( $i = 0; $i >= $size; $i++ ){
-                    if( $i > 0 ){
-                        unlink( SCM_DIR_ACF_JSON . "/" . $cont[$i] );
-                    }
-                }
-            }else if( $size === 0){
-                $created = scm_acf_group_contents( 'Contenuti Sezione', 'scm-sections' );
-                alert('Flexible Content for Sections created');
-            }*/
 
 			$themeStatus = get_option( 'scm-settings-installed' );
 
 			if ( ! $themeStatus ) {
                 alert('SCM theme installed');
 				update_option( 'scm-settings-installed', 1 );
-				header( 'Location: themes.php?page=' . SCM_SETTINGS_MAIN );		// Redirect alla pagina del Tema
+				header( 'Location: themes.php?page=' . SCM_SETTINGS_MAIN );		// Redirect alla pagina SCM Options
 				die;
 			}
 		}
@@ -102,7 +82,6 @@
             
 			$default_types = array(
 				'sections'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f116', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'modules'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Module', SCM_THEME), 				'plural' => __('Modules', SCM_THEME), 				'slug' => 'scm-modules', 			'categories' => 1, 	'tags' => 1, 	'icon' => 'f119', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
 				'soggetti'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f338', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
 				'luoghi'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f230', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
 				'news'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 				'categories' => 1, 	'tags' => 0, 	'icon' => 'f488', 	'folder' => 1,      'orderby' => 'date',        'order' => '' ),
@@ -116,7 +95,7 @@
             foreach ($default_types as $default => $value) {
                 $elem = getByValueKey( $saved_types, $value['slug'], 'slug' );
                 if( isset($elem) ){
-                    if( $default == 'sections' || $default == 'modules'){
+                    if( $default == 'sections' ){
                         $saved_types[$elem]['active'] = 1;
                     }
                 }else{
@@ -218,8 +197,10 @@
                             'page_title'    => 'Template ' . $title,
                             'menu_title'    => 'Template',
                             'menu_slug'     => 'acf-options-template-' . $slug,
-                            'parent_slug'   => 'edit.php?post_type=' . $slug,
+                            'parent_slug'   => 'edit.php' . ( $slug == 'post' ? '' : '?post_type=' . $slug ),
                         ));
+
+
 
                         scm_acf_fields_group_duplicate( $SCM_custom_fields['header'], $title, $slug, array( array( array ( 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options-template-' . $slug ) ) ) );
                     }
@@ -229,11 +210,25 @@
     }
 
 // *****************************************************
-// *      CUSTOM FIELDS INSTALLATION
+// *      DUPLICATE FIELDS GROUP
 // *****************************************************
 
-    
+    if ( ! function_exists( 'scm_acf_fields_group_duplicate' ) ) {
+        function scm_acf_fields_group_duplicate( $group, $title, $slug, $location = array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'post' ) ) ) ) {
 
+            $group['title'] .= ' ' . $title;
+            $group['key'] .= '_' . $slug;
+            $group['location'] = $location;
+
+            for ($i = 0; $i < sizeof($group['fields']); $i++) {
+                $group['fields'][$i]['key'] .= '_' . $slug;
+                $group['fields'][$i]['name'] .= '_' . $slug;
+            }
+
+            if( function_exists('register_field_group') )
+                register_field_group( $group );
+        }
+    }
 
 // *****************************************************
 // *      PLUGIN INSTALLATION

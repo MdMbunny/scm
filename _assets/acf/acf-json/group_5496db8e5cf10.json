@@ -3,6 +3,50 @@
     "title": "Contenuto Pagina",
     "fields": [
         {
+            "key": "field_54bc0452a3623",
+            "label": "Custom ID",
+            "name": "custom_id",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "id",
+            "prepend": "#",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54bc0462a3624",
+            "label": "Custom Classes",
+            "name": "custom_classes",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "classes",
+            "prepend": ".",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_5496db8e5fcfc",
             "label": "Righe",
             "name": "flexible_rows",
@@ -22,21 +66,21 @@
             "layouts": [
                 {
                     "key": "5496d906456b4",
-                    "name": "sezione",
+                    "name": "section_element",
                     "label": "Sezione",
                     "display": "block",
                     "sub_fields": [
                         {
                             "key": "field_5496db8e617bb",
                             "label": "Contenuto",
-                            "name": "contenuto",
+                            "name": "select_section",
                             "prefix": "",
                             "type": "post_object",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": "",
+                                "width": 33,
                                 "class": "",
                                 "id": ""
                             },
@@ -48,6 +92,50 @@
                             "multiple": 0,
                             "return_format": "object",
                             "ui": 1
+                        },
+                        {
+                            "key": "field_54bc03ba9e082",
+                            "label": "Custom ID",
+                            "name": "custom_id",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": 33,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "id",
+                            "prepend": "#",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54bc03e39e083",
+                            "label": "Custom Classes",
+                            "name": "custom_classes",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": 33,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "classes",
+                            "prepend": ".",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
                         }
                     ],
                     "min": "",
@@ -85,5 +173,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323403
+    "modified": 1421609166
 }

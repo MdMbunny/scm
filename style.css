@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.5.7
+Version:			v1.5.8
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -814,13 +814,17 @@ a:hover{
 	padding-bottom: 0px;
 }*/
 
-.navigation li a:hover{
+.navigation li:hover{
 	background-color: #555;
 }
 
-.navigation li.active > a,
-.navigation li.active > a:hover{
+.navigation li.active,
+.navigation li.active:hover{
 	background-color: #FFF;
+}
+
+.navigation li.active > a,
+.navigation li.active:hover > a{
 	color: #333;
 	cursor: default;
 }
@@ -947,7 +951,7 @@ a:hover{
 	cursor: pointer;
 	max-width: 40%;
 	float: left;
-	padding: 0.6% 2.5% 0 0;
+	padding: 0.4% 2.5% 0 0;
 }
 
 .smart .menu-toggle {

@@ -6,7 +6,7 @@
 global $SCM_galleries, $post;
 
 $type = get_post_type();
-$title = get_the_title();
+$titletitle = get_the_title();
 
 $b_init = ( isset( $this ) ? $this->b_init : 0 );
 $b_type = ( isset( $this ) ? $this->b_type : 'img');
@@ -14,7 +14,7 @@ $b_img = ( isset( $this ) ? $this->b_img : 0 );
 $b_size = ( isset( $this ) ? $this->b_size : '150px' );
 $b_txt = ( isset( $this ) ? $this->b_txt : 'Galleria');
 $b_bg = ( isset( $this ) ? $this->b_bg : '');
-$b_mod = ( isset( $this ) ? $this->b_mod : '');
+$b_section = ( isset( $this ) ? $this->b_section : '');
 
 $gallery = get_field( 'gallerie_immagini' );
 
@@ -39,11 +39,11 @@ echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX
 			echo $b_txt;
 		break;
 
-		case 'module':
-			if( !$b_mod ) break;
-			$post = $b_mod;
+		case 'section':
+			if( !$b_section ) break;
+			$post = $b_section;
 			setup_postdata( $post );
-			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
 
 		break;
 	}

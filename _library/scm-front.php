@@ -413,7 +413,7 @@
             $sticky_id = ( get_field( 'id_menu', 'option' ) ? get_field( 'id_menu', 'option' ) . '-sticky' : 'site-navigation-sticky' );
 
             $sticky_layout = ( get_field('select_layout_page', 'option') ? get_field('select_layout_page', 'option') : 'full' );
-            $sticky_align = ( get_field('select_alignment_site', 'option') ? get_field('select_alignment_site', 'option') : 'center');
+            //$sticky_align = ( get_field('select_alignment_site', 'option') ? get_field('select_alignment_site', 'option') : 'center');
 
             $perma = get_permalink();
             $home = get_home_url();
@@ -424,7 +424,7 @@
             $sticky_icon = ( get_field( 'icon_sticky_menu', 'option' ) ? 'fa ' . get_field( 'icon_sticky_menu', 'option' ) : 'fa-home' );
             $sticky_image = ( get_field( 'image_sticky_menu', 'option' ) ? get_field( 'image_sticky_menu', 'option' ) : '' );
             
-            $sticky_class = $sticky_layout . ' ' . $sticky_align . ' navigation sticky';
+            $sticky_class = $sticky_layout . ' navigation sticky';
             
 
             $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ? get_field('select_layout_sticky_menu', 'option') : 'full' ) : 'full' );               
@@ -473,15 +473,23 @@
 
     //Prints Element Inner Header
     if ( ! function_exists( 'scm_custom_header' ) ) {
-        function scm_custom_header( $header, $type = 'all', $custom = '' ) {
+        function scm_custom_header( $slides, $type = '', $height = 'auto' ) {
 
+            // +++ todo: immagini multiple per Slider
 
-            if ($header && get_field( 'flexible_headers' . $custom, $header ) ) {
+            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full full-image mask" style="max-height:' . $height . ';">';
+                
+                foreach ($slides as $slide) {
+                    $img = $slide[ 'immagine' ];
+                    $caption = ( !$slide[ 'active_caption' ] ?: $slide['caption'] );
 
-                echo '<header class="full ' . SCM_PREFIX . 'header ' . $type . '-header">';
-                    scm_flexible_content( get_field('flexible_headers' . $custom, $header ) );
-                echo '</header><!-- ' . $type . '-header -->';
-            }
+                    // +++ todo: disegna Caption
+
+                    echo '<img src="' . $img . '" class="full">';
+                }
+
+            echo '</header><!-- ' . $type . '-header -->';
+
         }
     }
 
@@ -501,17 +509,6 @@
 
                 switch ($element) {
 
-                    case 'module_element':
-
-                        $single = $cont[ 'select_module' ];
-                        if(!$single) continue;
-                        $single_type = $single->post_type;
-                        $post = $single;
-                        setup_postdata( $post );
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm' );
-
-                    break;
-
                     case 'galleria_element':
 
                         $single = $cont[ 'select_galleria' ];
@@ -526,7 +523,7 @@
                             'b_size'    => $cont[ 'module_galleria_img_size' ],
                             'b_txt'     => $cont[ 'module_galleria_txt' ],
                             'b_bg'      => $cont[ 'module_galleria_txt_bg' ],
-                            'b_mod'     => $cont[ 'module_galleria_module' ],
+                            'b_section' => $cont[ 'module_galleria_section' ],
                         ));
 
                     break;
@@ -558,7 +555,7 @@
 
                     case 'login_form_element':
 
-                        get_template_part( SCM_DIR_PARTS_SINGLE . 'login-form' );
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'login-form' );
 
                     break;
 
@@ -630,35 +627,16 @@
                         $content = $cont['testo'];
                         if(!$content) continue;
                         echo $content;
-
                     break;
 
-                    default:
-                        $single = $cont[ 'sezione' ];
+                    case 'section_element':
+                        $single = $cont[ 'select_section' ];
                         if(!$single) continue;
-                        $single_type = $single->post_type;
                         $post = $single;
                         setup_postdata( $post );
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
-                            'add_class'    => ( isset($cont[ 'add_class' ]) ? $cont[ 'add_class' ] : 0 ),
-                        ));
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
                     break;                    
                 }
-            }
-        }
-    }
-
-    //Prints Element Inner Footer
-    if ( ! function_exists( 'scm_custom_footer' ) ) {
-        function scm_custom_footer( $footer, $type = 'all', $custom = '' ) {
-
-            if( $footer && have_rows( 'flexible_footers' . $custom, $footer ) ){
-                
-                echo '<footer class="full ' . SCM_PREFIX . 'footer ' . $type . '-footer">';
-
-                    scm_flexible_content( get_field('flexible_footers' . $custom, $footer ) );
-
-                echo '</footer><!-- ' . $type . '-footer -->';
             }
         }
     }
@@ -669,7 +647,7 @@
 //*****************************************************
 
     //Prints copyright text
-    if ( ! function_exists( 'scm_credits' ) ) {
+    if ( ! function_exists( 'scm_credits' ) ) {     // ENTRERÀ A FAR PARTE DEGLI ELEMENTI SELEZIONABILI DAL FLEXIBLE CONTENT
         function scm_credits() {
 
             $copyText = get_field('footer_credits', 'option');

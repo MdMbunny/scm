@@ -7,7 +7,7 @@
  * @package SCM
  */
 
-	scm_custom_header( 'options', 'none', '' );
+	//scm_custom_header( 'options', 'none', '' );
 
 ?>
 
@@ -34,9 +34,3 @@
 		<?php endif; ?>
 	</div><!-- .page-content -->
 </section><!-- .no-results -->
-
-<?php
-	
-	scm_custom_footer( 'options', 'none', '', 'left' );
-
-?>

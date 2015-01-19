@@ -24,7 +24,7 @@
                 {
                     "key": "field_54b3d58501bd5",
                     "label": "Sezione",
-                    "name": "sezione",
+                    "name": "select_section",
                     "prefix": "",
                     "type": "post_object",
                     "instructions": "",
@@ -124,5 +124,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323224
+    "modified": 1421615615
 }

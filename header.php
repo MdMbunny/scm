@@ -89,7 +89,7 @@ $page_class = ( get_field('select_layout_page', 'option') ? get_field('select_la
 
             $head_layout = ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_head', 'option') ? get_field('select_layout_head', 'option') : 'full' ) : 'full' );
 
-            $head_class = $site_align . ' site-header full';
+            $head_class = 'site-header full';
             $head_row_class = $head_layout . ' left row scm-row';
 
 

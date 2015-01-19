@@ -2,86 +2,113 @@
 
 global $post;
 
-$repeater = ( get_field('columns_repeater') ? get_field('columns_repeater') : 0 );
+$type = $post->post_type;
+$id = $post->ID;
+$slug = $post->post_name;
 
-if( $repeater ):
-	
-	$current_column = 0;
-	$counter = 0;
+$custom_id = ( get_field('custom_id') ?: $type . '-' . $id );
 
-	$odd = '';
-	$class = '';
+$classes = ( ( isset($this) && isset($this->add_class) ) ? $this->add_class . ' ' : '' );
 
-	$modules = array();
-	
-	$total = sizeof( get_field( 'columns_repeater' ) );
+$classes .= ( get_field('custom_classes') ?  ' ' . get_field('custom_classes') . ' ' : '' ) . $slug . ' ' . SCM_PREFIX . 'object full ';
+$classes .= implode( ' ', get_post_class() );
 
-	foreach ($repeater as $section) {
+$style = scm_options_get_style( $id, 1 );
 
-    	$layout = $section['select_columns_width'];
-    	$module = $section['flexible_build'];
+$sc_bg = scm_options_get( 'bg_image', array( 'type' => 'sc', 'target' => $id ), 1 );
+if( $sc_bg ){
+	$sc_bg .= scm_options_get( 'bg_repeat', array( 'type' => 'sc', 'target' => $id ), 1 );
+	$sc_bg .= scm_options_get( 'bg_position', array( 'type' => 'sc', 'target' => $id ), 1 );
+	$sc_bg .= scm_options_get( 'bg_size', array( 'type' => 'sc', 'target' => $id ), 1 );
+}
+$sc_bg .= scm_options_get( 'bg_color', array( 'type' => 'sc', 'target' => $id ), 1 );
 
-    	if( !$module )
-    		continue;
+$row_style = '';
+$row_id = $custom_id . '-row';
+$row_layout = ( get_field('select_layout_row') != 'default' ? get_field('select_layout_row') : ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_cont', 'option') ?: 'full' ) : 'full') );
+$row_class = $row_layout . ' row ' . SCM_PREFIX . 'row ' . $type . '-row';
+$row_style = ( $style ?: '' );
+$style = ( $sc_bg ? ' style="' . $sc_bg . '"' : '' );
 
-    	$size = (int)$layout[0] / (int)$layout[1];
-    	$counter += $size;
-    	$current_column++;
+echo '<section id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>';
 
-    	$class = 'light-module column column-' . $layout;
+	$custom_head = ( get_field( 'flexible_headers' ) ?: array() );
+	if( sizeof( $custom_head ) ){
+		$height = ( get_field('max_height') ? get_field('max_height') . get_field('units') : 'auto' );
+		scm_custom_header( $custom_head, $type, $height );
+	}
 
-    	if( $counter == 1 && $size == 1 ){
+	echo '<row id="' . $row_id . '" class="' . $row_class . '" ' . $row_style . '>';
 
-    		$class .= ' column-solo';
-    		$counter = 0;
+		$repeater = ( get_field('columns_repeater') ?: array() );
 
-    	}elseif( $counter == $size || $counter > 1 ){
+		if( sizeof( $repeater ) ){
 
-    		$class .= ' column-first';
+			$current_column = 0;
+			$counter = 0;
 
-    	}elseif( $counter == 1 ){
+			$odd = '';
+			$class = '';
 
-    		$class .= ' column-last clear';
-    		$counter = 0;
+			$modules = array();
+			
+			$total = sizeof( $repeater );
 
-    	}else{
-    		$class .= ' column-middle';
-    	}
-		
-		if( $current_column == 1 )
-			$class .= ' first';
-		elseif( $current_column == $total )
-			$class .= ' last';
+			foreach ($repeater as $column) {
 
-		$odd = ( $odd ? '' : ' column-odd odd' );
-		$class .= $odd;
-		$class .= ' count-' . ( $current_column );
+		    	$layout = $column['select_columns_width'];
+		    	$module = $column['flexible_build'];
 
-		$class = ( $section['column_classes'] ? $class . ' ' . $section['column_classes'] : $class);
+		    	$size = (int)$layout[0] / (int)$layout[1];
+		    	$counter += $size;
+		    	$current_column++;
 
-		$id = ( $section['column_id'] ? $section['column_id'] : uniqid( 'light-module-' ) ) ;
-		
-		//$modules[] = array( $module, $id, $class );
+		    	$class = 'light-module column column-' . $layout;
 
-		echo '<div id="' . $id . '" class="' . $class . '">';	
-			scm_flexible_content( $module );
-		echo '</div>';
+		    	if( $counter == 1 && $size == 1 ){
 
-    }
-	
-    /*foreach ($modules as $value) {
-    	echo '<div id="' . $value[1] . '" class="' . $value[2] . '">';	
-			scm_flexible_content( $value[0] );
-		echo '</div>';
-	}*/
-	
+		    		$class .= ' column-solo';
+		    		$counter = 0;
 
-else :
+		    	}elseif( $counter == $size || $counter > 1 ){
 
-    // no layouts found
+		    		$class .= ' column-first';
 
-endif;
+		    	}elseif( $counter == 1 ){
 
+		    		$class .= ' column-last clear';
+		    		$counter = 0;
 
+		    	}else{
+		    		$class .= ' column-middle';
+		    	}
+				
+				if( $current_column == 1 )
+					$class .= ' first';
+				elseif( $current_column == $total )
+					$class .= ' last';
+
+				$odd = ( $odd ? '' : ' column-odd odd' );
+				$class .= $odd;
+				$class .= ' count-' . ( $current_column );
+
+				$class = ( $column['column_classes'] ? $class . ' ' . $column['column_classes'] : $class);
+
+				$id = ( $column['column_id'] ? $column['column_id'] : uniqid( 'light-module-' ) ) ;
+				
+				echo '<div id="' . $id . '" class="' . $class . '">';	
+					if( $module )
+						scm_flexible_content( $module );
+				echo '</div>';
+
+		    }
+
+		}else{
+		    // no layouts found
+		}
+
+   	echo '</row><!-- ' . $type . '-row -->';
+
+echo '</section><!-- ' . $type . ' -->';
 
 ?>

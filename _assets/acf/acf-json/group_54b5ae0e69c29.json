@@ -121,81 +121,11 @@
                     "max": "",
                     "layouts": [
                         {
-                            "key": "54b5ae0e69c65",
-                            "name": "full_element",
-                            "label": "Immagine Full",
-                            "display": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_54b5ae0e69c6e",
-                                    "label": "Seleziona un'immagine",
-                                    "name": "immagine",
-                                    "prefix": "",
-                                    "type": "image",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": 80,
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "return_format": "url",
-                                    "preview_size": "large",
-                                    "library": "all"
-                                },
-                                {
-                                    "key": "field_54b5ae0e69c7b",
-                                    "label": "Altezza",
-                                    "name": "altezza",
-                                    "prefix": "",
-                                    "type": "number",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": 20,
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "default_value": "",
-                                    "placeholder": "auto",
-                                    "prepend": "",
-                                    "append": "px",
-                                    "min": "",
-                                    "max": "",
-                                    "step": "",
-                                    "readonly": 0,
-                                    "disabled": 0
-                                }
-                            ],
-                            "min": "",
-                            "max": ""
-                        },
-                        {
                             "key": "54b5ae0e69c93",
                             "name": "image_element",
                             "label": "Immagine",
                             "display": "block",
                             "sub_fields": [
-                                {
-                                    "key": "field_54b5ae0e69c9d",
-                                    "label": "Seleziona un'immagine",
-                                    "name": "immagine",
-                                    "prefix": "",
-                                    "type": "image",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": 40,
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "return_format": "url",
-                                    "preview_size": "large",
-                                    "library": "all"
-                                },
                                 {
                                     "key": "field_54b5ae0e69c8c",
                                     "label": "Tipo",
@@ -206,13 +136,14 @@
                                     "required": 0,
                                     "conditional_logic": 0,
                                     "wrapper": {
-                                        "width": 15,
+                                        "width": 60,
                                         "class": "",
                                         "id": ""
                                     },
                                     "choices": {
                                         "norm": "Normal",
-                                        "quad": "Quadrata"
+                                        "quad": "Quadrata",
+                                        "full": "Full Width"
                                     },
                                     "default_value": {
                                         "norm": "Normal"
@@ -248,9 +179,9 @@
                                         "id": ""
                                     },
                                     "default_value": "",
-                                    "placeholder": "auto",
+                                    "placeholder": "larghezza",
                                     "prepend": "",
-                                    "append": "px",
+                                    "append": "",
                                     "min": "",
                                     "max": "",
                                     "step": "",
@@ -258,7 +189,7 @@
                                     "disabled": 0
                                 },
                                 {
-                                    "key": "field_54b5ae0e69cbf",
+                                    "key": "field_54b5ae0e69c7b",
                                     "label": "Altezza",
                                     "name": "altezza",
                                     "prefix": "",
@@ -280,9 +211,41 @@
                                         "id": ""
                                     },
                                     "default_value": "",
-                                    "placeholder": "auto",
+                                    "placeholder": "altezza",
                                     "prepend": "",
-                                    "append": "px",
+                                    "append": "",
+                                    "min": "",
+                                    "max": "",
+                                    "step": "",
+                                    "readonly": 0,
+                                    "disabled": 0
+                                },
+                                {
+                                    "key": "field_54bbe03a4e5be",
+                                    "label": "Altezza",
+                                    "name": "altezza_full",
+                                    "prefix": "",
+                                    "type": "number",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54b5ae0e69c8c",
+                                                "operator": "==",
+                                                "value": "full"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": 30,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "altezza",
+                                    "prepend": "",
+                                    "append": "",
                                     "min": "",
                                     "max": "",
                                     "step": "",
@@ -312,14 +275,62 @@
                                         "id": ""
                                     },
                                     "default_value": "",
-                                    "placeholder": "auto",
+                                    "placeholder": "dimensione",
                                     "prepend": "",
-                                    "append": "px",
+                                    "append": "",
                                     "min": "",
                                     "max": "",
                                     "step": "",
                                     "readonly": 0,
                                     "disabled": 0
+                                },
+                                {
+                                    "key": "field_54bbd6e5baf6a",
+                                    "label": "Unit\u00e0",
+                                    "name": "units",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 10,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "px": "px",
+                                        "%": "%",
+                                        "em": "em"
+                                    },
+                                    "default_value": {
+                                        "px": "px"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54b5ae0e69c9d",
+                                    "label": "Seleziona un'immagine",
+                                    "name": "immagine",
+                                    "prefix": "",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 80,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "url",
+                                    "preview_size": "large",
+                                    "library": "all"
                                 },
                                 {
                                     "key": "field_54b5ae0e69ce0",
@@ -329,9 +340,17 @@
                                     "type": "select",
                                     "instructions": "",
                                     "required": 0,
-                                    "conditional_logic": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54b5ae0e69c8c",
+                                                "operator": "!=",
+                                                "value": "full"
+                                            }
+                                        ]
+                                    ],
                                     "wrapper": {
-                                        "width": 15,
+                                        "width": 20,
                                         "class": "",
                                         "id": ""
                                     },
@@ -341,7 +360,9 @@
                                         "float-right": "Destra",
                                         "float-center": "Centrato"
                                     },
-                                    "default_value": [],
+                                    "default_value": {
+                                        "": ""
+                                    },
                                     "allow_null": 0,
                                     "multiple": 0,
                                     "ui": 0,
@@ -1123,7 +1144,7 @@
                                     "choices": {
                                         "img": "Immagine",
                                         "txt": "Testo",
-                                        "module": "Modulo"
+                                        "section": "Sezione"
                                     },
                                     "default_value": {
                                         "img": "img"
@@ -1256,8 +1277,8 @@
                                 },
                                 {
                                     "key": "field_54b5ae0e69e8b",
-                                    "label": "Modulo",
-                                    "name": "module_galleria_module",
+                                    "label": "Sezione",
+                                    "name": "module_galleria_section",
                                     "prefix": "",
                                     "type": "post_object",
                                     "instructions": "",
@@ -1267,7 +1288,7 @@
                                             {
                                                 "field": "field_54b5ae0e69e09",
                                                 "operator": "==",
-                                                "value": "module"
+                                                "value": "section"
                                             }
                                         ]
                                     ],
@@ -1277,7 +1298,7 @@
                                         "id": ""
                                     },
                                     "post_type": [
-                                        "scm-modules"
+                                        "scm-sections"
                                     ],
                                     "taxonomy": "",
                                     "allow_null": 0,
@@ -1608,39 +1629,6 @@
                             "max": ""
                         },
                         {
-                            "key": "54b5ae0e69f80",
-                            "name": "module_element",
-                            "label": "Modulo",
-                            "display": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_54b5ae0e69f8a",
-                                    "label": "Seleziona Modulo",
-                                    "name": "select_module",
-                                    "prefix": "",
-                                    "type": "post_object",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "post_type": [
-                                        "scm-modules"
-                                    ],
-                                    "taxonomy": "",
-                                    "allow_null": 0,
-                                    "multiple": 0,
-                                    "return_format": "object",
-                                    "ui": 1
-                                }
-                            ],
-                            "min": "",
-                            "max": ""
-                        },
-                        {
                             "key": "54b5ae0e69fa0",
                             "name": "contact_form_element",
                             "label": "Contact Form",
@@ -1704,6 +1692,39 @@
                             ],
                             "min": "",
                             "max": 1
+                        },
+                        {
+                            "key": "54b5ae0e69f80",
+                            "name": "section_element",
+                            "label": "Sezione",
+                            "display": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_54b5ae0e69f8a",
+                                    "label": "Seleziona Sezione",
+                                    "name": "select_section",
+                                    "prefix": "",
+                                    "type": "post_object",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "post_type": [
+                                        "scm-sections"
+                                    ],
+                                    "taxonomy": "",
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "return_format": "object",
+                                    "ui": 1
+                                }
+                            ],
+                            "min": "",
+                            "max": ""
                         }
                     ]
                 }
@@ -1740,5 +1761,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421475069
+    "modified": 1421615600
 }

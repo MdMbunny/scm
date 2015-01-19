@@ -156,7 +156,8 @@
         function scm_options_get_size( $type = '', $target = 'option', $add = false ) {
 
         	if( $type || $target != 'option' ){
-                $size = ( get_field( 'select_txt_size' . $type, $target ) ? get_field( 'select_txt_size' . $type, $target ) . '%' : 'default' );                
+                $size = ( get_field( 'select_txt_size' . $type, $target ) ?: 'default' );
+                $size = ( $size == 'default' ? $size : $size . '%' );
 			}else{
                 $obj = get_field_object( 'select_txt_size' . $type, $target );
                 

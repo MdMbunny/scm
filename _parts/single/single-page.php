@@ -1,56 +1,90 @@
 <?php
 
-if( have_rows('flexible_rows') ):
+global $post;
 
-	global $post;
+$type = $post->post_type;
+$slug = $post->post_name;
 
-	$current_row = 0;
+$id = $post->ID;
+$custom_id = ( get_field('custom_id') ?: $type . '-' . $id );
 
-	$odd = '';
+$class = get_post_class();
+$custom_classes = ( get_field('custom_classes') ?: '' );
+$classes =  implode( ' ', $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object ' . $custom_classes;
 
-	$sections = array();
+$style = scm_options_get_style( $id, 1 );
 
-	$total = sizeof( get_field( 'flexible_rows' ) );
+$single = ( ( isset($this) && isset($this->single) ) ? $this->single : 0 );
 
-    while ( have_rows('flexible_rows') ) : the_row();
+echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>';
+	
+	// --- Header
+	$custom_head = ( $single ? get_field( 'flexible_headers_' . $type, 'option' ) : get_field( 'flexible_headers' ) );
+	$custom_head = ( $custom_head ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+	$units = ( $single ? get_field( 'units_' . $type, 'option' ) : get_field( 'units' ) );
+	$units = ( $units ?: ( get_field( 'units', 'option' ) ?: 'px' ) );
+	$height = ( $single ? get_field( 'max_height_' . $type, 'option' ) : get_field( 'max_height' ) );
+	$height = ( $height ?: ( get_field( 'max_height', 'option' ) ?: 'auto' ) );
+	$height = ( $height == 'auto' ?: $height . $units );
+
+	if( sizeof( $custom_head ) ){
+		scm_custom_header( $custom_head, $type, $height );
+	}
+
+	if( $single ){
+
+        get_template_part( SCM_DIR_PARTS_SINGLE, $type );
+
+	}else{
+
+		$repeater = ( get_field('flexible_rows') ?: array() );
 		
-		$class = 'section';
+		if( sizeof( $repeater ) ){
 
-    	$current_row++;
-		
-		if( $current_row == 1 )
-			$class .= ' first';
-		elseif( $current_row == $total )
-			$class .= ' last';
+			$current_row = 0;
 
-		$odd = ( $odd ? '' : ' section-odd odd' );
-		$class .= $odd;
-		$class .= ' count-' . ( $current_row );
+			$odd = '';
 
-		$section = get_sub_field('contenuto');
+			$total = sizeof( $repeater );
 
-		if(!$section) continue;
-		
-		$sections[] = array( 'sezione' => $section, 'add_class' => $class );
+			foreach ($repeater as $row) {
 
-    endwhile;
-   
-    scm_flexible_content( $sections );
+				$classes = 'row';
 
-    /*foreach ($sections as $value) {
+		    	$current_row++;
+				
+				if( $current_row == 1 )
+					$classes .= ' first';
+				elseif( $current_row == $total )
+					$classes .= ' last';
 
-    	$post = $value[0];
-		setup_postdata( $post );
-		Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
-		   'add_class' => $value[1]
-		));
-	}*/
+				$odd = ( $odd ? '' : ' row-odd odd' );
+				$classes .= $odd;
+				$classes .= ' count-' . ( $current_row );
 
-else :
+				$element = ( isset( $row['acf_fc_layout'] ) ?: '' );
+				if( !$element ) continue;
 
-    // no layouts found
+				switch ($element) {
+					case 'section_element':
+						
+						$single = $row[ 'select_section' ];
+	            		if(!$single) continue;
+			            $post = $single;
+			            setup_postdata( $post );
+			            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
+                           'add_class' => $classes,
+                        ));
 
-endif;
+					break;
+				}
+		    }
+		   
+		}else{
+		    // no layouts found
+		}
+	}
 
+echo '</article><!-- page -->';
 
 ?>

@@ -237,7 +237,7 @@
             },
             "choices": {
                 "default": "Default",
-                "00": "Nessuno spazio",
+                "0.0": "Nessuno spazio",
                 "0.25": "1 quarto di linea",
                 "0.5": "Mezza linea",
                 "1": "Una linea",
@@ -447,13 +447,6 @@
         ],
         [
             {
-                "param": "post_type",
-                "operator": "==",
-                "value": "scm-modules"
-            }
-        ],
-        [
-            {
                 "param": "options_page",
                 "operator": "==",
                 "value": "acf-options-stili"
@@ -481,5 +474,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421474259
+    "modified": 1421599326
 }

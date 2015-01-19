@@ -15,29 +15,6 @@ add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
 
-
-// *****************************************************
-// *      DUPLICATE GROUP
-// *****************************************************
-
-    if ( ! function_exists( 'scm_acf_fields_group_duplicate' ) ) {
-        function scm_acf_fields_group_duplicate( $group, $title, $slug, $location = array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'post' ) ) ) ) {
-
-            $group['title'] .= ' ' . $title;
-            $group['key'] .= '_' . $slug;
-            $group['location'] = $location;
-
-            for ($i = 0; $i < sizeof($group['fields']); $i++) {
-                $group['fields'][$i]['key'] .= '_' . $slug;
-                $group['fields'][$i]['name'] .= '_' . $slug;
-            }
-
-            if( function_exists('register_field_group') )
-                register_field_group( $group );
-        }
-    }
-
-
 // *****************************************************
 // *      CUSTOM FIELDS ACTIONS
 // *****************************************************

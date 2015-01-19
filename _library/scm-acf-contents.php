@@ -856,7 +856,7 @@
 					array (
 						'key' => uniqid('field_'),
 						'label' => 'Tag',
-						'name' => 'select_headings',
+						'name' => 'select_complete_headings',
 						'prefix' => '',
 						'type' => 'select',
 						'instructions' => '',
@@ -868,7 +868,9 @@
 							'id' => '',
 						),
 						'choices' => array (
-							'default' => 'Default',
+							'select_headings_1' => 'Primario',
+			        		'select_headings_2' => 'Secondario',
+			        		'select_headings_3' => 'Terziario',
 							'h1' => 'h1',
 							'h2' => 'h2',
 							'h3' => 'h3',
@@ -883,7 +885,7 @@
 							'div' => 'div',
 						),
 						'default_value' => array (
-							'default' => 'Default',
+							'select_headings_1' => 'Primario',
 						),
 						'allow_null' => 0,
 						'multiple' => 0,

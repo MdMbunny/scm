@@ -15,9 +15,8 @@ global $post;
                     $foot_row_id = $foot_id . '-row';
                     
                     $foot_layout = ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_foot', 'option') ? get_field('select_layout_foot', 'option') : 'full' ) : 'full' );
-                    $foot_align = ( get_field( 'select_alignment_site', 'option' ) ? get_field( 'select_alignment_site', 'option' ) : 'center' );
 
-                    $foot_class = $foot_align . ' site-footer full';
+                    $foot_class = 'site-footer full';
                     $foot_row_class = $foot_layout . ' row scm-row';
 
                      // If comments are open or we have at least one comment, load up the comment template
@@ -38,7 +37,13 @@ global $post;
                 $credits = get_field( 'footer_credits_active', 'option' );
                 $sections = ( get_field( 'footer_sections', 'option' ) ? get_field( 'footer_sections', 'option' ) : array() );
 
-                scm_flexible_content( $sections );
+                foreach ($sections as $section) {
+                    $single = $section[ 'select_section' ];
+                    if(!$single) continue;
+                    $post = $single;
+                    setup_postdata( $post );
+                    get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
+                }
 
                 if( $credits )
                     scm_credits();

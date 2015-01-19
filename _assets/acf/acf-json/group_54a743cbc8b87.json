@@ -151,13 +151,6 @@
         ],
         [
             {
-                "param": "post_type",
-                "operator": "==",
-                "value": "scm-modules"
-            }
-        ],
-        [
-            {
                 "param": "options_page",
                 "operator": "==",
                 "value": "acf-options-stili"
@@ -185,5 +178,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421460951
+    "modified": 1421599344
 }

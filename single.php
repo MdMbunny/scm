@@ -13,7 +13,7 @@
 		$public = getByKey( $SCM_types['public'], $type );
 
 		if( $public && locate_template( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php' ) ){
-			Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm.php', array(
+			Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-page.php', array(
 			   'single' => 1,
 			));
 		}else{
