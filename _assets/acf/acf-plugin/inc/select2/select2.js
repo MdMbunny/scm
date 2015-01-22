@@ -776,8 +776,8 @@ the specific language governing permissions and limitations under the Apache Lic
             this.dropdown.on("scroll-debounced", resultsSelector, this.bind(this.loadMoreIfNeeded));
 
             // do not propagate change event from the search field out of the component
-            //$(this.container).on("change", ".select2-input", function(e) {e.stopPropagation();});
-            //$(this.dropdown).on("change", ".select2-input", function(e) {e.stopPropagation();});
+            $(this.container).on("change", ".select2-input", function(e) {e.stopPropagation();});
+            $(this.dropdown).on("change", ".select2-input", function(e) {e.stopPropagation();});
 
             // if jquery.mousewheel plugin is installed we can prevent out-of-bounds scrolling of results via mousewheel
             if ($.fn.mousewheel) {
@@ -2636,6 +2636,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // multi
         selectChoice: function (choice) {
+
             var selected = this.container.find(".select2-search-choice-focus");
             if (selected.length && choice && choice[0] == selected[0]) {
 

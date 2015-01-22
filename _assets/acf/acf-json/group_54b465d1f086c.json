@@ -42,6 +42,25 @@
             "library": "all"
         },
         {
+            "key": "field_54bfee6704993",
+            "label": "Anteprima",
+            "name": "articoli_excerpt",
+            "prefix": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0
+        },
+        {
             "key": "field_54b465d20c302",
             "label": "Inserisci il contenuto dell'articolo",
             "name": "articoli_content",
@@ -91,5 +110,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323352
+    "modified": 1421864607
 }

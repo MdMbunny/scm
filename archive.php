@@ -4,10 +4,48 @@
  * @package SCM
  */
 
-	get_header();
+	if( isset($this) ){
 
-	get_template_part( SCM_DIR_PARTS, 'none' );
+		$args = $this->pargs;
+		$args['paged'] = ( $this->pagination == 'yes' ? ( get_query_var( 'page' ) ? get_query_var( 'page' ) : 1 ) : 1 );
+		$type = $args['post_type'];
+		$layout = $this->layout;
+		$paginationType = $this->pagination;
 
-	get_footer();
+		$loop = new WP_Query( $args );
+
+		$pagination = ( $paginationType == 'yes' ? scm_pagination( $loop ) : '' );
+		$paginationClass = ( $pagination ? ' paginated' : '' );
+
+		echo '<ul class="archive-' . $type . $paginationClass . '">';
+
+		while ( $loop->have_posts() ) : $loop->the_post();
+
+			global $post;
+
+			$id = $type . '-' . get_the_ID();
+			$classes = 'layout-' . $layout . ' ' . SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name;
+
+			echo '<li id="' . $id . '" class="' . $classes . '">';
+
+				Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php', array(
+	                'layout' => $layout,
+	            ));
+
+			echo '</li>';
+
+		endwhile;
+
+		echo '</ul>';
+
+		echo $pagination;
+
+		wp_reset_query();
+
+	}else{
+
+		get_template_part( SCM_DIR_PARTS, 'none' );
+
+	}
 
 ?>

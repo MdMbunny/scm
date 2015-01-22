@@ -6,7 +6,6 @@
 
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_favicon' );
     add_filter('body_class','scm_body_hook_class');
-    //add_filter( 'pre_get_posts', 'scm_post_hook_pagination' );
     add_filter('synved_social_skin_image_list', 'scm_custom_social_icons');
 
     add_filter('wp_get_nav_menu_items','scm_navigation_anchors', 10, 2);
@@ -98,37 +97,6 @@
     }
 
 
-//****************************** POST HOOKS ***
-
-//Assign custom pagination value to custom type archives
-    if ( ! function_exists( 'scm_post_hook_pagination' ) ) {
-        function scm_post_hook_pagination( $query ) {
-            if(!is_admin()){
-                $slug = thePost('type');
-                $tax = thePost('taxonomy');
-                $term = thePost('term');
-
-                //$pages = scm_option('pagination');
-                $typ = ( isset($query->query_vars['post_type']) ? $query->query_vars['post_type'] : '' );
-                $page = getByKey($pages, $typ);
-                if(!$page) $page = getByKey($pages, $term);
-                if(!$page) $page = getByKey($pages, $tax);
-                //if(!$page) $page = getByKey($pages, $slug);
-                if(!$page) $page = getByKey($pages, 'default');
-
-                $list = $page[0];
-                $archive = $page[1];
-                if($archive == null) $archive = $list;  
-
-                if(is_archive()) $query->query_vars['posts_per_page'] = $archive ;
-                else $query->query_vars['posts_per_page'] = $list ;
-            }
-            
-            return $query;
-        }
-    }
-
-
 //**************************** SOCIAL HOOKS ***
 
     if ( ! function_exists( 'scm_custom_social_icons' ) ) {
@@ -184,72 +152,39 @@
 // *****************************************************
 
     if ( ! function_exists( 'scm_pagination' ) ) {
-        function scm_pagination( $query = null, $atts = array() ) {
-            $atts = wp_parse_args( $atts, array(
-                    'label_previous' => __( 'Precedente', SCM_THEME ),
-                    'label_next'     => __( 'Prossima', SCM_THEME),
-                    'before_output'  => '<div class="pagination">',
-                    'after_output'   => '</div> <!-- /pagination -->',
-                    'print'          => true
-                ) );
-            
-            //$atts = apply_filters( 'wmhook_pagination_atts', $atts );
-
-            //WP-PageNavi plugin support (http://wordpress.org/plugins/wp-pagenavi/)
-            if ( function_exists( 'wp_pagenavi' ) ) {
-                //Set up WP-PageNavi attributes
-                    $atts_pagenavi = array(
-                            'echo' => false,
-                        );
-                    if ( $query ) {
-                        $atts_pagenavi['query'] = $query;
-                    }
-                    //$atts_pagenavi = apply_filters( 'wmhook_wppagenavi_atts', $atts_pagenavi );
-
-                //Output
-                    if ( $atts['print'] ) {
-                        echo $atts['before_output'] . wp_pagenavi( $atts_pagenavi ) . $atts['after_output'];
-                        return;
-                    } else {
-                        return $atts['before_output'] . wp_pagenavi( $atts_pagenavi ) . $atts['after_output'];
-                    }
-            }
+        function scm_pagination( $query = null ) {
 
             global $wp_query, $wp_rewrite;
 
             //Override global WordPress query if custom used
-                if ( $query ) {
-                    $wp_query = $query;
-                }
+            if ( $query ) {
+                $wp_query = $query;
+            }
 
             //WordPress pagination settings
-                $pagination = array(
-                        'base'      => @add_query_arg( 'paged', '%#%' ),
-                        'format'    => '',
-                        'current'   => max( 1, get_query_var( 'paged' ) ),
-                        'total'     => $wp_query->max_num_pages,
-                        'prev_text' => $atts['label_previous'],
-                        'next_text' => $atts['label_next'],
-                    );
+            $pagination = array(
+                    'base'      => @add_query_arg( 'paged', '%#%' ),
+                    'format'    => '',
+                    'current'   => max( 1, get_query_var( 'paged' ) ),
+                    'total'     => $wp_query->max_num_pages,
+                    'prev_text' => __( '<', SCM_THEME ),
+                    'next_text' => __( '>', SCM_THEME ),
+                );
 
             //Nice URLs
-                if ( $wp_rewrite->using_permalinks() ) {
-                    $pagination['base'] = user_trailingslashit( trailingslashit( remove_query_arg( 's', get_pagenum_link( 1 ) ) ) . 'page/%#%/', 'paged' );
-                }
+            if ( $wp_rewrite->using_permalinks() ) {
+                $pagination['base'] = user_trailingslashit( trailingslashit( remove_query_arg( 's', get_pagenum_link( 1 ) ) ) . 'page/%#%/', 'paged' );
+            }
 
             //Search page
-                if ( get_query_var( 's' ) ) {
-                    $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
-                }
+            if ( get_query_var( 's' ) ) {
+                $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
+            }
 
             //Output
-                if ( 1 < $wp_query->max_num_pages ) {
-                    if ( $atts['print'] ) {
-                        echo $atts['before_output'] . paginate_links( $pagination ) . $atts['after_output'];
-                    } else {
-                        return $atts['before_output'] . paginate_links( $pagination ) . $atts['after_output'];
-                    }
-                }
+            if ( 1 < $wp_query->max_num_pages ) {
+                return '<div class="pagination">' . paginate_links( $pagination ) . '</div> <!-- pagination -->';
+            }
         }
     }
 
@@ -346,15 +281,22 @@
         function scm_navigation_anchors( $items, $menu ) {
 
             $current = get_permalink();
+            $parents = array();
 
             for( $i = 0; $i < sizeof( $items ); $i++) {
                 $url = $items[$i]->url;
+                $id = $items[$i]->ID;
+                $parent_id = $items[$i]->menu_item_parent;
+                $parent = ( $parent_id ? get_post( $parent_id ) : 0 );
+
+                if( !$parent )
+                    $parents[$id] = $url;
 
                 if( $current == $url )
                     $url = '#top';
-                elseif( strpos( $url, $current ) !== false )
-                    $url = substr( $url, strlen( $current ) );
-                //alert($items[$i]->url);
+                elseif( strpos( $url, '#' ) === 0 && $parent && $current != $parents[$parent_id])
+                    $url = $parents[$parent_id] . $url;
+
                 $items[$i]->url = $url;
 
             }
@@ -509,6 +451,33 @@
 
                 switch ($element) {
 
+                    case 'archive':
+
+                        $args = array(
+                            'post_type' => $cont['select_types_public'],
+                            'orderby' => $cont['orderby'],
+                            'order' => $cont['order'],
+                            'posts_per_page' => ( (int)$cont['all'] ? -1 : $cont['max'] ),
+                        );
+
+                        if( $cont['categories'] ){
+                            $args['tax_query'] = array(
+                                array(
+                                    'taxonomy' => 'categories-' . $cont['select_types_public'],
+                                    'field'    => 'slug',
+                                    'terms'    => explode( ' ', $cont['categories'] ),
+                                ),
+                            );
+                        }
+
+                        Get_Template_Part::get_part( 'archive.php', array(
+                            'pargs' => $args,
+                            'pagination' => ( (int)$cont['all'] ? 'no' : $cont['pagination'] ),
+                            'layout' => $cont['layout'],
+                        ));
+
+                    break;
+
                     case 'galleria_element':
 
                         $single = $cont[ 'select_galleria' ];
@@ -537,7 +506,7 @@
                         $post = $single;
                         setup_postdata( $post );
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                           'soggetto_rows' => $build,
+                            'soggetto_rows' => $build,
                         ));
 
                     break;

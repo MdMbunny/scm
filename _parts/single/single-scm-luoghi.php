@@ -41,13 +41,13 @@ $region = ( ( $region && $country ) ? $region . ' ' : $region );
 
 $inline_address = $address . $town . $code . $city . $province . $region . $country;
 
-$classes = array(
+/*$classes = array(
 	$type . '-' . $post->post_name,
 	'clear'
-);
+);*/
 
 
-echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '">';
+//echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '">';
 
 	if($show_address == 'up'){
 		echo '<div class="scm-address address">';
@@ -71,7 +71,7 @@ echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'obje
 		echo '</div>';
 	}
 
-echo '</div><!-- ' . $type . ' -->';
+//echo '</div><!-- ' . $type . ' -->';
 
 
 

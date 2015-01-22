@@ -11,41 +11,45 @@ $type = get_post_type();
 $province_prefix = '(';
 $province_suffix = ')';
 
+$single = 0;
+$max = -1;
+$pag = 'no';
+
 $rows = array(
 	array(
 		'acf_fc_layout'					=>	'logo',
-		'negativo'						=>	0,
+		'negativo'						=>	'0',
 		'larghezza' 					=>	100,
 	),
 	array(
 		'acf_fc_layout'					=>	'data',
 		'tipo'							=>	'address',
-		'mostra_icona'					=>	1,
-		'mostra_nome'					=>	1,
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
 		'separatore'					=>	'-',
 		'larghezza' 					=>	100,
 	),
 	array(
 		'acf_fc_layout'					=>	'data',
 		'tipo'							=>	'num',
-		'mostra_icona'					=>	1,
-		'mostra_nome'					=>	1,
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
 		'separatore'					=>	'-',
 		'larghezza' 					=>	100,
 	),
 	array(
 		'acf_fc_layout'					=>	'data',
 		'tipo'							=>	'email',
-		'mostra_icona'					=>	1,
-		'mostra_nome'					=>	1,
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
 		'separatore'					=>	'-',
 		'larghezza' 					=>	100,
 	),
 	array(
 		'acf_fc_layout'					=>	'data',
 		'tipo'							=>	'link',
-		'mostra_icona'					=>	1,
-		'mostra_nome'					=>	1,
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
 		'separatore'					=>	'-',
 		'larghezza' 					=>	100,
 	),
@@ -56,24 +60,22 @@ $rows = array(
 );
 
 if( isset($this) ){
-	$rows = ( $this->soggetto_rows ? $this->soggetto_rows : $rows);
+	$rows = ( isset($this->soggetto_rows) ? $this->soggetto_rows : $rows);
 }
 
-$classes = array(
-	$type . '-' . $post->post_name,
-	'clear'
-);
 
-echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '">';
+$id = uniqid( $type . '-' );
+$classes = SCM_PREFIX . 'object ' . implode( " ", get_post_class() ) . $post->post_name . ' clear';
 
-	
+//echo '<div id="' . $id . '" class="' . $classes . '">';
 
 	foreach ($rows as $row) {
 		$elem = ( $row['acf_fc_layout'] != 'data' ? $row['acf_fc_layout'] : $row['tipo'] );
-		$ico = ( isset( $row['mostra_icona'] ) ? $row['mostra_icona'] : 0 );
-		$txt = ( isset( $row['mostra_nome'] ) ? $row['mostra_nome'] : 0 );
+		$ico = ( isset( $row['mostra_icona'] ) ? (int)$row['mostra_icona'] : 0 );
+		$txt = ( isset( $row['mostra_nome'] ) ? (int)$row['mostra_nome'] : 0 );
 		$sep = ( isset( $row['separatore'] ) ? ' ' . $row['separatore'] . ' ' : ' - ' );
-		$neg = ( isset( $row['negativo'] ) ? $row['negativo'] : 0 );
+		// +++ todo: integrare ICONA POS o NEG
+		$neg = ( isset( $row['negativo'] ) ? (int)$row['negativo'] : 0 );
 		$wid = ( isset( $row['larghezza'] ) ? $row['larghezza'] : 100 );
 
 		$class = SCM_PREFIX . $elem . ' ' . $elem . ' full' . ( $neg ? ' negative' : '' );
@@ -170,7 +172,6 @@ echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'obje
 		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
 	}
 
-echo '</div><!-- ' . $type . ' -->';
-
+//echo '</div><!-- ' . $type . ' -->';
 
 ?>

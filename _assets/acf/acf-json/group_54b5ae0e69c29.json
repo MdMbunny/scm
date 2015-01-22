@@ -121,6 +121,259 @@
                     "max": "",
                     "layouts": [
                         {
+                            "key": "54bfdce6d86f7",
+                            "name": "archive",
+                            "label": "Archivio",
+                            "display": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_54bfdce6d86f8",
+                                    "label": "Tipo",
+                                    "name": "select_types_public",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "post": "Articoli",
+                                        "scm-soggetti": "Soggetti",
+                                        "scm-luoghi": "Luoghi",
+                                        "scm-gallerie": "Gallerie"
+                                    },
+                                    "default_value": {
+                                        "": ""
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86fa",
+                                    "label": "Categorie",
+                                    "name": "categories",
+                                    "prefix": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "cat1 cat2",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": "",
+                                    "readonly": 0,
+                                    "disabled": 0
+                                },
+                                {
+                                    "key": "field_54bfe201994b7",
+                                    "label": "Layout",
+                                    "name": "layout",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "min": "Minima",
+                                        "preview": "Anteprima",
+                                        "complete": "Completo"
+                                    },
+                                    "default_value": {
+                                        "min": "min"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86f9",
+                                    "label": "Archivio completo",
+                                    "name": "all",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "1": "Archivio completo",
+                                        "0": "Archivio parziale"
+                                    },
+                                    "default_value": 1,
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86fb",
+                                    "label": "Post per pagina",
+                                    "name": "max",
+                                    "prefix": "",
+                                    "type": "number",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54bfdce6d86f9",
+                                                "operator": "==",
+                                                "value": "0"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": 5,
+                                    "placeholder": 5,
+                                    "prepend": "",
+                                    "append": "",
+                                    "min": 1,
+                                    "max": "",
+                                    "step": "",
+                                    "readonly": 0,
+                                    "disabled": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86fc",
+                                    "label": "Paginazione",
+                                    "name": "pagination",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54bfdce6d86f9",
+                                                "operator": "==",
+                                                "value": "0"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "yes": "Paginazione",
+                                        "all": "Pulsante ALL",
+                                        "more": "Pulsante MORE",
+                                        "no": "No paginazione"
+                                    },
+                                    "default_value": {
+                                        "no": "no"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86fd",
+                                    "label": "Ordina per",
+                                    "name": "orderby",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "date": "Data",
+                                        "title": "Titolo",
+                                        "modified": "Data modifica",
+                                        "name": "Slug",
+                                        "type": "Tipo",
+                                        "rand": "Random"
+                                    },
+                                    "default_value": {
+                                        "date": "date"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfdce6d86fe",
+                                    "label": "Ordine",
+                                    "name": "order",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "DESC": "Discendente",
+                                        "ASC": "Ascendente"
+                                    },
+                                    "default_value": {
+                                        "DESC": "DESC"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                }
+                            ],
+                            "min": "",
+                            "max": ""
+                        },
+                        {
                             "key": "54b5ae0e69c93",
                             "name": "image_element",
                             "label": "Immagine",
@@ -1317,6 +1570,260 @@
                             "display": "block",
                             "sub_fields": [
                                 {
+                                    "key": "field_54be651f7e660",
+                                    "label": "Archivio",
+                                    "name": "archive",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "single": "Singolo",
+                                        "archive": "Archivio"
+                                    },
+                                    "default_value": {
+                                        "single": "single"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54be66cf7e662",
+                                    "label": "Archivio completo",
+                                    "name": "complete",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": 49,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "all": "Archivio completo",
+                                        "num": "Archivio parziale"
+                                    },
+                                    "default_value": {
+                                        "": ""
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfd98cae629",
+                                    "label": "Categoria",
+                                    "name": "category",
+                                    "prefix": "",
+                                    "type": "taxonomy",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "taxonomy": "categories-scm-soggetti",
+                                    "field_type": "checkbox",
+                                    "allow_null": 0,
+                                    "load_save_terms": 0,
+                                    "return_format": "id",
+                                    "multiple": 0
+                                },
+                                {
+                                    "key": "field_54be67707e664",
+                                    "label": "Post per pagina",
+                                    "name": "max",
+                                    "prefix": "",
+                                    "type": "number",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            },
+                                            {
+                                                "field": "field_54be66cf7e662",
+                                                "operator": "==",
+                                                "value": "num"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": 5,
+                                    "placeholder": 5,
+                                    "prepend": "",
+                                    "append": "",
+                                    "min": 1,
+                                    "max": "",
+                                    "step": "",
+                                    "readonly": 0,
+                                    "disabled": 0
+                                },
+                                {
+                                    "key": "field_54be65687e661",
+                                    "label": "Paginazione",
+                                    "name": "pagination",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            },
+                                            {
+                                                "field": "field_54be66cf7e662",
+                                                "operator": "==",
+                                                "value": "num"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "yes": "Paginazione",
+                                        "all": "Pulsante ALL",
+                                        "more": "Pulsante MORE",
+                                        "no": "No paginazione"
+                                    },
+                                    "default_value": {
+                                        "no": "no"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfd031ae627",
+                                    "label": "Ordina per",
+                                    "name": "ordina",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "date": "Data",
+                                        "title": "Titolo",
+                                        "modified": "Data modifica",
+                                        "name": "Slug",
+                                        "type": "Tipo",
+                                        "rand": "Random"
+                                    },
+                                    "default_value": {
+                                        "date": "date"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
+                                    "key": "field_54bfd4afae628",
+                                    "label": "Ordine",
+                                    "name": "ordine",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "archive"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "DESC": "Discendente",
+                                        "ASC": "Ascendente"
+                                    },
+                                    "default_value": {
+                                        "DESC": "DESC"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                },
+                                {
                                     "key": "field_54b5ae0e69eb4",
                                     "label": "Seleziona Soggetto",
                                     "name": "select_soggetto",
@@ -1324,9 +1831,17 @@
                                     "type": "post_object",
                                     "instructions": "",
                                     "required": 0,
-                                    "conditional_logic": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_54be651f7e660",
+                                                "operator": "==",
+                                                "value": "single"
+                                            }
+                                        ]
+                                    ],
                                     "wrapper": {
-                                        "width": 100,
+                                        "width": 50,
                                         "class": "",
                                         "id": ""
                                     },
@@ -1353,7 +1868,7 @@
                                         "class": "",
                                         "id": ""
                                     },
-                                    "button_label": "Aggiungi Elemento",
+                                    "button_label": "Componi Soggetto",
                                     "min": "",
                                     "max": "",
                                     "layouts": [
@@ -1368,7 +1883,7 @@
                                                     "label": "Negativo",
                                                     "name": "negativo",
                                                     "prefix": "",
-                                                    "type": "true_false",
+                                                    "type": "select",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": 0,
@@ -1377,8 +1892,18 @@
                                                         "class": "",
                                                         "id": ""
                                                     },
-                                                    "message": "",
-                                                    "default_value": 0
+                                                    "choices": [
+                                                        "Positivo",
+                                                        "Negativo"
+                                                    ],
+                                                    "default_value": 0,
+                                                    "allow_null": 0,
+                                                    "multiple": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": "",
+                                                    "disabled": 0,
+                                                    "readonly": 0
                                                 },
                                                 {
                                                     "key": "field_54b5ae0e69eec",
@@ -1419,7 +1944,7 @@
                                                     "label": "Negativo",
                                                     "name": "negativo",
                                                     "prefix": "",
-                                                    "type": "true_false",
+                                                    "type": "select",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": 0,
@@ -1428,8 +1953,18 @@
                                                         "class": "",
                                                         "id": ""
                                                     },
-                                                    "message": "",
-                                                    "default_value": 0
+                                                    "choices": [
+                                                        "Positivo",
+                                                        "Negativo"
+                                                    ],
+                                                    "default_value": 0,
+                                                    "allow_null": 0,
+                                                    "multiple": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": "",
+                                                    "disabled": 0,
+                                                    "readonly": 0
                                                 },
                                                 {
                                                     "key": "field_54b91eec53e4f",
@@ -1557,7 +2092,7 @@
                                                     "label": "Mostra Icona",
                                                     "name": "mostra_icona",
                                                     "prefix": "",
-                                                    "type": "true_false",
+                                                    "type": "select",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": 0,
@@ -1566,15 +2101,25 @@
                                                         "class": "",
                                                         "id": ""
                                                     },
-                                                    "message": "",
-                                                    "default_value": 0
+                                                    "choices": [
+                                                        "No icona",
+                                                        "Icona"
+                                                    ],
+                                                    "default_value": 0,
+                                                    "allow_null": 0,
+                                                    "multiple": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": "",
+                                                    "disabled": 0,
+                                                    "readonly": 0
                                                 },
                                                 {
                                                     "key": "field_54b5ae0e69f54",
                                                     "label": "Mostra Nome",
                                                     "name": "mostra_nome",
                                                     "prefix": "",
-                                                    "type": "true_false",
+                                                    "type": "select",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": [
@@ -1591,8 +2136,18 @@
                                                         "class": "",
                                                         "id": ""
                                                     },
-                                                    "message": "",
-                                                    "default_value": 1
+                                                    "choices": [
+                                                        "No nome",
+                                                        "Nome"
+                                                    ],
+                                                    "default_value": 1,
+                                                    "allow_null": 0,
+                                                    "multiple": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": "",
+                                                    "disabled": 0,
+                                                    "readonly": 0
                                                 },
                                                 {
                                                     "key": "field_54b5ae0e69f67",
@@ -1761,5 +2316,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421615600
+    "modified": 1421863292
 }

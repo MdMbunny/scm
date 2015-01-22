@@ -23,12 +23,12 @@ $style = ( $b_bg ? ' style="background-image: transparent url(\'' . $b_bg . '\')
 $SCM_galleries[$type . '-' . get_the_ID()] = array( 'init' => $b_init, 'title' => $title, 'gallery' => $gallery );
 
 
-$classes = array(
+/*$classes = array(
 	$type . '-' . $post->post_name,
 	'clear'
-);
+);*/
 
-echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '"' . $style . '>';
+//echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '"' . $style . '>';
 
 	switch ($b_type) {
 		case 'img':
@@ -48,6 +48,6 @@ echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX
 		break;
 	}
 
-echo '</div><!-- ' . $type . ' -->';
+//echo '</div><!-- ' . $type . ' -->';
 
 ?>
