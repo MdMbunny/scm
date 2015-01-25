@@ -3,12 +3,20 @@
 	acf.fields.tab = acf.field.extend({
 		
 		type: 'tab',
+		$el: null,
 		
 		actions: {
 			'ready':	'initialize',
 			'append':	'initialize',
 			'hide':		'hide',
 			'show':		'show'
+		},
+		
+		focus: function(){
+			
+			// get elements
+			this.$el = this.$field.find('.acf-tab');
+			
 		},
 		
 		initialize: function(){
@@ -29,15 +37,13 @@
 		add_tab : function(){
 			
 			// vars
-			var $el = this.$field.find('.acf-tab'),
-				$group = this.$field.siblings('.acf-tab-wrap'),
-				key = this.$field.data('key');
+			var $group = this.$field.siblings('.acf-tab-wrap');
 			
 			
 			// template
 			var html = [
 				'<li>',
-					'<a class="acf-tab-button" href="#" data-key="' + key + '">' + $el.text() + '</a>',
+					'<a class="acf-tab-button" href="#" data-key="' + this.$field.data('key') + '">' + this.$el.text() + '</a>',
 				'</li>'].join('');
 				
 				
@@ -76,6 +82,9 @@
 			
 				html = '<div class="acf-tab-wrap"><ul class="acf-hl acf-tab-group"></ul></div>';
 				
+				// tab placement
+				$wrap.addClass('acf-tp' + this.$el.data('placement').substr(0, 1));
+			
 			}
 			
 			
@@ -99,7 +108,7 @@
 			
 			
 			// loop over 
-			$wrap.siblings('.acf-field[data-type="tab"]').each(function(){
+			$wrap.siblings('.acf-field-tab').each(function(){
 				
 				// show fields
 				if( $(this).attr('data-key') === $a.attr('data-key') ) {
@@ -133,7 +142,7 @@
 			
 			$field.removeClass('hidden-by-tab');
 			
-			$field.nextUntil('.acf-field[data-type="tab"]', '.acf-field').each(function(){
+			$field.nextUntil('.acf-field-tab', '.acf-field').each(function(){
 				
 				// remove class
 				$(this).removeClass('hidden-by-tab');
@@ -153,8 +162,9 @@
 			
 			$field.addClass('hidden-by-tab');
 			
-			$field.nextUntil('.acf-field[data-type="tab"]', '.acf-field').each(function(){
+			$field.nextUntil('.acf-field-tab', '.acf-field').each(function(){
 				
+				//console.log( $field.nextUntil('.acf-field-tab', '.acf-field') )
 				// add class
 				$(this).addClass('hidden-by-tab');
 				
@@ -168,57 +178,49 @@
 		
 		hide: function( $field, context ){
 			
+			// bail early if no conditional logic
+			if( context != 'conditional_logic' ) {
+				
+				return;
+				
+			}
+			
+			
 			// vars
 			var $a = $field.siblings('.acf-tab-wrap').find('a[data-key="' + $field.data('key') + '"]'),
 				$li = $a.parent();
 				
 			
 			// if this tab field was hidden by conditional_logic, disable it's children to prevent validation
-			if( context == 'conditional_logic' ) {
+			$field.nextUntil('.acf-field-tab', '.acf-field').each(function(){
 				
-				$field.nextUntil('.acf-field[data-type="tab"]', '.acf-field').each(function(){
-					
-					acf.conditional_logic.hide_field( $(this) );
-					
-				});
+				acf.conditional_logic.hide_field( $(this) );
 				
-			}
+			});
 			
 			
-			// bail early if already hidden
-			if( $li.is(':hidden') ) {
+			// hide li
+			$li.addClass('hidden-by-conditional-logic');
 			
-				return;
+			
+			// select other tab if active
+			if( $li.hasClass('active') ) {
 				
-			}
-			
-			
-			// visibility
-			$li.hide();
-			
-			
-			// bail early if active tab exists
-			if( $li.siblings('.active').exists() ) {
-			
-				return;
+				$li.siblings().not('hidden-by-conditional-logic').first().children('a').trigger('click');
 				
 			}
-			
-			
-			// if sibling tab exists, click it
-			if( $li.siblings(':visible').exists() ) {
-				
-				$li.siblings(':visible').first().children('a').trigger('click');
-				return;
-			}
-			
-			
-			// hide fields under this tab
-			acf.fields.tab.hide_tab_fields( $field );
 			
 		},
 		
 		show: function( $field, context ){
+			
+			// bail early if no conditional logic
+			if( context != 'conditional_logic' ) {
+				
+				return;
+				
+			}
+			
 			
 			// vars
 			var $a = $field.siblings('.acf-tab-wrap').find('a[data-key="' + $field.data('key') + '"]'),
@@ -226,15 +228,11 @@
 				
 			
 			// if this tab field was shown by conditional_logic, enable it's children to allow validation
-			if( context == 'conditional_logic' ) {
+			$field.nextUntil('.acf-field-tab', '.acf-field').each(function(){
 				
-				$field.nextUntil('.acf-field[data-type="tab"]', '.acf-field').each(function(){
-					
-					acf.conditional_logic.show_field( $(this) );
-					
-				});
+				acf.conditional_logic.show_field( $(this) );
 				
-			}
+			});
 			
 			
 			// if tab is already visible, then ignore the following functionality
@@ -245,32 +243,13 @@
 			}
 			
 			
-			// visibility
-			$li.show();
-			
-			
-			// bail early if this is the active tab
-			if( $li.hasClass('active') ) {
-			
-				return;
-				
-			}
-			
-			
-			// if the sibling active tab is actually hidden by conditional logic, take ownership of tabs
-			if( !$li.siblings(':visible').exists() ) {
-			
-				// show this tab group
-				$a.trigger('click');
-				
-			}
+			// show li
+			$li.removeClass('hidden-by-conditional-logic');
 			
 		}
 		
 	});
 	
-	
-		
 	
 	/*
 	*  Events
@@ -301,7 +280,7 @@
 		
 			var $input = $form.find('[name="' + item.input + '"]').first(),
 				$field = acf.get_field_wrap( $input ),
-				$tab = $field.prevAll('.acf-field[data-type="tab"]:first');
+				$tab = $field.prevAll('.acf-field-tab:first');
 			
 			
 			// does tab group exist?

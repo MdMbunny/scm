@@ -167,8 +167,8 @@
                     'format'    => '',
                     'current'   => max( 1, get_query_var( 'paged' ) ),
                     'total'     => $wp_query->max_num_pages,
-                    'prev_text' => __( '<', SCM_THEME ),
-                    'next_text' => __( '>', SCM_THEME ),
+                    'prev_text' => '<i class="fa fa-chevron-left"></i>',
+                    'next_text' => '<i class="fa fa-chevron-right"></i>',
                 );
 
             //Nice URLs
@@ -280,25 +280,28 @@
     if ( ! function_exists( 'scm_navigation_anchors' ) ) {
         function scm_navigation_anchors( $items, $menu ) {
 
-            $current = get_permalink();
-            $parents = array();
+            if(!is_admin()){
 
-            for( $i = 0; $i < sizeof( $items ); $i++) {
-                $url = $items[$i]->url;
-                $id = $items[$i]->ID;
-                $parent_id = $items[$i]->menu_item_parent;
-                $parent = ( $parent_id ? get_post( $parent_id ) : 0 );
+                $current = get_permalink();
+                $parents = array();
 
-                if( !$parent )
-                    $parents[$id] = $url;
+                for( $i = 0; $i < sizeof( $items ); $i++) {
+                    $url = $items[$i]->url;
+                    $id = $items[$i]->ID;
+                    $parent_id = $items[$i]->menu_item_parent;
+                    $parent = ( $parent_id ? get_post( $parent_id ) : 0 );
 
-                if( $current == $url )
-                    $url = '#top';
-                elseif( strpos( $url, '#' ) === 0 && $parent && $current != $parents[$parent_id])
-                    $url = $parents[$parent_id] . $url;
+                    if( !$parent )
+                        $parents[$id] = $url;
 
-                $items[$i]->url = $url;
+                    if( $current == $url )
+                        $url = '#top';
+                    elseif( strpos( $url, '#' ) === 0 && $parent && $current != $parents[$parent_id])
+                        $url = $parents[$parent_id] . $url;
 
+                    $items[$i]->url = $url;
+
+                }
             }
 
             return $items;
@@ -542,44 +545,48 @@
                     break;
 
                     case 'image_element':
+                        $class = '';
+                        $image = ( $cont[ 'immagine' ] ?: '' );
+                        $image_fissa = ( $cont[ 'fissa' ] ?: 'norm' );
+                        $image_units = ( $cont[ 'units' ] ?: 'px' );
+                        
                         $image_float = ( ( $cont[ 'select_float_img' ] && $cont[ 'select_float_img' ] != 'no' ) ? $cont[ 'select_float_img' ] : 'no-float' );
                         $image_float = ( $image_float == 'float-center' ? 'float-center text-center' : $image_float );
 
-                        $image = ( $cont[ 'immagine' ] ? $cont[ 'immagine' ] : '' );
-                        $image_fissa = ( $cont[ 'fissa' ] ? $cont[ 'fissa' ] : 'norm' );
-                        $image_size = ( $cont[ 'dimensione' ] ? $cont[ 'dimensione' ] . 'px' : '' );
-                        $image_width = ( $cont[ 'larghezza' ] ? $cont[ 'larghezza' ] . 'px' : 'auto' );
-                        $image_height = ( $cont[ 'altezza' ] ? $cont[ 'altezza' ] . 'px' : $image_width );
-
-                        $image_style = ( $image_fissa == 'quad' ? 'width:' . $image_size . '; height:' . $image_size . ';' : 'width:' . $image_width . '; height:' . $image_height . ';' );
-
                         $image_class = SCM_PREFIX . 'img ' . $image_float;
+                        
+                        switch ($image_fissa) {
+                            case 'full':
+                                $class = ' class="full"';
+                                $image_float = '';
+                                $image_height = ( $cont[ 'altezza_full' ] ? $cont[ 'altezza_full' ] . $image_units : 'auto' );
+                                $image_style = 'max-height:' . $image_height . ';';
+                                $image_class = SCM_PREFIX . 'full-image mask';
+                            break;
+
+                            case 'quad':
+                                $image_size = ( $cont[ 'dimensione' ] ? $cont[ 'dimensione' ] . $image_units : '64px' );
+                                $image_style = 'width:' . $image_size . '; height:' . $image_size . ';';
+                            break;
+                            
+                            default:
+                                $image_width = ( $cont[ 'larghezza' ] ? $cont[ 'larghezza' ] . $image_units : 'auto' );
+                                $image_height = ( $cont[ 'altezza' ] ? $cont[ 'altezza' ] . $image_units : $image_width );
+                                $image_style = 'width:' . $image_width . '; height:' . $image_height . ';';
+                            break;
+                        }
 
                         echo    '<div class="' . $image_class . '" style="' . $image_style . '">
-                                    <img src="' . $image . '">
+                                    <img src="' . $image . '"' . $class . '>
                                 </div><!-- icon-image -->';
-                    break;
 
-                    case 'full_element':
-                        $full = $cont[ 'immagine' ];
-                        $full_height = $cont[ 'altezza' ];
-
-                        $full_style = ( $full_height ? 'max-height:' . $full_height . 'px;' : 'max-height:auto;' );
-                        $full_mask = 'mask';
-
-                        $full_class = SCM_PREFIX . 'full-image ' . $full_mask;
-
-                        echo    '<div class="' . $full_class . '" style="' . $full_style . '">
-                                    <img src="' . $full . '" class="full">
-                                </div><!-- full-image -->';
                     break;
 
                     case 'title_element':
                         $text = $cont[ 'testo' ];
-                        $text_default = ( $cont[ 'select_complete_headings' ] ? $cont[ 'select_complete_headings' ] : '' );
+                        $text_default = ( $cont[ 'select_complete_headings' ] ?: '' );
                         $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_complete_headings' ] : ( get_field( $text_default , 'option') ? get_field( $text_default , 'option') : 'h1' ) );
                         $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] . ' ' : '' );
-                        
                         $text_class = scm_acf_select_preset( 'select_default_headings_classes',  $text_default, ' ' );
                         $text_class .= $text_align . SCM_PREFIX . 'title clear';
 

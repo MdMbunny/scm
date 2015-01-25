@@ -148,38 +148,6 @@
 	
 	
 	/*
-	*  acf/setup_fields
-	*
-	*  run init function on all elements for this field
-	*
-	*  @type	event
-	*  @date	20/07/13
-	*
-	*  @param	{object}	e		event object
-	*  @param	{object}	el		DOM object which may contain new ACF elements
-	*  @return	N/A
-	*/
-	
-	/*
-acf.add_action('ready append', function( $el ){
-		
-		
-		// add tabs
-		acf.get_fields({ type : 'oembed'}, $el).each(function(){
-			
-			acf.fields.oembed.add_oembed( $(this) );
-			
-		});
-		
-		
-		// activate first tab
-		acf.fields.tab.refresh( $el );
-		
-	});
-*/
-	
-	
-	/*
 	*  Events
 	*
 	*  jQuery events for this field

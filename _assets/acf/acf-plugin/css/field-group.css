@@ -8,6 +8,7 @@
 	padding: 0 5px;
 }
 
+
 /*---------------------------------------------------------------------------------------------
 *
 *  Postbox: Publish
@@ -23,6 +24,7 @@
 #minor-publishing {
 	border-bottom: 0 none;
 }
+
 #misc-pub-section {
 	border-bottom: 0 none;
 }
@@ -52,18 +54,23 @@
 	padding: 15px 15px;
 }
 
-.li-field_order { width: 22%; padding-right: 0 !important; }
-.li-field_label { width: 28%; }
-.li-field_name { width: 25%; }
-.li-field_type { width: 25%; }
-
-
 .acf-field-list-wrap {
 	border: #DFDFDF solid 1px;
 }
 
+
+/* table header */
+.li-field-order { width: 22%; padding-right: 0 !important; }
+.li-field-label { width: 28%; }
+.li-field-name { width: 25%; }
+.li-field-type { width: 25%; }
+
+
+/* field list */
 .acf-field-list {
 	background: #F9F9F9;
+	border-top: #E1E1E1 solid 1px;
+	margin-top: -1px;
 }
 
 .acf-field-list a {
@@ -73,51 +80,68 @@
 .acf-field-list a:active,
 .acf-field-list a:focus {
 	outline: none;
+	box-shadow: none;
 }
 
 
-.acf-field-list .field {
+/* field object */
+.acf-field-object {
 	border-top: #F0F0F0 solid 1px;
 	background: #fff;
 }
 
-.acf-field-list .field:first-child,
-.acf-field-list .field:first-child + .field.ui-sortable-placeholder {
+.acf-field-object:first-child {
 	border-top: 0 none;
 }
 
-.acf-field-list .field.ui-sortable-helper {
+.acf-field-object.ui-sortable-helper {
 	border-top-color: #fff;
 	box-shadow: 0 0 0 1px #DFDFDF, 0 1px 4px rgba(0,0,0,0.1);
 }
 
-.acf-field-list .field.ui-sortable-placeholder {
+.acf-field-object.ui-sortable-placeholder {
 	box-shadow: 0 -1px 0 0 #DFDFDF;
 	visibility: visible !important;
 	background: #F9F9F9;
+	border-top-color: transparent;
+}
+
+.acf-field-object[data-key="acfcloneindex"] {
+	display: none !important;
 }
 
 
+/* field object (open) */
+.acf-field-object.open {}
 
-/* info */
-.acf-field-list .field .field-info {
-	
+.acf-field-object.open + .acf-field-object {
+	border-top-color: #E1E1E1;
 }
 
-.acf-field-list .field .field-info li {
+
+/* field object meta */
+.acf-field-object .meta {
+	display: none;
+}
+
+
+/* field object handle */
+.acf-field-object .handle {}
+
+.acf-field-object .handle li {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	word-wrap: break-word;
 }
 
-.acf-field-list .field .field-info .acf-icon {
+.acf-field-object .handle .acf-icon {
 	margin: 1px 5px 0 0;
 	cursor: move;
 	background: transparent;
 	float: left;
 }
 
-.acf-field-list .field .field-info strong {
+.acf-field-object .handle strong {
 	display: block;
 	padding-bottom: 6px;
 	font-size: 14px;
@@ -125,36 +149,25 @@
 	min-height: 14px;
 }
 
-.acf-field-list .field .field-info .row-options {
+.acf-field-object .handle .row-options {
 	visibility: hidden;
 }
 
-.acf-field-list .field .field-info .row-options a {
-	margin-right: 4px;
-}
-
-.acf-field-list .field .field-info .row-options .delete-field:hover {
-	color: #f00;
-}
-
-.acf-field-list .field:hover > .field-info .row-options {
+.acf-field-object:hover > .handle .row-options {
 	visibility: visible;
 }
 
-.acf-field-list .field .field-settings {
-	display: none;
-	width: 100%;
+.acf-field-object .handle .row-options a {
+	margin-right: 4px;
 }
 
-.acf-field-list .field.open {
-	
+.acf-field-object .handle .delete-field:hover {
+	color: #f00;
 }
 
-.acf-field-list .field.open + .field {
-	border-top-color: #E1E1E1;
-}
 
-.acf-field-list .field.open > .field-info {
+/* field object handle (open) */
+.acf-field-object.open > .handle {
 	background: #3595BC;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#46AFDB), to(#3199C5)); /* Safari 4+, Chrome */
 	background-image: -webkit-linear-gradient(top, #46AFDB, #3199C5); /* Chrome 10+, Safari 5.1+, iOS 5+ */
@@ -169,33 +182,31 @@
 	color: #fff;
 	
 	position: relative;
-	margin: -1px 0 0 -1px;
+	margin: -1px -1px 0 -1px;
 }
 
-.acf-field-list .field.open > .field-info a {
+.acf-field-object.open > .handle a {
 	color: #fff !important;
 }
 
-.acf-field-list .field.open > .field-info a:hover {
-	
-}
-
-.acf-field-list .field.open > .field-info > .li-field_order .acf-icon {
+.acf-field-object.open > .handle .acf-icon {
 	border-color: #fff;
 }
 
 
-.acf-field-list .field[data-key="acfcloneindex"] {
-	display: none !important;
+/* field object settings */
+.acf-field-object .settings {
+	display: none;
+	width: 100%;
 }
 
-.acf-field-list .field .location-groups {
+.acf-field-object .location-groups {
 	margin-top: 10px;
 }
 
 
-/* field keys */
-.acf-field-list .pre-field_key {
+/* field object keys */
+.acf-field-object .handle .pre-field-key {
 	background: #F9F9F9;
 	border: #E1E1E1 solid 1px;
 	padding: 5px;
@@ -206,17 +217,17 @@
 	display: none;
 }
 
-.acf-field-list .field.open > .field-info .pre-field_key {
+.acf-field-object.open > .handle .pre-field-key {
 	border-color: #268FBB;
 	background: transparent;
 }
 
-#acf-field-group-fields.show-field-keys .acf-field-list .pre-field_key {
+.show-field-keys .acf-field-object .handle .pre-field-key {
 	display: block;
 }
 
-#acf-field-group-fields.show-field-keys .li-field_order { width: 24%; }
-#acf-field-group-fields.show-field-keys .li-field_label { width: 26%; }
+.show-field-keys .li-field-order { width: 24%; }
+.show-field-keys .li-field-label { width: 26%; }
 
 
 /*---------------------------------------------------------------------------------------------
@@ -291,39 +302,6 @@
 
 /*---------------------------------------------------------------------------------------------
 *
-*	Select with Optgroup
-*	
-*---------------------------------------------------------------------------------------------*/
-
-#acf_fields select optgroup,
-#acf-field-group-locations select optgroup {
-	padding: 5px 5px;
-	background: #fff;
-}
-
-#acf_fields select optgroup option:first-child,
-#acf-field-group-locations select optgroup option:first-child{
-	
-}
-
-#acf_fields select option,
-#acf-field-group-locations select option {
-	padding: 3px;
-}
-
-#acf_fields select optgroup option,
-#acf-field-group-locations select optgroup option {
-	padding-left: 5px;
-}
-
-#acf_fields select optgroup:nth-child(2n),
-#acf-field-group-locations select optgroup:nth-child(2n) {
-    background: #F9F9F9;
-}
-
-
-/*---------------------------------------------------------------------------------------------
-*
 *	Conditional Logic
 *	
 *---------------------------------------------------------------------------------------------*/
@@ -347,18 +325,45 @@ table.conditional-logic-rules tbody td {
 *	
 *---------------------------------------------------------------------------------------------*/
 
-.acf-field-list .field_type-tab tr[data-name="name"],
-.acf-field-list .field_type-tab tr[data-name="instructions"],
-.acf-field-list .field_type-tab tr[data-name="required"],
-.acf-field-list .field_type-tab tr[data-name="warning"],
-.acf-field-list .field_type-tab tr[data-name="wrapper"] {
+.acf-field-object-tab tr[data-name="name"],
+.acf-field-object-tab tr[data-name="instructions"],
+.acf-field-object-tab tr[data-name="required"],
+.acf-field-object-tab tr[data-name="warning"],
+.acf-field-object-tab tr[data-name="wrapper"] {
 	display: none !important;
 }
 
-.acf-field-list.layout-table .field_type-tab tr[data-name="warning"] {
+.acf-field-object-tab .li-field-name {
+	visibility: hidden;
+}
+
+.layout-table .acf-field-object-tab tr[data-name="warning"] {
 	display: table-row !important;
 }
 
+.acf-field-object + .acf-field-object-tab {
+	margin-top: 6px;
+}
+
+.acf-field-object + .acf-field-object-tab:before {
+	display: block;
+	content: "";
+	height: 1px;
+	background: #F0F0F0;
+	margin-top: -7px;
+	width: 100%;
+	position: absolute;
+}
+
+.acf-field-object + .acf-field-object-tab.ui-sortable-placeholder {
+	margin-top: 0;
+	padding-top: 6px;
+}
+
+.acf-field-object-tab.ui-sortable-helper:before,
+.ui-sortable-placeholder + .acf-field-object-tab:before  {
+	display: none;
+}
 
 
 /*---------------------------------------------------------------------------------------------
@@ -367,14 +372,18 @@ table.conditional-logic-rules tbody td {
 *	
 *---------------------------------------------------------------------------------------------*/
 
-.acf-field-list .field_type-message tr[data-name="name"],
-.acf-field-list .field_type-message tr[data-name="instructions"],
-.acf-field-list .field_type-message tr[data-name="required"],
-.acf-field-list .field_type-message tr[data-name="wrapper"] {
+.acf-field-object-message tr[data-name="name"],
+.acf-field-object-message tr[data-name="instructions"],
+.acf-field-object-message tr[data-name="required"],
+.acf-field-object-message tr[data-name="wrapper"] {
 	display: none !important;
 }
 
-.acf-field-list .field_type-message textarea {
+.acf-field-object-message .li-field-name {
+	visibility: hidden;
+}
+
+.acf-field-object-message textarea {
 	height: 175px !important;
 }
 
@@ -385,7 +394,7 @@ table.conditional-logic-rules tbody td {
 *	
 *---------------------------------------------------------------------------------------------*/
 
-.acf-field-list .field_type-date_picker .acf-radio-list span {
+.acf-field-object-date_picker .acf-radio-list span {
 	display: inline-block;
 	width: 100px;
 }
@@ -397,28 +406,16 @@ table.conditional-logic-rules tbody td {
 *
 *--------------------------------------------------------------------------------------------*/
 
-html[dir="rtl"] .acf-field-list .field.open > .field-info {
+html[dir="rtl"] .acf-field-object.open > .handle {
 	margin: -1px -1px 0;
 }
 
-html[dir="rtl"] .acf-field-list .field .field-info .acf-icon {
+html[dir="rtl"] .acf-field-object.open > .handle .acf-icon {
 	float: right;
 }
 
-html[dir="rtl"] .acf-field-list .li-field_order {
+html[dir="rtl"] .acf-field-object.open > .handle .li-field-order {
     padding-left: 0 !important;
     padding-right: 15px !important;
 }
 
-
-/*---------------------------------------------------------------------------------------------
-*
-*	Firefox
-*	
-*---------------------------------------------------------------------------------------------*/
-
-@-moz-document url-prefix() {
-    .acf-field-list .field .li-field_order .acf-icon {
-	    
-    }
-}

@@ -388,7 +388,7 @@ function my_force_fallback( $force_fallback ) {
 			endif;
 
 			if( $get )
-				return ( $arr[ $get ] ? $arr[ $get ] . $separator : '' );
+				return ( isset( $arr[ $get ] ) ? $arr[ $get ] . $separator : '' );
 
 			return $arr;
 

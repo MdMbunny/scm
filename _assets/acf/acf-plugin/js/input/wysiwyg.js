@@ -171,6 +171,10 @@ ed.on('ResizeEditor', function(e) {
 			}
 			
 			
+			// disable wp_autoresize_on (no solution yet for fixed toolbar)
+			mceInit.wp_autoresize_on = false;
+			
+			
 			// hook for 3rd party customization
 			mceInit = acf.apply_filters('wysiwyg_tinymce_settings', mceInit, mceInit.id);
 			

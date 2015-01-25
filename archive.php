@@ -6,8 +6,10 @@
 
 	if( isset($this) ){
 
+		$paged = ( is_front_page() ? 'page' : 'paged' );
+
 		$args = $this->pargs;
-		$args['paged'] = ( $this->pagination == 'yes' ? ( get_query_var( 'page' ) ? get_query_var( 'page' ) : 1 ) : 1 );
+		$args['paged'] = ( $this->pagination == 'yes' ? ( get_query_var( $paged ) ? get_query_var( $paged ) : 1 ) : 1 );
 		$type = $args['post_type'];
 		$layout = $this->layout;
 		$paginationType = $this->pagination;
@@ -17,7 +19,9 @@
 		$pagination = ( $paginationType == 'yes' ? scm_pagination( $loop ) : '' );
 		$paginationClass = ( $pagination ? ' paginated' : '' );
 
-		echo '<ul class="archive-' . $type . $paginationClass . '">';
+		$odd = '';
+
+		echo '<ul class="archive archive-' . $type . $paginationClass . '">';
 
 		while ( $loop->have_posts() ) : $loop->the_post();
 
@@ -25,6 +29,9 @@
 
 			$id = $type . '-' . get_the_ID();
 			$classes = 'layout-' . $layout . ' ' . SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name;
+
+			$odd = ( $odd ? '' : ' odd' );
+			$classes .= $odd;
 
 			echo '<li id="' . $id . '" class="' . $classes . '">';
 

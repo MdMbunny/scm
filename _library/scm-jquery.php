@@ -395,6 +395,7 @@
 					var offset = <?php echo json_encode($offset); ?>;
 
 					$('#site-navigation-sticky').singlePageNav({
+					//$('.navigation').singlePageNav({
 						filter: ':not(.external) :not([href="#top"])',
 						currentClass: active,
 						offset: offset,

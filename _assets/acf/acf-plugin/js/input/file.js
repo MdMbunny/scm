@@ -41,15 +41,12 @@
 		add : function() {
 			
 			// reference
-			var self = this;
-			
-			
-			// vars
-			var field_key = acf.get_data( this.$field, 'key' );
+			var self = this,
+				$field = this.$field;
 			
 			
 			// get repeater
-			var $repeater = acf.get_closest_field( this.$field, {type:'repeater'} );
+			var $repeater = acf.get_closest_field( $field, 'repeater' );
 			
 			
 			// popup
@@ -63,23 +60,28 @@
 				
 				select: function( attachment, i ) {
 					
+					
 					// select / add another image field?
 			    	if( i > 0 ) {
 			    		
 						// vars
-						var $tr = self.$field.parent(),
-							$next = false;
+						var key = acf.get_field_key( $field ),
+							$tr = $field.closest('.acf-row');
+						
+						
+						// reset field
+						$field = false;
 							
 						
 						// find next image field
 						$tr.nextAll('.acf-row:visible').each(function(){
 							
 							// get next $field
-							$next = acf.get_field( field_key, $(this) );
+							$field = acf.get_field( key, $(this) );
 							
 							
 							// bail early if $next was not found
-							if( !$next ) {
+							if( !$field ) {
 								
 								return;
 								
@@ -87,9 +89,9 @@
 							
 							
 							// bail early if next file uploader has value
-							if( $next.find('.acf-file-uploader.has-value').exists() ) {
+							if( $field.find('.acf-file-uploader.has-value').exists() ) {
 								
-								$next = false;
+								$field = false;
 								return;
 								
 							}
@@ -103,7 +105,7 @@
 						
 						
 						// add extra row if next is not found
-						if( !$next ) {
+						if( !$field ) {
 							
 							$tr = acf.fields.repeater.doFocus( $repeater ).add();
 							
@@ -117,18 +119,18 @@
 							
 							
 							// get next $field
-							$next = acf.get_field( field_key, $tr );
+							$field = acf.get_field( key, $tr );
 							
 						}
 						
-						
-						// update $el
-						self.doFocus( $next );
-						
 					}
 					
-									
-			    	// add file to field
+					
+					// focus
+					self.doFocus( $field );
+					
+								
+			    	// render
 					self.render( self.prepare(attachment) );
 					
 				}
@@ -172,7 +174,8 @@
 		edit : function() {
 			
 			// reference
-			var self = this;
+			var self = this,
+				$field = this.$field;
 			
 			
 			// vars
@@ -189,6 +192,11 @@
 				
 				select:	function( attachment, i ) {
 					
+					// focus
+					self.doFocus( $field );
+					
+					
+					// render
 			    	self.render( self.prepare(attachment) );
 					
 				}

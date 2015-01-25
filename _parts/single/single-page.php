@@ -49,7 +49,7 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 
 			foreach ($repeater as $row) {
 
-				$classes = 'row';
+				$classes = 'section';
 
 		    	$current_row++;
 				
@@ -62,6 +62,10 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 				$classes .= $odd;
 				$classes .= ' count-' . ( $current_row );
 
+				$class = ( $row['row_classes'] ? $classes . ' ' . $row['row_classes'] : $classes);
+
+				$row_id = ( $row['row_id'] ?: '' ) ;
+
 				$element = ( isset( $row['acf_fc_layout'] ) ?: '' );
 				if( !$element ) continue;
 
@@ -73,7 +77,8 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 			            $post = $single;
 			            setup_postdata( $post );
 			            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
-                           'add_class' => $classes,
+			            	'add_id' => $row_id,
+                        	'add_class' => $class,
                         ));
 
 					break;

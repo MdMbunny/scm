@@ -64,7 +64,7 @@ var acf;
 		*  @return	n/a
 		*/
 		
-		update : function( k, v ){
+		update: function( k, v ){
 				
 			this.o[ k ] = v;
 			
@@ -84,7 +84,7 @@ var acf;
 		*  @return	v (mixed) the value
 		*/
 		
-		get : function( k ){
+		get: function( k ){
 			
 			if( typeof this.o[ k ] !== 'undefined' ) {
 				
@@ -111,7 +111,7 @@ var acf;
 		*  @return	string (string)
 		*/
 		
-		_e : function( k1, k2 ){
+		_e: function( k1, k2 ){
 			
 			// defaults
 			k2 = k2 || false;
@@ -148,7 +148,7 @@ var acf;
 		*  @return
 		*/
 		
-		add_action : function() {
+		add_action: function() {
 			
 			// allow multiple action parameters such as 'ready append'
 			var actions = arguments[0].split(' ');
@@ -179,7 +179,7 @@ var acf;
 		*  @return
 		*/
 		
-		remove_action : function() {
+		remove_action: function() {
 			
 			// prefix action
 			arguments[0] = 'acf.' + arguments[0];
@@ -204,7 +204,7 @@ var acf;
 		*  @return
 		*/
 		
-		do_action : function() {
+		do_action: function() {
 			
 			// prefix action
 			arguments[0] = 'acf.' + arguments[0];
@@ -229,7 +229,7 @@ var acf;
 		*  @return
 		*/
 		
-		add_filter : function() {
+		add_filter: function() {
 			
 			// prefix action
 			arguments[0] = 'acf.' + arguments[0];
@@ -254,7 +254,7 @@ var acf;
 		*  @return
 		*/
 		
-		remove_filter : function() {
+		remove_filter: function() {
 			
 			// prefix action
 			arguments[0] = 'acf.' + arguments[0];
@@ -279,12 +279,71 @@ var acf;
 		*  @return
 		*/
 		
-		apply_filters : function() {
+		apply_filters: function() {
 			
 			// prefix action
 			arguments[0] = 'acf.' + arguments[0];
 			
 			return wp.hooks.applyFilters.apply(this, arguments);
+			
+		},
+		
+		
+		/*
+		*  get_selector
+		*
+		*  This function will return a valid selector for finding a field object
+		*
+		*  @type	function
+		*  @date	15/01/2015
+		*  @since	5.1.5
+		*
+		*  @param	s (string)
+		*  @return	(string)
+		*/
+		
+		get_selector: function( s ) {
+			
+			// defaults
+			s = s || '';
+			
+			
+			// vars
+			var selector = '.acf-field';
+			
+			
+			// compatibility with object
+			if( $.isEmptyObject(s) ) {
+				
+				s = '';
+				
+			} else if( $.isPlainObject(s) ) {
+				
+				for( k in s ) {
+				
+					s = s[k];
+					break;
+					
+				}
+				
+			}
+
+
+			// search
+			if( s ) {
+				
+				// append
+				selector += '-' + s.replace('_', '-');
+				
+				
+				// remove potential double up
+				selector = selector.replace('field-field-', 'field-');
+			
+			}
+			
+			
+			// return
+			return selector;
 			
 		},
 		
@@ -304,7 +363,7 @@ var acf;
 		*  @return	$fields (jQuery)
 		*/
 		
-		get_fields : function( args, $el, all ){
+		get_fields: function( s, $el, all ){
 			
 			// debug
 			//console.log( 'acf.get_fields(%o, %o, %o)', args, $el, all );
@@ -312,39 +371,28 @@ var acf;
 			
 			
 			// defaults
-			args = args || {};
-			$el = $el || $('body');
+			s = s || '';
+			$el = $el || false;
 			all = all || false;
 			
 			
 			// vars
-			var selector = '.acf-field';
-			
-			
-			// add selector
-			for( k in args ) {
-				
-				selector += '[data-' + k + '="' + args[k] + '"]';
-				
-			}
-			
-			
-			// get fields
-			var $fields = $el.find(selector);
+			var $fields = $( this.get_selector(s), $el );
 			
 			
 			// is current $el a field?
 			// this is the case when editing a field group
-			if( $el.is( selector ) ) {
+			/* is this neeed?
+if( $el.is( selector ) ) {
 			
 				$fields = $fields.add( $el );
 				
 			}
+*/
 			
 			
-			//console.log('get_fields(%o, %s, %b). selector = %s', $el, field_type, allow_filter, selector);
-			//console.log( $el );
-			//console.log( $fields );
+			//console.log('get_fields(%o, %o, %o) %o', s, $el, all, $fields);
+			
 			
 			// filter out fields
 			if( !all ) {
@@ -354,6 +402,7 @@ var acf;
 			}
 			
 			
+			//console.log('acf.get_fields(%o):', this.get_selector(s) );
 			//console.timeEnd("acf.get_fields");
 			
 			
@@ -377,26 +426,27 @@ var acf;
 		*  @return	$field (jQuery)
 		*/
 		
-		get_field : function( field_key, $el ){
+		get_field: function( s, $el ){
 			
 			// defaults
-			$el = $el || $('body');
+			s = s || '';
+			$el = $el || false;
 			
 			
 			// get fields
-			var $fields = this.get_fields({ key : field_key }, $el, true);
+			var $fields = this.get_fields(s, $el, true);
 			
 			
-			// validate
-			if( !$fields.exists() ) {
+			// check if exists
+			if( $fields.exists() ) {
 			
-				return false;
+				return $fields.first();
 				
 			}
 			
 			
 			// return
-			return $fields.first();
+			return false;
 			
 		},
 		
@@ -415,25 +465,14 @@ var acf;
 		*  @return	$field (jQuery)
 		*/
 		
-		get_closest_field : function( $el, args ){
+		get_closest_field : function( $el, s ){
 			
 			// defaults
-			args = args || {};
+			s = s || '';
 			
 			
-			// vars
-			var selector = '.acf-field';
-			
-			
-			// add selector
-			for( k in args ) {
-				
-				selector += '[data-' + k + '="' + args[k] + '"]';
-				
-			}
-			
-			
-			return $el.closest( selector );
+			// return
+			return $el.closest( this.get_selector(s) );
 			
 		},
 		
@@ -451,9 +490,9 @@ var acf;
 		*  @return	$field (jQuery)
 		*/
 		
-		get_field_wrap : function( $el ){
+		get_field_wrap: function( $el ){
 			
-			return $el.closest('.acf-field');
+			return $el.closest( this.get_selector() );
 			
 		},
 		
@@ -471,7 +510,7 @@ var acf;
 		*  @return	(string)
 		*/
 		
-		get_field_key : function( $field ){
+		get_field_key: function( $field ){
 		
 			return this.get_data( $field, 'key' );
 			
@@ -491,7 +530,7 @@ var acf;
 		*  @return	(string)
 		*/
 		
-		get_field_type : function( $field ){
+		get_field_type: function( $field ){
 		
 			return this.get_data( $field, 'type' );
 			
@@ -528,105 +567,6 @@ var acf;
 			// return
 			return $el.data(name);
 							
-		},
-		
-		
-		/*
-		*  is_field
-		*
-		*  This function will return true if the jQuery selection is an acf-field
-		*
-		*  @type	function
-		*  @date	8/09/2014
-		*  @since	5.0.0
-		*
-		*  @param	$el (jQuery)
-		*  @param	args (object)
-		*  @return	$post_id (int)
-		*/
-		
-		is_field : function( $el, args ){
-			
-			// defaults
-			args = args || {};
-			
-			
-			// bail early if class does not exist
-			if( !$el.hasClass('acf-field') ) {
-			
-				return false;
-				
-			}
-			
-			
-			// vars
-			var r = true;
-			
-			
-			// check args (data attributes)
-			$.each( args, function( k, v ) {
-				
-				if( $el.attr('data-' + k) != v ) {
-				
-					r = false;
-					
-				}
-				
-			});
-			
-			
-			// return
-			return r;
-			
-		},
-		
-		
-		/*
-		*  is_sub_field
-		*
-		*  This function will return true if the jQuery selection is a sub field
-		*
-		*  @type	function
-		*  @date	8/09/2014
-		*  @since	5.0.0
-		*
-		*  @param	$field (jQuery)
-		*  @param	args (object)
-		*  @return	(boolean)
-		*/
-		
-		is_sub_field : function( $field, args ) {
-			
-			// defaults
-			args = args || false;
-			
-			
-			// var
-			var r = false;
-			
-			
-			// find parent
-			$parent = $field.parent().closest('.acf-field');
-			
-			
-			if( $parent.exists() ) {
-			
-				r = true;
-				
-				
-				// check args (data attributes)
-				if( args ) {
-					
-					r = this.is_field( $parent, args );
-					
-				}
-				
-			}
-			
-			
-			// return
-			return r;
-			
 		},
 		
 		
@@ -1141,7 +1081,6 @@ var acf;
 				$popup.remove();
 			}
 			
-			
 		},
 		
 		
@@ -1293,7 +1232,7 @@ var acf;
 		/*
 		*  val
 		*
-		*  This function will update an elements value and trigger the change event if differene
+		*  This function will update an elements value and trigger the change event if different
 		*
 		*  @type	function
 		*  @date	16/10/2014
@@ -1972,7 +1911,7 @@ frame.on('all', function( e ) {
 	
 	
 	/*
-	*  conditional_logic
+	*  layout
 	*
 	*  description
 	*
@@ -1997,11 +1936,11 @@ frame.on('all', function( e ) {
 			//console.time('acf.width.render');
 			
 			// defaults
-			$el = $el || $('body');
+			$el = $el || false;
 			
 			
 			// loop over visible fields
-			$el.find('.acf-fields:visible').each(function(){
+			$('.acf-fields:visible', $el).each(function(){
 				
 				// vars
 				var $els = $(),
@@ -2125,6 +2064,7 @@ frame.on('all', function( e ) {
 		
 		items: {},
 		triggers: {},
+		cache: {},
 		
 		add : function( key, groups ){
 			
@@ -2203,7 +2143,7 @@ frame.on('all', function( e ) {
 				
 				
 				// get targets
-				var $targets = acf.get_fields({key : target_key}, $parent, true);
+				var $targets = acf.get_fields(target_key, $parent, true);
 				
 				
 				this.render_fields( $targets );
@@ -2223,11 +2163,11 @@ frame.on('all', function( e ) {
 			
 			
 			// defaults
-			$el = $el || $('body');
+			$el = $el || false;
 			
 			
 			// get targets
-			var $targets = acf.get_fields( {}, $el, true );
+			var $targets = acf.get_fields( '', $el, true );
 			
 			
 			// render fields
@@ -2251,6 +2191,10 @@ frame.on('all', function( e ) {
 				self.render_field( $(this) );
 				
 			});
+			
+			
+			// clear cache
+			this.cache = {};
 			
 		},
 		
@@ -2327,10 +2271,6 @@ frame.on('all', function( e ) {
 		
 		show_field : function( $field ){
 			
-			// vars
-			//var key = acf.get_field_key( $field );
-							
-			
 			// add class
 			$field.removeClass( 'hidden-by-conditional-logic' );
 			
@@ -2352,10 +2292,6 @@ frame.on('all', function( e ) {
 			//console.log( 'conditional_logic.hide_field(%o)', $field );
 			
 			
-			// vars
-			//var key = acf.get_field_key( $field );
-			
-			
 			// add class
 			$field.addClass( 'hidden-by-conditional-logic' );
 			
@@ -2374,12 +2310,19 @@ frame.on('all', function( e ) {
 			
 			//console.log( 'conditional_logic.get_visibility(%o, %o)', $target, rule );
 			
-			// vars
-			//var $search = acf.is_sub_field( $target ) ? $target.parent() : $('body');
-			//console.log( '$search %o', $search );
+			// update cache (cache is cleared after render_fields)
+			if( !acf.isset(this.cache, rule.field) ) {
+				
+				//console.log('get_fields(%o)', rule.field);
+				
+				// get all fields for this field_key and store in cache
+				this.cache[ rule.field ] = acf.get_fields(rule.field, false, true);
+				
+			}
+			
 			
 			// vars
-			var $triggers = acf.get_fields({key : rule.field}, false, true),
+			var $triggers = this.cache[ rule.field ],
 				$trigger = null;
 			
 			
@@ -2763,7 +2706,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('ready', function( $el ){
 				
-		acf.get_fields({}, $el).each(function(){
+		acf.get_fields('', $el).each(function(){
 			
 			acf.do_action('ready_field', $(this));
 			acf.do_action('ready_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2774,7 +2717,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('append', function( $el ){
 				
-		acf.get_fields({}, $el).each(function(){
+		acf.get_fields('', $el).each(function(){
 			
 			acf.do_action('append_field', $(this));
 			acf.do_action('append_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2785,7 +2728,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('load', function( $el ){
 				
-		acf.get_fields({}, $el).each(function(){
+		acf.get_fields('', $el).each(function(){
 			
 			acf.do_action('load_field', $(this));
 			acf.do_action('load_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2797,7 +2740,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('remove', function( $el ){
 				
-		acf.get_fields({}, $el).each(function(){
+		acf.get_fields('', $el).each(function(){
 			
 			acf.do_action('remove_field', $(this));
 			acf.do_action('remove_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2808,7 +2751,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('sortstart', function( $item, $placeholder ){
 				
-		acf.get_fields({}, $item).each(function(){
+		acf.get_fields('', $item).each(function(){
 			
 			acf.do_action('sortstart_field', $(this));
 			acf.do_action('sortstart_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2819,7 +2762,7 @@ frame.on('all', function( e ) {
 	
 	acf.add_action('sortstop', function( $item, $placeholder ){
 				
-		acf.get_fields({}, $item).each(function(){
+		acf.get_fields('', $item).each(function(){
 			
 			acf.do_action('sortstop_field', $(this));
 			acf.do_action('sortstop_field/type=' + acf.get_field_type($(this)), $(this));
@@ -2875,12 +2818,14 @@ frame.on('all', function( e ) {
 			
 			
 			// setup events
+			var context = acf.get_selector(model.type);
+			
 			$.each(model.events, function( k, callback ){
 				
 				var event = k.substr(0,k.indexOf(' ')),
 					selector = k.substr(k.indexOf(' ')+1);
 				
-				$(document).on(event, '.acf-field[data-type="' + model.type + '"] ' + selector, function( e ){
+				$(document).on(event, context + ' ' + selector, function( e ){
 					
 					e.$el = $(this);
 					
@@ -2941,7 +2886,7 @@ frame.on('all', function( e ) {
 			
 			
 			// focus
-			this.doFocus( acf.get_closest_field( e.$el, {type : this.type} ) );
+			this.doFocus( acf.get_closest_field( e.$el, this.type ) );
 			
 			
 			// callback
@@ -2950,5 +2895,23 @@ frame.on('all', function( e ) {
 		},
 		
 	};
+	
+	/*
+console.time("acf_test_ready");
+	console.time("acf_test_load");
+	
+	acf.add_action('ready', function(){
+		
+		console.timeEnd("acf_test_ready");
+		
+	}, 999);
+	
+	acf.add_action('load', function(){
+		
+		console.timeEnd("acf_test_load");
+		
+	}, 999);
+*/
+	
 	
 })(jQuery);

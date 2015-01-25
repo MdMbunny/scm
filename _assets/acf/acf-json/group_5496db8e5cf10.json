@@ -96,7 +96,7 @@
                         {
                             "key": "field_54bc03ba9e082",
                             "label": "Custom ID",
-                            "name": "custom_id",
+                            "name": "row_id",
                             "prefix": "",
                             "type": "text",
                             "instructions": "",
@@ -118,7 +118,7 @@
                         {
                             "key": "field_54bc03e39e083",
                             "label": "Custom Classes",
-                            "name": "custom_classes",
+                            "name": "row_classes",
                             "prefix": "",
                             "type": "text",
                             "instructions": "",
@@ -173,5 +173,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421609166
+    "modified": 1422114643
 }

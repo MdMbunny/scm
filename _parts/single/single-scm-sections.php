@@ -6,7 +6,7 @@ $type = $post->post_type;
 $id = $post->ID;
 $slug = $post->post_name;
 
-$custom_id = ( get_field('custom_id') ?: $type . '-' . $id );
+$custom_id = ( ( isset($this) && isset($this->add_id) && $this->add_id ) ? $this->add_id : $type . '-' . $id );
 
 $classes = ( ( isset($this) && isset($this->add_class) ) ? $this->add_class . ' ' : '' );
 
