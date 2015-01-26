@@ -249,8 +249,6 @@
 
 						} );
 
-						
-
 						var w = $(window).width();
 
 						if( w < 701 ){
@@ -455,14 +453,17 @@
 			<script type="text/javascript">
 				
 				jQuery(document).ready(function($){
-					
-					var overlay = $('.overlay');
 
 					$( 'body' ).on( 'responsive', function(){
-						overlay.each(function(){
-							var h = $(this).outerHeight();
-							$(this).css( 'margin-bottom', - h );
-						});
+						var overlay = $('.overlay-menu');
+						setTimeout(function() {	// PER COLPA DI SAFARI USO UN TIMEOUT CHE SAREBBE MEGLIO ELIMINARE
+
+							overlay.each(function(){
+								var h = $(this).outerHeight();
+								$(this).css( 'margin-bottom', - h );
+							});
+
+						}, 100);
 						
 					});
 				
@@ -969,7 +970,10 @@
 						$('body').removeClass( r );
 						$('body').addClass( a );
 
+
+
 						$( 'body' ).trigger('responsive');
+
 					}
 					
 
@@ -977,8 +981,6 @@
 
 					$(window).resize( responsiveClasses );
 
-
-					
 				});
 			</script>
 

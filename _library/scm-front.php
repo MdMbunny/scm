@@ -314,7 +314,7 @@
 
             $menu_id = ( get_field( 'id_menu', 'option' ) ? get_field( 'id_menu', 'option' ) : 'site-navigation' );
             
-            $menu_class = ( get_field( 'overlay_menu', 'option' ) ? 'overlay ' : '' ) . 'navigation ';
+            $menu_class = ( get_field( 'overlay_menu', 'option' ) ? 'overlay-menu ' : '' ) . 'navigation ';
             $menu_class .= ( ( $align == 'center' || $position != 'inline' ) ? 'full ' : 'half-width ' );
             $menu_class .= $align;
 

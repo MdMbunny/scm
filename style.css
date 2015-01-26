@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.6.2
+Version:			v1.6.3
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -494,6 +494,7 @@ th {
 .r800 .responsive, .w800 { width: 800px; }
 .r700 .responsive, .w700 { width: 700px; }
 .smart .responsive { width: 100%; }
+
 
 /*--------------------------------------------------------------
 14.0 SCM Layouts
