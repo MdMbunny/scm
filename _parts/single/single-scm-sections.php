@@ -35,7 +35,7 @@ echo '<section id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 	$custom_head = ( get_field( 'flexible_headers' ) ?: array() );
 	if( sizeof( $custom_head ) ){
 		$height = ( get_field('max_height') ? get_field('max_height') . get_field('units') : 'auto' );
-		scm_custom_header( $custom_head, $type, $height );
+		scm_custom_header( $id, $custom_head, $type, $height );
 	}
 
 	echo '<row id="' . $row_id . '" class="' . $row_class . '" ' . $row_style . '>';

@@ -1,6 +1,6 @@
 {
     "key": "group_5496ea259f9b7",
-    "title": "Testata",
+    "title": "Slider",
     "fields": [
         {
             "key": "field_54bbec56e22ed",
@@ -81,6 +81,67 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_54ca5ddee7cf1",
+                            "label": "ID",
+                            "name": "slide_id",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": 50,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "id",
+                            "prepend": "#",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca5dfee7cf2",
+                            "label": "Class",
+                            "name": "slide_class",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": 50,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "classes",
+                            "prepend": ".",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca2591a0a1d",
+                            "label": "Link",
+                            "name": "link",
+                            "prefix": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        },
+                        {
                             "key": "field_5496ef0a02704",
                             "label": "Seleziona un'immagine",
                             "name": "immagine",
@@ -104,7 +165,7 @@
                             "name": "active_caption",
                             "prefix": "",
                             "type": "true_false",
-                            "instructions": "",
+                            "instructions": "Se non spuntato, eredita didascalia precedente.\r\nSe spuntato, ma senza contenuti, niente didascalia.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -113,7 +174,165 @@
                                 "id": ""
                             },
                             "message": "",
-                            "default_value": 0
+                            "default_value": 1
+                        },
+                        {
+                            "key": "field_54ca4acbc757d",
+                            "label": "Alto",
+                            "name": "caption_top",
+                            "prefix": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_54bbde6dd98aa",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": 22,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "auto",
+                            "prepend": "",
+                            "append": "%",
+                            "min": "",
+                            "max": "",
+                            "step": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca4bf6c757e",
+                            "label": "Destra",
+                            "name": "caption_right",
+                            "prefix": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_54bbde6dd98aa",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": 22,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "auto",
+                            "prepend": "",
+                            "append": "%",
+                            "min": "",
+                            "max": "",
+                            "step": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca4c0ac757f",
+                            "label": "Basso",
+                            "name": "caption_bottom",
+                            "prefix": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_54bbde6dd98aa",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": 22,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "auto",
+                            "prepend": "",
+                            "append": "%",
+                            "min": "",
+                            "max": "",
+                            "step": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca4c21c7580",
+                            "label": "Sinistra",
+                            "name": "caption_left",
+                            "prefix": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_54bbde6dd98aa",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": 22,
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 0,
+                            "placeholder": "auto",
+                            "prepend": "",
+                            "append": "%",
+                            "min": "",
+                            "max": "",
+                            "step": "",
+                            "readonly": 0,
+                            "disabled": 0
+                        },
+                        {
+                            "key": "field_54ca4a98c757c",
+                            "label": "Contenuto Titolo",
+                            "name": "caption_title",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_54bbde6dd98aa",
+                                        "operator": "==",
+                                        "value": "1"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
                         },
                         {
                             "key": "field_5496ef0a02707",
@@ -133,14 +352,14 @@
                                 ]
                             ],
                             "wrapper": {
-                                "width": 90,
+                                "width": "",
                                 "class": "",
                                 "id": ""
                             },
                             "default_value": "",
                             "tabs": "all",
-                            "toolbar": "full",
-                            "media_upload": 0
+                            "toolbar": "basic",
+                            "media_upload": 1
                         }
                     ],
                     "min": "",
@@ -193,5 +412,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421610866
+    "modified": 1422550550
 }

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.6.3
+Version:			v1.6.4
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -90,8 +90,8 @@ html {
 .responsive,
 header,
 footer{
-	-webkit-transition: width .3s;
-	transition: width .3s;
+	/*-webkit-transition: width .3s;
+	transition: width .3s;*/
 }
 
 *,
@@ -767,6 +767,7 @@ a:hover{
 .navigation{
 	position: relative;
 	display: block;
+	z-index: 7500;
 }
 
 .navigation,
@@ -1411,6 +1412,57 @@ input[type="submit"]:active {
 
 .scm-map img{
 	max-width: none;
+}
+
+/*--------------------------------------------------------------
+16.1 Nivo Slider
+--------------------------------------------------------------*/
+
+.nivoSlider{
+	box-shadow: none !important;
+	margin: 0 !important;
+}
+
+.nivoSlider img{
+	height: auto !important;
+}
+
+.nivo-controlNav{
+	position: relative;
+	z-index: 7900;
+}
+
+.nivo-caption {
+	top: 0;
+	bottom: 0;
+	left: 100%;
+	right: 0;
+	padding: 0;
+	background: transparent;
+	pointer-events: none;
+	opacity: 1;
+}
+
+.nivo-caption div {
+	position: absolute;
+	width: auto;
+	overflow: visible;
+	display: block;
+	padding: 50px 0;
+}
+
+.nivo-caption div a{
+	pointer-events: all;
+	border: none !important;
+}
+
+.nivo-caption div h3,
+.nivo-caption div p{
+	padding: 10px 20px;
+}
+
+.nivo-caption div h3{
+	background-color: rgba(0,0,0,.8);
 }
 
 

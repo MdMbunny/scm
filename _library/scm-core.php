@@ -1,19 +1,5 @@
 <?php
 
-
-
-// *****************************************************
-// *      REQUIRED FILES
-// *****************************************************
-
-
-//Slider generator functions
-	//require_once( SCM_DIR_SLIDERS . 'flex.php' );
-	//require_once( SCM_DIR_SLIDERS . 'nivo.php' );
-	//require_once( SCM_DIR_SLIDERS . 'roundabout.php' );
-
-
-
 // *****************************************************
 // *      ACTIONS AND FILTERS
 // *****************************************************
@@ -114,8 +100,8 @@
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
                 $styles = implode( ',', $value['select_webfonts_styles'] );
-                wp_register_style( 'webfonts' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_enqueue_style( 'webfonts' . $slug );
+                wp_register_style( 'webfonts-' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_enqueue_style( 'webfonts-' . $slug );
                 
             }
         }
@@ -129,10 +115,19 @@
             wp_enqueue_style( 'animate' );
             
             if( get_field( 'tools_fancybox_active', 'option' ) ){
-                wp_register_style( 'fancybox', SCM_URI_JS . 'fancybox/source/jquery.fancybox.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_register_style( 'fancybox-thumbs', SCM_URI_JS . 'fancybox/source/helpers/jquery.fancybox-thumbs.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_register_style( 'fancybox', SCM_URI_CSS . 'fancybox/jquery.fancybox.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_register_style( 'fancybox-thumbs', SCM_URI_CSS . 'fancybox/helpers/jquery.fancybox-thumbs.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+                //wp_register_style( 'fancybox-buttons', SCM_URI_JS . 'fancybox/source/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'fancybox' );
                 wp_enqueue_style( 'fancybox-thumbs' );
+                //wp_enqueue_style( 'fancybox-buttons' );
+            }
+
+            if( get_field( 'tools_nivo_active', 'option' ) ){
+                wp_register_style( 'nivo-default', SCM_URI_CSS . 'nivo/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
+                wp_register_style( 'nivo', SCM_URI_CSS . 'nivo/nivo-slider.css', false, SCM_SCRIPTS_VERSION, 'all' );
+                wp_enqueue_style( 'nivo-default' );
+                wp_enqueue_style( 'nivo' );
             }
 
             //+++ todo: if Color Picker is on page [check how to integrate it]
@@ -151,14 +146,6 @@
             // +++ todo: if html header is PRINT
             //wp_register_style( 'print', SCM_URI_CSS . 'print.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             //wp_enqueue_style( 'print' );
-
-            //sliders
-            /*wp_register_style( 'flex', SCM_URI_CSS . 'flex/flex.css', false, SCM_SCRIPTS_VERSION, 'all' );
-            wp_register_style( 'nivo', SCM_URI_CSS . 'nivo/nivo.css', false, SCM_SCRIPTS_VERSION, 'all' );
-            wp_register_style( 'roundabout', SCM_URI_CSS . 'roundabout/roundabout.css', false, SCM_SCRIPTS_VERSION, 'all' );
-            wp_enqueue_style( 'flex' );
-            wp_enqueue_style( 'nivo' );
-            wp_enqueue_style( 'roundabout' );*/
             
             //wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             //wp_enqueue_style( 'fontawesome' );
@@ -186,37 +173,29 @@
             wp_enqueue_script( 'skip-link-focus-fix' );
 
             if( get_field( 'tools_fancybox_active', 'option' ) ){
-                wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox/source/jquery.fancybox.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-                wp_register_script( 'fancybox-thumbs', SCM_URI_JS . 'fancybox/source/helpers/jquery.fancybox-thumbs.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                //wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox/jquery.fancybox.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox/jquery.fancybox.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                wp_register_script( 'fancybox-thumbs', SCM_URI_JS . 'fancybox/helpers/jquery.fancybox-thumbs.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                //wp_register_script( 'fancybox-buttons', SCM_URI_JS . 'fancybox/helpers/jquery.fancybox-buttons.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                //wp_register_script( 'fancybox-media', SCM_URI_JS . 'fancybox/helpers/jquery.fancybox-media.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_enqueue_script( 'fancybox' );
                 wp_enqueue_script( 'fancybox-thumbs' );
+                //wp_enqueue_script( 'fancybox-buttons' );
+                //wp_enqueue_script( 'fancybox-media' );
+            }
+
+            if( get_field( 'tools_nivo_active', 'option' ) ){
+                wp_register_script( 'nivo', SCM_URI_JS . 'nivo/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                wp_enqueue_script( 'nivo' );
             }
             
-            //+++ todo: if Google Map is on page
             wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, '', true );
-            wp_enqueue_script( 'gmapapi' );
+            // ENQUEUED BY scm-jquery.php IF A MAP IS LOADED
 
             wp_enqueue_script('jquery-effects-core');
 
-            wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.1.1.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'bootstrap' );
-
-            // +++ todo: register only if Slider is present into the page
-            /* wp_register_script( 'flex', SCM_URI_JS . 'flex/jquery.flexslider-min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'apply-flex', SCM_URI_JS . 'flex/apply-flex.js.php', array( 'jquery', 'flex' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'nivo', SCM_URI_JS . 'nivo/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'apply-nivo', SCM_URI_JS . 'nivo/apply-nivo.js.php', array( 'jquery', 'nivo' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'roundabout', SCM_URI_JS . 'roundabout/jquery.roundabout.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'roundabout-shapes', SCM_URI_JS . 'roundabout/jquery.roundabout-shapes.min.js', array( 'jquery', 'roundabout' ), SCM_SCRIPTS_VERSION, true );
-            wp_register_script( 'apply-roundabout', SCM_URI_JS . 'roundabout/apply-roundabout.js.php', array( 'jquery', 'roundabout' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'flex' );
-            wp_enqueue_script( 'apply-flex' );
-            wp_enqueue_script( 'nivo' );
-            wp_enqueue_script( 'apply-nivo' );
-            wp_enqueue_script( 'roundabout' );
-            wp_enqueue_script( 'roundabout-shapes' );
-            wp_enqueue_script( 'apply-roundabout' );*/
-            
+            wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.2.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'bootstrap' );            
 
         }
     }
@@ -282,30 +261,26 @@
             $top_bg = scm_options_get( 'bg_color', 'topofpage', 1 );
             $top_icon = scm_options_get( 'text_color', 'topofpage', 1 );
 
-            $css = '
+            $css = 'html{ ' . $html . ' }' . PHP_EOL;
 
-                html{' . $html . '}
+            $css .= '*, input, textarea{ ' . $font . ' }' . PHP_EOL;
 
-                *, input, textarea{' . $font . '}
+            $css .= 'body { ' . $body . ' }' . PHP_EOL;
 
-                body {' . $body . '}
+            $css .= '.site-page { ' . $opacity . ' }' . PHP_EOL;
 
-                .site-page {' . $opacity . '}
+            $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . PHP_EOL;
 
-                .site-content, .site-footer{' . $line_height . '}
-
-                .primary, .primary i {' . $primary . '}
-                .secondary, .secondary i {' . $secondary . '}
-                .tertiary, .tertiary i {' . $tertiary . '}
+            $css .= '.primary, .primary i { ' . $primary . ' }' . PHP_EOL;
+            $css .= '.secondary, .secondary i { ' . $secondary . ' }' . PHP_EOL;
+            $css .= '.tertiary, .tertiary i { ' . $tertiary . ' }' . PHP_EOL;
 
 
-                .navigation {' . $menu_font . '}
-                .navigation.sticky row {' . $sticky_font . '}
+            $css .= '.navigation { ' . $menu_font . ' }' . PHP_EOL;
+            $css .= '.navigation.sticky row { ' . $sticky_font . ' }' . PHP_EOL;
 
-                .topofpage {' . $top_bg . '}
-                .topofpage a {' . $top_icon . '}
-
-            ';
+            $css .= '.topofpage { ' . $top_bg . ' }' . PHP_EOL;
+            $css .= '.topofpage a { ' . $top_icon . ' }' . PHP_EOL;
 
             
             if( !empty( $css ) )

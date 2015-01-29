@@ -18,7 +18,8 @@
 //	Active Class
 //  Responsive Layout
 //  Google Maps
-//	Prettyphoto
+//  Nivo Slider
+//	Fancybox
 //
 //	Show Body
 //*
@@ -48,7 +49,8 @@
 	//add_action('wp_footer', 'scm_jquery_active_class');
 	add_action('wp_footer', 'scm_responsive_layout');
 	add_action('wp_footer', 'scm_jquery_google_map');
-	add_action('wp_footer', 'scm_jquery_prettyphoto');
+	add_action('wp_footer', 'scm_jquery_nivoslider');
+	add_action('wp_footer', 'scm_jquery_fancybox');
 
 	add_action('wp_footer', 'scm_jquery_change_page');
 
@@ -456,14 +458,11 @@
 
 					$( 'body' ).on( 'responsive', function(){
 						var overlay = $('.overlay-menu');
-						setTimeout(function() {	// PER COLPA DI SAFARI USO UN TIMEOUT CHE SAREBBE MEGLIO ELIMINARE
 
-							overlay.each(function(){
-								var h = $(this).outerHeight();
-								$(this).css( 'margin-bottom', - h );
-							});
-
-						}, 100);
+						overlay.each(function(){
+							var h = $(this).outerHeight();
+							$(this).css( 'margin-bottom', - h );
+						});
 						
 					});
 				
@@ -1150,7 +1149,12 @@
 					var mapClass = <?php echo json_encode($map_class); ?>;
 					var markerClass = <?php echo json_encode($marker_class); ?>;
 
-					$(window).load(function (){
+					$(window).load(function(){
+
+						if( $(mapClass).length ){
+							<?php wp_enqueue_script( 'gmapapi' ); ?>		// ENQUEUE GM SCRIPT IF MAP IS ON PAGE
+						}
+
 						$(mapClass).each(function(){
 
 							render_map( $(this) , markerClass );
@@ -1165,14 +1169,81 @@
 	}
 
 // *****************************************************
-// *      PRETTYPHOTO
+// *      NIVO SLIDER
 // *****************************************************
 
-	//Prettyphoto
-    if ( ! function_exists( 'scm_jquery_prettyphoto' ) ) {
-        function scm_jquery_prettyphoto(){
+	//Nivo Slider
+    if ( ! function_exists( 'scm_jquery_nivoslider' ) ) {
+        function scm_jquery_nivoslider(){
+        	if( !get_field( 'tools_nivo_active', 'option' ) )
+        		return;
+
+        ?>
+            <script type="text/javascript">
+
+            	function captionMoveIn(id) {
+					jQuery( '.nivo-caption' )
+					.fadeIn( 10 )
+					.animate( { left: "0%", right: "0%" }, 500 );
+				};
+
+				function captionMoveOut(id) {
+					jQuery( '.nivo-caption' )
+					.fadeOut( 500 )
+					.animate( { left: "100%", right: "0%" }, 0 );
+				};
+
+            	jQuery(document).ready(function($){
+
+	            	$(window).load(function(){
+						$('.nivoSlider').each(function(){
+							var slides = $(this).find('img').length;
+		        			if(slides > 1){
+		        				$(this).nivoSlider({
+								    effect: 'sliceDown',               // Specify sets like: 'fold,fade,sliceDown'
+								    slices: 15,                     // For slice animations
+								    boxCols: 8,                     // For box animations
+								    boxRows: 4,                     // For box animations
+								    animSpeed: 500,                 // Slide transition speed
+								    pauseTime: 5000,                // How long each slide will show
+								    startSlide: 0,                  // Set starting Slide (0 index)
+								    directionNav: true,             // Next & Prev navigation
+								    controlNav: false,               // 1,2,3... navigation
+								    controlNavThumbs: false,        // Use thumbnails for Control Nav
+								    pauseOnHover: true,             // Stop animation while hovering
+								    manualAdvance: false,           // Force manual transitions
+								    prevText: 'Prev',               // Prev directionNav text
+								    nextText: 'Next',               // Next directionNav text
+								    randomStart: false,             // Start on a random slide
+								    beforeChange: function(){captionMoveOut();},     // Triggers before a slide transition
+								    afterChange: function(){captionMoveIn();},      // Triggers after a slide transition
+								    slideshowEnd: function(){},     // Triggers after all slides have been shown
+								    lastSlide: function(){},        // Triggers when last slide is shown
+								    afterLoad: function(){captionMoveIn();}         // Triggers when slider has loaded
+								});
+							}else{
+								$(this).removeClass('nivoSlider');
+								$(this).addClass('mask');
+							}
+		        		});
+
+	            	});
+            	});
+
+			</script>
+		<?php
+		}
+	}
+
+// *****************************************************
+// *      FANCYBOX
+// *****************************************************
+
+	//Fancybox
+    if ( ! function_exists( 'scm_jquery_fancybox' ) ) {
+        function scm_jquery_fancybox(){
         	
-        	if( get_field( 'tools_fancybox_active', 'option' ) )
+        	if( !get_field( 'tools_fancybox_active', 'option' ) )
         		return;
 
         	global $SCM_galleries;

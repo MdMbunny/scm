@@ -413,30 +413,73 @@
     }
 
 //*****************************************************
-//*      CONTENTS
+//*      SLIDER
 //*****************************************************
 
     //Prints Element Inner Header
     if ( ! function_exists( 'scm_custom_header' ) ) {
-        function scm_custom_header( $slides, $type = '', $height = 'auto' ) {
+        function scm_custom_header( $id, $slides, $type = '', $height = 'auto' ) {
 
-            // +++ todo: immagini multiple per Slider
+            $i = 0;
+            $images = '<div id="slider-' . $id . '" class="nivoSlider" style="max-height:' . $height . ';">';
+            $captions = '';
 
-            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full full-image mask" style="max-height:' . $height . ';">';
-                
-                foreach ($slides as $slide) {
-                    $img = $slide[ 'immagine' ];
-                    $caption = ( !$slide[ 'active_caption' ] ?: $slide['caption'] );
+            foreach ($slides as $slide) {
+                $i++;
+                $img = $slide[ 'immagine' ];
+                $link = ( isset( $slide[ 'link' ] ) ? $slide[ 'link' ] : '' );
+                $caption = '';
+                $slide_id = $slide[ 'slide_id' ];
+                $slide_class = $slide[ 'slide_class' ];
+                $title = '';
 
-                    // +++ todo: disegna Caption
-
-                    echo '<img src="' . $img . '" class="full">';
+                if( $slide[ 'active_caption' ] ){
+                    $caption_id = 'caption-' . $id . '-' . $i;
+                    $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
+                    $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
+                    $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
+                    $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
+                    $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
+                    
+                    $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . '">';
+                        $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ( $slide_class ? ' class="' . $slide_class . '"' : '' ) . $style . '">';
+                            $caption .= ( $slide[ 'caption_title'] ? '<h3>' . $slide[ 'caption_title' ] . '</h3>' : '' );
+                            $caption .= $slide['caption'];
+                        $caption .= '</div>';
+                    $caption .= '</div>';
+                    
+                    
                 }
+
+                $title = ( $caption ? 'title="#' . $caption_id . '" ' : 'title=""' );                
+
+                $images .= ( $link ? '<a href="' . $link . '">' : '' );
+                    $images .= '<img src="' . $img . '" data-thumb="' . $img . '" alt="" ' . $title . '/>';
+                $images .= ( $link ? '</a>' : '' );
+
+                $captions .= $caption;
+
+            }
+
+            $images .= '</div>';
+
+
+            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full full-image slider-wrapper theme-default">';
+                
+            echo $images;               
+
+            echo $captions;
 
             echo '</header><!-- ' . $type . '-header -->';
 
+
+
         }
     }
+
+//*****************************************************
+//*      CONTENT
+//*****************************************************
 
     //Prints Element Flexible Contents
     if ( ! function_exists( 'scm_flexible_content' ) ) {

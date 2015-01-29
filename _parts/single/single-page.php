@@ -28,7 +28,7 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 	$height = ( $height == 'auto' ?: $height . $units );
 
 	if( sizeof( $custom_head ) ){
-		scm_custom_header( $custom_head, $type, $height );
+		scm_custom_header( $id, $custom_head, $type, $height );
 	}
 
 	if( $single ){

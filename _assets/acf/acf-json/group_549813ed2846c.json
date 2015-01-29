@@ -15,7 +15,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_549d785c7ed31",
@@ -138,7 +139,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_549814ea10983",
@@ -225,7 +227,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_54abcf2e83680",
@@ -1130,6 +1133,39 @@
             "default_value": 0
         },
         {
+            "key": "field_54ca187c4531f",
+            "label": "Nivo Slider",
+            "name": "_copia",
+            "prefix": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54ca18a545320",
+            "label": "Attivo",
+            "name": "tools_nivo_active",
+            "prefix": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 52,
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0
+        },
+        {
             "key": "field_5498490192c64",
             "label": "Accordion",
             "name": "",
@@ -1182,7 +1218,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_5498161809d78",
@@ -1214,7 +1251,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_54ad82196059c",
@@ -1405,7 +1443,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_549815c609d76",
@@ -1462,5 +1501,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421533766
+    "modified": 1422530748
 }
