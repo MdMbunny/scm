@@ -707,7 +707,7 @@
             $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
             $title = __( $text, SCM_THEME );
 
-            $output =   '<div id="' . $id . '" class="topofpage"">';
+            $output =   '<div id="' . $id . '" class="topofpage">';
             $output .=      '<a href="#top" title="' . $title . '" alt="' . $title . '">';
             $output .=          '<i class="fa ' . $icon . '"></i>';
             $output .=      '</a>';
