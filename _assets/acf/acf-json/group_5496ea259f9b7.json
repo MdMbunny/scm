@@ -127,9 +127,9 @@
                         {
                             "key": "field_54ca2591a0a1d",
                             "label": "Link",
-                            "name": "link",
+                            "name": "url",
                             "prefix": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -139,7 +139,12 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "placeholder": ""
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
                         },
                         {
                             "key": "field_5496ef0a02704",
@@ -165,16 +170,16 @@
                             "name": "active_caption",
                             "prefix": "",
                             "type": "true_false",
-                            "instructions": "Se non spuntato, eredita didascalia precedente.\r\nSe spuntato, ma senza contenuti, niente didascalia.",
+                            "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": 10,
+                                "width": "",
                                 "class": "",
                                 "id": ""
                             },
                             "message": "",
-                            "default_value": 1
+                            "default_value": 0
                         },
                         {
                             "key": "field_54ca4acbc757d",
@@ -194,7 +199,7 @@
                                 ]
                             ],
                             "wrapper": {
-                                "width": 22,
+                                "width": 25,
                                 "class": "",
                                 "id": ""
                             },
@@ -226,7 +231,7 @@
                                 ]
                             ],
                             "wrapper": {
-                                "width": 22,
+                                "width": 25,
                                 "class": "",
                                 "id": ""
                             },
@@ -258,7 +263,7 @@
                                 ]
                             ],
                             "wrapper": {
-                                "width": 22,
+                                "width": 25,
                                 "class": "",
                                 "id": ""
                             },
@@ -290,7 +295,7 @@
                                 ]
                             ],
                             "wrapper": {
-                                "width": 22,
+                                "width": 25,
                                 "class": "",
                                 "id": ""
                             },
@@ -412,5 +417,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422550550
+    "modified": 1422634973
 }

@@ -280,7 +280,7 @@
             $css .= '.navigation.sticky row { ' . $sticky_font . ' }' . PHP_EOL;
 
             $css .= '.topofpage { ' . $top_bg . ' }' . PHP_EOL;
-            $css .= '.topofpage a { ' . $top_icon . ' }' . PHP_EOL;
+            $css .= '.topofpage a i { ' . $top_icon . ' }' . PHP_EOL;
 
             
             if( !empty( $css ) )

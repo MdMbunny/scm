@@ -1166,6 +1166,40 @@
             "default_value": 0
         },
         {
+            "key": "field_54ccc5995d7e3",
+            "label": "Google Maps",
+            "name": "_copia_copia",
+            "prefix": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54ccc5aa5d7e4",
+            "label": "Marker",
+            "name": "tools_gmap_marker",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all"
+        },
+        {
             "key": "field_5498490192c64",
             "label": "Accordion",
             "name": "",
@@ -1501,5 +1535,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422530748
+    "modified": 1422706132
 }

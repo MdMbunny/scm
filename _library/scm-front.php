@@ -427,7 +427,7 @@
             foreach ($slides as $slide) {
                 $i++;
                 $img = $slide[ 'immagine' ];
-                $link = ( isset( $slide[ 'link' ] ) ? $slide[ 'link' ] : '' );
+                $link = ( isset( $slide[ 'url' ] ) ? $slide[ 'url' ] : '' );
                 $caption = '';
                 $slide_id = $slide[ 'slide_id' ];
                 $slide_class = $slide[ 'slide_class' ];
@@ -702,7 +702,7 @@
     if ( ! function_exists( 'scm_top_of_page' ) ) {
         function scm_top_of_page() {
             
-            $id = get_field('id_topofpage', 'option');
+            $id = ( get_field('id_topofpage', 'option') ?: 'site-topofpage' );
             $icon = get_field('tools_topofpage_icon', 'option');
             $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
             $title = __( $text, SCM_THEME );

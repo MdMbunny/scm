@@ -997,6 +997,7 @@
 
 			$map_class = '.scm-map';
 			$marker_class = '.scm-marker';
+			$marker_img = ( get_field( 'tools_gmap_marker', 'option' ) ?: false );
 
 		?>
 			<script type="text/javascript">
@@ -1111,10 +1112,54 @@
 					function add_marker( $marker, map ) {
 
 						var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
+
+						// +++ todo: Markers personalizzabili
+						// if not data-img in scm-marker, then get it from general options
+
+						var marker_A = $marker.attr('data-img');
+						var marker_B = <?php echo json_encode($marker_img); ?>;
+
+						var marker_img = false;
+						if( marker_A )
+							marker_img = marker_A;
+						else if( marker_B )
+							marker_img = marker_B;
+						
+						//var image = new google.maps.MarkerImage(
+								//marker_img
+								//<?php echo json_encode(SCM_URI_CHILD); ?> + 'assets/img/marker.png',
+								/*new google.maps.Size( 24, 42 ),
+								new google.maps.Point( 0, 0 ),
+								new google.maps.Point( 12, 42 )*/
+							//);
+						/*
+						var shadow = new google.maps.MarkerImage(
+								themeImgs + 'map/marker-shadow.png',
+								new google.maps.Size( 58, 44 ),
+								new google.maps.Point( 0, 0 ),
+								new google.maps.Point( 16, 44 )
+							);
+
+						var shape = {
+								coord : [20,0,23,1,24,2,25,3,27,4,27,5,28,6,29,7,29,8,30,9,30,10,31,11,31,12,31,13,31,14,31,15,31,16,31,17,31,18,31,19,31,20,31,21,30,22,30,23,29,24,29,25,28,26,28,27,27,28,27,29,26,30,25,31,25,32,24,33,23,34,22,35,22,36,21,37,20,38,20,39,19,40,18,41,17,42,16,43,15,43,14,42,13,41,12,40,11,39,11,38,10,37,9,36,9,35,8,34,7,33,6,32,6,31,5,30,4,29,4,28,3,27,3,26,2,25,2,24,1,23,1,22,0,21,0,20,0,19,0,18,0,17,0,16,0,15,0,14,0,13,0,12,0,11,1,10,1,9,2,8,2,7,3,6,4,5,4,4,6,3,7,2,8,1,11,0,20,0],
+								type  : 'poly'
+							};
+						*/
+
 						var marker = new google.maps.Marker({
+							raiseOnDrag : false,
+							clickable   : false,
+							//icon        : image,
+							//shadow      : shadow,
+							//shape       : shape,
+							//cursor      : 'crosshair',
+							animation   : google.maps.Animation.BOUNCE,
 							position	: latlng,
 							map			: map
 						});
+
+						if ( marker_img )
+							marker.setIcon( marker_img );
 
 						map.markers.push( marker );
 
