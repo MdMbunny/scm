@@ -44,7 +44,6 @@
 	add_action('wp_footer', 'scm_jquery_tabs');
 	add_action('wp_footer', 'scm_jquery_accordion');
 	add_action('wp_footer', 'scm_jquery_toggle');
-	add_action('wp_footer', 'scm_jquery_slideshow');
 	add_action('wp_footer', 'scm_jquery_isotope_filter');
 	//add_action('wp_footer', 'scm_jquery_active_class');
 	add_action('wp_footer', 'scm_responsive_layout');
@@ -714,70 +713,6 @@
 
 
 // *****************************************************
-// *      SLIDESHOW
-// *****************************************************
-
-	//Slideshow
-	if ( ! function_exists( 'scm_jquery_slideshow' ) ) {
-		function scm_jquery_slideshow(){
-
-		?>
-			<script type="text/javascript">
-				jQuery(document).ready(function($){
-
-					if ( $().flexslider ) {
-						var $containerF = $( '.slideshow.flexslider' ),
-						    slideSpeed  = $containerF.data( 'time' );
-
-						if ( $('html').hasClass('ie') ) {
-							$containerF.flexslider( {
-								animation      : "slide",
-								easing         : "swing",
-								direction      : "horizontal",
-								slideshowSpeed : slideSpeed,
-								smoothHeight   : true,
-								animationSpeed : 400,
-								pauseOnAction  : true,
-								pauseOnHover   : true,
-								useCSS         : true,
-								touch          : true,
-								video          : false,
-								controlNav     : false,
-								directionNav   : true,
-								keyboard       : true,
-								pausePlay      : false
-							} );
-						} else {
-							$containerF.imagesLoaded( function() {
-								$containerF.flexslider( {
-									animation      : "slide",
-									easing         : "swing",
-									direction      : "horizontal",
-									slideshowSpeed : slideSpeed,
-									smoothHeight   : true,
-									animationSpeed : 400,
-									pauseOnAction  : true,
-									pauseOnHover   : true,
-									useCSS         : true,
-									touch          : true,
-									video          : false,
-									controlNav     : false,
-									directionNav   : true,
-									keyboard       : true,
-									pausePlay      : false
-								} );
-							} );
-						}
-					}
-
-				});
-			</script>
-		<?php
-		}
-	}
-
-
-// *****************************************************
 // *      ISOTOPE FILTER
 // *****************************************************
 
@@ -1226,16 +1161,38 @@
         ?>
             <script type="text/javascript">
 
-            	function captionMoveIn(id) {
-					jQuery( '.nivo-caption' )
+            	function captionMoveIn() {
+					/*jQuery( '.nivo-caption' )
 					.fadeIn( 10 )
-					.animate( { left: "0%", right: "0%" }, 500 );
+					.animate( {
+						left: "0%",
+						right: "0%"
+					}, {
+						duration: 500,
+						start: function(){
+							alert($(this.attr('id')));
+					} } );*/
+					jQuery( '.nivo-caption' ).removeClass( 'from-left' );
+					jQuery( '.nivo-caption' ).addClass( 'from-right' );
+					jQuery( '.nivo-caption' ).removeClass( 'from-right', 500 );
+					/*jQuery( '.nivo-caption > *' ).each(function(){
+						setTimeout(function(i){
+							$(this).removeClass( 'from-right', 500 );
+						}, (i+1) * 100 );
+					});*/
+					//jQuery( '.nivo-caption' ).removeClass( 'from-right', 500 );
 				};
 
-				function captionMoveOut(id) {
-					jQuery( '.nivo-caption' )
+				function captionMoveOut() {
+					jQuery( '.nivo-caption' ).addClass( 'from-left', 500 );
+					/*jQuery( '.nivo-caption > *' ).each(function(){
+						setTimeout(function(i){
+							$(this).addClass( 'from-left', 500 );
+						}, (i+1) * 100 );
+					});*/
+					/*jQuery( '.nivo-caption' )
 					.fadeOut( 500 )
-					.animate( { left: "100%", right: "0%" }, 0 );
+					.animate( { left: "100%", right: "0%" }, 0 );*/
 				};
 
             	jQuery(document).ready(function($){
