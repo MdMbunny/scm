@@ -1006,9 +1006,11 @@
 							},
 				        ];
 
+				        var zoom = parseFloat($el.attr('data-zoom'));
+
 				        var args = {
-				        	center:new google.maps.LatLng(0, 0),
-							zoom:4,
+				        	center: new google.maps.LatLng(0, 0),
+							zoom: zoom,
 							draggableCursor : 'crosshair',
 						    draggingCursor  : 'crosshair',
 						    styles                : style,
@@ -1028,14 +1030,19 @@
 
 				        var $markers = $el.find($marker_class);
 
-						var map = new google.maps.Map( $el[0], args);	
-						
-						map.markers = [];
-						$markers.each(function(){
-					    	add_marker( $(this), map );
+						var map = new google.maps.Map( $el[0], args);
+
+						var infowindow = new google.maps.InfoWindow({
+							content		: '',
+							maxWidth	: 500
 						});
 
-						center_map( map, 10 );
+						map.markers = [];
+						$markers.each(function(){
+					    	add_marker( $(this), map, infowindow );
+						});
+
+						center_map( map, zoom );
 						
 						google.maps.event.addListener(map, 'tilesloaded', function() {
 
@@ -1044,7 +1051,7 @@
 						});
 					}
 
-					function add_marker( $marker, map ) {
+					function add_marker( $marker, map, infowindow ) {
 
 						var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
 
@@ -1083,11 +1090,11 @@
 
 						var marker = new google.maps.Marker({
 							raiseOnDrag : false,
-							clickable   : false,
+							clickable   : true,
 							//icon        : image,
 							//shadow      : shadow,
 							//shape       : shape,
-							//cursor      : 'crosshair',
+							cursor      : 'pointer',
 							animation   : google.maps.Animation.BOUNCE,
 							position	: latlng,
 							map			: map
@@ -1099,11 +1106,9 @@
 						map.markers.push( marker );
 
 						if( $marker.html() ){
-							var infowindow = new google.maps.InfoWindow({
-								content		: $marker.html()
-							});
-
 							google.maps.event.addListener(marker, 'click', function() {
+								infowindow.close();
+								infowindow.setContent($marker.html());
 								infowindow.open( map, marker );
 							});
 						}
@@ -1122,7 +1127,19 @@
 						    map.setCenter( bounds.getCenter() );
 						    map.setZoom( zoom );
 						}else{
-							map.fitBounds( bounds );
+							google.maps.event.addListener(map, 'zoom_changed', function() {
+							    zoomChangeBoundsListener = 
+							        google.maps.event.addListener(map, 'bounds_changed', function(event) {
+							            if (this.getZoom() > zoom && this.initialZoom == true) {
+							                // Change max/min zoom here
+							                this.setZoom(zoom);
+							                this.initialZoom = false;
+							            }
+							        google.maps.event.removeListener(zoomChangeBoundsListener);
+							    });
+							});
+							map.initialZoom = true;
+							map.fitBounds(bounds);
 						}
 					}
 					

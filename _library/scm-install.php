@@ -33,7 +33,7 @@
                     
                     if( $json['title'] ){
                         switch( $json['title'] ){
-                            case 'Testata':
+                            case 'Slider':
                                 // Salvo in un array globale il JSON del gruppo Testata che duplicherò per ogni Type
                                 $SCM_custom_fields['header'] = $json;
                             break;
@@ -240,6 +240,15 @@
             $plugins = array(
 
                 array(
+                    'name'               => 'ACF Hidden Field', // The plugin name.
+                    'slug'               => 'acf-hidden-master', // The plugin slug (typically the folder name).
+                    'source'             => 'acf-hidden-master.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
                     'name'               => 'ACF CF7', // The plugin name.
                     'slug'               => 'acf-cf7-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-cf7-master.zip', // The plugin source.
@@ -358,8 +367,8 @@
 
                 array(
                     'name'               => 'GitHub Updater', // The plugin name.
-                    'slug'               => 'github-updater-develop', // The plugin slug (typically the folder name).
-                    'source'             => 'github-updater-develop.zip', // The plugin source.
+                    'slug'               => 'github-updater', // The plugin slug (typically the folder name).
+                    'source'             => 'github-updater.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.

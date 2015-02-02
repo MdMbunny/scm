@@ -13,6 +13,9 @@ add_filter('acf/settings/load_json', 'scm_acf_json_load');
 
 add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
+//add_action('acf/save_post', 'scm_acf_assign_soggetti', 1);
+
+//add_filter('acf/fields/relationship/query/name=select_luoghi', 'scm_acf_select_luoghi', 10, 3);
 
 add_filter( 'bfa_force_fallback', 'my_force_fallback' );
 
@@ -93,14 +96,78 @@ function my_force_fallback( $force_fallback ) {
             $address = $fields[SCM_ACF_LUOGO_ADDRESS];
 
             $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
+
             $ll = getGoogleMapsLatLng( $google_address, $country );
             $lat = $ll['lat'];
             $lng = $ll['lng'];
 
-            $fields[SCM_ACF_LUOGO_LATITUDE] = $lat;
-            $fields[SCM_ACF_LUOGO_LONGITUDE] = $lng; 
+            $_POST['acf'][SCM_ACF_LUOGO_LATITUDE] = $lat;
+            $_POST['acf'][SCM_ACF_LUOGO_LONGITUDE] = $lng; 
         }
 	}
+
+	/*if ( ! function_exists( 'scm_acf_assign_soggetti' ) ) {
+        function scm_acf_assign_soggetti( $post_id ) {
+        	if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
+				return;
+            if( $_POST['post_type'] != 'scm-soggetti' )
+                return;
+
+            $fields = $_POST['acf'];
+
+            foreach ( get_posts(array( 'post_type' => 'scm-luoghi' )) as $luogo) {
+            	$luogo_id = $luogo->ID;
+            	$soggetti = ( gettype(get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id )) == 'array' ? get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id ) : array() );
+            	$index = array_search($post_id, $soggetti);
+				if ( $index !== false ) {
+					unset( $soggetti[$index] );
+				}
+				$soggetti = ( sizeof($soggetti) > 0 ? $soggetti : null );
+				update_field( SCM_ACF_LUOGO_SOGGETTI, $soggetti, $luogo_id );
+				//printPre($luogo_id);
+				//printPre(get_field('luoghi_soggetti', $luogo_id));
+            }
+
+            if( $fields[SCM_ACF_SOGGETTO_LUOGHI] ){
+	            foreach ($fields[SCM_ACF_SOGGETTO_LUOGHI] as $luogo_id) {
+	            	
+	            	$soggetti = ( get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id ) ?: array() );
+	            	$soggetti = array_merge($soggetti, array($post_id));
+					
+	            	update_field( SCM_ACF_LUOGO_SOGGETTI, $soggetti, $luogo_id );
+	            	//printPre($luogo_id);
+	            	//printPre(get_field('luoghi_soggetti', $luogo_id));
+	            }
+	        }
+
+            //foreach ( get_posts(array( 'post_type' => 'scm-luoghi' )) as $luogo) {
+            	//$luogo_id = $luogo->ID;
+            	//printPre($luogo_id);
+				//printPre(get_field('luoghi_soggetti', $luogo_id));
+            //}
+        }
+    }
+
+	// insert default select options from default presets
+	if ( ! function_exists( 'scm_acf_select_luoghi' ) ) {
+        function scm_acf_select_luoghi( $args, $field, $post ){
+        	//print($post->ID);
+        	//printPre($args['meta_query']);
+        	//alert('PIPPO');
+        	$obj = get_field( 'select_soggetto' );
+        	$id = $obj->ID;
+
+            $args['meta_query'] = array(
+		        array(
+		            'key' => 'luoghi_soggetti',
+		            'value' => $id,
+		            'compare' => 'LIKE'
+		        )
+		    );
+
+		    return $args;
+        }
+	}*/
 
 // *****************************************************
 // *      PRESETS

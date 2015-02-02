@@ -6,73 +6,141 @@
 global $post;
 
 $type = get_post_type();
+$id = $post->ID;
 
-$show_map = true;
-$show_address = 'no';
-$map_width = "100%";
-$map_height = "400px";
-$address_separator = ' &mdash; ';
 $province_prefix = '(';
 $province_suffix = ')';
 
+$rows = array(
+	array(
+		'tipo'							=>	'name',
+	),
+	array(
+		'tipo'							=>	'address',
+		'mostra_icona'					=>	'1',
+		'separatore'					=>	'-',
+	),
+	array(
+		'tipo'							=>	'num',
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
+		'separatore'					=>	'-',
+	),
+	array(
+		'tipo'							=>	'email',
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
+		'separatore'					=>	'-',
+	),
+	array(
+		'tipo'							=>	'link',
+		'mostra_icona'					=>	'1',
+		'mostra_nome'					=>	'1',
+		'separatore'					=>	'-',
+	),
+);
+
+$width = 100;
+$legend = 0;
+
 if( isset($this) ){
-	$show_map = $this->luogo_show_map;
-	$show_address = $this->luogo_show_address;
+	$rows = ( isset($this->luogo_rows) ? $this->luogo_rows : $rows );
+	$width = ( isset($this->luogo_width) ? $this->luogo_width : 100 );
+	$legend = ( isset($this->luogo_legend) ? $this->luogo_legend : 0 );
 }
 
-$country = ( get_field('luoghi_paese') ? get_field('luoghi_paese') : '' );
-$region = ( get_field('luoghi_regione') ? get_field('luoghi_regione') : '' );
-$province = ( get_field('luoghi_provincia') ? $province_prefix . get_field('luoghi_provincia') . $province_suffix : '' );
-$code = ( get_field('luoghi_cap') ? get_field('luoghi_cap') : '' );
-$city = ( get_field('luoghi_citta') ? get_field('luoghi_citta') : '' );
-$town = ( get_field('luoghi_frazione') ? get_field('luoghi_frazione') : '' );
-$address = ( get_field('luoghi_indirizzo') ? get_field('luoghi_indirizzo') : '' );
-
-$lat = ( get_field('luoghi_lat') ? get_field('luoghi_lat') : '' );
-$lng = ( get_field('luoghi_lng') ? get_field('luoghi_lng') : '' );
 
 
-$address = ( $address && ( $town || $city || $code || $province ) ? $address . $address_separator : $address );
-$town = ( ( $town && ( $city || $code || $province ) ) ? $town . ' ' : $town );
-$code = ( ( $code && ( $city || $province ) ) ? $code . ' ' : $code );
-$city = ( ( $city && $province ) ? $city . ' ' : $city );
-$province = ( ( $province && ( $region || $country ) ) ? $province . $address_separator : $province );
-$region = ( ( $region && $country ) ? $region . ' ' : $region );
+$classes = SCM_PREFIX . 'object ' . implode( " ", get_post_class() ) . $post->post_name . ' clear';
 
-$inline_address = $address . $town . $code . $city . $province . $region . $country;
+echo '<div id="' . $type . '-' . $id . '" class="' . $classes . '">';
 
-/*$classes = array(
-	$type . '-' . $post->post_name,
-	'clear'
-);*/
+$marker = ( get_field('luoghi_marker') ?: 0 );
 
+if ($legend && $marker)
+	echo '<div class="legend"><img src="' . $marker . '" /></div>';
 
-//echo '<div id="' . $type . '-' . get_the_ID() . '" class="' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '">';
-
-	if($show_address == 'up'){
-		echo '<div class="scm-address address">';
-			echo $inline_address;
-		echo '</div>';
-	}
-
-	if($show_map){
-
-		if( $lat && $lng ){
-			echo '<div class="scm-map map full">';
-				echo '<div class="scm-marker marker" data-lat="' . $lat . '" data-lng="' . $lng . '"></div>';
-			echo '</div>';
-		}
+	foreach ($rows as $row) {
+		$elem = ( $row['tipo'] ?: $row['tipo'] );
+		$ico = ( isset( $row['mostra_icona'] ) ? (int)$row['mostra_icona'] : 0 );
+		$txt = ( isset( $row['mostra_nome'] ) ? (int)$row['mostra_nome'] : 0 );
+		$sep = ( isset( $row['separatore'] ) ? ' ' . $row['separatore'] . ' ' : ' - ' );
 		
+
+		$class = SCM_PREFIX . $elem . ' ' . $elem . ' full';
+
+		echo '<div class="' . $class . '">';
+
+			switch ($elem) {
+				case 'name':
+					echo '<strong>' . get_field( 'luoghi_nome' ) . '</strong>';
+				break;
+				
+				case 'num':
+				case 'email':
+				case 'link':
+					
+					$list = get_field('luoghi_' . $elem);
+			
+					if( $list && sizeof($list) > 0 ){
+												
+						for( $i = 0; $i < sizeof( $list ); $i++ ) {
+							$value = $list[$i];
+							
+							$icona = $value['luogo_icona_' . $elem];
+							$nome = ( $txt ? $value['luogo_nome_' . $elem] . ' ' : '' );
+							$testo = $value['luogo_' . $elem];
+							if($elem == 'email') $testo = '<a href="mailto:' . $testo . '">' . $testo . '</a>';
+							$separator = ( $i < sizeof( $list ) - 1 ? $sep : '' );
+							$icon = ( $ico ? '<i class="fa ' . $icona . '"></i> ' : '' );
+							
+							echo '<span>' . $icon . $nome . $testo . '</span>';
+							if($separator)
+								echo '<span class="separator">' . $separator . '</span>';
+						}
+					}
+
+				break;
+				
+				case 'address':
+
+					$icona = get_field('luoghi_icon');
+						
+					$country = get_field('luoghi_paese');
+					$region = get_field('luoghi_regione');
+					$province = ( get_field('luoghi_provincia') ? $province_prefix . get_field('luoghi_provincia') . $province_suffix : '' );
+					$code = get_field('luoghi_cap');
+					$city = get_field('luoghi_citta');
+					$town = get_field('luoghi_frazione');
+					$address = get_field('luoghi_indirizzo');
+
+					$icon = ( $ico ? '<i class="fa ' . $icona . '"></i> ' : '' );
+
+					$town = ( ( $town && ( $city || $code || $province ) ) ? $town . ' ' : $town );
+					$code = ( ( $code && ( $city || $province ) ) ? $code . ' ' : $code );
+					$city = ( ( $city && $province ) ? $city . ' ' : $city );
+					$region = ( ( $region && $country ) ? $region . ', ' : $region );
+					$country = ( $country ? $country : '' );
+
+					$inline_address = '<span class="street">' . $address . '</span>';
+					if( $town || $city || $code || $province ){
+						$inline_address .= '<span class="separator">' . $sep . '</span>';
+						$inline_address .= '<span class="town">' . $town . $code . $city . $province . '</span>';
+					}
+
+					if( $region || $country ){
+						$inline_address .= '<span class="separator">' . $sep . '</span>';
+						$inline_address .= '<span class="country">' . $region . $country . '</span>';
+					}			
+					
+					echo $icon . $inline_address;
+					
+				break;
+			}
+
+		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
 	}
 
-	if($show_address == 'dw'){
-		echo '<div class="scm-address address">';
-			echo $inline_address;
-		echo '</div>';
-	}
-
-//echo '</div><!-- ' . $type . ' -->';
-
-
+echo '</div><!-- ' . $type . ' -->';
 
 ?>

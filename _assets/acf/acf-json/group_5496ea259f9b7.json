@@ -127,6 +127,23 @@
                         {
                             "key": "field_54ca2591a0a1d",
                             "label": "Link",
+                            "name": "link",
+                            "prefix": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_54ca2591a0a1d",
+                            "label": "Link",
                             "name": "url",
                             "prefix": "",
                             "type": "text",
@@ -417,5 +434,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422634973
+    "modified": 1422878820
 }

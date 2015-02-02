@@ -119,6 +119,9 @@ if ( ! isset( $content_width ) ) {
 		define( 'SCM_ACF_LUOGO_ADDRESS', 	'field_548ee49dfd2bb' );
 		define( 'SCM_ACF_LUOGO_LATITUDE', 	'field_548fe73047972' );
 		define( 'SCM_ACF_LUOGO_LONGITUDE', 	'field_54945fd9fdd3e' );
+		
+		define( 'SCM_ACF_LUOGO_SOGGETTI', 	'field_54cfa2278c48e' );	
+		define( 'SCM_ACF_SOGGETTO_LUOGHI', 	'field_548ee690a8b1a' );
 
 
 

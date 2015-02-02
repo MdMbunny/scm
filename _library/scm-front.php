@@ -557,6 +557,42 @@
 
                     break;
 
+                    case 'map_element':
+
+                        $luoghi = $cont[ 'select_luoghi' ];
+                        if(!$luoghi) continue;
+                        $width = ( $cont['larghezza'] >= 0 ? $cont['larghezza'] : 100);
+                        $zoom = ( $cont['zoom'] >= 0 ? $cont['zoom'] : 10);
+
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
+                            'map_luoghi' => $luoghi,
+                            'map_width' => $width,
+                            'map_zoom' => $zoom
+                        ));
+
+                    break;
+
+                    case 'luogo_element':
+
+                        $luoghi = $cont[ 'select_luoghi' ];
+                        if(!$luoghi) continue;
+                        $build = $cont['build_luoghi'];
+                        $width = ( $cont['larghezza'] >= 0 ? $cont['larghezza'] : 100);
+                        $legend = ( $cont['legend'] ?: 0);
+
+                        foreach ($luoghi as $luogo) {
+                            $single_type = $luogo->post_type;
+                            $post = $luogo;
+                            setup_postdata( $post );
+                            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
+                                'luogo_rows' => $build,
+                                'luogo_width' => $width,
+                                'luogo_legend' => $legend
+                            ));
+                        }
+
+                    break;
+
                     case 'contact_form_element':
 
                         $single = $cont[ 'select_contact_form' ];
