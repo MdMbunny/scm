@@ -308,107 +308,101 @@
         }
     }
 
-    //Prints main menu
+    //Prints menu
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
-
-            $menu_id = ( get_field( 'id_menu', 'option' ) ? get_field( 'id_menu', 'option' ) : 'site-navigation' );
             
-            $menu_class = ( get_field( 'overlay_menu', 'option' ) ? 'overlay-menu ' : '' ) . 'navigation ';
-            $menu_class .= ( ( $align == 'center' || $position != 'inline' ) ? 'full ' : 'half-width ' );
+            $menu = ( get_field( 'select_menu', 'option' ) ?: 'primary' );
+            
+            $menu_id = ( get_field( 'id_menu', 'option' ) ?: 'site-navigation' );
+            
+            $menu_class = 'navigation';
+            $menu_class .= ( ( $align == 'center' || $position != 'inline' ) ? ' full ' : ' half-width ' );
             $menu_class .= $align;
-
-            $out = '';
-
-            $out .= '<row class="' . $menu_class . '">';
-            
-                $out .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
-
-            $out .= '</row>';
-
-            $menu_wrap = $out;
-
-            wp_nav_menu( array(
-                "container" => "nav",
-                "container_id" => $menu_id,
-                "container_class" => $menu_class,
-                "menu_id" => "menu-main-menu",
-                "menu_class" => "menu",
-                "theme_location" => "primary",
-                'menu' => '', // id, name or slug
-                /*'items_wrap' => $menu_wrap,*/
-            ) );
-            
-            echo '<!-- #site-navigation -->';
-        }
-    }
-
-    //Prints sticky menu
-    if ( ! function_exists( 'scm_sticky_menu' ) ) {
-        function scm_sticky_menu() {
-
-            global $post;
-
-            $sticky = ( get_field( 'active_sticky_menu' ) == 'on' ? 1 : 0 );
-            $sticky = ( !$sticky ? ( get_field( 'active_sticky_menu', 'option' ) ? 1 : 0 ) : $sticky );
-
-            if( !$sticky )
-                return;
-
-            $sticky_id = ( get_field( 'id_menu', 'option' ) ? get_field( 'id_menu', 'option' ) . '-sticky' : 'site-navigation-sticky' );
-
-            $sticky_layout = ( get_field('select_layout_page', 'option') ? get_field('select_layout_page', 'option') : 'full' );
-            //$sticky_align = ( get_field('select_alignment_site', 'option') ? get_field('select_alignment_site', 'option') : 'center');
 
             $perma = get_permalink();
             $home = get_home_url();
             
-            $sticky_menu = ( get_field( 'menu_sticky_menu', 'option' ) ? get_field( 'menu_sticky_menu', 'option' ) : 'primary' );
-            $sticky_link = ( strpos($perma, $home)!==false ? '#top' : get_home_url() );
-            $sticky_toggle = ( get_field( 'toggle_sticky_menu', 'option' ) ? 'fa ' . get_field( 'toggle_sticky_menu', 'option' ) : 'fa-bars' );
-            $sticky_icon = ( get_field( 'icon_sticky_menu', 'option' ) ? 'fa ' . get_field( 'icon_sticky_menu', 'option' ) : 'fa-home' );
-            $sticky_image = ( get_field( 'image_sticky_menu', 'option' ) ? get_field( 'image_sticky_menu', 'option' ) : '' );
+            $toggle_menu = ( get_field( 'toggle_menu', 'option' ) ?: 'toggle' );
+            $toggle_link = ( strpos($perma, $home)!==false ? '#top' : get_home_url() );
+            $toggle_icon = 'fa ' . ( get_field( 'icon_toggle_menu', 'option' ) ?: 'fa-bars' );
+            $toggle_home = 'fa ' . ( get_field( 'home_toggle_menu', 'option' ) ?: 'fa-home' );
+            $toggle_image = ( get_field( 'image_toggle_menu', 'option' ) ?: '' );                      
+            $toggle_class = ( $align == 'center' ? 'block' : 'float-' . ( $align == 'left' ? 'right' : 'left' ) );
+
+
+            $wrap = '';
+
+            $wrap .= '<row class="full">';
             
-            $sticky_class = $sticky_layout . ' navigation sticky';
+                $wrap .= '<a href="' . $toggle_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false">';
+                        $wrap .= '<i class="sticky-toggle ' . $toggle_icon . '"></i>';
+                        if( $toggle_menu == 'home' ){
+                            $wrap .= '<i class="sticky-icon ' . $toggle_home . '"></i>';
+                            if($toggle_image)
+                                $wrap .= '<img class="sticky-image" src="' . $toggle_image . '" height=100% />';
+                        }
+                $wrap .= '</a>';
             
+                $wrap .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
 
-            $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ? get_field('select_layout_sticky_menu', 'option') : 'full' ) : 'full' );               
-            $row_align = ( get_field('select_alignment_sticky', 'option') ? get_field('select_alignment_sticky', 'option') : 'right');
-            
-            $row_class = $row_layout . ' ' . $row_align;
-
-            $toggle_class = ( $row_align == 'center' ? 'block' : 'float-' . ( $row_align == 'left' ? 'right' : 'left' ) );
-
-            $out = '';
-
-            $out .= '<row class="' . $row_class . '">';
-            
-                $out .= '<a href="' . $sticky_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false">';
-                        $out .= '<i class="sticky-toggle ' . $sticky_toggle . '"></i>';
-                        $out .= '<i class="sticky-icon ' . $sticky_icon . '"></i>';
-                        if($sticky_image)
-                            $out .= '<img class="sticky-image" src="' . $sticky_image . '" height=100% />';
-                $out .= '</a>';
-            
-                $out .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
-
-            $out .= '</row>';
-
-            $sticky_wrap = $out;
+            $wrap .= '</row>';
 
             wp_nav_menu( array(
                 'container' => 'nav',
-                'container_id' => $sticky_id,
-                'container_class' => $sticky_class,
-                'menu_id' => 'menu-sticky-menu',
+                'container_id' => $menu_id,
+                'container_class' => $menu_class . ( get_field( 'overlay_menu', 'option' ) ? ' overlay-menu' : '' ),
+                'menu_id' => 'menu-main-menu',
                 'menu_class' => 'menu',
-                'theme_location' => $sticky_menu,
+                'theme_location' => $menu,
                 'menu' => '', // id, name or slug
-                'items_wrap' => $sticky_wrap,
+                'items_wrap' => $wrap,
             ) );
 
-            echo '<!-- #site-navigation-sticky -->';
+            echo '<!-- #site-navigation -->';
 
+
+            $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
+
+            if( $sticky == 'plus' ){
+
+                $sticky_id = $menu_id . '-sticky';
+
+                $sticky_layout = ( get_field('select_layout_page', 'option') ?: 'full' );
+                $sticky_class = $menu_class . ' ' . $sticky_layout . ' sticky';
+
+                $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ?: 'full' ) : 'full' );
+                $row_align = $align;
+                $row_class = $row_layout . ' ' . $row_align;
+
+                $sticky_wrap = '';
+
+                $sticky_wrap .= '<row class="' . $row_class . '">';
+                
+                    $sticky_wrap .= '<a href="' . $toggle_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false">';
+                            $sticky_wrap .= '<i class="sticky-toggle ' . $toggle_icon . '"></i>';
+                            $sticky_wrap .= '<i class="sticky-icon ' . $toggle_home . '"></i>';
+                            if($toggle_image)
+                                $sticky_wrap .= '<img class="sticky-image" src="' . $toggle_image . '" height=100% />';
+                    $sticky_wrap .= '</a>';
+                
+                    $sticky_wrap .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
+
+                $sticky_wrap .= '</row>';
+
+                wp_nav_menu( array(
+                    'container' => 'nav',
+                    'container_id' => $sticky_id,
+                    'container_class' => $sticky_class,
+                    'menu_id' => 'menu-sticky-menu',
+                    'menu_class' => 'menu',
+                    'theme_location' => $menu,
+                    'menu' => '', // id, name or slug
+                    'items_wrap' => $sticky_wrap,
+                ) );
+
+                echo '<!-- #site-navigation-sticky -->';
+            }
         }
     }
 
@@ -741,7 +735,7 @@
             $id = ( get_field('id_topofpage', 'option') ?: 'site-topofpage' );
             $icon = get_field('tools_topofpage_icon', 'option');
             $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
-            $title = __( $text, SCM_THEME );
+            $title = $text;
 
             $output =   '<div id="' . $id . '" class="topofpage">';
             $output .=      '<a href="#top" title="' . $title . '" alt="' . $title . '">';

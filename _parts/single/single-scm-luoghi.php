@@ -60,6 +60,8 @@ $marker = ( get_field('luoghi_marker') ?: 0 );
 if ($legend && $marker)
 	echo '<div class="legend"><img src="' . $marker . '" /></div>';
 
+	echo '<div class="datas">';
+
 	foreach ($rows as $row) {
 		$elem = ( $row['tipo'] ?: $row['tipo'] );
 		$ico = ( isset( $row['mostra_icona'] ) ? (int)$row['mostra_icona'] : 0 );
@@ -140,6 +142,8 @@ if ($legend && $marker)
 
 		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
 	}
+
+	echo '</div>';
 
 echo '</div><!-- ' . $type . ' -->';
 

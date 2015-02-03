@@ -41,17 +41,20 @@
 	add_action('wp_footer', 'scm_jquery_single_page_nav');
 	add_action('wp_footer', 'scm_jquery_top_of_page');
 	add_action('wp_footer', 'scm_jquery_overlay');
+
 	add_action('wp_footer', 'scm_jquery_tabs');
 	add_action('wp_footer', 'scm_jquery_accordion');
 	add_action('wp_footer', 'scm_jquery_toggle');
 	add_action('wp_footer', 'scm_jquery_isotope_filter');
 	//add_action('wp_footer', 'scm_jquery_active_class');
+
 	add_action('wp_footer', 'scm_responsive_layout');
 	add_action('wp_footer', 'scm_jquery_google_map');
 	add_action('wp_footer', 'scm_jquery_nivoslider');
 	add_action('wp_footer', 'scm_jquery_fancybox');
 
 	add_action('wp_footer', 'scm_jquery_change_page');
+
 
 
 // *****************************************************
@@ -112,74 +115,80 @@
 	if ( ! function_exists( 'scm_jquery_toggle_menu' ) ) {
 		function scm_jquery_toggle_menu(){
 
-			$menu = ( get_field('id_menu', 'option') ? get_field('id_menu', 'option') : 'site-navigation' );
-			$sticky_menu = $menu . '-sticky';
+			//$menu = ( get_field('id_menu', 'option') ? get_field('id_menu', 'option') : 'site-navigation' );
+			$menu = 'navigation';
+			//$sticky_menu = $menu . '-sticky';
 
 		?>
 			<script type="text/javascript">
 			
 				jQuery(document).ready(function($){
 
-					var sticky_menu = '#' + <?php echo json_encode($sticky_menu); ?>;
+					var elem = '.' + <?php echo json_encode($menu); ?>;
 
-					var container, button, menu;
+					$( elem ).map(function(){
 
-					container = $( sticky_menu );
-
-					if ( ! container ) {
-						return;
-					}
-
-					button = $( '.menu-toggle' );
-
-					if ( 'undefined' === typeof button ) {
-						return;
-					}
-
-					menu = $( sticky_menu + ' ul' );
-
-					// Hide menu toggle button if menu is empty and return early.
-					if ( 'undefined' === typeof menu ) {
-						$button.css( 'display', 'none' );
-						return;
-					}
-
-					menu.attr( 'aria-expanded', 'false' );
-
-					container.mouseover( toggleOn );
-					container.mouseout( toggleOff );
-
-					button.click( toggleOff );
-
-					$( sticky_menu + ' row > ul > li > a' ).click( toggleOff );
-
-					var now = (-90).toString();
-
-					function toggleOn(){
-						if( $('body').hasClass('smart') && !container.hasClass( 'toggled' ) ){
-
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
-
-							container.addClass( 'toggled' );
-							button.attr( 'aria-expanded', 'true' );
-							menu.attr( 'aria-expanded', 'true' );
-							container.css( 'cursor', 'pointer' );
+						var button, menu;
+						
+						
+						
+						button = $(this).find( '.menu-toggle' );
+				
+						if ( 'undefined' === typeof button ) {
+							return;
 						}
-					}
 
-					function toggleOff(){						
-						if( $('body').hasClass('smart') && container.hasClass( 'toggled' ) ){
+						menu = $(this).find( 'ul' );
 
-							$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-
-							container.removeClass( 'toggled' );
-							button.attr( 'aria-expanded', 'false' );
-							menu.attr( 'aria-expanded', 'false' );
-							container.css( 'cursor', 'default' );
+						// Hide menu toggle button if menu is empty and return early.
+						if ( 'undefined' === typeof menu ) {
+							$button.css( 'display', 'none' );
+							return;
 						}
-					}
+
+						$(menu).attr( 'aria-expanded', 'false' );
+
+						$(this).on("tap", toggleOn );
+						$(this).mouseover( toggleOn );
+						$(this).mouseout( toggleOff );
+						$(window).on("swipe", toggleOff );
+
+						$(button).click( toggleOff );
+
+						$(this).find(' row > ul > li > a' ).click( toggleOff );
+
+						var now = (-90).toString();
+
+						function toggleOn(){
+							if( $('body').hasClass('smart') && !$(this).hasClass( 'toggled' ) ){
+
+								$( '.sticky-toggle' ).css( 'display', 'none' );
+								$( '.sticky-icon' ).css( 'display', 'inline-block' );
+
+								$(this).addClass( 'toggled' );
+								$(button).attr( 'aria-expanded', 'true' );
+								$(menu).attr( 'aria-expanded', 'true' );
+								$(this).css( 'cursor', 'pointer' );
+							}
+						}
+
+						function toggleOff(event){	
+							//event.preventDefault();	
+							//console.log(event);
+
+							if( $('body').hasClass('smart') && $(this).hasClass( 'toggled' ) ){
+
+								$( '.sticky-toggle' ).css( 'display', 'inline-block' );
+								$( '.sticky-icon' ).css( 'display', 'none' );
+
+								$(this).removeClass( 'toggled' );
+								$(button).attr( 'aria-expanded', 'false' );
+								$(menu).attr( 'aria-expanded', 'false' );
+								$(this).css( 'cursor', 'default' );
+							}
+						}
+
+					});
 				});
 
 			</script>
@@ -195,13 +204,20 @@
 	if ( ! function_exists( 'scm_jquery_sticky_menu' ) ) {
 		function scm_jquery_sticky_menu(){
 
-			$sticky = ( get_field('active_sticky_menu', 'option') ?: 0 );
-			$anim = ( get_field('anim_sticky_menu', 'option') ?: 0 );
+			$sticky = ( get_field('active_sticky_menu', 'option') ?: 'no' );
+
+			if( $sticky == 'no' )
+				return;
+
 			$offset = ( get_field('offset_sticky_menu', 'option') ?: 0 );
 			$attach = ( get_field('attach_sticky_menu', 'option') ?: 'nav-top' );
 			$menu = ( get_field('id_menu', 'option') ?: 'site-navigation' );
-			$sticky_menu = $menu . '-sticky';
-
+			$sticky_layout = ( get_field('select_layout_page', 'option') ?: '' );
+			$sticky_menu = $menu;
+			if( $sticky == 'plus' )
+				$sticky_menu .= '-sticky';
+			else
+				$attach = 'nav-top';
 		?>
 
 			<script type="text/javascript">
@@ -210,97 +226,113 @@
 					
 					var menu = '#' + <?php echo json_encode($menu); ?>;
 					var sticky_menu = '#' + <?php echo json_encode($sticky_menu); ?>;
-					var sticky = <?php echo json_encode($sticky); ?>;
-					var anim = <?php echo json_encode($anim); ?>;
+					var sticky_layout = <?php echo json_encode($sticky_layout); ?>;
 					var offset = parseFloat( <?php echo json_encode($offset); ?> );
 					var attach = <?php echo json_encode($attach); ?>;
-					
-					if(sticky){
-						
-						$(sticky_menu).css( 'top', -$(sticky_menu).outerHeight() );
-						
-						if( anim ){
-							$(sticky_menu).css({
-								'visibility' : 'hidden',
-							});
-						}else{
-							$(sticky_menu).css({
-								'-webkit-transition' : 'none',
-								'transition' : 'none',
-							});
+
+					//$( 'body' ).on( 'responsive', function(){
+					function setSticky(){
+
+						var new_offset = 0;
+
+						if( attach == 'nav-top'){
+							new_offset = offset + $(menu).offset().top;
+						}else if( attach == 'nav-bottom'){
+							new_offset = offset + $(menu).offset().top + $(menu).outerHeight();
 						}
 
-						$( 'body' ).on( 'responsive', function(){
+						$(window).off('.affix');
+						$(sticky_menu)
+						    .removeClass("affix affix-top affix-bottom")
+						    .removeData("bs.affix");
+						
+						$(sticky_menu).affix(
+							{ offset: { top: parseInt(new_offset) } }
+						);
 
-							var new_offset = 0;
+						// Se Sticky Plus muovi Nav top-negativo della sua outerHeight + eventuale box-shadow
+						if( sticky_menu != menu ){
+							var result = $(sticky_menu).css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g)
+							var color = result[0],
+							    x = result[1],
+							    y = result[2],
+							    blur = result[3],
+							    exp = result[4];
+							var plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
 
-							if( attach == 'nav-top'){
-								new_offset = offset + $(menu).offset().top;
-							}else if( attach == 'nav-bottom'){
-								new_offset = offset + $(menu).offset().top + $(menu).outerHeight();
-							}
-
-							$(window).off('.affix');
-							$(sticky_menu)
-							    .removeClass("affix affix-top affix-bottom")
-							    .removeData("bs.affix");
-							$(sticky_menu).affix(
-								{ offset: { top: parseInt(new_offset) } }
-							);
-
-						} );
-
-						var w = $(window).width();
-
-						if( w < 701 ){
-							$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-						}else if( w < 941 ){
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
+							$(sticky_menu).css( 'top', -$(sticky_menu).outerHeight()-plus );
 						}else{
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-
-							if( $( '.sticky-image' )[0] ){
-								$( '.sticky-image' ).css( 'display', 'inline-block' );
-								$( '.sticky-icon' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}else{
-								$( '.sticky-icon' ).css( 'display', 'inline-block' );
-								$( '.sticky-image' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}
+							$(sticky_menu).on('affix.bs.affix', function () {
+							     $(this).addClass(sticky_layout);
+							});
+							$(sticky_menu).on('affix-top.bs.affix', function () {
+							     $(this).removeClass(sticky_layout);
+							});
 						}
-
-						$( 'body' ).on( 'responsiveSmart', function(){
-							$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-						} );
-
-						$( 'body' ).on( 'responsiveTablet', function(){
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
-						} );
-
-						$( 'body' ).on( 'responsiveDesktop', function(){
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							if( $( '.sticky-image' )[0] ){
-								$( '.sticky-image' ).css( 'display', 'inline-block' );
-								$( '.sticky-icon' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}else{
-								$( '.sticky-icon' ).css( 'display', 'inline-block' );
-								$( '.sticky-image' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}
-
-						} );
-
 					}
+
+					setSticky();
+
+					//} );
+
+					var w = $(window).width();
+
+					if( w < 701 ){
+						$( '.navigation' ).addClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'inline-block' );
+						$( '.sticky-icon' ).css( 'display', 'none' );
+						$( '.sticky-image' ).css( 'display', 'none' );
+					}else if( w < 941 ){
+						$( '.navigation' ).removeClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'none' );
+						$( '.sticky-image' ).css( 'display', 'none' );
+						$( '.sticky-icon' ).css( 'display', 'inline-block' );
+					}else{
+						$( '.navigation' ).removeClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'none' );
+
+						if( $( '.sticky-image' )[0] ){
+							$( '.sticky-image' ).css( 'display', 'inline-block' );
+							$( '.sticky-icon' ).css( 'display', 'none' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+						}else{
+							$( '.sticky-icon' ).css( 'display', 'inline-block' );
+							$( '.sticky-image' ).css( 'display', 'none' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+						}
+					}
+
+					$( 'body' ).on( 'responsiveSmart', function(){
+						setSticky();
+						$( '.navigation' ).addClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'inline-block' );
+						$( '.sticky-icon' ).css( 'display', 'none' );
+						$( '.sticky-image' ).css( 'display', 'none' );
+					} );
+
+					$( 'body' ).on( 'responsiveTablet', function(){
+						$( '.navigation' ).removeClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'none' );
+						$( '.sticky-image' ).css( 'display', 'none' );
+						$( '.sticky-icon' ).css( 'display', 'inline-block' );
+					} );
+
+					$( 'body' ).on( 'responsiveDesktop', function(){
+						setSticky();
+						$( '.navigation' ).removeClass( 'toggle' );
+						$( '.sticky-toggle' ).css( 'display', 'none' );
+						if( $( '.sticky-image' )[0] ){
+							$( '.sticky-image' ).css( 'display', 'inline-block' );
+							$( '.sticky-icon' ).css( 'display', 'none' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+						}else{
+							$( '.sticky-icon' ).css( 'display', 'inline-block' );
+							$( '.sticky-image' ).css( 'display', 'none' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+						}
+
+					} );
+
 
 				});
 			</script>
@@ -340,7 +372,7 @@
 							var name = this.hash.slice( 1 );
 							var destination;
 
-							console.log(this);
+							//console.log(this);
 
 							target = target.length ? target : $( '[name=' + name +']' );
 
@@ -393,7 +425,7 @@
 					var interval = <?php echo json_encode($interval); ?>;
 					var offset = <?php echo json_encode($offset); ?>;
 
-					$('#site-navigation-sticky').singlePageNav({
+					$('.navigation').singlePageNav({
 					//$('.navigation').singlePageNav({
 						filter: ':not(.external) :not([href="#top"])',
 						currentClass: active,
@@ -454,16 +486,20 @@
 			<script type="text/javascript">
 				
 				jQuery(document).ready(function($){
-
-					$( 'body' ).on( 'responsive', function(){
-						var overlay = $('.overlay-menu');
-
-						overlay.each(function(){
-							var h = $(this).outerHeight();
-							$(this).css( 'margin-bottom', - h );
+					
+					var overlay = $('.overlay-menu');
+					
+					if( overlay ){
+						$( 'body' ).on( 'responsive', function(){
+							
+							overlay.each(function(){
+								var h = $(this).outerHeight();
+								$(this).css( 'margin-bottom', - h );
+								//$(this).css( 'position', 'absolute' );
+							});
+							
 						});
-						
-					});
+					}
 				
 				});
 			</script>

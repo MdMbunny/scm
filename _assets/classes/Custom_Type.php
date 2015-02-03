@@ -40,10 +40,10 @@ class Custom_Type {
         $this->attributes = array();
         $this->taxonomies = array();
         
-        $this->singular = __( $singular, SCM_THEME );
-        $this->singular_short = __( $singular_short, SCM_THEME );
-        $this->plural = __( $plural, SCM_THEME );
-        $this->plural_short = __( $plural_short, SCM_THEME );
+        $this->singular = $singular;
+        $this->singular_short = $singular_short;
+        $this->plural = $plural;
+        $this->plural_short = $plural_short;
         $this->slug = $slug;
         $this->icon = $icon;
         $this->uploads_post_folder = $folder;

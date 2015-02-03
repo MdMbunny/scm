@@ -216,6 +216,14 @@ function my_force_fallback( $force_fallback ) {
 	    			$arr = $SCM_types['public'];
 	    		else
 	    			$arr = $SCM_types['all'];
+	    	elseif( strpos( $list, 'select_menu' ) !== false ):
+
+	    		$menus = get_registered_nav_menus();
+
+				foreach ( $menus as $location => $description ) {
+					if( !strpos( $location, '__en' ) )
+						$arr[ $location ] = $description;
+				}
 	        elseif( strpos( $list, 'select_alignment' ) !== false ):
 	        	$arr = array(
 					'left' => 'Sinistra',

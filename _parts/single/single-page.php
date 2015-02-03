@@ -19,8 +19,8 @@ $single = ( ( isset($this) && isset($this->single) ) ? $this->single : 0 );
 echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>';
 	
 	// --- Header
-	$custom_head = ( $single ? get_field( 'flexible_headers_' . $type, 'option' ) : get_field( 'flexible_headers' ) );
-	$custom_head = ( $custom_head ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+	$custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+	//$custom_head = ( $single ? get_field( 'flexible_headers' ) : ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
 	$units = ( $single ? get_field( 'units_' . $type, 'option' ) : get_field( 'units' ) );
 	$units = ( $units ?: ( get_field( 'units', 'option' ) ?: 'px' ) );
 	$height = ( $single ? get_field( 'max_height_' . $type, 'option' ) : get_field( 'max_height' ) );

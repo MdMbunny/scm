@@ -256,7 +256,6 @@
             $tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';
 
             $menu_font = scm_options_get( 'font', 'menu', 1 );
-            $sticky_font = scm_options_get( 'font', 'sticky_menu', 1 );
 
             $top_bg = scm_options_get( 'bg_color', 'topofpage', 1 );
             $top_icon = scm_options_get( 'text_color', 'topofpage', 1 );
@@ -275,9 +274,7 @@
             $css .= '.secondary, .secondary i { ' . $secondary . ' }' . PHP_EOL;
             $css .= '.tertiary, .tertiary i { ' . $tertiary . ' }' . PHP_EOL;
 
-
             $css .= '.navigation { ' . $menu_font . ' }' . PHP_EOL;
-            $css .= '.navigation.sticky row { ' . $sticky_font . ' }' . PHP_EOL;
 
             $css .= '.topofpage { ' . $top_bg . ' }' . PHP_EOL;
             $css .= '.topofpage a i { ' . $top_icon . ' }' . PHP_EOL;

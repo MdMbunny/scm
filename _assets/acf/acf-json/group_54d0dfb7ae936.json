@@ -1,40 +1,23 @@
 {
-    "key": "group_54ac404e7659e",
-    "title": "Header Sticky Menu",
+    "key": "group_54d0dfb7ae936",
+    "title": "Opzioni Menu",
     "fields": [
         {
-            "key": "field_54ac404e7dcdb",
-            "label": "Attivo",
-            "name": "active_sticky_menu",
-            "prefix": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 20,
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1
-        },
-        {
-            "key": "field_54ac4110743aa",
+            "key": "field_54d0dfb7b70f8",
             "label": "Menu",
-            "name": "menu_sticky_menu",
+            "name": "select_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 80,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "choices": {
-                "primary": "Main Menu"
+                "primary": "Menu Principale IT"
             },
             "default_value": {
                 "": ""
@@ -48,25 +31,26 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac458ccf6e5",
-            "label": "Impostazioni",
-            "name": "",
+            "key": "field_54d0e3c6f02eb",
+            "label": "Overlay",
+            "name": "overlay_menu",
             "prefix": "",
-            "type": "message",
+            "type": "true_false",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 50,
                 "class": "",
                 "id": ""
             },
-            "message": ""
+            "message": "",
+            "default_value": 0
         },
         {
-            "key": "field_54ac404e7dd3e",
-            "label": "Attach to Menu",
-            "name": "attach_sticky_menu",
+            "key": "field_54d0e3eff02ec",
+            "label": "Posizione",
+            "name": "position_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -78,12 +62,12 @@
                 "id": ""
             },
             "choices": {
-                "no": "No attach",
-                "nav-top": "Attach to #site-navigation TOP",
-                "nav-bottom": "Attach to #site-navigation BOTTOM"
+                "top": "Menu sopra al logo",
+                "inline": "Menu affianco al logo",
+                "bottom": "Menu sotto al logo"
             },
             "default_value": {
-                "no": "No attach"
+                "bottom": "bottom"
             },
             "allow_null": 0,
             "multiple": 0,
@@ -94,9 +78,9 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac404e7dd16",
+            "key": "field_54d0dfb7b7165",
             "label": "Allineamento",
-            "name": "select_alignment_sticky",
+            "name": "select_alignment_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -113,7 +97,7 @@
                 "center": "Centrato"
             },
             "default_value": {
-                "right": "right"
+                "left": "left"
             },
             "allow_null": 0,
             "multiple": 0,
@@ -124,50 +108,9 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac404e7dd29",
-            "label": "Offset",
-            "name": "offset_sticky_menu",
-            "prefix": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "default_value": 0,
-            "placeholder": 0,
-            "prepend": "",
-            "append": "px",
-            "min": "",
-            "max": "",
-            "step": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
-            "key": "field_54ae7a944c855",
-            "label": "Animazione",
-            "name": "anim_sticky_menu",
-            "prefix": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0
-        },
-        {
-            "key": "field_54ac404e7dca7",
+            "key": "field_54d0dfb7b719f",
             "label": "Font Menu",
-            "name": "select_webfonts_families_sticky_menu",
+            "name": "select_webfonts_families_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -197,9 +140,9 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac404e7dcc1",
+            "key": "field_54d0dfb7b71b2",
             "label": "Sub-Family Menu",
-            "name": "select_webfonts_default_families_sticky_menu",
+            "name": "select_webfonts_default_families_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -235,9 +178,9 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac45f5cf6e6",
-            "label": "Pulsante",
-            "name": "",
+            "key": "field_54d0e62140b88",
+            "label": "Toggle Menu",
+            "name": "_copia_copia",
             "prefix": "",
             "type": "message",
             "instructions": "",
@@ -251,16 +194,16 @@
             "message": ""
         },
         {
-            "key": "field_54ac4146743ab",
+            "key": "field_54d0dfb7b71d6",
             "label": "Tipo",
-            "name": "button_sticky_menu",
+            "name": "toggle_menu",
             "prefix": "",
             "type": "select",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 20,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -280,16 +223,16 @@
             "readonly": 0
         },
         {
-            "key": "field_54ac404e7dd74",
+            "key": "field_54d0dfb7b71e8",
             "label": "Icona Toggle Menu",
-            "name": "toggle_sticky_menu",
+            "name": "icon_toggle_menu",
             "prefix": "",
             "type": "font-awesome",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 80,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -781,46 +724,35 @@
             }
         },
         {
-            "key": "field_54ac404e7dcef",
-            "label": "Link",
-            "name": "link_sticky_menu",
+            "key": "field_54d0dfb7b721f",
+            "label": "Immagine Home",
+            "name": "image_toggle_menu",
             "prefix": "",
-            "type": "select",
+            "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": [
                 [
                     {
-                        "field": "field_54ac4146743ab",
+                        "field": "field_54d0dfb7b71d6",
                         "operator": "==",
                         "value": "home"
                     }
                 ]
             ],
             "wrapper": {
-                "width": 20,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "home": "Home Page",
-                "top": "Top of Page"
-            },
-            "default_value": {
-                "home": "home"
-            },
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all"
         },
         {
-            "key": "field_54ac404e7dd62",
+            "key": "field_54d0dfb7b720d",
             "label": "Icona Home",
-            "name": "icon_sticky_menu",
+            "name": "home_toggle_menu",
             "prefix": "",
             "type": "font-awesome",
             "instructions": "",
@@ -828,14 +760,14 @@
             "conditional_logic": [
                 [
                     {
-                        "field": "field_54ac4146743ab",
+                        "field": "field_54d0dfb7b71d6",
                         "operator": "==",
                         "value": "home"
                     }
                 ]
             ],
             "wrapper": {
-                "width": 30,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -1327,19 +1259,65 @@
             }
         },
         {
-            "key": "field_54ac404e7dd50",
-            "label": "Immagine Home",
-            "name": "image_sticky_menu",
+            "key": "field_54d0e3220b9e7",
+            "label": "Sticky Menu",
+            "name": "_copia",
             "prefix": "",
-            "type": "image",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54d0dfb7b70dc",
+            "label": "Tipo",
+            "name": "active_sticky_menu",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "no": "No Sticky",
+                "self": "Sticky Self",
+                "plus": "Sticky Plus"
+            },
+            "default_value": {
+                "no": "no"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54d0dfb7b7148",
+            "label": "Attach to Menu",
+            "name": "attach_sticky_menu",
+            "prefix": "",
+            "type": "select",
             "instructions": "",
             "required": 0,
             "conditional_logic": [
                 [
                     {
-                        "field": "field_54ac4146743ab",
+                        "field": "field_54d0dfb7b70dc",
                         "operator": "==",
-                        "value": "home"
+                        "value": "plus"
                     }
                 ]
             ],
@@ -1348,21 +1326,65 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "url",
-            "preview_size": "thumbnail",
-            "library": "all"
+            "choices": {
+                "no": "No attach",
+                "nav-top": "Attach to main navigation TOP",
+                "nav-bottom": "Attach to main navigation BOTTOM"
+            },
+            "default_value": {
+                "no": "No attach"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54d0dfb7b7178",
+            "label": "Offset",
+            "name": "offset_sticky_menu",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54d0dfb7b70dc",
+                        "operator": "!=",
+                        "value": "no"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": 0,
+            "prepend": "",
+            "append": "px",
+            "min": "",
+            "max": "",
+            "step": "",
+            "readonly": 0,
+            "disabled": 0
         }
     ],
     "location": [
         [
             {
-                "param": "post_type",
+                "param": "options_page",
                 "operator": "==",
-                "value": "polylang_mo"
+                "value": "acf-options-header"
             }
         ]
     ],
-    "menu_order": 1025,
+    "menu_order": 1018,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -1383,5 +1405,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422976256
+    "modified": 1422979269
 }

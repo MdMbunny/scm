@@ -18,11 +18,11 @@
 	if ( ! function_exists( 'scm_install' ) ) {
 		function scm_install() {
 
-            global $SCM_custom_fields;
+            //global $SCM_custom_fields;
 
-            $cont = array();
+            //$cont = array();
 
-            $dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
+            /*$dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
             foreach ($dir as $fileinfo) {
                 if (!$fileinfo->isDot()) {
 
@@ -40,7 +40,7 @@
                         }
                     }
                 }
-            }
+            }*/
 
 			$themeStatus = get_option( 'scm-settings-installed' );
 
@@ -189,7 +189,7 @@
                     'parent_slug'   => SCM_SETTINGS_MAIN,
                 ));
 
-                if( isset( $SCM_custom_fields['header'] ) ){
+                /*if( isset( $SCM_custom_fields['header'] ) ){
 
                     foreach ($SCM_types['public'] as $slug => $title) {
 
@@ -204,7 +204,7 @@
 
                         scm_acf_fields_group_duplicate( $SCM_custom_fields['header'], $title, $slug, array( array( array ( 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options-template-' . $slug ) ) ) );
                     }
-                }
+                }*/
             }
         }
     }
@@ -213,7 +213,7 @@
 // *      DUPLICATE FIELDS GROUP
 // *****************************************************
 
-    if ( ! function_exists( 'scm_acf_fields_group_duplicate' ) ) {
+    /*if ( ! function_exists( 'scm_acf_fields_group_duplicate' ) ) {
         function scm_acf_fields_group_duplicate( $group, $title, $slug, $location = array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'post' ) ) ) ) {
 
             $group['title'] .= ' ' . $title;
@@ -228,7 +228,7 @@
             if( function_exists('register_field_group') )
                 register_field_group( $group );
         }
-    }
+    }*/
 
 // *****************************************************
 // *      PLUGIN INSTALLATION

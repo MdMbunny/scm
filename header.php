@@ -148,8 +148,6 @@ $page_class = ( get_field('select_layout_page', 'option') ? get_field('select_la
 
                     }
 
-                    scm_sticky_menu();
-
                     ?>
 
 

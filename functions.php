@@ -40,7 +40,7 @@ if ( ! isset( $content_width ) ) {
 	}
 
 	$SCM_types = array();
-	$SCM_custom_fields = array();
+	//$SCM_custom_fields = array();
 	$SCM_back_query;
 	$SCM_galleries = array();
 
@@ -134,7 +134,6 @@ require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
 require SCM_DIR_LIBRARY . 'scm-functions.php';
 
 require SCM_DIR_LIBRARY . 'scm-acf.php';
-require SCM_DIR_LIBRARY . 'scm-acf-contents.php';
 require SCM_DIR_LIBRARY . 'scm-install.php';
 require SCM_DIR_LIBRARY . 'scm-options.php';
 require SCM_DIR_LIBRARY . 'scm-core.php';

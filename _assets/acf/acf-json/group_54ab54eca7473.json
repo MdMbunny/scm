@@ -153,9 +153,9 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "post_type",
                 "operator": "==",
-                "value": "acf-options-header"
+                "value": "polylang_mo"
             }
         ]
     ],
@@ -180,5 +180,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421536884
+    "modified": 1422976184
 }
