@@ -33,6 +33,8 @@
 // +++ todo:	A > if script is needed, then add_action
 //				B > merge everything in one single script as functions (maybe a JS Class with Methods), then call functions/methods only if needed
 
+	add_action('wp_footer', 'scm_jquery_link_events');
+
 	add_action('wp_footer', 'scm_jquery_ie_fixes');
 	add_action('wp_footer', 'scm_jquery_youtube_fix');
 	add_action('wp_footer', 'scm_jquery_toggle_menu');
@@ -48,12 +50,56 @@
 	add_action('wp_footer', 'scm_jquery_isotope_filter');
 	//add_action('wp_footer', 'scm_jquery_active_class');
 
-	add_action('wp_footer', 'scm_responsive_layout');
+	
 	add_action('wp_footer', 'scm_jquery_google_map');
 	add_action('wp_footer', 'scm_jquery_nivoslider');
 	add_action('wp_footer', 'scm_jquery_fancybox');
 
 	add_action('wp_footer', 'scm_jquery_change_page');
+
+	add_action('wp_footer', 'scm_responsive_layout');
+
+
+
+// *****************************************************
+// *      EVENTS
+// *****************************************************
+
+	//Link Events
+    if ( ! function_exists( 'scm_jquery_link_events' ) ) {
+        function scm_jquery_link_events(){
+
+        ?>
+			<script type="text/javascript">
+	        	jQuery(document).ready(function($){
+
+	        		$('a').click(function(event) {
+
+	        			event.preventDefault();
+	        			
+	        			var link = String(this.href);
+
+	        			$('body').trigger( 'link', [ this, link ] );
+	        			$(this).trigger( 'link', [ this, link ] );
+
+	            		if ( location.pathname.replace( /^\//,'' ) !== this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
+							$('body').trigger( 'linkSite', [ this, link ] );
+							$(this).trigger( 'linkSite', [ this, link ] );
+						}else if ( location.pathname.replace( /^\//,'' ) === this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
+							$('body').trigger( 'linkPage', [ this, link ] );
+							$(this).trigger( 'linkPage', [ this, link ] );
+						}else{
+							$('body').trigger( 'linkExternal', [ this, link ] );
+							$(this).trigger( 'linkExternal', [ this, link ] );
+						}
+
+					});
+
+				});
+			</script>
+		<?php
+		}
+	}
 
 
 
@@ -142,25 +188,54 @@
 
 						// Hide menu toggle button if menu is empty and return early.
 						if ( 'undefined' === typeof menu ) {
-							$button.css( 'display', 'none' );
+							$(button).css( 'display', 'none' );
 							return;
 						}
 
 						$(menu).attr( 'aria-expanded', 'false' );
 
-						$(this).on("tap", toggleOn );
-						$(this).mouseover( toggleOn );
-						$(this).mouseout( toggleOff );
-						$(window).on("swipe", toggleOff );
+						$(this).mouseenter( toggleOn );
+						$(this).mouseleave( toggleOff );
+						$(window).on('swipe', toggleOff );
+						$(window).on('tap', toggleOff );
+						$(this).on('tap', toggleOn );
 
-						$(button).click( toggleOff );
+						$( '.toggled .menu-toggle' ).on( 'link', toggleOff );
+						$(this).find('row > ul > li > a' ).on( 'link', toggleOff );
 
-						$(this).find(' row > ul > li > a' ).click( toggleOff );
+						$( 'body' ).on( 'responsiveSmart', function(){
+							$( '.navigation' ).addClass( 'toggle' );
+							$( '.sticky-toggle' ).css( 'display', 'inline-block' );
+							$( '.sticky-icon' ).css( 'display', 'none' );
+							$( '.sticky-image' ).css( 'display', 'none' );
+						} );
+
+						$( 'body' ).on( 'responsiveTablet', function(){
+							$( '.navigation' ).removeClass( 'toggle' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+							$( '.sticky-image' ).css( 'display', 'none' );
+							$( '.sticky-icon' ).css( 'display', 'inline-block' );
+						} );
+
+						$( 'body' ).on( 'responsiveDesktop', function(){
+							$( '.navigation' ).removeClass( 'toggle' );
+							$( '.sticky-toggle' ).css( 'display', 'none' );
+							if( $( '.sticky-image' )[0] ){
+								$( '.sticky-image' ).css( 'display', 'inline-block' );
+								$( '.sticky-icon' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
+							}else{
+								$( '.sticky-icon' ).css( 'display', 'inline-block' );
+								$( '.sticky-image' ).css( 'display', 'none' );
+								$( '.sticky-toggle' ).css( 'display', 'none' );
+							}
+
+						} );
 
 						var now = (-90).toString();
 
-						function toggleOn(){
-							if( $('body').hasClass('smart') && !$(this).hasClass( 'toggled' ) ){
+						function toggleOn() {
+							if( $('body').hasClass('smart') && !$(this).hasClass( 'toggled' ) ) {
 
 								$( '.sticky-toggle' ).css( 'display', 'none' );
 								$( '.sticky-icon' ).css( 'display', 'inline-block' );
@@ -172,11 +247,9 @@
 							}
 						}
 
-						function toggleOff(event){	
-							//event.preventDefault();	
-							//console.log(event);
+						function toggleOff( event, elem, link ) {
 
-							if( $('body').hasClass('smart') && $(this).hasClass( 'toggled' ) ){
+							if( $('body').hasClass('smart') && $(this).hasClass( 'toggled' ) ) {
 
 								$( '.sticky-toggle' ).css( 'display', 'inline-block' );
 								$( '.sticky-icon' ).css( 'display', 'none' );
@@ -212,11 +285,8 @@
 			$offset = ( get_field('offset_sticky_menu', 'option') ?: 0 );
 			$attach = ( get_field('attach_sticky_menu', 'option') ?: 'nav-top' );
 			$menu = ( get_field('id_menu', 'option') ?: 'site-navigation' );
-			$sticky_layout = ( get_field('select_layout_page', 'option') ?: '' );
-			$sticky_menu = $menu;
-			if( $sticky == 'plus' )
-				$sticky_menu .= '-sticky';
-			else
+			$sticky_menu = $menu . '-sticky';
+			if( $sticky == 'self' )
 				$attach = 'nav-top';
 		?>
 
@@ -226,11 +296,12 @@
 					
 					var menu = '#' + <?php echo json_encode($menu); ?>;
 					var sticky_menu = '#' + <?php echo json_encode($sticky_menu); ?>;
-					var sticky_layout = <?php echo json_encode($sticky_layout); ?>;
 					var offset = parseFloat( <?php echo json_encode($offset); ?> );
 					var attach = <?php echo json_encode($attach); ?>;
+					var sticky = <?php echo json_encode($sticky); ?>;
+					
+					$( 'body' ).on( 'responsive', setSticky );
 
-					//$( 'body' ).on( 'responsive', function(){
 					function setSticky(){
 
 						var new_offset = 0;
@@ -250,8 +321,21 @@
 							{ offset: { top: parseInt(new_offset) } }
 						);
 
+						fixSticky();
+
+						$(sticky_menu).on('affix.bs.affix', function () {
+						     $(menu).addClass('affix-' + sticky);
+						});
+						$(sticky_menu).on('affix-top.bs.affix', function () {
+						     $(menu).removeClass('affix-' + sticky);
+						});
+
+					}
+
+					function fixSticky(){
+
 						// Se Sticky Plus muovi Nav top-negativo della sua outerHeight + eventuale box-shadow
-						if( sticky_menu != menu ){
+						if( sticky == 'plus' ){
 							var result = $(sticky_menu).css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g)
 							var color = result[0],
 							    x = result[1],
@@ -260,24 +344,24 @@
 							    exp = result[4];
 							var plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
 
+							//alert($(sticky_menu).outerHeight()-plus);
+							//alert($(sticky_menu).outerHeight());
+
 							$(sticky_menu).css( 'top', -$(sticky_menu).outerHeight()-plus );
 						}else{
-							$(sticky_menu).on('affix.bs.affix', function () {
-							     $(this).addClass(sticky_layout);
-							});
-							$(sticky_menu).on('affix-top.bs.affix', function () {
-							     $(this).removeClass(sticky_layout);
-							});
+							//$(sticky_menu).css( 'top', $(menu).top );
 						}
 					}
 
-					setSticky();
+					//setSticky();
 
-					//} );
+					
 
-					var w = $(window).width();
 
-					if( w < 701 ){
+					//var w = $(window).width();
+
+					/*if( w < 701 ){
+						alert('DUE');
 						$( '.navigation' ).addClass( 'toggle' );
 						$( '.sticky-toggle' ).css( 'display', 'inline-block' );
 						$( '.sticky-icon' ).css( 'display', 'none' );
@@ -300,39 +384,7 @@
 							$( '.sticky-image' ).css( 'display', 'none' );
 							$( '.sticky-toggle' ).css( 'display', 'none' );
 						}
-					}
-
-					$( 'body' ).on( 'responsiveSmart', function(){
-						setSticky();
-						$( '.navigation' ).addClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-						$( '.sticky-icon' ).css( 'display', 'none' );
-						$( '.sticky-image' ).css( 'display', 'none' );
-					} );
-
-					$( 'body' ).on( 'responsiveTablet', function(){
-						$( '.navigation' ).removeClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'none' );
-						$( '.sticky-image' ).css( 'display', 'none' );
-						$( '.sticky-icon' ).css( 'display', 'inline-block' );
-					} );
-
-					$( 'body' ).on( 'responsiveDesktop', function(){
-						setSticky();
-						$( '.navigation' ).removeClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'none' );
-						if( $( '.sticky-image' )[0] ){
-							$( '.sticky-image' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-						}else{
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-						}
-
-					} );
-
+					}*/
 
 				});
 			</script>
@@ -356,20 +408,22 @@
 		?>
 			<script type="text/javascript">
 				jQuery(document).ready(function($){
-					
-					$( 'a' ).click( function() {
-						if ( location.pathname.replace( /^\//,'' ) === this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
 
-							var time = <?php echo json_encode($duration); ?>;
-							var offset = <?php echo json_encode($offset); ?>;
-							var ease = <?php echo json_encode($ease); ?>;
+					var time = <?php echo json_encode($duration); ?>;
+					var offset = <?php echo json_encode($offset); ?>;
+					var ease = <?php echo json_encode($ease); ?>;
+
+					$( 'body' ).on( 'linkPage', smoothScroll );
+
+					function smoothScroll( event, elem, link ) {
+						//if ( location.pathname.replace( /^\//,'' ) === this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
 							
 							var win = $( window ).height();
 							var height = $( 'body' ).height();
 							var position = $( 'body' ).scrollTop();
 
-							var target = $( this.hash );
-							var name = this.hash.slice( 1 );
+							var target = $( elem.hash );
+							var name = elem.hash.slice( 1 );
 							var destination;
 
 							//console.log(this);
@@ -396,8 +450,8 @@
 								$( 'html, body' ).animate( { scrollTop: destination }, parseInt( duration ), ease, function(){ $( this ).css( 'pointer-events', 'all' ); } );
 								return false;
 							}
-						}
-					});
+						//}
+					}
 
 				});
 			</script>
@@ -460,6 +514,7 @@
 					var offset = parseFloat( <?php echo json_encode($offset); ?> );
 
 					$( 'body' ).on( 'responsive', function(){
+						//alert('topofpage');
 						$(topofpage)
 						    .removeClass("affix affix-top affix-bottom")
 						    .removeData("bs.affix");
@@ -491,7 +546,7 @@
 					
 					if( overlay ){
 						$( 'body' ).on( 'responsive', function(){
-							
+							//alert('overlay');
 							overlay.each(function(){
 								var h = $(this).outerHeight();
 								$(this).css( 'margin-bottom', - h );
@@ -870,93 +925,6 @@
          <?php
         }
     }
-
-// *****************************************************
-// *      RESPONSIVE LAYOUT
-// *****************************************************
-
-	//Responsive Layout On Resize Window
-	if ( ! function_exists( 'scm_responsive_layout' ) ) {
-	    function scm_responsive_layout() {
-		?>
-			<script type="text/javascript">
-				jQuery(document).ready(function($){
-
-					function responsiveClasses(){
-
-						var w = $(window).width();
-						var a = '';
-						var r = '';
-
-						if( w > 700 ){
-
-							a += 'desktop r1400 ';
-							r += 'smart smartmid smartmin smartmicro ';
-
-							if( w < 1401 ) a += 'r1120 ';
-							else r += 'r1120 ';
-
-							if( w < 1121 ) a += 'r940 ';
-							else r += 'r940 ';
-
-							if( w < 941 ){
-								a += 'tablet r800 ';
-								if ( !$( 'body' ).hasClass('tablet') || $( 'body' ).hasClass('smart') )
-									$( 'body' ).trigger('responsiveTablet');
-								
-							}else{
-								r += 'tablet r800 ';
-								if ( $( 'body' ).hasClass('tablet') || !$( 'body' ).hasClass('desktop') )
-									$( 'body' ).trigger('responsiveDesktop');
-								
-							}
-
-							if( w < 801 ) a += 'r700 ';
-							else r += 'r700 ';
-
-						}else{
-
-							a += 'tablet smart ';
-							r += 'desktop r1400 r1120 r940 r800 r700 ';
-
-							if ( !$( 'body' ).hasClass('smart') )
-								$( 'body' ).trigger('responsiveSmart');
-							
-
-							if( w < 401 ) a += 'smartmicro ';
-							else r += 'smartmicro ';
-
-							if( w < 501 ) a += 'smartmin ';
-							else r += 'smartmin ';
-							
-							if( w < 601 ) a += 'smartmid ';
-							else r += 'smartmid ';
-
-							if ( !$( 'body' ).hasClass('smart') )
-								$( 'body' ).trigger('responsiveSmart');
-
-						}
-
-						$('body').removeClass( r );
-						$('body').addClass( a );
-
-
-
-						$( 'body' ).trigger('responsive');
-
-					}
-					
-
-					responsiveClasses();
-
-					$(window).resize( responsiveClasses );
-
-				});
-			</script>
-
-		<?php
-		}
-	}
 
 // *****************************************************
 // *      GOOGLE MAPS
@@ -1401,6 +1369,7 @@
         }
     }
 
+
 // *****************************************************
 // *      CHANGE PAGE
 // *****************************************************
@@ -1437,13 +1406,8 @@
         		}else{
 	        		$( 'body' ).on( 'mapLoaded', bodyIn );
 	        	}
-			
-            	$('a').click(function() {
-            		if ( location.pathname.replace( /^\//,'' ) !== this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
-						bodyOut(this);
-					}
 
-				});
+				$( 'body' ).on( 'linkSite', bodyOut );
 
 				function bodyIn(){
         			$('body').animate({
@@ -1453,10 +1417,8 @@
 					});
         		}
 
-        		function bodyOut(a){
-        			event.preventDefault();
-
-					var link = String(a.href);
+        		function bodyOut(event, elem, link){
+        			//event.preventDefault();
 
 					$('body').css('pointer-events', 'none');
 
@@ -1473,6 +1435,94 @@
          <?php
         }
     }
+
+// *****************************************************
+// *      RESPONSIVE LAYOUT
+// *****************************************************
+
+	//Responsive Layout On Resize Window
+	if ( ! function_exists( 'scm_responsive_layout' ) ) {
+	    function scm_responsive_layout() {
+		?>
+			<script type="text/javascript">
+				jQuery(document).ready(function($){
+
+					function responsiveClasses(){
+
+						var w = $(window).width();
+						var a = '';
+						var r = '';
+
+						if( w > 700 ){
+
+							a += 'desktop r1400 ';
+							r += 'smart smartmid smartmin smartmicro ';
+
+							if( w < 1401 ) a += 'r1120 ';
+							else r += 'r1120 ';
+
+							if( w < 1121 ) a += 'r940 ';
+							else r += 'r940 ';
+
+							if( w < 941 ){
+								a += 'tablet r800 ';
+								if ( !$( 'body' ).hasClass('tablet') || $( 'body' ).hasClass('smart') )
+									$( 'body' ).trigger('responsiveTablet');
+							}else{
+								r += 'tablet r800 ';
+								if ( $( 'body' ).hasClass('tablet') || !$( 'body' ).hasClass('desktop') )
+									$( 'body' ).trigger('responsiveDesktop');
+							}
+
+							if( w < 801 ) a += 'r700 ';
+							else r += 'r700 ';
+
+						}else{
+
+							a += 'tablet smart ';
+							r += 'desktop r1400 r1120 r940 r800 r700 ';
+
+							/*if ( !$( 'body' ).hasClass('smart') )
+								$( 'body' ).trigger('responsiveSmart');*/
+							
+
+							if( w < 401 ) a += 'smartmicro ';
+							else r += 'smartmicro ';
+
+							if( w < 501 ) a += 'smartmin ';
+							else r += 'smartmin ';
+							
+							if( w < 601 ) a += 'smartmid ';
+							else r += 'smartmid ';
+
+							if ( !$( 'body' ).hasClass('smart') )
+								$( 'body' ).trigger('responsiveSmart');
+						}
+
+						var cl1 = $('body').attr('class');
+
+						$('body').removeClass( r );
+						$('body').addClass( a );
+
+						var cl2 = $('body').attr('class');
+
+						if(cl1 != cl2)
+							$( 'body' ).trigger('responsive');
+
+					}
+					
+
+					responsiveClasses();
+
+					$(window).resize( responsiveClasses );
+
+				});
+			</script>
+
+		<?php
+		}
+	}
+
 
 
 ?>
