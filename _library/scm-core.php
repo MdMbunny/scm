@@ -163,8 +163,8 @@
             wp_enqueue_script( 'scm-functions' );
             
             // +++ todo: check if needed
-            //wp_register_script( 'imagesloaded', SCM_URI_JS . 'imagesloaded/jquery.imagesloaded.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            //wp_enqueue_script( 'imagesloaded' );
+            wp_register_script( 'imagesloaded', SCM_URI_JS . 'imagesloaded/jquery.imagesloaded.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'imagesloaded' );
 
             wp_register_script( 'single-page-nav', SCM_URI_JS . 'jquery.singlePageNav.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'single-page-nav' );
@@ -190,12 +190,25 @@
             }
             
             wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, '', true );
-            // ENQUEUED BY scm-jquery.php IF A MAP IS LOADED
+            // ENQUEUED BY scm-jquery.php IF A MAP IS NEEDED
 
             wp_enqueue_script('jquery-effects-core');
 
             wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.2.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'bootstrap' );            
+            wp_enqueue_script( 'bootstrap' );
+
+            // MODERNIZR
+
+            // Complete
+            /*wp_register_script( 'modernizr', SCM_URI_JS . 'modernizr.custom.js', array( 'jquery' ), false, false );
+            wp_enqueue_script( 'modernizr' );*/
+            // Basic
+            wp_register_script( 'modernizr-basic', SCM_URI_JS . 'modernizr/modernizr.custom.basic.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'modernizr-basic' );
+            // Touch
+            wp_register_script( 'modernizr-touch', SCM_URI_JS . 'modernizr/modernizr.custom.touch.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'modernizr-touch' );
+
 
         }
     }

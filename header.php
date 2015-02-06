@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The header for our theme.
  *
@@ -35,6 +36,8 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 
 <head>
 
+<meta http-equiv="Cache-control" content="public">
+
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
 <title><?php echo wp_title(' &#124; ', true, 'right') ?></title>
@@ -42,6 +45,7 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 <meta name="author" content="Studio Creativo M - www.studiocreativo-m.it'" />
 <meta name="DC.creator" content="Studio Creativo M - www.studiocreativo-m.it" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
 
 <?php if ( $is_IE ) : ?>
 

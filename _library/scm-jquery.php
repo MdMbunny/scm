@@ -33,7 +33,9 @@
 // +++ todo:	A > if script is needed, then add_action
 //				B > merge everything in one single script as functions (maybe a JS Class with Methods), then call functions/methods only if needed
 
-	add_action('wp_footer', 'scm_jquery_link_events');
+	
+	
+	
 
 	add_action('wp_footer', 'scm_jquery_ie_fixes');
 	add_action('wp_footer', 'scm_jquery_youtube_fix');
@@ -49,15 +51,17 @@
 	add_action('wp_footer', 'scm_jquery_toggle');
 	add_action('wp_footer', 'scm_jquery_isotope_filter');
 	//add_action('wp_footer', 'scm_jquery_active_class');
-
 	
 	add_action('wp_footer', 'scm_jquery_google_map');
 	add_action('wp_footer', 'scm_jquery_nivoslider');
 	add_action('wp_footer', 'scm_jquery_fancybox');
 
-	add_action('wp_footer', 'scm_jquery_change_page');
-
 	add_action('wp_footer', 'scm_responsive_layout');
+	add_action('wp_footer', 'scm_jquery_events');
+	add_action('wp_footer', 'scm_jquery_change_page');	
+
+	
+	
 
 
 
@@ -66,36 +70,241 @@
 // *****************************************************
 
 	//Link Events
-    if ( ! function_exists( 'scm_jquery_link_events' ) ) {
-        function scm_jquery_link_events(){
+    if ( ! function_exists( 'scm_jquery_events' ) ) {
+        function scm_jquery_events(){
+        	global $is_iphone, $is_gecko;
 
         ?>
 			<script type="text/javascript">
 	        	jQuery(document).ready(function($){
 
-	        		$('a').click(function(event) {
-
-	        			event.preventDefault();
-	        			
-	        			var link = String(this.href);
-
-	        			$('body').trigger( 'link', [ this, link ] );
-	        			$(this).trigger( 'link', [ this, link ] );
-
-	            		if ( location.pathname.replace( /^\//,'' ) !== this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
-							$('body').trigger( 'linkSite', [ this, link ] );
-							$(this).trigger( 'linkSite', [ this, link ] );
-						}else if ( location.pathname.replace( /^\//,'' ) === this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
-							$('body').trigger( 'linkPage', [ this, link ] );
-							$(this).trigger( 'linkPage', [ this, link ] );
-						}else{
-							$('body').trigger( 'linkExternal', [ this, link ] );
-							$(this).trigger( 'linkExternal', [ this, link ] );
-						}
-
+	        		$(window).load(function(){
+						$( 'body' ).trigger('windowLoaded');
 					});
 
+	        		var istouch = false;
+	        		var is_iphone = <?php echo json_encode($is_iphone); ?>;
+	        		var is_gecko = <?php echo json_encode($is_gecko); ?>;
+
+		        	if ( Modernizr.touchEvents || Modernizr.touch || is_iphone ) {   
+					    istouch = true;
+					    
+					    <?php
+						    wp_register_script( 'jquerymobile', SCM_URI_JS . 'jquery.mobile/jquery.mobile.touchevents.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+	            			wp_enqueue_script( 'jquerymobile' );
+	            			wp_register_script( 'jqueryswipe', SCM_URI_JS . 'jquery.touchSwipe/jquery.touchSwipe.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+	            			wp_enqueue_script( 'jqueryswipe' );
+            			?>
+
+					}	
+
+					function linkIt( elem, link ){
+
+						if( $( '.toggled' ).length > 0 )
+							toggleIt();
+
+						$('body').trigger( 'link', [ elem, link ] );
+
+	            		if ( location.pathname.replace( /^\//,'' ) !== elem.pathname.replace( /^\//,'' ) && location.hostname === elem.hostname ) {
+							$('body').trigger( 'linkSite', [ elem, link ] );
+						}else if ( location.pathname.replace( /^\//,'' ) === elem.pathname.replace( /^\//,'' ) && location.hostname === elem.hostname ) {
+							$('body').trigger( 'linkPage', [ elem, link ] );
+						}else{
+							$('body').trigger( 'linkExternal', [ elem, link ] );
+						}
+						
+					}
+
+					function toggleIt( event, elem ) {
+
+						if( 'undefined' === typeof elem )
+							elem = $('.toggle');
+						else if( !$( elem ).hasClass( 'toggle' ) )
+							elem = $( elem ).parents( '.toggle' );
+
+						var $this = $( elem );
+
+						if( !$this.hasClass( 'toggled' ) )
+							toggleOn( event, elem );
+						else
+							toggleOff( event, elem );
+
+					}
+
+					function toggleOn( event, elem ) {
+
+						if( 'undefined' === typeof elem )
+							elem = $('.toggle');
+						else if( !$( elem ).hasClass( 'toggle' ) )
+							elem = $( elem ).parents( '.toggle' );
+
+						var $this = $( elem );
+						
+						if( !$this.hasClass( 'toggled' ) ){
+							$this.find( '.menu-toggle' ).data( 'tapped', true );
+							$this.addClass( 'toggled' );
+							$this.trigger( 'toggled', [ elem, 1 ] );
+						}
+					}
+
+					function toggleOff( event, elem ) {
+
+						if( 'undefined' === typeof elem )
+							elem = $('.toggle');
+						else if( !$( elem ).hasClass( 'toggle' ) )
+							elem = $( elem ).parents( '.toggle' );
+
+						var $this = $( elem );
+
+						if( $this.hasClass( 'toggled' ) ){
+							$this.find( '.menu-toggle' ).data( 'tapped', false );
+							//alert( $this.find( '.menu-toggle' ).data( 'tapped' ) );
+							$this.removeClass( 'toggled' );
+							$this.trigger( 'toggled', [ elem, 0 ] );
+						}
+					}
+
+					function resetEvents( event, elem, on){
+
+		        		if( !istouch || is_gecko ){
+
+			        		$('a').click(function(event) {
+
+			        			event.preventDefault();
+			        			
+			        			var link = String(this.href);
+
+			        			linkIt(this, link);
+
+							});
+
+							$('.toggle').mouseenter( function(event) {
+								toggleOn( event, this );
+							});
+
+							$('.toggle').mouseleave( function(event) {
+								toggleOff( event, this );
+							});
+
+			        	}
+
+			        	if( istouch ){
+
+			        		$('a').on('tap', function(event) {
+
+			        			event.preventDefault();
+
+			        			if(this.href != undefined){
+
+			        				var link = String(this.href);
+
+			        				//alert($( this ).data( 'tapped' ));
+							    
+								    if( $( this ).data( 'tapped' ) ) {
+								    	// If it is already TAPPED go Link
+								        $( '*' ).data( 'tapped', false );
+								        linkIt( this, link );
+
+								    } else {
+								    	
+								    	var menu = $( this ).parent().children( '.sub-menu' );
+
+								    	if( $( menu ).length == 0 ){
+
+								    		var inside = $( this ).parents().hasClass( 'sub-menu' );
+								    		// If it is not inside TAPPABLE go Reset
+											if( !inside )
+												$( '*' ).data( 'tapped', false );
+
+											// If it is Home Button in Toggle Menu go Tap
+											if( $( this ).hasClass( 'menu-toggle' ) && $( this ).parents( '.toggle' ).length > 0 ){
+
+												toggleOn( event, this );
+
+											// If it is not TAPPABLE go Link
+											}else{
+											
+									        	linkIt( this, link );
+
+									        }
+
+								        }else if( $( menu ).css( 'display' ) != 'none' ){
+								        	// If it is TAPPABLE and not already TAPPED go Tap
+								        	$( this ).data( 'tapped', true );
+								        	$( 'body' ).trigger( 'linkTap', [ this, link ] );
+
+								        }else{
+
+								        	linkIt( this, link );
+
+								        }
+								    }
+								}else{
+									//alert('TAPPED');
+								}
+
+								event.stopPropagation();
+								
+							});
+
+
+							$( '.toggle' ).on( 'tap', function( event ) {
+								//event.stopPropagation();
+								toggleIt( event, this );
+								return false;
+							});
+
+
+							$( '.toggle' ).swipe( {
+								
+						        swipeDown: function( event, direction, distance, duration, fingerCount ) {
+						        	toggleOn( event, this );
+						        	event.stopPropagation();
+
+						        },
+						        swipeUp: function( event, direction, distance, duration, fingerCount ) {
+						        	toggleOff( event, this );
+						        	event.stopPropagation();
+
+						        },
+						        threshold: 10,
+						        excludedElements: ''
+								
+							});
+
+							$('.menu-toggle').on('vmouseup', function(event) {
+								$( this ).css('opacity', 1);
+							});
+
+							$('.toggle').on('vmousedown', function(event) {
+								event.preventDefault();
+								event.stopPropagation();
+							});
+							
+							$(':not(.toggle) a').on('vmousedown', function(event) {
+								event.preventDefault();
+								event.stopPropagation();
+							});
+							
+							$('*:not(a):not(a *):not(.toggle):not(.toggle *)').on('vmousedown', function(event) {
+								//alert($(this).find('.menu-toggle').data('tapped'));
+								//alert('PIPPO');
+								$('*').data( 'tapped', false );
+								toggleOff( event );
+								//event.preventDefault();
+						        event.stopPropagation();
+
+							});
+
+						}
+					}
+
+					$( '.navigation' ).on( 'toggle', resetEvents );
+					resetEvents();
+
 				});
+
+				
 			</script>
 		<?php
 		}
@@ -161,107 +370,189 @@
 	if ( ! function_exists( 'scm_jquery_toggle_menu' ) ) {
 		function scm_jquery_toggle_menu(){
 
-			//$menu = ( get_field('id_menu', 'option') ? get_field('id_menu', 'option') : 'site-navigation' );
-			$menu = 'navigation';
-			//$sticky_menu = $menu . '-sticky';
+			$menu = ( get_field('id_menu', 'option') ?: 'site-navigation' );
+			$sticky_menu = $menu . '-sticky';
 
 		?>
 			<script type="text/javascript">
 			
 				jQuery(document).ready(function($){
 
-					var elem = '.' + <?php echo json_encode($menu); ?>;
+					var menu = $( '#' + <?php echo json_encode($menu); ?> );
+					var sticky_menu = $( '#' + <?php echo json_encode($sticky_menu); ?> );
 
-					$( elem ).map(function(){
+					if( 'undefined' !== typeof menu )
+						setToggle( menu );
+					if( 'undefined' !== typeof sticky_menu )
+						setToggle( sticky_menu );
+
+
+					function toggleMenu( event, elem, on ) {
+
+						var $this = $(elem);
+						var $menu = $this.find( '.menu' );
+						var $toggle = $this.find( '.menu-toggle' );
+						var $icon = $this.find( '.icon-toggle' );
+						var $home = $this.find( '.icon-home' );
+
+						if( on ){
+
+							$icon.css( 'display', 'none' );
+							$home.css( 'display', 'inline-block' );
+							/*$home.css({
+						        transform: 'rotate(90deg)'
+						    });
+							$({deg: 0}).animate({deg: -90}, {
+						        duration: 300,
+						        step: function(now) {
+						            $toggle.css({
+						                transform: 'rotate(' + now + 'deg)'
+						            });
+
+						        }
+						    });*/
+
+							//$toggle.css( 'pointer-events', 'auto' );
+							$toggle.attr( 'aria-expanded', 'true' );
+							$menu.attr( 'aria-expanded', 'true' );
+							$this.css( 'cursor', 'pointer' );
+
+						}else{
+
+							$icon.css( 'display', 'inline-block' );
+							$home.css( 'display', 'none' );
+
+							/*$({deg: -90}).animate({deg: 0}, {
+						        duration: 300,
+						        step: function(now) {
+						            $toggle.css({
+						                transform: 'rotate(' + now + 'deg)'
+						            });
+
+						        }
+						    });*/
+
+							//$toggle.css( 'pointer-events', 'none' );
+							$toggle.attr( 'aria-expanded', 'false' );
+							$menu.attr( 'aria-expanded', 'false' );
+							$this.css( 'cursor', 'default' );
+
+						}
+
+					}
+
+					function switchMenu( event, state ) {
+						var nav = $( event.data.nav );
+						//var menu = $( nav ).find( '.menu' );
+						var button = $( nav ).find( '.menu-toggle' );
+						var toggle = $( nav ).find( '.icon-toggle' );
+						var home = $( nav ).find( '.icon-home' );
+						var image = $( nav ).find( '.icon-image' );
+
+						var toggle_act, home_act, image_act;
+
+						toggle_act = $( button ).attr( 'data-toggle' );
+						home_act = $( button ).attr( 'data-home' );
+						image_act = $( button ).attr( 'data-image' );
+
+						var toggle_st, home_st, image_st;
+						
+						toggle_st = 'inline-block';
+						home_st = 'none';
+						image_st = 'none';
+
+						switch( state ){
+
+							case 'portrait':
+								if( toggle_act == 'smart' ){
+									toggle_st = 'none';
+									if( home_act == 'true' ){
+										if ( image_act == 'portrait' || image_act == 'landscape' || image_act == 'desktop' )
+											image_st = 'inline-block';
+										else
+											home_st = 'inline-block';
+									}
+								}
+
+							break;
+
+							case 'landscape':
+								if( toggle_act != 'desktop' && toggle_act != 'landscape' ){
+									toggle_st = 'none';
+									if( home_act == 'true' ){
+										if ( image_act == 'landscape' || image_act == 'desktop' )
+											image_st = 'inline-block';
+										else
+											home_st = 'inline-block';
+									}
+								}
+							break;
+
+							case 'desktop':
+								if( toggle_act != 'desktop' ){
+									toggle_st = 'none';
+									if( home_act == 'true' ){
+										if ( image_act == 'desktop' )
+											image_st = 'inline-block';
+										else
+											home_st = 'inline-block';
+									}
+								}
+							break;
+						}
+
+						if( toggle_st != 'none' ){
+							$( nav ).addClass( 'toggle' );
+							$( nav ).trigger( 'toggle', [ nav, 1 ] );
+						}else{
+							$( nav ).removeClass( 'toggle' );
+							$( nav ).trigger( 'toggle', [ nav, 0 ] );
+						}
+
+						if( toggle ) $( toggle ).css( 'display', toggle_st );
+						if( home ) $( home ).css( 'display', home_st );
+						if( image ) $( image ).css( 'display', image_st );
+
+					}
+
+					function setToggle( nav ){
 
 						var button, menu;
 						
-						
-						
-						button = $(this).find( '.menu-toggle' );
+						button = $( nav ).find( '.menu-toggle' );
 				
 						if ( 'undefined' === typeof button ) {
 							return;
 						}
 
-						menu = $(this).find( 'ul' );
+						menu = $( nav ).find( 'row > ul' );
 
-						// Hide menu toggle button if menu is empty and return early.
 						if ( 'undefined' === typeof menu ) {
-							$(button).css( 'display', 'none' );
+							$( button ).css( 'display', 'none' );
 							return;
 						}
 
-						$(menu).attr( 'aria-expanded', 'false' );
+						$( menu ).attr( 'aria-expanded', 'false' );
 
-						$(this).mouseenter( toggleOn );
-						$(this).mouseleave( toggleOff );
-						$(window).on('swipe', toggleOff );
-						$(window).on('tap', toggleOff );
-						$(this).on('tap', toggleOn );
+						var toggle, home, image;
 
-						$( '.toggled .menu-toggle' ).on( 'link', toggleOff );
-						$(this).find('row > ul > li > a' ).on( 'link', toggleOff );
+						toggle = $( button ).find( 'icon-toggle' );
+						home = $( button ).find( 'icon-home' );
+						image = $( button ).find( 'icon-image' );
 
-						$( 'body' ).on( 'responsiveSmart', function(){
-							$( '.navigation' ).addClass( 'toggle' );
-							$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-						} );
+						$( 'body' ).on( 'responsive', {nav: nav}, switchMenu);
 
-						$( 'body' ).on( 'responsiveTablet', function(){
-							$( '.navigation' ).removeClass( 'toggle' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
-						} );
 
-						$( 'body' ).on( 'responsiveDesktop', function(){
-							$( '.navigation' ).removeClass( 'toggle' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-							if( $( '.sticky-image' )[0] ){
-								$( '.sticky-image' ).css( 'display', 'inline-block' );
-								$( '.sticky-icon' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}else{
-								$( '.sticky-icon' ).css( 'display', 'inline-block' );
-								$( '.sticky-image' ).css( 'display', 'none' );
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-							}
+						$( nav ).on( 'toggled', toggleMenu );
 
-						} );
+						//$( nav ).mouseleave( toggleOff );
+						//$(window).on('swipe', toggleOff );
+						//$(window).on('tap', toggleOff );
+					
+						/*$( '.toggled .menu-toggle' ).on( 'link', toggleOff );
+						$( nav ).find('row > ul > li > a' ).on( 'link', toggleOff );*/
 
-						var now = (-90).toString();
-
-						function toggleOn() {
-							if( $('body').hasClass('smart') && !$(this).hasClass( 'toggled' ) ) {
-
-								$( '.sticky-toggle' ).css( 'display', 'none' );
-								$( '.sticky-icon' ).css( 'display', 'inline-block' );
-
-								$(this).addClass( 'toggled' );
-								$(button).attr( 'aria-expanded', 'true' );
-								$(menu).attr( 'aria-expanded', 'true' );
-								$(this).css( 'cursor', 'pointer' );
-							}
-						}
-
-						function toggleOff( event, elem, link ) {
-
-							if( $('body').hasClass('smart') && $(this).hasClass( 'toggled' ) ) {
-
-								$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-								$( '.sticky-icon' ).css( 'display', 'none' );
-
-								$(this).removeClass( 'toggled' );
-								$(button).attr( 'aria-expanded', 'false' );
-								$(menu).attr( 'aria-expanded', 'false' );
-								$(this).css( 'cursor', 'default' );
-							}
-						}
-
-					});
+					}
 				});
 
 			</script>
@@ -300,9 +591,7 @@
 					var attach = <?php echo json_encode($attach); ?>;
 					var sticky = <?php echo json_encode($sticky); ?>;
 					
-					$( 'body' ).on( 'responsive', setSticky );
-
-					function setSticky(){
+					function setSticky( event, state ){
 
 						var new_offset = 0;
 
@@ -321,7 +610,17 @@
 							{ offset: { top: parseInt(new_offset) } }
 						);
 
-						fixSticky();
+						if( sticky == 'plus' ){
+							var result = $(sticky_menu).css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g)
+							var color = result[0],
+							    x = result[1],
+							    y = result[2],
+							    blur = result[3],
+							    exp = result[4];
+							var plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
+
+							$(sticky_menu).css( 'top', -$(sticky_menu).outerHeight()-plus );
+						}
 
 						$(sticky_menu).on('affix.bs.affix', function () {
 						     $(menu).addClass('affix-' + sticky);
@@ -332,59 +631,7 @@
 
 					}
 
-					function fixSticky(){
-
-						// Se Sticky Plus muovi Nav top-negativo della sua outerHeight + eventuale box-shadow
-						if( sticky == 'plus' ){
-							var result = $(sticky_menu).css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g)
-							var color = result[0],
-							    x = result[1],
-							    y = result[2],
-							    blur = result[3],
-							    exp = result[4];
-							var plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
-
-							//alert($(sticky_menu).outerHeight()-plus);
-							//alert($(sticky_menu).outerHeight());
-
-							$(sticky_menu).css( 'top', -$(sticky_menu).outerHeight()-plus );
-						}else{
-							//$(sticky_menu).css( 'top', $(menu).top );
-						}
-					}
-
-					//setSticky();
-
-					
-
-
-					//var w = $(window).width();
-
-					/*if( w < 701 ){
-						alert('DUE');
-						$( '.navigation' ).addClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'inline-block' );
-						$( '.sticky-icon' ).css( 'display', 'none' );
-						$( '.sticky-image' ).css( 'display', 'none' );
-					}else if( w < 941 ){
-						$( '.navigation' ).removeClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'none' );
-						$( '.sticky-image' ).css( 'display', 'none' );
-						$( '.sticky-icon' ).css( 'display', 'inline-block' );
-					}else{
-						$( '.navigation' ).removeClass( 'toggle' );
-						$( '.sticky-toggle' ).css( 'display', 'none' );
-
-						if( $( '.sticky-image' )[0] ){
-							$( '.sticky-image' ).css( 'display', 'inline-block' );
-							$( '.sticky-icon' ).css( 'display', 'none' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-						}else{
-							$( '.sticky-icon' ).css( 'display', 'inline-block' );
-							$( '.sticky-image' ).css( 'display', 'none' );
-							$( '.sticky-toggle' ).css( 'display', 'none' );
-						}
-					}*/
+					$( 'body' ).on( 'responsive', setSticky );
 
 				});
 			</script>
@@ -413,45 +660,43 @@
 					var offset = <?php echo json_encode($offset); ?>;
 					var ease = <?php echo json_encode($ease); ?>;
 
-					$( 'body' ).on( 'linkPage', smoothScroll );
-
 					function smoothScroll( event, elem, link ) {
-						//if ( location.pathname.replace( /^\//,'' ) === this.pathname.replace( /^\//,'' ) && location.hostname === this.hostname ) {
+
+						event.preventDefault();
 							
-							var win = $( window ).height();
-							var height = $( 'body' ).height();
-							var position = $( 'body' ).scrollTop();
+						var win = $( window ).height();
+						var height = $( 'body' ).height();
+						var position = $( 'body' ).scrollTop();
 
-							var target = $( elem.hash );
-							var name = elem.hash.slice( 1 );
-							var destination;
+						var target = $( elem.hash );
+						var name = elem.hash.slice( 1 );
+						var destination;
 
-							//console.log(this);
+						target = target.length ? target : $( '[id=' + name +']' );
 
-							target = target.length ? target : $( '[name=' + name +']' );
-
-							if ( name == 'top' ){								
-								destination = 0;
-							}else{
-								destination = target.offset().top - parseInt( offset );
-								if( height - destination < win ){
-									destination = height - win;
-								}
+						if ( name == 'top' ){								
+							destination = 0;
+						}else{
+							destination = target.offset().top - parseInt( offset );
+							if( height - destination < win ){
+								destination = height - win;
 							}
+						}
 
-							var difference = Math.abs( destination - position );
-							var duration = time * difference / 1000;
+						var difference = Math.abs( destination - position );
+						var duration = time * difference / 1000;
 
-							duration = ( duration < 500 ? 500 : duration );
-							duration = ( duration > 1500 ? 1500 : duration );
+						duration = ( duration < 500 ? 500 : duration );
+						duration = ( duration > 1500 ? 1500 : duration );
 
-							if ( target.length || destination == 0 ) {
-								$( 'body' ).css( 'pointer-events', 'none' );
-								$( 'html, body' ).animate( { scrollTop: destination }, parseInt( duration ), ease, function(){ $( this ).css( 'pointer-events', 'all' ); } );
-								return false;
-							}
-						//}
+						if ( target.length || destination == 0 ) {
+							$( 'body' ).css( 'pointer-events', 'none' );
+							$( 'html, body' ).animate( { scrollTop: destination }, parseInt( duration ), ease, function(){ $( this ).css( 'pointer-events', 'all' ); } );
+							return false;
+						}
 					}
+
+					$( 'body' ).on( 'linkPage', smoothScroll );
 
 				});
 			</script>
@@ -513,15 +758,22 @@
 					var topofpage = '#' + <?php echo json_encode($topofpage); ?>;
 					var offset = parseFloat( <?php echo json_encode($offset); ?> );
 
-					$( 'body' ).on( 'responsive', function(){
-						//alert('topofpage');
+					function setTopOfPage( event, state ){
+
 						$(topofpage)
+
 						    .removeClass("affix affix-top affix-bottom")
 						    .removeData("bs.affix");
+
 						$(topofpage).affix(
+
 							{ offset: { top: parseInt(offset) } }
+
 						);
-					});
+
+					}
+
+					$( 'body' ).on( 'responsive', setTopOfPage );
 				
 				});
 			</script>
@@ -545,15 +797,16 @@
 					var overlay = $('.overlay-menu');
 					
 					if( overlay ){
-						$( 'body' ).on( 'responsive', function(){
-							//alert('overlay');
+
+						function setOverlay( event, state){
+
 							overlay.each(function(){
 								var h = $(this).outerHeight();
 								$(this).css( 'margin-bottom', - h );
-								//$(this).css( 'position', 'absolute' );
 							});
 							
-						});
+						}
+						$( 'body' ).on( 'responsive', setOverlay );
 					}
 				
 				});
@@ -1049,9 +1302,7 @@
 						center_map( map, zoom );
 						
 						google.maps.event.addListener(map, 'tilesloaded', function() {
-
 							$( 'body' ).trigger( 'mapLoaded' );
-
 						});
 					}
 
@@ -1178,79 +1429,123 @@
         function scm_jquery_nivoslider(){
         	if( !get_field( 'tools_nivo_active', 'option' ) )
         		return;
+        	global $is_iphone, $is_gecko;
 
         ?>
             <script type="text/javascript">
 
-            	function captionMoveIn() {
-					/*jQuery( '.nivo-caption' )
-					.fadeIn( 10 )
-					.animate( {
-						left: "0%",
-						right: "0%"
-					}, {
-						duration: 500,
-						start: function(){
-							alert($(this.attr('id')));
-					} } );*/
-					jQuery( '.nivo-caption' ).removeClass( 'from-left' );
-					jQuery( '.nivo-caption' ).addClass( 'from-right' );
-					jQuery( '.nivo-caption' ).removeClass( 'from-right', 500 );
-					/*jQuery( '.nivo-caption > *' ).each(function(){
-						setTimeout(function(i){
-							$(this).removeClass( 'from-right', 500 );
-						}, (i+1) * 100 );
-					});*/
-					//jQuery( '.nivo-caption' ).removeClass( 'from-right', 500 );
-				};
-
-				function captionMoveOut() {
-					jQuery( '.nivo-caption' ).addClass( 'from-left', 500 );
-					/*jQuery( '.nivo-caption > *' ).each(function(){
-						setTimeout(function(i){
-							$(this).addClass( 'from-left', 500 );
-						}, (i+1) * 100 );
-					});*/
-					/*jQuery( '.nivo-caption' )
-					.fadeOut( 500 )
-					.animate( { left: "100%", right: "0%" }, 0 );*/
-				};
-
             	jQuery(document).ready(function($){
 
-	            	$(window).load(function(){
+            		$('.slider').each(function(){
+            			var slides = $(this).find('img').length;
+            			if( slides > 0 ){
+            				$(this).find('img').css( 'display', 'none' );
+            				var img = $(this).find('img')[0];
+	            			$(img).css( 'display', 'block' );
+	            		}
+            		});
+
+            		$(window).load( setNivoSlider );
+            		//$( 'body' ).on( 'windowLoaded', setNivoSlider );
+
+            		function captionMoveIn(elem,pos) {
+
+						$(elem + ' .nivo-caption').removeClass( 'from-left' );
+						$(elem + ' .nivo-caption').addClass( 'from-right' );
+						$(elem + ' .nivo-caption').removeClass( 'from-right', 500 );
+
+					};
+
+					function captionMoveOut(elem,pos) {
+						
+						$(elem + ' .nivo-caption').addClass( 'from-left', 500 );
+
+					};
+
+					function setNivoSlider(){
+
+						var is_iphone = <?php echo json_encode($is_iphone); ?>;
+	        			var is_gecko = <?php echo json_encode($is_gecko); ?>;
+
+		        		var touch = ( Modernizr.touchEvents || Modernizr.touch || is_iphone );
+
+						$('.slider').each(function(){
+	            			var slides = $(this).find('img').length;
+	            			if( slides > 1 )
+	            				$(this).addClass('nivoSlider');
+	            		});
 						$('.nivoSlider').each(function(){
-							var slides = $(this).find('img').length;
-		        			if(slides > 1){
-		        				$(this).nivoSlider({
-								    effect: 'sliceDown',               // Specify sets like: 'fold,fade,sliceDown'
-								    slices: 15,                     // For slice animations
-								    boxCols: 8,                     // For box animations
-								    boxRows: 4,                     // For box animations
-								    animSpeed: 500,                 // Slide transition speed
-								    pauseTime: 5000,                // How long each slide will show
-								    startSlide: 0,                  // Set starting Slide (0 index)
-								    directionNav: true,             // Next & Prev navigation
-								    controlNav: false,               // 1,2,3... navigation
-								    controlNavThumbs: false,        // Use thumbnails for Control Nav
-								    pauseOnHover: true,             // Stop animation while hovering
-								    manualAdvance: false,           // Force manual transitions
-								    prevText: 'Prev',               // Prev directionNav text
-								    nextText: 'Next',               // Next directionNav text
-								    randomStart: false,             // Start on a random slide
-								    beforeChange: function(){captionMoveOut();},     // Triggers before a slide transition
-								    afterChange: function(){captionMoveIn();},      // Triggers after a slide transition
-								    slideshowEnd: function(){},     // Triggers after all slides have been shown
-								    lastSlide: function(){},        // Triggers when last slide is shown
-								    afterLoad: function(){captionMoveIn();}         // Triggers when slider has loaded
-								});
-							}else{
-								$(this).removeClass('nivoSlider');
-								$(this).addClass('mask');
+							$(this).find('img').css( 'display', 'block' );
+							var id = '#' + $(this).attr( 'id' );
+	        				$(this).nivoSlider({
+							    effect: 'sliceDownLeft',            // Specify sets like: 'fold,fade,sliceDown'
+							    slices: 15,                     // For slice animations
+							    boxCols: 8,                     // For box animations
+							    boxRows: 4,                     // For box animations
+							    animSpeed: 500,                 // Slide transition speed
+							    pauseTime: 5000,                // How long each slide will show
+							    startSlide: 0,                  // Set starting Slide (0 index)
+							    directionNav: true,             // Next & Prev navigation
+							    controlNav: false,              // 1,2,3... navigation
+							    controlNavThumbs: false,        // Use thumbnails for Control Nav
+							    pauseOnHover: true,             // Stop animation while hovering
+							    manualAdvance: false,           // Force manual transitions
+							    prevText: 'Prev',               // Prev directionNav text
+							    nextText: 'Next',               // Next directionNav text
+							    randomStart: false,             // Start on a random slide
+							    beforeChange: function(){       // Triggers before a slide transition
+
+							    	captionMoveOut( id, 'before' );
+
+							    },
+							    afterChange: function(){        // Triggers after a slide transition
+
+							    	captionMoveIn( id, 'after' );
+
+							    },
+							    slideshowEnd: function(){       // Triggers after all slides have been shown
+
+							    },
+							    lastSlide: function(){          // Triggers when last slide is shown
+
+							    },
+							    afterLoad: function(){          // Triggers when slider has loaded
+							    	//$(this).on('swipeleft', toggleOff );
+							    	captionMoveIn( id, 'load' );
+							    	$( 'body' ).trigger( 'nivoLoaded', [ this ] );
+
+							    }
+							});
+
+							if( touch && !is_gecko ){
+
+								$('a.nivo-nextNav').css('visibility', 'hidden');
+								$('a.nivo-prevNav').css('visibility', 'hidden');
 							}
+
+							$( this ).swipe( {
+							
+						        swipeLeft: function( event, direction, distance, duration, fingerCount ) {
+						        	//$(this).find('img').attr("data-transition","sliceDownLeft");
+									$('a.nivo-nextNav').trigger('click');
+									event.stopPropagation();
+
+						        },
+						        swipeRight: function( event, direction, distance, duration, fingerCount ) {
+						        	$(this).find('img').attr("data-transition","sliceDown");
+					                $('a.nivo-prevNav').trigger('click');
+					                $(this).find('img').attr("data-transition","sliceDownLeft");
+						        	event.stopPropagation();
+
+						        },
+						        threshold: 10,
+						        excludedElements: ''
+								
+							});
+							
 		        		});
 
-	            	});
+	            	}
             	});
 
 			</script>
@@ -1369,73 +1664,6 @@
         }
     }
 
-
-// *****************************************************
-// *      CHANGE PAGE
-// *****************************************************
-
-	//Change Page
-    if ( ! function_exists( 'scm_jquery_change_page' ) ) {
-        function scm_jquery_change_page(){
-
-        	$map_class = '.scm-map';
-        	$fader = (get_field('fader_active', 'option') ? get_field('fader_active', 'option') : 0);
-        	$duration = (get_field('fader_duration', 'option') ? get_field('fader_duration', 'option') : 0);
-
-        ?>
-            <script type="text/javascript">
-
-            jQuery(document).ready(function($){
-
-            	var mapClass = <?php echo json_encode($map_class); ?>;
-            	var fader = <?php echo json_encode($fader); ?>;
-            	var duration = <?php echo json_encode($duration); ?>;
-
-				if(!fader){
-            	
-	            	$( 'body' ).css({
-	            		'opacity' : '1',
-						'pointer-events' : 'all'
-	            	});
-					
-					return;
-				}
-            	            	
-            	if(!$(mapClass).length){
-            		bodyIn();
-        		}else{
-	        		$( 'body' ).on( 'mapLoaded', bodyIn );
-	        	}
-
-				$( 'body' ).on( 'linkSite', bodyOut );
-
-				function bodyIn(){
-        			$('body').animate({
-						opacity: 1,
-					}, duration * 1100, function() {
-						$('body').css('pointer-events', 'all');
-					});
-        		}
-
-        		function bodyOut(event, elem, link){
-        			//event.preventDefault();
-
-					$('body').css('pointer-events', 'none');
-
-					$('body').animate({
-						opacity: 0,
-					}, duration * 1100, function() {
-						location.href = link;
-					});
-        		}
-
-			});
-			
-            </script>
-         <?php
-        }
-    }
-
 // *****************************************************
 // *      RESPONSIVE LAYOUT
 // *****************************************************
@@ -1461,30 +1689,22 @@
 							if( w < 1401 ) a += 'r1120 ';
 							else r += 'r1120 ';
 
-							if( w < 1121 ) a += 'r940 ';
+							if( w < 1121 ) a += 'tablet landscape r1030 ';
+							else r += 'tablet landscape r1030 ';
+
+							if( w < 1031 ) a += 'r940 ';
 							else r += 'r940 ';
 
-							if( w < 941 ){
-								a += 'tablet r800 ';
-								if ( !$( 'body' ).hasClass('tablet') || $( 'body' ).hasClass('smart') )
-									$( 'body' ).trigger('responsiveTablet');
-							}else{
-								r += 'tablet r800 ';
-								if ( $( 'body' ).hasClass('tablet') || !$( 'body' ).hasClass('desktop') )
-									$( 'body' ).trigger('responsiveDesktop');
-							}
+							if( w < 941 ) a += 'r800 ';
+							else r += 'r800 ';
 
-							if( w < 801 ) a += 'r700 ';
-							else r += 'r700 ';
+							if( w < 801 ) a += 'portrait r700 ';
+							else r += 'portrait r700 ';
 
 						}else{
 
 							a += 'tablet smart ';
-							r += 'desktop r1400 r1120 r940 r800 r700 ';
-
-							/*if ( !$( 'body' ).hasClass('smart') )
-								$( 'body' ).trigger('responsiveSmart');*/
-							
+							r += 'desktop landscape portrait r1400 r1120 r1030 r940 r800 r700 ';							
 
 							if( w < 401 ) a += 'smartmicro ';
 							else r += 'smartmicro ';
@@ -1495,9 +1715,18 @@
 							if( w < 601 ) a += 'smartmid ';
 							else r += 'smartmid ';
 
-							if ( !$( 'body' ).hasClass('smart') )
-								$( 'body' ).trigger('responsiveSmart');
 						}
+
+						/*if ( !$( 'body' ).hasClass('smart') && a.indexOf('smart') >= 0 )
+							$( 'body' ).trigger( 'responsiveSmart', [ 'smart' ] );
+						else if( (!$( 'body' ).hasClass('portrait') && a.indexOf('portrait') >= 0) || ($( 'body' ).hasClass('smart') && r.indexOf('smart') >= 0) )
+							$( 'body' ).trigger( 'responsivePortrait', [ 'portrait' ] );
+						else if( (!$( 'body' ).hasClass('landscape') && a.indexOf('landscape') >= 0) || ($( 'body' ).hasClass('portrait') && r.indexOf('portrait') >= 0) )
+							$( 'body' ).trigger( 'responsiveLandscape', [ 'landscape' ] );
+						else if( (!$( 'body' ).hasClass('desktop') && a.indexOf('desktop') >= 0) || ($( 'body' ).hasClass('landscape') && r.indexOf('landscape') >= 0) )
+							$( 'body' ).trigger( 'responsiveDesktop', [ 'desktop' ] );*/
+
+						
 
 						var cl1 = $('body').attr('class');
 
@@ -1506,8 +1735,15 @@
 
 						var cl2 = $('body').attr('class');
 
-						if(cl1 != cl2)
-							$( 'body' ).trigger('responsive');
+						if(cl1 != cl2){
+							var state = 'all';
+							if ( $( 'body' ).hasClass( 'smart' ) )			state = 'smart';
+							else if( $( 'body' ).hasClass( 'portrait' ) )	state = 'portrait';
+							else if( $( 'body' ).hasClass( 'landscape' ) )	state = 'landscape';
+							else if( $( 'body' ).hasClass( 'desktop' ) )	state = 'desktop';
+
+							$( 'body' ).trigger( 'responsive', [ state ] );
+						}
 
 					}
 					
@@ -1523,6 +1759,106 @@
 		}
 	}
 
+// *****************************************************
+// *      CHANGE PAGE
+// *****************************************************
+
+	//Change Page
+    if ( ! function_exists( 'scm_jquery_change_page' ) ) {
+        function scm_jquery_change_page(){
+
+        	$map_class = '.scm-map';
+        	$fadeIn = (get_field('fader_active', 'option') ?: 0);
+        	$fadeOut = (get_field('fader_out_active', 'option') ?: 0);
+        	$duration = (get_field('fader_duration', 'option') ?: 0);
+			$waitfor = (get_field('fader_waitfor', 'option') ?: '');
+
+        ?>
+            <script type="text/javascript">
+
+            jQuery(document).ready(function($){
+
+            	var mapClass = <?php echo json_encode($map_class); ?>;
+            	var fadeIn = <?php echo json_encode($fadeIn); ?>;
+            	var fadeOut = <?php echo json_encode($fadeOut); ?>;
+            	var duration = <?php echo json_encode($duration); ?>;
+            	var waitfor = <?php echo json_encode($waitfor); ?>;
+
+
+            	function bodyLink(link){
+            		window.location.replace( link );
+            	}
+
+            	function bodyIn(event){
+					
+					if( fadeIn ){
+
+		            	$('body').animate({
+							opacity: 1,
+						}, duration * 1000, function() {
+							$('body').css('pointer-events', 'all');
+						});
+
+	            	}else{
+
+						$( 'body' ).css({
+		            		'opacity' : '1',
+							'pointer-events' : 'all'
+		            	});
+
+	        		}
+
+        		}
+
+        		function bodyOut(event, elem, link){
+        			
+        			event.preventDefault();
+
+        			$('body').css('pointer-events', 'none');
+
+        			if(fadeOut){
+						$('body').animate({
+							opacity: 0,
+						}, duration * 1000, function() {
+							bodyLink(link);
+						});
+					}else{
+						bodyLink(link);
+					}
+        		}
+
+				switch( waitfor ){
+					case 'window':
+						$( 'body' ).on( 'windowLoaded', bodyIn );
+					break;
+					case 'images':
+						$( 'body' ).imagesLoaded( bodyIn );
+					break;
+					case 'sliders':
+						if( $( '.nivoSlider' ).length )
+							$( 'body' ).on( 'nivoLoaded', bodyIn );
+						else
+							$( 'body' ).imagesLoaded( bodyIn );
+					break;
+					case 'maps':
+						if( $( mapClass ).length > 0 )
+							$( 'body' ).on( 'mapLoaded', bodyIn );
+						else
+							$( 'body' ).imagesLoaded( bodyIn );
+					break;
+					default:
+						bodyIn();
+					break;
+				}
+				
+				$( 'body' ).on( 'linkSite', bodyOut );
+
+			});
+			
+            </script>
+         <?php
+        }
+    }
 
 
 ?>

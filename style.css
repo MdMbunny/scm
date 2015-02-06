@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.7.0
+Version:			v1.7.2
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -75,7 +75,7 @@ html {
 	box-sizing: border-box; /* Apply a natural box layout model to the document; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 	background-position: center center;
 	background-repeat: no-repeat;
-	background-attachment: fixed;
+	/*background-attachment: fixed;*/
 	height: 100%;
 }
 
@@ -84,6 +84,7 @@ html {
 	outline: 0;
 	border-color: transparent;
 	vertical-align: top;
+	-webkit-tap-highlight-color: transparent;
 }
 
 #page,
@@ -137,6 +138,7 @@ row,
 	padding: 0px 0px;
 	margin: 0;
 	clear: both;
+	max-width: 100%;
 }
 
 table { /* tables still need 'cellspacing="0"' in the markup */
@@ -490,6 +492,7 @@ th {
 }
 
 .r1400 .responsive, .r1120 .responsive, .w1120 { width: 1120px; }
+.r1030 .responsive, .w1030 { width: 1030px; }
 .r940 .responsive, .w940 { width: 940px; }
 .r800 .responsive, .w800 { width: 800px; }
 .r700 .responsive, .w700 { width: 700px; }
@@ -820,35 +823,28 @@ a:hover{
 	right: 0;
 }
 
-.navigation li:hover,
-.navigation li.active {
+.navigation:not(.toggle) li:hover,
+.navigation:not(.toggle) li.active,
+.navigation:not(.toggle) li.active:hover {
 	background-color: #FFF;
 }
 
-.navigation li:hover a{
+.navigation a:hover{
 	color: #666;
 }
 
-.navigation li.active,
-.navigation li.active:hover {
-	background-color: #FFF;
-}
-
 .navigation li.active > a,
-.navigation li.active:hover > a{
+.navigation li.active > a:hover{
 	color: #666;
 	cursor: default;
 }
 
 .navigation.affix a:hover,
 .navigation li.active a,
-.navigation .sub-menu li:hover a{
+.navigation .sub-menu li a:hover{
 	color: #999;
 }
 
-.navigation.toggle{
-	text-align: center;
-}
 
 /* Level 1 */ 
 
@@ -863,15 +859,6 @@ a:hover{
 	display: inline-block;
 	vertical-align: top;
 }
-
-.smart .menu > li{
-	margin: 0;
-	float: none;
-	position: static;
-	display: block;
-	width: 100%;
-}
-
 
 /* Level 2 */ 
 
@@ -910,20 +897,6 @@ a:hover{
 	width: 100%;
 	text-align: left;
 }
-
-.sub-menu li{
-	
-	/*position: relative;*/
-}
-
-.menu li:hover .sub-menu li {
-
-	/*display: block;*/
-}
-
-.sub-menu a:hover {
-}
-
 
 
 /* Level 3 */ 
@@ -967,11 +940,29 @@ a:hover{
 	top: 0px !important;
 }
 
-.navigation.toggle row {
-	text-align: center;
+/* Toggle Button */
+
+.navigation.toggle:not(.sticky):not(.affix){
+	position: absolute;
 }
 
-.navigation.toggle row > ul {
+.navigation.toggle,
+.navigation.toggle row{
+	text-align: center;
+	margin-bottom: 0 !important;
+}
+
+.navigation.toggle a {
+	display: inline-block;
+	font-size: 1.5em;
+	padding: 0 0 1.4em 0;
+}
+
+.navigation.toggle li:first-child a {
+	padding-top: .7em;
+}
+
+.navigation.toggle .menu {
 	visibility: hidden;
 	overflow: hidden;
 	display: block;
@@ -980,15 +971,17 @@ a:hover{
 	transition: max-height .3s, visibility .3s;
 }
 
-.navigation.toggle.toggled row > ul{
+.navigation.toggle.toggled .menu {
 	visibility: visible;
 	max-height: 1000px;
 }
-
-/* Toggle Button */
-
-.navigation.toggle:not(.sticky):not(.affix){
-	position: absolute;
+ 
+.navigation.toggle .menu > li {
+	margin: 0;
+	float: none;
+	position: static;
+	display: block;
+	width: 100%;
 }
 
 .navigation .menu-toggle {
@@ -1002,6 +995,15 @@ a:hover{
 	padding: 0.25em 2em 0 0;
 }
 
+.navigation .menu-toggle > *{
+	vertical-align: middle;
+}
+
+.navigation .menu-toggle img{
+	height: 80%;
+	width: 80%;
+}
+
 .navigation.toggle .menu-toggle {
 	padding: 0px;
 	font-size: 2em;
@@ -1012,27 +1014,17 @@ a:hover{
 	transition: transform .2s;
 }
 
-.navigation.toggle.toggled:hover .menu-toggle{
-	-ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-}
-
-.navigation .menu-toggle > *{
-	vertical-align: middle;
-}
-
-.navigation .menu-toggle img{
-	height: 80%;
-	width: 80%;
-}
-
-.navigation.toggle .menu-toggle .sticky-icon{
+.navigation.toggle.toggled .menu-toggle{
 	-ms-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 
+.navigation.toggle .menu-toggle .icon-home{
+	-ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
 
 
 

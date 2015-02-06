@@ -247,8 +247,25 @@
             "message": ""
         },
         {
+            "key": "field_54d278758760d",
+            "label": "Fade Out",
+            "name": "fader_out_active",
+            "prefix": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1
+        },
+        {
             "key": "field_54abcf4583681",
-            "label": "Attivo",
+            "label": "Fade In",
             "name": "fader_active",
             "prefix": "",
             "type": "true_false",
@@ -256,7 +273,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -278,10 +295,17 @@
                         "operator": "==",
                         "value": "1"
                     }
+                ],
+                [
+                    {
+                        "field": "field_54d278758760d",
+                        "operator": "==",
+                        "value": "1"
+                    }
                 ]
             ],
             "wrapper": {
-                "width": "",
+                "width": 50,
                 "class": "",
                 "id": ""
             },
@@ -294,6 +318,46 @@
             "step": "0.1",
             "readonly": 0,
             "disabled": 0
+        },
+        {
+            "key": "field_54d27400e8a30",
+            "label": "Wait For",
+            "name": "fader_waitfor",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54abcf4583681",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "no": "None",
+                "window": "Window",
+                "images": "Images",
+                "sliders": "Sliders",
+                "maps": "Maps"
+            },
+            "default_value": {
+                "no": "no"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
         },
         {
             "key": "field_549846bc92c58",
@@ -1535,5 +1599,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422878861
+    "modified": 1423079602
 }

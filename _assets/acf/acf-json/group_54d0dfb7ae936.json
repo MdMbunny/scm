@@ -1,6 +1,6 @@
 {
     "key": "group_54d0dfb7ae936",
-    "title": "Opzioni Menu",
+    "title": "Header Menu",
     "fields": [
         {
             "key": "field_54d0dfb7b70f8",
@@ -194,9 +194,9 @@
             "message": ""
         },
         {
-            "key": "field_54d0dfb7b71d6",
-            "label": "Tipo",
-            "name": "toggle_menu",
+            "key": "field_54d3a2a47f146",
+            "label": "Attiva Toggle Menu",
+            "name": "select_responsive_events_toggle",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -208,11 +208,13 @@
                 "id": ""
             },
             "choices": {
-                "home": "Home + Toggle",
-                "toggle": "Solo Toggle"
+                "smart": "Mobile",
+                "portrait": "Tablet Portrait",
+                "landscape": "Tablet Landscape",
+                "desktop": "Desktop"
             },
             "default_value": {
-                "home": "home"
+                "": ""
             },
             "allow_null": 0,
             "multiple": 0,
@@ -225,7 +227,7 @@
         {
             "key": "field_54d0dfb7b71e8",
             "label": "Icona Toggle Menu",
-            "name": "icon_toggle_menu",
+            "name": "toggle_icon",
             "prefix": "",
             "type": "font-awesome",
             "instructions": "",
@@ -724,48 +726,61 @@
             }
         },
         {
-            "key": "field_54d0dfb7b721f",
-            "label": "Immagine Home",
-            "name": "image_toggle_menu",
+            "key": "field_54d3ad8b7345d",
+            "label": "Home Button",
+            "name": "_copia_copia_copia",
             "prefix": "",
-            "type": "image",
+            "type": "message",
             "instructions": "",
             "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_54d0dfb7b71d6",
-                        "operator": "==",
-                        "value": "home"
-                    }
-                ]
-            ],
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": ""
+        },
+        {
+            "key": "field_54d0dfb7b71d6",
+            "label": "Attiva Home Button",
+            "name": "home_active",
+            "prefix": "",
+            "type": "select",
+            "instructions": "Le due opzioni che includono il menu Sticky necessitano dell'opzione Sticky Plus.<br \/>\r\nVedi qui sotto: Sticky Menu > Tipo > Sticky Plus.",
+            "required": 0,
+            "conditional_logic": 0,
             "wrapper": {
                 "width": 50,
                 "class": "",
                 "id": ""
             },
-            "return_format": "url",
-            "preview_size": "thumbnail",
-            "library": "all"
+            "choices": {
+                "both": "Menu + Sticky",
+                "sticky": "Solo Sticky",
+                "menu": "Solo Menu",
+                "no": "Solo in Toggle Menu"
+            },
+            "default_value": {
+                "both": "both"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
         },
         {
             "key": "field_54d0dfb7b720d",
             "label": "Icona Home",
-            "name": "home_toggle_menu",
+            "name": "home_icon",
             "prefix": "",
             "type": "font-awesome",
             "instructions": "",
             "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_54d0dfb7b71d6",
-                        "operator": "==",
-                        "value": "home"
-                    }
-                ]
-            ],
+            "conditional_logic": 0,
             "wrapper": {
                 "width": 50,
                 "class": "",
@@ -1259,6 +1274,56 @@
             }
         },
         {
+            "key": "field_54d3ae0d7345e",
+            "label": "Attiva Logo",
+            "name": "select_responsive_events_logo",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "no": "None",
+                "smart": "Mobile",
+                "portrait": "Tablet Portrait",
+                "landscape": "Tablet Landscape",
+                "desktop": "Desktop"
+            },
+            "default_value": {
+                "no": "no"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54d0dfb7b721f",
+            "label": "Logo Home",
+            "name": "image_icon",
+            "prefix": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all"
+        },
+        {
             "key": "field_54d0e3220b9e7",
             "label": "Sticky Menu",
             "name": "_copia",
@@ -1405,5 +1470,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422979269
+    "modified": 1423161905
 }

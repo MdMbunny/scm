@@ -337,17 +337,27 @@ function my_force_fallback( $force_fallback ) {
 					'25px' => 'XXX-Big',
 					'26px' => 'Huge',
 				);
-
+			
 			elseif( strpos( $list, 'select_layout' ) !== false ):
 				$arr = array(
 					'responsive'		=> 'Responsive',
 					'full'				=> 'Full Width',
 				);
+			
+			elseif( strpos( $list, 'select_responsive_events' ) !== false ):
+				$arr = array(
+					'smart'			=> 'Mobile',
+					'portrait'		=> 'Tablet Portrait',
+					'landscape'		=> 'Tablet Landscape',
+					'desktop'		=> 'Desktop',
+				);
+			
 			elseif( strpos( $list, 'select_head_layout' ) !== false ):
 				$arr = array(
 					'menu_down'			=> 'Menu sotto a Logo',
 					'menu_right'		=> 'Menu alla destra del Logo',
 				);
+			
 			elseif( strpos( $list, 'select_bg_repeat' ) !== false ):
 				$arr = array(
 					'no-repeat'			=> 'No repeat',
@@ -355,6 +365,7 @@ function my_force_fallback( $force_fallback ) {
 					'repeat-x'			=> 'Repeat x',
 					'repeat-y'			=> 'Repeat y',
 				);
+			
 			elseif( strpos( $list, 'select_bg_position' ) !== false ):
 				$arr = array(
 					'center center'			=> 'center center',

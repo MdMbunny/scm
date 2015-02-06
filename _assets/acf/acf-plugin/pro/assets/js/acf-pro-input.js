@@ -180,8 +180,11 @@
 		}
 		
 	});
-	
-	
+
+})(jQuery);
+
+(function($){
+		
 	acf.fields.repeater = acf.field.extend({
 		
 		type: 'repeater',
@@ -461,7 +464,10 @@
 		
 	});	
 	
-	
+})(jQuery);
+
+(function($){
+		
 	acf.fields.flexible_content = acf.field.extend({
 		
 		type: 'flexible_content',
@@ -1017,16 +1023,10 @@
 		}
 	});	
 	
-	
-	/*
-	*  Gallery
-	*
-	*  static model for this field
-	*
-	*  @type	event
-	*  @date	18/08/13
-	*
-	*/
+
+})(jQuery);
+
+(function($){
 	
 	acf.fields.gallery = acf.field.extend({
 		
@@ -1756,7 +1756,11 @@
 		}
 		
 	});
-		
 	
-
 })(jQuery);
+
+// @codekit-prepend "../js/acf-pro.js";
+// @codekit-prepend "../js/acf-repeater.js";
+// @codekit-prepend "../js/acf-flexible-content.js";
+// @codekit-prepend "../js/acf-gallery.js";
+

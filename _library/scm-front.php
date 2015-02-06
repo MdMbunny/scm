@@ -314,61 +314,79 @@
             
             $menu = ( get_field( 'select_menu', 'option' ) ?: 'primary' );
             
-            $menu_id = ( get_field( 'id_menu', 'option' ) ?: 'site-navigation' );
+            $id = ( get_field( 'id_menu', 'option' ) ?: 'site-navigation' );
             
-            $menu_class = 'navigation';
-            $menu_class .= ( ( $align == 'center' || $position != 'inline' ) ? ' full ' : ' half-width ' );
-            $menu_class .= $align;
+            $class = 'navigation';
+            $class .= ( ( $align == 'center' || $position != 'inline' ) ? ' full ' : ' half-width ' );
+            $class .= $align;
+
+            $toggle_active = ( get_field( 'select_responsive_events_toggle', 'option' ) ?: 'smart' );
+            $home_active = ( get_field( 'home_active', 'option' ) ?: 'no' );
+            $image_active = ( get_field( 'select_responsive_events_logo', 'option' ) ?: 'no' );
+
+            $menu_id = $id;
+            $menu_class = $class . ( get_field( 'overlay_menu', 'option' ) ? ' overlay-menu' : '' );
+
+            $menu_data_toggle = $toggle_active;
+            $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
+            $menu_data_image = ( $menu_data_home ? $image_active : 'no' );
 
             // Print Main Menu
-            scm_get_menu( $menu_id, $menu_class . ( get_field( 'overlay_menu', 'option' ) ? ' overlay-menu' : '' ), 'full', $menu, $align );
+            scm_get_menu( $menu_id, $menu_class, 'full', $menu_data_toggle, $menu_data_home, $menu_data_image, $align, $menu );
 
             $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
 
             if( $sticky != 'no' ){
 
-                $sticky_id = $menu_id . '-sticky';
+                $sticky_id = $id . '-sticky';
 
                 $sticky_layout = ( get_field('select_layout_page', 'option') ?: 'full' );
-                $sticky_class = $menu_class . ' ' . $sticky_layout . ' sticky' . ( $sticky == 'self' ? ' self' : '' );
+                $sticky_class = $class . ' ' . $sticky_layout . ' sticky' . ( $sticky == 'self' ? ' self' : '' );
 
                 $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ?: 'full' ) : 'full' );
                 $row_align = $align;
                 $row_class = $row_layout . ' ' . $row_align;
+
+                $sticky_data_toggle = $toggle_active;
+                $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
+                $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
                 
             // Print Sticky Menu
-                scm_get_menu( $sticky_id, $sticky_class, $row_class, $menu, $align );
+                scm_get_menu( $sticky_id, $sticky_class, $row_class, $sticky_data_toggle, $sticky_data_home, $sticky_data_image, $align, $menu );
             }
         }
     }
 
     if ( ! function_exists( 'scm_get_menu' ) ) {
-        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $menu = 'primary', $align = 'left' ) {
+        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $align = 'center' , $menu = 'primary' ) {
 
             $perma = get_permalink();
             $home = get_home_url();
-            
-            $toggle_menu = ( get_field( 'toggle_menu', 'option' ) ?: 'toggle' );
+
             $toggle_link = ( strpos($perma, $home)!==false ? '#top' : get_home_url() );
-            $toggle_icon = 'fa ' . ( get_field( 'icon_toggle_menu', 'option' ) ?: 'fa-bars' );
-            $toggle_home = 'fa ' . ( get_field( 'home_toggle_menu', 'option' ) ?: 'fa-home' );
-            $toggle_image = ( get_field( 'image_toggle_menu', 'option' ) ?: '' );                      
-            $toggle_class = ( $align == 'center' ? 'block' : 'float-' . ( $align == 'left' ? 'right' : 'left' ) );
+
+            $toggle_icon = 'fa ' . ( get_field( 'toggle_icon', 'option' ) ?: 'fa-bars' );
+            $home_icon = 'fa ' . ( get_field( 'home_icon', 'option' ) ?: 'fa-home' );
+            $image_icon = ( get_field( 'image_icon', 'option' ) ?: '' );
+
+            $toggle_class =  ( $align == 'center' ? 'block' : 'float-' . ( $align == 'left' ? 'right' : 'left' ) );
 
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
 
             $wrap = '<row class="' . $row_class . '">';
 
-                $wrap .= '<a href="' . $toggle_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false">';
-                        $wrap .= '<i class="sticky-toggle ' . $toggle_icon . '"></i>';
-                        if( $toggle_menu == 'home' ){
-                            $wrap .= '<i class="sticky-icon ' . $toggle_home . '"></i>';
-                            if($toggle_image)
-                                $wrap .= '<img class="sticky-image" src="' . $toggle_image . '" height=100% />';
-                        }
-                $wrap .= '</a>';
-            
+                    $wrap .= '<a href="' . $toggle_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false" data-home="' . $home_active . '" data-toggle="' . $toggle_active . '" data-image="' . $image_active . '">';
+
+                        $wrap .= '<i class="icon-toggle ' . $toggle_icon . '"></i>';
+
+                        $wrap .= '<i class="icon-home ' . $home_icon . '"></i>';
+                        
+                        if( $image_active != 'no' )
+                        $wrap .= '<img class="icon-image" src="' . $image_icon . '" height=100% />';
+
+                    $wrap .= '</a>';
+
                 $wrap .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
 
             $wrap .= '</row>';
@@ -398,7 +416,7 @@
         function scm_custom_header( $id, $slides, $type = '', $height = 'auto' ) {
 
             $i = 0;
-            $images = '<div id="slider-' . $id . '" class="nivoSlider" style="max-height:' . $height . ';">';
+            $images = '<div id="slider-' . $id . '" class="slider mask" style="max-height:' . $height . ';">';
             $captions = '';
 
             foreach ($slides as $slide) {
