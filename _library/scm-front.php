@@ -8,8 +8,6 @@
     add_filter('body_class','scm_body_hook_class');
     add_filter('synved_social_skin_image_list', 'scm_custom_social_icons');
 
-    add_filter('wp_get_nav_menu_items','scm_navigation_anchors', 10, 2);
-
 // *****************************************************
 // *      HOOKS
 // *****************************************************
@@ -18,25 +16,29 @@
 
     //favicon / touch-icons
     if ( ! function_exists( 'scm_site_assets_favicon' ) ) {
-        function scm_site_assets_favicon() {
+        function scm_site_assets_favicon( $ico144 = '', $ico114 = '', $ico72 = '', $ico54 = '', $png = '', $ico = '' ) {
 
-            $out = '';
+            $ico144 = ( $ico144 ?: get_field('branding_icon_144', 'option') );
+            $ico114 = ( $ico114 ?: get_field('branding_icon_114', 'option') );
+            $ico72 = ( $ico72 ?: get_field('branding_icon_72', 'option') );
+            $ico54 = ( $ico54 ?: get_field('branding_icon_54', 'option') );
+            $png = ( $png ?: get_field('branding_icon_png', 'option') );
+            $ico = ( $ico ?: get_field('branding_icon_ico', 'option') );
 
-            if ( get_field('branding_icon_144', 'option') )
-                $out .= '<link rel="apple-touch-icon-precomposed" sizes="144x144" href="' . esc_url( get_field('branding_icon_144', 'option') ) . '" /> <!-- for retina iPad -->';
-            if ( get_field('branding_icon_114', 'option') )
-                $out .= '<link rel="apple-touch-icon-precomposed" sizes="114x114" href="' . esc_url( get_field('branding_icon_114', 'option') ) . '" /> <!-- for retina iPhone -->';
-            if ( get_field('branding_icon_72', 'option') )
-                $out .= '<link rel="apple-touch-icon-precomposed" href="' . esc_url( get_field('branding_icon_72', 'option') ) . '" /> <!-- for legacy iPad -->';
-            if ( get_field('branding_icon_54', 'option') )
-                $out .= '<link rel="apple-touch-icon-precomposed" href="' . esc_url( get_field('branding_icon_54', 'option') ) . '" /> <!-- for non-retina devices -->';
+            if ( $ico144 )
+                echo '<link rel="apple-touch-icon-precomposed" sizes="144x144" href="' . esc_url( $ico144 ) . '" /> <!-- for retina iPad -->';
+            if ( $ico114 )
+                echo '<link rel="apple-touch-icon-precomposed" sizes="114x114" href="' . esc_url( $ico114 ) . '" /> <!-- for retina iPhone -->';
+            if ( $ico72 )
+                echo '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico72 ) . '" /> <!-- for legacy iPad -->';
+            if ( $ico54 )
+                echo '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico54 ) . '" /> <!-- for non-retina devices -->';
 
-            if ( get_field('branding_favicon_png', 'option') )
-                $out .= '<link rel="icon" type="image/png" href="' . esc_url( get_field('branding_favicon_png', 'option') ) . '" /> <!-- standard favicon -->';
-            if ( get_field('branding_favicon_ico', 'option') )
-                $out .= '<link rel="shortcut icon" href="' . esc_url( get_field('branding_favicon_ico', 'option') ) . '" /><!-- IE favicon -->';
+            if ( $png )
+                echo '<link rel="icon" type="image/png" href="' . esc_url( $png ) . '" /> <!-- standard favicon -->';
+            if ( $ico )
+                echo '<link rel="shortcut icon" href="' . esc_url( $ico ) . '" /><!-- IE favicon -->';
 
-            echo $out;
         }
     }
 
@@ -44,7 +46,7 @@
 
 //Add body class
     if ( ! function_exists( 'scm_body_hook_class' ) ) {
-        function scm_body_hook_class($classes) {
+        function scm_body_hook_class( $classes ) {
 
             global $SCM_styles;
 
@@ -53,15 +55,15 @@
 
             $classes[] = SCM_THEME;
 
-            if (is_single() ) {
-                foreach((get_the_category($post->ID)) as $category) {
+            if ( is_single() ) {
+                foreach ( ( get_the_category( $post->ID ) ) as $category ) {
                     $classes[] = 'post-'.$category->category_nicename;
                 }
             }
-            if (is_page() ) {
-                if ($parents = get_post_ancestors($post->ID)) {
-                    foreach ((array)$parents as $parent) {
-                        if ($page = get_page($parent)) {
+            if ( is_page() ) {
+                if ( $parents = get_post_ancestors( $post->ID ) ) {
+                    foreach ( (array)$parents as $parent ) {
+                        if ( $page = get_page( $parent ) ) {
                             $classes[] = "{$page->post_type}-{$page->post_name}";
                         }
                     }
@@ -70,27 +72,39 @@
             }
 
             // BROWSER classes
-            global $is_gecko, $is_safari, $is_chrome, $is_opera, $is_IE, $is_iphone;
 
-            if ($is_gecko) $classes[] = 'firefox';
-            elseif ($is_safari) $classes[] = 'safari';
-            elseif ($is_chrome) $classes[] = 'chrome';
-            elseif ($is_opera) $classes[] = 'opera';
-            elseif ($is_IE) $classes[] = 'ie';
-            elseif ($is_iphone) $classes[] = 'safari iphone';
-            else $classes[] = 'safari';
+            if( function_exists( 'get_browser_name' ) ){
 
-            // LANGUAGE classes ----------> NEEDS PolyLang Plugin - (includerlo nel tema?)
+                $browser = strtolower( get_browser_name() );
+
+                $classes[] = $browser;
+                if( $browser == 'ie' )
+                    $classes[] = $browser . (int)get_browser_version();
+
+                if( is_desktop() ) $classes[] = 'is-desktop';
+                if( is_tablet() ) $classes[] = 'is-tablet';
+                if( is_iphone() ) $classes[] = 'is-iphone';
+                if( is_ipad() ) $classes[] = 'is-ipad';
+                if( is_ipod() ) $classes[] = 'is-ipod';
+                if( is_mobile() ) $classes[] = 'is-mobile';
+
+            }else{
+
+                global $is_gecko, $is_chrome, $is_opera, $is_IE, $is_iphone;
+
+                if ( $is_gecko ) $classes[] = 'firefox';
+                elseif ( $is_chrome ) $classes[] = 'chrome';
+                elseif ( $is_opera ) $classes[] = 'opera';
+                elseif ( $is_IE ) $classes[] = 'ie';
+                elseif ( $is_iphone ) $classes[] = 'safari is-iphone';
+                else $classes[] = 'safari';
+
+            }
+
+            // LANGUAGE classes - NEEDS PolyLang Plugin - (includerlo nel tema?)
             if(function_exists('pll_current_language')){
                 $classes[] = 'lang-' . pll_current_language();
             }
-
-            /*$SCM_styles['align'] = ( get_field('select_txt_alignment', 'option') != 'default' ? get_field('select_txt_alignment', 'option') : 'left');
-            $SCM_styles['size'] = ( get_field('select_txt_size', 'option') != 'default' ? get_field('select_txt_size', 'option') : 'normal');
-            
-            $classes[] = $SCM_styles['align'];
-            $classes[] = $SCM_styles['size'];*/
-
 
             return $classes;
         }
@@ -183,7 +197,7 @@
 
             //Output
             if ( 1 < $wp_query->max_num_pages ) {
-                return '<div class="pagination">' . paginate_links( $pagination ) . '</div> <!-- pagination -->';
+                return '<div class="pagination">' . paginate_links( $pagination ) . '</div> <!-- pagination -->' . lbreak();
             }
         }
     }
@@ -196,213 +210,302 @@
     //Prints logo
     if ( ! function_exists( 'scm_logo' ) ) {
 
-        function scm_logo( $align = 'right' ) {
-            $logo_id = ( get_field( 'id_branding', 'option' ) ? get_field( 'id_branding', 'option' ) : 'site-branding' );
+        function scm_logo( $in = 0 ) {
+            
+            $logo_id = ( get_field( 'id_branding', 'option' ) ?: 'site-branding' );
 
-            $follow = ( get_field('active_social_follow', 'option') ? 1 : 0 );
+            $follow = ( get_field('active_social_follow', 'option') ?: 0 );
 
-            $logo_image = esc_url(get_field('branding_header_logo', 'option'));
-            $logo_height= numberToStyle(get_field('branding_header_logo_height', 'option'));
-            $logo_align = ( $align == 'center' ? 'center' : ( get_field( 'select_alignment_logo', 'option' ) ? get_field( 'select_alignment_logo', 'option' ) : 'left' ) );
+            $logo_image = esc_url( get_field( 'branding_header_logo', 'option' ) );
+            $logo_height= numberToStyle(get_field( 'branding_header_logo_height', 'option' ) );
+            $logo_align = ( get_field( 'select_alignment_logo', 'option' ) ?: 'left' );
 
             $logo_title = get_bloginfo( 'name' );
             $logo_slogan = get_bloginfo( 'description' );
-            $show_slogan = ( get_field('branding_header_slogan', 'option') ? 1 : 0 );
+            $show_slogan = ( get_field( 'branding_header_slogan', 'option' ) ?: 0 );
             
-            $logo_type = ( get_field('branding_header_type', 'option') ? get_field('branding_header_type', 'option') : 'text' );
+            $logo_type = ( get_field('branding_header_type', 'option') ?: 'text' );
 
             $logo_class = 'header-column site-branding ';
-            $logo_class .= ( ( $align != 'center' || $follow ) ? 'half-width ' : 'full ' );
+            $logo_class .= ( ( $logo_align != 'center' || $follow ) ? 'half-width ' : 'full ' );
             $logo_class .= $logo_align . ' inlineblock';
             
             //SEO logo HTML tag
             $logo_tag = ( is_front_page() ? 'h1' : 'div' );
             
-            //output
-            $out = '';
+            indent( $in, '<div id="' . $logo_id . '" class="' . $logo_class . '">' );
 
-            $out .= '<div id="' . $logo_id . '" class="' . $logo_class . '">';
-
-                $out .= '<' . $logo_tag . ' class="site-title logo ' . $logo_type . '-only">';
+                indent( $in+1 , '<' . $logo_tag . ' class="site-title logo ' . $logo_type . '-only">' );
                     
-                    $out .= '<a href="' . home_url() . '" title="' . $logo_title . '" style="display:block;">';
+                    indent( $in+2 , '<a href="' . home_url() . '" title="' . $logo_title . '" style="display:block;">' );
                     
-                        $out .= ( 'img' == $logo_type  ? '<img src="' . $logo_image . '" alt="' . $logo_title . '" title="' . $logo_title . '" style="max-height:' . $logo_height . ';" />' : '' );
+                    if( 'img' == $logo_type )
+                        indent( $in+3 , '<img src="' . $logo_image . '" alt="' . $logo_title . '" title="' . $logo_title . '" style="max-height:' . $logo_height . ';" />' );
                     
-                        $out .= '<span class="' . (  'img' == $logo_type ? 'invisible' : 'text-logo' ) . '">' . $logo_title . '</span>';
+                        indent( $in+3 , '<span class="' . (  'img' == $logo_type ? 'invisible' : 'text-logo' ) . '">' . $logo_title . '</span>' );
                     
-                    $out .= '</a>';
+                    indent( $in+2 , '</a>' );
                 
-                $out .= '</' . $logo_tag . '>';
+                indent( $in+1 , '</' . $logo_tag . '>' );
                 
-                $out .= ( $show_slogan ? '<h2 class="site-description">' . $logo_slogan . '</h2>' : '' );
+            if( $show_slogan )
+                indent( $in+1 , '<h2 class="site-description">' . $logo_slogan . '</h2>' );
 
-            $out .= '</div><!-- #site-branding -->';
+            indent( $in , '</div><!-- #site-branding -->' );
 
-            echo $out;
         }
     }
 
     //Prints social follow menu
     if ( ! function_exists( 'scm_social_follow' ) ) {
-        function scm_social_follow( $align = 'right' ) {
+        function scm_social_follow( $in = 0 ) {
 
-            $follow = ( get_field('active_social_follow', 'option') ? 1 : 0 );
+            $follow = ( get_field( 'active_social_follow', 'option' ) ?: 0 );
 
             if( !$follow || !shortcode_exists( 'feather_follow' ) )
                 return;
             
-            $follow_id = ( get_field( 'id_social_follow', 'option' ) ? get_field( 'id_social_follow', 'option' ) : 'site-social-follow' );
+            $follow_id = ( get_field( 'id_social_follow', 'option' ) ?: 'site-social-follow' );
 
-            $follow_align = ( $align == 'center' ? 'center' : ( get_field('select_alignment_social_follow', 'option') ? get_field('select_alignment_social_follow', 'option') : 'right' ) );
-            $follow_size = ( get_field('social_follow_size', 'option') ? get_field('social_follow_size', 'option') : 64 );
+            $follow_align = ( get_field( 'select_alignment_social_follow', 'option' ) ?: 'right' );
+            $follow_size = ( get_field( 'social_follow_size', 'option' ) ?: 64 );
 
             $follow_class = 'header-column site-social-follow ';
-            $follow_class .= ( $align != 'center' ? 'half-width ' : 'full ' );
+            $follow_class .= ( $follow_align != 'center' ? 'half-width ' : 'full ' );
             $follow_class .= $follow_align . ' inlineblock';
             
 
-            //output
-            $out = '';
-
-            $out .= '<div id="' . $follow_id . '" class="' . $follow_class . '">';
+            indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">' );
                 
-                $out .= do_shortcode( '[feather_follow size="' . $follow_size . '"]' );
+                indent( $in+1, do_shortcode( '[feather_follow size="' . $follow_size . '"]' ) );
             
-            $out .= '</div><!-- #site-social-follow -->';
+            indent( $in, '</div><!-- #site-social-follow -->' );
 
-            echo $out;
-
-        }
-    }
-
-    //Change Navigation Links from # to url and viceversa
-    if ( ! function_exists( 'scm_navigation_anchors' ) ) {
-        function scm_navigation_anchors( $items, $menu ) {
-
-            if(!is_admin()){
-
-                $current = get_permalink();
-                $parents = array();
-
-                for( $i = 0; $i < sizeof( $items ); $i++) {
-                    $url = $items[$i]->url;
-                    $id = $items[$i]->ID;
-                    $parent_id = $items[$i]->menu_item_parent;
-                    $parent = ( $parent_id ? get_post( $parent_id ) : 0 );
-
-                    if( !$parent )
-                        $parents[$id] = $url;
-
-                    if( $current == $url )
-                        $url = '#top';
-                    elseif( strpos( $url, '#' ) === 0 && $parent && $current != $parents[$parent_id])
-                        $url = $parents[$parent_id] . $url;
-
-                    $items[$i]->url = $url;
-
-                }
-            }
-
-            return $items;
         }
     }
 
     //Prints menu
     if ( ! function_exists( 'scm_main_menu' ) ) {
-        function scm_main_menu( $align = 'right', $position = 'inline' ) {
+        function scm_main_menu( $align = 'right', $position = 'inline', $in = 0 ) {
+
+            $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
+            $offset = ( get_field( 'offset_sticky_menu', 'option' ) ?: 0 );
+            $attach = ( get_field( 'attach_sticky_menu', 'option' ) ?: 'nav-top' );
+            if( $sticky == 'self' )
+                $attach = 'nav-top';
             
             $menu = ( get_field( 'select_menu', 'option' ) ?: 'primary' );
             
             $id = ( get_field( 'id_menu', 'option' ) ?: 'site-navigation' );
             
-            $class = 'navigation';
-            $class .= ( ( $align == 'center' || $position != 'inline' ) ? ' full ' : ' half-width ' );
-            $class .= $align;
+            $site_align = ( get_field( 'select_alignment_site', 'option' ) ?: 'center' );
 
-            $toggle_active = ( get_field( 'select_responsive_events_toggle', 'option' ) ?: 'smart' );
+            $toggle_active = ( get_field( 'select_responsive_up_toggle', 'option' ) ?: 'smart' );
             $home_active = ( get_field( 'home_active', 'option' ) ?: 'no' );
-            $image_active = ( get_field( 'select_responsive_events_logo', 'option' ) ?: 'no' );
+            $image_active = ( get_field( 'select_responsive_down_logo', 'option' ) ?: 'no' );
 
             $menu_id = $id;
-            $menu_class = $class . ( get_field( 'overlay_menu', 'option' ) ? ' overlay-menu' : '' );
+            $menu_class = 'navigation ';
+            $menu_class .= ( get_field( 'overlay_menu', 'option' ) ? 'overlay ' : '' );
+            $menu_class .= ( get_field('select_layout_page', 'option') ?: 'full' );
+
+            $row_layout = ( get_field('select_layout_menu', 'option') ?: 'full' );
+            $row_class = $row_layout . ' float-' . $site_align . ' ' . $align;
 
             $menu_data_toggle = $toggle_active;
             $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
             $menu_data_image = ( $menu_data_home ? $image_active : 'no' );
 
             // Print Main Menu
-            scm_get_menu( $menu_id, $menu_class, 'full', $menu_data_toggle, $menu_data_home, $menu_data_image, $align, $menu );
-
-            $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
+            scm_get_menu( array(
+                'id' => $menu_id,
+                'class' => $menu_class,
+                'row_class' => $row_class,
+                'toggle_active' => $menu_data_toggle,
+                'home_active' => $menu_data_home,
+                'image_active' => $menu_data_image,
+                'menu' => $menu,
+                'indent' => $in
+            ));
 
             if( $sticky != 'no' ){
 
                 $sticky_id = $id . '-sticky';
 
                 $sticky_layout = ( get_field('select_layout_page', 'option') ?: 'full' );
-                $sticky_class = $class . ' ' . $sticky_layout . ' sticky' . ( $sticky == 'self' ? ' self' : '' );
+                $sticky_class = 'navigation sticky ' . ( $sticky == 'self' ? 'self' : '' ) . ' ' . $sticky_layout;
 
-                $row_layout = ( $sticky_layout == 'full' ? ( get_field('select_layout_sticky_menu', 'option') ?: 'full' ) : 'full' );
-                $row_align = $align;
-                $row_class = $row_layout . ' ' . $row_align;
+                $sticky_row_layout = ( get_field('select_layout_sticky_menu', 'option') ?: 'full' );
+                $sticky_row_class = $sticky_row_layout . ' float-' . $site_align . ' ' . $align;
 
                 $sticky_data_toggle = $toggle_active;
                 $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
                 $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
                 
-            // Print Sticky Menu
-                scm_get_menu( $sticky_id, $sticky_class, $row_class, $sticky_data_toggle, $sticky_data_home, $sticky_data_image, $align, $menu );
+                // Print Sticky Menu
+                scm_get_menu( array(
+                    'id' => $sticky_id,
+                    'class' => $sticky_class,
+                    'row_class' => $sticky_row_class,
+                    'toggle_active' => $sticky_data_toggle,
+                    'home_active' => $sticky_data_home,
+                    'image_active' => $sticky_data_image,
+                    'menu' => $menu,
+                    'sticky' => $id,
+                    'type' => $sticky,
+                    'offset' => $offset,
+                    'attach' => $attach,
+                    'indent' => $in
+                ));
             }
         }
     }
 
     if ( ! function_exists( 'scm_get_menu' ) ) {
-        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $align = 'center' , $menu = 'primary' ) {
+        
+        class Sublevel_Walker extends Walker_Nav_Menu {
+            function start_lvl( &$output, $depth = 0, $args = array() ) {
+                $output .= lbreak() . indent( $indent + 7 + $depth ) . '<ul class="toggle-content sub-menu depth-' . $depth . '">' . lbreak();
+
+            }
+
+            function end_lvl( &$output, $depth = 0, $args = array() ) {
+                $output .= indent( $indent + 7 + $depth ) . '</ul>' . lbreak() . indent( 6 );
+            }
+
+            function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
+                
+                $ind = 7;
+                if( !$depth ) $ind = 6;
+
+                //alert($object->object_id);
+                //printPre( $object );
+                
+                $current = $object->current;
+                $class = ( $current ? ' current' : '' );
+                
+                $url = $object->url;
+                $content = $object->title;
+                $type = 'site';
+                $anchor = '';
+                $button = '';
+                $data = '';
+
+                if( $current )
+                    $url = '#top';
+
+                if( strpos( $url, '#') === 0 ){
+                    $type = 'page';
+                    $anchor = ' data-anchor="' . $url . '"';
+                    //$url = $parent_url;
+                }else if( strpos( $url, SCM_URL ) === false ){
+                    $type = 'external';
+                }
+
+                $has_children = getByValue( $object->classes, 'menu-item-has-children' );
+                
+                $link = '<a href="' . $url . '"' . $anchor . '>' . $content . '</a>';
+                //$span = '<span ' . $a_class . 'href="' . $url . '"' . $anchor . '>' . $content . '</span>';
+                if( $has_children >= 0 ){
+                    $data = 'data-toggle="true" ';
+                    $class .= ' has-children toggle no-toggled';
+                    $link = '<div class="toggle-button">' . $link . '</div>';
+                }
+                
+                $output .= indent( $indent + $ind + $depth ) . '<li class="menu-item link-' . $type . $class . '"' . $data . '>' . $link;
+            
+            }
+
+            function end_el( &$output, $object, $depth = 0, $args = array() ) {
+                $output .= '</li>' . lbreak();
+            }
+        }
+
+
+
+        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $type = 'self', $offset = 0, $attach = 'nav-top', $indent = 0 ) {
+
+            $default = array(
+                'id'               => 'site-navigation',
+                'class'            => 'navigation full',
+                'row_class'        => 'full',
+                'toggle_active'    => 'smart',
+                'home_active'      => 'false',
+                'image_active'     => 'no',
+                'menu'             => 'primary',
+                'sticky'           => '',
+                'type'             => 'self',
+                'offset'           => 0,
+                'attach'           => 'nav-top',
+                'indent'           => 0
+            );
+
+            if( is_array( $id ) )
+                extract( wp_parse_args( $id, $default ) );
+
+            
+
 
             $perma = get_permalink();
             $home = get_home_url();
 
-            $toggle_link = ( strpos($perma, $home)!==false ? '#top' : get_home_url() );
+            $toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
 
             $toggle_icon = 'fa ' . ( get_field( 'toggle_icon', 'option' ) ?: 'fa-bars' );
             $home_icon = 'fa ' . ( get_field( 'home_icon', 'option' ) ?: 'fa-home' );
             $image_icon = ( get_field( 'image_icon', 'option' ) ?: '' );
 
-            $toggle_class =  ( $align == 'center' ? 'block' : 'float-' . ( $align == 'left' ? 'right' : 'left' ) );
-
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
 
-            $wrap = '<row class="' . $row_class . '">';
+            $data = ( $sticky ? 'data-sticky="' . $sticky . '" data-sticky-type="' . $type . '" data-sticky-offset="' . $offset . '" data-sticky-attach="' . $attach . '" ' : '' );
 
-                    $wrap .= '<a href="' . $toggle_link . '" class="menu-toggle ' . $toggle_class . '" aria-controls="menu" aria-expanded="false" data-home="' . $home_active . '" data-toggle="' . $toggle_active . '" data-image="' . $image_active . '">';
+            $wrap = indent( $indent ) . '<nav id="' . $id . '" class="' . $class . '" data-toggle="true" data-switch-toggle="' . $toggle_active . '"' . $data . '>' . lbreak();
 
-                        $wrap .= '<i class="icon-toggle ' . $toggle_icon . '"></i>';
+                $wrap .= indent( $indent + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
 
-                        $wrap .= '<i class="icon-home ' . $home_icon . '"></i>';
-                        
-                        if( $image_active != 'no' )
-                        $wrap .= '<img class="icon-image" src="' . $image_icon . '" height=100% />';
+                    $wrap .= indent( $indent + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak();
 
-                    $wrap .= '</a>';
+                        $wrap .= indent( $indent + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
+                        $wrap .= indent( $indent + 3 ) . '<a href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
 
-                $wrap .= '<ul id="%1$s" class="%2$s">%3$s</ul>';
+                    $wrap .= indent( $indent + 2 ) . '</div>' . lbreak();
+                
+                if( $home_active == 'true' ){
+                
+                    if( $image_active && $image_active != 'no' ){
 
-            $wrap .= '</row>';
+                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak();
+                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '"><img src="' . $image_icon . '" alt="" /></a>' . lbreak();
+                    
+                    }else{
+                    
+                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak();
+                    
+                    }
 
+                }
+
+                    $wrap .= indent( $indent + 2 ) . '<ul class="toggle-content %2$s">' . lbreak();
+
+                        $wrap .= '%3$s' . lbreak();
+
+                    $wrap .= indent( $indent + 2 ) . '</ul>' . lbreak();
+
+                $wrap .= indent( $indent + 1 ) . '</div>' . lbreak();
+
+            $wrap .= indent( $indent ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
+
+            // Print Menu
             wp_nav_menu( array(
-                    'container' => 'nav',
-                    'container_id' => $id,
-                    'container_class' => $class,
+                    'container' => false,
                     'menu_id' => $ul_id,
                     'menu_class' => $ul_class,
                     'theme_location' => $menu,
                     'menu' => '', // id, name or slug
                     'items_wrap' => $wrap,
+                    'walker' => new Sublevel_Walker
                 ) );
-
-            echo '<!-- #' . $id . ' -->';
 
         }
     }
@@ -410,46 +513,175 @@
 //*****************************************************
 //*      SLIDER
 //*****************************************************
+/*
+//Prints Element Inner Header
+    if ( ! function_exists( 'scm_custom_slider' ) ) {
+        function scm_custom_slider() {
 
-    //Prints Element Inner Header
-    if ( ! function_exists( 'scm_custom_header' ) ) {
-        function scm_custom_header( $id, $slides, $type = '', $height = 'auto' ) {
+            global $post;
+
+            $type = $post->post_type;
+            $slug = $post->post_name;
+
+            
+            $active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
+
+            if( $active ){
+                $custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+                $layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : ( get_field( 'select_layout_slider', 'option' ) != 'default' ? get_field( 'select_layout_slider', 'option' ) : 'responsive' ) );
+                $height = get_field( 'height_slider' );
+                
+                if( !$height )
+                    $height = ( get_field( 'height_slider', 'option' ) ?: 'initial' );
+
+                if( sizeof( $custom_head ) )
+                    scm_custom_header( $id, $custom_head, $type, $layout, $height );
+            }
 
             $i = 0;
-            $images = '<div id="slider-' . $id . '" class="slider mask" style="max-height:' . $height . ';">';
+            $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
+            $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
+
+            
+            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full">';
+
+                switch ( $slider ) {
+                    case 'nivo':
+                        scm_custom_slider_nivo();
+                    break;
+                }
+
+            echo '</header><!-- ' . $type . '-header -->';
+
+
+
+            $id = uniqid( 'slider-' );
+
+            $images = '<div id="' . $id . '" class="slider nivo ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '">';
             $captions = '';
 
             foreach ($slides as $slide) {
                 $i++;
                 $img = $slide[ 'immagine' ];
-                $link = ( isset( $slide[ 'url' ] ) ? $slide[ 'url' ] : '' );
+                $link = ( $slide[ 'slide_link' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'slide_link' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
                 $caption = '';
                 $slide_id = $slide[ 'slide_id' ];
                 $slide_class = $slide[ 'slide_class' ];
                 $title = '';
 
-                if( $slide[ 'active_caption' ] ){
-                    $caption_id = 'caption-' . $id . '-' . $i;
-                    $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
-                    $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
-                    $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
-                    $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
-                    $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
+                $caption_id = 'caption-' . $id . '-' . $i;
+
+                $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
+                $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
+                $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
+                $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
+                $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
                     
-                    $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . '">';
-                        $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ( $slide_class ? ' class="' . $slide_class . '"' : '' ) . $style . '">';
+                $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . ' count-' . $i . '">';
+                    $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ( $slide_class ? ' class="' . $slide_class . '"' : '' ) . $style . '">';
+                        if( $slide[ 'active_caption' ] ){
                             $caption .= ( $slide[ 'caption_title'] ? '<h3>' . $slide[ 'caption_title' ] . '</h3>' : '' );
                             $caption .= $slide['caption'];
-                        $caption .= '</div>';
+                        }
                     $caption .= '</div>';
-                    
-                    
-                }
+                $caption .= '</div>';
 
-                $title = ( $caption ? 'title="#' . $caption_id . '" ' : 'title=""' );                
+                $title = ( $caption ? '#' . $caption_id : '' );
 
                 $images .= ( $link ? '<a href="' . $link . '">' : '' );
-                    $images .= '<img src="' . $img . '" data-thumb="' . $img . '" alt="" ' . $title . '/>';
+                    $images .= '<img src="' . $img . '" " data-thumb="' . $img . '" alt="" title="' . $title . '" />';
+                $images .= ( $link ? '</a>' : '' );
+
+                $captions .= $caption;
+
+            }
+
+            $images .= '</div>';
+
+
+            
+                
+            echo $images;               
+
+            echo $captions;
+
+
+
+
+
+        }
+    }*/
+
+//*****************************************************
+//*      NIVO SLIDER
+//*****************************************************
+
+    //Prints Element Inner Header
+    if ( ! function_exists( 'scm_custom_header' ) ) {
+        function scm_custom_header( $id, $slides, $type = '', $layout = '', $height = '' ) {
+
+            /*global $post;
+
+            $type = $post->post_type;
+            $slug = $post->post_name;
+
+            $id = uniqid( 'slider-' );
+            $active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
+
+            if( $active ){
+                $custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+                $layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : ( get_field( 'select_layout_slider', 'option' ) != 'default' ? get_field( 'select_layout_slider', 'option' ) : 'responsive' ) );
+                $height = get_field( 'height_slider' );
+                
+                if( !$height )
+                    $height = ( get_field( 'height_slider', 'option' ) ?: 'initial' );
+
+                if( sizeof( $custom_head ) )
+                    scm_custom_header( $id, $custom_head, $type, $layout, $height );
+            }*/
+
+            $i = 0;
+            $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
+            $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
+
+            
+            // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
+            $images = '<div id="' . $id . '" class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '">';
+            $captions = '';
+
+            foreach ($slides as $slide) {
+                $i++;
+                $img = $slide[ 'immagine' ];
+                $link = ( $slide[ 'slide_link' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'slide_link' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
+                $caption = '';
+                $slide_id = $slide[ 'slide_id' ];
+                $slide_class = $slide[ 'slide_class' ];
+                $title = '';
+
+                $caption_id = 'caption-' . $id . '-' . $i;
+
+                $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
+                $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
+                $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
+                $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
+                $class = 'box' . ( $slide_class ? ' ' . $slide_class : '' );
+                $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
+                    
+                $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . ' count-' . $i . '">';
+                    if( $slide[ 'active_caption' ] ){
+                        $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ' class="' . $class . '"' . $style . '>';
+                            
+                                $caption .= ( $slide[ 'caption_title'] ? '<h3>' . $slide[ 'caption_title' ] . '</h3>' : '' );
+                                $caption .= $slide['caption'];
+                            
+                        $caption .= '</div>';
+                    }
+                $caption .= '</div>';
+
+                $title = ( $caption ? '#' . $caption_id : '' );
+
+                $images .= ( $link ? '<a href="' . $link . '">' : '' );
+                    $images .= '<img class="nivo-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
                 $images .= ( $link ? '</a>' : '' );
 
                 $captions .= $caption;
@@ -466,8 +698,6 @@
             echo $captions;
 
             echo '</header><!-- ' . $type . '-header -->';
-
-
 
         }
     }
@@ -633,13 +863,13 @@
                             case 'full':
                                 $class = ' class="full"';
                                 $image_float = '';
-                                $image_height = ( $cont[ 'altezza_full' ] ? $cont[ 'altezza_full' ] . $image_units : 'auto' );
+                                $image_height = ( $cont[ 'altezza_full' ] ? $cont[ 'altezza_full' ] . $image_units : 'initial' );
                                 $image_style = 'max-height:' . $image_height . ';';
                                 $image_class = SCM_PREFIX . 'full-image mask';
                             break;
 
                             case 'quad':
-                                $image_size = ( $cont[ 'dimensione' ] ? $cont[ 'dimensione' ] . $image_units : '64px' );
+                                $image_size = ( $cont[ 'dimensione' ] ? $cont[ 'dimensione' ] . $image_units : 'auto' );
                                 $image_style = 'width:' . $image_size . '; height:' . $image_size . ';';
                             break;
                             
@@ -650,8 +880,11 @@
                             break;
                         }
 
+                        if( !$image )
+                            continue;
+
                         echo    '<div class="' . $image_class . '" style="' . $image_style . '">
-                                    <img src="' . $image . '"' . $class . '>
+                                    <img src="' . $image . '"' . $class . ' alt="">
                                 </div><!-- icon-image -->';
 
                     break;
@@ -736,10 +969,11 @@
             $id = ( get_field('id_topofpage', 'option') ?: 'site-topofpage' );
             $icon = get_field('tools_topofpage_icon', 'option');
             $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
+            $offset = ( get_field('tools_topofpage_offset', 'option') ?: 0 );
             $title = $text;
 
-            $output =   '<div id="' . $id . '" class="topofpage">';
-            $output .=      '<a href="#top" title="' . $title . '" alt="' . $title . '">';
+            $output =   '<div id="' . $id . '" class="topofpage" data-offset="' . $offset . '">';
+            $output .=      '<a href="#top" title="' . $title . '">';
             $output .=          '<i class="fa ' . $icon . '"></i>';
             $output .=      '</a>';
             $output .=  '</div>';

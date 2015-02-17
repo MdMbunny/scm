@@ -3,6 +3,36 @@
     "title": "Opzioni Layout",
     "fields": [
         {
+            "key": "field_54ab55b9b0c48",
+            "label": "Allineamento Generale",
+            "name": "select_alignment_site",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "left": "Sinistra",
+                "right": "Destra",
+                "center": "Centrato"
+            },
+            "default_value": {
+                "center": "center"
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
             "key": "field_54ab55b9b0c70",
             "label": "Larghezza Pagina",
             "name": "select_layout_page",
@@ -137,9 +167,67 @@
             "readonly": 0
         },
         {
+            "key": "field_54dab2ed96fd6",
+            "label": "Larghezza Menu",
+            "name": "select_layout_menu",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "responsive": "Responsive",
+                "full": "Full Width"
+            },
+            "default_value": {
+                "": ""
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
             "key": "field_54ad869bca084",
             "label": "Larghezza Sticky Menu",
             "name": "select_layout_sticky_menu",
+            "prefix": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "responsive": "Responsive",
+                "full": "Full Width"
+            },
+            "default_value": {
+                "": ""
+            },
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        },
+        {
+            "key": "field_54dbefb2d545f",
+            "label": "Responsive to Full",
+            "name": "select_responsive_events_tofull",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -151,39 +239,13 @@
                 "id": ""
             },
             "choices": {
-                "responsive": "Responsive",
-                "full": "Full Width"
-            },
-            "default_value": [],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
-            "key": "field_54ab55b9b0c48",
-            "label": "Allineamento Contenitori",
-            "name": "select_alignment_rows",
-            "prefix": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 100,
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "left": "Sinistra",
-                "right": "Destra",
-                "center": "Centrato"
+                "smart": "Mobile",
+                "portrait": "Tablet Portrait",
+                "landscape": "Tablet Landscape",
+                "desktop": "Desktop"
             },
             "default_value": {
-                "center": "center"
+                "smart": "smart"
             },
             "allow_null": 0,
             "multiple": 0,
@@ -224,5 +286,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421599115
+    "modified": 1423700914
 }

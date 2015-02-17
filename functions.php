@@ -10,6 +10,7 @@ if ( ! isset( $content_width ) ) {
 	$content_width = 1120;
 }
 
+
 /*
 *****************************************************
 *      GLOBAL
@@ -19,9 +20,9 @@ if ( ! isset( $content_width ) ) {
 
 //Getting website data
 
-/*	$SCM_parse			 = parse_url(site_url());
+	$SCM_parse			 = parse_url(site_url());
 	$SCM_domain 		 = $SCM_parse["host"];
-	$SCM_url			 = 'http://' . $SCM_domain . '/';*/
+	$SCM_url			 = 'http://' . $SCM_domain . '/';
 
 //Getting theme data
 	$SCM_shortname 		 = sanitize_title(get_template());
@@ -50,6 +51,8 @@ if ( ! isset( $content_width ) ) {
 */
 
 //Basic constants
+	define( 'SCM_DOMAIN',			    $SCM_domain );
+	define( 'SCM_URL',			      	$SCM_url );
 	define( 'SCM_NAME',     	 		$SCM_name );
 	define( 'SCM_THEME',	 			$SCM_shortname );
 	define( 'SCM_PREFIX', 				SCM_THEME . '-' );
@@ -90,9 +93,13 @@ if ( ! isset( $content_width ) ) {
 				define( 'SCM_DIR_ACF_JSON',      		SCM_DIR_ACF . 'acf-json/' );
 				define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
 		define( 'SCM_URI_ASSETS',      			SCM_URI . '_assets/' );
+		define( 'SCM_URI_ASSETS_CHILD',      	SCM_URI_CHILD . '_assets/' );
 			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
+			define( 'SCM_URI_CSS_CHILD',      		SCM_URI_ASSETS_CHILD . 'css/' );
 			define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
+			define( 'SCM_URI_JS_CHILD',      		SCM_URI_ASSETS_CHILD . 'js/' );
 			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
+			define( 'SCM_URI_IMG_CHILD',      		SCM_URI_ASSETS_CHILD . 'img/' );
 			define( 'SCM_URI_FONT',      			SCM_URI_ASSETS . 'font/' );
 			define( 'SCM_URI_ACF',      		SCM_URI_ASSETS . 'acf/' );
 				define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
@@ -124,7 +131,7 @@ if ( ! isset( $content_width ) ) {
 
 
 
-    
+
 require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';
 require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
@@ -139,11 +146,9 @@ require SCM_DIR_LIBRARY . 'scm-core.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';
 
-
-require SCM_DIR_LIBRARY . 'scm-jquery.php';
-require SCM_DIR_LIBRARY . 'scm-jquery-admin.php';
+require SCM_DIR_LIBRARY . 'scm-jquery-admin.php'; // diventerà pure questo un .js
 
 require SCM_DIR_LIBRARY . 'scm-shortcodes.php';
 
-require SCM_DIR_LIBRARY . 'private.php';			// XXXXX
+//require SCM_DIR_LIBRARY . 'private.php';			// XXXXX
 

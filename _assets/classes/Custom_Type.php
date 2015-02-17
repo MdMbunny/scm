@@ -6,27 +6,36 @@ class Custom_Type {
     protected $categories;
     protected $tags;
  
-    function __construct( $singular = '', $plural = '', $singular_short = '', $plural_short = '', $slug = '', $categories = 0, $tags = 0, $icon = '', $folder = 0, $orderby = 'title', $order = '' ) {
+    function __construct( $plural, $singular = '', $plural_short = '', $singular_short = '', $slug = '', $categories = 0, $categories_plural = '', $categories_singular = '', $tags = 0, $tags_plural = '', $tags_singular = '', $icon = '', $folder = 0, $orderby = 'title', $order = '' ) {
         
-        $default = array(
-            'singular'         => null,
-            'plural'           => null,
-            'singular_short'   => null,
-            'plural_short'     => null,
-            'slug'             => null,
-            'categories'       => 0,
-            'tags'             => 0,
-            'icon'             => '',
-            'folder'           => 0,
-            'orderby'          => 'title',
-            'order'            => ''
-        );
-
-        if(is_array($singular))
-            extract( wp_parse_args( $singular, $default ) );
-
-        if(!$singular || !$plural)
+        if( !$plural )
             return;
+
+        if( is_array( $plural ) ){
+
+            $default = array(
+                'singular'              => null,
+                'plural'                => null,
+                'singular_short'        => null,
+                'plural_short'          => null,
+                'slug'                  => null,
+                'categories'            => 0,
+                'tags'                  => 0,
+                'categories_singular'   => null,
+                'categories_plural'     => null,
+                'tags_singular'         => null,
+                'tags_plural'           => null,
+                'icon'                  => '',
+                'folder'                => 0,
+                'orderby'               => 'title',
+                'order'                 => ''
+            );
+
+            extract( wp_parse_args( $plural, $default ) );
+
+        }else{
+            $singular = $plural;
+        }
 
         if(!$slug)
             $slug = sanitize_title($plural);
@@ -36,6 +45,18 @@ class Custom_Type {
 
         if( !$singular_short )
             $singular_short = $singular;
+
+        if( !$categories_plural )
+            $categories_plural = 'Categorie ' . $plural;
+
+        if( !$categories_singular )
+            $categories_singular = 'Categoria ' . $singular;
+
+        if( !$tags_plural )
+            $tags_plural = 'Tags ' . $plural;
+
+        if( !$categories_singular )
+            $tags_singular = 'Tag ' . $singular;
 
         $this->attributes = array();
         $this->taxonomies = array();
@@ -54,12 +75,12 @@ class Custom_Type {
         //$this->menu_pos = 9;
 
         if( $categories ) {
-            $this->categories = new Custom_Taxonomy( $this->plural , $this->plural, 'categories-' . $slug, array( $slug ), false );
+            $this->categories = new Custom_Taxonomy( $categories_plural , $categories_singular, 'categories-' . $slug, array( $slug ), false );
             $this->taxonomies[] = 'categories-' . $slug;
             add_action( 'admin_menu', array( &$this, 'CT_remove_cat_metabox' ) );
         }
         if( $tags ) {
-            $this->tags = new Custom_Taxonomy( $this->plural, $this->plural, 'tags-' . $slug, array( $slug ), 1 );
+            $this->tags = new Custom_Taxonomy( $tags_plural, $tags_singular, 'tags-' . $slug, array( $slug ), 1 );
             $this->taxonomies[] = 'tags-' . $slug;
             add_action( 'admin_menu', array(&$this, 'CT_remove_tag_metabox') );
         }

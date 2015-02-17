@@ -17,8 +17,10 @@ if( isset($this) ){
 	$zoom = ( isset($this->map_zoom) ? $this->map_zoom : 10 );
 }
 
+
 $id = uniqid( $type . '-' );
 $classes = SCM_PREFIX . 'object ' . SCM_PREFIX . $type . ' ' . $type . ' full';
+
 
 //echo '<div id="' . $id . '" class="' . $classes . '">';
 
@@ -33,8 +35,10 @@ $classes = SCM_PREFIX . 'object ' . SCM_PREFIX . $type . ' ' . $type . ' full';
 			$id = $luogo->ID;
 			$lat = get_field('luoghi_lat', $id);
 			$lng = get_field('luoghi_lng', $id);
+			$img = ( get_field('luoghi_marker', $id) ?: ( get_field( 'tools_gmap_marker', 'option' ) ?: '' ) );
 
-			$marker = ( get_field('luoghi_marker', $id) ? ' data-img="' . get_field('luoghi_marker', $id) . '"' : '' );
+			$marker = ( $img ? ' data-img="' . $img . '"' : '' );
+
 
 			if( $lat && $lng ){
 				echo '<div id="marker-' . $id . '" class="' . SCM_PREFIX . 'marker marker" data-lat="' . $lat . '" data-lng="' . $lng . '"' . $marker . '>';

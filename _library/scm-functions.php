@@ -11,6 +11,7 @@
 // thePost:             get current id, post, type, slug and title
 // printPre:            <pre>print_r(%array)</pre>
 // alert:               JS alert - second parameter will be merged to the first one, separated by the third one (default ': ')
+// consoleLog:          JS console.log
 // getByValue:          get array by $value
 // getByValueKey:       get array by $value and $key
 // getByKey:            get array by $key       (exact $key)
@@ -19,6 +20,8 @@
 // getAllByString:      get arrays by $string   (contains $string)
 // getByPrefix:         get array by $prefix    (starts with $prefix)
 // getAllByPrefix:      get arrays by $prefix   (starts with $prefix)
+// indent:              return or echo n tab indent ( add optional line break )
+// lbreak:              return n line break
 // addHTTP:             add http:// to a link
 // fontSizeLimiter:     add font-size based on #characters
 // getGoogleMapsLatLng: get GM Lat and Lng from an address (es. "Address+Country+State")
@@ -83,6 +86,14 @@ function alert( $str, $more = '', $divider = ': ' ){
     if( !$more )
         $divider = '';
     echo '<script>alert("' . $str . $divider . $more . '");</script>';
+}
+
+function consoleLog( $obj ){
+    ?>
+    <script type='text/javascript'>
+        console.log( <?php echo json_encode( $obj ); ?> );
+    </script>
+    <?php
 }
 
 /**
@@ -220,6 +231,38 @@ function getByValue($arr, $value){
 
 
 /**
+* Return $indent tab indents if one or none (=1) arguments are passed
+* Echo $indent tab indents + $eco + $break line breaks
+* @param int $indent number of tab indents
+* @param string $eco string to be echoed
+* @param int $break number of line breaks
+* @author SCM
+*/
+
+function indent( $indent = 1, $eco = '', $break = 1 ){
+    $str = str_repeat( '    ' , $indent);
+    
+    if(!$eco) return $str;
+    
+    $str .= $eco;
+
+    $str .= str_repeat( PHP_EOL , $break );
+    
+    echo $str;
+}
+
+/**
+* Return $break line breaks
+* @param int $break number of line breaks, default = 1
+* @author SCM
+*/
+
+function lbreak( $break = 1 ){
+    return str_repeat( PHP_EOL, $break );
+}
+
+
+/**
 * Add http:// if doesn't exist in $url
 * @param string $url URL to check
 * @author SCM
@@ -340,6 +383,7 @@ function fileSizeConvert($bytes, $dec = 0)
     }
     return $result;
 }
+
 
 /**
 * Converts a number to a string "450px" if positive or "100%" if negative

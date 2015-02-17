@@ -20,19 +20,17 @@ $gallery = get_field( 'gallerie_immagini' );
 
 $style = ( $b_bg ? ' style="background-image: transparent url(\'' . $b_bg . '\') no-repeat center center;' : '' );
 
-$SCM_galleries[$type . '-' . get_the_ID()] = array( 'init' => $b_init, 'title' => $title, 'gallery' => $gallery );
+$id = uniqid( 'gallery-' );
+$classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' pointer';
+
+$SCM_galleries[ $id ] = $gallery;
 
 
-/*$classes = array(
-	$type . '-' . $post->post_name,
-	'clear'
-);*/
-
-//echo '<div id="' . $type . '-' . get_the_ID() . '" class="pointer ' . SCM_PREFIX . 'object ' . implode( " ", $classes ) . ' ' . implode( " ", get_post_class() ) . '"' . $style . '>';
+echo '<div id="' . $id . '" class="' . $classes . '"' . $style . ' data-init="' . $b_init . '" data-title="' .$title . '">';
 
 	switch ($b_type) {
 		case 'img':
-			echo '<img src="' . $gallery[$b_img]['sizes']['thumbnail'] . '" width="' . $b_size . '" height="' . $b_size . '" />';
+			echo '<img src="' . $gallery[$b_img]['sizes']['thumbnail'] . '" width="' . $b_size . '" height="' . $b_size . '" alt="" />';
 		break;
 		
 		case 'txt':
@@ -48,6 +46,6 @@ $SCM_galleries[$type . '-' . get_the_ID()] = array( 'init' => $b_init, 'title' =
 		break;
 	}
 
-//echo '</div><!-- ' . $type . ' -->';
+echo '</div><!-- ' . $type . ' -->';
 
 ?>

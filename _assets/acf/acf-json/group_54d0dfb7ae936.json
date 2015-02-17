@@ -196,7 +196,7 @@
         {
             "key": "field_54d3a2a47f146",
             "label": "Attiva Toggle Menu",
-            "name": "select_responsive_events_toggle",
+            "name": "select_responsive_up_toggle",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -209,9 +209,9 @@
             },
             "choices": {
                 "smart": "Mobile",
-                "portrait": "Tablet Portrait",
-                "landscape": "Tablet Landscape",
-                "desktop": "Desktop"
+                "smart portrait": "Tablet Portrait",
+                "smart portrait landscape": "Tablet Landscape",
+                "smart portrait landscape desktop": "Desktop"
             },
             "default_value": {
                 "": ""
@@ -747,7 +747,7 @@
             "name": "home_active",
             "prefix": "",
             "type": "select",
-            "instructions": "Le due opzioni che includono il menu Sticky necessitano dell'opzione Sticky Plus.<br \/>\r\nVedi qui sotto: Sticky Menu > Tipo > Sticky Plus.",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -759,7 +759,7 @@
                 "both": "Menu + Sticky",
                 "sticky": "Solo Sticky",
                 "menu": "Solo Menu",
-                "no": "Solo in Toggle Menu"
+                "no": "Solo Toggle"
             },
             "default_value": {
                 "both": "both"
@@ -1276,7 +1276,7 @@
         {
             "key": "field_54d3ae0d7345e",
             "label": "Attiva Logo",
-            "name": "select_responsive_events_logo",
+            "name": "select_responsive_down_logo",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -1289,9 +1289,9 @@
             },
             "choices": {
                 "no": "None",
-                "smart": "Mobile",
-                "portrait": "Tablet Portrait",
-                "landscape": "Tablet Landscape",
+                "desktop landscape portrait smart": "Mobile",
+                "desktop landscape portrait": "Tablet Portrait",
+                "desktop landscape": "Tablet Landscape",
                 "desktop": "Desktop"
             },
             "default_value": {
@@ -1470,5 +1470,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1423161905
+    "modified": 1423980038
 }

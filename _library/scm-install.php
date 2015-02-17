@@ -17,32 +17,8 @@
 
 	if ( ! function_exists( 'scm_install' ) ) {
 		function scm_install() {
-
-            //global $SCM_custom_fields;
-
-            //$cont = array();
-
-            /*$dir = new DirectoryIterator(SCM_DIR_ACF_JSON);
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-
-                    $name = $fileinfo->getFilename();
-      
-                    $string = file_get_contents(SCM_DIR_ACF_JSON . '/' . $name);
-                    $json=json_decode($string,true);
-                    
-                    if( $json['title'] ){
-                        switch( $json['title'] ){
-                            case 'Slider':
-                                // Salvo in un array globale il JSON del gruppo Testata che duplicherò per ogni Type
-                                $SCM_custom_fields['header'] = $json;
-                            break;
-                        }
-                    }
-                }
-            }*/
-
-			$themeStatus = get_option( 'scm-settings-installed' );
+            
+            $themeStatus = get_option( 'scm-settings-installed' );
 
 			if ( ! $themeStatus ) {
                 alert('SCM theme installed');
@@ -63,10 +39,10 @@
 
             $SCM_types = array(
                 'objects' => array(),
+                'private' => array(),
                 'public' => array(
                     'post'                  => 'Articoli',
                 ),
-                'private' => array(),
                 'all' => array(
                     'post'                  => 'Articoli',
                     'wpcf7_contact_form'    => 'Contact Form',
@@ -81,14 +57,15 @@
             $saved_types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
             
 			$default_types = array(
-				'sections'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f116', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'soggetti'				=> array( 'public' => 1,   'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f338', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'luoghi'				=> array( 'public' => 1,   'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f230', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'news'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 				'categories' => 1, 	'tags' => 0, 	'icon' => 'f488', 	'folder' => 1,      'orderby' => 'date',        'order' => '' ),
-				'documenti'				=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'scm-documenti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f109', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'gallerie'				=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'scm-gallerie', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f161', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'video'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'scm-video', 				'categories' => 0, 	'tags' => 0, 	'icon' => 'f236', 	'folder' => 1,      'orderby' => 'title',       'order' => '' ),
-				'rassegne-stampa'		=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'scm-rassegne-stampa', 	'categories' => 0,	'tags' => 0, 	'icon' => 'f336', 	'folder' => 1,      'orderby' => 'date',        'order' => '',     'singular_short' => __('Rassegna', SCM_THEME),     'plural_short' => __('Rassegne', SCM_THEME), 	),
+				'sections'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f489',      'orderby' => 'title',       'order' => '' ),
+				'slides'                => array( 'public' => 0,   'active' => 1,        'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'scm-slides',             'categories' => 1,  'tags' => 1,    'icon' => 'f128',      'orderby' => 'date',        'order' => '',        'categories_plural' => 'Sliders',                   'categories_singular' => 'Slider' ),
+                'soggetti'				=> array( 'public' => 1,   'active' => 1,		 'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'scm-soggetti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f338',      'orderby' => 'title',       'order' => '' ),
+				'luoghi'				=> array( 'public' => 1,   'active' => 1,		 'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'scm-luoghi', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f230',      'orderby' => 'title',       'order' => '' ),
+				'news'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'scm-news', 				'categories' => 1, 	'tags' => 0, 	'icon' => 'f488',      'orderby' => 'date',        'order' => '' ),
+				'documenti'				=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'scm-documenti', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f109',      'orderby' => 'title',       'order' => '' ),
+				'gallerie'				=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'scm-gallerie', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f161',      'orderby' => 'title',       'order' => '' ),
+				'video'					=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'scm-video', 				'categories' => 0, 	'tags' => 0, 	'icon' => 'f236',      'orderby' => 'title',       'order' => '' ),
+				'rassegne-stampa'		=> array( 'public' => 1,   'active' => 0,		 'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'scm-rassegne-stampa', 	'categories' => 0,	'tags' => 0, 	'icon' => 'f336',      'orderby' => 'date',        'order' => '',        'singular_short' => __('Rassegna', SCM_THEME),     'plural_short' => __('Rassegne', SCM_THEME), 	),
 			);
 
 
@@ -244,7 +221,7 @@
                     'slug'               => 'acf-hidden-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-hidden-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -253,7 +230,7 @@
                     'slug'               => 'acf-cf7-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-cf7-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -262,7 +239,7 @@
                     'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-paypal-field-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -271,7 +248,7 @@
                     'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -280,7 +257,7 @@
                     'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -288,8 +265,8 @@
                     'name'               => 'Contact Form 7', // The plugin name.
                     'slug'               => 'contact-form-7', // The plugin slug (typically the folder name).
                     'source'             => 'contact-form-7.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -316,7 +293,7 @@
                     'slug'               => 'post-duplicator', // The plugin slug (typically the folder name).
                     'source'             => 'post-duplicator.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -369,9 +346,27 @@
                     'name'               => 'GitHub Updater', // The plugin name.
                     'slug'               => 'github-updater', // The plugin slug (typically the folder name).
                     'source'             => 'github-updater.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'Thumbs Regenerator', // The plugin name.
+                    'slug'               => 'regenerate-thumbnails', // The plugin slug (typically the folder name).
+                    'source'             => 'regenerate-thumbnails.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'Browser Detection', // The plugin name.
+                    'slug'               => 'php-browser-detection', // The plugin slug (typically the folder name).
+                    'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
             );

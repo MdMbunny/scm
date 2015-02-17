@@ -17,13 +17,13 @@ add_action('acf/save_post', 'scm_acf_google_latlng', 1);
 
 //add_filter('acf/fields/relationship/query/name=select_luoghi', 'scm_acf_select_luoghi', 10, 3);
 
-add_filter( 'bfa_force_fallback', 'my_force_fallback' );
+add_filter( 'bfa_force_fallback', 'scm_force_fallback' );
 
 // *****************************************************
 // *      FONT AWESOME FALLBACK FIX
 // *****************************************************
 
-function my_force_fallback( $force_fallback ) {
+function scm_force_fallback( $force_fallback ) {
 	return true;
 }
 
@@ -351,6 +351,22 @@ function my_force_fallback( $force_fallback ) {
 					'landscape'		=> 'Tablet Landscape',
 					'desktop'		=> 'Desktop',
 				);
+
+			elseif( strpos( $list, 'select_responsive_up' ) !== false ):
+				$arr = array(
+					'smart'									=> 'Mobile',
+					'smart portrait'						=> 'Tablet Portrait',
+					'smart portrait landscape'				=> 'Tablet Landscape',
+					'smart portrait landscape desktop'		=> 'Desktop',
+				);
+
+			elseif( strpos( $list, 'select_responsive_down' ) !== false ):
+				$arr = array(
+					'desktop landscape portrait smart'		=> 'Mobile',
+					'desktop landscape portrait'			=> 'Tablet Portrait',
+					'desktop landscape'						=> 'Tablet Landscape',
+					'desktop'								=> 'Desktop',
+				);
 			
 			elseif( strpos( $list, 'select_head_layout' ) !== false ):
 				$arr = array(
@@ -435,6 +451,31 @@ function my_force_fallback( $force_fallback ) {
 					'3' => 'Tripla linea',
 					'4' => 'Quadrupla linea',
 				);
+			elseif( strpos( $list, 'select_slider' ) !== false ):
+				$arr = array(
+					'nivo' => 'Nivo Slider',
+				);
+			elseif( strpos( $list, 'select_effect' ) !== false ):
+				if( strpos( $list, '_nivo' ) !== false ):
+					$arr = array(
+						'sliceDown' => 'Slice Down',
+						'sliceDownLeft' => 'Slice Down Left',
+						'sliceUp' => 'Slice Up',
+						'sliceUpLeft' => 'Slice Up Left',
+						'sliceUpDown' => 'Slice Up Down',
+						'sliceUpDownLeft' => 'Slice Up Down Left',
+						'fold' => 'Fold',
+						'fade' => 'Fade',
+						'random' => 'Random',
+						'slideInRight' => 'Slide In Right',
+						'slideInLeft' => 'Slide In Left',
+						'boxRandom' => 'Box Random',
+						'boxRain' => 'Box Rain',
+						'boxRainReverse' => 'Box Rain Reverse',
+						'boxRainGrow' => 'Box Rain Grow',
+						'boxRainGrowReverse' => 'Box Rain Grow Reverse'
+					);
+				endif;			
 			elseif( strpos( $list, 'select_ease' ) !== false ):
 				$arr = array(
 					'linear' 			=> 'Linear',

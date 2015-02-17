@@ -144,6 +144,20 @@
                 "operator": "==",
                 "value": "scm-sections"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ],
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-stili"
+            }
         ]
     ],
     "menu_order": 103,
@@ -167,5 +181,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323433
+    "modified": 1423580861
 }

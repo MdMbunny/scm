@@ -51,14 +51,14 @@ if( isset($this) ){
 
 
 
-$classes = SCM_PREFIX . 'object ' . implode( " ", get_post_class() ) . $post->post_name . ' clear';
+$classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name . ' clear';
 
-echo '<div id="' . $type . '-' . $id . '" class="' . $classes . '">';
+echo '<div class="' . $classes . '">';
 
 $marker = ( get_field('luoghi_marker') ?: 0 );
 
 if ($legend && $marker)
-	echo '<div class="legend"><img src="' . $marker . '" /></div>';
+	echo '<div class="legend"><img src="' . $marker . '" alt="" /></div>';
 
 	echo '<div class="datas">';
 

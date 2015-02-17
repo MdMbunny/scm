@@ -15,7 +15,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_54bac005882d3",
@@ -86,7 +87,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_54b9377ba7d72",
@@ -173,7 +175,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_54b9377ba7d97",
@@ -778,6 +781,158 @@
             "placeholder": "",
             "disabled": 0,
             "readonly": 0
+        },
+        {
+            "key": "field_54dbfacaef1f2",
+            "label": "Responsive",
+            "name": "responsive",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top"
+        },
+        {
+            "key": "field_54dc02a3ef1f3",
+            "label": "Font Size",
+            "name": "desktop",
+            "prefix": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Aggiungi o togli px dalla dimensione generale (Opzioni qui affianco, sotto Testi)"
+        },
+        {
+            "key": "field_54dc0752dea66",
+            "label": "Wide",
+            "name": "font_size_wide",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": -1,
+            "placeholder": 0,
+            "prepend": "+\/-",
+            "append": "px",
+            "min": -100,
+            "max": 100,
+            "step": 1,
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54dc064e48675",
+            "label": "Desktop",
+            "name": "font_size_desktop",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "placeholder": 0,
+            "prepend": "+\/-",
+            "append": "px",
+            "min": -100,
+            "max": 100,
+            "step": 1,
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54dc06c748677",
+            "label": "Tablet Landscape",
+            "name": "font_size_landscape",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "placeholder": 0,
+            "prepend": "+\/-",
+            "append": "px",
+            "min": -100,
+            "max": 100,
+            "step": 1,
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54dc06b248676",
+            "label": "Tablet Portrait",
+            "name": "font_size_portrait",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 2,
+            "placeholder": 0,
+            "prepend": "+\/-",
+            "append": "px",
+            "min": -100,
+            "max": 100,
+            "step": 1,
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54dc071348678",
+            "label": "Mobile",
+            "name": "font_size_smart",
+            "prefix": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 3,
+            "placeholder": 0,
+            "prepend": "+\/-",
+            "append": "px",
+            "min": -100,
+            "max": 100,
+            "step": 1,
+            "readonly": 0,
+            "disabled": 0
         }
     ],
     "location": [
@@ -810,5 +965,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421526333
+    "modified": 1423705959
 }

@@ -6,15 +6,58 @@
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
+
+/*add_filter('wp_handle_upload_prefilter', 'spacepad_pre_upload', 2);
+add_filter('wp_handle_upload', 'spacepad_post_upload', 2);
+
+// Change the upload path to the one we want
+function spacepad_pre_upload($file){
+    add_filter('upload_dir', 'spacepad_custom_upload_dir');
+    return $file;
+}
+ 
+// Change the upload path back to the one Wordpress uses by default
+function spacepad_post_upload($fileinfo){
+    remove_filter('upload_dir', 'spacepad_custom_upload_dir');
+    return $fileinfo;
+}
+ 
+function spacepad_custom_upload_dir($path){    
+
+    $use_default_dir = ( isset($_REQUEST['post_id'] ) && $_REQUEST['post_id'] == 0 ) ? true : false; 
+    if( !empty( $path['error'] ) || $use_default_dir )
+        return $path; //error or uploading not from a post/page/cpt 
+ 
+
+    $the_cat = get_the_category( $_REQUEST['post_id'] );
+    $customdir = '/' . strtolower(str_replace(" ", "-", $the_cat[0]->cat_name));
+ 
+    $path['path']    = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
+    $path['url']     = str_replace($path['subdir'], '', $path['url']);      
+    $path['subdir']  = $customdir;
+    $path['path']   .= $customdir; 
+    $path['url']    .= $customdir;  
+ 
+    return $path;
+}*/
+
+
+
+    
     add_action( 'admin_menu', 'scm_admin_remove_menus' );
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
     add_action( 'pre_user_query','scm_admin_hide_from_users');
 
-    //add_filter('wp_handle_upload_prefilter', 'scm_upload_hook_filename', 1, 1);
-    //add_filter('wp_read_image_metadata', 'scm_upload_hook_meta', 1, 3);
+    add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
+    add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
+    add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3);
 
-    add_filter( 'upload_dir', 'scm_upload_set_directory' );
-    add_filter( 'wp_handle_upload', 'scm_upload_set_size' );
+    //add_action( 'admin_init', 'scm_upload_sizes' );
+    //add_filter('wp_handle_upload_prefilter', 'scm_upload_set_filename', 1, 1);
+    //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
+    //add_filter( 'upload_dir', 'scm_upload_set_directory' );
+    
+
 
 // *****************************************************
 // *      HOOKS
@@ -54,6 +97,8 @@
         }
     }
 
+
+
 // Remove Dashboard Widgets
     if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
         function scm_admin_remove_dashboard_widgets(){
@@ -68,6 +113,9 @@
             remove_meta_box('dashboard_primary', 'dashboard', 'side');   // WordPress blog
             remove_meta_box('dashboard_secondary', 'dashboard', 'side');   // Other WordPress News
         }
+
+        //$screen = get_current_screen();
+        //alert( $screen->base );
     }
 
 // Hide Administrator From User List
@@ -92,34 +140,125 @@
 
 
 // *********************************************
-// **************************** UPLOAD HOOKS ***                                         <<  +++ todo:  dare nome post + index (post-type-01)
-// *********************************************                                                    ottenere ID file e aggiungere {index, ID, nome originale} in tabella database (new post-type Files ?)
-/*                                                                                                  quando carico nuovo file cerca in Files database [nome-originale], se lo trovo sostituisco File [index]
-//Change the Name of the Uploaded File
-function scm_upload_hook_filename($arr) {
+// **************************** UPLOAD HOOKS ***
+// *********************************************
+    
+    add_action( 'current_screen', 'scm_current_screen' );
 
-    if (!isset($_REQUEST['post_id'])) {
-        $id = (int)$_REQUEST['post_id'];
-    }else{
-        $id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : '' );
-    }
+    if ( ! function_exists( 'scm_current_screen' ) ) {
+        function scm_current_screen( $current_screen ){
+            global $currentScreen;
 
-    if($id && is_numeric($id)) {
-        $post_obj = get_post($id); 
-        $slug = $post_obj->post_name;
-        // variabile per slug o title
-        if($post_slug) {
-            // numero progressivo?
-            $random_number = rand(10000,99999);
-            // get estensione -> .jpg
-            $arr['name'] = $post_slug . '-' . $random_number . '.jpg';
+            $currentScreen = $current_screen;
+
+            //printPre( $current_screen );
         }
     }
-    return $arr;
-}
 
+
+// Change the upload path to the one we want
+    if ( ! function_exists( 'scm_upload_pre' ) ) {
+        function scm_upload_pre( $file ){
+
+            add_filter( 'upload_dir', 'scm_upload_set_directory' );
+
+            return $file;
+
+        }
+    }
+ 
+// Change the upload path back to the one Wordpress uses by default
+    if ( ! function_exists( 'scm_upload_post' ) ) {
+        function scm_upload_post( $fileinfo ){
+
+            remove_filter( 'upload_dir', 'scm_upload_set_directory' );
+
+            return $fileinfo;
+        }
+    }
+                                                                                                
+//Change the Upload Folder to a Type Folder
+    if ( ! function_exists( 'scm_upload_set_directory' ) ) {
+        function scm_upload_set_directory($args){
+
+            $arr = thePost();
+
+            $dir = '';
+            
+            if($arr){
+                $type = $arr['type'];        
+                $slug = $arr['slug'];
+                $tax = $arr['taxonomy'];
+                if(gettype($tax) == 'array') $tax = implode('-', $tax);
+                
+                if( $type ){
+                    
+                    $dir .= '/' . $type;
+                    
+                    if( $tax )
+                        $dir .= '/' . $tax;
+
+                }
+
+            }else{
+
+                $dir = '/options';
+            }
+
+            if( $dir ){
+
+                //$args['path']    = str_replace( $args['subdir'], '', $args['path'] );
+                //$args['url']     = str_replace( $args['subdir'], '', $args['url'] );
+                $args['subdir']  = $dir;
+                $args['path']   .= $dir; 
+                $args['url']    .= $dir;
+
+            }
+
+            return $args;
+        }
+    }
+
+
+//Add Sizes for Uploaded Images
+    if ( ! function_exists( 'scm_upload_sizes' ) ) {
+        function scm_upload_sizes(){
+
+            //add_image_size('icon', 64, 64, true);
+            //add_image_size('big', 700, 700, false);
+
+        }
+    }
+
+    //Change the Name of the Uploaded File
+    /*if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
+        function scm_upload_set_filename( $image ) {
+
+            if ( isset( $_REQUEST['post_id'] ) ) {
+
+                $id = absint( $_REQUEST['post_id'] );
+
+                if( $id && is_numeric( $id ) ) {
+
+                    $post_obj = get_post( $id ); 
+                    $slug = $post_obj->post_name;
+
+                    if( $post_slug ) {
+
+                        $image[ 'name' ] = $post_slug . substr( $image[ 'name' ], 0, strpos( $image[ 'name' ], '.', -1 ) - 1 );
+
+                    }
+
+                }
+
+            }
+
+            return $image;
+        }
+    }*/
+/*
 //Change the Meta of the Uploaded File
-function scm_upload_hook_meta($meta, $file, $sourceImageType) {
+function scm_upload_set_meta($meta, $file, $sourceImageType) {
 
     if( isset($_REQUEST['post_id']) ) {
         $post_id = $_REQUEST['post_id'];
@@ -136,35 +275,6 @@ function scm_upload_hook_meta($meta, $file, $sourceImageType) {
     return $meta;
 }
 */
-
-
-//Change the Upload Folder to a Type Folder
-    if ( ! function_exists( 'scm_upload_set_directory' ) ) {
-        function scm_upload_set_directory($args){
-            
-            $arr = thePost();
-
-            if($arr){
-                $type = $arr['type'];        
-                $slug = $arr['slug'];
-                $tax = $arr['taxonomy'];
-                if(gettype($tax) == 'array') $tax = implode('-', $tax);
-                
-                $newdir = '/' . $type;
-                if($tax) $newdir .= '/' . $tax;
-                
-                $args['path']    = str_replace( $args['subdir'], '', $args['path'] );
-                $args['url']     = str_replace( $args['subdir'], '', $args['url'] );      
-                $args['subdir']  = $newdir;
-                $args['path']   .= $newdir; 
-                $args['url']    .= $newdir; 
-
-                return $args;
-            }
-
-            return $args;
-        }
-    }
 
 
 //Set the Max Size for Uploaded Images and Delete Original Files

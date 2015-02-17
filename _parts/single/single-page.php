@@ -12,23 +12,24 @@ $class = get_post_class();
 $custom_classes = ( get_field('custom_classes') ?: '' );
 $classes =  implode( ' ', $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object ' . $custom_classes;
 
-$style = scm_options_get_style( $id, 1 );
-
 $single = ( ( isset($this) && isset($this->single) ) ? $this->single : 0 );
 
-echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>';
+echo '<article id="' . $custom_id . '" class="' . $classes . '">';
 	
 	// --- Header
-	$custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
-	//$custom_head = ( $single ? get_field( 'flexible_headers' ) : ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
-	$units = ( $single ? get_field( 'units_' . $type, 'option' ) : get_field( 'units' ) );
-	$units = ( $units ?: ( get_field( 'units', 'option' ) ?: 'px' ) );
-	$height = ( $single ? get_field( 'max_height_' . $type, 'option' ) : get_field( 'max_height' ) );
-	$height = ( $height ?: ( get_field( 'max_height', 'option' ) ?: 'auto' ) );
-	$height = ( $height == 'auto' ?: $height . $units );
 
-	if( sizeof( $custom_head ) ){
-		scm_custom_header( $id, $custom_head, $type, $height );
+	$active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
+
+	if( $active ){
+		$custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
+		$layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : ( get_field( 'select_layout_slider', 'option' ) != 'default' ? get_field( 'select_layout_slider', 'option' ) : 'responsive' ) );
+		$height = get_field( 'height_slider' );
+		
+		if( !$height )
+			$height = ( get_field( 'height_slider', 'option' ) ?: 'initial' );
+
+		if( sizeof( $custom_head ) )
+			scm_custom_header( $id, $custom_head, $type, $layout, $height );
 	}
 
 	if( $single ){
@@ -49,20 +50,20 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 
 			foreach ($repeater as $row) {
 
-				$classes = 'section';
+				$classes = '';
 
 		    	$current_row++;
 				
 				if( $current_row == 1 )
-					$classes .= ' first';
-				elseif( $current_row == $total )
-					$classes .= ' last';
+					$classes .= 'first';
+				if( $current_row == $total )
+					$classes .= 'last';
 
 				$odd = ( $odd ? '' : ' row-odd odd' );
 				$classes .= $odd;
 				$classes .= ' count-' . ( $current_row );
 
-				$class = ( $row['row_classes'] ? $classes . ' ' . $row['row_classes'] : $classes);
+				$classes .= ( $row['row_classes'] ? ' ' . $row['row_classes'] : '' );
 
 				$row_id = ( $row['row_id'] ?: '' ) ;
 
@@ -77,8 +78,9 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '" ' . $style . '>'
 			            $post = $single;
 			            setup_postdata( $post );
 			            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
+			            	'page_id' => $id,
 			            	'add_id' => $row_id,
-                        	'add_class' => $class,
+                        	'add_class' => $classes,
                         ));
 
 					break;

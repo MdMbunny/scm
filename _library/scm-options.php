@@ -261,10 +261,11 @@
 
         	$shadow = ( get_field('text_shadow' . $type, $target) ?: 'none' );
 			
-			if( $shadow == 'none' ){
+			if( $shadow === 'none' ){
 				if( $type || $target != 'option' )
         			return '';
         	}else{
+
         		$shadow_x = ( get_field('text_shadow_x' . $type, $target) ?: '0' ) . 'px';
 	        	$shadow_y = ( get_field('text_shadow_y' . $type, $target) ?: '0' ) . 'px';
 	        	$shadow_size = ( get_field('text_shadow_size' . $type, $target) ?: '0' ) . 'px';
@@ -273,7 +274,6 @@
 	        	$shadow = $shadow_x . ' ' . $shadow_y . ' ' . $shadow_size . ' ' . hex2rgba( $shadow_color, $shadow_alpha );
         	}
 
-        	
             return ( !$add ? $shadow : 'text-shadow:' . $shadow . ';' );
 
         }
@@ -339,7 +339,8 @@
 	if ( ! function_exists( 'scm_options_get_bg_repeat' ) ) {
         function scm_options_get_bg_repeat( $type = '', $target = 'option', $add = false ) {
 
-			$bg_repeat = ( get_field('select_bg_repeat' . $type, $target) ?: 'no-repeat' );
+            $bg_repeat = ( get_field('select_bg_repeat' . $type, $target) ?: 'default' );
+			$bg_repeat = ( $bg_repeat != 'default' ? $bg_repeat : 'no-repeat' );
 			return ( !$add ? $bg_repeat : 'background-repeat:' . $bg_repeat . ';' );
 
 		}
@@ -357,7 +358,8 @@
 	if ( ! function_exists( 'scm_options_get_bg_size' ) ) {
         function scm_options_get_bg_size( $type = '', $target = 'option', $add = false ) {
 
-            $bg_size = ( get_field('background_size' . $type, $target) ?: 'auto' );
+            $bg_size = ( get_field('background_size' . $type, $target) ?: 'default' );
+            $bg_size = ( $bg_size != 'default' ? $bg_size : 'auto' );
             return ( !$add ? $bg_size : 'background-size:' . $bg_size . ';' );
 
         }
@@ -378,29 +380,55 @@
     }
 	
     if ( ! function_exists( 'scm_options_get_style' ) ) {
-        function scm_options_get_style( $target = 'option', $add = false ) {
+        function scm_options_get_style( $target = 'option', $add = 0, $type = '' ) {
 
-        	$align = scm_options_get( 'align', $target, 1 );
-            $size = scm_options_get( 'size', $target, 1 );
+            if( !$target )
+                return '';
 
-            $font = scm_options_get( 'font', $target, 1 );
+            if( strpos( $type, '_' ) === 0 ){
 
-            $color = scm_options_get( 'color', $target, 1 );
-            $line_height = scm_options_get( 'line_height', $target, 1 );
-            $weight = scm_options_get( 'weight', $target, 1 );
-            
-            $opacity = scm_options_get( 'opacity', $target, 1 );
-            $shadow = scm_options_get( 'shadow', $target, 1 );
-            $margin = scm_options_get( 'margin', $target, 1 );
-            $padding = scm_options_get( 'padding', $target, 1 );
-            
-            $bg_image = scm_options_get( 'bg_image', $target, 1 );
-        	$bg_repeat = ( $bg_image ? scm_options_get( 'bg_repeat', $target, 1 ) : '' );
-            $bg_position = ( $bg_image ? scm_options_get( 'bg_position', $target, 1 ) : '' );
-            $bg_size = ( $bg_image ? scm_options_get( 'bg_size', $target, 1 ) : '' );
-            $bg_color = scm_options_get( 'bg_color', $target, 1 );
+                $bg_image = scm_options_get( 'bg_image', array( 'target' => $target, 'type' => $suffix ), 1 );
+                $bg_repeat = ( $bg_image ? scm_options_get( 'bg_repeat', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
+                $bg_position = ( $bg_image ? scm_options_get( 'bg_position', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
+                $bg_size = ( $bg_image ? scm_options_get( 'bg_size', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
+                $bg_color = scm_options_get( 'bg_color', array( 'target' => $target, 'type' => $suffix ), 1 );
 
-            $style = $align . $size . $font . $color . $line_height . $weight . $opacity . $shadow . $margin . $padding . $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
+                $style = $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
+
+            }else{
+
+                if( $type != 'bg' ){
+
+                	$align = scm_options_get( 'align', $target, 1 );
+                    $size = scm_options_get( 'size', $target, 1 );
+
+                    $font = scm_options_get( 'font', $target, 1 );
+
+                    $color = scm_options_get( 'color', $target, 1 );
+                    $line_height = scm_options_get( 'line_height', $target, 1 );
+                    $weight = scm_options_get( 'weight', $target, 1 );
+                    
+                    $opacity = scm_options_get( 'opacity', $target, 1 );
+                    $shadow = scm_options_get( 'shadow', $target, 1 );
+                    $margin = scm_options_get( 'margin', $target, 1 );
+                    $padding = scm_options_get( 'padding', $target, 1 );
+
+                    $style = $align . $size . $font . $color . $line_height . $weight . $opacity . $shadow . $margin . $padding;
+
+                }
+
+                if( $type != 'nobg' ){
+
+                    $bg_image = scm_options_get( 'bg_image', $target, 1 );
+                	$bg_repeat = ( $bg_image ? scm_options_get( 'bg_repeat', $target, 1 ) : '' );
+                    $bg_position = ( $bg_image ? scm_options_get( 'bg_position', $target, 1 ) : '' );
+                    $bg_size = ( $bg_image ? scm_options_get( 'bg_size', $target, 1 ) : '' );
+                    $bg_color = scm_options_get( 'bg_color', $target, 1 );
+
+                    $style .= $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
+
+                }
+            }
             
             if( !$style )
             	return '';
@@ -409,5 +437,6 @@
 
         }
     }
+
 
 ?>

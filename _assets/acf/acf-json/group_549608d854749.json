@@ -55,6 +55,13 @@
                 "operator": "!=",
                 "value": "post"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "scm-gallerie"
+            }
         ]
     ],
     "menu_order": 500,
@@ -78,5 +85,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323338
+    "modified": 1423458306
 }
