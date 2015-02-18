@@ -10,7 +10,6 @@ if ( ! isset( $content_width ) ) {
 	$content_width = 1120;
 }
 
-
 /*
 *****************************************************
 *      GLOBAL
@@ -19,8 +18,9 @@ if ( ! isset( $content_width ) ) {
 
 
 //Getting website data
-
-	$SCM_parse			 = parse_url(site_url());
+	
+	$SCM_site			 = site_url();
+	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
 	$SCM_url			 = 'http://' . $SCM_domain . '/';
 
@@ -51,6 +51,7 @@ if ( ! isset( $content_width ) ) {
 */
 
 //Basic constants
+	define( 'SCM_SITE',				    $SCM_site );
 	define( 'SCM_DOMAIN',			    $SCM_domain );
 	define( 'SCM_URL',			      	$SCM_url );
 	define( 'SCM_NAME',     	 		$SCM_name );

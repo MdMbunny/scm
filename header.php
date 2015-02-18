@@ -5,7 +5,7 @@
  *
  * @package SCM
  */
-
+//header("Access-Control-Allow-Origin: *");
 ?><!DOCTYPE html>
 
 <html class="scm no-js" <?php language_attributes(); ?>>

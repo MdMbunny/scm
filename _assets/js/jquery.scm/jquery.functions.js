@@ -32,10 +32,10 @@
 	$.wpUpdateOption = function( name, value, fun ) {
 
 		$.post(
-		    'http://www.mdmbunny.com/service/progefarm/wp-admin/admin-ajax.php', 
+		    '../wp-admin/admin-ajax.php', 
 		    {
 		        'action': name,
-		        'data':   value
+		        'data':   value,
 		    }, fun
 		);
     }

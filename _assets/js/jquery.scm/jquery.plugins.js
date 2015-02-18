@@ -213,7 +213,7 @@
 
 		$.fn.goToLink = function( event, state, title ){
 
-			var link 		= ( this.data( 'anchor' ) ? this.attr( 'href' ) + this.data( 'anchor' ) : this.attr( 'href' ) ),
+			var link 		= this.attr( 'href' ),
 				state 		= ( state ? state : 'site' ),
 				ext 		= ( typeof this.attr( 'target' ) !== 'undefined' ? ( this.attr('target') == '_blank' ? true : false ) : this.hasClass( 'external' ) ),
 				title 		= ( typeof title !== 'undefined' ? title : 'Arrivederci!' );
@@ -223,7 +223,7 @@
 
 			if( !link )
 				return this;
-
+			
 			if( hash && hash != 'none' && hash !== '' )
 				$.wpUpdateOption( 'scm_anchor', hash, function(r){
 					if( r )

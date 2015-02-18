@@ -24,6 +24,16 @@ function savePosts(){
 // *      ACTIONS AND FILTERS
 // *****************************************************
 
+
+    /*add_action( 'template_redirect', 'scm_header_access_control' );
+
+    if ( ! function_exists( 'scm_header_access_control' ) ) {
+        function scm_header_access_control() {
+            
+        }
+    }*/
+
+
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles_inline' );
@@ -427,7 +437,7 @@ function savePosts(){
     if ( ! function_exists( 'scm_jquery_init' ) ) {
         function scm_jquery_init(){
 
-            global $SCM_galleries;
+            global $SCM_parse, $SCM_galleries;
             
             $anchor = get_option( 'scm-utils-anchor' );
 
@@ -435,7 +445,7 @@ function savePosts(){
 
 <script type="text/javascript">
 
-    var GALLERIES = <?php echo json_encode($SCM_galleries) ?>;
+    var GALLERIES = <?php echo json_encode($SCM_galleries); ?>;
 
     jQuery(document).ready(function($){
 

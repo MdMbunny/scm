@@ -396,7 +396,7 @@
 
                 if( strpos( $url, '#') === 0 ){
                     $type = 'page';
-                    $anchor = ' data-anchor="' . $url . '"';
+                    //$anchor = ' data-anchor="' . $url . '"';
                     //$url = $parent_url;
                 }else if( strpos( $url, SCM_URL ) === false ){
                     $type = 'external';
@@ -442,9 +442,6 @@
 
             if( is_array( $id ) )
                 extract( wp_parse_args( $id, $default ) );
-
-            
-
 
             $perma = get_permalink();
             $home = get_home_url();
