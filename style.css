@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.8.1
+Version:			v1.8.2
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -504,13 +504,14 @@ th {
 13.7 Width
 --------------------------------------------------------------*/
 
-.r1400 .responsive, .w1400 { width: 1250px; }
-.r1120 .responsive, .w1120 { width: 1120px; }
-.r1030 .responsive, .w1030 { width: 1030px; }
-.r940 .responsive, .w940 { width: 940px; }
-.r800 .responsive, .w800 { width: 800px; }
-.r700 .responsive, .w700 { width: 700px; }
+.w1400 { width: 1250px; }
+.w1120 { width: 1120px; }
+.w1030 { width: 1030px; }
+.w940 { width: 940px; }
+.w800 { width: 800px; }
+.w700 { width: 700px; }
 
+.smart .responsive,
 .responsive.full, .responsive.fullwidth, .responsive.full-width,
 .full, .fullwidth, .full-width,
 .content-full > *, .all-full * {
@@ -608,13 +609,13 @@ th {
 
 
 
-.r940 .column:not(.column-solo):not(.column-12):not(.column-23){
+/*.r940 .column:not(.column-solo):not(.column-12):not(.column-23){
 	width: 33.33%;
 }
 
 .r800:not(.r700) .column:not(.column-solo){
 	width: 50%;
-}
+}*/
 
 .r700 .column,
 .smart .column{
@@ -631,7 +632,6 @@ th {
 .smartmin .address span,
 .smartmin .num span {
 	display: block;
-	margin-top: 1em;
 }
 
 .smartmin .address span.separator,
@@ -810,6 +810,11 @@ a:hover{
 	position: relative;
 	display: block;
 	z-index: 7500;
+	line-height: 1em;
+}
+
+.navigation *{
+	line-height: 1em;
 }
 
 .navigation,
@@ -820,13 +825,19 @@ a:hover{
 	text-transform: uppercase;
 }
 
-.navigation li a {
-	display: block;
-	padding: 8px 10px 6px;
+.navigation a {
+	color: #FFF;
+	display: inline-block;
+	vertical-align: top;
+	padding: 7px 15px 5px 15px;
 	text-decoration: none;
 	background-color: transparent;
 	text-align: center;
+	-webkit-transition: opacity .2s, color .2s;
+	transition: opacity .2s, color .2s;
 }
+
+
 /*
 .navigation.affix a,
 .navigation .current > a,
@@ -851,8 +862,9 @@ a:hover{
 	background-color: #FFF;
 }
 
-.navigation li a:hover{
-	color: #666;
+.navigation a:hover{
+	/*color: #666;*/
+	opacity: .7;
 }
 
 .navigation li.current > a:hover,
@@ -952,6 +964,11 @@ body.mouse .sub-menu li:hover > ul {
 	left: auto;
 }
 
+.navigation.self{
+	-webkit-transition: background-color .3s;
+	transition: background-color .3s;
+}
+
 .navigation.sticky.self{
 	position: absolute;
 	-webkit-transition: background-color .3s, top .3s;
@@ -966,9 +983,9 @@ body.mouse .sub-menu li:hover > ul {
 
 /* Toggle Button */
 
-.navigation.toggle:not(.sticky):not(.affix){
+/*.navigation.toggle:not(.sticky):not(.affix){
 	position: absolute;
-}
+}*/
 
 .navigation.toggle,
 .navigation.toggle .row{
@@ -1339,11 +1356,11 @@ object {
 15.0 SCM Elements
 --------------------------------------------------------------*/
 
-.light-module p{
+.module p{
 	margin-bottom: 1em;
 }
 
-.light-module p:last-child{
+.module p:last-child{
 	margin-bottom: 0;
 }
 
@@ -1351,6 +1368,15 @@ object {
 	display: inline-block;
 }
 
+.smart .datas .address {
+	margin-bottom: 1em;
+}
+.smart .datas .separator {
+	display: none;
+}
+.smart .datas span {
+	display: block;
+}
 
 /*--------------------------------------------------------------
 15.1 Scroll To Top
@@ -1439,6 +1465,7 @@ blockquote {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 120%;
+	cursor: default;
 }
 
 .page-numbers{
@@ -1681,10 +1708,18 @@ a.fancybox-next *{
 
 
 /*--------------------------------------------------------------
-17.3 SCM Fancybox
+17.3 SCM Font Awesome
 --------------------------------------------------------------*/
 
 i.fa {
-	font-size: 1.4em;
-	line-height: 1em;
+	font-size: 1em;
+	line-height: inherit;
+	vertical-align: top;
+	display: inline;
 }
+
+
+
+
+
+.overlay { position: absolute; }

@@ -17,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "id",
+            "placeholder": "id-page",
             "prepend": "#",
             "append": "",
             "maxlength": "",
@@ -39,7 +39,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "classes",
+            "placeholder": "class-page",
             "prepend": ".",
             "append": "",
             "maxlength": "",
@@ -108,7 +108,7 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "placeholder": "id",
+                            "placeholder": "id-section",
                             "prepend": "#",
                             "append": "",
                             "maxlength": "",
@@ -130,7 +130,7 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "placeholder": "classes",
+                            "placeholder": "class-section",
                             "prepend": ".",
                             "append": "",
                             "maxlength": "",
@@ -173,5 +173,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422114643
+    "modified": 1424305528
 }

@@ -348,7 +348,7 @@
 
 	if ( ! function_exists( 'scm_options_get_bg_position' ) ) {
         function scm_options_get_bg_position( $type = '', $target = 'option', $add = false ) {
-
+            
             $bg_position = ( get_field('select_bg_position' . $type, $target) ?: 'center center' );
             return ( !$add ? $bg_position : 'background-position:' . $bg_position . ';' );
 
@@ -387,11 +387,11 @@
 
             if( strpos( $type, '_' ) === 0 ){
 
-                $bg_image = scm_options_get( 'bg_image', array( 'target' => $target, 'type' => $suffix ), 1 );
-                $bg_repeat = ( $bg_image ? scm_options_get( 'bg_repeat', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
-                $bg_position = ( $bg_image ? scm_options_get( 'bg_position', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
-                $bg_size = ( $bg_image ? scm_options_get( 'bg_size', array( 'target' => $target, 'type' => $suffix ), 1 ) : '' );
-                $bg_color = scm_options_get( 'bg_color', array( 'target' => $target, 'type' => $suffix ), 1 );
+                $bg_image = scm_options_get( 'bg_image', array( 'target' => $target, 'type' => $type ), 1 );
+                $bg_repeat = ( $bg_image ? scm_options_get( 'bg_repeat', array( 'target' => $target, 'type' => $type ), 1 ) : '' );
+                $bg_position = ( $bg_image ? scm_options_get( 'bg_position', array( 'target' => $target, 'type' => $type ), 1 ) : '' );
+                $bg_size = ( $bg_image ? scm_options_get( 'bg_size', array( 'target' => $target, 'type' => $type ), 1 ) : '' );
+                $bg_color = scm_options_get( 'bg_color', array( 'target' => $target, 'type' => $type ), 1 );
 
                 $style = $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
 

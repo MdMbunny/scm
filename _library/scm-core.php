@@ -335,6 +335,8 @@ function savePosts(){
             $body .= scm_options_get( 'bg_size', 'sc', 1 );
             $body .= scm_options_get( 'bg_color', 'sc', 1 );
 
+            
+
             $content = scm_options_get( 'bg_image', 'option', 1 );
             $content .= scm_options_get( 'bg_repeat', 'option', 1 );
             $content .= scm_options_get( 'bg_position', 'option', 1 );
@@ -388,6 +390,40 @@ function savePosts(){
 
             // Responsive
 
+            $r_max = intval( get_field( 'select_responsive_layouts_max', 'option' ) ?: '1400' );
+            
+            if( $r_max >= 1400 )
+                $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
+            else
+                $css .= '.r1400 .responsive, ';
+
+            if( $r_max >= 1120 )
+                $css .= '.r1120 .responsive { width: 1120px; }' . lbreak();
+            else
+                $css .= '.r1120 .responsive, ';
+
+            if( $r_max >= 1030 )
+                $css .= '.r1030 .responsive { width: 1030px; }' . lbreak();
+            else
+                $css .= '.r1030 .responsive, ';
+
+            if( $r_max >= 940 )
+                $css .= '.r940 .responsive { width: 940px; }' . lbreak();
+            else
+                $css .= '.r940 .responsive, ';
+
+            if( $r_max >= 800 )
+                $css .= '.r800 .responsive { width: 800px; }' . lbreak();
+            else
+                $css .= '.r800 .responsive, ';
+
+            if( $r_max >= 700 )
+                $css .= '.r700 .responsive { width: 700px; }' . lbreak();
+
+            $r_full = ( get_field( 'select_responsive_events_tofull', 'option' ) ?: '' );
+            if( $r_full )
+                $css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
+
             $r_desktop = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_desktop', 'option' ) );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
 
@@ -402,10 +438,6 @@ function savePosts(){
 
             $r_smart = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_smart', 'option' ) );
             $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
-
-            $r_full = ( get_field( 'select_responsive_events_tofull', 'option' ) ?: '' );
-            if( $r_full )
-                $css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
 
             
             if( !empty( $css ) )

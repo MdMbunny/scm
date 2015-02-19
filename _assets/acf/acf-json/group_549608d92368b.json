@@ -15,7 +15,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b7e03e44b8",
@@ -53,7 +54,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b7e57e44b9",
@@ -124,7 +126,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b7da2e44b5",
@@ -162,7 +165,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b7dd1e44b6",
@@ -200,7 +204,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b7df3e44b7",
@@ -256,5 +261,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323306
+    "modified": 1424222280,
+    "local": "json"
 }

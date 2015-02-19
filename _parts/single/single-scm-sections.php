@@ -6,21 +6,19 @@ $type = $post->post_type;
 $id = $post->ID;
 $slug = $post->post_name;
 
-$page_id = ( ( isset($this) && isset($this->page_id) ) ? $this->page_id : '' );
-
-$custom_id = ( ( isset($this) && isset($this->add_id) && $this->add_id ) ? $this->add_id : $type . '-' . $id );
-
-$classes = 'section ';
-
-$classes .= ( ( isset($this) && isset($this->add_class) ) ? $this->add_class . ' ' : '' );
-
-$classes .= ( get_field('custom_classes') ?  ' ' . get_field('custom_classes') . ' ' : '' ) . $slug . ' ' . SCM_PREFIX . 'object full ';
-$classes .= implode( ' ', get_post_class() );
-
 $site_align = ( get_field( 'select_alignment_site', 'option' ) ?: 'center' );
 
+$page_id = ( ( isset($this) && isset($this->page_id) ) ? $this->page_id : '' );
+
+$section_id = ( ( isset($this) && isset($this->add_id) && $this->add_id ) ?  ' id="' . $this->add_id . '"' : '' );
+$section_class = 'section scm-section scm-object full';
+$section_class .= ( ( isset($this) && isset($this->add_class) ) ?  ' ' . $this->add_class : '' );
+
+$row_id = ( get_field('section_id_row') ? ' id="' . get_field('section_id_row') . '"' : '' );
 $row_layout = ( ( get_field('select_layout_row') && get_field('select_layout_row') != 'default' ) ? get_field('select_layout_row') : ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_cont', 'option') ?: 'full' ) : 'full') );
-$row_class = 'row ' . $row_layout . ' float-' . $site_align . ' ' . SCM_PREFIX . 'row ' . $type . '-row';
+$row_class = 'row scm-row ' . $row_layout . ' float-' . $site_align;
+$row_class .= ( get_field('section_class_row') ? ' ' . get_field('section_class_row') : '' );
+
 
 $style_cont = ' ' . scm_options_get_style( $id, 1, '_sc' );
 $style = scm_options_get_style( $id, 0, 'nobg' );
@@ -42,8 +40,7 @@ $style .= $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
 $style = ( $style ? ' style="' . $style . '"' : '' );
 
 
-
-echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style_cont . '>';
+echo '<div' . $section_id . ' class="' . $section_class . '"' . $style_cont . '>';
 
 	$active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
 	
@@ -60,7 +57,7 @@ echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style_cont . '>'
 		}
 	}
 
-	echo '<div class="' . $row_class . '"' . $style . '>';
+	echo '<div' . $row_id . ' class="' . $row_class . '"' . $style . '>';
 
 		$repeater = ( get_field('columns_repeater') ?: array() );
 
@@ -85,7 +82,7 @@ echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style_cont . '>'
 		    	$counter += $size;
 		    	$current_column++;
 
-		    	$class = 'light-module column column-' . $layout;
+		    	$class = 'module scm-module column column-' . $layout;
 
 		    	if( $counter == 1 && $size == 1 ){
 
@@ -116,9 +113,9 @@ echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style_cont . '>'
 
 				$class = ( $column['column_classes'] ? $class . ' ' . $column['column_classes'] : $class);
 
-				$id = ( $column['column_id'] ? $column['column_id'] : uniqid( 'light-module-' ) ) ;
+				$id = ( $column['column_id'] ? ' id="' . $column['column_id'] . '"' : '' ) ;
 				
-				echo '<div id="' . $id . '" class="' . $class . '">';	
+				echo '<div' . $id . ' class="' . $class . '">';	
 					if( $module )
 						scm_flexible_content( $module );
 				echo '</div>';
@@ -129,8 +126,8 @@ echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style_cont . '>'
 		    // no layouts found
 		}
 
-   	echo '</div><!-- ' . $type . '-row -->';
+   	echo '</div><!-- row -->';
 
-echo '</div><!-- ' . $type . ' -->';
+echo '</div><!-- section -->';
 
 ?>

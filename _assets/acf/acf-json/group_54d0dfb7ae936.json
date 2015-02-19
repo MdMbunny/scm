@@ -17,7 +17,7 @@
                 "id": ""
             },
             "choices": {
-                "primary": "Menu Principale IT"
+                "primary": "Menu Principale"
             },
             "default_value": {
                 "": ""
@@ -124,9 +124,7 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto",
-                "Open Sans": "Open Sans",
-                "Merriweather Sans": "Merriweather Sans"
+                "Roboto": "Roboto"
             },
             "default_value": {
                 "default": "default"
@@ -1419,8 +1417,8 @@
                 [
                     {
                         "field": "field_54d0dfb7b70dc",
-                        "operator": "!=",
-                        "value": "no"
+                        "operator": "==",
+                        "value": "plus"
                     }
                 ]
             ],
@@ -1470,5 +1468,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1423980038
+    "modified": 1424265571
 }

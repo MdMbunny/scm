@@ -202,6 +202,7 @@ function scm_force_fallback( $force_fallback ) {
         function scm_acf_select_preset( $list, $get = '', $separator = '' ){
 
         	$arr = array();
+        	//return $arr;
 		        				
 			if( strpos( $list, 'select_types' ) !== false ):
 	    		global $SCM_types;
@@ -348,7 +349,7 @@ function scm_force_fallback( $force_fallback ) {
 				$arr = array(
 					'smart'			=> 'Mobile',
 					'portrait'		=> 'Tablet Portrait',
-					'landscape'		=> 'Tablet Landscape',
+					'tablet'		=> 'Tablet Landscape',
 					'desktop'		=> 'Desktop',
 				);
 
@@ -366,6 +367,16 @@ function scm_force_fallback( $force_fallback ) {
 					'desktop landscape portrait'			=> 'Tablet Portrait',
 					'desktop landscape'						=> 'Tablet Landscape',
 					'desktop'								=> 'Desktop',
+				);
+
+			elseif( strpos( $list, 'select_responsive_layouts' ) !== false ):
+				$arr = array(
+					'1400'			=> '1250px',
+					'1120'			=> '1120px',
+					'1030'			=> '1030px',
+					'940'			=> '940px',
+					'800'			=> '800px',
+					'700'			=> '700px',
 				);
 			
 			elseif( strpos( $list, 'select_head_layout' ) !== false ):
@@ -394,6 +405,7 @@ function scm_force_fallback( $force_fallback ) {
 					'right top'				=> 'right top',
 					'right bottom'			=> 'right bottom',
 				);
+
 			elseif( strpos( $list, 'select_webfonts_families' ) !== false ):
 				$arr = array('no' => 'No Google font');
 				$arr['Roboto'] = 'Roboto';
@@ -405,16 +417,16 @@ function scm_force_fallback( $force_fallback ) {
 				endif;
 			elseif( strpos( $list, 'select_webfonts_default_families' ) !== false ):
 				$arr = array(
-					'Helvetica_Arial_sans-serif'							=> 'Helvetica, Arial, sans-serif',
+					'Helvetica_Arial_sans-serif'						=> 'Helvetica, Arial, sans-serif',
 					'Lucida Sans Unicode_Lucida Grande_sans-serif'		=> 'Lucida Sans Unicode, Lucida Grande, sans-serif',
 					'Trebuchet MS_Helvetica_sans-serif'					=> 'Trebuchet MS, Helvetica, sans-serif',
-					'Verdana_Geneva_sans-serif'								=> 'Verdana, Geneva, sans-serif',
-					'Georgia_serif'											=> 'Georgia, serif',
-					'Times New Roman_Times_serif'							=> 'Times New Roman, Times, serif',
+					'Verdana_Geneva_sans-serif'							=> 'Verdana, Geneva, sans-serif',
+					'Georgia_serif'										=> 'Georgia, serif',
+					'Times New Roman_Times_serif'						=> 'Times New Roman, Times, serif',
 					'Palatino Linotype_Book Antiqua_Palatino_serif'		=> 'Palatino Linotype, Book Antiqua, Palatino, serif',
-					'cursive_serif'											=> 'cursive, serif',
+					'cursive_serif'										=> 'cursive, serif',
 					'Courier New_Courier_monospace'						=> 'Courier New, Courier, monospace',
-					'Lucida Console_Monaco_monospace'						=> 'Lucida Console, Monaco, monospace',
+					'Lucida Console_Monaco_monospace'					=> 'Lucida Console, Monaco, monospace',
 				);
 			elseif( strpos( $list, 'select_webfonts_styles' ) !== false ):
 				$arr = array(

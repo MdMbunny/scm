@@ -3,6 +3,50 @@
     "title": "Contenuti",
     "fields": [
         {
+            "key": "field_54e52c8dcebd2",
+            "label": "ID",
+            "name": "section_id_row",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "id-row",
+            "prepend": "#",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54e52cbbcebd3",
+            "label": "Class",
+            "name": "section_class_row",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "class-row",
+            "prepend": ".",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_54b5ae0e69c35",
             "label": "Colonne",
             "name": "columns_repeater",
@@ -49,7 +93,9 @@
                         "16": "1\/6",
                         "56": "5\/6"
                     },
-                    "default_value": 11,
+                    "default_value": [
+                        11
+                    ],
                     "allow_null": 0,
                     "multiple": 0,
                     "ui": 1,
@@ -73,7 +119,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": "id-colonna",
+                    "placeholder": "id-column",
                     "prepend": "#",
                     "append": "",
                     "maxlength": "",
@@ -95,7 +141,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": "class1 class2 class3",
+                    "placeholder": "class-column",
                     "prepend": ".",
                     "append": "",
                     "maxlength": "",
@@ -143,8 +189,7 @@
                                     "choices": {
                                         "post": "Articoli",
                                         "scm-soggetti": "Soggetti",
-                                        "scm-luoghi": "Luoghi",
-                                        "scm-gallerie": "Gallerie"
+                                        "scm-luoghi": "Luoghi"
                                     },
                                     "default_value": {
                                         "": ""
@@ -227,7 +272,9 @@
                                         "1": "Archivio completo",
                                         "0": "Archivio parziale"
                                     },
-                                    "default_value": 1,
+                                    "default_value": [
+                                        1
+                                    ],
                                     "allow_null": 0,
                                     "multiple": 0,
                                     "ui": 0,
@@ -1634,7 +1681,9 @@
                                                         "Positivo",
                                                         "Negativo"
                                                     ],
-                                                    "default_value": 0,
+                                                    "default_value": [
+                                                        0
+                                                    ],
                                                     "allow_null": 0,
                                                     "multiple": 0,
                                                     "ui": 0,
@@ -1695,7 +1744,9 @@
                                                         "Positivo",
                                                         "Negativo"
                                                     ],
-                                                    "default_value": 0,
+                                                    "default_value": [
+                                                        0
+                                                    ],
                                                     "allow_null": 0,
                                                     "multiple": 0,
                                                     "ui": 0,
@@ -2325,5 +2376,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1422971110
+    "modified": 1424305474
 }

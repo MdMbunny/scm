@@ -6,15 +6,14 @@ $type = $post->post_type;
 $slug = $post->post_name;
 
 $id = $post->ID;
-$custom_id = ( get_field('custom_id') ?: $type . '-' . $id );
 
-$class = get_post_class();
-$custom_classes = ( get_field('custom_classes') ?: '' );
-$classes =  implode( ' ', $class ) . ' ' . $slug . ' ' . SCM_PREFIX . 'object ' . $custom_classes;
+$page_id = ( get_field('custom_id') ? ' id="' . get_field('custom_id') . '"' : '' );
+$page_class = 'page scm-page scm-object';
+$page_class .= ( get_field('custom_classes') ? ' ' . get_field('custom_classes') : '' );
 
 $single = ( ( isset($this) && isset($this->single) ) ? $this->single : 0 );
 
-echo '<article id="' . $custom_id . '" class="' . $classes . '">';
+echo '<article' . $page_id . ' class="' . $page_class . '">';
 	
 	// --- Header
 
@@ -42,7 +41,7 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '">';
 		
 		if( sizeof( $repeater ) ){
 
-			$current_row = 0;
+			$current = 0;
 
 			$odd = '';
 
@@ -50,20 +49,20 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '">';
 
 			foreach ($repeater as $row) {
 
-				$classes = '';
+				$section_class = '';
 
-		    	$current_row++;
+		    	$current++;
 				
-				if( $current_row == 1 )
-					$classes .= 'first';
-				if( $current_row == $total )
-					$classes .= 'last';
+				if( $current == 1 )
+					$section_class .= 'first ';
+				if( $current == $total )
+					$section_class .= 'last ';
 
-				$odd = ( $odd ? '' : ' row-odd odd' );
-				$classes .= $odd;
-				$classes .= ' count-' . ( $current_row );
+				$odd = ( $odd ? '' : 'odd ' );
+				$section_class .= $odd;
+				$section_class .= 'count-' . ( $current );
 
-				$classes .= ( $row['row_classes'] ? ' ' . $row['row_classes'] : '' );
+				$section_class .= ( $row['row_classes'] ? ' ' . $row['row_classes'] : '' );
 
 				$row_id = ( $row['row_id'] ?: '' ) ;
 
@@ -80,7 +79,7 @@ echo '<article id="' . $custom_id . '" class="' . $classes . '">';
 			            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
 			            	'page_id' => $id,
 			            	'add_id' => $row_id,
-                        	'add_class' => $classes,
+                        	'add_class' => $section_class,
                         ));
 
 					break;

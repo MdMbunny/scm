@@ -67,6 +67,37 @@
 		};
 	}
 
+	if ( !$.fn.getHighest ) {
+
+		$.fn.getHighest = function( elem ) {
+
+			var t_height = 0;
+			var t_elem;
+
+			if( !this.length )
+				return 0;
+
+			this.each( function () {
+
+			    $this = $(this);
+
+			    if ( $this.outerHeight() > t_height ) {
+
+			        t_elem=this;
+			        t_height = $this.outerHeight();
+			    }
+
+			} );
+
+			if ( elem )
+				return t_elem;
+
+			return t_height;
+
+		};
+
+	}
+
 	if ( !$.fn.equalChildrenSize ) {
 
 		$.fn.equalChildrenSize = function( options ) {

@@ -34,7 +34,7 @@ if ( ! class_exists('Get_Template_Part') ) {
  
 		public function render() {
 			if( locate_template($this->file) ){
-				include( locate_template($this->file) );//Theme Check free. Child themes support.
+				include( locate_template($this->file) );
 			}
 		}
 

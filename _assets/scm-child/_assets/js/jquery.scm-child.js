@@ -2,7 +2,6 @@
 
 	jQuery(function($){
 
-
-
+	});
 
 } )( jQuery );

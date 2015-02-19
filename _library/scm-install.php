@@ -55,6 +55,7 @@
             );
 			
             $saved_types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
+            //alert();
             
 			$default_types = array(
 				'sections'				=> array( 'public' => 0,   'active' => 1,		 'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'scm-sections', 			'categories' => 1, 	'tags' => 0, 	'icon' => 'f489',      'orderby' => 'title',       'order' => '' ),
@@ -248,7 +249,7 @@
                     'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 

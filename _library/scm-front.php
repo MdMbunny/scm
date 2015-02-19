@@ -289,10 +289,8 @@
         function scm_main_menu( $align = 'right', $position = 'inline', $in = 0 ) {
 
             $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
-            $offset = ( get_field( 'offset_sticky_menu', 'option' ) ?: 0 );
-            $attach = ( get_field( 'attach_sticky_menu', 'option' ) ?: 'nav-top' );
-            if( $sticky == 'self' )
-                $attach = 'nav-top';
+            $offset = ( $sticky != 'self' ? ( intval( get_field( 'offset_sticky_menu', 'option' ) ) ?: 0 ) : 0 );
+            $attach = ( $sticky != 'self' ? ( get_field( 'attach_sticky_menu', 'option' ) ?: 'nav-top' ) : 'nav-top' );
             
             $menu = ( get_field( 'select_menu', 'option' ) ?: 'primary' );
             
@@ -333,7 +331,7 @@
                 $sticky_id = $id . '-sticky';
 
                 $sticky_layout = ( get_field('select_layout_page', 'option') ?: 'full' );
-                $sticky_class = 'navigation sticky ' . ( $sticky == 'self' ? 'self' : '' ) . ' ' . $sticky_layout;
+                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' ) . $sticky_layout;
 
                 $sticky_row_layout = ( get_field('select_layout_sticky_menu', 'option') ?: 'full' );
                 $sticky_row_class = $sticky_row_layout . ' float-' . $site_align . ' ' . $align;
@@ -365,12 +363,12 @@
         
         class Sublevel_Walker extends Walker_Nav_Menu {
             function start_lvl( &$output, $depth = 0, $args = array() ) {
-                $output .= lbreak() . indent( $indent + 7 + $depth ) . '<ul class="toggle-content sub-menu depth-' . $depth . '">' . lbreak();
+                $output .= lbreak() . indent( 7 + $depth ) . '<ul class="toggle-content sub-menu depth-' . $depth . '">' . lbreak();
 
             }
 
             function end_lvl( &$output, $depth = 0, $args = array() ) {
-                $output .= indent( $indent + 7 + $depth ) . '</ul>' . lbreak() . indent( 6 );
+                $output .= indent( 7 + $depth ) . '</ul>' . lbreak() . indent( 6 );
             }
 
             function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
@@ -412,7 +410,7 @@
                     $link = '<div class="toggle-button">' . $link . '</div>';
                 }
                 
-                $output .= indent( $indent + $ind + $depth ) . '<li class="menu-item link-' . $type . $class . '"' . $data . '>' . $link;
+                $output .= indent( $ind + $depth ) . '<li class="menu-item link-' . $type . $class . '"' . $data . '>' . $link;
             
             }
 
@@ -641,7 +639,6 @@
             $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
             $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
 
-            
             // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
             $images = '<div id="' . $id . '" class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '">';
             $captions = '';

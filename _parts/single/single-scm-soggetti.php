@@ -24,32 +24,36 @@ $classes = SCM_PREFIX . 'object ' . implode( " ", get_post_class() ) . $post->po
 
 echo '<div class="' . $classes . '">';
 
-	foreach ($rows as $row) {
-		// +++ todo: integrare ICONA POS o NEG, NAME e PIVA
-		$elem = ( $row['acf_fc_layout'] ?: $row['acf_fc_layout'] );
-		$neg = ( isset( $row['negativo'] ) ? (int)$row['negativo'] : 0 );
-		$wid = ( isset( $row['larghezza'] ) ? $row['larghezza'] : 100 );
+	if( $rows && sizeof( $rows ) > 0 ){
 
-		$class = SCM_PREFIX . $elem . ' ' . $elem . ' full' . ( $neg ? ' negative' : '' );
-		
-		$width = ( $wid ? 'width=' . $wid . '%' : '' );
-		
-		echo '<div class="' . $class . '" style="' . $width . '">';
+		foreach ($rows as $row) {
+			// +++ todo: integrare ICONA POS o NEG, NAME e PIVA
+			$elem = ( $row['acf_fc_layout'] ?: $row['acf_fc_layout'] );
+			$neg = ( isset( $row['negativo'] ) ? (int)$row['negativo'] : 0 );
+			$wid = ( isset( $row['larghezza'] ) ? $row['larghezza'] : 100 );
 
-			switch ($elem) {
-				// +++ todo: case 'icon', case 'name', case 'piva'
-				case 'logo':
-					
-					$logo = ( !$neg ? get_field('soggetti_logo') : get_field('soggetti_logo_negativo') );
-					$width = ( $wid ? 'width=' . $wid . '%' : '' );
+			$class = SCM_PREFIX . $elem . ' ' . $elem . ' full' . ( $neg ? ' negative' : '' );
+			
+			$width = ( $wid ? 'width=' . $wid . '%' : '' );
+			
+			echo '<div class="' . $class . '" style="' . $width . '">';
 
-					echo '<img src="' . $logo . '" alt="">';
+				switch ($elem) {
+					// +++ todo: case 'icon', case 'name', case 'piva'
+					case 'logo':
+						
+						$logo = ( !$neg ? get_field('soggetti_logo') : get_field('soggetti_logo_negativo') );
+						$width = ( $wid ? 'width=' . $wid . '%' : '' );
 
-				break;
+						echo '<img src="' . $logo . '" alt="">';
 
-			}
+					break;
 
-		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
+				}
+
+			echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
+		}
+
 	}
 
 echo '</div><!-- ' . $type . ' -->';

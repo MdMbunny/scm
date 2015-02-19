@@ -15,7 +15,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_5474d089dfb2a",
@@ -51,7 +52,8 @@
                 "width": "",
                 "class": "",
                 "id": ""
-            }
+            },
+            "placement": "top"
         },
         {
             "key": "field_538b6d9943f54",
@@ -106,5 +108,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1421323343
+    "modified": 1424222280,
+    "local": "json"
 }

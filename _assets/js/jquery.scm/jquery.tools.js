@@ -149,12 +149,28 @@
 				state = 'external';
 			}
 
-			$this.trigger( 'link', [ state ] );
+			// +++ todo:
+			// A: o delay è passato dalle opzioni in data-... + integri in jQuery l'animazione dei Toggle Menu e in CSS potrebbe esserci solo un display/visibility come fallback per i .no-js
+			// B: o delay è = this... transition.duration ???
 
-			if( result === false )
+			// Comunque il setTimeout è da levare, al suo posto il toggledOff deve animare lui stesso il menu e avere un onComplete dove ficcarci il trigger('link').
+
+			var delay = 400;
+
+			if( result === false ){
+				$this.trigger( 'link', [ state ] );
 				return $this;
+			}else{
+				if( $( '.toggled' ).length ){
+					$( '.toggled' ).toggledOff( event );
+					setTimeout( function(){
+						$this.trigger( 'link', [ state ] );
+					}, delay );
+				}else{
+					$this.trigger( 'link', [ state ] );
+				}
+			}
 
-			$( '.toggled' ).toggledOff( event );
 
 		});
 		
@@ -300,13 +316,15 @@
 			if( !$menu.length )
 				return;
 
+
+
 			if( attach == 'nav-top'){
 				new_offset = offset + $menu.offset().top;
 			}else if( attach == 'nav-bottom'){
 				new_offset = offset + $menu.offset().top + $menu.outerHeight();
 			}
 
-			$(window).off('.affix');
+			$this.off('.affix');
 			$this
 			    .removeClass("affix affix-top affix-bottom")
 			    .removeData("bs.affix");
@@ -317,22 +335,29 @@
 
 			if( sticky == 'plus' ){
 				var result = $this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
-				var color = result[0],
-				    x = result[1],
-				    y = result[2],
-				    blur = result[3],
-				    exp = result[4];
-				var plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
+				var plus = 0;
+				if( result ){
+					var color = result[0],
+					    x = result[1],
+					    y = result[2],
+					    blur = result[3],
+					    exp = result[4];
+
+					plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
+				}
 
 				$this.css( 'top', -$this.outerHeight()-plus );
 			}
 
-			$this.on('affix.bs.affix', function () {
-			     $(menu).addClass('affix-' + sticky);
-			});
-			$this.on('affix-top.bs.affix', function () {
-			     $(menu).removeClass('affix-' + sticky);
-			});
+			$menu.addClass( sticky );
+
+			$this
+				.on( 'affix.bs.affix', function () {
+				     $menu.addClass( 'affix-' + sticky );
+				} )
+				.on( 'affix-top.bs.affix', function () {
+				     $menu.removeClass( 'affix-' + sticky) ;
+				} );
 
 		});
 
@@ -376,8 +401,9 @@
 				height 			= $( 'body' ).height(),
 				position 		= $( 'body' ).scrollTop(),
 
-				target 			= $( elem.hash ),
-				name 			= elem.hash.slice( 1 ),
+				hash 			= elem.hash,
+				target 			= $( hash ),
+				name 			= hash.slice( 1 ),
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0,
@@ -395,11 +421,14 @@
 					);
 				};
 
+			
+			name 			= elem.hash.slice( 1 ),
+
 			event.preventDefault();
 
 			if( target.length ){
 
-				destination = target.offset().top - parseInt( offset );
+				destination = target.offset().top - parseInt( offset ) - $( '.sticky' ).getHighest() + 1;
 
 				if( height - destination < win ){
 					destination = height - win;
@@ -697,14 +726,23 @@
 		//this.removeClass( 'from-left' );
 		//this.addClass( 'from-right' );
 		//this.removeClass( 'from-right', 500 );
+
+
 		return this.each( function() {
 
-			$from = $( 'body' ).outerWidth() + $( this ).outerWidth();
-			$( this ).css( { left: $from, opacity: 0 } ).animate({
-				left: $( this ).parent( '.slider' ).position().left,
-				opacity: 1
-			}, 1000);
+			var from = /*$( 'body' ).outerWidth(); +*/ $( this ).outerWidth();
+			$( this ).css( { left: from, opacity: 0 } );
 
+			if ( $( this ).children().length ){
+
+				
+				$( this ).animate({
+					//left: $( this ).parent( '.slider' ).position().left,
+					left: 0,
+					opacity: 1
+				}, 1000);
+
+			}
 		});
 
 	}
@@ -715,13 +753,20 @@
 
 		return this.each( function() {
 
-			//$( this ).css( { left: -250 } );
-			w = - $( this ).outerWidth();
+			var to = - $( this ).outerWidth();
 
-			$( this ).animate({
-				left: w,
-				//opacity: 0
-			}, 1000);
+			if ( $( this ).children().length ){
+
+				//$( this ).css( { left: -250 } );
+				
+				$( this ).animate({
+					left: to,
+					//opacity: 0
+				}, 1000);
+
+			}else{
+
+			}
 
 		});
 
@@ -1043,7 +1088,7 @@
 		if( link )
 			$elem.data( 'done', true );
 
-		if( duration > 0 ){
+		if( state != 'external' && duration > 0 ){
 
 			$( 'body' ).animate( {
         		opacity: opacity
@@ -1053,6 +1098,7 @@
 
 		}else{
 
+			$( 'body' ).css( 'pointer-events', 'all' );
 			$elem.goToLink( event, state, 'See You!' );
 
 		}
@@ -1100,7 +1146,7 @@
 			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle' );
 			$( '[data-switch]' ).switchByData( state, 'switch' );
 			$( '[data-sticky]' ).setSticky( e, state );
-			$( '.overlay' ).setOverlay( e, state );
+			//$( '.overlay' ).setOverlay( e, state );
 			$( '.topofpage' ).topOfPage( e, state );
 
 		} );
