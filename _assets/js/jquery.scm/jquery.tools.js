@@ -5,9 +5,8 @@
 //	Toggle Menu
 //	Sticky Menu
 //	Smooth Scroll
-//	Single Page Nav
+//	Current Link Class
 //  Top Of Page
-//  Overlay
 //  Responsive Layout
 //  Google Maps
 //  Nivo Slider
@@ -27,13 +26,13 @@
 	// *      RESPONSIVE
 	// *****************************************************
 
-	$.fn.responsiveClasses = function( event, state ) {
+	$.fn.responsiveClasses = function( event ) {
 
-		//console.log('RESP');
-
-		var w = $( window ).width();
-		var a = '';
-		var r = '';
+		var w 		= $( window ).width();
+			a 		= '',
+			r 		= '',
+			state 	= 'all',
+			old 	= this.attr( 'class' );
 
 		if( w > 700 ){
 
@@ -80,12 +79,9 @@
 		}
 
 		if( event != 'init' ){
-			var cl1 = this.attr( 'class' );
 			this.removeClass( r );
 			this.addClass( a );
-			var cl2 = this.attr( 'class' );
-			if(cl1 != cl2){
-				var state = 'all';
+			if(old != this.attr( 'class' )){
 				if ( this.hasClass( 'smart' ) )			state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
 				else if( this.hasClass( 'landscape' ) )	state = 'landscape';
@@ -161,8 +157,9 @@
 				$this.trigger( 'link', [ state ] );
 				return $this;
 			}else{
-				if( $( '.toggled' ).length ){
-					$( '.toggled' ).toggledOff( event );
+				$toggled = $( '.toggled' );
+				if( $toggled.length ){
+					$toggled.toggledOff( event );
 					setTimeout( function(){
 						$this.trigger( 'link', [ state ] );
 					}, delay );
@@ -170,7 +167,6 @@
 					$this.trigger( 'link', [ state ] );
 				}
 			}
-
 
 		});
 		
@@ -183,10 +179,16 @@
 	$.fn.toggledIt = function( event, state ) {
 		event.stopPropagation();
 
-		if( !this.hasClass( 'toggled' ) )
-			return this.toggledOn( event );
-		else
-			return this.toggledOff( event );
+		return this.each(function() {
+
+			var $this = $( this );
+
+			if( !$this.hasClass( 'toggled' ) )
+				return $this.toggledOn( event );
+			else
+				return $this.toggledOff( event );
+
+		});
 
 	}
 
@@ -194,20 +196,21 @@
 
 		return this.each(function() {
 
-			var $elem = $( this );
+			var $this = $( this );
 
-	        if( !$elem.hasClass( 'toggle' ) )
-	        	$elem = $( this ).parents( '.toggle' );
+	        if( !$this.hasClass( 'toggle' ) )
+	        	$this = $( this ).parents( '.toggle' );
 
-			$elem.data( 'done', false );
+			$this.data( 'done', false );
 			
-			$elem.find( '.toggle-button' ).children( '[data-toggle-button="off"]' ).hide();
-			$elem.find( '.toggle-button' ).children( '[data-toggle-button="on"]' ).show();
-			if( !$elem.hasClass( 'toggled' ) ){
-				$elem.data( 'done', true );
-				$elem.addClass( 'toggled' );
-				$elem.removeClass( 'no-toggled' );
-				$elem.trigger( 'toggledOn' );
+			$this.find( '.toggle-button' ).children( '[data-toggle-button="off"]' ).hide();
+			$this.find( '.toggle-button' ).children( '[data-toggle-button="on"]' ).show();
+			if( !$this.hasClass( 'toggled' ) ){
+				$this.data( 'done', true );
+				$this.addClass( 'toggled' );
+				$this.removeClass( 'no-toggled' );
+				$this.trigger( 'toggledOn' );
+
 				// +++ todo: aggiungere qui animazione da this.data( 'toggle_in | toggle_out | toggle_in_time | toggle_out_time | toggle_in_ease | toggle_out_ease' )
 			}
 
@@ -217,53 +220,47 @@
 
 	$.fn.toggledOff = function( event, state ) {
 
-		//alert( event.type );
-		//console.log( state );
-
 		return this.each(function() {
 
-			var $elem = $( this );
+			var $this = $( this );
 
-	        if( !$elem.hasClass( 'toggle' ) )
-	        	$elem = $( this ).parents( '.toggle' );
+	        if( !$this.hasClass( 'toggle' ) )
+	        	$this = $( this ).parents( '.toggle' );
 			
-			$elem.data( 'done', false );
+			$this.data( 'done', false );
 			
-			$elem.find( '.toggle-button' ).children( '[data-toggle-button="off"]' ).show();
-			$elem.find( '.toggle-button' ).children( '[data-toggle-button="on"]' ).hide();
-			if( $elem.hasClass( 'toggled' ) ){
-				$elem.data( 'done', true );
-				$elem.trigger( 'toggledOff' );
-				$elem.removeClass( 'toggled' );
-				$elem.addClass( 'no-toggled' );
+			$this.find( '.toggle-button' ).children( '[data-toggle-button="off"]' ).show();
+			$this.find( '.toggle-button' ).children( '[data-toggle-button="on"]' ).hide();
+			if( $this.hasClass( 'toggled' ) ){
+
+				$this
+					.data( 'done', true )
+					.trigger( 'toggledOff' )
+					.removeClass( 'toggled' )
+					.addClass( 'no-toggled' );
+				
 				// +++ todo: aggiungere qui animazione da this.data( 'toggle_in | toggle_out | toggle_in_time | toggle_out_time | toggle_in_ease | toggle_out_ease' )
-			}else if( !$elem.hasClass( 'no-toggled' ) ){
-				$elem.addClass( 'no-toggled' );
-				$elem.data( 'done', true );
-				$elem.trigger( 'toggledOff' );
-				$elem.removeClass( 'toggled' );
-				$elem.addClass( 'no-toggled' );
+
+			}else if( !$this.hasClass( 'no-toggled' ) ){
+
+				$this
+					.addClass( 'no-toggled' )
+					.data( 'done', true )
+					.trigger( 'toggledOff' )
+					.removeClass( 'toggled' )
+					.addClass( 'no-toggled' );
 			}
 
 		} );
 	}
-
-	/*$.fn.tapIt = function( event ){
-
-		this.data( 'done', false );
-
-
-		this.data( 'done', true );
-		return this;
-
-	}*/
 
 // +++ todo: plugin
 
 
 	$.fn.switchByData = function( data, name, classes ) {
 
-		name = ( classes ? name : 'switch' );
+		if( !name )
+			name = ( classes ? name : 'switch' );
 
 		return this.each(function() {
 
@@ -278,16 +275,16 @@
 						$this.siblings( '[data-' + name + '=""]' ).hide();
 					}else{
 						$this.addClass( classes );
-						$this.trigger( 'switchOn' );
 					}
+					$this.trigger( 'switchOn' );
 				}else{
 					if( !classes ){
 						$this.hide();
 						$this.siblings( '[data-' + name + '=""]' ).show();
 					}else{
 						$this.removeClass( classes );
-						$this.trigger( 'switchOff' );
 					}
+					$this.trigger( 'switchOff' );
 				}
 			}
 
@@ -300,8 +297,7 @@
 	// *      STICKY MENU
 	// *****************************************************
 	
-	$.fn.setSticky = function( event, state ){
-
+	$.fn.stickyMenu = function(){
 
 		return this.each(function() {
 
@@ -316,22 +312,11 @@
 			if( !$menu.length )
 				return;
 
-
-
 			if( attach == 'nav-top'){
 				new_offset = offset + $menu.offset().top;
 			}else if( attach == 'nav-bottom'){
 				new_offset = offset + $menu.offset().top + $menu.outerHeight();
 			}
-
-			$this.off('.affix');
-			$this
-			    .removeClass("affix affix-top affix-bottom")
-			    .removeData("bs.affix");
-			
-			$this.affix(
-				{ offset: { top: parseInt(new_offset) } }
-			);
 
 			if( sticky == 'plus' ){
 				var result = $this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
@@ -351,33 +336,28 @@
 
 			$menu.addClass( sticky );
 
+			// Affix
+
 			$this
-				.on( 'affix.bs.affix', function () {
-				     $menu.addClass( 'affix-' + sticky );
-				} )
-				.on( 'affix-top.bs.affix', function () {
-				     $menu.removeClass( 'affix-' + sticky) ;
-				} );
-
-		});
-
-	}
-
-	// *****************************************************
-	// *      OVERLAY
-	// *****************************************************
-
-	$.fn.setOverlay = function( event, state ) {
-
-		return this.each(function(){
-
-			var h = $( this ).outerHeight();
+				.attr( 'data-affix', 'top' )
+				.attr( 'data-affix-offset', new_offset );
 			
-			$( this ).css( 'margin-bottom', - h );
+			$this
+				.off( 'affixedOn' )
+				.on( 'affixedOn', function () {
+				    $menu.addClass( 'affix-' + sticky );
+				});
+
+			$this
+				.off( 'affixedOff' )
+				.on( 'affixedOff', function () {
+				    $menu.removeClass( 'affix-' + sticky);
+				});
 
 		});
-		
+
 	}
+
 
 	// *****************************************************
 	// *      SMOOTH SCROLL
@@ -387,42 +367,38 @@
 
 		return this.each(function(){
 					
-			var $elem 			= $( this ),
-				elem 			= this,
-				link 			= $elem.attr( 'href' ),
+			var $this 			= $( this ),
+				link 			= $this.attr( 'href' ),
+				$body 			= $( 'body' ),
 
-				time 			= ( $( 'body' ).data( 'smooth-duration' ) ? parseFloat( $( 'body' ).data( 'smooth-duration' ) ) : 1 ),
-				offset 			= ( $( 'body' ).data( 'smooth-offset' ) ? parseFloat( $( 'body' ).data( 'smooth-offset' ) ) : 0 ),
-				ease 			= ( $( 'body' ).data( 'smooth-ease' ) ? $( 'body' ).data( 'smooth-ease' ) : 'swing' ),
-				delay 			= ( $( 'body' ).data( 'smooth-delay' ) ? parseFloat( $( 'body' ).data( 'smooth-delay' ) ): 0 );
+				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
+				offset 			= ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ),
+				ease 			= ( $body.data( 'smooth-ease' ) ? $body.data( 'smooth-ease' ) : 'swing' ),
+				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0 ),
 
-				
 				win 			= $( window ).height(),
-				height 			= $( 'body' ).height(),
-				position 		= $( 'body' ).scrollTop(),
+				height 			= $body.height(),
+				position 		= $body.scrollTop(),
 
-				hash 			= elem.hash,
+				hash 			= this.hash,
 				target 			= $( hash ),
 				name 			= hash.slice( 1 ),
 				destination 	= 0,
 				difference 		= 0,
-				duration 		= 0,
+				duration 		= 0;
 
-				pageScroll 		= function(){
+			var pageScroll = function(){
 
-					$( 'html, body' ).animate( {
+				$( 'html, body' ).animate( {
 
-							scrollTop: destination
+						scrollTop: destination
 
-						}, parseFloat( duration ), ease, function() {
+					}, parseFloat( duration ), ease, function() {
 
-							$( 'body' ).css( 'pointer-events', 'all' );
-						}
-					);
-				};
-
-			
-			name 			= elem.hash.slice( 1 ),
+						$body.css( 'pointer-events', 'all' );
+					}
+				);
+			};
 
 			event.preventDefault();
 
@@ -435,38 +411,35 @@
 				}
 
 			}else if( name == 'top' ){
+
 				destination = 0;
+
 			}else{
+
 				$( 'body' ).css( 'pointer-events', 'all' );
 				return this;
+
 			}
 
 			difference = Math.abs( destination - position );
+
 			if( !difference ){
 				$( 'body' ).css( 'pointer-events', 'all' );
 				return this;
 			}
 
-			$elem.data('done', false);
+			$this.data('done', false);
 			$( 'body' ).css( 'pointer-events', 'none' );
 
 			duration = time * difference / 1000;
 			duration = ( duration < 500 ? 500 : ( duration > 1500 ? 1500 : duration ) );
-
-			//if ( time > 0 && difference > 0 && ( target.length || destination === 0 ) ) {
 
 			if( delay )
 				setTimeout( pageScroll, delay );
 			else
 				pageScroll();	
 
-			/*}else{
-
-				$( 'body' ).css( 'pointer-events', 'all' );
-				return this;
-			}*/
-
-			$elem.data('done', true);
+			$this.data('done', true);
 
 			return this;
 
@@ -474,22 +447,156 @@
 	}
 
 	// *****************************************************
-	// *      TOP OF PAGE
+	// *      CURRENT LINK CLASS
 	// *****************************************************
 
-	$.fn.topOfPage = function( event, state ){
+	$.fn.currentLink = function( event, state ){
 
 		return this.each(function() {
 
-			var $this = $( this );
+			var $elem 			= $( this ),
+				elem 			= this,
+				$body 			= $( 'body' ),
+				currentClass 	= $elem.data( 'current-link' ),
+	            offset 			= ( $elem.data( 'current-link-offset' ) ? $elem.data( 'current-link-offset' ) : 0 ),
+	            threshold 		= ( $elem.data( 'current-link-threshold' ) ? $elem.data( 'current-link-threshold' ) : 0 ),
+	            interval 		= ( $elem.data( 'current-link-interval' ) ? $elem.data( 'current-link-interval' ) : 250 ),
+	            filter 			= ( $elem.data( 'current-link-filter' ) ? $elem.data( 'current-link-filter' ) : '' ),
+	            $links 			= $elem.find( 'a[href^="#"]:not([data-anchor]), a[data-anchor]:not([href^="#"])' ).filter( ':not(.external) :not([href="#top"])' ),
+	            $hash 			= [],
+	            $anchors 		= [],
+	            didScroll 		= true,
+	            timer 			= null;
 
-			$this.removeClass( 'affix affix-top affix-bottom' )
-			    .removeData( 'bs.affix' )
-			    .affix( {
-					offset: {
-						top: parseInt( $this.data( 'offset' ) )
-					}
-				});
+            if ( filter )
+                $links = $links.filter( filter );
+
+            if( !$links.length )
+                return this;
+
+            $links.each( function(){
+                var hash, anchors;
+
+                hash = $( this ).data( 'anchor' );
+                if( !hash )
+                    hash = this.hash;
+                
+                anchors = $body.find( hash );
+
+                if( anchors.length ){
+                    $anchors.push( anchors );
+                    $hash.push( $( this ) );
+                }
+
+            } );
+
+            if( !$hash.length )
+            	return this;
+
+			        
+	        var setTimer = function() {
+	            
+	            $( window ).on( 'scroll.currentLink', function() {
+	                didScroll = true;
+	            });
+	            
+	            setActiveClass();
+	            timer = setInterval( function() {
+
+	                if ( didScroll ) {
+	                    didScroll = false;
+	                    setActiveClass();
+	                }
+
+	            }, interval );
+	        };
+	        
+	        var clearTimer = function() {	          
+
+	            clearInterval( timer );
+	            $( window ).off( 'scroll.currentLink' );
+	            didScroll = false;
+
+	        };
+	        
+	        var setActiveClass = function() {
+	            var i, coords, link, $link, $anchor;
+
+	            var scrollPos = $( window ).scrollTop(),
+	            	heightWin = $( window ).height(),
+	            	heightBody = $( 'body' ).outerHeight();
+
+	            for( i = 0; i < $anchors.length; i++ ) {
+
+	                $anchor = $anchors[i];
+
+	                coords = {
+	                    top: Math.round( $anchor.offset().top ) - offset,
+	                    bottom: Math.round( $anchor.offset().top + $anchor.outerHeight() ) - offset
+	                };
+
+	                link = $( $hash[i] ).parent();
+	                $link = $( link );
+	                
+	                if ( scrollPos >= coords.top - threshold && scrollPos < coords.bottom - threshold )
+	                    $link.addClass( currentClass );
+	                else
+	                    $link.removeClass( currentClass );
+
+	            }
+
+	            if ( scrollPos + heightWin >= heightBody ) {
+
+	                link = $( $hash[$hash.length-1] ).parent();
+	                $link = $( link );
+	                $( $hash ).each( function(){
+	                    $( this ).parent().removeClass( currentClass );
+	                });
+	                $link.addClass( currentClass );
+
+	            }
+	        }
+
+	        didScroll = true;
+            setTimer();
+			    
+		});
+
+	}
+
+	// *****************************************************
+	// *      AFFIX IT
+	// *****************************************************
+
+	$.fn.affixIt = function(){
+
+		return this.each(function() {
+
+			var $this 	= $( this ),
+				ref 	= $this.data( 'affix' ),
+				offset 	= $this.data( 'affix-offset' );
+
+			$this.off('.affix');
+			$this
+			    .removeClass("affix affix-top affix-bottom")
+			    .removeData("bs.affix");
+			
+			switch( ref ){
+
+				case 'top': $this.affix( { offset: { top: parseInt( offset ) } }); break;
+				case 'bottom': $this.affix( { offset: { bottom: parseInt( offset ) } }); break;
+				default: return this; break;
+
+			}
+
+			$this
+				.on( 'affix.bs.affix', function () {
+				    $this.trigger( 'affixedOn' );
+				} )
+				.on( 'affix-top.bs.affix affix-bottom.bs.affix', function () {
+				    $this.trigger( 'affixedOff' );
+				} );
+
 		});
 
 	}
@@ -500,7 +607,9 @@
 
 	$.fn.googleMap = function() {
 
-		$( 'body' ).data( 'maps', this.length );
+		var $body = $( 'body' );
+
+		$body.data( 'maps', this.length );
 
 		return this.each(function() {
 
@@ -611,7 +720,7 @@
 			
 			google.maps.event.addListener( map, 'tilesloaded', function() {
 
-				$( 'body' ).trigger( 'mapLoaded' );
+				$body.trigger( 'mapLoaded' );
 
 			});
 
@@ -785,10 +894,7 @@
 			if( slides.length ){
 
 				slides.css( 'display', 'none' );
-
-				var img = slides[0];
-
-				$( img ).css( 'display', 'inline-block' );
+				$( slides[0] ).css( 'display', 'inline-block' );
 
 			}
 
@@ -805,8 +911,6 @@
 			if( slides > 1 ){
 				$( this ).parent().addClass( 'slider-wrapper theme-default' );
 				$( this ).addClass( 'nivoSlider' );
-			}else{
-				//$( this ).find( '.nivo-caption' ).css( 'display', 'inline-block' );
 			}
 
 		});
@@ -817,7 +921,8 @@
 
 		return this.each( function() {
 
-			var $this = $( this );
+			var $body 		= $( 'body' ),
+				$this 		= $( this );
 
 			$this.find( 'img' ).each( function(){
 				$( this ).css( 'display', 'inline-block' );
@@ -857,13 +962,12 @@
 			    },
 			    afterLoad: function( e ){          // Triggers when slider has loaded
 			    	
-
-			    	$( 'body' ).trigger( 'nivoLoaded', [ $this ] );
+			    	$body.trigger( 'nivoLoaded', [ $this ] );
 			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load' );
 			    }
 			});
 
-			if( $( 'body' ).hasClass( 'touch' ) ){
+			if( $body.hasClass( 'touch' ) ){
 
 				$this.find( 'a.nivo-nextNav' ).css( 'visibility', 'hidden' );
 				$this.find( 'a.nivo-prevNav' ).css( 'visibility', 'hidden' );
@@ -901,24 +1005,27 @@
 
 		return this.each( function() {
 
-			var $this = $( this ),
+			var $this 			= $( this ),
 				id 				= $this.attr( 'id' ),
 				init 			= $this.data( 'init' ),
 				name 			= $this.data( 'title' ),
 				gallery 		= GALLERIES[ id ],
 				images 			= [],
 				titles 			= [],
-				descriptions 	= [];
+				descriptions 	= [],
+				i 				= 0;
 
-			for (var i = 0; i < gallery.length; i++) {
+			for ( i = 0; i < gallery.length; i++ ) {
+				
 				images.push( {
 					href: gallery[i]['url'],
 				});
-				titles.push(gallery[i]['title']);
-				descriptions.push(gallery[i]['description']);
+				
+				titles.push( gallery[i]['title'] );
+				descriptions.push( gallery[i]['description'] );
 			};
 
-			$this.click(function() {
+			$this.click( function() {
 
 			    $.fancybox.open(
 			    	images,
@@ -990,12 +1097,14 @@
 
 		return this.each( function() {
 
-			var srcAtt = $( this ).attr( 'src' );
+			var $this 	= $( this ),
+				srcAtt 	= $this.attr( 'src' );
+
 			if ( -1 == srcAtt.indexOf( '?' ) )
 				srcAtt += '?wmode=transparent';
 			else
 				srcAtt += '&amp;wmode=transparent';
-			$( this ).attr( 'src', srcAtt );
+			$this.attr( 'src', srcAtt );
 
 		});
 	}
@@ -1007,65 +1116,63 @@
 
 	$.fn.bodyIn = function( event ){
 
-		var duration 		= ( $( 'body' ).data( 'fade-in' ) ? parseFloat( $( 'body' ).data( 'fade-in' ) ) : 0 ),
-			delay 			= ( $( 'body' ).data( 'smooth-new' ) ? parseFloat( $( 'body' ).data( 'smooth-new' ) ): 0 ),
-			post 			= ( $( 'body' ).data( 'smooth-post' ) ? $( 'body' ).data( 'smooth-post' ) : 'all' ),
-			anchor 			= $( 'body' ).data( 'anchor' ),
-			button 			= $( 'a[href="#' + anchor + '"]' ),
+		var $body 			= $( 'body' ),
+			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
+			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
+			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
+			anchor 			= $body.data( 'anchor' ),
+			button 			= $( 'a[href="#' + anchor + '"]' );
 
-			pageScroll 		= function(){
+		var pageScroll = function(){
 
-				var $anchor = $( '#' + anchor );
+			var $anchor = $( '#' + anchor );
 
-				if( button.length ){
+			if( button.length ){
 
-					if( post != 'all' ){
+				if( post != 'all' ){
 
-						$( 'body' ).css( 'pointer-events', 'all' );
-						$( 'html, body' ).scrollTop( $anchor.offset().top );
-
-					}else{
-
-						$( button[0] ).trigger( 'link', [ 'page' ] );
-					}
+					$body.css( 'pointer-events', 'all' );
+					$( 'html, body' ).scrollTop( $anchor.offset().top );
 
 				}else{
 
-					$( 'html, body' ).animate({
-						scrollTop: $anchor.offset().top
-					}, 1000, function() {
-						$( 'body' ).css( 'pointer-events', 'all' );
-					});
+					$( button[0] ).trigger( 'link', [ 'page' ] );
 				}
 
-			},
+			}else{
 
-    		checkScroll 	= function(){
+				$( 'html, body' ).animate({
+					scrollTop: $anchor.offset().top
+				}, 1000, function() {
+					$body.css( 'pointer-events', 'all' );
+				});
+			}
 
-    			//anchor = $.urlData( 'anchor' );
+		};
 
-				//if( anchor && anchor.indexOf( '#' ) === 0 ){
-				if( anchor && anchor != 'none' ){
-					if( delay ){
-						setTimeout( pageScroll, delay );
-					}else{
-						pageScroll();
-					}
-					
+		var checkScroll	= function(){
+
+			if( anchor && anchor != 'none' ){
+				if( delay ){
+					setTimeout( pageScroll, delay );
 				}else{
-
-					$( 'body' ).css( 'pointer-events', 'all' );
-					$( 'body' ).css( 'opacity', 1 );
-
+					pageScroll();
 				}
-        	};
+				
+			}else{
+
+				$body.css( 'pointer-events', 'all' );
+				$body.css( 'opacity', 1 );
+
+			}
+    	};
 
     	if( duration > 0 ){
-        	$( 'body' ).animate( {
+        	$body.animate( {
         		opacity: 1
         	}, duration * 1000, checkScroll );
         }else{
-        	$( 'body' ).css({
+        	$body.css({
         		'opacity' : 1
         	});
         	checkScroll();
@@ -1078,10 +1185,11 @@
 			return;
 		}
 
-		var $elem 		= this,
+		var $body 		= $( 'body' ),
+			$elem 		= this,
 			link 		= $elem.attr( 'href' ),
-			duration 	= ( $( 'body' ).data( 'fade-out' ) ? parseFloat( $( 'body' ).data( 'fade-out' ) ) : 0 ),
-			wait 		= ( $( 'body' ).data( 'fade-wait' ) ? $( 'body' ).data( 'fade-wait' ) : 'no' ),
+			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : 0 ),
+			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
 			opacity 	= ( wait != 'no' ? 0 : .6 );
 
 		$elem.data( 'done', false );
@@ -1090,7 +1198,7 @@
 
 		if( state != 'external' && duration > 0 ){
 
-			$( 'body' ).animate( {
+			$body.animate( {
         		opacity: opacity
         	}, duration * 1000, function() {
 				$elem.goToLink( event, state, 'See You!' );
@@ -1098,7 +1206,7 @@
 
 		}else{
 
-			$( 'body' ).css( 'pointer-events', 'all' );
+			$body.css( 'pointer-events', 'all' );
 			$elem.goToLink( event, state, 'See You!' );
 
 		}
@@ -1111,77 +1219,74 @@
 
 	jQuery(function($){
 
-		$( 'html' ).removeClass( 'no-js' );
-		
-		// *****************************************************
-		// *****************************************************
-		// *****************************************************
-		// *      SETTINGS
-		// *****************************************************
-		// *****************************************************
-		// *****************************************************
+		var $window 	= $( window ),
+			$html 		= $( 'html' ),
+			$body 		= $( 'body' );
+
+
+		$html.removeClass( 'no-js' );
 
 // TOUCH CLASS
 
-        if ( ( Modernizr && ( Modernizr.touchEvents || Modernizr.touch ) ) && ( $('body').hasClass('is-iphone') || $('body').hasClass('is-tablet') || $('body').hasClass('is-mobile') ) ) {
-            $( 'body' ).addClass( 'touch' );
-            $( 'body' ).removeClass( 'mouse' );
+        if ( ( Modernizr && ( Modernizr.touchEvents || Modernizr.touch ) ) && ( $body.hasClass('is-iphone') || $body.hasClass('is-tablet') || $body.hasClass('is-mobile') ) ) {
+            $body.addClass( 'touch' );
+            $body.removeClass( 'mouse' );
         }else{
-            $( 'body' ).removeClass( 'touch' );
-            $( 'body' ).addClass( 'mouse' );
+            $body.removeClass( 'touch' );
+            $body.addClass( 'mouse' );
         }
 
-        /*$( 'body' ).addClass( 'touch' );
-        $( 'body' ).removeClass( 'mouse' );*/
+        // For DEBUG - Touch active on Desktop
+        //*$body.addClass( 'touch' );
+        //$body.removeClass( 'mouse' );
 
 // EVENTS
 		
-		$( 'body' ).on( 'resizing resized documentReady', function(e){
-			$( '.slider' ).equalChildrenSize();
-			$( this ).responsiveClasses();
+		$body.on( 'resizing resized documentReady', function(e){
+			$( '[data-equal]' ).equalChildrenSize();
+			$body.responsiveClasses( e );
 		} );
 
-		$( 'body' ).on( 'responsive', function( e, state ) {
+		$body.on( 'responsive', function( e, state ) {
 
 			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle' );
 			$( '[data-switch]' ).switchByData( state, 'switch' );
-			$( '[data-sticky]' ).setSticky( e, state );
-			//$( '.overlay' ).setOverlay( e, state );
-			$( '.topofpage' ).topOfPage( e, state );
+			$( '[data-sticky]' ).stickyMenu();
+			$( '[data-affix]' ).affixIt();
 
 		} );
 
-		switch( $( 'body' ).data( 'fade-wait' ) ){
+		switch( $body.data( 'fade-wait' ) ){
 			case 'window':
-				$( 'body' ).on( 'windowLoaded', function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'windowLoaded', function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'images':
-				$( 'body' ).imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+				$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'sliders':
 				if( $( '.nivoSlider' ).length )
-					$( 'body' ).on( 'nivoLoaded', function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'nivoLoaded', function(e){ $( this ).bodyIn(e); } );
 				else
-					$( 'body' ).imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+					$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'maps':
 				if( $( '.scm-map' ).length )
-					$( 'body' ).on( 'mapsLoaded', function(e, tot){ $( this ).bodyIn(e, tot); } );
+					$body.on( 'mapsLoaded', function(e, tot){ $( this ).bodyIn(e, tot); } );
 				else
-					$( 'body' ).imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+					$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
 			break;
 			default:
-				$( 'body' ).imagesLoaded( function(e){ $( this ).bodyIn(e); } );
-				$( 'body' ).css( 'opacity', .6 );
+				$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+				$body.css( 'opacity', .6 );
 				
 			break;
 		}
 		
 		
-		$( 'body' ).on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
+		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
 		
 		
-		$( window ).on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
+		$window.on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
 				
 
 		$( '.site-page' ).on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
@@ -1194,7 +1299,7 @@
 			if( toggle.length )
 				cont = $( toggle ).parents( '.toggle-content' ).length;
 
-			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
+			if( !$body.hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
 				$( this ).linkIt(e);
 			}else{
 				$( '.toggled' ).toggledOff(e);
@@ -1203,7 +1308,7 @@
 
 		} );
 
-		$( 'body' ).on( 'link', 'a', function( e, state ){
+		$body.on( 'link', 'a', function( e, state ){
 		
 			if( state != 'page' )
 				$( this ).bodyOut( e, state );
@@ -1215,7 +1320,7 @@
 
 
 			
-		if( $( 'body' ).hasClass( 'touch' ) ){
+		if( $body.hasClass( 'touch' ) ){
 
 			$( '.navigation[data-toggle="true"]' ).swipe( {
 
@@ -1257,39 +1362,47 @@
 		$( '.scm-gallerie' ).setFancybox();
 		$( '.slider' ).initSlider();
 		$( 'iframe[src*="youtube.com"]' ).youtubeFix();
-		$( '.site-main' ).singlePageNav({
-			filter: ':not(.external) :not([href="#top"])',
-			currentClass: $( 'body' ).data( 'single-class' ),
-			offset: $( 'body' ).data( 'single-offset' ),
-	        threshold: $( 'body' ).data( 'single-threshold' ),
-	        interval: $( 'body' ).data( 'single-interval' ),
-	        data: true
-		});
+		$( '[data-current-link]' ).currentLink();
 
 
 // *** DEBUG		
 
-		$( 'body' ).on( 'documentReady', function(e){ console.log('document.ready'); } );
-		$( 'body' ).on( 'windowLoaded', function(e){ console.log('window.load'); } );
-		$( 'body' ).imagesLoaded( function(e){ console.log('imagesLoaded'); } );
-		$( 'body' ).on( 'nivoLoaded', function(e){ console.log('nivoLoaded'); } );
-		$( 'body' ).on( 'mapLoaded', function(e){ console.log('mapLoaded'); } );
+		$body.on( 'documentReady', function(e){ console.log('document.ready'); } );
+		$body.on( 'windowLoaded', function(e){ console.log('window.load'); } );
+		$body.on( 'imagesLoaded', function(e){ console.log('imagesLoaded'); } );
+		$body.on( 'nivoLoaded', function(e){ console.log('nivoLoaded'); } );
+		$body.on( 'mapLoaded', function(e){ console.log('mapLoaded'); } );
+
+		/*$body.imagesLoaded()
+				.always( function( instance ) {
+		    console.log('all images loaded');
+		  })
+		  	.done( function( instance ) {
+		    console.log('all images successfully loaded');
+		  })
+		  	.fail( function() {
+		    console.log('all images loaded, at least one is broken');
+		  })
+		  	.progress( function( instance, image ) {
+		    var result = image.isLoaded ? 'loaded' : 'broken';
+		    console.log( 'image is ' + result + ' for ' + image.img.src );
+		  });*/
 
 
 // TRIGGERS
 
 		// Trigger WINDOW RESIZED event
 		var interval, resizing;
-		$( window ).resize( function(e){
+		$window.resize( function(e){
 
-			$( 'body' ).trigger( 'resizing' );
+			$body.trigger( 'resizing' );
 
 			resizing = true;
 			clearInterval( interval );
 			interval = setInterval( function(){
 				if ( resizing ){
 					resizing = false;
-					$( 'body' ).trigger( 'resized' );
+					$body.trigger( 'resized' );
 					clearInterval( interval );
 				}
 			}, 100 );
@@ -1297,40 +1410,36 @@
 		} );
 
 		// Trigger DOCUMENT READY event
-		$( 'body' ).trigger( 'documentReady' );
+		$body.trigger( 'documentReady' );
 
 		// Trigger WINDOW LOADED event
 		$(window).load(function(e){
-			$( 'body' ).trigger( 'windowLoaded' );
-			/*$( '.slider.nivo' ).initNivoSlider();
-			$( '.nivoSlider' ).setNivoSlider();
-			$( '.scm-map' ).googleMap();*/
+			$body.trigger( 'windowLoaded' );
 		});
 
 		// Call NivoSlider and wait for NIVO LOADED event
-		$( 'body' ).imagesLoaded( function(){
-			$( '.slider.nivo' ).initNivoSlider();
+		$body.imagesLoaded( function( instance ) {
+		    $body.trigger( 'imagesLoaded' );
+		    $( '.slider.nivo' ).initNivoSlider();
 			$( '.nivoSlider' ).setNivoSlider();
-			$( '.scm-map' ).googleMap();
 		});
 
 		// Call GoogleMaps and wait for MAPS LOADED event
-		/*$( 'body' ).on( 'nivoLoaded', function(){
+		$body.on( 'nivoLoaded', function(){
 			$( '.scm-map' ).googleMap();
-		});*/
+		});
 
 		// Call Single Map and wait for MAP LOADED event
 		var countMaps = 0;
-		$( 'body' ).on( 'mapLoaded', function(e){
-			var totMaps = $( 'body' ).data( 'maps' );
+		$body.on( 'mapLoaded', function(e){
+			var totMaps = $body.data( 'maps' );
 			countMaps++;
 			if( countMaps >= totMaps )
-				$( 'body' ).trigger( 'mapsLoaded', [ totMaps ] );
+				$body.trigger( 'mapsLoaded', [ totMaps ] );
 		});
 
-		//$( this ).responsiveClasses();
 		$( '.slider' ).equalChildrenSize();
-			$( this ).responsiveClasses();
+		$body.responsiveClasses();
 
 	});
 

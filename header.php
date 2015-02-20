@@ -146,7 +146,12 @@ indent( 1, '<div id="' . $page_id . '" class="' . $page_class . '">', 2 );
     indent( 2, '<a class="skip-link screen-reader-text" href="#' . $cont_id . '">' . $skip . '</a>', 2 );
 
     // Head
-    indent( 2, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner">', 2 );
+    indent( 2, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
+                    data-current-link="' . $single_class . '"
+                    data-current-link-interval="' . $single_interval . '"
+                    data-current-link-offset="' . $single_offset . '"
+                    data-current-link-threshold="' . $single_threshold . '"
+                >', 2 );
 
         // Menu above head
     if ( $menu_position == 'top' )
@@ -182,11 +187,6 @@ indent( 1, '<div id="' . $page_id . '" class="' . $page_class . '">', 2 );
     indent( 2, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );
         
         indent( 3, '<div id="primary" class="content-area">' );
-            indent( 4, '<main id="main" class="site-main" role="main"
-                            data-single-class="' . $single_class . '"
-                            data-single-interval="' . $single_interval . '"
-                            data-single-offset="' . $single_offset . '"
-                            data-single-threshold="' . $single_threshold . '"
-                        >', 2 );
+            indent( 4, '<main id="main" class="site-main" role="main">', 2 );
 
 ?>

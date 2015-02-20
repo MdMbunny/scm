@@ -100,110 +100,99 @@
 
 	if ( !$.fn.equalChildrenSize ) {
 
-		$.fn.equalChildrenSize = function( options ) {
-
-			var defaults = {
-				attribute : 'height',
-				max : false,
-				include : 'img',
-			};
-
-			var options = $.extend( {}, defaults, options );
-			if( options.attribute != 'height' && options.attribute != 'width' )
-				options.attribute = 'height';
+		$.fn.equalChildrenSize = function() {
 
 			return this.each( function() {
 
-				var $this 		= $( this ),
-					elems 		= $this.children( options.include );
-					current 	= ( !options.max ? 9999999 : 0 );
-					maxw 		= parseInt( $this.data( 'max-width' ), 10 ),
-					maxh 		= parseInt( $this.data( 'max-height' ), 10 ),
-					minw 		= parseInt( $this.data( 'min-width' ), 10 ),
-					minh 		= parseInt( $this.data( 'min-height' ), 10 );
+				var elem 		= this,
+					$elem 		= $( this ),
+					equal 		= $elem.data( 'equal' ),
+					elems 		= $elem.children( equal ),
+					equal_max 	= $elem.data( 'equal-max' ),
+					equal_min 	= $elem.data( 'equal-min' );
+
+				if( !equal || !$( elems ).length )
+					return this;
+
+				var current_max 	= ( !equal_max ? 9999999 : 0 );
+					current_min 	= ( !equal_min ? 0 : 9999999 );
+					maxw 			= parseInt( $elem.data( 'max-width' ), 10 ),
+					maxh 			= parseInt( $elem.data( 'max-height' ), 10 ),
+					minw 			= parseInt( $elem.data( 'min-width' ), 10 ),
+					minh 			= parseInt( $elem.data( 'min-height' ), 10 );
 
 				$( elems ).each( function( i ) {
 
 					var h = parseInt( $( this ).css( 'height' ), 10 );
 					var w = parseInt( $( this ).css( 'width' ), 10 );
 
-					switch( options.attribute ){
-						case 'height':
-
-							if( !options.max ){
-								if ( h && h < current )
-									current = h;
-							}else{
-								if ( h && h > current )
-									current = h;
-							}
-						
-						break;
-
-						case 'width':
-
-							if( !options.max ){
-								if ( w && w < current )
-									current = w;
-							}else{
-								if ( w && w > current )
-									current = w;
-							}						
-						
-						break;
-
+					switch( equal_max ){
+						case 'height': if ( h && h > current_max ) current_max = h; break;
+						case 'width': if ( w && w > current_max ) current_max = w; break;
 					}
+				
+					switch( equal_min ){
+						case 'height': if ( h && h < current_min ) current_min = h; break;
+						case 'width': if ( w && w < current_min ) current_min = w; break;
+					}
+
 				});
 
-				current = ( current == 9999999 ? 'auto' : current );
+				current_max = ( current_max == 9999999 ? 'auto' : current_max );
+				current_min = ( current_min == 9999999 ? 'auto' : current_min );
 				
-				switch( options.attribute ){
+				switch( equal_max ){
 					case 'height':
-
 						if( $.browser.msie && $.browser.version == 6.0 )
-							$this.css( 'height', current );
-						
-						if( !options.max ){
-							if( !maxh || maxh > current ){
-								$this.css( 'height', current );
-								$this.css( 'max-height', current );
-							}else{
-								$this.css( 'height', maxh );
-								$this.css( 'max-height', maxh );
-							}
-						}else{
-							if( !minh || minh < current ){
-								$this.css( 'min-height', current );
-							}else{
-								$this.css( 'min-height', minh );
-							}
-						}
+							$elem.css( 'height', current_max );
 
+						if( !minh || minh < current_max )
+							$elem.css( 'min-height', current_max );
+						else
+							$elem.css( 'min-height', minh );
+						
 					break;
-
 					case 'width':
-
 						if( $.browser.msie && $.browser.version == 6.0 )
-							$this.css( 'width', current );
-						
-						if( !options.max ){
-							if( !maxw || maxw > current ){
-								$this.css( 'width', current );
-								$this.css( 'max-width', current );
-							}else{
-								$this.css( 'width', maxw );
-								$this.css( 'max-width', maxw );
-							}
-						}else{
-							if( !minw || minw < current ){
-								$this.css( 'min-width', current );
-							}else{
-								$this.css( 'min-width', minw );
-							}
-						}
+							$elem.css( 'width', current_max );
 
+						if( !minw || minw < current_max )
+							$elem.css( 'min-width', current_max );
+						else
+							$elem.css( 'min-width', minw );
+						
 					break;
 				}
+			
+				switch( equal_min ){
+					case 'height':
+						if( $.browser.msie && $.browser.version == 6.0 )
+							$elem.css( 'height', current_min );
+
+						if( !maxh || maxh > current_min ){
+							$elem.css( 'height', current_min );
+							$elem.css( 'max-height', current_min );
+						}else{
+							$elem.css( 'height', maxh );
+							$elem.css( 'max-height', maxh );
+						}
+						
+					break;
+					case 'width':
+						if( $.browser.msie && $.browser.version == 6.0 )
+							$elem.css( 'width', current_min );
+
+						if( !maxw || maxw > current_min ){
+							$elem.css( 'width', current_min );
+							$elem.css( 'max-width', current_min );
+						}else{
+							$elem.css( 'width', maxw );
+							$elem.css( 'max-width', maxw );
+						}
+						
+					break;
+				}
+
 			});
 		};
 

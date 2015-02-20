@@ -222,7 +222,7 @@
                     'slug'               => 'acf-hidden-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-hidden-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -231,7 +231,7 @@
                     'slug'               => 'acf-cf7-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-cf7-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -240,7 +240,7 @@
                     'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-paypal-field-master.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -258,7 +258,7 @@
                     'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
                     'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
@@ -349,7 +349,7 @@
                     'source'             => 'github-updater.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
                 array(
@@ -367,6 +367,15 @@
                     'source'             => 'php-browser-detection.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'WP Security', // The plugin name.
+                    'slug'               => 'better-wp-security', // The plugin slug (typically the folder name).
+                    'source'             => 'better-wp-security.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 

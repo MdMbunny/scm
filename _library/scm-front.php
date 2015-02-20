@@ -376,9 +376,6 @@
                 $ind = 7;
                 if( !$depth ) $ind = 6;
 
-                //alert($object->object_id);
-                //printPre( $object );
-                
                 $current = $object->current;
                 $class = ( $current ? ' current' : '' );
                 
@@ -394,8 +391,6 @@
 
                 if( strpos( $url, '#') === 0 ){
                     $type = 'page';
-                    //$anchor = ' data-anchor="' . $url . '"';
-                    //$url = $parent_url;
                 }else if( strpos( $url, SCM_URL ) === false ){
                     $type = 'external';
                 }
@@ -403,7 +398,7 @@
                 $has_children = getByValue( $object->classes, 'menu-item-has-children' );
                 
                 $link = '<a href="' . $url . '"' . $anchor . '>' . $content . '</a>';
-                //$span = '<span ' . $a_class . 'href="' . $url . '"' . $anchor . '>' . $content . '</span>';
+
                 if( $has_children >= 0 ){
                     $data = 'data-toggle="true" ';
                     $class .= ' has-children toggle no-toggled';
@@ -640,7 +635,7 @@
             $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
 
             // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
-            $images = '<div id="' . $id . '" class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '">';
+            $images = '<div id="' . $id . '" class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '" data-equal-max="height" data-equal="img">';  // +++ todo: From options?
             $captions = '';
 
             foreach ($slides as $slide) {
@@ -966,7 +961,7 @@
             $offset = ( get_field('tools_topofpage_offset', 'option') ?: 0 );
             $title = $text;
 
-            $output =   '<div id="' . $id . '" class="topofpage" data-offset="' . $offset . '">';
+            $output =   '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">';
             $output .=      '<a href="#top" title="' . $title . '">';
             $output .=          '<i class="fa ' . $icon . '"></i>';
             $output .=      '</a>';
