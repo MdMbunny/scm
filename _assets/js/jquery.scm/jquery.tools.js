@@ -20,7 +20,11 @@
 
 ( function($){
 
-// *      jQuery on INIT
+// ******************************************************
+// ******************************************************
+// *      jQuery INIT
+// ******************************************************
+// ******************************************************
 
 	// *****************************************************
 	// *      RESPONSIVE
@@ -605,11 +609,16 @@
 	// *      GOOGLE MAPS
 	// *****************************************************
 
+
 	$.fn.googleMap = function() {
 
 		var $body = $( 'body' );
+		var countMaps = 0;
+		var totMaps = this.length;
 
-		$body.data( 'maps', this.length );
+		//$body.data( 'maps', totMaps );
+
+
 
 		return this.each(function() {
 
@@ -721,6 +730,9 @@
 			google.maps.event.addListener( map, 'tilesloaded', function() {
 
 				$body.trigger( 'mapLoaded' );
+				countMaps++;
+				if( countMaps >= totMaps )
+					$body.trigger( 'mapsLoaded', [ totMaps ] );
 
 			});
 
@@ -1213,9 +1225,11 @@
 
 	}
 
-			
-
-	// jQuery on READY
+// ******************************************************			
+// ******************************************************
+	// jQuery READY
+// ******************************************************
+// ******************************************************
 
 	jQuery(function($){
 
@@ -1242,11 +1256,13 @@
 
 // EVENTS
 		
-		$body.on( 'resizing resized documentReady', function(e){
-			$( '[data-equal]' ).equalChildrenSize();
+		$body.on( 'resizing resized imagesLoaded', function(e){
+		
 			$body.responsiveClasses( e );
+			$( '[data-equal]' ).equalChildrenSize();
+		
 		} );
-
+		
 		$body.on( 'responsive', function( e, state ) {
 
 			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle' );
@@ -1261,24 +1277,23 @@
 				$body.on( 'windowLoaded', function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'images':
-				$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'sliders':
 				if( $( '.nivoSlider' ).length )
 					$body.on( 'nivoLoaded', function(e){ $( this ).bodyIn(e); } );
 				else
-					$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
 			break;
 			case 'maps':
 				if( $( '.scm-map' ).length )
 					$body.on( 'mapsLoaded', function(e, tot){ $( this ).bodyIn(e, tot); } );
 				else
-					$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
 			break;
 			default:
-				$body.imagesLoaded( function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
 				$body.css( 'opacity', .6 );
-				
 			break;
 		}
 		
@@ -1372,6 +1387,8 @@
 		$body.on( 'imagesLoaded', function(e){ console.log('imagesLoaded'); } );
 		$body.on( 'nivoLoaded', function(e){ console.log('nivoLoaded'); } );
 		$body.on( 'mapLoaded', function(e){ console.log('mapLoaded'); } );
+		$body.on( 'mapsLoaded', function(e){ console.log('mapsLoaded'); } );
+		//$body.on( 'pageLoaded', function(e){ console.log('pageLoaded'); } );
 
 		/*$body.imagesLoaded()
 				.always( function( instance ) {
@@ -1396,16 +1413,19 @@
 		$window.resize( function(e){
 
 			$body.trigger( 'resizing' );
+			
+			//if( !resizing ){
+				
+				resizing = true;
 
-			resizing = true;
-			clearInterval( interval );
-			interval = setInterval( function(){
-				if ( resizing ){
-					resizing = false;
-					$body.trigger( 'resized' );
-					clearInterval( interval );
-				}
-			}, 100 );
+				clearTimeout( interval );
+				interval = setTimeout( function(){
+					if ( resizing ){
+						resizing = false;
+						$body.trigger( 'resized' );
+						clearInterval( interval );
+					}
+				}, 250 );
 
 		} );
 
@@ -1420,25 +1440,50 @@
 		// Call NivoSlider and wait for NIVO LOADED event
 		$body.imagesLoaded( function( instance ) {
 		    $body.trigger( 'imagesLoaded' );
+		    
 		    $( '.slider.nivo' ).initNivoSlider();
-			$( '.nivoSlider' ).setNivoSlider();
+
+		    var $nivo = $( '.nivoSlider' );
+		    var $maps = $( '.scm-map' );
+
+		    $nivo.setNivoSlider();
+		    $maps.googleMap();
+
+		    /*if( $nivo.length ){
+		    	// +++ todo: anche le Slider come le Mappe vengono contate e restituiscono sliderLoaded e slidersLoaded
+				$nivo.setNivoSlider();
+				$body.on( 'nivoLoaded', function(){
+					if( $maps.length ){
+
+						$maps.googleMap();
+						$body.on( 'mapsLoaded', function(e){
+							$body.trigger( 'pageLoaded' );
+						});
+					}else{
+						$body.trigger( 'pageLoaded' );
+					}
+				});
+
+			}else if( $maps.length ){
+
+				$maps.googleMap();
+				$body.on( 'mapsLoaded', function(e){
+					$body.trigger( 'pageLoaded' );
+				});
+
+			}else{
+
+				$body.trigger( 'pageLoaded' );
+
+			}*/
+
 		});
 
-		// Call GoogleMaps and wait for MAPS LOADED event
-		$body.on( 'nivoLoaded', function(){
-			$( '.scm-map' ).googleMap();
-		});
+		
 
-		// Call Single Map and wait for MAP LOADED event
-		var countMaps = 0;
-		$body.on( 'mapLoaded', function(e){
-			var totMaps = $body.data( 'maps' );
-			countMaps++;
-			if( countMaps >= totMaps )
-				$body.trigger( 'mapsLoaded', [ totMaps ] );
-		});
 
-		$( '.slider' ).equalChildrenSize();
+
+		$( '[data-equal]' ).equalChildrenSize();
 		$body.responsiveClasses();
 
 	});

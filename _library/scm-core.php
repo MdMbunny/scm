@@ -248,12 +248,7 @@ function savePosts(){
             
             wp_register_script( 'imagesloaded', SCM_URI_JS . 'imagesloaded-3.1.8/imagesloaded.pkgd.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'imagesloaded' );
-
-            // Single Page Menu
-
-            wp_register_script( 'single-page-nav', SCM_URI_JS . 'jquery.singlePageNav.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'single-page-nav' );
-            
+           
             // Fancybox
 
             if( get_field( 'tools_fancybox_active', 'option' ) ){
