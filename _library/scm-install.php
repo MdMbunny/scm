@@ -41,15 +41,15 @@
             global $SCM_version;
 
             if ( !empty($upgrader_object->result['destination_name']) ){
+                alert( 'Updating Posts');
+                
                 $my_types = get_post_types();
                 $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
-                //consoleLog( 'SCM Theme Updating to Version: ' . $SCM_version );
-                //consoleLog( sizeof($my_posts) . ' Posts' );
-                alert( 'Updating ' . sizeof($my_posts) . ' Posts');
+
                 foreach ( $my_posts as $my_post ){
                     wp_update_post( $my_post );
                 }
-                alert( 'SCM Theme Updated to Version: ' . $SCM_version );
+                alert( 'SCM Theme Updated to Version: ' . $SCM_version . ' - ' . sizeof($my_posts) . ' Posts Updated' );
             }else{
                 return false;
             }
