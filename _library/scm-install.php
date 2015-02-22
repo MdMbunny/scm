@@ -9,7 +9,9 @@
 	add_action( 'after_setup_theme', 'scm_install' );
     add_action( 'after_setup_theme', 'scm_types_install' );
 	add_action( 'after_setup_theme', 'scm_option_pages_install' );
-    
+
+    add_action( 'upgrader_process_complete', 'scm_save_posts', 10, 2 );
+  
 
 // *****************************************************
 // *      THEME INSTALLATION
@@ -28,6 +30,31 @@
 			}
 		}
 	}
+
+// *****************************************************
+// *      THEME UPDATE - SAVE ALL POSTS
+// *****************************************************
+
+    if ( ! function_exists( 'scm_save_posts' ) ) {
+        function scm_save_posts($upgrader_object, $options){
+
+            global $SCM_version;
+
+            if ( !empty($upgrader_object->result['destination_name']) ){
+                $my_types = get_post_types();
+                $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
+                //consoleLog( 'SCM Theme Updating to Version: ' . $SCM_version );
+                //consoleLog( sizeof($my_posts) . ' Posts' );
+                alert( 'Updating ' . sizeof($my_posts) . ' Posts');
+                foreach ( $my_posts as $my_post ){
+                    wp_update_post( $my_post );
+                }
+                alert( 'SCM Theme Updated to Version: ' . $SCM_version );
+            }else{
+                return false;
+            }
+        }
+    }
 
 // *****************************************************
 // *      CUSTOM TYPES INSTALLATION
