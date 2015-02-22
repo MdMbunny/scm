@@ -861,6 +861,8 @@
 					opacity: 1
 				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
 
+			}else{
+				$slider.css( 'pointer-events', 'all' );
 			}
 		});
 
@@ -882,6 +884,8 @@
 					left: to,
 				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
 
+			}else{
+				$slider.css( 'pointer-events', 'all' );
 			}
 		});
 
