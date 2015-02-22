@@ -3,21 +3,25 @@
 
 // INTERESSANTE FUNZIONE IN HOOK INIT, PER SALVARE TUTTI O UNA PARTE DEI POST
 
-/*add_action('init','savePosts');
+add_action( 'upgrader_process_complete', 'scm_save_posts', 10, 2 );
 
-function savePosts(){
+    if ( ! function_exists( 'scm_save_posts' ) ) {
+        function scm_save_posts($upgrader_object, $options){
 
-    $my_types = get_post_types();
-    $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
+            printPre($upgrader_object);
 
-    alert( sizeof($my_posts) );
+            /*$my_types = get_post_types();
+            $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
 
-    foreach ( $my_posts as $my_post ): 
+            alert( sizeof($my_posts) );
 
-    wp_update_post( $my_post );
+            foreach ( $my_posts as $my_post ): 
 
-    endforeach;
-}*/
+            wp_update_post( $my_post );
+
+            endforeach;*/
+        }
+    }
 
 
 // *****************************************************
@@ -470,7 +474,7 @@ function savePosts(){
     if ( ! function_exists( 'scm_jquery_init' ) ) {
         function scm_jquery_init(){
 
-            global $SCM_parse, $SCM_galleries;
+            global $SCM_site, $SCM_galleries;
             
             $anchor = get_option( 'scm-utils-anchor' );
 
@@ -487,8 +491,10 @@ function savePosts(){
             <?php update_option( 'scm-utils-anchor', '' ); ?>
         } );
 
+        var site = <?php echo json_encode( $SCM_site ); ?>;
         var anchor = <?php echo json_encode( $anchor ); ?>;
-        $( 'body' ).attr( 'data-anchor', anchor );
+        $( 'body' ).data( 'site', site );
+        $( 'body' ).data( 'anchor', anchor );
 
     });
     

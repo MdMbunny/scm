@@ -501,108 +501,6 @@
     }
 
 //*****************************************************
-//*      SLIDER
-//*****************************************************
-/*
-//Prints Element Inner Header
-    if ( ! function_exists( 'scm_custom_slider' ) ) {
-        function scm_custom_slider() {
-
-            global $post;
-
-            $type = $post->post_type;
-            $slug = $post->post_name;
-
-            
-            $active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
-
-            if( $active ){
-                $custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
-                $layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : ( get_field( 'select_layout_slider', 'option' ) != 'default' ? get_field( 'select_layout_slider', 'option' ) : 'responsive' ) );
-                $height = get_field( 'height_slider' );
-                
-                if( !$height )
-                    $height = ( get_field( 'height_slider', 'option' ) ?: 'initial' );
-
-                if( sizeof( $custom_head ) )
-                    scm_custom_header( $id, $custom_head, $type, $layout, $height );
-            }
-
-            $i = 0;
-            $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
-            $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
-
-            
-            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full">';
-
-                switch ( $slider ) {
-                    case 'nivo':
-                        scm_custom_slider_nivo();
-                    break;
-                }
-
-            echo '</header><!-- ' . $type . '-header -->';
-
-
-
-            $id = uniqid( 'slider-' );
-
-            $images = '<div id="' . $id . '" class="slider nivo ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '">';
-            $captions = '';
-
-            foreach ($slides as $slide) {
-                $i++;
-                $img = $slide[ 'immagine' ];
-                $link = ( $slide[ 'slide_link' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'slide_link' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
-                $caption = '';
-                $slide_id = $slide[ 'slide_id' ];
-                $slide_class = $slide[ 'slide_class' ];
-                $title = '';
-
-                $caption_id = 'caption-' . $id . '-' . $i;
-
-                $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
-                $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
-                $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
-                $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
-                $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
-                    
-                $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . ' count-' . $i . '">';
-                    $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ( $slide_class ? ' class="' . $slide_class . '"' : '' ) . $style . '">';
-                        if( $slide[ 'active_caption' ] ){
-                            $caption .= ( $slide[ 'caption_title'] ? '<h3>' . $slide[ 'caption_title' ] . '</h3>' : '' );
-                            $caption .= $slide['caption'];
-                        }
-                    $caption .= '</div>';
-                $caption .= '</div>';
-
-                $title = ( $caption ? '#' . $caption_id : '' );
-
-                $images .= ( $link ? '<a href="' . $link . '">' : '' );
-                    $images .= '<img src="' . $img . '" " data-thumb="' . $img . '" alt="" title="' . $title . '" />';
-                $images .= ( $link ? '</a>' : '' );
-
-                $captions .= $caption;
-
-            }
-
-            $images .= '</div>';
-
-
-            
-                
-            echo $images;               
-
-            echo $captions;
-
-
-
-
-
-        }
-    }*/
-
-//*****************************************************
 //*      NIVO SLIDER
 //*****************************************************
 
@@ -610,32 +508,34 @@
     if ( ! function_exists( 'scm_custom_header' ) ) {
         function scm_custom_header( $id, $slides, $type = '', $layout = '', $height = '' ) {
 
-            /*global $post;
-
-            $type = $post->post_type;
-            $slug = $post->post_name;
-
-            $id = uniqid( 'slider-' );
-            $active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
-
-            if( $active ){
-                $custom_head = (  get_field( 'flexible_headers' ) ?: ( get_field( 'flexible_headers', 'option' ) ?: array() ) );
-                $layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : ( get_field( 'select_layout_slider', 'option' ) != 'default' ? get_field( 'select_layout_slider', 'option' ) : 'responsive' ) );
-                $height = get_field( 'height_slider' );
-                
-                if( !$height )
-                    $height = ( get_field( 'height_slider', 'option' ) ?: 'initial' );
-
-                if( sizeof( $custom_head ) )
-                    scm_custom_header( $id, $custom_head, $type, $layout, $height );
-            }*/
-
             $i = 0;
             $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
             $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
 
             // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
-            $images = '<div id="' . $id . '" class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" data-max-height="' . $height . '" data-equal-max="height" data-equal="img">';  // +++ todo: From options?
+            // E tutte le sue belle opzioni
+            $images = '<div class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" 
+                            data-slider="' . $slider . '" 
+                            data-slider-effect="fold" 
+                            data-slider-slices="15" 
+                            data-slider-cols="8" 
+                            data-slider-rows="4" 
+                            data-slider-speed="500" 
+                            data-slider-time="5000" 
+                            data-slider-start="0" 
+                            data-slider-random="false" 
+                            data-slider-hover="true" 
+                            data-slider-manual="false" 
+                            data-slider-direction="true" 
+                            data-slider-control="false" 
+                            data-slider-thumbs="false" 
+                            data-slider-prev="Prev" 
+                            data-slider-next="Next" 
+                            data-max-height="' . $height . '" 
+                            data-equal="img" 
+                            data-equal-max="height" 
+                        >';
+
             $captions = '';
 
             foreach ($slides as $slide) {
@@ -670,7 +570,7 @@
                 $title = ( $caption ? '#' . $caption_id : '' );
 
                 $images .= ( $link ? '<a href="' . $link . '">' : '' );
-                    $images .= '<img class="nivo-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
+                    $images .= '<img class="slide-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
                 $images .= ( $link ? '</a>' : '' );
 
                 $captions .= $caption;
@@ -678,7 +578,6 @@
             }
 
             $images .= '</div>';
-
 
             echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full full-image slider-wrapper theme-default">';
                 

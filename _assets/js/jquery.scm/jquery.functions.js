@@ -32,7 +32,7 @@
 	$.wpUpdateOption = function( name, value, fun ) {
 
 		$.post(
-		    '../wp-admin/admin-ajax.php', 
+		    $( 'body' ).data( 'site' ) + '/wp-admin/admin-ajax.php', 
 		    {
 		        'action': name,
 		        'data':   value,

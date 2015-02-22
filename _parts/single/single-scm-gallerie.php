@@ -6,7 +6,7 @@
 global $SCM_galleries, $post;
 
 $type = get_post_type();
-$titletitle = get_the_title();
+$title = get_the_title();
 
 $b_init = ( isset( $this ) ? $this->b_init : 0 );
 $b_type = ( isset( $this ) ? $this->b_type : 'img');
@@ -21,12 +21,16 @@ $gallery = get_field( 'gallerie_immagini' );
 $style = ( $b_bg ? ' style="background-image: transparent url(\'' . $b_bg . '\') no-repeat center center;' : '' );
 
 $id = uniqid( 'gallery-' );
-$classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' pointer';
+$section_class = 'gallery scm-gallery scm-object pointer';
 
 $SCM_galleries[ $id ] = $gallery;
 
 
-echo '<div id="' . $id . '" class="' . $classes . '"' . $style . ' data-init="' . $b_init . '" data-title="' .$title . '">';
+echo '<div id="' . $id . '" class="' . $classes . '"' . $style . ' 
+			data-gallery="' . $b_type . '" 
+			data-init="' . $b_init . '" 
+			data-title="' .$title . '"
+		>';
 
 	switch ($b_type) {
 		case 'img':

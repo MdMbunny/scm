@@ -839,69 +839,63 @@
 	// *      SLIDER CAPTION
 	// *****************************************************
 
-	// +++ todo: passare data a Nivo Slider (velocità, pausa, controlli) e figli (animazioni caption, più livelli, ecc)
-	// queste 2 funzioni vengono riviste (o spostate...)
+	// +++ todo: passare data a figli (animazioni caption, più livelli, ecc)
+	// queste 2 funzioni vengono riviste
 
-	$.fn.captionMoveIn = function( state ){
-		
-		//this.removeClass( 'from-left' );
-		//this.addClass( 'from-right' );
-		//this.removeClass( 'from-right', 500 );
+	$.fn.captionMoveIn = function( state, slider ){	
 
+		var $slider = $( slider );
+		$slider.css( 'pointer-events', 'none' );
 
 		return this.each( function() {
 
-			var from = /*$( 'body' ).outerWidth(); +*/ $( this ).outerWidth();
-			$( this ).css( { left: from, opacity: 0 } );
+			var $this = $( this ),
+				from = $( this ).outerWidth();
 
-			if ( $( this ).children().length ){
+			$this.css( { left: from, opacity: 0 } );
 
+			if ( $this.children().length ){
 				
-				$( this ).animate({
-					//left: $( this ).parent( '.slider' ).position().left,
+				$this.animate({
 					left: 0,
 					opacity: 1
-				}, 1000);
+				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
 
 			}
 		});
 
 	}
 
-	$.fn.captionMoveOut = function( state ){
-	
-		//this.addClass( 'from-left', 500 );
+	$.fn.captionMoveOut = function( state, slider ){
 
+		var $slider = $( slider );
+		$slider.css( 'pointer-events', 'none' );
+	
 		return this.each( function() {
 
-			var to = - $( this ).outerWidth();
+			var $this = $( this ),
+				to = - $this.outerWidth();
 
-			if ( $( this ).children().length ){
+			if ( $this.children().length ){
 
-				//$( this ).css( { left: -250 } );
-				
-				$( this ).animate({
+				$this.animate({
 					left: to,
-					//opacity: 0
-				}, 1000);
-
-			}else{
+				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
 
 			}
-
 		});
 
 	}
 
 	// *****************************************************
-	// *      NIVO SLIDER
+	// *      SLIDER
 	// *****************************************************
-	
+
 	$.fn.initSlider = function() {
 
 		return this.each( function() {
 
-			var slides = $( this ).find( '.nivo-image' );
+			var slides = $( this ).find( '.slide-image' );
 
 			if( slides.length ){
 
@@ -914,20 +908,9 @@
 
 	}
 
-	$.fn.initNivoSlider = function() {
-
-		return this.each( function() {
-			
-			var slides = $( this ).find( '.nivo-image' ).length;
-
-			if( slides > 1 ){
-				$( this ).parent().addClass( 'slider-wrapper theme-default' );
-				$( this ).addClass( 'nivoSlider' );
-			}
-
-		});
-
-	}
+	// *****************************************************
+	// *      NIVO SLIDER
+	// *****************************************************
 
 	$.fn.setNivoSlider = function(){
 
@@ -936,46 +919,52 @@
 			var $body 		= $( 'body' ),
 				$this 		= $( this );
 
+			if( $this.find( '.slide-image' ).length < 2 )
+				return this;
+
+			$this.parent().addClass( 'slider-wrapper theme-default' );
+			$this.addClass( 'nivoSlider' );
+
 			$this.find( 'img' ).each( function(){
 				$( this ).css( 'display', 'inline-block' );
 			});
 
 			$this.nivoSlider( {
-			    effect: 'fold',        // Specify sets like: 'fold,fade,sliceDown'
-			    slices: 15,                     // For slice animations
-			    boxCols: 8,                     // For box animations
-			    boxRows: 4,                     // For box animations
-			    animSpeed: 500,                 // Slide transition speed
-			    pauseTime: 5000,                // How long each slide will show
-			    startSlide: 0,                  // Set starting Slide (0 index)
-			    directionNav: true,             // Next & Prev navigation
-			    controlNav: false,              // 1,2,3... navigation
-			    controlNavThumbs: false,        // Use thumbnails for Control Nav
-			    pauseOnHover: true,             // Stop animation while hovering
-			    manualAdvance: false,           // Force manual transitions
-			    prevText: 'Prev',               // Prev directionNav text
-			    nextText: 'Next',               // Next directionNav text
-			    randomStart: false,             // Start on a random slide
-			    beforeChange: function( e ){       // Triggers before a slide transition
+			    effect: 			$this.data( 'slider-effect' ), 		// sliceDown | sliceDownLeft | sliceUp | sliceUpLeft | sliceUpDown | sliceUpDownLeft | fold | fade | random | slideInRight | slideInLeft | boxRandom | boxRain | boxRainReverse | boxRainGrow | boxRainGrowReverse
+			    slices: 			$this.data( 'slider-slices' ), 		// For slice animations
+			    boxCols: 			$this.data( 'slider-cols' ), 		// For box animations
+			    boxRows: 			$this.data( 'slider-rows' ), 		// For box animations
+			    animSpeed: 			$this.data( 'slider-speed' ), 		// Slide transition speed
+			    pauseTime: 			$this.data( 'slider-time' ), 		// How long each slide will show
+			    startSlide: 		$this.data( 'slider-start' ), 		// Set starting Slide (0 index)
+			    directionNav: 		$this.data( 'slider-direction' ), 	// Next & Prev navigation
+			    controlNav: 		$this.data( 'slider-control' ), 	// 1,2,3... navigation
+			    controlNavThumbs: 	$this.data( 'slider-thumbs' ), 		// Use thumbnails for Control Nav
+			    pauseOnHover: 		$this.data( 'slider-hover' ), 		// Stop animation while hovering
+			    manualAdvance: 		$this.data( 'slider-manual' ), 		// Force manual transitions
+			    prevText: 			$this.data( 'slider-prev' ), 		// Prev directionNav text
+			    nextText: 			$this.data( 'slider-next' ), 		// Next directionNav text
+			    randomStart: 		$this.data( 'slider-random' ), 		// Start on a random slide
+			    beforeChange: function( e ){       						// Triggers before a slide transition
 
-			    	$this.find( '.nivo-caption' ).captionMoveOut( 'before' );
-
-			    },
-			    afterChange: function( e ){        // Triggers after a slide transition
-
-			    	$this.find( '.nivo-caption' ).captionMoveIn( 'after' );
+			    	$this.find( '.nivo-caption' ).captionMoveOut( 'before', this );
 
 			    },
-			    slideshowEnd: function( e ){       // Triggers after all slides have been shown
+			    afterChange: function( e ){        						// Triggers after a slide transition
+
+			    	$this.find( '.nivo-caption' ).captionMoveIn( 'after', this );
 
 			    },
-			    lastSlide: function( e ){          // Triggers when last slide is shown
+			    slideshowEnd: function( e ){       						// Triggers after all slides have been shown
 
 			    },
-			    afterLoad: function( e ){          // Triggers when slider has loaded
+			    lastSlide: function( e ){          						// Triggers when last slide is shown
+
+			    },
+			    afterLoad: function( e ){          						// Triggers when slider has loaded
 			    	
 			    	$body.trigger( 'nivoLoaded', [ $this ] );
-			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load' );
+			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this );
 			    }
 			});
 
@@ -987,6 +976,7 @@
 				$this.swipe( {
 			
 			        swipeLeft: function( event, direction, distance, duration, fingerCount ) {
+			        	$this.find( 'img' ).data( 'transition','sliceDownLeft' );
 						$this.find( 'a.nivo-nextNav' ).trigger( 'click' );
 						event.stopPropagation();
 
@@ -1019,8 +1009,8 @@
 
 			var $this 			= $( this ),
 				id 				= $this.attr( 'id' ),
-				init 			= $this.data( 'init' ),
-				name 			= $this.data( 'title' ),
+				init 			= ( $this.data( 'init' ) ? $this.data( 'init' ) : 0 ),
+				name 			= ( $this.data( 'title' ) ? $this.data( 'title' ) : '' ),
 				gallery 		= GALLERIES[ id ],
 				images 			= [],
 				titles 			= [],
@@ -1133,7 +1123,8 @@
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
 			anchor 			= $body.data( 'anchor' ),
-			button 			= $( 'a[href="#' + anchor + '"]' );
+			button 			= $( 'a[href="#' + anchor + '"]' ),
+			$all 			= $( 'html, body' );
 
 		var pageScroll = function(){
 
@@ -1144,7 +1135,7 @@
 				if( post != 'all' ){
 
 					$body.css( 'pointer-events', 'all' );
-					$( 'html, body' ).scrollTop( $anchor.offset().top );
+					$all.scrollTop( $anchor.offset().top );
 
 				}else{
 
@@ -1153,7 +1144,7 @@
 
 			}else{
 
-				$( 'html, body' ).animate({
+				$all.animate({
 					scrollTop: $anchor.offset().top
 				}, 1000, function() {
 					$body.css( 'pointer-events', 'all' );
@@ -1237,7 +1228,6 @@
 			$html 		= $( 'html' ),
 			$body 		= $( 'body' );
 
-
 		$html.removeClass( 'no-js' );
 
 // TOUCH CLASS
@@ -1297,13 +1287,8 @@
 			break;
 		}
 		
-		
-		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
-		
-		
 		$window.on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
-				
-
+		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
 		$( '.site-page' ).on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
 		$( '.site-page' ).on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
 		$( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
@@ -1331,9 +1316,6 @@
 				$( this ).smoothScroll( e, state );
 
 		} );
-
-
-
 			
 		if( $body.hasClass( 'touch' ) ){
 
@@ -1373,11 +1355,10 @@
 
 // TOOLS
 
-		
-		$( '.scm-gallerie' ).setFancybox();
-		$( '.slider' ).initSlider();
-		$( 'iframe[src*="youtube.com"]' ).youtubeFix();
+		$( '[data-gallery]' ).setFancybox();
+		$( '[data-slider]' ).initSlider();
 		$( '[data-current-link]' ).currentLink();
+		$( 'iframe[src*="youtube.com"]' ).youtubeFix();
 
 
 // *** DEBUG		
@@ -1413,19 +1394,17 @@
 		$window.resize( function(e){
 
 			$body.trigger( 'resizing' );
-			
-			//if( !resizing ){
-				
-				resizing = true;
+							
+			resizing = true;
 
-				clearTimeout( interval );
-				interval = setTimeout( function(){
-					if ( resizing ){
-						resizing = false;
-						$body.trigger( 'resized' );
-						clearInterval( interval );
-					}
-				}, 250 );
+			clearTimeout( interval );
+			interval = setTimeout( function(){
+				if ( resizing ){
+					resizing = false;
+					$body.trigger( 'resized' );
+					clearInterval( interval );
+				}
+			}, 250 );
 
 		} );
 
@@ -1441,13 +1420,8 @@
 		$body.imagesLoaded( function( instance ) {
 		    $body.trigger( 'imagesLoaded' );
 		    
-		    $( '.slider.nivo' ).initNivoSlider();
-
-		    var $nivo = $( '.nivoSlider' );
-		    var $maps = $( '.scm-map' );
-
-		    $nivo.setNivoSlider();
-		    $maps.googleMap();
+		    $( '[data-slider="nivo"]' ).setNivoSlider();
+		    $( '.scm-map' ).googleMap();
 
 		    /*if( $nivo.length ){
 		    	// +++ todo: anche le Slider come le Mappe vengono contate e restituiscono sliderLoaded e slidersLoaded
@@ -1478,10 +1452,6 @@
 			}*/
 
 		});
-
-		
-
-
 
 		$( '[data-equal]' ).equalChildrenSize();
 		$body.responsiveClasses();
