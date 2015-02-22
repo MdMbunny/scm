@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.8.4
+Version:			v1.8.5
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -1412,6 +1412,7 @@ object {
 	line-height: 40px;
 	width: 40px;
 	height: 40px;
+	text-decoration: none;
 }
 
 .topofpage a i{
