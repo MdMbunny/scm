@@ -1,32 +1,27 @@
 <?php
 
 
-// INTERESSANTE FUNZIONE IN HOOK INIT, PER SALVARE TUTTI O UNA PARTE DEI POST
 
 add_action( 'upgrader_process_complete', 'scm_save_posts', 10, 2 );
 
     if ( ! function_exists( 'scm_save_posts' ) ) {
         function scm_save_posts($upgrader_object, $options){
 
-            //printPre($upgrader_object);
+            global $SCM_version;
 
-            if( $upgrader_object['result']['destination_name'] )
-
-            if ( !empty($upgrader_object->result['destination_name']) )
-                alert( sizeof($my_posts) );
-            else
+            if ( !empty($upgrader_object->result['destination_name']) ){
+                $my_types = get_post_types();
+                $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
+                //consoleLog( 'SCM Theme Updating to Version: ' . $SCM_version );
+                //consoleLog( sizeof($my_posts) . ' Posts' );
+                foreach ( $my_posts as $my_post ){
+                    wp_update_post( $my_post );
+                }
+                consoleLog( 'SCM Theme Updated to Version: ' . $SCM_version );
+                consoleLog( sizeof($my_posts) . ' Posts Updated' );
+            }else{
                 return false;
-
-            /*$my_types = get_post_types();
-            $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
-
-            
-
-            foreach ( $my_posts as $my_post ): 
-
-            wp_update_post( $my_post );
-
-            endforeach;*/
+            }
         }
     }
 
