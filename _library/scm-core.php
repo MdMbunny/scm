@@ -8,12 +8,19 @@ add_action( 'upgrader_process_complete', 'scm_save_posts', 10, 2 );
     if ( ! function_exists( 'scm_save_posts' ) ) {
         function scm_save_posts($upgrader_object, $options){
 
-            printPre($upgrader_object);
+            //printPre($upgrader_object);
+
+            if( $upgrader_object['result']['destination_name'] )
+
+            if ( !empty($upgrader_object->result['destination_name']) )
+                alert( sizeof($my_posts) );
+            else
+                return false;
 
             /*$my_types = get_post_types();
             $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
 
-            alert( sizeof($my_posts) );
+            
 
             foreach ( $my_posts as $my_post ): 
 
