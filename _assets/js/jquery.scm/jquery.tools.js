@@ -20,6 +20,11 @@
 
 ( function($){
 
+	/*if( location.href.indexOf( '?' ) > -1 ){
+		location.replace( location.protocol + '//' + location.host + location.pathname );
+	return;
+}*/
+
 // ******************************************************
 // ******************************************************
 // *      jQuery INIT
@@ -109,9 +114,7 @@
 		return this.each(function() {
 
 		    var $this 		= $( this );
-		    	link 		= $this.attr( 'href' ),
-				ext 		= ( typeof $this.attr( 'target' ) !== 'undefined' ? ( $this.attr( 'target' ) == '_blank' ? true : false ) : $this.hasClass( 'external' ) ),
-				title 		= ( typeof title !== 'undefined' ? title : 'Arrivederci!' ),
+		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
 				current 	= document.URL,
 		        parent 		= $this.parents( '.sub-menu' ),
 		        a_parent 	= $( parent ).siblings().find( 'a' ),
@@ -126,12 +129,16 @@
 			$( 'body' ).css( 'pointer-events', 'none' );
 
 	        if( current.indexOf( link ) === 0 )
-	            $this.attr( 'href', '#top' );
+	            $this.data( 'href', '#top' );
 	        else if( link.indexOf( '#' ) === 0 && url_parent && ( current.indexOf( url_parent ) < 0 && url_parent != '#top' ) )
-	            $this.attr( 'href', url_parent + link );
+	            $this.data( 'href', url_parent + link );
+	        else
+	        	$this.data( 'href', link );
 
-	        var elem 		= $this.context,
-				lochost		= location.hostname,
+	        var elem = document.createElement( 'a' );
+    		elem.href = $this.data( 'href' );
+
+	        var lochost		= location.hostname,
 				host 		= elem.hostname,
 				locpath		= location.pathname.replace( /^\//,'' ),
 				path 		= elem.pathname.replace( /^\//,'' );
@@ -1120,7 +1127,7 @@
 	// *      CHANGE PAGE
 	// *****************************************************
 
-	$.fn.bodyIn = function( event ){
+	$.bodyIn = function( event ){
 
 		var $body 			= $( 'body' ),
 			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
@@ -1169,7 +1176,7 @@
 			}else{
 
 				$body.css( 'pointer-events', 'all' );
-				$body.css( 'opacity', 1 );
+				//$body.css( 'opacity', 1 );
 
 			}
     	};
@@ -1179,9 +1186,7 @@
         		opacity: 1
         	}, duration * 1000, checkScroll );
         }else{
-        	$body.css({
-        		'opacity' : 1
-        	});
+        	$body.css( 'opacity', 1 );
         	checkScroll();
         }
 	}
@@ -1194,10 +1199,12 @@
 
 		var $body 		= $( 'body' ),
 			$elem 		= this,
-			link 		= $elem.attr( 'href' ),
+			link 		= $elem.data( 'href' ),
 			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : 0 ),
 			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
 			opacity 	= ( wait != 'no' ? 0 : .6 );
+
+
 
 		$elem.data( 'done', false );
 		if( link )
@@ -1208,13 +1215,13 @@
 			$body.animate( {
         		opacity: opacity
         	}, duration * 1000, function() {
-				$elem.goToLink( event, state, 'See You!' );
+				$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
 			});
 
 		}else{
 
 			$body.css( 'pointer-events', 'all' );
-			$elem.goToLink( event, state, 'See You!' );
+			$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
 
 		}
 
@@ -1230,7 +1237,8 @@
 
 		var $window 	= $( window ),
 			$html 		= $( 'html' ),
-			$body 		= $( 'body' );
+			$body 		= $( 'body' ),
+			$location 	= $( location );
 
 		$html.removeClass( 'no-js' );
 
@@ -1268,25 +1276,25 @@
 
 		switch( $body.data( 'fade-wait' ) ){
 			case 'window':
-				$body.on( 'windowLoaded', function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'windowLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			case 'images':
-				$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			case 'sliders':
 				if( $( '.nivoSlider' ).length )
-					$body.on( 'nivoLoaded', function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'nivoLoaded', function(e){ $.bodyIn(e); } );
 				else
-					$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			case 'maps':
 				if( $( '.scm-map' ).length )
-					$body.on( 'mapsLoaded', function(e, tot){ $( this ).bodyIn(e, tot); } );
+					$body.on( 'mapsLoaded', function(e, tot){ $.bodyIn(e, tot); } );
 				else
-					$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
+					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			default:
-				$body.on( 'imagesLoaded', function(e){ $( this ).bodyIn(e); } );
+				$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 				$body.css( 'opacity', .6 );
 			break;
 		}
@@ -1296,7 +1304,7 @@
 		$( '.site-page' ).on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
 		$( '.site-page' ).on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
 		$( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
-		$( 'a' ).on( 'click', function(e){
+		$( 'a, [data-href]' ).on( 'click', function(e){
 			var toggle = $( this ).parents( '.no-toggled' );
 
 			var cont = 0;
@@ -1312,12 +1320,14 @@
 
 		} );
 
-		$body.on( 'link', 'a', function( e, state ){
-		
+		$body.on( 'link', 'a, [data-href]', function( e, state ){
+
+			var $this = $( this );
+	
 			if( state != 'page' )
-				$( this ).bodyOut( e, state );
+				$this.bodyOut( e, state );
 			else
-				$( this ).smoothScroll( e, state );
+				$this.smoothScroll( e, state );
 
 		} );
 			
@@ -1393,6 +1403,17 @@
 
 // TRIGGERS
 
+		// Trigger WINDOW UNLOAD event
+		$window.on( 'beforeunload', function(e){
+
+			//e.preventDefault();
+
+			//$body.trigger( 'windowUnload' );
+			//location.href.replace( location.protocol + '//' + location.host + location.pathname );
+			//return false;
+
+		} );
+
 		// Trigger WINDOW RESIZED event
 		var interval, resizing;
 		$window.resize( function(e){
@@ -1417,7 +1438,19 @@
 
 		// Trigger WINDOW LOADED event
 		$(window).load(function(e){
+
+			var loc = $location.attr( 'href' );
+			if( loc.indexOf( '#' ) > -1 ){
+				$body.data( 'anchor', loc.split('#')[1] );
+				window.location.replace("#");
+
+				if ( typeof window.history.replaceState == 'function' ) {
+				  history.replaceState({}, '', location.href.slice(0, -1));
+				}
+			}
+
 			$body.trigger( 'windowLoaded' );
+
 		});
 
 		// Call NivoSlider and wait for NIVO LOADED event

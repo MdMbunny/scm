@@ -239,30 +239,31 @@
 
 	if ( !$.fn.goToLink ) {
 
-		$.fn.goToLink = function( event, state, title ){
+		$.fn.goToLink = function( event, state, title, fallback ){
 
-			var link 		= this.attr( 'href' ),
-				state 		= ( state ? state : 'site' ),
-				ext 		= ( typeof this.attr( 'target' ) !== 'undefined' ? ( this.attr('target') == '_blank' ? true : false ) : this.hasClass( 'external' ) ),
+			var link 		= this.data( 'href' ),
+				ext 		= ( this.attr('target') == '_blank' ? true : ( this.data( 'target' ) == '_blank' ? true : this.hasClass( 'external' ) ) ),
 				title 		= ( typeof title !== 'undefined' ? title : 'Arrivederci!' );
-				urlHash 	= link.split("#"),
-				url 		= urlHash[0],
-				hash 		= ( state != 'external' ? ( urlHash[1] ? urlHash[1] : 'none' ) : 'none' );
-
-			if( !link )
+				//ext 		= ( typeof this.attr( 'target' ) !== 'undefined' ? ( this.attr('target') == '_blank' ? true : false ) : this.hasClass( 'external' ) ),
+				
+			if( !link ){
+				if ( fallback ) fallback();
 				return this;
-			
-			if( hash && hash != 'none' && hash !== '' )
-				$.wpUpdateOption( 'scm_anchor', hash, function(r){
-					if( r )
-						window.location.replace( url )
-					else
-						window.location.replace( link )
-				} );
-			else if( !ext )
+			}
+
+			if( !ext ){
+
 				window.location.replace( link );
-			else
+				return this;
+
+			}else{
+
 				window.open( link, title );
+				return this;
+
+			}
+			
+			if ( fallback ) fallback();
 
 			return this;
 

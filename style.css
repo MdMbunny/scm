@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.9.1
+Version:			v1.9.3
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -64,7 +64,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	margin: 0;
 	outline: 0;
 	padding: 0;
-	vertical-align: baseline;
+	/*vertical-align: baseline;*/
 }
 
 html {
@@ -382,6 +382,7 @@ dd {
 img {
 	border: 0;
 	height: auto; /* Make sure images are scaled correctly. */
+	width: inherit;
 	max-width: 100%; /* Adhere to container width. */
 }
 
@@ -421,7 +422,7 @@ th {
 .inline, .displayinline, .display-inline { display: inline; }
 
 .mask {
-	display: block;
+	display: inline-block;
 	overflow: hidden;
 }
 
@@ -460,22 +461,22 @@ th {
 --------------------------------------------------------------*/
 
 .align-left, .alignleft, .float-left, .floatleft {
-	display: inline-block;
-	vertical-align: top;
+	/*display: inline-block;
+	vertical-align: top;*/
 	float: left;
 }
 
 .align-right, .alignright, .float-right, .floatright,
 .content-float-right > *, .all-float-right * {
-	display: inline-block;
-	vertical-align: top;
+	/*display: inline-block;
+	vertical-align: top;*/
 	float: right;
 }
 
 .align-center, .aligncenter, .float-center, .floatcenter,
 .content-float-center > *, .all-float-center * {
 	clear: both;
-	display: block;
+	/*display: inline-block;*/
 	margin: 0 auto;
 }
 
@@ -566,6 +567,7 @@ th {
 .column {
 	width: 100%;
 	clear: none;
+	float: left;
 }
 
 .half-width, .column-12 { width: 50%; }
@@ -706,8 +708,8 @@ textarea,
 	width: 100%;
 	font-size: .8em;
 	margin-bottom: 15px;
-	-webkit-transition: all .2s;
-	transition: all .2s;
+	-webkit-transition: all .3s;
+	transition: all .3s;
 	display: block;
 }
 
@@ -717,7 +719,7 @@ select {
 	width: 100%;
 	background-color: transparent;
 	color: #a7a7a7;
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 input[type="text"]:focus,
@@ -774,6 +776,14 @@ textarea {
 /*--------------------------------------------------------------
 5.1 Links
 --------------------------------------------------------------*/
+
+.toggle .toggle-button i,
+select,
+button, button *,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+[data-href], [data-href] *,
 a, a *,
 a:visited,
 a:visited *,
@@ -788,11 +798,30 @@ button * {
 	cursor: pointer;
 	outline: 0;
 	color: inherit;
+	-webkit-transition: opacity .3s, color .3s;
+	transition: opacity .3s, color .3s;
 }
 
+.toggle .toggle-button:hover i,
+button:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover,
+[data-href]:hover,
 a:hover{
 	text-decoration: none;
+	opacity: .5;
 }
+
+.current > .toggle-button > a, .active > .toggle-button > a,
+.current > a, .active > a,
+.current > [data-href], .active > [data-href],
+.current > button, .active > button{
+	cursor: default;
+	opacity: .5;
+}
+
+
 
 /*--------------------------------------------------------------
 5.2 Header
@@ -838,22 +867,9 @@ a:hover{
 	text-decoration: none;
 	background-color: transparent;
 	text-align: center;
-	-webkit-transition: opacity .2s, color .2s;
-	transition: opacity .2s, color .2s;
+	/*-webkit-transition: opacity .2s, color .2s;
+	transition: opacity .2s, color .2s;*/
 }
-
-
-/*
-.navigation.affix a,
-.navigation .current > a,
-.navigation .sub-menu li a{
-	color: #666;
-}*/
-
-/*.navigation .current > a,
-.navigation .sub-menu li a{
-	background-color: #FFF;
-}*/
 
 .navigation li.lang-item{
 	float: right;
@@ -861,29 +877,21 @@ a:hover{
 	right: 0;
 }
 
+.navigation:not(.toggle) li{
+	-webkit-transition: background-color .5s ease-in;
+	transition: background-color .5s ease-in;
+}
+
+.navigation:not(.toggle) li:hover{
+	-webkit-transition: background-color .3s ease-out;
+	transition: background-color .3s ease-out;
+}
+
 .navigation:not(.toggle) li:hover,
 .navigation:not(.toggle) li.current:hover,
 .navigation:not(.toggle) li.active:hover {
 	background-color: #FFF;
 }
-
-.navigation.affix a:hover,
-.navigation li.active a,
-.navigation .sub-menu li a:hover,
-.navigation li.current > a:hover,
-.navigation li.active > a:hover,
-.navigation a:hover{
-	/*color: #666;*/
-	opacity: .7;
-}
-
-.navigation li.current > a:hover,
-.navigation li.active > a:hover{
-	/*color: #666;*/
-	cursor: default;
-}
-
-
 
 /* Level 1 */ 
 
@@ -984,6 +992,13 @@ body.mouse .sub-menu li:hover > ul {
 	position: fixed !important;
 	visibility: visible !important;
 	top: 0px !important;
+}
+
+.navigation.sticky .menu > .current > a:hover,
+.navigation.sticky .menu > .active > a:hover,
+.navigation.sticky .current > .toggle-button > a:hover,
+.navigation.sticky .active > .toggle-button > a:hover{
+	cursor: pointer;
 }
 
 /* Toggle Button */
@@ -1111,13 +1126,6 @@ body.mouse .sub-menu li:hover > ul {
 	width: 50%;
 }
 
-/*--------------------------------------------------------------
-5.3 Footer
---------------------------------------------------------------*/
-
-.site-footer > .row{
-	/*background-color: #FFF;*/
-}
 
 /*--------------------------------------------------------------
 6.0 Accessibility
@@ -1170,6 +1178,8 @@ body.mouse .sub-menu li:hover > ul {
 .site-footer:after {
 	content: "";
 	display: table;
+	float: none;
+	clear: both;
 }
 
 .entry-content:after,
@@ -1426,12 +1436,6 @@ object {
 }
 
 
-
-
-
-
-
-
 button,
 input[type="button"],
 input[type="reset"],
@@ -1444,11 +1448,10 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"],
 .page-numbers,
-em,
 blockquote {
 	background: #666;
 	color: rgba(0, 0, 0, 1);
-	cursor: pointer; /* Improves usability and consistency of cursor style between image-type 'input' and others */
+	/*cursor: pointer;*/ /* Improves usability and consistency of cursor style between image-type 'input' and others */
 	background-image: none;
 	border: 0;
 	width: auto;
@@ -1463,7 +1466,6 @@ blockquote {
 	padding: 1em;
 }
 
-em,
 blockquote {
 	text-align: left;
 	font-size: 120%;
@@ -1471,21 +1473,13 @@ blockquote {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 120%;
-	cursor: default;
+	/*cursor: default;*/
 }
 
 .page-numbers{
 	width: 3em;
 	background-color: transparent;
 	color: #666;
-}
-
-button:hover,
-input[type="button"]:hover,
-input[type="reset"]:hover,
-input[type="submit"]:hover,
-.page-numbers:hover {
-	opacity: 0.8;
 }
 
 .page-numbers:hover{
@@ -1542,6 +1536,10 @@ input[type="submit"]:active {
 	/*margin: 0 1em 1em 0;*/
 	width: 95%;
 	padding-left: 1em;
+}
+
+.scm-object .legend img{
+	width: 100%;
 }
 
 /*--------------------------------------------------------------
@@ -1627,13 +1625,13 @@ input[type="submit"]:active {
 }
 
 .synved-social-resolution-single{
-	-webkit-transition: opacity .2s;
-	transition: opacity .2s;
+	/*-webkit-transition: opacity .2s;
+	transition: opacity .2s;*/
 }
-
+/*
 .synved-social-resolution-single:hover{
 	opacity: .6;
-}
+}*/
 
 
 /*--------------------------------------------------------------

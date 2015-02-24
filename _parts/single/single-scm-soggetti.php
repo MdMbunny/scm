@@ -43,19 +43,20 @@ echo '<div class="' . $classes . '">';
 					case 'logo':
 						
 						$logo = ( !$neg ? get_field('soggetti_logo') : get_field('soggetti_logo_negativo') );
-						$width = ( $wid ? 'width=' . $wid . '%' : '' );
+						//$width = ( $wid ? 'width=' . $wid . '%' : '' );
 
-						echo '<img src="' . $logo . '" alt="">';
+						if( $logo )
+							echo '<img src="' . $logo . '" alt="">';
 
 					break;
 
 				}
 
-			echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
+			echo '</div><!-- ' . $elem . ' -->';
 		}
 
 	}
 
-echo '</div><!-- ' . $type . ' -->';
+echo '</div><!-- soggetto -->';
 
 ?>

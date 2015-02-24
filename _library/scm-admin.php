@@ -285,9 +285,9 @@ function scm_upload_set_meta($meta, $file, $sourceImageType) {
             $image = wp_get_image_editor( $filePath );
             
             if ( ! is_wp_error( $image ) ) {
-                $quality = get_field('uploads_quality', 'option');
-                $largeWidth = get_field('uploads_width', 'option');
-                $largeHeight = get_field('uploads_height', 'option');
+                $quality = scm_field('uploads_quality', 90, 'option');
+                $largeWidth = scm_field('uploads_width', 1800, 'option');
+                $largeHeight = scm_field('uploads_height', 1800, 'option');
                 $size = $image->get_size();
                 $oldWidth = $size['width'];
                 $oldHeight = $size['height'];

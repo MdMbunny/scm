@@ -16,28 +16,30 @@
 
     //favicon / touch-icons
     if ( ! function_exists( 'scm_site_assets_favicon' ) ) {
-        function scm_site_assets_favicon( $ico144 = '', $ico114 = '', $ico72 = '', $ico54 = '', $png = '', $ico = '' ) {
+        function scm_site_assets_favicon() {
 
-            $ico144 = ( $ico144 ?: get_field('branding_icon_144', 'option') );
-            $ico114 = ( $ico114 ?: get_field('branding_icon_114', 'option') );
-            $ico72 = ( $ico72 ?: get_field('branding_icon_72', 'option') );
-            $ico54 = ( $ico54 ?: get_field('branding_icon_54', 'option') );
-            $png = ( $png ?: get_field('branding_icon_png', 'option') );
-            $ico = ( $ico ?: get_field('branding_icon_ico', 'option') );
+            $ico144 = scm_field('branding_icon_144', '', 'option');
+            $ico114 = scm_field('branding_icon_114', '', 'option');
+            $ico72 = scm_field('branding_icon_72', '', 'option');
+            $ico54 = scm_field('branding_icon_54', '', 'option');
+            $png = scm_field('branding_favicon_png', '', 'option');
+            $ico = scm_field('branding_favicon_ico', '', 'option');
+
+            indent( 0, lbreak() . '<!------ Favicon and Touch Icons ------>', 2 );
 
             if ( $ico144 )
-                echo '<link rel="apple-touch-icon-precomposed" sizes="144x144" href="' . esc_url( $ico144 ) . '" /> <!-- for retina iPad -->';
+                indent( 0, '<link rel="apple-touch-icon-precomposed" sizes="144x144" href="' . esc_url( $ico144 ) . '" /> <!-- for retina iPad -->', 1 );
             if ( $ico114 )
-                echo '<link rel="apple-touch-icon-precomposed" sizes="114x114" href="' . esc_url( $ico114 ) . '" /> <!-- for retina iPhone -->';
+                indent( 0, '<link rel="apple-touch-icon-precomposed" sizes="114x114" href="' . esc_url( $ico114 ) . '" /> <!-- for retina iPhone -->', 1 );
             if ( $ico72 )
-                echo '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico72 ) . '" /> <!-- for legacy iPad -->';
+                indent( 0, '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico72 ) . '" /> <!-- for legacy iPad -->', 1 );
             if ( $ico54 )
-                echo '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico54 ) . '" /> <!-- for non-retina devices -->';
+                indent( 0, '<link rel="apple-touch-icon-precomposed" href="' . esc_url( $ico54 ) . '" /> <!-- for non-retina devices -->', 1 );
 
             if ( $png )
-                echo '<link rel="icon" type="image/png" href="' . esc_url( $png ) . '" /> <!-- standard favicon -->';
+                indent( 0, '<link rel="icon" type="image/png" href="' . esc_url( $png ) . '" /> <!-- standard favicon -->', 1 );
             if ( $ico )
-                echo '<link rel="shortcut icon" href="' . esc_url( $ico ) . '" /><!-- IE favicon -->';
+                indent( 0, '<link rel="shortcut icon" href="' . esc_url( $ico ) . '" /><!-- IE favicon -->', 2 );
 
         }
     }
@@ -119,7 +121,7 @@
             include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
             if ( is_plugin_active( 'social-media-feather/social-media-feather.php' ) ) {
 
-                $soc_shape = get_field('social_follow_shape', 'option');
+                $soc_shape = scm_field('select_social_shape', 'square', 'option');
 
                 $path = SCM_DIR_IMG . 'icons/social/typeB/' . $soc_shape;
                 $baseURL = SCM_URI_IMG . 'icons/social/typeB/' . $soc_shape;
@@ -212,19 +214,19 @@
 
         function scm_logo( $in = 0 ) {
             
-            $logo_id = ( get_field( 'id_branding', 'option' ) ?: 'site-branding' );
+            $logo_id = scm_field( 'id_branding', 'site-branding', 'option' );
 
-            $follow = ( get_field('active_social_follow', 'option') ?: 0 );
+            $follow = scm_field( 'active_social_follow', 0, 'option' );
 
-            $logo_image = esc_url( get_field( 'branding_header_logo', 'option' ) );
-            $logo_height= numberToStyle(get_field( 'branding_header_logo_height', 'option' ) );
-            $logo_align = ( get_field( 'select_alignment_logo', 'option' ) ?: 'left' );
+            $logo_image = esc_url( scm_field( 'branding_header_logo', '', 'option' ) );
+            $logo_height= numberToStyle( scm_field( 'branding_header_logo_height', 40, 'option' ) );
+            $logo_align = scm_field( 'select_alignment_logo', 'left', 'option' );
 
             $logo_title = get_bloginfo( 'name' );
             $logo_slogan = get_bloginfo( 'description' );
-            $show_slogan = ( get_field( 'branding_header_slogan', 'option' ) ?: 0 );
+            $show_slogan = scm_field( 'branding_header_slogan', 0, 'option' );
             
-            $logo_type = ( get_field('branding_header_type', 'option') ?: 'text' );
+            $logo_type = scm_field( 'branding_header_type', 'text', 'option' );
 
             $logo_class = 'header-column site-branding ';
             $logo_class .= ( ( $logo_align != 'center' || $follow ) ? 'half-width ' : 'full ' );
@@ -260,15 +262,15 @@
     if ( ! function_exists( 'scm_social_follow' ) ) {
         function scm_social_follow( $in = 0 ) {
 
-            $follow = ( get_field( 'active_social_follow', 'option' ) ?: 0 );
+            $follow = scm_field( 'active_social_follow', 0, 'option' );
 
             if( !$follow || !shortcode_exists( 'feather_follow' ) )
                 return;
             
-            $follow_id = ( get_field( 'id_social_follow', 'option' ) ?: 'site-social-follow' );
+            $follow_id = scm_field( 'id_social_follow', 'site-social-follow', 'option' );
 
-            $follow_align = ( get_field( 'select_alignment_social_follow', 'option' ) ?: 'right' );
-            $follow_size = ( get_field( 'social_follow_size', 'option' ) ?: 64 );
+            $follow_align = scm_field( 'select_alignment_social_follow', 'right', 'option' );
+            $follow_size = scm_field( 'social_follow_size', 64, 'option' );
 
             $follow_class = 'header-column site-social-follow ';
             $follow_class .= ( $follow_align != 'center' ? 'half-width ' : 'full ' );
@@ -288,27 +290,34 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline', $in = 0 ) {
 
-            $sticky = ( get_field( 'active_sticky_menu', 'option' ) ?: 'no' );
-            $offset = ( $sticky != 'self' ? ( intval( get_field( 'offset_sticky_menu', 'option' ) ) ?: 0 ) : 0 );
-            $attach = ( $sticky != 'self' ? ( get_field( 'attach_sticky_menu', 'option' ) ?: 'nav-top' ) : 'nav-top' );
+            $sticky = scm_field( 'active_sticky_menu', 'no', 'option' );
+            $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'offset_sticky_menu', 0, 'option' ) );
+            $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'attach_sticky_menu', 'nav-top', 'option' ) );
             
-            $menu = ( get_field( 'select_menu', 'option' ) ?: 'primary' );
+            $menu = scm_field( 'select_menu', 'primary', 'option' );
             
-            $id = ( get_field( 'id_menu', 'option' ) ?: 'site-navigation' );
+            $id = scm_field( 'id_menu', 'site-navigation', 'option' );
             
-            $site_align = ( get_field( 'select_alignment_site', 'option' ) ?: 'center' );
+            $site_align = scm_field( 'select_alignment_site', 'center', 'option' );
 
-            $toggle_active = ( get_field( 'select_responsive_up_toggle', 'option' ) ?: 'smart' );
-            $home_active = ( get_field( 'home_active', 'option' ) ?: 'no' );
-            $image_active = ( get_field( 'select_responsive_down_logo', 'option' ) ?: 'no' );
+            $toggle_active = scm_field( 'select_responsive_up_toggle', 'smart', 'option' );
+            $home_active = scm_field( 'home_active', 'no', 'option' );
+            $image_active = scm_field( 'select_responsive_down_logo', 'no', 'option' );
 
             $menu_id = $id;
             $menu_class = 'navigation ';
-            $menu_class .= ( get_field( 'overlay_menu', 'option' ) ? 'overlay ' : '' );
-            $menu_class .= ( get_field('select_layout_page', 'option') ?: 'full' );
+            $menu_class .= ( scm_field( 'overlay_menu', 0, 'option' ) ? 'overlay ' : '' );
 
-            $row_layout = ( get_field('select_layout_menu', 'option') ?: 'full' );
-            $row_class = $row_layout . ' float-' . $site_align . ' ' . $align;
+            $menu_layout = scm_field( 'select_layout_page', 'full', 'option' );
+            $row_layout = scm_field( 'select_layout_menu', 'full', 'option' );
+            
+            if( $position == 'inline' ){
+                $menu_class .= 'half-width float-' . $align;
+                $row_class = 'full';
+            }else{
+                $menu_class .= $menu_layout . ' ' . $site_align;
+                $row_class = $row_layout . ' ' . $align;
+            }            
 
             $menu_data_toggle = $toggle_active;
             $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
@@ -330,11 +339,11 @@
 
                 $sticky_id = $id . '-sticky';
 
-                $sticky_layout = ( get_field('select_layout_page', 'option') ?: 'full' );
-                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' ) . $sticky_layout;
+                $sticky_layout = scm_field( 'select_layout_page', 'full', 'option' );
+                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' ) . $sticky_layout . ' ' . $site_align;
 
-                $sticky_row_layout = ( get_field('select_layout_sticky_menu', 'option') ?: 'full' );
-                $sticky_row_class = $sticky_row_layout . ' float-' . $site_align . ' ' . $align;
+                $sticky_row_layout = scm_field( 'select_layout_sticky_menu', 'full', 'option' );
+                $sticky_row_class = $sticky_row_layout . ' ' . $align;
 
                 $sticky_data_toggle = $toggle_active;
                 $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
@@ -391,7 +400,7 @@
 
                 if( strpos( $url, '#') === 0 ){
                     $type = 'page';
-                }else if( strpos( $url, SCM_URL ) === false ){
+                }else if( strpos( $url, SCM_DOMAIN ) === false ){
                     $type = 'external';
                 }
 
@@ -439,11 +448,14 @@
             $perma = get_permalink();
             $home = get_home_url();
 
+            //consoleLog($perma);
+            //consoleLog($home);
+
             $toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
 
-            $toggle_icon = 'fa ' . ( get_field( 'toggle_icon', 'option' ) ?: 'fa-bars' );
-            $home_icon = 'fa ' . ( get_field( 'home_icon', 'option' ) ?: 'fa-home' );
-            $image_icon = ( get_field( 'image_icon', 'option' ) ?: '' );
+            $toggle_icon = 'fa ' . scm_field( 'toggle_icon', 'fa-bars', 'option' );
+            $home_icon = 'fa ' . scm_field( 'home_icon', 'fa-home', 'option' );
+            $image_icon = scm_field( 'image_icon', '', 'option' );
 
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
@@ -500,95 +512,6 @@
         }
     }
 
-//*****************************************************
-//*      NIVO SLIDER
-//*****************************************************
-
-    //Prints Element Inner Header
-    if ( ! function_exists( 'scm_custom_header' ) ) {
-        function scm_custom_header( $id, $slides, $type = '', $layout = '', $height = '' ) {
-
-            $i = 0;
-            $slider = ( get_field( 'select_slider', 'option' ) ?: 'nivo' );
-            $align = ( get_field('select_alignment_site', 'option') ?: 'center' );
-
-            // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
-            // E tutte le sue belle opzioni
-            $images = '<div class="slider ' . $slider . ' ' . $layout . ' mask float-' . $align . ' ' . $align . '" 
-                            data-slider="' . $slider . '" 
-                            data-slider-effect="fold" 
-                            data-slider-slices="15" 
-                            data-slider-cols="8" 
-                            data-slider-rows="4" 
-                            data-slider-speed="500" 
-                            data-slider-time="5000" 
-                            data-slider-start="0" 
-                            data-slider-random="false" 
-                            data-slider-hover="true" 
-                            data-slider-manual="false" 
-                            data-slider-direction="true" 
-                            data-slider-control="false" 
-                            data-slider-thumbs="false" 
-                            data-slider-prev="Prev" 
-                            data-slider-next="Next" 
-                            data-max-height="' . $height . '" 
-                            data-equal="img" 
-                            data-equal-max="height" 
-                        >';
-
-            $captions = '';
-
-            foreach ($slides as $slide) {
-                $i++;
-                $img = $slide[ 'immagine' ];
-                $link = ( $slide[ 'slide_link' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'slide_link' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
-                $caption = '';
-                $slide_id = $slide[ 'slide_id' ];
-                $slide_class = $slide[ 'slide_class' ];
-                $title = '';
-
-                $caption_id = 'caption-' . $id . '-' . $i;
-
-                $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
-                $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
-                $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
-                $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
-                $class = 'box' . ( $slide_class ? ' ' . $slide_class : '' );
-                $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
-                    
-                $caption = '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . ' count-' . $i . '">';
-                    if( $slide[ 'active_caption' ] ){
-                        $caption .= '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ' class="' . $class . '"' . $style . '>';
-                            
-                                $caption .= ( $slide[ 'caption_title'] ? '<h3>' . $slide[ 'caption_title' ] . '</h3>' : '' );
-                                $caption .= $slide['caption'];
-                            
-                        $caption .= '</div>';
-                    }
-                $caption .= '</div>';
-
-                $title = ( $caption ? '#' . $caption_id : '' );
-
-                $images .= ( $link ? '<a href="' . $link . '">' : '' );
-                    $images .= '<img class="slide-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
-                $images .= ( $link ? '</a>' : '' );
-
-                $captions .= $caption;
-
-            }
-
-            $images .= '</div>';
-
-            echo '<header class="' . SCM_PREFIX . 'header ' . $type . '-header full full-image slider-wrapper theme-default">';
-                
-            echo $images;               
-
-            echo $captions;
-
-            echo '</header><!-- ' . $type . '-header -->';
-
-        }
-    }
 
 //*****************************************************
 //*      CONTENT
@@ -737,7 +660,6 @@
                     break;
 
                     case 'image_element':
-                        $class = '';
                         $image = ( $cont[ 'immagine' ] ?: '' );
                         $image_fissa = ( $cont[ 'fissa' ] ?: 'norm' );
                         $image_units = ( $cont[ 'units' ] ?: 'px' );
@@ -749,11 +671,10 @@
                         
                         switch ($image_fissa) {
                             case 'full':
-                                $class = ' class="full"';
                                 $image_float = '';
                                 $image_height = ( $cont[ 'altezza_full' ] ? $cont[ 'altezza_full' ] . $image_units : 'initial' );
                                 $image_style = 'max-height:' . $image_height . ';';
-                                $image_class = SCM_PREFIX . 'full-image mask';
+                                $image_class = 'scm-full-image mask full';
                             break;
 
                             case 'quad':
@@ -772,7 +693,7 @@
                             continue;
 
                         echo    '<div class="' . $image_class . '" style="' . $image_style . '">
-                                    <img src="' . $image . '"' . $class . ' alt="">
+                                    <img src="' . $image . '" alt="">
                                 </div><!-- icon-image -->';
 
                     break;
@@ -780,7 +701,7 @@
                     case 'title_element':
                         $text = $cont[ 'testo' ];
                         $text_default = ( $cont[ 'select_complete_headings' ] ?: '' );
-                        $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_complete_headings' ] : ( get_field( $text_default , 'option') ? get_field( $text_default , 'option') : 'h1' ) );
+                        $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_complete_headings' ] : scm_field( $text_default , 'h1', 'option') );
                         $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] . ' ' : '' );
                         $text_class = scm_acf_select_preset( 'select_default_headings_classes',  $text_default, ' ' );
                         $text_class .= $text_align . SCM_PREFIX . 'title clear';
@@ -821,7 +742,7 @@
     if ( ! function_exists( 'scm_credits' ) ) {     // ENTRERÀ A FAR PARTE DEGLI ELEMENTI SELEZIONABILI DAL FLEXIBLE CONTENT
         function scm_credits() {
 
-            $copyText = get_field('footer_credits', 'option');
+            $copyText = scm_field('footer_credits', '', 'option');
             if(!$copyText){
                 return;
             }
@@ -854,10 +775,10 @@
     if ( ! function_exists( 'scm_top_of_page' ) ) {
         function scm_top_of_page() {
             
-            $id = ( get_field('id_topofpage', 'option') ?: 'site-topofpage' );
-            $icon = get_field('tools_topofpage_icon', 'option');
-            $text = ( get_field('tools_topofpage_title', 'option') ?: 'Inizio Pagina' );
-            $offset = ( get_field('tools_topofpage_offset', 'option') ?: 0 );
+            $id = scm_field( 'id_topofpage', 'site-topofpage', 'option' );
+            $icon = scm_field( 'tools_topofpage_icon', 'fa-angle-up', 'option' );
+            $text = scm_field( 'tools_topofpage_title', 'Inizio Pagina', 'option' );
+            $offset = scm_field( 'tools_topofpage_offset', 0, 'option' );
             $title = $text;
 
             $output =   '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">';

@@ -1,6 +1,6 @@
 {
     "key": "group_5496db8e5cf10",
-    "title": "Contenuto Pagina",
+    "title": "Componi Sezioni Page",
     "fields": [
         {
             "key": "field_54bc0452a3623",
@@ -17,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "id-page",
+            "placeholder": "id",
             "prepend": "#",
             "append": "",
             "maxlength": "",
@@ -39,7 +39,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "class-page",
+            "placeholder": "class",
             "prepend": ".",
             "append": "",
             "maxlength": "",
@@ -136,6 +136,28 @@
                             "maxlength": "",
                             "readonly": 0,
                             "disabled": 0
+                        },
+                        {
+                            "key": "field_54eb14151abd4",
+                            "label": "Custom Attributes",
+                            "name": "row_attributes",
+                            "prefix": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "data-href=\"www.example.com\" data-target=\"_blank\"",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 0,
+                            "disabled": 0
                         }
                     ],
                     "min": "",
@@ -173,5 +195,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424305528
+    "modified": 1424694404
 }

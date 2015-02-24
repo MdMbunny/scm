@@ -5,8 +5,10 @@
 
 global $SCM_galleries, $post;
 
-$type = get_post_type();
+$id = $post->ID;
+$type = $post->post_type;
 $title = get_the_title();
+
 
 $b_init = ( isset( $this ) ? $this->b_init : 0 );
 $b_type = ( isset( $this ) ? $this->b_type : 'img');
@@ -16,17 +18,17 @@ $b_txt = ( isset( $this ) ? $this->b_txt : 'Galleria');
 $b_bg = ( isset( $this ) ? $this->b_bg : '');
 $b_section = ( isset( $this ) ? $this->b_section : '');
 
-$gallery = get_field( 'gallerie_immagini' );
+$gallery = scm_field( 'gallerie_immagini', '', $id, 1 );
 
 $style = ( $b_bg ? ' style="background-image: transparent url(\'' . $b_bg . '\') no-repeat center center;' : '' );
 
-$id = uniqid( 'gallery-' );
+$custom_id = uniqid( 'gallery-' );
 $section_class = 'gallery scm-gallery scm-object pointer';
 
-$SCM_galleries[ $id ] = $gallery;
+$SCM_galleries[ $custom_id ] = $gallery;
 
 
-echo '<div id="' . $id . '" class="' . $classes . '"' . $style . ' 
+echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style . ' 
 			data-gallery="' . $b_type . '" 
 			data-init="' . $b_init . '" 
 			data-title="' .$title . '"
@@ -45,7 +47,7 @@ echo '<div id="' . $id . '" class="' . $classes . '"' . $style . '
 			if( !$b_section ) break;
 			$post = $b_section;
 			setup_postdata( $post );
-			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-section' );
 
 		break;
 	}

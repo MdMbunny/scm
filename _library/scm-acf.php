@@ -13,9 +13,6 @@ add_filter('acf/settings/load_json', 'scm_acf_json_load');
 
 add_filter('acf/load_field', 'scm_acf_select_field');
 add_action('acf/save_post', 'scm_acf_google_latlng', 1);
-//add_action('acf/save_post', 'scm_acf_assign_soggetti', 1);
-
-//add_filter('acf/fields/relationship/query/name=select_luoghi', 'scm_acf_select_luoghi', 10, 3);
 
 add_filter( 'bfa_force_fallback', 'scm_force_fallback' );
 
@@ -106,68 +103,84 @@ function scm_force_fallback( $force_fallback ) {
         }
 	}
 
-	/*if ( ! function_exists( 'scm_acf_assign_soggetti' ) ) {
-        function scm_acf_assign_soggetti( $post_id ) {
-        	if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
-				return;
-            if( $_POST['post_type'] != 'scm-soggetti' )
-                return;
 
-            $fields = $_POST['acf'];
+// *****************************************************
+// *      GET FIELD
+// *****************************************************
 
-            foreach ( get_posts(array( 'post_type' => 'scm-luoghi' )) as $luogo) {
-            	$luogo_id = $luogo->ID;
-            	$soggetti = ( gettype(get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id )) == 'array' ? get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id ) : array() );
-            	$index = array_search($post_id, $soggetti);
-				if ( $index !== false ) {
-					unset( $soggetti[$index] );
-				}
-				$soggetti = ( sizeof($soggetti) > 0 ? $soggetti : null );
-				update_field( SCM_ACF_LUOGO_SOGGETTI, $soggetti, $luogo_id );
-				//printPre($luogo_id);
-				//printPre(get_field('luoghi_soggetti', $luogo_id));
-            }
+	// Get ACF Field through: Post Option > default? > General Option > default? > Fallback
+    if ( ! function_exists( 'scm_field' ) ) {
+        function scm_field( $name, $fallback = '', $target = '', $no_option = 0, $before = '', $after = '' ) {
 
-            if( $fields[SCM_ACF_SOGGETTO_LUOGHI] ){
-	            foreach ($fields[SCM_ACF_SOGGETTO_LUOGHI] as $luogo_id) {
-	            	
-	            	$soggetti = ( get_field( SCM_ACF_LUOGO_SOGGETTI, $luogo_id ) ?: array() );
-	            	$soggetti = array_merge($soggetti, array($post_id));
-					
-	            	update_field( SCM_ACF_LUOGO_SOGGETTI, $soggetti, $luogo_id );
-	            	//printPre($luogo_id);
-	            	//printPre(get_field('luoghi_soggetti', $luogo_id));
-	            }
-	        }
+        	if( $target != 'option' ){
 
-            //foreach ( get_posts(array( 'post_type' => 'scm-luoghi' )) as $luogo) {
-            	//$luogo_id = $luogo->ID;
-            	//printPre($luogo_id);
-				//printPre(get_field('luoghi_soggetti', $luogo_id));
-            //}
-        }
+	        	global $post;
+	        	$id = ( $target ?: $post->ID );
+
+	        	$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
+
+	        	if( $field === 'no' )
+	        		return '';
+
+	        	if( $field === 'on' )
+	        		return 1;
+
+	        	if( $field === 'off' )
+	        		return 0;
+
+	        	$field = ( $field !== 'default' ? $field : '' );
+
+	        	if( is_array( $fallback ) && is_array( $field ) )
+	        		$field = ( sizeof( $field ) > 0 ? $field : '' );
+				
+	        	if( $field !== '' ){
+	        		if( $before )
+	        			$field = $before . (string)$field;
+	        		if( $after )
+	        			$field = (string)$field . $after;
+
+	        		return $field;
+	        	}
+
+        	}else{
+        		$no_option = 0;
+        	}
+
+        	if( !$no_option ){
+
+	        	$field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
+
+	        	if( $field === 'no' )
+	        		return '';
+
+	        	if( $field === 'on' )
+	        		return 1;
+
+	        	if( $field === 'off' )
+	        		return 0;
+
+	        	$field = ( $field !== 'default' ? $field : '' );
+
+	        	if( is_array( $fallback ) && is_array( $field ) )
+		        	$field = ( sizeof( $field ) > 0 ? $field : '' );
+
+		        $field = ( $field !== '' ? $field : $fallback );
+
+		        if( $field !== '' ){
+	        		if( $before )
+	        			$field = $before . (string)$field;
+	        		if( $after )
+	        			$field = (string)$field . $after;
+
+	        		return $field;
+	        	}
+
+	    	}
+
+	    	return $fallback;
+
+    	}
     }
-
-	// insert default select options from default presets
-	if ( ! function_exists( 'scm_acf_select_luoghi' ) ) {
-        function scm_acf_select_luoghi( $args, $field, $post ){
-        	//print($post->ID);
-        	//printPre($args['meta_query']);
-        	//alert('PIPPO');
-        	$obj = get_field( 'select_soggetto' );
-        	$id = $obj->ID;
-
-            $args['meta_query'] = array(
-		        array(
-		            'key' => 'luoghi_soggetti',
-		            'value' => $id,
-		            'compare' => 'LIKE'
-		        )
-		    );
-
-		    return $args;
-        }
-	}*/
 
 // *****************************************************
 // *      PRESETS
@@ -202,7 +215,6 @@ function scm_force_fallback( $force_fallback ) {
         function scm_acf_select_preset( $list, $get = '', $separator = '' ){
 
         	$arr = array();
-        	//return $arr;
 		        				
 			if( strpos( $list, 'select_types' ) !== false ):
 	    		global $SCM_types;
@@ -217,6 +229,7 @@ function scm_force_fallback( $force_fallback ) {
 	    			$arr = $SCM_types['public'];
 	    		else
 	    			$arr = $SCM_types['all'];
+
 	    	elseif( strpos( $list, 'select_menu' ) !== false ):
 
 	    		$menus = get_registered_nav_menus();
@@ -225,12 +238,14 @@ function scm_force_fallback( $force_fallback ) {
 					if( !strpos( $location, '__en' ) )
 						$arr[ $location ] = $description;
 				}
+
 	        elseif( strpos( $list, 'select_alignment' ) !== false ):
 	        	$arr = array(
 					'left' => 'Sinistra',
 					'right' => 'Destra',
 					'center' => 'Centrato',
 				);
+
 			elseif( strpos( $list, 'select_txt_alignment' ) !== false ):
 	        	$arr = array(
 					'left' => 'Sinistra',
@@ -238,6 +253,7 @@ function scm_force_fallback( $force_fallback ) {
 					'center' => 'Centrato',
 					'justify' => 'Giustificato',
 				);
+
 			elseif( strpos( $list, 'select_float' ) !== false ):
 	        	$arr = array(
 					'no' => 'No float',
@@ -245,6 +261,7 @@ function scm_force_fallback( $force_fallback ) {
 					'float-right' => 'Destra',
 					'float-center' => 'Centrato',
 				);
+
 			elseif( strpos( $list, 'select_headings' ) !== false ):
 	        	$arr = array(
 					"h1" => "h1",
@@ -260,6 +277,7 @@ function scm_force_fallback( $force_fallback ) {
 					"strong" => "strong",
 					"div" => "div",
 				);
+
 	        elseif( strpos( $list, 'select_complete_headings' ) !== false ):
 	        	$arr = array(
 	        		"select_headings_1" => "Primario",
@@ -278,12 +296,14 @@ function scm_force_fallback( $force_fallback ) {
 					"strong" => "strong",
 					"div" => "div",
 				);
+
 	        elseif( strpos( $list, 'select_default_headings_classes' ) !== false ):
 	        	$arr = array(
 	        		"select_headings_1" => "primary",
 	        		"select_headings_2" => "secondary",
 	        		"select_headings_3" => "tertiary",
 	        	);
+
 			elseif( strpos( $list, 'select_columns_width' ) !== false ):
 				$arr = array(
 					'11' => '1/1',
@@ -409,12 +429,11 @@ function scm_force_fallback( $force_fallback ) {
 			elseif( strpos( $list, 'select_webfonts_families' ) !== false ):
 				$arr = array('no' => 'No Google font');
 				$arr['Roboto'] = 'Roboto';
-				$fonts = get_field( 'webfonts', 'option' );
-				if( $fonts ):
-					foreach ( $fonts as $font):
-						$arr[$font['family']] = $font['family'];
-					endforeach;
-				endif;
+				$fonts = scm_field( 'webfonts', array(), 'option' );
+				foreach ( $fonts as $font):
+					$arr[$font['family']] = $font['family'];
+				endforeach;
+
 			elseif( strpos( $list, 'select_webfonts_default_families' ) !== false ):
 				$arr = array(
 					'Helvetica_Arial_sans-serif'						=> 'Helvetica, Arial, sans-serif',
@@ -428,6 +447,7 @@ function scm_force_fallback( $force_fallback ) {
 					'Courier New_Courier_monospace'						=> 'Courier New, Courier, monospace',
 					'Lucida Console_Monaco_monospace'					=> 'Lucida Console, Monaco, monospace',
 				);
+
 			elseif( strpos( $list, 'select_webfonts_styles' ) !== false ):
 				$arr = array(
 					'300' => 'Light',
@@ -441,6 +461,7 @@ function scm_force_fallback( $force_fallback ) {
 					'800' => 'Extra Bold',
 					'800italic' => 'Extra Bold Italic',
 				);
+
 			elseif( strpos( $list, 'select_font_weight' ) !== false ):
 				$arr = array(
 					'300' => 'Light',
@@ -449,6 +470,7 @@ function scm_force_fallback( $force_fallback ) {
 					'700' => 'Bold',
 					'800' => 'Extra Bold',
 				);
+
 			elseif( strpos( $list, 'select_line_height' ) !== false ):
 				$arr = array(
 					'0.0' => 'Nessuno spazio',
@@ -463,10 +485,12 @@ function scm_force_fallback( $force_fallback ) {
 					'3' => 'Tripla linea',
 					'4' => 'Quadrupla linea',
 				);
+
 			elseif( strpos( $list, 'select_slider' ) !== false ):
 				$arr = array(
 					'nivo' => 'Nivo Slider',
 				);
+
 			elseif( strpos( $list, 'select_effect' ) !== false ):
 				if( strpos( $list, '_nivo' ) !== false ):
 					$arr = array(
@@ -487,7 +511,17 @@ function scm_force_fallback( $force_fallback ) {
 						'boxRainGrow' => 'Box Rain Grow',
 						'boxRainGrowReverse' => 'Box Rain Grow Reverse'
 					);
-				endif;			
+				endif;
+
+			elseif( strpos( $list, 'select_social_shape' ) !== false ):
+				$arr = array(
+					'square' 		=> 'Quadrati',
+					'square_neg' 	=> 'Quadrati, negativo',
+					'circle' 		=> 'Cerchi',
+					'rounded' 		=> 'Arrotondati',
+					'hexagonal' 	=> 'Esagonali',
+				);
+
 			elseif( strpos( $list, 'select_ease' ) !== false ):
 				$arr = array(
 					'linear' 			=> 'Linear',

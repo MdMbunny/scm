@@ -28,7 +28,7 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 
 if( function_exists('get_browser_name') ) :
     if( is_ie() ) :
-        if( get_browser_version() <= (int)get_field( 'ie_version', 'option' ) ) :
+        if( get_browser_version() <= (int)scm_field( 'ie_version', '10', 'option' ) ) :
 //[ 1 ]
 ?>
 <meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />
@@ -47,7 +47,7 @@ else :
     if( $is_IE ) :
 //[ 1 ]
 ?>
-<!--[if lte IE <?php echo (int)get_field('ie_version', 'option'); ?>]>
+<!--[if lte IE <?php echo (int)scm_field( 'ie_version', '10', 'option' ); ?>]>
 <meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />
 <![endif]-->
 <?php
@@ -78,47 +78,47 @@ endif;
 
 $skip = __( "Vai al contenuto", SCM_THEME );
 
-$site_align = ( get_field( 'select_alignment_site', 'option' ) ?: 'center' );
+$site_align = scm_field( 'select_alignment_site', 'center', 'option' );
 
-$page_id = ( get_field( 'id_page', 'option' ) ?: 'site-page' );
-$page_class = ( get_field('select_layout_page', 'option') ?: 'full' ) . ' float-' . $site_align . ' site-page hfeed site';
+$page_id = scm_field( 'id_page', 'site-page', 'option' );
+$page_class = scm_field( 'select_layout_page', 'full', 'option' ) . ' float-' . $site_align . ' site-page hfeed site';
 
-$fade_in = ( get_field( 'fade_in', 'option' ) ?: 0 );
-$fade_out = ( get_field( 'fade_out', 'option' ) ?: 0 );
-$fade_wait = ( get_field( 'fade_wait', 'option' ) ?: 'no' );
+$fade_in = scm_field( 'fade_in', 0, 'option' );
+$fade_out = scm_field( 'fade_out', 0, 'option' );
+$fade_wait = scm_field( 'fade_wait', 'no', 'option' );
 
-$smooth_duration = ( get_field( 'tools_smoothscroll_duration', 'option' ) ?: 0 );
-$smooth_offset = ( get_field( 'tools_smoothscroll_offset', 'option' ) ?: 0 );
-$smooth_ease = ( get_field( 'select_ease_smoothscroll', 'option' ) ?: 'swing' );
-$smooth_delay = ( get_field( 'tools_smoothscroll_delay', 'option' ) ?: 0 );
-$smooth_new = ( get_field( 'tools_smoothscroll_delay_new', 'option' ) ?: 0 );
-$smooth_post = ( get_field( 'tools_smoothscroll_where', 'option' ) ?: 'all' );
+$smooth_duration = scm_field( 'tools_smoothscroll_duration', 0, 'option' );
+$smooth_offset = scm_field( 'tools_smoothscroll_offset', 0, 'option' );
+$smooth_ease = scm_field( 'select_ease_smoothscroll', 'swing', 'option' );
+$smooth_delay = scm_field( 'tools_smoothscroll_delay', 0, 'option' );
+$smooth_new = scm_field( 'tools_smoothscroll_delay_new', 0, 'option' );
+$smooth_post = scm_field( 'tools_smoothscroll_where', 'all', 'option' );
 
-$single_class = ( get_field( 'tools_singlepagenav_activeclass', 'option' ) ?: 'active' );
-$single_interval = ( get_field( 'tools_singlepagenav_interval', 'option' ) ?: 1 );
-$single_offset = ( get_field( 'tools_singlepagenav_offset', 'option' ) ?: 0 );
-$single_threshold = ( get_field( 'tools_singlepagenav_threshold', 'option' ) ?: 0 );
+$single_class = scm_field( 'tools_singlepagenav_activeclass', 'active', 'option' );
+$single_interval = scm_field( 'tools_singlepagenav_interval', 1, 'option' );
+$single_offset = scm_field( 'tools_singlepagenav_offset', 0, 'option' );
+$single_threshold = scm_field( 'tools_singlepagenav_threshold', 0, 'option' );
 
 $style_body = scm_options_get_style( get_queried_object_id(), 1, '_sc' );
 $style_page = scm_options_get_style( get_queried_object_id(), 1, 'nobg' );
 
             
-$head_id = ( get_field( 'id_header', 'option' ) ? get_field( 'id_header', 'option' ) : 'site-header' );
+$head_id = scm_field( 'id_header', 'site-header', 'option' );
 $head_row_id = $head_id . '-row';
 
-$head_layout = ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_head', 'option') ?: 'full' ) : 'full' );
+$head_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'full', 'option' ) );
 
-$head_class = 'site-header full';
-$head_row_class = 'row ' . $head_layout . ' float-' . $site_align . ' left row scm-row';
+$head_class = 'site-header full ' . $site_align;
+$head_row_class = 'row scm-row ' . $head_layout . ' left';
 
 
-$menu_position = ( get_field( 'position_menu', 'option' ) ? get_field( 'position_menu', 'option' ) : 'inline' );
-$menu_align = ( get_field( 'select_alignment_menu', 'option' ) ? get_field( 'select_alignment_menu', 'option' ) : 'right' );
+$menu_position = scm_field( 'position_menu', 'inline', 'option' );
+$menu_align = scm_field( 'select_alignment_menu', 'right', 'option' );
 
-$follow_position = ( get_field('position_social_follow', 'option') ? get_field('position_social_follow', 'option') : 'top' );
+$follow_position = scm_field( 'position_social_follow', 'top', 'option' );
 
-$cont_id = ( get_field( 'id_content', 'option' ) ?: 'site-content' );
-$cont_layout = ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_content', 'option') ?: 'full' ) : 'full' );
+$cont_id = scm_field( 'id_content', 'site-content', 'option' );
+$cont_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_content', 'full', 'option' ) );
 $cont_class = 'site-content full';
 
 ?>

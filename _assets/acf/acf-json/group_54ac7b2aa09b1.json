@@ -97,7 +97,7 @@
         {
             "key": "field_54ac7b2aad9be",
             "label": "Forma",
-            "name": "social_follow_shape",
+            "name": "select_social_shape",
             "prefix": "",
             "type": "select",
             "instructions": "",
@@ -117,14 +117,10 @@
                 "id": ""
             },
             "choices": {
-                "square": "Quadrati",
-                "square_neg": "Quadrati, negativo",
-                "circle": "Cerchi",
-                "rounded": "Arrotondati",
-                "hexagonal": "Esagonali"
+                "": ""
             },
             "default_value": {
-                "circle": "circle"
+                "": ""
             },
             "allow_null": 0,
             "multiple": 0,
@@ -205,6 +201,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424222281,
-    "local": "json"
+    "modified": 1424748958
 }

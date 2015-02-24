@@ -108,7 +108,7 @@
     //fonts
     if ( ! function_exists( 'scm_site_assets_webfonts' ) ) {
         function scm_site_assets_webfonts() {
-            $fonts =  ( get_field('webfonts', 'option') ? get_field('webfonts', 'option') : array() );
+            $fonts =  scm_field( 'webfonts', array(), 'option' );
             foreach ($fonts as $value) {    
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
@@ -326,17 +326,20 @@
             $primary = scm_options_get( 'font', 'heading_1', 1 );
             $primary .= scm_options_get( 'weight', 'heading_1', 1 ) ?: '700';
             $primary .= scm_options_get( 'color', 'heading_1', 1 );
-            $primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) - .3 ?: '0' ) . 'em;';
+            $primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) ?: '0' ) . 'em;';
+            //$primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) - .3 ?: '0' ) . 'em;';
 
             $secondary = scm_options_get( 'font', 'heading_2', 1 );
             $secondary .= scm_options_get( 'weight', 'heading_2', 1 ) ?: '700';
             $secondary .= scm_options_get( 'color', 'heading_2', 1 );
-            $secondary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_2', 0, '' ) - .3 ?: '0' ) . 'em;';
+            $secondary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_2', 0, '' ) ?: '0' ) . 'em;';
+            //$secondary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_2', 0, '' ) - .3 ?: '0' ) . 'em;';
 
             $tertiary = scm_options_get( 'font', 'heading_3', 1 );
             $tertiary .= scm_options_get( 'weight', 'heading_3', 1 ) ?: '700';
             $tertiary .= scm_options_get( 'color', 'heading_3', 1 );
-            $tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';
+            $tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) ?: '0' ) . 'em;';
+            //$tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';
 
             $menu_font = scm_options_get( 'font', 'menu', 1 );
 
@@ -370,7 +373,7 @@
 
             // Responsive
 
-            $r_max = intval( get_field( 'select_responsive_layouts_max', 'option' ) ?: '1400' );
+            $r_max = intval( scm_field( 'select_responsive_layouts_max', '1400', 'option' ) );
             
             if( $r_max >= 1400 )
                 $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
@@ -400,23 +403,23 @@
             if( $r_max >= 700 )
                 $css .= '.r700 .responsive { width: 700px; }' . lbreak();
 
-            $r_full = ( get_field( 'select_responsive_events_tofull', 'option' ) ?: '' );
+            $r_full = scm_field( 'select_responsive_events_tofull', '', 'option' );
             if( $r_full )
                 $css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
 
-            $r_desktop = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_desktop', 'option' ) );
+            $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_desktop', -1, 'option' );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
 
-            $r_wide = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_wide', 'option' ) );
+            $r_wide = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_wide', 0, 'option' );
             $css .= 'body.wide { font-size: ' . $r_wide . 'px; }' . lbreak();
 
-            $r_landscape = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_landscape', 'option' ) );
+            $r_landscape = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_landscape', 1, 'option' );
             $css .= 'body.landscape { font-size: ' . $r_landscape . 'px; }' . lbreak();
 
-            $r_portrait = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_portrait', 'option' ) );
+            $r_portrait = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_portrait', 2, 'option' );
             $css .= 'body.portrait { font-size: ' . $r_portrait . 'px; }' . lbreak();
 
-            $r_smart = intval( scm_options_get( 'size', 'option' ) ) + intval( get_field( 'font_size_smart', 'option' ) );
+            $r_smart = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_smart', 3, 'option' );
             $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
 
             
@@ -431,7 +434,7 @@
 // *****************************************************
 
     // Used by jQuery to get stored ANCHOR data - [ for smooth scroll from page to page ]
-    if ( ! function_exists( 'scm_jquery_init' ) ) {
+    if ( ! function_exists( 'scm_anchor' ) ) {
         function scm_anchor() {
             $new_value = ( $_POST['data'] ?: '' );
 
@@ -451,8 +454,6 @@
 
             global $SCM_site, $SCM_galleries;
             
-            $anchor = get_option( 'scm-utils-anchor' );
-
         ?>
 
 <script type="text/javascript">
@@ -461,15 +462,8 @@
 
     jQuery(document).ready(function($){
 
-        $( window ).load( function(e){
-            // Reset Anchor Option
-            <?php update_option( 'scm-utils-anchor', '' ); ?>
-        } );
-
         var site = <?php echo json_encode( $SCM_site ); ?>;
-        var anchor = <?php echo json_encode( $anchor ); ?>;
         $( 'body' ).data( 'site', site );
-        $( 'body' ).data( 'anchor', anchor );
 
     });
     

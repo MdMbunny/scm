@@ -49,7 +49,7 @@
                 foreach ( $my_posts as $my_post ){
                     wp_update_post( $my_post );
                 }
-                alert( 'SCM Theme Updated to Version: ' . $SCM_version . ' - ' . sizeof($my_posts) . ' Posts Updated' );
+                alert( sizeof($my_posts) . ' Posts Updated' );
             }else{
                 return false;
             }
@@ -81,7 +81,7 @@
                 ),
             );
 			
-            $saved_types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
+            $saved_types = scm_field( 'types_list', array(), 'option' );
             //alert();
             
 			$default_types = array(
@@ -110,7 +110,7 @@
 
             update_field( 'types_list', $saved_types, 'option' );
 
-            $types = ( get_field('types_list', 'option') ? get_field('types_list', 'option') : array() );
+            $types = scm_field( 'types_list', array(), 'option' );
 
             foreach ( $types as $type ) {
 

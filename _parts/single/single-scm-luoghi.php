@@ -110,7 +110,7 @@ if ($legend && $marker)
 						
 					$country = get_field('luoghi_paese');
 					$region = get_field('luoghi_regione');
-					$province = ( get_field('luoghi_provincia') ? $province_prefix . get_field('luoghi_provincia') . $province_suffix : '' );
+					$province = scm_field( 'luoghi_provincia', '', $id, 1, $province_prefix, $province_suffix );
 					$code = get_field('luoghi_cap');
 					$city = get_field('luoghi_citta');
 					$town = get_field('luoghi_frazione');

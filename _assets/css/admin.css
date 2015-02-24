@@ -135,6 +135,7 @@
 .acf-flexible-content .layout .acf-fc-layout-handle{
 	border: 0;
 	z-index: 997;
+	background-color: #ddeedd;
 }
 
 .acf-flexible-content .layout .acf-fc-layout-controlls{

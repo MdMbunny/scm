@@ -2,132 +2,69 @@
 
 global $post;
 
-$type = $post->post_type;
-$id = $post->ID;
-$slug = $post->post_name;
-
-$site_align = ( get_field( 'select_alignment_site', 'option' ) ?: 'center' );
-
-$page_id = ( ( isset($this) && isset($this->page_id) ) ? $this->page_id : '' );
-
-$section_id = ( ( isset($this) && isset($this->add_id) && $this->add_id ) ?  ' id="' . $this->add_id . '"' : '' );
-$section_class = 'section scm-section scm-object full';
-$section_class .= ( ( isset($this) && isset($this->add_class) ) ?  ' ' . $this->add_class : '' );
-
-$row_id = ( get_field('section_id_row') ? ' id="' . get_field('section_id_row') . '"' : '' );
-$row_layout = ( ( get_field('select_layout_row') && get_field('select_layout_row') != 'default' ) ? get_field('select_layout_row') : ( get_field('select_layout_page', 'option') != 'responsive' ? ( get_field('select_layout_cont', 'option') ?: 'full' ) : 'full') );
-$row_class = 'row scm-row ' . $row_layout . ' float-' . $site_align;
-$row_class .= ( get_field('section_class_row') ? ' ' . get_field('section_class_row') : '' );
+$id = ( ( isset($this) && isset($this->option) ) ? 'option' : $post->ID );
+$flexible = 'flexible_rows';
+$flexible .= ( ( isset($this) && isset($this->option) ) ? '_' . $this->option : '' );
+$indent = ( ( isset($this) && isset($this->indent) ) ? $this->indent : 0 );
 
 
-$style_cont = ' ' . scm_options_get_style( $id, 1, '_sc' );
-$style = scm_options_get_style( $id, 0, 'nobg' );
+	$repeater = scm_field( $flexible, array(), $id, 1 );
+		
+	if( sizeof( $repeater ) ){
 
-$bg_color = ( scm_options_get( 'bg_color', $id, 1 ) ?: ( scm_options_get( 'bg_color', $page_id, 1 ) ?: '' ) );
-$bg_image = ( scm_options_get( 'bg_image', $id, 1 ) ?: ( scm_options_get( 'bg_image', $page_id, 1 ) ?: '' ) );
-$bg_repeat = '';
-$bg_position = '';
-$bg_size = '';
+		$id = ( $id == 'option' ? '' : $id );
 
-if( $bg_image ){
-	$bg_repeat = ( scm_options_get( 'bg_repeat', $id, 1 ) ?: ( scm_options_get( 'bg_repeat', $page_id, 1 ) ?: '' ) );
-	$bg_position = ( scm_options_get( 'bg_position', $id, 1 ) ?: ( scm_options_get( 'bg_position', $page_id, 1 ) ?: '' ) );
-	$bg_size = ( scm_options_get( 'bg_size', $id, 1 ) ?: ( scm_options_get( 'bg_size', $page_id, 1 ) ?: '' ) );
-}
+		$current = 0;
 
-$style .= $bg_color . $bg_image . $bg_repeat . $bg_position . $bg_size;
+		$odd = '';
 
-$style = ( $style ? ' style="' . $style . '"' : '' );
+		$total = sizeof( $repeater );
 
+		foreach ($repeater as $row) {
 
-echo '<div' . $section_id . ' class="' . $section_class . '"' . $style_cont . '>';
+			$section_class = '';
 
-	$active = ( get_field( 'active_slider' ) == 'on' ?: 0 );
-	
-	if( $active ){
-
-		$custom_head = ( get_field( 'flexible_headers' ) ?: array() );
-
-		if( sizeof( $custom_head ) ){
-
-			$height = ( get_field( 'height_slider' ) ?: 'auto' );
-			$layout = ( get_field( 'select_layout_slider' ) != 'default' ? get_field( 'select_layout_slider' ) : 'responsive' );
-			scm_custom_header( $id, $custom_head, $type, $layout, $height );
-
-		}
-	}
-
-	echo '<div' . $row_id . ' class="' . $row_class . '"' . $style . '>';
-
-		$repeater = ( get_field('columns_repeater') ?: array() );
-
-		if( sizeof( $repeater ) ){
-
-			$current_column = 0;
-			$counter = 0;
-
-			$odd = '';
-			$class = '';
-
-			$modules = array();
+	    	$current++;
 			
-			$total = sizeof( $repeater );
+			if( $current == 1 )
+				$section_class .= 'first ';
+			if( $current == $total )
+				$section_class .= 'last ';
 
-			foreach ($repeater as $column) {
+			$odd = ( $odd ? '' : 'odd ' );
+			$section_class .= $odd;
+			$section_class .= 'count-' . ( $current );
 
-		    	$layout = $column['select_columns_width'];
-		    	$module = $column['flexible_build'];
+			$section_class .= ( $row['row_classes'] ? ' ' . $row['row_classes'] : '' );
 
-		    	$size = (int)$layout[0] / (int)$layout[1];
-		    	$counter += $size;
-		    	$current_column++;
+			$section_id = ( $row['row_id'] ?: '' ) ;
 
-		    	$class = 'module scm-module column column-' . $layout;
+			$section_attributes = ( $row['row_attributes'] ?: '' ) ;
 
-		    	if( $counter == 1 && $size == 1 ){
+			$element = ( isset( $row['acf_fc_layout'] ) ?: '' );
+			if( !$element ) continue;
 
-		    		$class .= ' column-solo';
-		    		$counter = 0;
+			switch ($element) {
+				case 'section_element':
+					
+					$single = $row[ 'select_section' ];
+            		if(!$single) continue;
+		            $post = $single;
+		            setup_postdata( $post );
+		            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-section.php', array(
+		            	'page_id' => $id,
+		            	'add_id' => $section_id,
+                    	'add_class' => $section_class,
+                    	'add_attributes' => $section_attributes,
+                    	'indent' => $indent,
+                    ));
 
-		    	}elseif( $counter == $size || $counter > 1 ){
-
-		    		$class .= ' column-first';
-
-		    	}elseif( $counter == 1 ){
-
-		    		$class .= ' column-last clear';
-		    		$counter = 0;
-
-		    	}else{
-		    		$class .= ' column-middle';
-		    	}
-				
-				if( $current_column == 1 )
-					$class .= ' first';
-				elseif( $current_column == $total )
-					$class .= ' last';
-
-				$odd = ( $odd ? '' : ' column-odd odd' );
-				$class .= $odd;
-				$class .= ' count-' . ( $current_column );
-
-				$class = ( $column['column_classes'] ? $class . ' ' . $column['column_classes'] : $class);
-
-				$id = ( $column['column_id'] ? ' id="' . $column['column_id'] . '"' : '' ) ;
-				
-				echo '<div' . $id . ' class="' . $class . '">';	
-					if( $module )
-						scm_flexible_content( $module );
-				echo '</div>';
-
-		    }
-
-		}else{
-		    // no layouts found
-		}
-
-   	echo '</div><!-- row -->';
-
-echo '</div><!-- section -->';
+				break;
+			}
+	    }
+	   
+	}else{
+	    // no layouts found
+	}
 
 ?>

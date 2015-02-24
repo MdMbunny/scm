@@ -1,6 +1,6 @@
 {
     "key": "group_54b5ae0e69c29",
-    "title": "Contenuti",
+    "title": "Componi Righe",
     "fields": [
         {
             "key": "field_54e52c8dcebd2",
@@ -41,6 +41,28 @@
             "default_value": "",
             "placeholder": "class-row",
             "prepend": ".",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_54eb14a7cd669",
+            "label": "Attributi",
+            "name": "section_attributes_row",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "data-href=\"www.example.com\" data-target=\"_blank\"",
+            "prepend": "",
             "append": "",
             "maxlength": "",
             "readonly": 0,
@@ -93,9 +115,9 @@
                         "16": "1\/6",
                         "56": "5\/6"
                     },
-                    "default_value": [
-                        11
-                    ],
+                    "default_value": {
+                        "11": 11
+                    },
                     "allow_null": 0,
                     "multiple": 0,
                     "ui": 1,
@@ -119,7 +141,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": "id-column",
+                    "placeholder": "id-colonna",
                     "prepend": "#",
                     "append": "",
                     "maxlength": "",
@@ -141,7 +163,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": "class-column",
+                    "placeholder": "class1 class2 class3",
                     "prepend": ".",
                     "append": "",
                     "maxlength": "",
@@ -630,7 +652,14 @@
                                     },
                                     "return_format": "url",
                                     "preview_size": "large",
-                                    "library": "all"
+                                    "library": "all",
+                                    "min_width": 0,
+                                    "min_height": 0,
+                                    "min_size": 0,
+                                    "max_width": 0,
+                                    "max_height": 0,
+                                    "max_size": 0,
+                                    "mime_types": ""
                                 },
                                 {
                                     "key": "field_54b5ae0e69ce0",
@@ -1573,7 +1602,14 @@
                                     },
                                     "return_format": "url",
                                     "preview_size": "thumbnail",
-                                    "library": "all"
+                                    "library": "all",
+                                    "min_width": 0,
+                                    "min_height": 0,
+                                    "min_size": 0,
+                                    "max_width": 0,
+                                    "max_height": 0,
+                                    "max_size": 0,
+                                    "mime_types": ""
                                 },
                                 {
                                     "key": "field_54b5ae0e69e8b",
@@ -2376,5 +2412,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424305474
+    "modified": 1424723356
 }

@@ -140,7 +140,7 @@
     if ( ! function_exists( 'scm_options_get_align' ) ) {
         function scm_options_get_align( $type = '', $target = 'option', $add = false ) {
 			
-			$align = ( get_field( 'select_txt_alignment' . $type, $target ) != 'default' ? get_field( 'select_txt_alignment' . $type, $target ) : '' );
+			$align = scm_field( 'select_txt_alignment' . $type, '', $target, 1 );
         	
         	if( !$align && ( $type || $target != 'option' ) )
         		return '';
@@ -229,7 +229,7 @@
 			if( $units == '%' )
 				$line_height = ( get_field( 'select_line_height' . $type, $target ) != 'default' ? (string)(100 * (float)get_field( 'select_line_height' . $type, $target )) : '' );
 			else
-				$line_height = ( get_field( 'select_line_height' . $type, $target ) != 'default' ? get_field( 'select_line_height' . $type, $target ) : '' );
+				$line_height = scm_field( 'select_line_height' . $type, '', $target, 1 );
         	
         	if( !$line_height && ( $type || $target != 'option' ) )
         		return '';
@@ -244,7 +244,7 @@
     if ( ! function_exists( 'scm_options_get_weight' ) ) {
         function scm_options_get_weight( $type = '', $target = 'option', $add = false ) {
 
-			$weight = ( get_field('select_font_weight' . $type, $target) != 'default' ? get_field('select_font_weight' . $type, $target) : '' );
+			$weight = scm_field( 'select_font_weight' . $type, '', $target, 1 );
 
         	if( !$weight && ( $type || $target != 'option' ) )
         		return '';
@@ -326,7 +326,7 @@
     if ( ! function_exists( 'scm_options_get_bg_image' ) ) {
         function scm_options_get_bg_image( $type = '', $target = 'option', $add = false ) {
 
-			$bg_image = ( get_field('background_image' . $type, $target) ? 'url(' . get_field('background_image' . $type, $target) . ')' : 'none' );
+			$bg_image = scm_field( 'background_image' . $type, 'none', $target, 1, 'url(', ')' );
 
 			if( $bg_image == 'none' && ( $type || $target != 'option' ) )
 				return '';

@@ -5,8 +5,6 @@
 
 global $post;
 
-$type = 'map';
-
 $luoghi = array();
 $width = 100;
 $zoom = 10;
@@ -17,12 +15,7 @@ if( isset($this) ){
 	$zoom = ( isset($this->map_zoom) ? $this->map_zoom : 10 );
 }
 
-
-$id = uniqid( $type . '-' );
-$classes = SCM_PREFIX . 'object ' . SCM_PREFIX . $type . ' ' . $type . ' full';
-
-
-//echo '<div id="' . $id . '" class="' . $classes . '">';
+$classes = 'map scm-map scm-object full';
 
 	echo '<div class="' . $classes . '" data-zoom="' . $zoom . '">';	
 
@@ -33,22 +26,23 @@ $classes = SCM_PREFIX . 'object ' . SCM_PREFIX . $type . ' ' . $type . ' full';
 		foreach( $luoghi as $luogo ){
 
 			$id = $luogo->ID;
-			$lat = get_field('luoghi_lat', $id);
-			$lng = get_field('luoghi_lng', $id);
-			$img = ( get_field('luoghi_marker', $id) ?: ( get_field( 'tools_gmap_marker', 'option' ) ?: '' ) );
+			$lat = scm_field( 'luoghi_lat', 0, $id, 1 );
+			$lng = scm_field( 'luoghi_lng', 0, $id, 1 );
+			$img = scm_field( 'luoghi_marker', '', $id, 1 );
+			$img = ( $img ?: scm_field( 'tools_gmap_marker', '', 'option' ) );
 
 			$marker = ( $img ? ' data-img="' . $img . '"' : '' );
 
 
 			if( $lat && $lng ){
 				echo '<div id="marker-' . $id . '" class="' . SCM_PREFIX . 'marker marker" data-lat="' . $lat . '" data-lng="' . $lng . '"' . $marker . '>';
-						echo '<strong>' . get_field('luoghi_nome', $id) . '</strong><br>';
-						echo '<span>' . get_field('luoghi_indirizzo', $id) . ', ' . get_field('luoghi_citta', $id) . '</span>';
+						echo '<strong>' . scm_field( 'luoghi_nome', '', $id, 1 ) . '</strong><br>';
+						echo '<span>' . scm_field( 'luoghi_indirizzo', '', $id, 1 ) . ', ' . scm_field( 'luoghi_citta', '', $id, 1 ) . '</span>';
 				echo '</div>';
 			}
 		}
 	}
 
-	echo '</div><!-- ' . SCM_PREFIX . $type . ' -->';
+	echo '</div><!-- scm-map -->';
 
 ?>

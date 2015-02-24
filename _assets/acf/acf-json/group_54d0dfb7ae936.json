@@ -17,7 +17,7 @@
                 "id": ""
             },
             "choices": {
-                "primary": "Menu Principale"
+                "primary": "Menu Principale IT"
             },
             "default_value": {
                 "": ""
@@ -124,7 +124,9 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -1468,5 +1470,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424265571
+    "modified": 1424622164,
+    "local": "json"
 }
