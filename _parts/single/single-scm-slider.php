@@ -72,34 +72,32 @@ $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
         $img = $slide[ 'immagine' ];
         $link = ( $slide[ 'slide_link' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'slide_link' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
         $caption = '';
-        $slide_id = $slide[ 'slide_id' ];
-        $slide_class = $slide[ 'slide_class' ];
+        $slide_id = ( $slide[ 'slide_id' ] ? ' id="' . $slide[ 'slide_id' ] . '"' : '' );
+        $slide_class = 'caption box center' . ( $slide[ 'slide_class' ] ? ' ' . $slide[ 'slide_class' ] : '' );
         $title = '';
 
-        $caption_id = 'caption-' . $id . '-' . $i;
+        
 
         $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
         $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
         $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
         $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
-        $class = 'box center' . ( $slide_class ? ' ' . $slide_class : '' );
         $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
             
+        $caption_id = 'slide-' . $id . '-' . $i;
             
-            if( $slide[ 'active_caption' ] ){
+        if( $slide[ 'active_caption' ] ){
 
-            	$caption = indent( $indent + 2 ) . '<div id="' . $caption_id . '" class="nivo-html-caption' . ( $slide_class ? ' ' . $slide_class : '' ) . ' count-' . $i . '">' . lbreak();
-                $caption .= indent( $indent + 3 ) . '<div' . ( $slide_id ? ' id="' . $slide_id . '"' : '' ) . ' class="' . $class . '"' . $style . '>' . lbreak();
-                    
-                        $caption .= ( $slide[ 'caption_title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'caption_title' ] . '</h3>' . lbreak() : '' );
-                        $caption .= indent( $indent + 4 ) . $slide['caption'];
-                    
-                $caption .= indent( $indent + 3 ) . '</div>' . lbreak();
+        	$caption = indent( $indent + 2 ) . '<div id="' . $caption_id . '" class="nivo-html-caption count-' . $i . '">' . lbreak();
+            $caption .= indent( $indent + 3 ) . '<div' . $slide_id . ' class="' . $slide_class . '"' . $style . '>' . lbreak();
+                
+                    $caption .= ( $slide[ 'caption_title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'caption_title' ] . '</h3>' . lbreak() : '' );
+                    $caption .= indent( $indent + 4 ) . $slide['caption'];
+                
+            $caption .= indent( $indent + 3 ) . '</div>' . lbreak();
 
-                $caption .= indent( $indent + 2 ) . '</div>' . lbreak();
-            }
-
-        
+            $caption .= indent( $indent + 2 ) . '</div>' . lbreak();
+        }
 
         $title = ( $caption ? ' title="#' . $caption_id . '"' : '' );
         

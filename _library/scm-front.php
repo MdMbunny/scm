@@ -533,6 +533,14 @@
 
                 switch ($element) {
 
+                    case 'divider_element':
+
+                        $height = ( $cont['altezza'] ?: 1 );
+
+                        echo '<hr ' . 'style="height:' . $height . $cont['units'] . ';" />';
+
+                    break;
+
                     case 'archive':
 
                         $args = array(

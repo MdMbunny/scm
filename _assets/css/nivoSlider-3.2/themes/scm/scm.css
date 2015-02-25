@@ -8,28 +8,18 @@ Author URI: http://studiocreativo-m.it
 Supports Thumbs: true
 */
 
+
 .theme-scm .nivoSlider {
-	position:relative;
 	background:#fff url(loading.gif) no-repeat 50% 50%;
-    margin-bottom:10px;
-    -webkit-box-shadow: 0px 1px 5px 0px #4a4a4a;
-    -moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
-    box-shadow: 0px 1px 5px 0px #4a4a4a;
 }
-.theme-scm .nivoSlider img {
-	position:absolute;
-	top:0px;
-	left:0px;
-	display:none;
-}
-.theme-scm .nivoSlider a {
-	border:0;
-	display:block;
-}
+
+/*** CONTROL NAV ***/
 
 .theme-scm .nivo-controlNav {
 	text-align: center;
-	padding: 20px 0;
+	padding: 2em 0;
+	position: relative;
+	z-index: 7900;
 }
 
 .theme-scm .nivo-controlNav a {
@@ -46,44 +36,12 @@ Supports Thumbs: true
 	background-position:0 -22px;
 }
 
-.theme-scm .nivo-directionNav a {
-	opacity: 0;
-	-webkit-transition: all 200ms ease-in-out;
-    -moz-transition: all 200ms ease-in-out;
-    -o-transition: all 200ms ease-in-out;
-    transition: all 200ms ease-in-out;
-}
-
-.theme-scm:hover .nivo-directionNav a {
-	opacity: .7;
-}
-
-.theme-scm .nivo-directionNav a:hover {
-	opacity: 1;
-}
-
-.theme-scm:hover a.nivo-nextNav {
-	right:0px;
-}
-
-.theme-scm:hover a.nivo-prevNav {
-	left:0px;
-}
-
-.theme-scm .nivo-caption {
-    font-family: Helvetica, Arial, sans-serif;
-}
-.theme-scm .nivo-caption a {
-    color:#fff;
-    border-bottom:1px dotted #fff;
-}
-.theme-scm .nivo-caption a:hover {
-    color:#fff;
-}
+/*** THUMB NAV ***/
 
 .theme-scm .nivo-controlNav.nivo-thumbs-enabled {
 	width: 100%;
 }
+
 .theme-scm .nivo-controlNav.nivo-thumbs-enabled a {
 	width: auto;
 	height: auto;
@@ -94,4 +52,43 @@ Supports Thumbs: true
 	display: block;
 	width: 120px;
 	height: auto;
+}
+
+/*** DIRECTION NAV ***/
+
+.theme-scm .nivo-directionNav{
+	opacity: 0;
+}
+
+.theme-scm:hover .nivo-directionNav{
+	opacity: 1;
+}
+
+.theme-scm .nivo-directionNav a {
+	display: block;
+	-webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+
+.theme-scm a.nivo-nextNav {
+	right:0;
+}
+
+.theme-scm a.nivo-prevNav {
+	left:0;
+}
+
+/*** CAPTION ***/
+
+.theme-scm .nivo-caption a {
+    pointer-events: all;
+    border:none;
+    text-decoration: underline;
+}
+
+.theme-scm .nivo-caption a:hover {
+    color:#fff;
+    text-decoration: none;
 }

@@ -28,7 +28,7 @@
 			global $post;
 
 			$id = $type . '-' . get_the_ID();
-			$classes = 'layout-' . $layout . ' ' . SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name;
+			$classes = $type . ' layout-' . $layout . ' ' . $post->post_name;
 
 			$odd = ( $odd ? '' : ' odd' );
 			$classes .= $odd;

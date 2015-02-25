@@ -93,7 +93,8 @@ indent( $indent + 1, '<div' . $section_id . ' class="' . $section_class . '"' . 
 				
 				if( $current_column == 1 )
 					$class .= ' first';
-				elseif( $current_column == $total )
+				
+				if( $current_column == $total )
 					$class .= ' last';
 
 				$odd = ( $odd ? '' : ' column-odd odd' );

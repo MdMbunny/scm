@@ -58,7 +58,10 @@
                         "id": ""
                     },
                     "return_format": "url",
-                    "library": "all"
+                    "library": "all",
+                    "min_size": 0,
+                    "max_size": 0,
+                    "mime_types": ""
                 }
             ]
         }
@@ -68,7 +71,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "post"
+                "value": "polylang_mo"
             }
         ]
     ],
@@ -93,5 +96,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424627542
+    "modified": 1424887334
 }

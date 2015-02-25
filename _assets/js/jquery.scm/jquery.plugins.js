@@ -67,6 +67,18 @@
 		};
 	}
 
+	if ( !$.fn.getBoxShadow ) {
+
+		$.fn.getBoxShadow = function() {
+
+			var result = this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
+			if( !result )
+				return 0;
+
+			return { color: result[0], x: result[1], y: result[2], blur: result[3], exp: result[4] };
+		}
+	}
+
 	if ( !$.fn.getHighest ) {
 
 		$.fn.getHighest = function( elem ) {

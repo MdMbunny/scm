@@ -189,6 +189,70 @@
                     "max": "",
                     "layouts": [
                         {
+                            "key": "54edca6e2ae03",
+                            "name": "divider_element",
+                            "label": "Divider",
+                            "display": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_54edcaa52ae04",
+                                    "label": "Altezza",
+                                    "name": "altezza",
+                                    "prefix": "",
+                                    "type": "number",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 70,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "altezza",
+                                    "prepend": "",
+                                    "append": "",
+                                    "min": "",
+                                    "max": "",
+                                    "step": "",
+                                    "readonly": 0,
+                                    "disabled": 0
+                                },
+                                {
+                                    "key": "field_54edcaf42ae05",
+                                    "label": "Unit\u00e0",
+                                    "name": "units",
+                                    "prefix": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 30,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "em": "em",
+                                        "px": "px",
+                                        "%": "%"
+                                    },
+                                    "default_value": {
+                                        "em": "em"
+                                    },
+                                    "allow_null": 0,
+                                    "multiple": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "disabled": 0,
+                                    "readonly": 0
+                                }
+                            ],
+                            "min": "",
+                            "max": ""
+                        },
+                        {
                             "key": "54bfdce6d86f7",
                             "name": "archive",
                             "label": "Archivio",
@@ -2412,5 +2476,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424723356
+    "modified": 1424871067
 }

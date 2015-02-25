@@ -73,7 +73,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "post"
+                "value": "polylang_mo"
             }
         ]
     ],
@@ -98,5 +98,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424627303
+    "modified": 1424887338
 }

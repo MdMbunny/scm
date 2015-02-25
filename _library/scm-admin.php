@@ -52,7 +52,8 @@ function spacepad_custom_upload_dir($path){
     add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3);
 
-    //add_action( 'admin_init', 'scm_upload_sizes' );
+    add_action( 'admin_init', 'scm_upload_sizes' );
+    add_filter( 'image_size_names_choose', 'scm_custom_sizes' );
     //add_filter('wp_handle_upload_prefilter', 'scm_upload_set_filename', 1, 1);
     //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
     //add_filter( 'upload_dir', 'scm_upload_set_directory' );
@@ -224,9 +225,23 @@ function spacepad_custom_upload_dir($path){
     if ( ! function_exists( 'scm_upload_sizes' ) ) {
         function scm_upload_sizes(){
 
-            //add_image_size('icon', 64, 64, true);
+            add_image_size('square', 700, 700, true);
+            add_image_size('square-medium', 500, 500, true);
+            add_image_size('square-small', 300, 300, true);
+            add_image_size('square-thumb', 150, 150, true);
             //add_image_size('big', 700, 700, false);
 
+        }
+    }
+
+    if ( ! function_exists( 'scm_custom_sizes' ) ) {
+        function scm_custom_sizes( $sizes ) {
+            return array_merge( $sizes, array(
+                'square' => __( 'Quadrata', SCM_THEME ),
+                'square-medium' => __( 'Quadrata Media', SCM_THEME ),
+                'square-small' => __( 'Quadrata Piccola', SCM_THEME ),
+                'square-thumb' => __( 'Quadrata Thumb', SCM_THEME ),
+            ) );
         }
     }
 
@@ -294,10 +309,13 @@ function scm_upload_set_meta($meta, $file, $sourceImageType) {
                 $new_size = wp_constrain_dimensions( $oldWidth, $oldHeight, $largeWidth, $largeHeight );
                 $newWidth = $new_size[0];
                 $newHeight = $new_size[1];
+
+                if( $oldWidth > $newWidth || $oldHeight > $newHeight ){
             
-                $image->resize( $newWidth, $newHeight );
-                $image->set_quality( $quality );
-                $image->save( $filePath );
+                    $image->resize( $newWidth, $newHeight );
+                    $image->set_quality( $quality );
+                    $image->save( $filePath );
+                }
 
             }
 

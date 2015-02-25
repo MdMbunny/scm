@@ -46,7 +46,7 @@
 		if( w > 700 ){
 
 			a += 'desktop r1400 ';
-			r += 'smart smartmid smartmin smartmicro ';
+			r += 'smart smartmid smartmin smartmicro smartold ';
 
 			if( w < 1401 ){
 				a += 'r1120 ';
@@ -74,7 +74,10 @@
 		}else{
 
 			a += 'tablet smart ';
-			r += 'wide desktop landscape notebook portrait r1400 r1120 r1030 r940 r800 r700 ';							
+			r += 'wide desktop landscape notebook portrait r1400 r1120 r1030 r940 r800 r700 ';
+
+			if( w < 331 ) a += 'smartold ';
+			else r += 'smartold ';					
 
 			if( w < 401 ) a += 'smartmicro ';
 			else r += 'smartmicro ';
@@ -330,19 +333,10 @@
 			}
 
 			if( sticky == 'plus' ){
-				var result = $this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
-				var plus = 0;
-				if( result ){
-					var color = result[0],
-					    x = result[1],
-					    y = result[2],
-					    blur = result[3],
-					    exp = result[4];
+				
+				var sh = $this.getBoxShadow();
 
-					plus = parseFloat(y) + parseFloat(blur) + parseFloat(exp);
-				}
-
-				$this.css( 'top', -$this.outerHeight()-plus );
+				$this.css( 'top', -( $this.outerHeight() + parseFloat(sh.y) + parseFloat(sh.blur) + parseFloat(sh.exp) ) );
 			}
 
 			$menu.addClass( sticky );
@@ -976,8 +970,12 @@
 			    },
 			    afterLoad: function( e ){          						// Triggers when slider has loaded
 
-			    	$this.find( 'a.nivo-nextNav' ).append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' );
-			    	$this.find( 'a.nivo-prevNav' ).append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' );
+			    	var $el = $this.find( 'a.nivo-nextNav' ),
+			    		sh = $el.getBoxShadow(),
+			    		nw = $el.outerWidth() + parseFloat(+sh.x) + parseFloat(sh.blur) + parseFloat(sh.exp);
+
+			    	$this.find( 'a.nivo-nextNav' ).append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' ).css( 'right', -nw );
+			    	$this.find( 'a.nivo-prevNav' ).append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' ).css( 'left', -nw );
 			    	
 			    	$body.trigger( 'nivoLoaded', [ $this ] );
 			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this );

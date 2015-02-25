@@ -405,8 +405,11 @@
                 $css .= '.r700 .responsive { width: 700px; }' . lbreak();
 
             $r_full = scm_field( 'select_responsive_events_tofull', '', 'option' );
+        
             if( $r_full )
                 $css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
+
+            $css .= '.smart .responsive { width: 100%; }' . lbreak();
 
             $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_desktop', -1, 'option' );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
