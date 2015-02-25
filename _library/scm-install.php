@@ -401,6 +401,15 @@
                 ),
 
                 array(
+                    'name'               => 'Replace Media', // The plugin name.
+                    'slug'               => 'enable-media-replace', // The plugin slug (typically the folder name).
+                    'source'             => 'enable-media-replace.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
                     'name'               => 'Browser Detection', // The plugin name.
                     'slug'               => 'php-browser-detection', // The plugin slug (typically the folder name).
                     'source'             => 'php-browser-detection.zip', // The plugin source.
