@@ -14,11 +14,12 @@ $slides = scm_field( 'flexible_headers', array() );
 $default = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'responsive', 'option' ) );
 $layout = scm_field( 'select_layout_slider', $default );
 
+$slider = scm_field( 'select_slider', 'nivo', 'option' );
 $slider_class = 'slider ' . $slider . ' ' . $layout . ' mask';
 
-
-$slider = scm_field( 'select_slider', 'nivo', 'option' );
 $height = scm_field( 'height_slider', 'initial' );
+
+$theme = scm_field( 'themes_slider', 'scm' );
 
 $effect = scm_field( 'select_effect_nivo', 'fold' );
 $slices = scm_field( 'slices_options_slider', '15' );
@@ -37,11 +38,12 @@ $manual = scm_field( 'manual_options_slider', 'false' );
 $direction = scm_field( 'direction_options_slider', 'true' );
 $control = scm_field( 'control_options_slider', 'false' );
 $thumbs = scm_field( 'thumbs_options_slider', 'false' );
-$next = scm_field( 'next_options_slider', 'Next' );
-$prev = scm_field( 'prev_options_slider', 'Prev' );
+$next = scm_field( 'next_options_slider', 'fa-angle-right' );
+$prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
     
     echo indent( $indent + 2 ) . '<div class="' . $slider_class . '" ' . lbreak() .
             indent( $indent + 3 ) . 'data-slider="' . $slider . '" ' . lbreak() .
+            indent( $indent + 3 ) . 'data-slider-theme="' . $theme . '" ' . lbreak() .
             indent( $indent + 3 ) . 'data-slider-effect="' . $effect . '" ' . lbreak() .
             indent( $indent + 3 ) . 'data-slider-slices="' . $slices . '" ' . lbreak() .
             indent( $indent + 3 ) . 'data-slider-cols="' . $cols . '" ' . lbreak() .

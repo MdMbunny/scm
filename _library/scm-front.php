@@ -306,7 +306,7 @@
 
             $menu_id = $id;
             $menu_class = 'navigation ';
-            $menu_class .= ( scm_field( 'overlay_menu', 0, 'option' ) ? 'overlay ' : '' );
+            $menu_class .= ( scm_field( 'overlay_menu', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
 
             $menu_layout = scm_field( 'select_layout_page', 'full', 'option' );
             $row_layout = scm_field( 'select_layout_menu', 'full', 'option' );

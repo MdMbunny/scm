@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.9.3
+Version:			v1.9.4
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -13,28 +13,36 @@ GitHub Branch:		master
 /*--------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
+
 1.0 Reset
-2.0 Typography
+	1.1 Reset Elements
+	1.2 Reset Typography
+	1.3 Reset Forms
+2.0 Attributes
+	2.1 Attributes Typography
+	2.2 Attributes Display
+	2.3 Attributes Position
+	2.4 Attributes Alignment
+	2.5 Attributes Floating
+	2.6 Attributes Clearings
+	2.7 Attributes Cursor
+	2.8 Attributes Layout
 3.0 Elements
-4.0 Forms
-5.0 Navigation
-	5.1 Links
-	5.2 Menus
-6.0 Accessibility
-7.0 Alignments 						XXX
-8.0 Clearings
-9.0 Widgets
-10.0 Content
-	10.1 Posts and pages
-	10.2 Asides
-	10.3 Comments
-11.0 Infinite scroll
-12.0 Media
-	12.1 Captions
-	12.2 Galleries
-13.0 SCM
-	13.1 General
-	13.2 Columns
+	3.1 Elements Links
+	3.2 Elements Buttons
+	3.3 Elements Navigation
+	3.4 Elements Contacts
+4.0 Plugins
+	4.1 Plugins Google Maps
+	4.2 Plugins Slider
+		4.2.1 Plugins Slider Nivo
+	4.3 Plugins Social Feather
+	4.4 Plugins Fancybox
+	4.5 Plugins Font Awesome
+	4.6 Plugins Contact Form 7
+
+0.0 Accesibility
+	
 --------------------------------------------------------------*/
 
 
@@ -42,29 +50,34 @@ GitHub Branch:		master
 /*--------------------------------------------------------------
 1.0 Reset
 --------------------------------------------------------------*/
-
+/*--------------------------------------------------------------
+1.1 Reset Elements
+--------------------------------------------------------------*/
 #dp_swf_engine,
 .dealply-toast{
 	display: none;
 }
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-	border: 0;
-	/*font-family: inherit;*/
-	/*font-size: 100%;*/
+*{
+	/*cursor: default;*/
+	vertical-align: top;
 	font-style: inherit;
 	font-weight: inherit;
-	margin: 0;
+	line-height: inherit;
+	border: 0 solid transparent;
 	outline: 0;
+	margin: 0;
 	padding: 0;
-	/*vertical-align: baseline;*/
+	-webkit-tap-highlight-color: transparent;
+}
+
+*, *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+	box-sizing: inherit;
+}
+
+::selection{
+	background-color: #aaa;
+	color: #000;
 }
 
 html {
@@ -79,52 +92,12 @@ html {
 	height: 100%;
 }
 
-*{
-	/*cursor: default;*/
-	outline: 0;
-	border-color: transparent;
-	vertical-align: top;
-	-webkit-tap-highlight-color: transparent;
-}
-
-#page,
-.responsive,
-header,
-footer{
-	/*-webkit-transition: width .3s;
-	transition: width .3s;*/
-}
-
-*,
-*:before,
-*:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
-	box-sizing: inherit;
-}
-
 body {
 	background: #FFF; /* Fallback for when there is no custom background color defined. */
 	overflow: hidden;
 	min-height: 100%;
 	opacity: 0;
 	pointer-events: none;
-}
-
-/*.no-js body {
-	opacity: 1;
-	pointer-events: all;
-}*/
-
-.site-page{
-	overflow: hidden;
-}
-
-.site-content .section > .row{
-	background-color: #FFF;
-}
-
-::selection{
-	background-color: #aaa;
-	color: #000;
 }
 
 .box{
@@ -138,25 +111,16 @@ body {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	vertical-align: 0;
+	vertical-align: top;
 	background: transparent;
 	pointer-events: none;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-nav,
-.section,
-.row,
-.column {
+article, aside, details, figcaption, figure, footer, header, nav,
+.section, .row, .column {
 	display: inline-block;
 	vertical-align: top;
-	padding: 0px 0px;
+	padding: 0;
 	margin: 0;
 	clear: both;
 	width: 100%;
@@ -166,98 +130,60 @@ nav,
 table { /* tables still need 'cellspacing="0"' in the markup */
 	border-collapse: separate;
 	border-spacing: 0;
+	margin: 0 0 1.5em;
+	width: 100%;
 }
 
-caption,
-th,
-td {
-	font-weight: normal;
-	text-align: left;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
 	content: "";
 }
 
-blockquote,
-q {
+blockquote, q {
 	quotes: "" "";
 }
 
-a:hover,
-a:active {
+hr {
+	background-color: #ccc;
+	height: 1px;
+	margin-bottom: 1.5em;
 }
 
-a img {
-	border: 0;
+ul {
+	list-style: none;
+}
+
+ol {
+	list-style: decimal;
+}
+
+dd {
+	margin: 0 1.5em 1.5em;
+}
+
+img {
+	height: auto; /* Make sure images are scaled correctly. */
+	width: inherit;
+}
+
+img, embed, iframe, object {
+	max-width: 100%;
 }
 
 /*--------------------------------------------------------------
-2.0 Typography
+1.2 Reset Typography
 --------------------------------------------------------------*/
-/*body,
-button,
-input,
-select,
-textarea {
-	color: #404040;
-	font-size: 16px;
-	font-size: 1.6rem;
-	line-height: 1.5;
-}*/
+caption, th, td {
+	font-weight: normal;
+	text-align: left;
+}
 
-.h0,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h7,
-.h8,
-.h9 {
+.h0, h1, h2, h3, h4, h5, h6, .h7, .h8, .h9, b, strong, dt, th {
 	font-weight: bold;
 }
 
-.h0 { font-size: 2.5em; }
-h1 { font-size: 2.2em; }
-h2 { font-size: 2em; }
-h3 { font-size: 1.8em; }
-h4 { font-size: 1.6em; }
-h5 { font-size: 1.4em; }
-h6 { font-size: 1.2em; }
-.h7 { font-size: 1.15em; }
-.h8 { font-size: 1.1em; }
-.h9 { font-size: 1.05em; }
-
-/*p {
-	margin-bottom: 1.5em;
-}*/
-
-p:last-child {
-	margin-bottom: 0;
-}
-
-b,
-strong {
-	font-weight: bold;
-}
-
-dfn,
-cite,
-em,
-i {
+dfn, cite, em, i {
 	font-style: italic;
-}
-
-blockquote {
-	margin: 0;
-}
-
-address {
-	margin: 0;
 }
 
 pre {
@@ -272,29 +198,23 @@ pre {
 	padding: 1.6em;
 }
 
-code,
-kbd,
-tt,
-var {
+code, kbd, tt, var {
 	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 	font-size: 15px;
 	font-size: 1.5rem;
 }
 
-abbr,
-acronym {
+abbr, acronym {
 	border-bottom: 1px dotted #666;
 	cursor: help;
 }
 
-mark,
-ins {
+mark, ins {
 	background: #fff9c0;
 	text-decoration: none;
 }
 
-sup,
-sub {
+sup, sub {
 	font-size: 75%;
 	height: 0;
 	line-height: 0;
@@ -309,6 +229,112 @@ sup {
 .sub {
 	top: .5ex;
 }
+
+/*--------------------------------------------------------------
+1.3 Reset Forms
+--------------------------------------------------------------*/
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #ddd;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #ddd;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #ddd;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    #ddd;
+}
+
+input,
+select,
+textarea {
+	font-size: 100%; /* Corrects font size not being inherited in all browsers */
+	margin: 0; /* Addresses margins set differently in IE6/7, F3/4, S5, Chrome */
+	vertical-align: baseline; /* Improves appearance and consistency in all browsers */
+	cursor: text;
+	padding: 1em;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	padding: 0; /* Addresses excess padding in IE8/9 */
+}
+
+input[type="search"] {
+	-webkit-appearance: textfield; /* Addresses appearance set to searchfield in S5, Chrome */
+	box-sizing: border-box;
+}
+
+input[type="search"]::-webkit-search-decoration { /* Corrects inner padding displayed oddly in S5, Chrome on OSX */
+	-webkit-appearance: none;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+textarea,
+.wpcf7 .destinatario { /*  +++ todo: mira a select e non nello specifico wpcf7 */
+	color: #a7a7a7;
+	border: 1px solid #ccc;
+	max-width: 100%;
+	width: 100%;
+	font-size: .8em;
+	margin-bottom: 15px;
+	-webkit-transition: all .3s;
+	transition: all .3s;
+	display: block;
+}
+
+select {
+	height: 3.4em;
+	border: 0;
+	width: 100%;
+	background-color: transparent;
+	color: #a7a7a7;
+	/*cursor: pointer;*/
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+	color: #666;
+	border-color: #666;
+}
+
+textarea {
+	overflow: auto; /* Removes default vertical scrollbar in IE6/7/8/9 */
+	padding-left: 10px;
+	vertical-align: top; /* Improves readability and alignment in all browsers */
+	width: 100%;
+	height: 175px;
+	max-height: 300px;
+}
+
+
+/*--------------------------------------------------------------
+2.0 Attributes
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+2.1 Attributes Typography
+--------------------------------------------------------------*/
+.h0 { font-size: 2.5em; }
+h1 { font-size: 2.2em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.8em; }
+h4 { font-size: 1.6em; }
+h5 { font-size: 1.4em; }
+h6 { font-size: 1.2em; }
+.h7 { font-size: 1.15em; }
+.h8 { font-size: 1.1em; }
+.h9 { font-size: 1.05em; }
 
 .minion {
 	font-size: 60%;
@@ -342,82 +368,14 @@ sup {
 	font-size: 180%;
 }
 
-
 /*--------------------------------------------------------------
-3.0 Elements
---------------------------------------------------------------*/
-hr {
-	background-color: #ccc;
-	border: 0;
-	height: 1px;
-	margin-bottom: 1.5em;
-}
-
-ul,
-ol {
-	margin: 0;
-}
-
-ul {
-	list-style: none;
-}
-
-ol {
-	list-style: decimal;
-}
-
-li > ul,
-li > ol {
-	margin: 0;
-}
-
-dt {
-	font-weight: bold;
-}
-
-dd {
-	margin: 0 1.5em 1.5em;
-}
-
-img {
-	border: 0;
-	height: auto; /* Make sure images are scaled correctly. */
-	width: inherit;
-	max-width: 100%; /* Adhere to container width. */
-}
-
-figure {
-	margin: 0;
-}
-
-table {
-	margin: 0 0 1.5em;
-	width: 100%;
-}
-
-th {
-	font-weight: bold;
-}
-
-
-
-
-
-
-
-
-
-/*--------------------------------------------------------------
-13.0 SCM Attributes
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-13.1 Display
+2.2 Attributes Display
 --------------------------------------------------------------*/
 .invisible, .none, .displaynone, .display-none { display: none; }
 
 .block, .displayblock, .display-block { display: block; }
 
-.inlineblock, .displayinlineblock, .display-inline-block { display: inline-block; vertical-align: top; }
+.inlineblock, .displayinlineblock, .display-inline-block, [data-switch] { display: inline-block; vertical-align: top; }
 
 .inline, .displayinline, .display-inline { display: inline; }
 
@@ -427,14 +385,14 @@ th {
 }
 
 /*--------------------------------------------------------------
-13.2 Position
+2.3 Attributes Position
 --------------------------------------------------------------*/
 .affix, .fixed, .positionfixed, .position-fixed { position: fixed; }
 .absolute, .positionabsolute, .position-absolute { position: absolute; }
 .relative, .positionrelative, .position-relative { position: relative; }
 
 /*--------------------------------------------------------------
-13.3 Alignment
+2.4 Attributes Alignment
 --------------------------------------------------------------*/
 .left, .textleft, .text-left,
 .content-left > *, .all-left * {
@@ -457,31 +415,25 @@ th {
 }
 
 /*--------------------------------------------------------------
-13.4 Floating
+2.5 Attributes Floating
 --------------------------------------------------------------*/
-
 .align-left, .alignleft, .float-left, .floatleft {
-	/*display: inline-block;
-	vertical-align: top;*/
 	float: left;
 }
 
 .align-right, .alignright, .float-right, .floatright,
 .content-float-right > *, .all-float-right * {
-	/*display: inline-block;
-	vertical-align: top;*/
 	float: right;
 }
 
 .align-center, .aligncenter, .float-center, .floatcenter,
 .content-float-center > *, .all-float-center * {
 	clear: both;
-	/*display: inline-block;*/
 	margin: 0 auto;
 }
 
 /*--------------------------------------------------------------
-13.5 Clearings
+2.6 Attributes Clearings
 --------------------------------------------------------------*/
 .clearfix,
 .clear:before,
@@ -496,7 +448,7 @@ th {
 }
 
 /*--------------------------------------------------------------
-13.6 Cursor
+2.7 Attributes Cursor
 --------------------------------------------------------------*/
 .pointer, .pointer * {
 	cursor: pointer;
@@ -507,16 +459,8 @@ th {
 }
 
 /*--------------------------------------------------------------
-13.7 Width
+2.8 Attributes Layout
 --------------------------------------------------------------*/
-
-.w1400 { width: 1250px; }
-.w1120 { width: 1120px; }
-.w1030 { width: 1030px; }
-.w940 { width: 940px; }
-.w800 { width: 800px; }
-.w700 { width: 700px; }
-
 .smart .responsive,
 .responsive.full, .responsive.fullwidth, .responsive.full-width,
 .full, .fullwidth, .full-width,
@@ -524,44 +468,33 @@ th {
 	width: 100%;
 }
 
-/*--------------------------------------------------------------
-14.0 SCM Layouts
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-14.1 Sections, Rows and Columns
---------------------------------------------------------------*/
-
-.row{
-	padding: 0px;
+.site{
+	overflow: hidden;
 }
 
-/*.site-page.responsive .row{
-	padding: 0px;
-}*/
+.header-column{
+	padding: 20px 0;
+}
 
-.section .row/*,
-.row.responsive*/{
+.logo{
+	font-size: 2.5em;
+}
+
+.section > .row {
 	padding: 3.3em 4.4em;
 	clear: both;
 }
 
-/*.site-page.responsive .section .row,*/
-/*.section .row{
-	padding: 40px 80px;
-	
-}*/
-
-.smart .row{
-	padding: 0;
-}
-
-.smart .section .row {
+.smart .section > .row {
 	padding: 3em 2em;
 }
 
-.smart article .section,
-.smart .section .row{
-	width: 100%;
+.module p{
+	margin-bottom: 1em;
+}
+
+.module p:last-child{
+	margin-bottom: 0;
 }
 
 .column {
@@ -614,16 +547,6 @@ th {
 
 .column.last:after { clear: both; }
 
-
-
-/*.r940 .column:not(.column-solo):not(.column-12):not(.column-23){
-	width: 33.33%;
-}
-
-.r800:not(.r700) .column:not(.column-solo){
-	width: 50%;
-}*/
-
 .r700 .column,
 .smart .column{
 	width: 100%;
@@ -636,147 +559,16 @@ th {
 	padding-bottom: 2em;
 }
 
-.smartmin .address span,
-.smartmin .num span {
-	display: block;
-}
 
-.smartmin .address span.separator,
-.smartmin .num span.separator {
-	display: none;
-}
+
 
 
 /*--------------------------------------------------------------
-4.0 Forms
+3.0 Elements
 --------------------------------------------------------------*/
-
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #ddd;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #ddd;
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #ddd;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-   color:    #ddd;
-}
-
-.wpcf7 br{
-	display: none;
-}
-
-button,
-input,
-select,
-textarea {
-	font-size: 100%; /* Corrects font size not being inherited in all browsers */
-	margin: 0; /* Addresses margins set differently in IE6/7, F3/4, S5, Chrome */
-	vertical-align: baseline; /* Improves appearance and consistency in all browsers */
-	cursor: text;
-	padding: 1em;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-	padding: 0; /* Addresses excess padding in IE8/9 */
-}
-
-input[type="search"] {
-	-webkit-appearance: textfield; /* Addresses appearance set to searchfield in S5, Chrome */
-	box-sizing: border-box;
-}
-
-input[type="search"]::-webkit-search-decoration { /* Corrects inner padding displayed oddly in S5, Chrome on OSX */
-	-webkit-appearance: none;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="url"],
-input[type="password"],
-input[type="search"],
-textarea,
-.wpcf7 .destinatario {
-	color: #a7a7a7;
-	border: 1px solid #ccc;
-	max-width: 100%;
-	width: 100%;
-	font-size: .8em;
-	margin-bottom: 15px;
-	-webkit-transition: all .3s;
-	transition: all .3s;
-	display: block;
-}
-
-select {
-	height: 3.4em;
-	border: 0;
-	width: 100%;
-	background-color: transparent;
-	color: #a7a7a7;
-	/*cursor: pointer;*/
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-input[type="password"]:focus,
-input[type="search"]:focus,
-textarea:focus {
-	color: #666;
-	border-color: #666;
-}
-
-textarea {
-	overflow: auto; /* Removes default vertical scrollbar in IE6/7/8/9 */
-	padding-left: 10px;
-	vertical-align: top; /* Improves readability and alignment in all browsers */
-	width: 100%;
-	height: 175px;
-	max-height: 300px;
-}
-
-.wpcf7 .wpcf7-not-valid-tip,
-.wpcf7 p > img,
-.wpcf7 .wpcf7-response-output{
-	background-color: #FFF;
-	/*border-radius: 3px;*/
-	/*box-shadow: 0px 1px 1px 0px rgba(0,0,0,.5);*/
-	border-color: #ddd;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-.wpcf7 .wpcf7-not-valid-tip{
-	font-size: .7em;
-	padding: 0 10px 20px 0;
-}
-
-.wpcf7 p > img {
-	padding: 3px;
-	margin-top: 13px;
-	position: absolute;
-}
-
-.wpcf7 .wpcf7-validation-errors{
-	margin: 0px;
-	padding: 10px;
-	font-size: .9em;
-}
-
 /*--------------------------------------------------------------
-5.0 Navigation
+3.1 Elements Links
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-5.1 Links
---------------------------------------------------------------*/
-
 .toggle .toggle-button i,
 select,
 button, button *,
@@ -821,27 +613,129 @@ a:hover{
 	opacity: .5;
 }
 
+/*--------------------------------------------------------------
+3.2 Elements Buttons
+--------------------------------------------------------------*/
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.page-numbers,
+blockquote,
+.topofpage a,
+.theme-scm .nivo-directionNav a {
+	background: #666;
+	color: rgba(0, 0, 0, 1);
+	background-image: none;
+	border: 0;
+	width: auto;
+	color: #FFF;
+	display: inline-block;
+	text-decoration: none;
+	min-height: 3em;
+	min-width: 3em;
+	line-height: 1em;
+	font-size: 1em;
+	vertical-align: middle;
+	text-align: center;
+	padding: 1em;
+	text-decoration: none;
+}
 
+/* Blockquote */
+
+blockquote {
+	text-align: left;
+	font-size: 1.2em;
+	margin-bottom: 2em;
+	line-height: 1.2em;
+}
+
+/* Buttons */
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	-webkit-appearance: button; /* Corrects inability to style clickable 'input' types in iOS */
+}
+
+button:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="submit"]:focus,
+button:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+	background-color: #eee;
+	color: #666;
+}
+
+/* Pagination */
+
+.page-numbers{
+	width: 3em;
+	background-color: transparent;
+	color: #666;
+}
+
+.page-numbers:hover{
+	background-color: #EEE;
+}
+
+.page-numbers.current {
+	background-color: #666;
+	color: #FFF;
+}
+
+/* Scroll To Top */
+
+.topofpage {
+	background: #666;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	text-align: center;
+	border-radius: 4px;
+	z-index: 8000;
+	opacity: 0;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.topofpage.affix {
+	visibility: visible;
+	opacity: 0.5;
+	pointer-events: inherit;
+}
+
+.topofpage:hover {
+	opacity: 1;
+}
+
+.topofpage a {
+	background-color: transparent;
+	/*color: #fff;
+	display: inline-block;
+	line-height: 40px;
+	width: 40px;
+	height: 40px;
+	text-decoration: none;*/
+}
+
+.topofpage a i{
+	color: #fff;
+	vertical-align: initial;
+}
 
 /*--------------------------------------------------------------
-5.2 Header
+3.3 Elements Navigation
 --------------------------------------------------------------*/
 
-.site-header > .row{
-	background-color: transparent;
-}
-
-.header-column{
-	padding: 20px 0;
-}
-
-.img-only,
-.img-only{
-	font-size: 1em;
-}
-
 .navigation{
-	position: relative;
 	display: block;
 	z-index: 7500;
 	line-height: 1em;
@@ -853,8 +747,6 @@ a:hover{
 
 .navigation,
 .sub-menu {
-	padding: 0px;
-	margin: 0px;
 	font-size: 0.8em;
 	text-transform: uppercase;
 }
@@ -867,8 +759,6 @@ a:hover{
 	text-decoration: none;
 	background-color: transparent;
 	text-align: center;
-	/*-webkit-transition: opacity .2s, color .2s;
-	transition: opacity .2s, color .2s;*/
 }
 
 .navigation li.lang-item{
@@ -909,7 +799,6 @@ a:hover{
 
 /* Level 2 */ 
 
-
 .sub-menu {
 	float: left;
 	position: absolute;
@@ -931,7 +820,6 @@ body.mouse .menu li:hover .sub-menu,
 body.touch .menu li.toggled .sub-menu {
 	margin-left: 0;
 	opacity: 1;
-	/*max-height: 1000px;*/
 	-webkit-transition: all .3s;
 	transition: all .3s;
 	pointer-events: all;
@@ -942,7 +830,6 @@ body.touch .menu li.toggled .sub-menu {
 	width: 100%;
 	text-align: left;
 }
-
 
 /* Level 3 */ 
 
@@ -1002,10 +889,6 @@ body.mouse .sub-menu li:hover > ul {
 }
 
 /* Toggle Button */
-
-/*.navigation.toggle:not(.sticky):not(.affix){
-	position: absolute;
-}*/
 
 .navigation.toggle,
 .navigation.toggle .row{
@@ -1071,318 +954,10 @@ body.mouse .sub-menu li:hover > ul {
 	max-height: 80%;
 	max-width: 80%;
 }
-/*
-.navigation.toggle .toggle-button > [data-toggle="off"],
-.navigation.toggle .toggle-button > [data-toggle="on"] {
-	-webkit-transition: transform .2s;
-	transition: transform .2s;
-	-ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-}
-
-.navigation.toggle .toggle-button > [data-toggle="on"] {
-	-ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-}
-
-.navigation.toggle.toggled .toggle-button > [data-toggle="off"] {
-	-ms-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-}
-
-.navigation.toggle.toggled .toggle-button > [data-toggle="on"] {
-	-ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-}*/
-
-
-
-
-
-
-.site-main .comment-navigation,
-.site-main .paging-navigation,
-.site-main .post-navigation {
-	margin: 0;
-	overflow: hidden;
-}
-
-.comment-navigation .nav-previous,
-.paging-navigation .nav-previous,
-.post-navigation .nav-previous {
-	float: left;
-	width: 50%;
-}
-
-.comment-navigation .nav-next,
-.paging-navigation .nav-next,
-.post-navigation .nav-next {
-	float: right;
-	text-align: right;
-	width: 50%;
-}
-
 
 /*--------------------------------------------------------------
-6.0 Accessibility
+3.4 Elements Contacts
 --------------------------------------------------------------*/
-/* Text meant only for screen readers */
-.screen-reader-text {
-	clip: rect(1px, 1px, 1px, 1px);
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-}
-
-.screen-reader-text:hover,
-.screen-reader-text:active,
-.screen-reader-text:focus {
-	background-color: #f1f1f1;
-	border-radius: 3px;
-	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-	clip: auto !important;
-	color: #21759b;
-	display: block;
-	font-size: 14px;
-	font-size: 1.4rem;
-	font-weight: bold;
-	height: auto;
-	left: 5px;
-	line-height: normal;
-	padding: 15px 23px 14px;
-	text-decoration: none;
-	top: 5px;
-	width: auto;
-	z-index: 100000; /* Above WP toolbar */
-}
-
-
-
-/*--------------------------------------------------------------
-8.0 Clearings
---------------------------------------------------------------*/
-.entry-content:before,
-.entry-content:after,
-.comment-content:before,
-.comment-content:after,
-.site-header:before,
-.site-header:after,
-.site-content:before,
-.site-content:after,
-.site-footer:before,
-.site-footer:after {
-	content: "";
-	display: table;
-	float: none;
-	clear: both;
-}
-
-.entry-content:after,
-.comment-content:after,
-.site-header:after,
-.site-content:after,
-.site-footer:after {
-	clear: both;
-}
-
-/*--------------------------------------------------------------
-9.0 Widgets
---------------------------------------------------------------*/
-.widget {
-	margin: 0;
-}
-
-/* Make sure select elements fit in widgets */
-.widget select {
-	max-width: 100%;
-}
-
-/* Search widget */
-.widget_search .search-submit {
-	display: none;
-}
-
-/*--------------------------------------------------------------
-10.0 Content
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-10.1 Posts and pages
---------------------------------------------------------------*/
-.sticky {
-	display: block;
-}
-
-/*.hentry {
-	margin: 0;
-}*/
-
-.byline,
-.updated:not(.published) {
-	display: none;
-}
-
-.single .byline,
-.group-blog .byline {
-	display: inline;
-}
-
-.page-content,
-.entry-content,
-.entry-summary {
-	margin: 0;
-}
-
-.page-links {
-	clear: both;
-	margin: 0;
-}
-
-/*--------------------------------------------------------------
-10.2 Asides
---------------------------------------------------------------*/
-.blog .format-aside .entry-title,
-.archive .format-aside .entry-title {
-	display: none;
-}
-
-/*--------------------------------------------------------------
-10.3 Comments
---------------------------------------------------------------*/
-.comment-content a {
-	word-wrap: break-word;
-}
-
-.bypostauthor {
-	display: block;
-}
-
-/*--------------------------------------------------------------
-11.0 Infinite scroll
---------------------------------------------------------------*/
-/* Globally hidden elements when Infinite Scroll is supported and in use. */
-.infinite-scroll .paging-navigation, /* Older / Newer Posts Navigation (always hidden) */
-.infinite-scroll.neverending .site-footer { /* Theme Footer (when set to scrolling) */
-	display: none;
-}
-
-/* When Infinite Scroll has reached its end we need to re-display elements that were hidden (via .neverending) before */
-.infinity-end.neverending .site-footer {
-	display: block;
-}
-
-/*--------------------------------------------------------------
-12.0 Media
---------------------------------------------------------------*/
-.page-content img.wp-smiley,
-.entry-content img.wp-smiley,
-.comment-content img.wp-smiley {
-	border: none;
-	margin-bottom: 0;
-	margin-top: 0;
-	padding: 0;
-}
-
-/* Make sure embeds and iframes fit their containers */
-embed,
-iframe,
-object {
-	max-width: 100%;
-}
-
-/*--------------------------------------------------------------
-12.1 Captions
---------------------------------------------------------------*/
-.wp-caption {
-	margin-bottom: 1.5em;
-	max-width: 100%;
-}
-
-.wp-caption img[class*="wp-image-"] {
-	display: block;
-	margin: 0 auto;
-}
-
-.wp-caption-text {
-	text-align: center;
-}
-
-.wp-caption .wp-caption-text {
-	margin: 0.8075em 0;
-}
-
-/*--------------------------------------------------------------
-12.2 Galleries
---------------------------------------------------------------*/
-.gallery {
-	margin-bottom: 1.5em;
-}
-
-.gallery-item {
-	display: inline-block;
-	text-align: center;
-	vertical-align: top;
-	width: 100%;
-}
-
-.gallery-columns-2 .gallery-item {
-	max-width: 50%;
-}
-
-.gallery-columns-3 .gallery-item {
-	max-width: 33.33%;
-}
-
-.gallery-columns-4 .gallery-item {
-	max-width: 25%;
-}
-
-.gallery-columns-5 .gallery-item {
-	max-width: 20%;
-}
-
-.gallery-columns-6 .gallery-item {
-	max-width: 16.66%;
-}
-
-.gallery-columns-7 .gallery-item {
-	max-width: 14.28%;
-}
-
-.gallery-columns-8 .gallery-item {
-	max-width: 12.5%;
-}
-
-.gallery-columns-9 .gallery-item {
-	max-width: 11.11%;
-}
-
-.gallery-caption {
-	display: block;
-}
-
-
-
-/*--------------------------------------------------------------
-15.0 SCM Elements
---------------------------------------------------------------*/
-
-.module p{
-	margin-bottom: 1em;
-}
-
-.module p:last-child{
-	margin-bottom: 0;
-}
-
-*[data-switch]{
-	display: inline-block;
-}
-
 .smart .datas .address {
 	margin-bottom: 1em;
 }
@@ -1393,121 +968,22 @@ object {
 	display: block;
 }
 
-/*--------------------------------------------------------------
-15.1 Scroll To Top
---------------------------------------------------------------*/
-.topofpage {
-	background: #444444;
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	text-align: center;
-	border-radius: 4px;
-	z-index: 8000;
-	opacity: 0;
-	-webkit-transition: all 0.5s;
-	transition: all 0.5s;
-	visibility: hidden;
-	pointer-events: none;
+.smartmin .address span,
+.smartmin .num span {
+	display: block;
 }
 
-.topofpage.affix {
-	visibility: visible;
-	opacity: 0.5;
-	pointer-events: inherit;
+.smartmin .address span.separator,
+.smartmin .num span.separator {
+	display: none;
 }
-
-.topofpage:hover {
-	opacity: 1;
-}
-
-.topofpage a {
-	color: #fff;
-	display: inline-block;
-	line-height: 40px;
-	width: 40px;
-	height: 40px;
-	text-decoration: none;
-}
-
-.topofpage a i{
-	color: #fff;
-	vertical-align: initial;
-}
-
-
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-	-webkit-appearance: button; /* Corrects inability to style clickable 'input' types in iOS */
-}
-
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"],
-.page-numbers,
-blockquote {
-	background: #666;
-	color: rgba(0, 0, 0, 1);
-	/*cursor: pointer;*/ /* Improves usability and consistency of cursor style between image-type 'input' and others */
-	background-image: none;
-	border: 0;
-	width: auto;
-	color: #FFF;
-	display: inline-block;
-	text-decoration: none;
-	min-height: 3em;
-	line-height: 1em;
-	font-size: 1em;
-	vertical-align: middle;
-	text-align: center;
-	padding: 1em;
-}
-
-blockquote {
-	text-align: left;
-	font-size: 120%;
-	margin-bottom: 10px;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 120%;
-	/*cursor: default;*/
-}
-
-.page-numbers{
-	width: 3em;
-	background-color: transparent;
-	color: #666;
-}
-
-.page-numbers:hover{
-	background-color: #eee;
-}
-
-button:focus,
-input[type="button"]:focus,
-input[type="reset"]:focus,
-input[type="submit"]:focus,
-button:active,
-input[type="button"]:active,
-input[type="reset"]:active,
-input[type="submit"]:active {
-	background-color: #eee;
-	color: #666;
-}
-
-.page-numbers.current {
-	background-color: #666;
-	color: #FFF;
-}
-
 
 /*--------------------------------------------------------------
-16.0 Google Map
+4.0 Plugins
 --------------------------------------------------------------*/
-
+/*--------------------------------------------------------------
+4.1 Plugins Google Map
+--------------------------------------------------------------*/
 .scm-map{
 	height: 400px;
 }
@@ -1543,9 +1019,8 @@ input[type="submit"]:active {
 }
 
 /*--------------------------------------------------------------
-17.0 Slider
+4.2 Plugins Slider
 --------------------------------------------------------------*/
-
 .slider{
 	box-shadow: none !important;
 	/*margin: 0 !important;*/
@@ -1563,12 +1038,9 @@ input[type="submit"]:active {
 	-webkit-transition: all 0;
 }
 
-
-
 /*--------------------------------------------------------------
-17.1 Nivo Slider
+4.2.1 Plugins Slider Nivo
 --------------------------------------------------------------*/
-
 .nivoSlider{
 	margin-bottom: 0 !important;
 }
@@ -1601,15 +1073,9 @@ input[type="submit"]:active {
 }
 
 
-
 /*--------------------------------------------------------------
-17.0 SCM External Plugins
+4.3 Plugins Social Feather
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-17.1 SCM Social Follow
---------------------------------------------------------------*/
-
 .site-social-follow{
 	float: right;
 }
@@ -1624,20 +1090,9 @@ input[type="submit"]:active {
 	margin-right: 0px !important;
 }
 
-.synved-social-resolution-single{
-	/*-webkit-transition: opacity .2s;
-	transition: opacity .2s;*/
-}
-/*
-.synved-social-resolution-single:hover{
-	opacity: .6;
-}*/
-
-
 /*--------------------------------------------------------------
-17.2 SCM Fancybox
+4.4 Plugins Fancybox
 --------------------------------------------------------------*/
-
 .fancybox-overlay:hover {
 	cursor: zoom-out;
 }
@@ -1710,11 +1165,31 @@ a.fancybox-next *{
 	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
+#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
+	background-image: url('fancybox_sprite.png');
+}
+
+#fancybox-loading {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -22px;
+	margin-left: -22px;
+	background-position: 0 -108px;
+	opacity: 0.8;
+	cursor: pointer;
+	z-index: 8060;
+}
+
+#fancybox-loading div {
+	width: 44px;
+	height: 44px;
+	background: url('fancybox_loading.gif') center center no-repeat;
+}
 
 /*--------------------------------------------------------------
-17.3 SCM Font Awesome
+4.5 Plugins Font Awesome
 --------------------------------------------------------------*/
-
 i.fa {
 	font-size: 1em;
 	line-height: inherit;
@@ -1722,8 +1197,71 @@ i.fa {
 	display: inline;
 }
 
+/*--------------------------------------------------------------
+4.6 Plugins Contact Form 7
+--------------------------------------------------------------*/
+.wpcf7 br{
+	display: none;
+}
+
+.wpcf7 .wpcf7-not-valid-tip,
+.wpcf7 p > img,
+.wpcf7 .wpcf7-response-output{
+	background-color: #FFF;
+	border-color: #ddd;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.wpcf7 .wpcf7-not-valid-tip{
+	font-size: .7em;
+	padding: 0 1em 2em 0;
+}
+
+.wpcf7 p > img {
+	padding: .2em;
+	margin-top: 1.2em;
+	position: absolute;
+}
+
+.wpcf7 .wpcf7-validation-errors{
+	margin: 0;
+	padding: 1em;
+	font-size: .9em;
+}
+
+/*--------------------------------------------------------------
+0.0 Accessibility
+--------------------------------------------------------------*/
+/* Text meant only for screen readers */
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+
+.screen-reader-text:hover,
+.screen-reader-text:active,
+.screen-reader-text:focus {
+	background-color: #f1f1f1;
+	border-radius: 3px;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+	clip: auto !important;
+	color: #21759b;
+	display: block;
+	font-size: 14px;
+	font-size: 1.4rem;
+	font-weight: bold;
+	height: auto;
+	left: 5px;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	text-decoration: none;
+	top: 5px;
+	width: auto;
+	z-index: 100000; /* Above WP toolbar */
+}
 
 
-
-
-.overlay { position: absolute; }

@@ -928,12 +928,14 @@
 		return this.each( function() {
 
 			var $body 		= $( 'body' ),
-				$this 		= $( this );
+				$this 		= $( this ),
+				theme 		= 'theme-' + ( $this.data( 'slider-theme' ) ? $this.data( 'slider-theme' ) : 'default' );
 
 			if( $this.find( '.slide-image' ).length < 2 )
 				return this;
 
-			$this.parent().addClass( 'slider-wrapper theme-default' );
+			$this.parent().addClass( 'slider-wrapper' );
+			$this.parent().addClass( theme );
 			$this.addClass( 'nivoSlider' );
 
 			$this.find( 'img' ).each( function(){
@@ -941,22 +943,22 @@
 			});
 
 			$this.nivoSlider( {
-			    effect: 			$this.data( 'slider-effect' ), 		// sliceDown | sliceDownLeft | sliceUp | sliceUpLeft | sliceUpDown | sliceUpDownLeft | fold | fade | random | slideInRight | slideInLeft | boxRandom | boxRain | boxRainReverse | boxRainGrow | boxRainGrowReverse
-			    slices: 			$this.data( 'slider-slices' ), 		// For slice animations
-			    boxCols: 			$this.data( 'slider-cols' ), 		// For box animations
-			    boxRows: 			$this.data( 'slider-rows' ), 		// For box animations
-			    animSpeed: 			$this.data( 'slider-speed' ), 		// Slide transition speed
-			    pauseTime: 			$this.data( 'slider-time' ), 		// How long each slide will show
-			    startSlide: 		$this.data( 'slider-start' ), 		// Set starting Slide (0 index)
-			    directionNav: 		$this.data( 'slider-direction' ), 	// Next & Prev navigation
-			    controlNav: 		$this.data( 'slider-control' ), 	// 1,2,3... navigation
-			    controlNavThumbs: 	$this.data( 'slider-thumbs' ), 		// Use thumbnails for Control Nav
-			    pauseOnHover: 		$this.data( 'slider-hover' ), 		// Stop animation while hovering
-			    manualAdvance: 		$this.data( 'slider-manual' ), 		// Force manual transitions
-			    prevText: 			$this.data( 'slider-prev' ), 		// Prev directionNav text
-			    nextText: 			$this.data( 'slider-next' ), 		// Next directionNav text
-			    randomStart: 		$this.data( 'slider-random' ), 		// Start on a random slide
-			    beforeChange: function( e ){       						// Triggers before a slide transition
+			    effect: 			$this.data( 'slider-effect' ), 									// sliceDown | sliceDownLeft | sliceUp | sliceUpLeft | sliceUpDown | sliceUpDownLeft | fold | fade | random | slideInRight | slideInLeft | boxRandom | boxRain | boxRainReverse | boxRainGrow | boxRainGrowReverse
+			    slices: 			$this.data( 'slider-slices' ), 									// For slice animations
+			    boxCols: 			$this.data( 'slider-cols' ), 									// For box animations
+			    boxRows: 			$this.data( 'slider-rows' ), 									// For box animations
+			    animSpeed: 			$this.data( 'slider-speed' ), 									// Slide transition speed
+			    pauseTime: 			$this.data( 'slider-time' ), 									// How long each slide will show
+			    startSlide: 		$this.data( 'slider-start' ), 									// Set starting Slide (0 index)
+			    directionNav: 		$this.data( 'slider-direction' ), 								// Next & Prev navigation
+			    controlNav: 		$this.data( 'slider-control' ), 								// 1,2,3... navigation
+			    controlNavThumbs: 	$this.data( 'slider-thumbs' ), 									// Use thumbnails for Control Nav
+			    pauseOnHover: 		$this.data( 'slider-hover' ), 									// Stop animation while hovering
+			    manualAdvance: 		$this.data( 'slider-manual' ), 									// Force manual transitions
+			    prevText: 			'', 			// Prev directionNav text
+			    nextText: 			'', 			// Next directionNav text
+			    randomStart: 		$this.data( 'slider-random' ), 									// Start on a random slide
+			    beforeChange: function( e ){       													// Triggers before a slide transition
 
 			    	$this.find( '.nivo-caption' ).captionMoveOut( 'before', this );
 
@@ -973,6 +975,9 @@
 
 			    },
 			    afterLoad: function( e ){          						// Triggers when slider has loaded
+
+			    	$this.find( 'a.nivo-nextNav' ).append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' );
+			    	$this.find( 'a.nivo-prevNav' ).append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' );
 			    	
 			    	$body.trigger( 'nivoLoaded', [ $this ] );
 			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this );
@@ -1167,6 +1172,7 @@
 		var checkScroll	= function(){
 
 			if( anchor && anchor != 'none' ){
+
 				if( delay ){
 					setTimeout( pageScroll, delay );
 				}else{
@@ -1177,7 +1183,6 @@
 
 				$body.css( 'pointer-events', 'all' );
 				//$body.css( 'opacity', 1 );
-
 			}
     	};
 
@@ -1440,6 +1445,7 @@
 		$(window).load(function(e){
 
 			var loc = $location.attr( 'href' );
+
 			if( loc.indexOf( '#' ) > -1 ){
 				$body.data( 'anchor', loc.split('#')[1] );
 				window.location.replace("#");

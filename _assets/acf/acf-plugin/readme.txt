@@ -107,6 +107,9 @@ http://support.advancedcustomfields.com/
 
 == Changelog ==
 
+= 5.1.9.1 =
+* Language: Fixed corrupt language files
+
 = 5.1.9 =
 * Image field: Added new settings to restrict uploads (width, height, size, type)
 * File field: Same as above

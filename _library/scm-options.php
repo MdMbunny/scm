@@ -326,10 +326,14 @@
     if ( ! function_exists( 'scm_options_get_bg_image' ) ) {
         function scm_options_get_bg_image( $type = '', $target = 'option', $add = false ) {
 
-			$bg_image = scm_field( 'background_image' . $type, 'none', $target, 1, 'url(', ')' );
+			$bg_image = scm_field( 'background_image' . $type, 'none', $target, 1 );
 
-			if( $bg_image == 'none' && ( $type || $target != 'option' ) )
-				return '';
+			if( $bg_image === 'none' ){
+                if( $type || $target !== 'option' )
+				    return '';
+            }else{
+                $bg_image = 'url(' . $bg_image . ')';
+            }
 
 			return ( !$add ? $bg_image : 'background-image:' . $bg_image . ';' );
 

@@ -139,9 +139,10 @@
 
             if( get_field( 'select_slider', 'option' ) == 'nivo' ){
                 wp_register_style( 'nivo', SCM_URI_CSS . 'nivoSlider-3.2/nivo-slider.css', false, SCM_SCRIPTS_VERSION, 'all' );
-                wp_register_style( 'nivo-default', SCM_URI_CSS . 'nivoSlider-3.2/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
+                //wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
+                wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/scm/scm.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 wp_enqueue_style( 'nivo' );
-                wp_enqueue_style( 'nivo-default' );
+                wp_enqueue_style( 'nivo-theme' );
             }
 
             // Font Awesome
@@ -227,7 +228,7 @@
             
             wp_register_script( 'imagesloaded', SCM_URI_JS . 'imagesloaded-3.1.8/imagesloaded.pkgd.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'imagesloaded' );
-           
+
             // Fancybox
 
             if( get_field( 'tools_fancybox_active', 'option' ) ){
@@ -293,7 +294,7 @@
         function scm_site_assets_styles_inline() {
 
             $html = scm_options_get( 'bg_color', 'loading', 1 );
-            $html .= ( scm_options_get( 'bg_image', 'loading', 1 ) ?: '' );// 'background-image:url(' . SCM_URI_IMG . '/loading.gif);' );
+            $html .= ( scm_options_get( 'bg_image', 'loading', 1 ) ?: '' );
             $html .= scm_options_get( 'bg_size', 'loading', 1 );
 
             $font = scm_options_get( 'font', 'option', 1 );

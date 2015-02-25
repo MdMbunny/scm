@@ -1,14 +1,14 @@
 /*
-Skin Name: Nivo Slider Default Theme
-Skin URI: http://nivo.dev7studios.com
-Description: The default skin for the Nivo Slider.
-Version: 1.3
-Author: Gilbert Pellegrom
-Author URI: http://dev7studios.com
+Skin Name: Nivo Slider SCM Theme
+Skin URI: http://studiocreativo-m.it
+Description: SCM skin for the Nivo Slider.
+Version: 1.0
+Author: SCM
+Author URI: http://studiocreativo-m.it
 Supports Thumbs: true
 */
 
-.theme-default .nivoSlider {
+.theme-scm .nivoSlider {
 	position:relative;
 	background:#fff url(loading.gif) no-repeat 50% 50%;
     margin-bottom:10px;
@@ -16,22 +16,23 @@ Supports Thumbs: true
     -moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
     box-shadow: 0px 1px 5px 0px #4a4a4a;
 }
-.theme-default .nivoSlider img {
+.theme-scm .nivoSlider img {
 	position:absolute;
 	top:0px;
 	left:0px;
 	display:none;
 }
-.theme-default .nivoSlider a {
+.theme-scm .nivoSlider a {
 	border:0;
 	display:block;
 }
 
-.theme-default .nivo-controlNav {
+.theme-scm .nivo-controlNav {
 	text-align: center;
 	padding: 20px 0;
 }
-.theme-default .nivo-controlNav a {
+
+.theme-scm .nivo-controlNav a {
 	display:inline-block;
 	width:22px;
 	height:22px;
@@ -40,53 +41,56 @@ Supports Thumbs: true
 	border:0;
 	margin: 0 2px;
 }
-.theme-default .nivo-controlNav a.active {
+
+.theme-scm .nivo-controlNav a.active {
 	background-position:0 -22px;
 }
 
-.theme-default .nivo-directionNav a {
-	display:block;
-	width:30px;
-	height:30px;
-	background:url(arrows.png) no-repeat;
-	text-indent:-9999px;
-	border:0;
+.theme-scm .nivo-directionNav a {
 	opacity: 0;
 	-webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     -o-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out;
 }
-.theme-default:hover .nivo-directionNav a { opacity: 1; }
-.theme-default a.nivo-nextNav {
-	background-position:-30px 0;
-	right:15px;
-}
-.theme-default a.nivo-prevNav {
-	left:15px;
+
+.theme-scm:hover .nivo-directionNav a {
+	opacity: .7;
 }
 
-.theme-default .nivo-caption {
+.theme-scm .nivo-directionNav a:hover {
+	opacity: 1;
+}
+
+.theme-scm:hover a.nivo-nextNav {
+	right:0px;
+}
+
+.theme-scm:hover a.nivo-prevNav {
+	left:0px;
+}
+
+.theme-scm .nivo-caption {
     font-family: Helvetica, Arial, sans-serif;
 }
-.theme-default .nivo-caption a {
+.theme-scm .nivo-caption a {
     color:#fff;
     border-bottom:1px dotted #fff;
 }
-.theme-default .nivo-caption a:hover {
+.theme-scm .nivo-caption a:hover {
     color:#fff;
 }
 
-.theme-default .nivo-controlNav.nivo-thumbs-enabled {
+.theme-scm .nivo-controlNav.nivo-thumbs-enabled {
 	width: 100%;
 }
-.theme-default .nivo-controlNav.nivo-thumbs-enabled a {
+.theme-scm .nivo-controlNav.nivo-thumbs-enabled a {
 	width: auto;
 	height: auto;
 	background: none;
 	margin-bottom: 5px;
 }
-.theme-default .nivo-controlNav.nivo-thumbs-enabled img {
+.theme-scm .nivo-controlNav.nivo-thumbs-enabled img {
 	display: block;
 	width: 120px;
 	height: auto;

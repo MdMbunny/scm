@@ -16,7 +16,6 @@ if ( ! isset( $content_width ) ) {
 *****************************************************
 */
 
-
 //Getting website data
 	
 	$SCM_site			 = site_url();
@@ -40,7 +39,6 @@ if ( ! isset( $content_width ) ) {
 	}
 
 	$SCM_types = array();
-	//$SCM_custom_fields = array();
 	$SCM_back_query;
 	$SCM_galleries = array();
 
