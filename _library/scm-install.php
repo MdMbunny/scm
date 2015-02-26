@@ -257,6 +257,15 @@
             $plugins = array(
 
                 array(
+                    'name'               => 'ACF Sync', // The plugin name.
+                    'slug'               => 'acf-pro-sync', // The plugin slug (typically the folder name).
+                    'source'             => 'acf-pro-sync.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
                     'name'               => 'ACF Hidden Field', // The plugin name.
                     'slug'               => 'acf-hidden-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-hidden-master.zip', // The plugin source.

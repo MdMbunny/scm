@@ -49,11 +49,11 @@
             "mime_types": ""
         },
         {
-            "key": "field_54bfee6704993",
+            "key": "field_54eefe1680f26",
             "label": "Anteprima",
             "name": "articoli_excerpt",
             "prefix": "",
-            "type": "wysiwyg",
+            "type": "limiter",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -62,10 +62,8 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 0
+            "character_number": 350,
+            "display_characters": 0
         },
         {
             "key": "field_54b465d20c302",
@@ -117,5 +115,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424887307
+    "modified": 1424948845
 }
