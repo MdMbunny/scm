@@ -60,7 +60,7 @@
         function scm_save_posts_onupdate($upgrader_object, $options){
 
             if ( !empty($upgrader_object->result['destination_name']) ){
-                scm_save_posts();
+                //scm_save_posts();
             }else{
                 return false;
             }
