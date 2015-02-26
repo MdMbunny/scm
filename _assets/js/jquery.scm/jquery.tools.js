@@ -20,11 +20,6 @@
 
 ( function($){
 
-	/*if( location.href.indexOf( '?' ) > -1 ){
-		location.replace( location.protocol + '//' + location.host + location.pathname );
-	return;
-}*/
-
 // ******************************************************
 // ******************************************************
 // *      jQuery INIT
@@ -1449,7 +1444,7 @@
 				window.location.replace("#");
 
 				if ( typeof window.history.replaceState == 'function' ) {
-				  history.replaceState({}, '', location.href.slice(0, -1));
+				 window.history.replaceState({}, '', location.href.slice(0, -1));
 				}
 			}
 

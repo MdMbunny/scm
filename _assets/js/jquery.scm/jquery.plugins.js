@@ -264,9 +264,9 @@
 			}
 
 			if( !ext ){
-
-				window.location.replace( link );
-				return this;
+				
+				window.location = link;
+				return false;
 
 			}else{
 

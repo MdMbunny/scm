@@ -20,6 +20,7 @@
 // getAllByString:      get arrays by $string   (contains $string)
 // getByPrefix:         get array by $prefix    (starts with $prefix)
 // getAllByPrefix:      get arrays by $prefix   (starts with $prefix)
+// getTagContent:       get the content of a HTML tag
 // indent:              return or echo n tab indent ( add optional line break )
 // lbreak:              return n line break
 // addHTTP:             add http:// to a link
@@ -198,6 +199,19 @@ function getAllByPrefix( $arr, $prefix, $key = false ){
         }
     }
     return $arr;
+}
+
+/**
+* Get HTML Tag Content
+* @param string $string the string (html) where to search for $tagname
+* @param string $tagname the html tag in $string where to search for content
+* @author SCM
+*/
+
+function getTagContent( $string = '', $tagname = 'p' ){
+    $pattern = "/<$tagname ?.*>(.*)<\/$tagname>/";
+    preg_match($pattern, $string, $matches);
+    return $matches[1];
 }
 
 /**
