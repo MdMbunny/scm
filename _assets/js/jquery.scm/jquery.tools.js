@@ -838,7 +838,7 @@
 	// +++ todo: passare data a figli (animazioni caption, più livelli, ecc)
 	// queste 2 funzioni vengono riviste
 
-	$.fn.captionMoveIn = function( state, slider ){	
+	$.fn.captionMoveIn = function( state, slider, speed ){	
 
 		var $slider = $( slider );
 		$slider.css( 'pointer-events', 'none' );
@@ -854,7 +854,7 @@
 
 					'left': '0px'
 
-				}, 1000, function(){
+				}, speed, function(){
 					$slider.css( 'pointer-events', 'all' );
 				} );
 
@@ -862,7 +862,7 @@
 
 	}
 
-	$.fn.captionMoveOut = function( state, slider ){
+	$.fn.captionMoveOut = function( state, slider, speed ){
 
 		var $slider = $( slider );
 		$slider.css( 'pointer-events', 'none' );
@@ -878,7 +878,7 @@
 
 				'left': to + 'px'
 
-			}, 1000, function(){
+			}, speed, function(){
 			} );
 
 		});
@@ -947,12 +947,12 @@
 			    randomStart: 		$this.data( 'slider-random' ), 									// Start on a random slide
 			    beforeChange: function( e ){       													// Triggers before a slide transition
 
-			    	$this.find( '.nivo-caption' ).captionMoveOut( 'before', this );
+			    	$this.find( '.nivo-caption' ).captionMoveOut( 'before', this, $this.data( 'slider-speed' ) );
 
 			    },
 			    afterChange: function( e ){        						// Triggers after a slide transition
 
-			    	$this.find( '.nivo-caption' ).captionMoveIn( 'after', this );
+			    	$this.find( '.nivo-caption' ).captionMoveIn( 'after', this, $this.data( 'slider-speed' ) );
 
 			    },
 			    slideshowEnd: function( e ){       						// Triggers after all slides have been shown
@@ -1039,7 +1039,7 @@
 			    	
 			    	$body.trigger( 'nivoLoaded', [ $this ] );
 			    	//$this.find( '.nivo-caption' ).addClass( 'box' );
-			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this );
+			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this, $this.data( 'slider-speed' ) );
 			    }
 			});
 

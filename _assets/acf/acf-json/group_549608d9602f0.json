@@ -1,352 +1,352 @@
 {
-    "key": "group_549608d9602f0",
-    "title": "Soggetto",
-    "fields": [
-        {
-            "key": "field_54eff048432b8",
-            "label": "Tipologia",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left"
-        },
-        {
-            "key": "field_54eff052432b9",
-            "label": "Tipologia",
-            "name": "soggetti_tipologia",
-            "prefix": "",
-            "type": "taxonomy",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "taxonomy": "categories-scm-soggetti",
-            "field_type": "checkbox",
-            "allow_null": 0,
-            "load_save_terms": 0,
-            "return_format": "id",
-            "multiple": 0
-        },
-        {
-            "key": "field_548f73240d5a4",
-            "label": "Logo",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left"
-        },
-        {
-            "key": "field_538b6833d514e",
-            "label": "Logo Positivo",
-            "name": "soggetti_logo",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "full",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
-            "key": "field_548f730b0d5a3",
-            "label": "Logo Negativo",
-            "name": "soggetti_logo_negativo",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "full",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
-            "key": "field_54efe598ab460",
-            "label": "Icona",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left"
-        },
-        {
-            "key": "field_54b91d62a4206",
-            "label": "Icona",
-            "name": "soggetti_icona",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "full",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
-            "key": "field_54b91d75a4207",
-            "label": "Icona Negativo",
-            "name": "soggetti_icona_negativo",
-            "prefix": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 50,
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "full",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
-            "key": "field_548f539a3b6d9",
-            "label": "Luogo",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left"
-        },
-        {
-            "key": "field_548ee690a8b1a",
-            "label": "Luoghi",
-            "name": "soggetti_luoghi",
-            "prefix": "",
-            "type": "relationship",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "scm-luoghi"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search"
-            ],
-            "elements": "",
-            "max": "",
-            "return_format": "object"
-        },
-        {
-            "key": "field_54b91db1a4208",
-            "label": "Dati",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left"
-        },
-        {
-            "key": "field_54efe5bcab461",
-            "label": "Link",
-            "name": "soggetti_link",
-            "prefix": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "http:\/\/www.esempio.com"
-        },
-        {
-            "key": "field_54b91dc7a4209",
-            "label": "Intestazione",
-            "name": "soggetti_Intestazione",
-            "prefix": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "Nome Completo Azienda S.p.a.",
-            "prepend": "",
-            "append": "",
-            "maxlength": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
-            "key": "field_54b91e11a420a",
-            "label": "P.IVA",
-            "name": "soggetti_piva",
-            "prefix": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "0123456789101112",
-            "prepend": "",
-            "append": "",
-            "maxlength": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
-            "key": "field_54efe672c419b",
-            "label": "Codice Fiscale",
-            "name": "soggetti_cf",
-            "prefix": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "#",
-            "prepend": "",
-            "append": "",
-            "maxlength": "",
-            "readonly": 0,
-            "disabled": 0
-        }
-    ],
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "scm-soggetti"
-            },
-            {
-                "param": "post_type",
-                "operator": "!=",
-                "value": "post"
-            }
-        ]
-    ],
-    "menu_order": 504,
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": [
-        "the_content",
-        "excerpt",
-        "custom_fields",
-        "discussion",
-        "comments",
-        "revisions",
-        "slug",
-        "author",
-        "format",
-        "page_attributes",
-        "featured_image",
-        "categories",
-        "tags",
-        "send-trackbacks"
-    ],
-    "modified": 1425027418,
-    "local": "json"
+  "key":"group_549608d9602f0",
+  "title":"Soggetto",
+  "fields":[
+    {
+      "key":"field_54eff048432b8",
+      "label":"Tipologia",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"left"
+    },
+    {
+      "key":"field_54eff052432b9",
+      "label":"Tipologia",
+      "name":"soggetti_tipologia",
+      "prefix":"",
+      "type":"taxonomy",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "taxonomy":"categories-scm-soggetti",
+      "field_type":"checkbox",
+      "allow_null":0,
+      "load_save_terms":0,
+      "return_format":"id",
+      "multiple":0
+    },
+    {
+      "key":"field_548f73240d5a4",
+      "label":"Logo",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"left"
+    },
+    {
+      "key":"field_538b6833d514e",
+      "label":"Logo Positivo",
+      "name":"soggetti_logo",
+      "prefix":"",
+      "type":"image",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":50,
+        "class":"",
+        "id":""
+      },
+      "return_format":"url",
+      "preview_size":"full",
+      "library":"all",
+      "min_width":"",
+      "min_height":"",
+      "min_size":"",
+      "max_width":"",
+      "max_height":"",
+      "max_size":"",
+      "mime_types":""
+    },
+    {
+      "key":"field_548f730b0d5a3",
+      "label":"Logo Negativo",
+      "name":"soggetti_logo_negativo",
+      "prefix":"",
+      "type":"image",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":50,
+        "class":"",
+        "id":""
+      },
+      "return_format":"url",
+      "preview_size":"full",
+      "library":"all",
+      "min_width":"",
+      "min_height":"",
+      "min_size":"",
+      "max_width":"",
+      "max_height":"",
+      "max_size":"",
+      "mime_types":""
+    },
+    {
+      "key":"field_54efe598ab460",
+      "label":"Icona",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"left"
+    },
+    {
+      "key":"field_54b91d62a4206",
+      "label":"Icona",
+      "name":"soggetti_icona",
+      "prefix":"",
+      "type":"image",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":50,
+        "class":"",
+        "id":""
+      },
+      "return_format":"url",
+      "preview_size":"full",
+      "library":"all",
+      "min_width":"",
+      "min_height":"",
+      "min_size":"",
+      "max_width":"",
+      "max_height":"",
+      "max_size":"",
+      "mime_types":""
+    },
+    {
+      "key":"field_54b91d75a4207",
+      "label":"Icona Negativo",
+      "name":"soggetti_icona_negativo",
+      "prefix":"",
+      "type":"image",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":50,
+        "class":"",
+        "id":""
+      },
+      "return_format":"url",
+      "preview_size":"full",
+      "library":"all",
+      "min_width":"",
+      "min_height":"",
+      "min_size":"",
+      "max_width":"",
+      "max_height":"",
+      "max_size":"",
+      "mime_types":""
+    },
+    {
+      "key":"field_548f539a3b6d9",
+      "label":"Luogo",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"left"
+    },
+    {
+      "key":"field_548ee690a8b1a",
+      "label":"Luoghi",
+      "name":"soggetti_luoghi",
+      "prefix":"",
+      "type":"relationship",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "post_type":[
+        "scm-luoghi"
+      ],
+      "taxonomy":"",
+      "filters":[
+        "search"
+      ],
+      "elements":"",
+      "max":"",
+      "return_format":"object"
+    },
+    {
+      "key":"field_54b91db1a4208",
+      "label":"Dati",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"left"
+    },
+    {
+      "key":"field_54efe5bcab461",
+      "label":"Link",
+      "name":"soggetti_link",
+      "prefix":"",
+      "type":"url",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "default_value":"",
+      "placeholder":"http:\/\/www.esempio.com"
+    },
+    {
+      "key":"field_54b91dc7a4209",
+      "label":"Intestazione",
+      "name":"soggetti_Intestazione",
+      "prefix":"",
+      "type":"text",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "default_value":"",
+      "placeholder":"Nome Completo Azienda S.p.a.",
+      "prepend":"",
+      "append":"",
+      "maxlength":"",
+      "readonly":0,
+      "disabled":0
+    },
+    {
+      "key":"field_54b91e11a420a",
+      "label":"P.IVA",
+      "name":"soggetti_piva",
+      "prefix":"",
+      "type":"text",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "default_value":"",
+      "placeholder":"0123456789101112",
+      "prepend":"",
+      "append":"",
+      "maxlength":"",
+      "readonly":0,
+      "disabled":0
+    },
+    {
+      "key":"field_54efe672c419b",
+      "label":"Codice Fiscale",
+      "name":"soggetti_cf",
+      "prefix":"",
+      "type":"text",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "default_value":"",
+      "placeholder":"#",
+      "prepend":"",
+      "append":"",
+      "maxlength":"",
+      "readonly":0,
+      "disabled":0
+    }
+  ],
+  "location":[
+    [
+      {
+        "param":"post_type",
+        "operator":"==",
+        "value":"scm-soggetti"
+      },
+      {
+        "param":"post_type",
+        "operator":"!=",
+        "value":"post"
+      }
+    ]
+  ],
+  "menu_order":504,
+  "position":"normal",
+  "style":"default",
+  "label_placement":"top",
+  "instruction_placement":"label",
+  "hide_on_screen":[
+    "the_content",
+    "excerpt",
+    "custom_fields",
+    "discussion",
+    "comments",
+    "revisions",
+    "slug",
+    "author",
+    "format",
+    "page_attributes",
+    "featured_image",
+    "categories",
+    "tags",
+    "send-trackbacks"
+  ],
+  "modified":1425032714,
+  "local":"json"
 }

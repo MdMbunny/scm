@@ -1,116 +1,116 @@
 {
-    "key": "group_549608d839678",
-    "title": "Documento",
-    "fields": [
-        {
-            "key": "field_5474d07bdfb29",
-            "label": "Categoria",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top"
-        },
-        {
-            "key": "field_5474d089dfb2a",
-            "label": "Seleziona una Categoria",
-            "name": "documenti_categoria",
-            "prefix": "",
-            "type": "taxonomy",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "taxonomy": "category",
-            "field_type": "radio",
-            "allow_null": 0,
-            "load_save_terms": 1,
-            "return_format": "id",
-            "multiple": 0
-        },
-        {
-            "key": "field_5474d368d6b6c",
-            "label": "File",
-            "name": "",
-            "prefix": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top"
-        },
-        {
-            "key": "field_538b6d9943f54",
-            "label": "Carica un file",
-            "name": "documenti_file",
-            "prefix": "",
-            "type": "file",
-            "instructions": "(pdf, ppt, xls, doc, txt, rtf, jpg, png, zip, rar)",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "library": "all",
-            "return_format": "url",
-            "min_size": 0,
-            "max_size": 0,
-            "mime_types": ""
-        }
-    ],
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "post"
-            },
-            {
-                "param": "post_type",
-                "operator": "!=",
-                "value": "post"
-            }
-        ]
-    ],
-    "menu_order": 500,
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": [
-        "the_content",
-        "excerpt",
-        "custom_fields",
-        "discussion",
-        "comments",
-        "revisions",
-        "slug",
-        "author",
-        "format",
-        "page_attributes",
-        "featured_image",
-        "categories",
-        "tags",
-        "send-trackbacks"
-    ],
-    "modified": 1425027418,
-    "local": "json"
+  "key":"group_549608d839678",
+  "title":"Documento",
+  "fields":[
+    {
+      "key":"field_5474d07bdfb29",
+      "label":"Categoria",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"top"
+    },
+    {
+      "key":"field_5474d089dfb2a",
+      "label":"Seleziona una Categoria",
+      "name":"documenti_categoria",
+      "prefix":"",
+      "type":"taxonomy",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "taxonomy":"category",
+      "field_type":"radio",
+      "allow_null":0,
+      "load_save_terms":1,
+      "return_format":"id",
+      "multiple":0
+    },
+    {
+      "key":"field_5474d368d6b6c",
+      "label":"File",
+      "name":"",
+      "prefix":"",
+      "type":"tab",
+      "instructions":"",
+      "required":0,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "placement":"top"
+    },
+    {
+      "key":"field_538b6d9943f54",
+      "label":"Carica un file",
+      "name":"documenti_file",
+      "prefix":"",
+      "type":"file",
+      "instructions":"(pdf, ppt, xls, doc, txt, rtf, jpg, png, zip, rar)",
+      "required":1,
+      "conditional_logic":0,
+      "wrapper":{
+        "width":"",
+        "class":"",
+        "id":""
+      },
+      "library":"all",
+      "return_format":"url",
+      "min_size":0,
+      "max_size":0,
+      "mime_types":""
+    }
+  ],
+  "location":[
+    [
+      {
+        "param":"post_type",
+        "operator":"==",
+        "value":"post"
+      },
+      {
+        "param":"post_type",
+        "operator":"!=",
+        "value":"post"
+      }
+    ]
+  ],
+  "menu_order":500,
+  "position":"normal",
+  "style":"default",
+  "label_placement":"top",
+  "instruction_placement":"label",
+  "hide_on_screen":[
+    "the_content",
+    "excerpt",
+    "custom_fields",
+    "discussion",
+    "comments",
+    "revisions",
+    "slug",
+    "author",
+    "format",
+    "page_attributes",
+    "featured_image",
+    "categories",
+    "tags",
+    "send-trackbacks"
+  ],
+  "modified":1425032706,
+  "local":"json"
 }
