@@ -275,8 +275,7 @@
                                     "choices": {
                                         "post": "Articoli",
                                         "scm-soggetti": "Soggetti",
-                                        "scm-luoghi": "Luoghi",
-                                        "scm-gallerie": "Gallerie"
+                                        "scm-luoghi": "Luoghi"
                                     },
                                     "default_value": {
                                         "": ""
@@ -2552,5 +2551,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1425013746
+    "modified": 1425027418,
+    "local": "json"
 }

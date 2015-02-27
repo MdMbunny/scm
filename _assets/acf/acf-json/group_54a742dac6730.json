@@ -59,7 +59,9 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -472,6 +474,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424971419,
+    "modified": 1425027417,
     "local": "json"
 }

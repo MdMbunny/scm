@@ -336,7 +336,9 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -366,7 +368,9 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -396,7 +400,9 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto"
+                "Roboto": "Roboto",
+                "Open Sans": "Open Sans",
+                "Merriweather Sans": "Merriweather Sans"
             },
             "default_value": {
                 "default": "default"
@@ -968,5 +974,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424986964
+    "modified": 1425027419,
+    "local": "json"
 }

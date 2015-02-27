@@ -131,9 +131,8 @@ function scm_force_fallback( $force_fallback ) {
 	        	$field = ( $field !== 'default' ? $field : '' );
 
 	        	if( is_array( $fallback ) ){
-	        		if( !is_array( $field ) )
-	        			$field = array();
-	        		$field = ( sizeof( $field ) > 0 ? $field : array() );
+	        		if( is_array( $field ) )
+	        			$field = ( sizeof( $field ) > 0 ? $field : '' );
 	        	}
 				
 	        	if( $field !== '' ){

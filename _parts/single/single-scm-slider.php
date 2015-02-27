@@ -102,7 +102,7 @@ $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
             $caption .= indent( $indent + 2 ) . '</div>' . lbreak();
         //}
 
-        $title = ( $caption ? ' title="#' . $caption_id . '"' : '' );
+        $title = ( sizeof( $slides ) > 1 ? ' title="#' . $caption_id . '"' : '' );
         
         $images .= indent( $indent + 3 );
         $images .= ( $link ? '<a href="' . $link . '">' : '' );
