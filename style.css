@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.9.12
+Version:			v1.10.0
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -999,7 +999,7 @@ body.mouse .sub-menu li:hover > ul {
 	padding: 0;
 }
 
-.slider img.slide-image{
+.slider img{
 	height: auto !important; /* Prevent Image Stretching */
 	width: 100%;
 	max-width: none;
@@ -1010,6 +1010,15 @@ body.mouse .sub-menu li:hover > ul {
 	transition: all 0;
 	-webkit-transition: all 0;
 }
+
+.slider .caption img{
+	display: inline-block;
+	position: static;
+	width: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
 /*
 .slider .box > *{
 	padding: 1em 2em;
