@@ -80,7 +80,10 @@
                 "id": ""
             },
             "library": "all",
-            "return_format": "url"
+            "return_format": "url",
+            "min_size": 0,
+            "max_size": 0,
+            "mime_types": ""
         },
         {
             "key": "field_538b7e75e44ba",
@@ -261,6 +264,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424622163,
+    "modified": 1424971421,
     "local": "json"
 }

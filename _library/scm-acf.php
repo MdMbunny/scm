@@ -130,8 +130,11 @@ function scm_force_fallback( $force_fallback ) {
 
 	        	$field = ( $field !== 'default' ? $field : '' );
 
-	        	if( is_array( $fallback ) && is_array( $field ) )
-	        		$field = ( sizeof( $field ) > 0 ? $field : '' );
+	        	if( is_array( $fallback ) ){
+	        		if( !is_array( $field ) )
+	        			$field = array();
+	        		$field = ( sizeof( $field ) > 0 ? $field : array() );
+	        	}
 				
 	        	if( $field !== '' ){
 	        		if( $before )
@@ -161,8 +164,11 @@ function scm_force_fallback( $force_fallback ) {
 
 	        	$field = ( $field !== 'default' ? $field : '' );
 
-	        	if( is_array( $fallback ) && is_array( $field ) )
-		        	$field = ( sizeof( $field ) > 0 ? $field : '' );
+	        	if( is_array( $fallback ) ){
+	        		if( !is_array( $field ) )
+	        			$field = array();
+	        		$field = ( sizeof( $field ) > 0 ? $field : array() );
+	        	}
 
 		        $field = ( $field !== '' ? $field : $fallback );
 
@@ -295,6 +301,7 @@ function scm_force_fallback( $force_fallback ) {
 					".h0" => ".h0",
 					"strong" => "strong",
 					"div" => "div",
+					"span" => "span",
 				);
 
 	        elseif( strpos( $list, 'select_default_headings_classes' ) !== false ):

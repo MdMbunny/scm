@@ -17,7 +17,7 @@
                 "id": ""
             },
             "choices": {
-                "primary": "Menu Principale IT"
+                "primary": "Menu Principale"
             },
             "default_value": {
                 "": ""
@@ -124,9 +124,7 @@
             "choices": {
                 "default": "Default",
                 "no": "No Google font",
-                "Roboto": "Roboto",
-                "Open Sans": "Open Sans",
-                "Merriweather Sans": "Merriweather Sans"
+                "Roboto": "Roboto"
             },
             "default_value": {
                 "default": "default"
@@ -191,7 +189,8 @@
                 "class": "",
                 "id": ""
             },
-            "message": ""
+            "message": "",
+            "esc_html": 0
         },
         {
             "key": "field_54d3a2a47f146",
@@ -739,7 +738,8 @@
                 "class": "",
                 "id": ""
             },
-            "message": ""
+            "message": "",
+            "esc_html": 0
         },
         {
             "key": "field_54d0dfb7b71d6",
@@ -1321,7 +1321,14 @@
             },
             "return_format": "url",
             "preview_size": "thumbnail",
-            "library": "all"
+            "library": "all",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0,
+            "mime_types": ""
         },
         {
             "key": "field_54d0e3220b9e7",
@@ -1337,7 +1344,8 @@
                 "class": "",
                 "id": ""
             },
-            "message": ""
+            "message": "",
+            "esc_html": 0
         },
         {
             "key": "field_54d0dfb7b70dc",
@@ -1470,6 +1478,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424622164,
+    "modified": 1424971422,
     "local": "json"
 }

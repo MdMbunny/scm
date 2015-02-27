@@ -117,7 +117,11 @@
                 "id": ""
             },
             "choices": {
-                "": ""
+                "square": "Quadrati",
+                "square_neg": "Quadrati, negativo",
+                "circle": "Cerchi",
+                "rounded": "Arrotondati",
+                "hexagonal": "Esagonali"
             },
             "default_value": {
                 "": ""
@@ -201,5 +205,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424748958
+    "modified": 1424971422,
+    "local": "json"
 }

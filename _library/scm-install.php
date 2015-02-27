@@ -147,6 +147,7 @@
                     $SCM_types['objects'][$slug] = new Custom_Type( $type );
                 }
             }
+            //scm_save_posts();
         }
     }
 

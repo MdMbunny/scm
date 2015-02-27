@@ -275,7 +275,8 @@
                                     "choices": {
                                         "post": "Articoli",
                                         "scm-soggetti": "Soggetti",
-                                        "scm-luoghi": "Luoghi"
+                                        "scm-luoghi": "Luoghi",
+                                        "scm-gallerie": "Gallerie"
                                     },
                                     "default_value": {
                                         "": ""
@@ -1389,7 +1390,8 @@
                                         ".h9": ".h9",
                                         ".h0": ".h0",
                                         "strong": "strong",
-                                        "div": "div"
+                                        "div": "div",
+                                        "span": "span"
                                     },
                                     "default_value": {
                                         "": ""
@@ -1726,7 +1728,7 @@
                                     "required": 0,
                                     "conditional_logic": 0,
                                     "wrapper": {
-                                        "width": "",
+                                        "width": 50,
                                         "class": "",
                                         "id": ""
                                     },
@@ -1738,6 +1740,29 @@
                                     "multiple": 0,
                                     "return_format": "object",
                                     "ui": 1
+                                },
+                                {
+                                    "key": "field_54efe757eac6b",
+                                    "label": "Link",
+                                    "name": "soggetto_link",
+                                    "prefix": "",
+                                    "type": "radio",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": 50,
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "no": "Nessun Link",
+                                        "default": "Link Soggetto"
+                                    },
+                                    "other_choice": 1,
+                                    "save_other_choice": 0,
+                                    "default_value": "no",
+                                    "layout": "horizontal"
                                 },
                                 {
                                     "key": "field_54b5ae0e69ec5",
@@ -1797,7 +1822,7 @@
                                                     "label": "Larghezza",
                                                     "name": "larghezza",
                                                     "prefix": "",
-                                                    "type": "number",
+                                                    "type": "text",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": 0,
@@ -1806,13 +1831,11 @@
                                                         "class": "",
                                                         "id": ""
                                                     },
-                                                    "default_value": 100,
-                                                    "placeholder": 100,
+                                                    "default_value": "",
+                                                    "placeholder": "larghezza massima",
                                                     "prepend": "",
-                                                    "append": "%",
-                                                    "min": "",
-                                                    "max": "",
-                                                    "step": "",
+                                                    "append": "",
+                                                    "maxlength": "",
                                                     "readonly": 0,
                                                     "disabled": 0
                                                 }
@@ -1860,7 +1883,7 @@
                                                     "label": "Dimensione",
                                                     "name": "dimensione",
                                                     "prefix": "",
-                                                    "type": "number",
+                                                    "type": "text",
                                                     "instructions": "",
                                                     "required": 0,
                                                     "conditional_logic": 0,
@@ -1870,12 +1893,10 @@
                                                         "id": ""
                                                     },
                                                     "default_value": "",
-                                                    "placeholder": "auto",
+                                                    "placeholder": "dimensione massima",
                                                     "prepend": "",
-                                                    "append": "px",
-                                                    "min": "",
-                                                    "max": "",
-                                                    "step": "",
+                                                    "append": "",
+                                                    "maxlength": "",
                                                     "readonly": 0,
                                                     "disabled": 0
                                                 }
@@ -1918,10 +1939,11 @@
                                                         ".h9": ".h9",
                                                         ".h0": ".h0",
                                                         "strong": "strong",
-                                                        "div": "div"
+                                                        "div": "div",
+                                                        "span": "span"
                                                     },
                                                     "default_value": {
-                                                        "": ""
+                                                        "span": "span"
                                                     },
                                                     "allow_null": 0,
                                                     "multiple": 0,
@@ -1970,10 +1992,64 @@
                                                         ".h9": ".h9",
                                                         ".h0": ".h0",
                                                         "strong": "strong",
-                                                        "div": "div"
+                                                        "div": "div",
+                                                        "span": "span"
                                                     },
                                                     "default_value": {
-                                                        "": ""
+                                                        "span": "span"
+                                                    },
+                                                    "allow_null": 0,
+                                                    "multiple": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": "",
+                                                    "disabled": 0,
+                                                    "readonly": 0
+                                                }
+                                            ],
+                                            "min": "",
+                                            "max": ""
+                                        },
+                                        {
+                                            "key": "54efe73beac69",
+                                            "name": "cf",
+                                            "label": "Codice Fiscale",
+                                            "display": "block",
+                                            "sub_fields": [
+                                                {
+                                                    "key": "field_54efe73beac6a",
+                                                    "label": "Tag",
+                                                    "name": "select_complete_headings",
+                                                    "prefix": "",
+                                                    "type": "select",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "choices": {
+                                                        "select_headings_1": "Primario",
+                                                        "select_headings_2": "Secondario",
+                                                        "select_headings_3": "Terziario",
+                                                        "h1": "h1",
+                                                        "h2": "h2",
+                                                        "h3": "h3",
+                                                        "h4": "h4",
+                                                        "h5": "h5",
+                                                        "h6": "h6",
+                                                        ".h7": ".h7",
+                                                        ".h8": ".h8",
+                                                        ".h9": ".h9",
+                                                        ".h0": ".h0",
+                                                        "strong": "strong",
+                                                        "div": "div",
+                                                        "span": "span"
+                                                    },
+                                                    "default_value": {
+                                                        "span": "span"
                                                     },
                                                     "allow_null": 0,
                                                     "multiple": 0,
@@ -2476,5 +2552,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424871067
+    "modified": 1425013746
 }

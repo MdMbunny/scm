@@ -846,20 +846,18 @@
 		return this.each( function() {
 
 			var $this = $( this ),
-				from = $( this ).outerWidth();
+				from = $this.outerWidth();
 
-			$this.css( { left: from, opacity: 0 } );
-
-			if ( $this.children().length ){
+			$this.css( { left: from + 'px', opacity: 1 } );
 				
 				$this.animate({
-					left: 0,
-					opacity: 1
-				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
 
-			}else{
-				$slider.css( 'pointer-events', 'all' );
-			}
+					'left': '0px'
+
+				}, 1000, function(){
+					$slider.css( 'pointer-events', 'all' );
+				} );
+
 		});
 
 	}
@@ -874,15 +872,15 @@
 			var $this = $( this ),
 				to = - $this.outerWidth();
 
-			if ( $this.children().length ){
+			$this.css( { left: '0px', opacity: 1 } );
 
-				$this.animate({
-					left: to,
-				}, 1000, function(){ $slider.css( 'pointer-events', 'all' ); } );
+			$this.animate({
 
-			}else{
-				$slider.css( 'pointer-events', 'all' );
-			}
+				'left': to + 'px'
+
+			}, 1000, function(){
+			} );
+
 		});
 
 	}
@@ -965,14 +963,82 @@
 			    },
 			    afterLoad: function( e ){          						// Triggers when slider has loaded
 
-			    	var $el = $this.find( 'a.nivo-nextNav' ),
-			    		sh = $el.getBoxShadow(),
-			    		nw = $el.outerWidth() + parseFloat(+sh.x) + parseFloat(sh.blur) + parseFloat(sh.exp);
+			    	var $next = $this.find( 'a.nivo-nextNav' ),
+			    		$prev = $this.find( 'a.nivo-prevNav' );
 
-			    	$this.find( 'a.nivo-nextNav' ).append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' ).css( 'right', -nw );
-			    	$this.find( 'a.nivo-prevNav' ).append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' ).css( 'left', -nw );
+			    		//console.log($next.css( 'right' ));
+
+			    	$next.append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' );
+			    	$prev.append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' );
+
+			    	var next_over = parseInt( $next.css( 'right' ) ),
+			    		next_shw = $next.getBoxShadow(),
+			    		next_w = $next.outerWidth() + parseFloat(+next_shw.x) + parseFloat(next_shw.blur) + parseFloat(next_shw.exp),
+			    		next_out = next_over - next_w,
+			    		next_mid = next_over - next_w/4,
+			    		prev_over = parseInt( $prev.css( 'left' ) ),
+			    		prev_shw = $prev.getBoxShadow(),
+			    		prev_w = $prev.outerWidth() + parseFloat(+prev_shw.x) + parseFloat(prev_shw.blur) + parseFloat(prev_shw.exp),
+			    		prev_out = prev_over - prev_w,
+			    		prev_mid = prev_over - prev_w/4;
+
+					$next.css( 'right', next_out );
+					$prev.css( 'left', prev_out );
+
+			    	$this.mouseenter( function(e){
+						$next.animate( {
+							'right': next_mid + 'px'
+						}, 300 );
+						$prev.animate( {
+							'left': prev_mid + 'px'
+						}, 300 );
+			    	} );
+
+			    	$this.mouseleave( function(e){
+						$next.animate( {
+							'right': next_out + 'px'
+						}, 300 );
+						$prev.animate( {
+							'left': prev_out + 'px'
+						}, 300 );
+			    	} );
+
+			    	/*$( $next, $prev ).mouseenter( function(e){
+						$( this ).animate( {
+							transform: 'scale(1.2,1.2)'
+						}, 200 );
+			    	} );
+
+			    	$( $next, $prev ).mouseleave( function(e){
+						$( this ).animate( {
+							transform: 'scale(1,1)'
+						}, 200 );
+			    	} );*/
+
+			    	$next.mouseenter( function(e){
+						$( this ).animate( {
+							'right': next_over + 'px'
+						}, 200 );
+					} );
+					$prev.mouseenter( function(e){
+						$( this ).animate( {
+							'left': prev_over + 'px'
+						}, 200 );
+			    	} );
+
+			    	$next.mouseleave( function(e){
+						$( this ).animate( {
+							'right': next_mid + 'px'
+						}, 200 );
+					} );
+					$prev.mouseleave( function(e){
+						$( this ).animate( {
+							'left': prev_mid + 'px'
+						}, 200 );
+			    	} );
 			    	
 			    	$body.trigger( 'nivoLoaded', [ $this ] );
+			    	//$this.find( '.nivo-caption' ).addClass( 'box' );
 			    	$this.find( '.nivo-caption' ).addClass( 'box' ).captionMoveIn( 'load', this );
 			    }
 			});

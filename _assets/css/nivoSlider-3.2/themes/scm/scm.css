@@ -56,29 +56,32 @@ Supports Thumbs: true
 
 /*** DIRECTION NAV ***/
 
-.theme-scm .nivo-directionNav{
+/*.theme-scm .nivo-directionNav{
 	opacity: 0;
 }
 
 .theme-scm:hover .nivo-directionNav{
 	opacity: 1;
-}
+}*/
 
 .theme-scm .nivo-directionNav a {
 	display: block;
-	-webkit-transition: all .3s;
+	opacity: 1;
+	/*-webkit-transition: all .3s;
     -moz-transition: all .3s;
     -o-transition: all .3s;
-    transition: all .3s;
+    transition: all .3s;*/
 }
-
+/*
+.theme-scm:hover a.nivo-nextNav,
 .theme-scm a.nivo-nextNav {
 	right:0;
 }
 
+.theme-scm:hover a.nivo-prevNav,
 .theme-scm a.nivo-prevNav {
 	left:0;
-}
+}*/
 
 /*** CAPTION ***/
 

@@ -593,10 +593,12 @@
                         if(!$single) continue;
                         $single_type = $single->post_type;
                         $build = $cont['flexible_soggetto'];
+                        $link = $cont['soggetto_link'];
                         $post = $single;
                         setup_postdata( $post );
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
                             'soggetto_rows' => $build,
+                            'soggetto_link' => $link,
                         ));
 
                     break;

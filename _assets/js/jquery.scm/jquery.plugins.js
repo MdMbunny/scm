@@ -73,7 +73,7 @@
 
 			var result = this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
 			if( !result )
-				return 0;
+				return { color: 0, x: 0, y: 0, blur: 0, exp: 0 };
 
 			return { color: result[0], x: result[1], y: result[2], blur: result[3], exp: result[4] };
 		}

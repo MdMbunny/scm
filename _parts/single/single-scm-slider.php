@@ -9,6 +9,8 @@ $slug = $post->post_name;
 
 $id = $post->ID;
 
+$indent = ( ( isset($this) && isset($this->indent) ) ? $this->indent : 0 );
+
 $slides = scm_field( 'flexible_headers', array() );
 
 $default = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'responsive', 'option' ) );
@@ -65,6 +67,7 @@ $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
         indent( $indent + 2 ) . '>' . lbreak( 2 );
 
     $captions = '';
+    $images = '';
 	
 	$i = 0;
     foreach ($slides as $slide) {
@@ -86,7 +89,7 @@ $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
             
         $caption_id = 'slide-' . $id . '-' . $i;
             
-        if( $slide[ 'active_caption' ] ){
+        //if( $slide[ 'active_caption' ] ){
 
         	$caption = indent( $indent + 2 ) . '<div id="' . $caption_id . '" class="nivo-html-caption count-' . $i . '">' . lbreak();
             $caption .= indent( $indent + 3 ) . '<div' . $slide_id . ' class="' . $slide_class . '"' . $style . '>' . lbreak();
@@ -97,7 +100,7 @@ $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
             $caption .= indent( $indent + 3 ) . '</div>' . lbreak();
 
             $caption .= indent( $indent + 2 ) . '</div>' . lbreak();
-        }
+        //}
 
         $title = ( $caption ? ' title="#' . $caption_id . '"' : '' );
         

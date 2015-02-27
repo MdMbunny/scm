@@ -58,7 +58,14 @@
             },
             "return_format": "url",
             "preview_size": "medium",
-            "library": "all"
+            "library": "all",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0,
+            "mime_types": ""
         },
         {
             "key": "field_54a743cbcf239",
@@ -178,6 +185,6 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424622163,
+    "modified": 1424971419,
     "local": "json"
 }

@@ -3,6 +3,43 @@
     "title": "Soggetto",
     "fields": [
         {
+            "key": "field_54eff048432b8",
+            "label": "Tipologia",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left"
+        },
+        {
+            "key": "field_54eff052432b9",
+            "label": "Tipologia",
+            "name": "soggetti_tipologia",
+            "prefix": "",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "categories-scm-soggetti",
+            "field_type": "checkbox",
+            "allow_null": 0,
+            "load_save_terms": 0,
+            "return_format": "id",
+            "multiple": 0
+        },
+        {
             "key": "field_548f73240d5a4",
             "label": "Logo",
             "name": "",
@@ -16,7 +53,7 @@
                 "class": "",
                 "id": ""
             },
-            "placement": "top"
+            "placement": "left"
         },
         {
             "key": "field_538b6833d514e",
@@ -28,13 +65,20 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 25,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "return_format": "url",
             "preview_size": "full",
-            "library": "all"
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_548f730b0d5a3",
@@ -46,13 +90,36 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 25,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "return_format": "url",
             "preview_size": "full",
-            "library": "all"
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_54efe598ab460",
+            "label": "Icona",
+            "name": "",
+            "prefix": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left"
         },
         {
             "key": "field_54b91d62a4206",
@@ -64,13 +131,20 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 25,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "return_format": "url",
             "preview_size": "full",
-            "library": "all"
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_54b91d75a4207",
@@ -82,13 +156,20 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": 25,
+                "width": 50,
                 "class": "",
                 "id": ""
             },
             "return_format": "url",
             "preview_size": "full",
-            "library": "all"
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_548f539a3b6d9",
@@ -104,7 +185,7 @@
                 "class": "",
                 "id": ""
             },
-            "placement": "top"
+            "placement": "left"
         },
         {
             "key": "field_548ee690a8b1a",
@@ -145,7 +226,24 @@
                 "class": "",
                 "id": ""
             },
-            "placement": "top"
+            "placement": "left"
+        },
+        {
+            "key": "field_54efe5bcab461",
+            "label": "Link",
+            "name": "soggetti_link",
+            "prefix": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "http:\/\/www.esempio.com"
         },
         {
             "key": "field_54b91dc7a4209",
@@ -190,6 +288,28 @@
             "maxlength": "",
             "readonly": 0,
             "disabled": 0
+        },
+        {
+            "key": "field_54efe672c419b",
+            "label": "Codice Fiscale",
+            "name": "soggetti_cf",
+            "prefix": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "#",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
         }
     ],
     "location": [
@@ -206,7 +326,7 @@
             }
         ]
     ],
-    "menu_order": 502,
+    "menu_order": 504,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -227,6 +347,5 @@
         "tags",
         "send-trackbacks"
     ],
-    "modified": 1424622163,
-    "local": "json"
+    "modified": 1425010850
 }

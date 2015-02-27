@@ -55,10 +55,10 @@ $classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $po
 
 echo '<div class="' . $classes . '">';
 
-$marker = ( get_field('luoghi_marker') ?: 0 );
+	$marker = ( get_field('luoghi_marker') ?: 0 );
 
-if ($legend && $marker)
-	echo '<div class="legend"><img src="' . $marker . '" alt="" /></div>';
+	if ($legend && $marker)
+		echo '<div class="legend"><img src="' . $marker . '" alt="" /></div>';
 
 	echo '<div class="datas">';
 
@@ -77,33 +77,7 @@ if ($legend && $marker)
 				case 'name':
 					echo '<strong>' . get_field( 'luoghi_nome' ) . '</strong>';
 				break;
-				
-				case 'num':
-				case 'email':
-				case 'link':
-					
-					$list = get_field('luoghi_' . $elem);
-			
-					if( $list && sizeof($list) > 0 ){
-												
-						for( $i = 0; $i < sizeof( $list ); $i++ ) {
-							$value = $list[$i];
-							
-							$icona = $value['luogo_icona_' . $elem];
-							$nome = ( $txt ? $value['luogo_nome_' . $elem] . ' ' : '' );
-							$testo = $value['luogo_' . $elem];
-							if($elem == 'email') $testo = '<a href="mailto:' . $testo . '">' . $testo . '</a>';
-							$separator = ( $i < sizeof( $list ) - 1 ? $sep : '' );
-							$icon = ( $ico ? '<i class="fa ' . $icona . '"></i> ' : '' );
-							
-							echo '<span>' . $icon . $nome . $testo . '</span>';
-							if($separator)
-								echo '<span class="separator">' . $separator . '</span>';
-						}
-					}
-
-				break;
-				
+								
 				case 'address':
 
 					$icona = get_field('luoghi_icon');
@@ -138,6 +112,16 @@ if ($legend && $marker)
 					echo $icon . $inline_address;
 					
 				break;
+
+				default:
+
+					Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-contatti.php', array(
+                        'indent' => 0, // +++ todo
+                        'contact' => $elem,
+                        'ico' => $ico,
+                        'txt' => $txt,
+                        'sep' => $sep,
+                    ));
 			}
 
 		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
