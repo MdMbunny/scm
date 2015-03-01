@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.10.0
+Version:			v1.10.1
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -72,6 +72,11 @@ GitHub Branch:		master
 
 *, *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 	box-sizing: inherit;
+}
+
+::-moz-selection{
+	background-color: #aaa;
+	color: #000;
 }
 
 ::selection{

@@ -370,6 +370,7 @@
 			var $this 			= $( this ),
 				link 			= $this.attr( 'href' ),
 				$body 			= $( 'body' ),
+				$hbody 			= $( 'html, body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
 				offset 			= ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ),
@@ -378,7 +379,7 @@
 
 				win 			= $( window ).height(),
 				height 			= $body.height(),
-				position 		= $body.scrollTop(),
+				position 		= $hbody.scrollTop(),
 
 				hash 			= this.hash,
 				target 			= $( hash ),
@@ -386,6 +387,8 @@
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0;
+
+
 
 			var pageScroll = function(){
 
@@ -411,6 +414,7 @@
 				}
 
 			}else if( name == 'top' ){
+
 
 				destination = 0;
 
@@ -1201,6 +1205,8 @@
 			button 			= $( 'a[href="#' + anchor + '"]' ),
 			$all 			= $( 'html, body' );
 
+			//console.log( 'B: ' + $body.data( 'anchor'));
+
 		var pageScroll = function(){
 
 			var $anchor = $( '#' + anchor );
@@ -1506,11 +1512,11 @@
 			var loc = $location.attr( 'href' );
 
 			if( loc.indexOf( '#' ) > -1 ){
-				$body.data( 'anchor', loc.split('#')[1] );
+				
 				window.location.replace("#");
-
+				$body.data( 'anchor', loc.split('#')[1] );
 				if ( typeof window.history.replaceState == 'function' ) {
-				 window.history.replaceState({}, '', location.href.slice(0, -1));
+					window.history.replaceState({}, '', location.href.slice(0, -1));
 				}
 			}
 
