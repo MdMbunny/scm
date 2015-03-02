@@ -25,13 +25,15 @@
 // [ 2 ] = HTML5 SUPPORT IF IE < 9
 
 $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
+$redirect = scm_field( 'ie_redirect', '', 'option' );
+$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ? $redirect : SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
 
 if( function_exists('get_browser_name') ) :
     if( is_ie() ) :
-        if( get_browser_version() <= (int)scm_field( 'ie_version', '10', 'option' ) ) :
+        if( get_browser_version() <= (int)scm_field( 'ie_version', '10', 'option' ) && $redirect ) :
 //[ 1 ]
 ?>
-<meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />
+<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
 <?php
         elseif( get_browser_version() <= 9 ) :
 //[ 2 ]
@@ -44,13 +46,16 @@ if( function_exists('get_browser_name') ) :
     endif;
 else :
     global $is_IE;
+
     if( $is_IE ) :
+        if( $redirect ) :
 //[ 1 ]
 ?>
 <!--[if lte IE <?php echo (int)scm_field( 'ie_version', '10', 'option' ); ?>]>
-<meta http-equiv="refresh" content="0;url=<?php echo SCM_DIR_ASSETS . 'html/old_ie.html'; ?>" />
+<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
 <![endif]-->
 <?php
+        else :
 //[ 2 ]
 ?>
 <!--[if lt IE 9]>
@@ -59,6 +64,7 @@ else :
 <script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 <![endif]-->
 <?php
+        endif;
     endif;
 endif;
 ?>

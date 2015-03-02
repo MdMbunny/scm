@@ -370,7 +370,6 @@
 			var $this 			= $( this ),
 				link 			= $this.attr( 'href' ),
 				$body 			= $( 'body' ),
-				$hbody 			= $( 'html, body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
 				offset 			= ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ),
@@ -379,7 +378,7 @@
 
 				win 			= $( window ).height(),
 				height 			= $body.height(),
-				position 		= $hbody.scrollTop(),
+				position 		= $( document ).scrollTop(),
 
 				hash 			= this.hash,
 				target 			= $( hash ),
@@ -526,9 +525,10 @@
 	        var setActiveClass = function() {
 	            var i, coords, link, $link, $anchor;
 
-	            var scrollPos = $( window ).scrollTop(),
-	            	heightWin = $( window ).height(),
-	            	heightBody = $( 'body' ).outerHeight();
+	            var $win 		= $( window ),
+	            	scrollPos 	= $win.scrollTop(),
+	            	heightWin 	= $win.height(),
+	            	heightBody 	= $( 'body' ).outerHeight();
 
 	            for( i = 0; i < $anchors.length; i++ ) {
 
@@ -869,6 +869,7 @@
 	$.fn.captionMoveOut = function( state, slider, speed ){
 
 		var $slider = $( slider );
+
 		$slider.css( 'pointer-events', 'none' );
 	
 		return this.each( function() {
@@ -1007,35 +1008,35 @@
 						}, 300 );
 			    	} );
 
-			    	/*$( $next, $prev ).mouseenter( function(e){
-						$( this ).animate( {
-							transform: 'scale(1.2,1.2)'
-						}, 200 );
-			    	} );
-
-			    	$( $next, $prev ).mouseleave( function(e){
-						$( this ).animate( {
-							transform: 'scale(1,1)'
-						}, 200 );
-			    	} );*/
-
 			    	$next.mouseenter( function(e){
+			    		var $imgs = $this.find( 'img' );
+			    		$imgs.attr( 'data-transition', 'sliceDown' );
+
 						$( this ).animate( {
 							'right': next_over + 'px'
 						}, 200 );
 					} );
 					$prev.mouseenter( function(e){
+						var $imgs = $this.find( 'img' );
+			    		$imgs.attr( 'data-transition', 'sliceDownLeft' );
+
 						$( this ).animate( {
 							'left': prev_over + 'px'
 						}, 200 );
 			    	} );
 
 			    	$next.mouseleave( function(e){
+			    		var $imgs = $this.find( 'img' );
+			    		$imgs.attr( 'data-transition', $this.data( 'slider-effect' ) );
+
 						$( this ).animate( {
 							'right': next_mid + 'px'
 						}, 200 );
 					} );
 					$prev.mouseleave( function(e){
+						var $imgs = $this.find( 'img' );
+			    		$imgs.attr( 'data-transition', $this.data( 'slider-effect' ) );
+
 						$( this ).animate( {
 							'left': prev_mid + 'px'
 						}, 200 );
@@ -1055,15 +1056,17 @@
 				$this.swipe( {
 			
 			        swipeLeft: function( event, direction, distance, duration, fingerCount ) {
-			        	$this.find( 'img' ).data( 'transition','sliceDownLeft' );
+			        	//$this.find( 'img' ).data( 'transition','sliceDownLeft' );
+			        	$this.find( 'a.nivo-nextNav' ).trigger( 'mouseenter' );
 						$this.find( 'a.nivo-nextNav' ).trigger( 'click' );
 						event.stopPropagation();
 
 			        },
 			        swipeRight: function( event, direction, distance, duration, fingerCount ) {
-			        	$this.find( 'img' ).data( 'transition','sliceDown' );
+			        	//$this.find( 'img' ).data( 'transition','sliceDown' );
+		                $this.find( 'a.nivo-prevNav' ).trigger( 'mouseenter' );
 		                $this.find( 'a.nivo-prevNav' ).trigger( 'click' );
-		                $this.find( 'img' ).data( 'transition','sliceDownLeft' );
+		                //$this.find( 'img' ).data( 'transition','sliceDownLeft' );
 			        	event.stopPropagation();
 
 			        },
@@ -1203,6 +1206,7 @@
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
 			anchor 			= $body.data( 'anchor' ),
 			button 			= $( 'a[href="#' + anchor + '"]' ),
+			$doc 			= $( document ),
 			$all 			= $( 'html, body' );
 
 			//console.log( 'B: ' + $body.data( 'anchor'));
@@ -1216,7 +1220,7 @@
 				if( post != 'all' ){
 
 					$body.css( 'pointer-events', 'all' );
-					$all.scrollTop( $anchor.offset().top );
+					$doc.scrollTop( $anchor.offset().top );
 
 				}else{
 
@@ -1508,13 +1512,14 @@
 
 		// Trigger WINDOW LOADED event
 		$(window).load(function(e){
-
+				
 			var loc = $location.attr( 'href' );
 
 			if( loc.indexOf( '#' ) > -1 ){
-				
-				window.location.replace("#");
 				$body.data( 'anchor', loc.split('#')[1] );
+				window.location.replace("#");
+				
+				//console.log($body.data( 'anchor'));
 				if ( typeof window.history.replaceState == 'function' ) {
 					window.history.replaceState({}, '', location.href.slice(0, -1));
 				}
