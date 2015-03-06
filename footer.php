@@ -7,7 +7,7 @@
  * @package SCM
  */
 
-global $post;
+global $post, $SCM_indent;
 
 $site_align = scm_field( 'select_alignment_site', 'center', 'option' );
 $foot_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_foot', 'full', 'option' ) );
@@ -19,24 +19,25 @@ $foot_class = 'row site-footer ' . $foot_layout . ' float-' . $site_align;
 //if ( comments_open() || get_comments_number() )
     //comments_template();
 
-            indent( 4, '</main><!-- main -->' );
-        indent( 3, '</div><!-- primary -->', 2 );
+$indent = $SCM_indent + 1;
+
+$SCM_indent -= 3;
+
+            indent( $SCM_indent+3, '</main><!-- main -->' );
+        indent( $SCM_indent+2, '</div><!-- primary -->', 2 );
            
-    indent( 2, '</div><!-- content -->', 2 );
+    indent( $SCM_indent+1, '</div><!-- content -->', 2 );
 
-    indent( 2, '<footer id="' . $foot_id . '" class="' . $foot_class . '" role="contentinfo">', 2 );
+    indent( $SCM_indent+1, '<footer id="' . $foot_id . '" class="' . $foot_class . '" role="contentinfo">', 2 );
 
-            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
+            Get_Template_Part::get_part( SCM_DIR_PARTS . '-sections.php', array(
                 'option' => 'footer',
-                'indent' => 2
             ));
 
             scm_top_of_page();
 
-        echo lbreak(2);
-
-    indent( 2, '</footer><!-- footer -->', 2 );
-indent( 1, '</div><!-- page -->', 2 );
+    indent( $SCM_indent+1, '</footer><!-- footer -->', 2 );
+indent( $SCM_indent, '</div><!-- page -->', 2 );
 
 wp_footer();
 wp_reset_postdata();

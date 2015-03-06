@@ -82,6 +82,8 @@ endif;
 //***************** END HEAD *****
 //********************************
 
+global $SCM_indent;
+
 $skip = __( "Vai al contenuto", SCM_THEME );
 
 $site_align = scm_field( 'select_alignment_site', 'center', 'option' );
@@ -139,60 +141,71 @@ $cont_class = 'site-content full';
     data-smooth-delay="<?php echo $smooth_delay; ?>"
     data-smooth-new="<?php echo $smooth_new; ?>"
     data-smooth-post="<?php echo $smooth_post; ?>"
-    <?php echo $style_body; ?>
+    <?php echo $style_body; echo lbreak(); ?>
 >
 
 <?php
 
-
 // Page Wrapper
-indent( 1, '<div id="' . $page_id . '" class="' . $page_class . '">', 2 );
-
+indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 2 );
+    
+    $SCM_indent += 1;
+    
     // Skip to Content Link
-    indent( 2, '<a class="skip-link screen-reader-text" href="#' . $cont_id . '">' . $skip . '</a>', 2 );
+    indent( $SCM_indent, '<a class="skip-link screen-reader-text" href="#' . $cont_id . '">' . $skip . '</a>', 2 );
 
     // Head
-    indent( 2, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
-                    data-current-link="' . $single_class . '"
-                    data-current-link-interval="' . $single_interval . '"
-                    data-current-link-offset="' . $single_offset . '"
-                    data-current-link-threshold="' . $single_threshold . '"
-                >', 2 );
+    indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
+            data-current-link="' . $single_class . '"
+            data-current-link-interval="' . $single_interval . '"
+            data-current-link-offset="' . $single_offset . '"
+            data-current-link-threshold="' . $single_threshold . '"
+        >', 2 );
+
+    
 
         // Menu above head
     if ( $menu_position == 'top' )
-        scm_main_menu( $menu_align, $menu_position, 2 );
+        scm_main_menu( $menu_align, $menu_position );
+
+    $SCM_indent += 1;
 
         // Menu row
-        indent( 3, '<div id="' . $head_row_id . '" class="' . $head_row_class . '">', 2 );
-    
+        indent( $SCM_indent, '<div id="' . $head_row_id . '" class="' . $head_row_class . '">', 2 );
+
             // Logo
-            scm_logo( 4 );
+            scm_logo();
 
             // Menu Inline above Social Menu
         if ( $menu_position == 'inline' && $follow_position == 'bottom' )
-            scm_main_menu( $menu_align, $menu_position, 4 );
+            scm_main_menu( $menu_align, $menu_position );
 
             // Social Menu
-            scm_social_follow( 4 );
+            scm_social_follow();
 
             // Menu Inline under Social Menu
         if ( $menu_position == 'inline' && $follow_position == 'top' )
-            scm_main_menu( $menu_align, $menu_position, 4 );
+            scm_main_menu( $menu_align, $menu_position );
 
-        echo lbreak();
-        indent( 3, '</div><!-- #site-header-row -->', 2 );
+        indent( $SCM_indent, '</div><!-- .row -->', 2 );
+
+    $SCM_indent -= 1;
 
         // Menu under head
     if ( $menu_position == 'bottom' )
-        scm_main_menu( $menu_align, $menu_position, 3 );
+        scm_main_menu( $menu_align, $menu_position );
 
-    indent( 2, '</header><!-- #site-header -->', 2 );
+    indent( $SCM_indent, '</header><!-- #site-header -->', 2 );
     
     // Content
-    indent( 2, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );
+    indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );
+
+        $SCM_indent += 1;
         
-        indent( 3, '<div id="primary" class="content-area">' );
-            indent( 4, '<main id="main" class="site-main" role="main">', 2 );
+        indent( $SCM_indent, '<div id="primary" class="content-area">' );
+
+            $SCM_indent += 1;
+            
+            indent( $SCM_indent, '<main id="main" class="site-main" role="main">', 2 );
 
 ?>

@@ -35,6 +35,8 @@
 // *****************************************************
 
     register_nav_menus( array( 'primary' => __( 'Menu Principale', SCM_THEME ) ) );
+    register_nav_menus( array( 'secondary' => __( 'Menu Secondario', SCM_THEME ) ) );
+    register_nav_menus( array( 'temporary' => __( 'Menu Temporaneo', SCM_THEME ) ) );
 
     //add_editor_style( SCM_URI_CSS . 'editor.css' );
     
@@ -281,6 +283,9 @@
 
             wp_register_style( 'admin', SCM_URI_CSS . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('admin');
+
+            wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-admin' );
             
         }
     } 

@@ -1,5 +1,7 @@
 <?php
 
+	global $SCM_indent;
+
 	$indent = 0;
 	$contact = 'num';
 	$ico = 0;
@@ -7,7 +9,7 @@
 	$sep = ' - ';
 
 	if( isset($this) ) {
-		$indent = ( ( isset($this->indent) && $this->indent ) ?  $this->indent : $indent );
+		$indent = $SCM_indent + 1;
 		$contact = ( ( isset($this->contact) && $this->contact ) ? $this->contact : $contact );
 		$ico = ( ( isset($this->ico) && $this->ico ) ? $this->ico : $ico );
 		$txt = ( ( isset($this->txt) && $this->txt ) ? $this->txt : $txt );
@@ -28,9 +30,9 @@
 			$separator = ( $i < sizeof( $list ) - 1 ? $sep : '' );
 			$icon = ( $ico ? '<i class="fa ' . $icona . '"></i> ' : '' );
 			
-			echo '<span>' . $icon . $nome . $testo . '</span>';
+			indent( $indent, '<span>' . $icon . $nome . $testo . '</span>', 1 );
 			if($separator)
-				echo '<span class="separator">' . $separator . '</span>';
+				indent( $indent, '<span class="separator">' . $separator . '</span>', 1 );
 		}
 	}
 

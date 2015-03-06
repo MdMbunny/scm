@@ -115,7 +115,14 @@ function scm_force_fallback( $force_fallback ) {
         	if( $target != 'option' ){
 
 	        	global $post;
+
+	        	if( !$post && !$target )
+	        		return;
+
 	        	$id = ( $target ?: $post->ID );
+
+	        	if( !$id )
+	        		return;
 
 	        	$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
 
@@ -240,6 +247,7 @@ function scm_force_fallback( $force_fallback ) {
 	    		$menus = get_registered_nav_menus();
 
 				foreach ( $menus as $location => $description ) {
+
 					if( !strpos( $location, '__en' ) )
 						$arr[ $location ] = $description;
 				}

@@ -258,15 +258,6 @@
             $plugins = array(
 
                 array(
-                    'name'               => 'ACF Sync', // The plugin name.
-                    'slug'               => 'acf-pro-sync', // The plugin slug (typically the folder name).
-                    'source'             => 'acf-pro-sync.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
                     'name'               => 'ACF Hidden Field', // The plugin name.
                     'slug'               => 'acf-hidden-master', // The plugin slug (typically the folder name).
                     'source'             => 'acf-hidden-master.zip', // The plugin source.
@@ -310,6 +301,15 @@
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
+
+                /*array(
+                    'name'               => 'Custom Permalink', // The plugin name.
+                    'slug'               => 'custom-post-type-permalinks', // The plugin slug (typically the folder name).
+                    'source'             => 'custom-post-type-permalinks.zip', // The plugin source.
+                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),*/
 
                 array(
                     'name'               => 'Contact Form 7', // The plugin name.
@@ -356,14 +356,14 @@
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
-                array(
+                /*array(
                     'name'               => 'Social Login Widget', // The plugin name.
                     'slug'               => 'fb-login-widget-pro', // The plugin slug (typically the folder name).
                     'source'             => 'fb-login-widget-pro.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
+                ),*/
 
                 array(
                     'name'               => 'Admin Menu Editor', // The plugin name.
@@ -378,15 +378,6 @@
                     'name'               => 'Optimize Database', // The plugin name.
                     'slug'               => 'rvg-optimize-database', // The plugin slug (typically the folder name).
                     'source'             => 'rvg-optimize-database.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-                
-                array(
-                    'name'               => 'Theme Check', // The plugin name.
-                    'slug'               => 'theme-check', // The plugin slug (typically the folder name).
-                    'source'             => 'theme-check.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
@@ -425,15 +416,6 @@
                     'source'             => 'php-browser-detection.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
-                    'name'               => 'WP Security', // The plugin name.
-                    'slug'               => 'better-wp-security', // The plugin slug (typically the folder name).
-                    'source'             => 'better-wp-security.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 

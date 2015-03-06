@@ -3,7 +3,7 @@
  * @package SCM
  */
 
-global $post;
+global $post, $SCM_indent;
 
 $luoghi = array();
 $width = 100;
@@ -17,32 +17,33 @@ if( isset($this) ){
 
 $classes = 'map scm-map scm-object full';
 
-	echo '<div class="' . $classes . '" data-zoom="' . $zoom . '">';	
+$indent = $SCM_indent + 1;
 
-	if($luoghi){
+indent( $indent, '<div class="' . $classes . '" data-zoom="' . $zoom . '">' );
 
-		$output = '';
+if($luoghi){
 
-		foreach( $luoghi as $luogo ){
+	$output = '';
 
-			$id = $luogo->ID;
-			$lat = scm_field( 'luoghi_lat', 0, $id, 1 );
-			$lng = scm_field( 'luoghi_lng', 0, $id, 1 );
-			$img = scm_field( 'luoghi_marker', '', $id, 1 );
-			$img = ( $img ?: scm_field( 'tools_gmap_marker', '', 'option' ) );
+	foreach( $luoghi as $luogo ){
 
-			$marker = ( $img ? ' data-img="' . $img . '"' : '' );
+		$id = $luogo->ID;
+		$lat = scm_field( 'luoghi_lat', 0, $id, 1 );
+		$lng = scm_field( 'luoghi_lng', 0, $id, 1 );
+		$img = scm_field( 'luoghi_marker', '', $id, 1 );
+		$img = ( $img ?: scm_field( 'tools_gmap_marker', '', 'option' ) );
 
+		$marker = ( $img ? ' data-img="' . $img . '"' : '' );
 
-			if( $lat && $lng ){
-				echo '<div id="marker-' . $id . '" class="' . SCM_PREFIX . 'marker marker" data-lat="' . $lat . '" data-lng="' . $lng . '"' . $marker . '>';
-						echo '<strong>' . scm_field( 'luoghi_nome', '', $id, 1 ) . '</strong><br>';
-						echo '<span>' . scm_field( 'luoghi_indirizzo', '', $id, 1 ) . ', ' . scm_field( 'luoghi_citta', '', $id, 1 ) . '</span>';
-				echo '</div>';
-			}
+		if( $lat && $lng ){
+			indent( $indent+1, '<div id="marker-' . $id . '" class="' . SCM_PREFIX . 'marker marker" data-lat="' . $lat . '" data-lng="' . $lng . '"' . $marker . '>' );
+					indent( $indent+2, '<strong>' . scm_field( 'luoghi_nome', '', $id, 1 ) . '</strong><br>' );
+					indent( $indent+2, '<span>' . scm_field( 'luoghi_indirizzo', '', $id, 1 ) . ', ' . scm_field( 'luoghi_citta', '', $id, 1 ) . '</span>' );
+			indent( $indent+1, '</div>' );
 		}
 	}
+}
 
-	echo '</div><!-- scm-map -->';
+indent( $indent, '</div><!-- scm-map -->' );
 
 ?>

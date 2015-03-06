@@ -19,6 +19,26 @@
 	margin: 0px;
 }
 
+#adminmenu div.wp-menu-image {
+	text-align: center;
+	line-height: 0;
+	display: inline-flex;
+}
+
+#adminmenu div.wp-menu-image:before {
+	margin: 0 auto;
+}
+
+#adminmenu .wp-menu-image img {
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	padding: 6px 7px;
+	min-height: 0;
+	min-width: 0;
+	opacity: 1;
+}
+
 /******************************/
 /*** Advanced Custom Fields ***/
 /******************************/

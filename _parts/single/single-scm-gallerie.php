@@ -3,7 +3,7 @@
  * @package SCM
  */
 
-global $SCM_galleries, $post;
+global $SCM_galleries, $SCM_indent, $post;
 
 $id = $post->ID;
 $type = $post->post_type;
@@ -27,31 +27,37 @@ $section_class = 'gallery scm-gallery scm-object pointer';
 
 $SCM_galleries[ $custom_id ] = $gallery;
 
+$indent = $SCM_indent + 1;
 
-echo '<div id="' . $custom_id . '" class="' . $classes . '"' . $style . ' 
+indent( $indent, '<div id="' . $custom_id . '" class="' . $classes . '"' . $style . '
 			data-gallery="' . $b_type . '" 
 			data-init="' . $b_init . '" 
 			data-title="' .$title . '"
-		>';
+		>' );
 
 	switch ($b_type) {
 		case 'img':
-			echo '<img src="' . $gallery[$b_img]['sizes']['thumbnail'] . '" width="' . $b_size . '" height="' . $b_size . '" alt="" />';
+			indent( $indent+1, '<img src="' . $gallery[$b_img]['sizes']['thumbnail'] . '" width="' . $b_size . '" height="' . $b_size . '" alt="" />' );
 		break;
 		
 		case 'txt':
-			echo $b_txt;
+			indent( $indent+1, $b_txt );
 		break;
 
 		case 'section':
 			if( !$b_section ) break;
+
+			$SCM_indent += 1;
+
 			$post = $b_section;
 			setup_postdata( $post );
-			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-section' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
+
+			$SCM_indent -= 1;
 
 		break;
 	}
 
-echo '</div><!-- ' . $type . ' -->';
+indent( $indent, '</div><!-- ' . $type . ' -->' );
 
 ?>

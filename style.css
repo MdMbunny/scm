@@ -1,7 +1,9 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v1.10.2
+Version:			v2.0.0
+License: 			GNU General Public License v2 or later
+License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
 Author:				Studio Creativo M
 Text Domain:		scm
@@ -18,6 +20,7 @@ GitHub Branch:		master
 	1.1 Reset Elements
 	1.2 Reset Typography
 	1.3 Reset Forms
+	1.4 Reset WP
 2.0 Attributes
 	2.1 Attributes Typography
 	2.2 Attributes Display
@@ -316,6 +319,14 @@ textarea {
 	height: 175px;
 	max-height: 300px;
 }
+
+/*--------------------------------------------------------------
+1.4 Reset WP
+--------------------------------------------------------------*/
+.wp-caption{}
+.wp-caption-text{}
+.gallery-caption{}
+.bypostauthor{}
 
 
 /*--------------------------------------------------------------

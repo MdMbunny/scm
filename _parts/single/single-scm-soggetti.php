@@ -3,18 +3,18 @@
  * @package SCM
  */
 
-global $post;
+global $post, $SCM_indent;
 
 $type = get_post_type();
 $title = get_the_title();
 
-$link = 'no';
+$link = 'default';
 
 $rows = array(
 	array(
 		'acf_fc_layout'					=>	'logo',
 		'negativo'						=>	'0',
-		'larghezza' 					=>	100,
+		'larghezza' 					=>	'',
 	),
 	// +++ todo: case 'icon', case 'name', case 'piva'
 );
@@ -26,7 +26,9 @@ if( isset($this) ){
 
 $classes = 'soggetto scm-soggetti scm-object ' . $post->post_name . ' full';
 
-echo '<div class="' . $classes . '">';
+$indent = $SCM_indent + 1;
+
+indent( $indent, '<div class="' . $classes . '">', 2 );
 
 	if( $rows && sizeof( $rows ) > 0 ){
 
@@ -49,7 +51,7 @@ echo '<div class="' . $classes . '">';
 
 			$class =  $elem . ' scm-' . $elem . ( $neg ? ' negative' : '' ) . ' soggetto-row';
 			
-			echo '<div class="' . $class . '"' . $data . '>';
+			indent( $indent+1, '<div class="' . $class . '"' . $data . '>' );
 
 				switch ($elem) {
 					case 'logo':
@@ -57,14 +59,14 @@ echo '<div class="' . $classes . '">';
 						$logo_pos = get_field('soggetti_logo');
 						$logo_neg = get_field('soggetti_logo_negativo');
 
-						$logo = ( $neg ? ( $logo_neg ?: $logo_pos ) : $logo_pos );
+						$logo = ( $neg ? ( $logo_neg ?: $logo_pos ) : ( $logo_pos ?: $logo_neg ) );
 
 						$fall = '';
 						if( $neg && !$logo_neg )
 							$fall = 'padding:1em;background-color:#FFF;'; // +++ todo: fallback bg color (and stuff)
 
 						if( $logo )
-							echo '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . ';' . $fall . '">';
+							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . ';' . $fall . '" />' );
 
 					break;
 
@@ -73,7 +75,7 @@ echo '<div class="' . $classes . '">';
 						$logo = ( !$neg ? get_field('soggetti_icona') : get_field('soggetti_icona_negativo') );
 
 						if( $logo )
-							echo '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . '; max-height:' . $mea . ';">';
+							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . '; max-height:' . $mea . ';" />' );
 
 					break;
 
@@ -84,17 +86,16 @@ echo '<div class="' . $classes . '">';
 						$txt = get_field( 'soggetti_' . $elem );
 
 						if( $txt )
-							echo '<' . $tag . '>' . $txt . '</' . $tag . '>';
+							indent( $indent+2, '<' . $tag . '>' . $txt . '</' . $tag . '>' );
 
 					break;
 
 				}
 
-			echo '</div><!-- ' . $elem . ' -->';
+			indent( $indent+1, '</div><!-- ' . $elem . ' -->', 2);
 		}
-
 	}
 
-echo '</div><!-- soggetto -->';
+indent( $indent, '</div><!-- soggetto -->', 2 );
 
 ?>

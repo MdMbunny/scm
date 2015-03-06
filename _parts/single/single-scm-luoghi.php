@@ -3,7 +3,7 @@
  * @package SCM
  */
 
-global $post;
+global $post, $SCM_indent;
 
 $type = get_post_type();
 $id = $post->ID;
@@ -53,14 +53,17 @@ if( isset($this) ){
 
 $classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name . ' clear';
 
-echo '<div class="' . $classes . '">';
+$indent = $SCM_indent + 1;
+$SCM_indent += 4;
+
+indent( $indent, '<div class="' . $classes . '">' );
 
 	$marker = ( get_field('luoghi_marker') ?: 0 );
 
 	if ($legend && $marker)
-		echo '<div class="legend"><img src="' . $marker . '" alt="" /></div>';
+		indent( $indent+1, '<div class="legend"><img src="' . $marker . '" alt="" /></div>' );
 
-	echo '<div class="datas">';
+	indent( $indent+1, '<div class="datas">' );
 
 	foreach ($rows as $row) {
 		$elem = ( $row['tipo'] ?: $row['tipo'] );
@@ -71,11 +74,11 @@ echo '<div class="' . $classes . '">';
 
 		$class = SCM_PREFIX . $elem . ' ' . $elem . ' full';
 
-		echo '<div class="' . $class . '">';
+		indent( $indent+2, '<div class="' . $class . '">' );
 
 			switch ($elem) {
 				case 'name':
-					echo '<strong>' . get_field( 'luoghi_nome' ) . '</strong>';
+					indent( $indent+3, '<strong>' . get_field( 'luoghi_nome' ) . '</strong>' );
 				break;
 								
 				case 'address':
@@ -109,14 +112,13 @@ echo '<div class="' . $classes . '">';
 						$inline_address .= '<span class="country">' . $region . $country . '</span>';
 					}			
 					
-					echo $icon . $inline_address;
+					indent( $indent+3, $icon . $inline_address );
 					
 				break;
 
 				default:
 
-					Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-contatti.php', array(
-                        'indent' => 0, // +++ todo
+					Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-contatti.php', array(
                         'contact' => $elem,
                         'ico' => $ico,
                         'txt' => $txt,
@@ -124,11 +126,13 @@ echo '<div class="' . $classes . '">';
                     ));
 			}
 
-		echo '</div><!-- ' . SCM_PREFIX . $elem . ' -->';
+		indent( $indent+2, '</div><!-- ' . SCM_PREFIX . $elem . ' -->' );
 	}
 
-	echo '</div>';
+	indent( $indent+1, '</div>' );
 
-echo '</div><!-- ' . $type . ' -->';
+indent( $indent, '</div><!-- ' . $type . ' -->' );
+
+$SCM_indent -= 4;
 
 ?>

@@ -212,7 +212,9 @@
     //Prints logo
     if ( ! function_exists( 'scm_logo' ) ) {
 
-        function scm_logo( $in = 0 ) {
+        function scm_logo() {
+
+            global $SCM_indent;
             
             $logo_id = scm_field( 'id_branding', 'site-branding', 'option' );
 
@@ -234,8 +236,10 @@
             
             //SEO logo HTML tag
             $logo_tag = ( is_front_page() ? 'h1' : 'div' );
+
+            $in = $SCM_indent + 1;
             
-            indent( $in, '<div id="' . $logo_id . '" class="' . $logo_class . '">' );
+            indent( $in, '<div id="' . $logo_id . '" class="' . $logo_class . '">', 2 );
 
                 indent( $in+1 , '<' . $logo_tag . ' class="site-title logo ' . $logo_type . '-only">' );
                     
@@ -248,19 +252,21 @@
                     
                     indent( $in+2 , '</a>' );
                 
-                indent( $in+1 , '</' . $logo_tag . '>' );
+                indent( $in+1 , '</' . $logo_tag . '>', 2 );
                 
             if( $show_slogan )
-                indent( $in+1 , '<h2 class="site-description">' . $logo_slogan . '</h2>' );
+                indent( $in+1 , '<h2 class="site-description">' . $logo_slogan . '</h2>', 2 );
 
-            indent( $in , '</div><!-- #site-branding -->' );
+            indent( $in , '</div><!-- #site-branding -->', 2 );
 
         }
     }
 
     //Prints social follow menu
     if ( ! function_exists( 'scm_social_follow' ) ) {
-        function scm_social_follow( $in = 0 ) {
+        function scm_social_follow() {
+
+            global $SCM_indent;
 
             $follow = scm_field( 'active_social_follow', 0, 'option' );
 
@@ -275,26 +281,27 @@
             $follow_class = 'header-column site-social-follow ';
             $follow_class .= ( $follow_align != 'center' ? 'half-width ' : 'full ' );
             $follow_class .= $follow_align . ' inlineblock';
-            
 
-            indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">' );
+            $in = $SCM_indent + 1;
+
+            indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
                 
-                indent( $in+1, do_shortcode( '[feather_follow size="' . $follow_size . '"]' ) );
+                indent( $in + 1, do_shortcode( '[feather_follow size="' . $follow_size . '"]' ), 2 );
             
-            indent( $in, '</div><!-- #site-social-follow -->' );
+            indent( $in, '</div><!-- #site-social-follow -->', 2 );
 
         }
     }
 
     //Prints menu
     if ( ! function_exists( 'scm_main_menu' ) ) {
-        function scm_main_menu( $align = 'right', $position = 'inline', $in = 0 ) {
+        function scm_main_menu( $align = 'right', $position = 'inline' ) {
 
             $sticky = scm_field( 'active_sticky_menu', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'offset_sticky_menu', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'attach_sticky_menu', 'nav-top', 'option' ) );
             
-            $menu = scm_field( 'select_menu', 'primary', 'option' );
+            $menu = scm_field( 'select_menu', 'primary' );
             
             $id = scm_field( 'id_menu', 'site-navigation', 'option' );
             
@@ -332,7 +339,6 @@
                 'home_active' => $menu_data_home,
                 'image_active' => $menu_data_image,
                 'menu' => $menu,
-                'indent' => $in
             ));
 
             if( $sticky != 'no' ){
@@ -362,7 +368,6 @@
                     'type' => $sticky,
                     'offset' => $offset,
                     'attach' => $attach,
-                    'indent' => $in
                 ));
             }
         }
@@ -382,8 +387,11 @@
 
             function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
                 
-                $ind = 7;
-                if( !$depth ) $ind = 6;
+                global $SCM_indent;
+                
+                $ind = $SCM_indent + 3;
+
+                if( !$depth ) $ind = $SCM_indent + 2;
 
                 $current = $object->current;
                 $class = ( $current ? ' current' : '' );
@@ -425,7 +433,9 @@
 
 
 
-        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $type = 'self', $offset = 0, $attach = 'nav-top', $indent = 0 ) {
+        function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $type = 'self', $offset = 0, $attach = 'nav-top' ) {
+
+            global $SCM_indent;
 
             $default = array(
                 'id'               => 'site-navigation',
@@ -439,7 +449,6 @@
                 'type'             => 'self',
                 'offset'           => 0,
                 'attach'           => 'nav-top',
-                'indent'           => 0
             );
 
             if( is_array( $id ) )
@@ -460,43 +469,55 @@
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
 
-            $data = ( $sticky ? 'data-sticky="' . $sticky . '" data-sticky-type="' . $type . '" data-sticky-offset="' . $offset . '" data-sticky-attach="' . $attach . '" ' : '' );
+            $data = ( $sticky ? 
+                'data-sticky="' . $sticky . '" 
+                data-sticky-type="' . $type . '" 
+                data-sticky-offset="' . $offset . '" 
+                data-sticky-attach="' . $attach . '" ' : '' );
 
-            $wrap = indent( $indent ) . '<nav id="' . $id . '" class="' . $class . '" data-toggle="true" data-switch-toggle="' . $toggle_active . '"' . $data . '>' . lbreak();
+            $in = $SCM_indent + 1;
 
-                $wrap .= indent( $indent + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
+            $wrap = indent( $in ) . '<nav id="' . $id . '" class="' . $class . '" 
+                data-toggle="true" 
+                data-switch-toggle="' . $toggle_active . '" 
+                ' . $data . '
+            >' . lbreak();
 
-                    $wrap .= indent( $indent + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak();
+                $wrap .= indent( $in + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
 
-                        $wrap .= indent( $indent + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
-                        $wrap .= indent( $indent + 3 ) . '<a href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
+                    $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 
-                    $wrap .= indent( $indent + 2 ) . '</div>' . lbreak();
+                        $wrap .= indent( $in + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
+                        $wrap .= indent( $in + 3 ) . '<a href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
+
+                    $wrap .= indent( $in + 2 ) . '</div>' . lbreak(2);
                 
                 if( $home_active == 'true' ){
                 
                     if( $image_active && $image_active != 'no' ){
 
-                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak();
-                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '"><img src="' . $image_icon . '" alt="" /></a>' . lbreak();
+                        $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak(2);
+                        $wrap .= indent( $in + 2 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '"><img src="' . $image_icon . '" alt="" /></a>' . lbreak(2);
                     
                     }else{
                     
-                        $wrap .= indent( $indent + 3 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak();
+                        $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak(2);
                     
                     }
 
                 }
 
-                    $wrap .= indent( $indent + 2 ) . '<ul class="toggle-content %2$s">' . lbreak();
+                    $wrap .= indent( $in + 2 ) . '<ul class="toggle-content %2$s">' . lbreak(2);
 
                         $wrap .= '%3$s' . lbreak();
 
-                    $wrap .= indent( $indent + 2 ) . '</ul>' . lbreak();
+                    $wrap .= indent( $in + 2 ) . '</ul>' . lbreak(2);
 
-                $wrap .= indent( $indent + 1 ) . '</div>' . lbreak();
+                $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
-            $wrap .= indent( $indent ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
+            $wrap .= indent( $in ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
+
+            $SCM_indent += 2;
 
             // Print Menu
             wp_nav_menu( array(
@@ -509,6 +530,8 @@
                     'walker' => new Sublevel_Walker
                 ) );
 
+            $SCM_indent -= 2;
+
         }
     }
 
@@ -520,14 +543,15 @@
     //Prints Element Flexible Contents
     if ( ! function_exists( 'scm_flexible_content' ) ) {
         function scm_flexible_content( $content ) {
+
             if( !$content )
                 return;
 
-            global $post;
+            global $post, $SCM_indent;
+
+            $SCM_indent += 1;
 
             foreach ($content as $cont) {
-
-                $back_query = $post;
 
                 $element = ( isset( $cont['acf_fc_layout'] ) ? $cont['acf_fc_layout'] : '' );
 
@@ -537,7 +561,7 @@
 
                         $height = ( $cont['altezza'] ?: 1 );
 
-                        echo '<hr ' . 'style="height:' . $height . $cont['units'] . ';" />';
+                        indent( $SCM_indent, '<hr style="height:' . $height . $cont['units'] . ';" />', 2 );
 
                     break;
 
@@ -560,7 +584,7 @@
                             );
                         }
 
-                        Get_Template_Part::get_part( 'archive.php', array(
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-archive.php', array(
                             'pargs' => $args,
                             'pagination' => ( (int)$cont['all'] ? 'no' : $cont['pagination'] ),
                             'layout' => $cont['layout'],
@@ -657,6 +681,7 @@
                     break;
 
                     case 'icon_element':
+
                         $icon_float = ( ( $cont[ 'select_float_img' ] && $cont[ 'select_float_img' ] != 'no' ) ? $cont[ 'select_float_img' ] : 'no-float' );
                         $icon_float = ( $icon_float == 'float-center' ? 'float-center text-center' : $icon_float );
                         $icon = $cont[ 'icona' ];
@@ -664,12 +689,16 @@
                         $icon_class = SCM_PREFIX . 'img ' . $icon_float;
                         $icon_style = 'line-height:0;font-size:' . $icon_size . 'px';
 
-                        echo    '<div class="' . $icon_class . '" style="' . $icon_style . '">
-                                    <i class="fa ' . $icon . '"></i>
-                                </div><!-- icon -->';
+                        indent( $SCM_indent, '<div class="' . $icon_class . '" style="' . $icon_style . '">', 1 );
+
+                            indent( $SCM_indent+1, '<i class="fa ' . $icon . '"></i>', 1 );
+
+                        indent( $SCM_indent, '</div><!-- icon -->', 2 );
+
                     break;
 
                     case 'image_element':
+
                         $image = ( $cont[ 'immagine' ] ?: '' );
                         $image_fissa = ( $cont[ 'fissa' ] ?: 'norm' );
                         $image_units = ( $cont[ 'units' ] ?: 'px' );
@@ -702,13 +731,16 @@
                         if( !$image )
                             continue;
 
-                        echo    '<div class="' . $image_class . '" style="' . $image_style . '">
-                                    <img src="' . $image . '" alt="">
-                                </div><!-- icon-image -->';
+                        indent( $SCM_indent, '<div class="' . $image_class . '" style="' . $image_style . '">', 1 );
+
+                            indent( $SCM_indent+1, '<img src="' . $image . '" alt="">', 1 );
+
+                        indent( $SCM_indent, '</div><!-- icon-image -->', 2 );
 
                     break;
 
                     case 'title_element':
+
                         $text = $cont[ 'testo' ];
                         $text_default = ( $cont[ 'select_complete_headings' ] ?: '' );
                         $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_complete_headings' ] : scm_field( $text_default , 'h1', 'option') );
@@ -722,24 +754,31 @@
                             $text_tag = 'h1';
                         }
 
-                        echo '<' . $text_tag . ' class="' . $text_class . '">' . $text . '</' . $text_tag . '><!-- title -->';
+                        indent( $SCM_indent, '<' . $text_tag . ' class="' . $text_class . '">' . $text . '</' . $text_tag . '><!-- title -->', 2 );
+
                     break;
 
                     case 'text_element':
+
                         $content = $cont['testo'];
                         if(!$content) continue;
-                        echo $content;
+                        indent( $SCM_indent, $content, 2 );
+
                     break;
 
                     case 'section_element':
+
                         $single = $cont[ 'select_section' ];
                         if(!$single) continue;
                         $post = $single;
                         setup_postdata( $post );
                         get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-sections' );
+
                     break;                    
                 }
             }
+
+            $SCM_indent -= 1;
         }
     }
 
@@ -784,6 +823,8 @@
     //Prints top-of-page link
     if ( ! function_exists( 'scm_top_of_page' ) ) {
         function scm_top_of_page() {
+
+            global $SCM_indent;
             
             $id = scm_field( 'id_topofpage', 'site-topofpage', 'option' );
             $icon = scm_field( 'tools_topofpage_icon', 'fa-angle-up', 'option' );
@@ -791,13 +832,16 @@
             $offset = scm_field( 'tools_topofpage_offset', 0, 'option' );
             $title = $text;
 
-            $output =   '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">';
-            $output .=      '<a href="#top" title="' . $title . '">';
-            $output .=          '<i class="fa ' . $icon . '"></i>';
-            $output .=      '</a>';
-            $output .=  '</div>';
+            indent( $SCM_indent+1, '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">' );
+                
+                indent( $SCM_indent+2, '<a href="#top" title="' . $title . '">' );
+                    
+                    indent( $SCM_indent+3, '<i class="fa ' . $icon . '"></i>' );
+                
+                indent( $SCM_indent+2, '</a>' );
+            
+            indent( $SCM_indent+1, '</div>', 2 );
 
-            echo $output;
         }
     }
 

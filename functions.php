@@ -5,7 +5,6 @@
  * @package SCM
  */
 
-
 if ( ! isset( $content_width ) ) {
 	$content_width = 1120;
 }
@@ -38,9 +37,12 @@ if ( ! isset( $content_width ) ) {
 		$SCM_version = '';
 	}
 
-	$SCM_types = array();
-	$SCM_back_query;
-	$SCM_galleries = array();
+	$SCM_uploads 		= wp_upload_dir();
+	$SCM_types 			= array();
+	$SCM_galleries 		= array();
+
+	$SCM_indent 		= 1;
+	//$SCM_back_query;
 
 /*
 *****************************************************
@@ -65,10 +67,13 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_SETTINGS_TYPES',		'scm-types-settings' );
 
 //Directories
+
+	// UPLOADS FOLDER
+	define( 'SCM_URI_UPLOADS', 			$SCM_uploads['baseurl'] );
 	
 	// PARENT THEME
-	define( 'SCM_DIR',			      	$SCM_directory . '/');
-	define( 'SCM_URI',			      	$SCM_uri . '/');
+	define( 'SCM_DIR',			      	$SCM_directory . '/' );
+	define( 'SCM_URI',			      	$SCM_uri . '/' );
 	
 		// LANGUAGES PARENT
 		define( 'SCM_DIR_LANG',      		SCM_DIR . '_languages/' );
@@ -144,10 +149,4 @@ require SCM_DIR_LIBRARY . 'scm-options.php';
 require SCM_DIR_LIBRARY . 'scm-core.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';
-
-require SCM_DIR_LIBRARY . 'scm-jquery-admin.php'; // diventerà pure questo un .js
-
-require SCM_DIR_LIBRARY . 'scm-shortcodes.php';
-
-//require SCM_DIR_LIBRARY . 'private.php';			// XXXXX
 

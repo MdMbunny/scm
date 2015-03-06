@@ -2,14 +2,12 @@
 
 // +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
 
-global $post;
+global $post, $SCM_indent;
 
 $type = $post->post_type;
 $slug = $post->post_name;
 
 $id = $post->ID;
-
-$indent = ( ( isset($this) && isset($this->indent) ) ? $this->indent : 0 );
 
 $slides = scm_field( 'flexible_headers', array() );
 
@@ -42,6 +40,8 @@ $control = scm_field( 'control_options_slider', 'false' );
 $thumbs = scm_field( 'thumbs_options_slider', 'false' );
 $next = scm_field( 'next_options_slider', 'fa-angle-right' );
 $prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
+
+$indent = $SCM_indent + 1;
     
     echo indent( $indent + 2 ) . '<div class="' . $slider_class . '" ' . lbreak() .
             indent( $indent + 3 ) . 'data-slider="' . $slider . '" ' . lbreak() .
