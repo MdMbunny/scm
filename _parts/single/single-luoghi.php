@@ -50,8 +50,7 @@ if( isset($this) ){
 }
 
 
-
-$classes = SCM_PREFIX . 'object ' . implode( ' ', get_post_class() ) . ' ' . $post->post_name . ' clear';
+$classes = 'luogo scm-luogo object scm-object ' . $post->post_name . ' clear';
 
 $indent = $SCM_indent + 1;
 $SCM_indent += 4;
@@ -72,7 +71,7 @@ indent( $indent, '<div class="' . $classes . '">' );
 		$sep = ( isset( $row['separatore'] ) ? ' ' . $row['separatore'] . ' ' : ' - ' );
 		
 
-		$class = SCM_PREFIX . $elem . ' ' . $elem . ' full';
+		$class = 'scm-' . $elem . ' ' . $elem . ' full';
 
 		indent( $indent+2, '<div class="' . $class . '">' );
 
@@ -126,7 +125,7 @@ indent( $indent, '<div class="' . $classes . '">' );
                     ));
 			}
 
-		indent( $indent+2, '</div><!-- ' . SCM_PREFIX . $elem . ' -->' );
+		indent( $indent+2, '</div><!-- ' . $elem . ' -->' );
 	}
 
 	indent( $indent+1, '</div>' );

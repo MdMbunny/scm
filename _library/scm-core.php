@@ -1,19 +1,31 @@
 <?php
+/**
+ * @package SCM
+ */
 
 // *****************************************************
-// *      ACTIONS AND FILTERS
+// *    SCM CORE
 // *****************************************************
 
+/*
+*****************************************************
+*
+*   0.0 Actions and Filters
+*   1.0 Theme Support
+*   2.0 Register and Enqueue Styles
+*   3.0 Register and Enqueue Scripts
+*   4.0 Header Styles
+*   5.0 Initialize
+*
+*****************************************************
+*/
 
-    /*add_action( 'template_redirect', 'scm_header_access_control' );
+// *****************************************************
+// *      0.0 ACTIONS AND FILTERS
+// *****************************************************
 
-    if ( ! function_exists( 'scm_header_access_control' ) ) {
-        function scm_header_access_control() {
-            
-        }
-    }*/
-
-    add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts' );
+    add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts_adobe' );
+    add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts_google' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles_inline' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_scripts' );
@@ -31,25 +43,26 @@
     add_action( 'wp_footer', 'scm_jquery_init' );
 
 // *****************************************************
-// *       THEME SUPPORT
+// *       1.0 THEME SUPPORT
 // *****************************************************
 
     register_nav_menus( array( 'primary' => __( 'Menu Principale', SCM_THEME ) ) );
     register_nav_menus( array( 'secondary' => __( 'Menu Secondario', SCM_THEME ) ) );
     register_nav_menus( array( 'temporary' => __( 'Menu Temporaneo', SCM_THEME ) ) );
-
-    //add_editor_style( SCM_URI_CSS . 'editor.css' );
     
     add_theme_support( 'title-tag' );
     add_theme_support( 'automatic-feed-links' );
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
     add_theme_support( 'post-thumbnails' );
-    //add_theme_support( 'custom-header' );
-    /*add_theme_support( 'custom-background', apply_filters( 'scm_custom_background_args', array(
+    
+    /*
+    add_editor_style( SCM_URI_CSS . 'editor.css' );
+    add_theme_support( 'custom-header' );
+    add_theme_support( 'custom-background', apply_filters( 'scm_custom_background_args', array(
         'default-color' => 'ffffff',
         'default-image' => '',
-    ) ) );*/
-
+    ) ) );
+    */
 
     // *      WIDGETS
 
@@ -104,20 +117,19 @@
     }
     
 // *****************************************************
-// *      REGISTER AND ENQUEUE STYLES AND SCRIPTS
-// *****************************************************
+// *      2.0 REGISTER AND ENQUEUE STYLES
+// *****************************************************            
 
-    //fonts
-    if ( ! function_exists( 'scm_site_assets_webfonts' ) ) {
-        function scm_site_assets_webfonts() {
-            $fonts =  scm_field( 'webfonts', array(), 'option' );
+    //google fonts
+    if ( ! function_exists( 'scm_site_assets_webfonts_google' ) ) {
+        function scm_site_assets_webfonts_google() {
+            $fonts =  scm_field( 'styles-google', array(), 'option' );
             foreach ($fonts as $value) {    
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
-                $styles = implode( ',', $value['select_webfonts_styles'] );
-                wp_register_style( 'webfonts-' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_enqueue_style( 'webfonts-' . $slug );
-                
+                $styles = implode( ',', $value['select_webfonts_google_styles'] );
+                wp_register_style( 'webfonts-google-' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_enqueue_style( 'webfonts-google-' . $slug );                
             }
         }
     }
@@ -128,7 +140,7 @@
 
             // Fancybox
             
-            if( get_field( 'tools_fancybox_active', 'option' ) ){
+            if( get_field( 'select_disable_fancybox', 0, 'option' ) ){
                 wp_register_style( 'fancybox', SCM_URI_CSS . 'fancybox-2.1.5/jquery.fancybox.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_register_style( 'fancybox-thumbs', SCM_URI_CSS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_register_style( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/source/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
@@ -181,11 +193,38 @@
         }
     }
 
-    // See scm-styles.php for inline styles 
+// *****************************************************
+// *      3.0 REGISTER AND ENQUEUE SCRIPTS
+// *****************************************************
+
+    //adobe fonts
+    if ( ! function_exists( 'scm_site_assets_webfonts_adobe' ) ) {
+        function scm_site_assets_webfonts_adobe() {
+            $fonts =  scm_field( 'styles-adobe', array(), 'option' );
+
+            foreach ($fonts as $value) { 
+
+                $id = $value['id'];
+                $slug = ( $value['name'] ? sanitize_title( $value['name'] ) : $id );
+                $family = str_replace( ' ', '+', $value['family'] );
+                $styles = implode( ',', $value['select_webfonts_google_styles'] );
+                wp_register_script( 'webfonts-adobe-' . $slug , '//use.typekit.net/' . $id . '.js', false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_enqueue_script( 'webfonts-adobe-' . $slug );
+                
+            }
+
+            //echo '<script>try{Typekit.load();}catch(e){}</script>';
+        }
+    }
     
     //scripts
     if ( ! function_exists( 'scm_site_assets_scripts' ) ) {
         function scm_site_assets_scripts() {
+
+            // Select2 Events
+
+            /*wp_register_script( 'select2', SCM_URI_JS . 'select2.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'select2' );*/
 
             // Skip Link Focus Fix
 
@@ -233,7 +272,7 @@
 
             // Fancybox
 
-            if( get_field( 'tools_fancybox_active', 'option' ) ){
+            if( get_field( 'select_disable_fancybox', 0, 'option' ) ){
                 wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox-2.1.5/jquery.fancybox.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-thumbs', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
@@ -291,7 +330,7 @@
     } 
 
 // *****************************************************
-// *      DEFAULT STYLES
+// *      4.0 HEADER STYLES
 // *****************************************************
 
 
@@ -320,8 +359,6 @@
             $body .= scm_options_get( 'bg_position', 'sc', 1 );
             $body .= scm_options_get( 'bg_size', 'sc', 1 );
             $body .= scm_options_get( 'bg_color', 'sc', 1 );
-
-            
 
             $content = scm_options_get( 'bg_image', 'option', 1 );
             $content .= scm_options_get( 'bg_repeat', 'option', 1 );
@@ -379,7 +416,7 @@
 
             // Responsive
 
-            $r_max = intval( scm_field( 'select_responsive_layouts_max', '1400', 'option' ) );
+            $r_max = (int)scm_field( 'select_responsive_layouts_max', '1400', 'option' );
             
             if( $r_max >= 1400 )
                 $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
@@ -439,7 +476,7 @@
     }
 
 // *****************************************************
-// *      INITIALIZE
+// *      5.0 INITIALIZE
 // *****************************************************
 
     // Used by jQuery to get stored ANCHOR data - [ for smooth scroll from page to page ]

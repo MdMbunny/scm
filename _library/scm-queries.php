@@ -402,7 +402,7 @@ function scm_news_single_shortcode( $atts, $content = null ) {
 	return $ret;
 
 }
-add_shortcode( 'scm-news-single', 'scm_news_single_shortcode' );
+add_shortcode( 'news-single', 'scm_news_single_shortcode' );
 
 
 function scm_attachments_shortcode( $atts, $content = null ) {

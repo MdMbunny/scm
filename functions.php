@@ -1,9 +1,22 @@
 <?php
 /**
- * SCM functions and definitions
- *
  * @package SCM
  */
+
+// *****************************************************
+// *	FUNCTIONS
+// *****************************************************
+
+/*
+*****************************************************
+*
+* 	1.0 Globals
+* 	2.0 Constants
+* 	3.0 Requires
+* 	4.0 Functions
+*
+*****************************************************
+*/
 
 if ( ! isset( $content_width ) ) {
 	$content_width = 1120;
@@ -11,7 +24,7 @@ if ( ! isset( $content_width ) ) {
 
 /*
 *****************************************************
-*      GLOBAL
+*      1.0 GLOBAL
 *****************************************************
 */
 
@@ -40,15 +53,20 @@ if ( ! isset( $content_width ) ) {
 	$SCM_uploads 		= wp_upload_dir();
 	$SCM_types 			= array();
 	$SCM_galleries 		= array();
+	$SCM_acf_elements 	= array();
+	
+	$SCM_typekit;
 
 	$SCM_indent 		= 1;
-	//$SCM_back_query;
-
+	
 /*
 *****************************************************
-*      CONSTANTS
+*      2.0 CONSTANTS
 *****************************************************
 */
+
+//TypeKit constants
+	define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
 
 //Basic constants
 	define( 'SCM_SITE',				    $SCM_site );
@@ -56,15 +74,9 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_URL',			      	$SCM_url );
 	define( 'SCM_NAME',     	 		$SCM_name );
 	define( 'SCM_THEME',	 			$SCM_shortname );
-	define( 'SCM_PREFIX', 				SCM_THEME . '-' );
-	define( 'SCM_CHILD', 				SCM_PREFIX . 'child' );
+	define( 'SCM_CHILD', 				SCM_THEME . '-' . 'child' );
 	define( 'SCM_VERSION',   			$SCM_version );
 	define( 'SCM_SCRIPTS_VERSION',      trim( SCM_VERSION ) );
-
-//Option Pages
-
-	define( 'SCM_SETTINGS_MAIN',		'scm-main-settings' );
-	define( 'SCM_SETTINGS_TYPES',		'scm-types-settings' );
 
 //Directories
 
@@ -117,25 +129,14 @@ if ( ! isset( $content_width ) ) {
 			define( 'SCM_DIR_PARTS_SINGLE',		    	'_parts/single/single' );
 			define( 'SCM_DIR_PARTS_ARCHIVE',	    	'_parts/archive/archive' );
 
-// ACF
 
-		// ACF - fields keys ( modify them when field group LUOGO fields are deleted and recreated ) +++ todo: da scm-acf, pesca da nome field, e non da key
-		define( 'SCM_ACF_LUOGO_COUNTRY', 	'field_548f253744f97' );
-		define( 'SCM_ACF_LUOGO_REGION', 	'field_548f25f644f98' );
-		define( 'SCM_ACF_LUOGO_PROVINCE', 	'field_548f265644f99' );
-		define( 'SCM_ACF_LUOGO_CODE', 		'field_548ee4b8fd2bc' );
-		define( 'SCM_ACF_LUOGO_CITY', 		'field_548ee4cbfd2bd' );
-		define( 'SCM_ACF_LUOGO_TOWN', 		'field_548ee501fd2bf' );
-		define( 'SCM_ACF_LUOGO_ADDRESS', 	'field_548ee49dfd2bb' );
-		define( 'SCM_ACF_LUOGO_LATITUDE', 	'field_548fe73047972' );
-		define( 'SCM_ACF_LUOGO_LONGITUDE', 	'field_54945fd9fdd3e' );
-		
-		define( 'SCM_ACF_LUOGO_SOGGETTI', 	'field_54cfa2278c48e' );	
-		define( 'SCM_ACF_SOGGETTO_LUOGHI', 	'field_548ee690a8b1a' );
+/*
+*****************************************************
+*      3.0 REQUIRES
+*****************************************************
+*/
 
-
-
-
+require SCM_DIR_CLASSES . 'typekit-client.php';
 require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';
 require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
@@ -143,10 +144,34 @@ require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
 
 require SCM_DIR_LIBRARY . 'scm-functions.php';
 
+require SCM_DIR_LIBRARY . 'scm-acf-preset.php';
+require SCM_DIR_LIBRARY . 'scm-acf-layouts.php';
+require SCM_DIR_LIBRARY . 'scm-acf-fields.php';
 require SCM_DIR_LIBRARY . 'scm-acf.php';
+
 require SCM_DIR_LIBRARY . 'scm-install.php';
 require SCM_DIR_LIBRARY . 'scm-options.php';
+
 require SCM_DIR_LIBRARY . 'scm-core.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';
 
+
+
+// *****************************************************
+// *      4.0 FUNCTIONS
+// *****************************************************
+
+    if ( ! function_exists( 'scm_save_posts' ) ) {
+        function scm_save_posts(){
+            //alert( 'Updating Posts');
+            
+            $my_types = get_post_types();
+            $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
+
+            foreach ( $my_posts as $my_post ){
+                wp_update_post( $my_post );
+            }
+            //alert( sizeof($my_posts) . ' Posts Updated' );
+        }
+    }

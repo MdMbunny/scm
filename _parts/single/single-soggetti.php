@@ -9,52 +9,47 @@ $type = get_post_type();
 $title = get_the_title();
 
 $link = 'default';
+$neg = 'off';
 
 $rows = array(
 	array(
-		'acf_fc_layout'					=>	'logo',
-		'negativo'						=>	'0',
-		'larghezza' 					=>	'',
+		'acf_fc_layout'										=>	'logo',
+		'logo_larghezza' 									=>	'',
 	),
-	// +++ todo: case 'icon', case 'name', case 'piva'
+	// +++ todo: Template
 );
 
 if( isset($this) ){
 	$rows = ( isset($this->soggetto_rows) ? $this->soggetto_rows : $rows);
 	$link = ( isset($this->soggetto_link) ? $this->soggetto_link : $link);
+	$neg = ( isset($this->soggetto_neg) ? $this->soggetto_neg : $neg);
 }
 
-$classes = 'soggetto scm-soggetti scm-object ' . $post->post_name . ' full';
+$classes = 'soggetto scm-soggetto object scm-object ' . $post->post_name . ' full';
+
+$link = ( $link == 'default' ? get_field( 'soggetti_link' ) : $link );
+$data = ( ( $link && $link !== 'no' ) ? ' data-href="' . $link . '" data-target="_blank"' : '' );
+$neg = ( $neg === 'on' );
 
 $indent = $SCM_indent + 1;
 
-indent( $indent, '<div class="' . $classes . '">', 2 );
+indent( $indent, '<div class="' . $classes . '"' . $data . '>', 2 );
 
-	if( $rows && sizeof( $rows ) > 0 ){
+	if( $rows && sizeof( $rows ) ){
 
 		foreach ($rows as $row) {
-			// +++ todo: integrare ICONA POS o NEG, NAME e PIVA
-			$elem = ( $row['acf_fc_layout'] ?: $row['acf_fc_layout'] );
-			$neg = ( isset( $row['negativo'] ) ? (int)$row['negativo'] : 0 );
-			$mea = ( isset( $row['larghezza'] ) ? $row['larghezza'] : '' );
-			if( $mea ){
-				if( strpos( $mea, 'px' ) === false && strpos( $mea, 'em' ) === false )
-					$mea = (string)(int)$mea . '%';
-			}else{
-				$mea = '100%';
-			}
 
-			$tag = ( isset( $row['select_complete_headings'] ) ? $row['select_complete_headings'] : 'span' );
-
-			$link = ( $link == 'default' ? get_field( 'soggetti_link' ) : $link );
-			$data = ( ( $link && $link != 'no' ) ? ' data-href="' . $link . '" data-target="_blank"' : '' );
+			$elem = ( $row['acf_fc_layout'] ?: 'logo' );
 
 			$class =  $elem . ' scm-' . $elem . ( $neg ? ' negative' : '' ) . ' soggetto-row';
 			
-			indent( $indent+1, '<div class="' . $class . '"' . $data . '>' );
+			indent( $indent+1, '<div class="' . $class . '">' );
 
 				switch ($elem) {
 					case 'logo':
+
+						$width = ( $row['dimensione_logo'] ?: 100 );
+						$units = ( $row['select_units_logo'] ?: '%' );
 
 						$logo_pos = get_field('soggetti_logo');
 						$logo_neg = get_field('soggetti_logo_negativo');
@@ -66,22 +61,27 @@ indent( $indent, '<div class="' . $classes . '">', 2 );
 							$fall = 'padding:1em;background-color:#FFF;'; // +++ todo: fallback bg color (and stuff)
 
 						if( $logo )
-							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . ';' . $fall . '" />' );
+							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $width . $units . ';' . $fall . '" />' );
 
 					break;
 
 					case 'icona':
+
+						$size = ( $row['dimensione_icona'] ?: 150 );
+						$units = ( $row['select_units_icona'] ?: 'px' );
 						
 						$logo = ( !$neg ? get_field('soggetti_icona') : get_field('soggetti_icona_negativo') );
 
 						if( $logo )
-							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $mea . '; max-height:' . $mea . ';" />' );
+							indent( $indent+2, '<img src="' . $logo . '" alt="" title="' . $title . '" style="max-width:' . $size . $units . '; max-height:' . $size . $units . ';" />' );
 
 					break;
 
 					case 'intestazione':
 					case 'piva':
 					case 'cf':
+
+						$tag = ( isset( $row[ 'select_headings_complete_' . $elem ] ) ? $row[ 'select_headings_complete_' . $elem  ] : 'span' );
 
 						$txt = get_field( 'soggetti_' . $elem );
 

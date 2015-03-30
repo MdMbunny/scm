@@ -2,21 +2,52 @@
 
 class Custom_Taxonomy {
  
-    function __construct( $plural, $singular, $slug, $types = array(''), $tag = 0) {
+    function __construct( $build ) {
+
+    	if( !$build )
+            return;
+
+        $default = array(
+        	'hierarchical' 			=> 1,
+            'singular'              => '',
+            'plural'                => '',
+            'slug'                  => '',
+            'types' 				=> [],
+        );
+
+        if( is_array( $build ) )
+            $default = array_merge( $default, $build );
+        else if( is_string( $build ) )
+            $default['plural'] = $build;
+        else
+        	return;
 
     	$this->attributes = array();
         
-        $this->singular = $singular;
-        $this->plural = $plural;
-        $this->slug = $slug;
-        $this->types = $types;
-        $this->tag = $tag;
-        $name = explode( ' ', $this->plural );
-        $this->name = $name[0];
+        $this->plural = $default['plural'];
+        $this->singular = ( $default['singular'] ?: $this->plural );
+        $this->slug = ( $default['slug'] ?: sanitize_title( $this->plural ) );
+        $this->types = $default['types'];
+        $this->tag = $default['hierarchical'];
 
         $this->CT_taxonomy();
-        register_taxonomy( $this->slug, $this->types, $this->attributes);
- 
+        if( !empty( $this->types ) ){
+            $arr = [];
+            foreach ( $this->types as $key ) {
+                if( post_type_exists( $key . '_temp' ) )
+                    $arr[] = $key . '_temp';
+            }
+            $this->types = array_merge( $this->types, $arr );
+	        register_taxonomy( $this->slug, $this->types, $this->attributes);
+	        add_action( 'admin_menu', array( &$this, 'CT_remove_metaboxes' ) );	        
+	    }
+    }
+
+    function CT_remove_metaboxes() {
+        foreach ($this->types as $type) {
+            remove_meta_box( $this->slug . 'div', $type, 'side');
+            remove_meta_box( 'tagsdiv-' . $this->slug, $type, 'side');
+        }
     }
  	
  	function CT_taxonomy() {
@@ -24,7 +55,7 @@ class Custom_Taxonomy {
 			'labels' => array(
 				'name'                       => $this->plural,
 				'singular_name'              => $this->singular,
-				'menu_name'                  => $this->name,
+				'menu_name'                  => $this->plural,
 				'all_items'                  => __( 'Elenco', SCM_THEME ),
 				'parent_item'                => __( 'Genitore', SCM_THEME ),
 				'parent_item_colon'          => __( 'Genitore:', SCM_THEME ),
@@ -38,16 +69,13 @@ class Custom_Taxonomy {
 				'choose_from_most_used'      => __( 'I pi&ugrave; usati', SCM_THEME ),
 				'not_found'                  => __( 'Non trovato', SCM_THEME )
 			),
-			'hierarchical'               => true,
+			'hierarchical'               => $this->tag,
 			'public'                     => true,
 			'show_ui'                    => true,
 			'show_admin_column'          => false,
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false
 		);
-
-		if( $this->tag )
-			$this->attributes['hierarchical'] = false;
 
  	}
 }

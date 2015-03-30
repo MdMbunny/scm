@@ -1,17 +1,21 @@
 <?php
+/**
+ * @package SCM
+ */
 
-// ***************************************
-// *                                     *
-// * SCM Functions                       *
-// *                                     *
-// ***************************************
+// *****************************************************
+// *    SCM FUNCTIONS
+// *****************************************************
+
 //
-// Useful General Functions
+// Useful PHP Functions
 //
 // thePost:             get current id, post, type, slug and title
 // printPre:            <pre>print_r(%array)</pre>
 // alert:               JS alert - second parameter will be merged to the first one, separated by the third one (default ': ')
 // consoleLog:          JS console.log
+// startsWith           return true if string starts with $needle
+// endsWith             return true if string ends with $needle
 // getByValue:          get array by $value
 // getByValueKey:       get array by $value and $key
 // getByKey:            get array by $key       (exact $key)
@@ -98,6 +102,32 @@ function consoleLog( $obj ){
 }
 
 /**
+* String Starts With
+* @param string $str
+* @param string $needle
+* @return boolean
+* @author SCM
+*/
+function startsWith($str, $needle) {
+    
+    return $needle === "" || strrpos($str, $needle, -strlen($str)) !== FALSE;
+
+}
+
+/**
+* String Ends With
+* @param string $str
+* @param string $needle
+* @return boolean
+* @author SCM
+*/
+function endsWith($str, $needle) {
+
+    return $needle === "" || (($temp = strlen($str) - strlen($needle)) >= 0 && strpos($str, $needle, $temp) !== FALSE);
+
+}
+
+/**
 * Get Element by Key
 * @param array $arr the array where to search for
 * @param string $key the key to be checked
@@ -108,7 +138,7 @@ function getByKey( $arr, $key ){
     foreach ($arr as $k => $v) {
         if( $k == $key ) return $v;
     }
-    return null;
+    return false;
 }
 
 /**
@@ -141,7 +171,7 @@ function getByString( $arr, $string, $key = false ){
             return $v;
         }
     }
-    return null;
+    return false;
 }
 
 /**
@@ -179,7 +209,7 @@ function getByPrefix( $arr, $prefix, $key = false, $exist = true ){
             }
         }
     }
-    return null;
+    return false;
 }
 
 /**
@@ -224,9 +254,9 @@ function getTagContent( $string = '', $tagname = 'p' ){
 
 function getByValueKey( $arr, $value, $key = 'name' ){
     foreach ($arr as $index => $elem) {
-        if( $elem[$key] == $value ) return $index;
+        if( isset( $elem[$key] ) && $elem[$key] == $value ) return $index;
     }
-    return null;
+    return false;
 }
 
 /**
@@ -240,7 +270,7 @@ function getByValue($arr, $value){
     foreach ($arr as $key => $elem) {
         if( $elem == $value ) return $key;
     }
-    return -1;
+    return false;
 }
 
 

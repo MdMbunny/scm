@@ -623,7 +623,7 @@
 		return this.each(function() {
 
 			var $this 		= $( this ),
-				markers 	= $this.children( '.scm-marker' ),
+				markers 	= $this.children( '.marker' ),
 				zoom 		= parseFloat( $this.data( 'zoom' ) ),
 				style 		= [],
 				args 		= [],
@@ -1362,7 +1362,7 @@
 					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			case 'maps':
-				if( $( '.scm-map' ).length )
+				if( $( '.map' ).length )
 					$body.on( 'mapsLoaded', function(e, tot){ $.bodyIn(e, tot); } );
 				else
 					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
@@ -1534,7 +1534,10 @@
 		    $body.trigger( 'imagesLoaded' );
 		    
 		    $( '[data-slider="nivo"]' ).setNivoSlider();
-		    $( '.scm-map' ).googleMap();
+		    
+		    $( '[data-equal]' ).equalChildrenSize();
+
+		    $( '.map' ).googleMap();
 
 		    /*if( $nivo.length ){
 		    	// +++ todo: anche le Slider come le Mappe vengono contate e restituiscono sliderLoaded e slidersLoaded
@@ -1566,7 +1569,6 @@
 
 		});
 
-		$( '[data-equal]' ).equalChildrenSize();
 		$body.responsiveClasses();
 
 	});

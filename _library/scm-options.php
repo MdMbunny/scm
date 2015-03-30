@@ -1,4 +1,25 @@
 <?php
+/**
+ * @package SCM
+ */
+
+// *****************************************************
+// *    SCM OPTIONS
+// *****************************************************
+
+/*
+*****************************************************
+*
+*   1.0 Set Options
+*   2.0 Get Options
+*   3.0 Options
+*
+*****************************************************
+*/
+
+// *****************************************************
+// *      1.0 SET OPTIONS
+// *****************************************************
 
 	if ( ! function_exists( 'scm_options_set' ) ) {
         function scm_options_set( $target = '', $separator = '_' ) {
@@ -14,6 +35,10 @@
             return array( 'type' => false, 'target' => false );
         }
     }
+
+// *****************************************************
+// *      2.0 GET OPTIONS
+// *****************************************************
 
     if ( ! function_exists( 'scm_options_get' ) ) {
         function scm_options_get( $option, $target = 'option', $add = false, $units = '%' ) {
@@ -137,6 +162,10 @@
         }
     }
 
+// *****************************************************
+// *      3.0 OPTIONS
+// *****************************************************
+
     if ( ! function_exists( 'scm_options_get_align' ) ) {
         function scm_options_get_align( $type = '', $target = 'option', $add = false ) {
 			
@@ -167,7 +196,7 @@
                 $value = $obj['value'];
                 $choices = $obj['choices'];
                 $label = $choices[ $value ];
-                $sizes = scm_acf_select_preset( 'select_txt_font_size' );
+                $sizes = scm_acf_field_choices_preset( 'select_txt_font_size' );
                 $size = getByValue( $sizes, $label );
             }
 
@@ -187,15 +216,15 @@
     if ( ! function_exists( 'scm_options_get_fonts' ) ) {
         function scm_options_get_fonts( $type = '', $target = 'option', $add = false ) {
 
-            $webfont = ( get_field( 'select_webfonts_families' . $type, $target ) ?: 'default' );
-            $family = ( get_field( 'select_webfonts_default_families' . $type, $target ) ?: 'default' );
+            $webfont = ( get_field( 'select_webfonts_google' . $type, $target ) ?: 'default' );
+            $family = ( get_field( 'select_webfonts_fallback' . $type, $target ) ?: 'default' );
 
             if( $webfont == 'default' && ( $type || $target != 'option' ) ){
 
             	if( $family == 'default' )
             		return '';
 
-            	$webfont = ( get_field( 'select_webfonts_families', 'option' ) ?: '' );
+            	$webfont = ( get_field( 'select_webfonts_google', 'option' ) ?: '' );
 
 			}
 
@@ -210,7 +239,7 @@
     if ( ! function_exists( 'scm_options_get_color' ) ) {
         function scm_options_get_color( $type = '', $target = 'option', $add = false ) {
 
-        	$alpha = ( get_field('text_alpha' . $type, $target) ?: '1' );
+        	$alpha = ( get_field('text_alpha' . $type, $target) ?: '' );
         	$color = ( get_field('text_color' . $type, $target) ?: '' );
         	
         	if( !$color && ( $type || $target != 'option' ) )
@@ -259,12 +288,18 @@
     if ( ! function_exists( 'scm_options_get_shadow' ) ) {
         function scm_options_get_shadow( $type = '', $target = 'option', $add = false ) {
 
-        	$shadow = ( get_field('text_shadow' . $type, $target) ?: 'none' );
-			
-			if( $shadow === 'none' ){
+        	$shadow = ( scm_field( 'select_disable_text_shadow' . $type, $target) ?: 'none' );
+
+			if( $shadow === 'none' || $shadow === 'default' ){
+
 				if( $type || $target != 'option' )
         			return '';
-        	}else{
+
+        	}else if( $shadow === 'off' ){
+
+                $shadow = 'none';
+
+            }else{
 
         		$shadow_x = ( get_field('text_shadow_x' . $type, $target) ?: '0' ) . 'px';
 	        	$shadow_y = ( get_field('text_shadow_y' . $type, $target) ?: '0' ) . 'px';
@@ -272,6 +307,7 @@
 	        	$shadow_alpha = ( get_field('text_shadow_alpha' . $type, $target) ?: '0' );
 	        	$shadow_color = ( get_field('text_shadow_color' . $type, $target) ?: '#000000' );
 	        	$shadow = $shadow_x . ' ' . $shadow_y . ' ' . $shadow_size . ' ' . hex2rgba( $shadow_color, $shadow_alpha );
+
         	}
 
             return ( !$add ? $shadow : 'text-shadow:' . $shadow . ';' );
@@ -372,7 +408,7 @@
 	if ( ! function_exists( 'scm_options_get_bg_color' ) ) {
         function scm_options_get_bg_color( $type = '', $target = 'option', $add = false ) {
 
-            $bg_alpha = ( get_field('background_alpha' . $type, $target) ?: '1' );
+            $bg_alpha = ( get_field('background_alpha' . $type, $target) ?: '' );
             $bg_color = ( get_field('background_color' . $type, $target) ? hex2rgba( get_field( 'background_color' . $type, $target ), $bg_alpha ) : 'transparent' );
 
             if( $bg_color == 'transparent' && ( $type || $target != 'option' ) )

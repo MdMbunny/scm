@@ -6,7 +6,7 @@ $single = is_single();
 
 // return none (back to home) if type is not public, or has not a template
 if( $single &&
-	( !getByKey( $SCM_types['public'], $type ) || 
+	( getByKey( $SCM_types['public'], $type ) === false || 
 	  !locate_template( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php' ) ) ){
 		get_template_part( SCM_DIR_PARTS, 'none' );
 
@@ -25,12 +25,12 @@ if( $single &&
 	$tempA = SCM_DIR_PARTS;
 	$tempB = 'sections';
 	//$page_id = '';
-	$page_class = 'page scm-page scm-object';
+	$page_class = 'page scm-page object scm-object ' . $post->post_name;
 	//$head_active = 0;
 
-	$page_id = scm_field( 'custom_id', '', $id, 1, ' id="', '"' );
-	$page_class .= scm_field( 'custom_classes', '', $id, 1, ' ' );
-	$head_active = scm_field( 'active_slider', 0, $id, 1 );
+	$page_id = scm_field( 'id_page', '', $id, 1, ' id="', '"' );
+	$page_class .= scm_field( 'class_page', '', $id, 1, ' ' );
+	$head_active = scm_field( 'select_disable_slider', 0, $id, 1 );
 
 	
 	if( $single ){
@@ -56,7 +56,7 @@ if( $single &&
 
 			indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
 
-				get_template_part( SCM_DIR_PARTS_SINGLE, 'scm-slider' );
+				get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
 
 			indent( $SCM_indent, '</header><!-- header -->', 2 );
 		}

@@ -24,7 +24,7 @@
 			$value = $list[$i];
 			
 			$icona = $value['contatti_icona_' . $contact];
-			$nome = ( $txt ? $value['contatti_nome_' . $contact] . ' ' : '' );
+			$nome = ( $txt ? $value['select_contact_' . $contact] . ' ' : '' );
 			$testo = $value['contatti_' . $contact];
 			if($contact == 'email') $testo = '<a href="mailto:' . $testo . '">' . $testo . '</a>';
 			$separator = ( $i < sizeof( $list ) - 1 ? $sep : '' );

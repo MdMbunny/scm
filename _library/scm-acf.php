@@ -1,130 +1,331 @@
 <?php
-
-
-// *****************************************************
-// *      ACTIONS AND FILTERS
-// *****************************************************
-
-add_filter('acf/settings/dir', 'scm_acf_settings_dir');
-add_filter('acf/settings/path', 'scm_acf_settings_path');
-
-add_filter('acf/settings/save_json', 'scm_acf_json_save');
-add_filter('acf/settings/load_json', 'scm_acf_json_load');
-
-add_filter('acf/load_field', 'scm_acf_select_field');
-add_action('acf/save_post', 'scm_acf_google_latlng', 1);
-
-add_filter( 'bfa_force_fallback', 'scm_force_fallback' );
+/**
+ * @package SCM
+ */
 
 // *****************************************************
-// *      FONT AWESOME FALLBACK FIX
+// *	ACF
 // *****************************************************
 
-function scm_force_fallback( $force_fallback ) {
-	return true;
-}
-
+/*
+*****************************************************
+*
+*   1.0 ACF Field Group
+**		Field Group
+**		Location
+**		Keys
+**		Conditional
+**		Register
+*
+*   2.0 ACF Field
+**		Set Field
+**		Get Field
+*
+*   3.0 ACF Flexible Layout
+*
+*****************************************************
+*/
 
 // *****************************************************
-// *      CUSTOM FIELDS ACTIONS
+// *      1.0 ACF FIELD GROUPS
 // *****************************************************
 
-// *** PLUGIN SETTINGS
+    // Set Field Group
+	if ( ! function_exists( 'scm_acf_group' ) ) {
+		function scm_acf_group( $name, $key, $position = 'normal' ) {
 
-	// customize ACF plugin path
-	if ( ! function_exists( 'scm_acf_settings_path' ) ) {
-		function scm_acf_settings_path( $path ) {
-		    
-		    $path = SCM_DIR_ACF_PLUGIN;
-		    return $path;
-		    
-		}	
-	}
-	 
-	// customize ACF plugin dir
-	if ( ! function_exists( 'scm_acf_settings_dir' ) ) {
-		function scm_acf_settings_dir( $dir ) {
-		    
-		    $dir = SCM_URI_ACF_PLUGIN;
-		    return $dir;
-		    
-		}
-	}
-
-	// customize ACF json path for saving field groups
-	 if ( ! function_exists( 'scm_acf_json_save' ) ) {
-		function scm_acf_json_save( $path ) {
-
-		    $path = SCM_DIR_ACF_JSON;
-
-		    return $path;
-
-		}
-	}
-
-	// customize ACF json path for loading field groups
-	if ( ! function_exists( 'scm_acf_json_load' ) ) {
-		function scm_acf_json_load( $paths ) {
-	    
-			//unset($paths[0]);
-			$paths[] = SCM_DIR_ACF_JSON;
-			
-		    return $paths;
-		}
-	}
-
-
-	if ( ! function_exists( 'scm_acf_google_latlng' ) ) {
-        function scm_acf_google_latlng( $post_id ) {
-           
-			if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
+			if( !$name || !$key )
 				return;
-            if( $_POST['post_type'] != 'scm-luoghi' )
-                return;
 
-            $fields = $_POST['acf'];
-            
-            $country = $fields[SCM_ACF_LUOGO_COUNTRY];
-            $region = $fields[SCM_ACF_LUOGO_REGION];
-            $province = $fields[SCM_ACF_LUOGO_PROVINCE];
-            $code = $fields[SCM_ACF_LUOGO_CODE];
-            $city = $fields[SCM_ACF_LUOGO_CITY];
-            $town = $fields[SCM_ACF_LUOGO_TOWN];
-            $address = $fields[SCM_ACF_LUOGO_ADDRESS];
+			$group = array (
+				'key' => $key,
+				'title' => $name,
+				'fields' => array(),
+				'location' => array(
+					array(
+						array(
+							'param' => 'post_type',
+							'operator' => '==',
+							'value' => 'post',
+						),
+						array(
+							'param' => 'post_type',
+							'operator' => '!=',
+							'value' => 'post',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => $position,
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => array(
+					0 => 'the_content',
+					1 => 'excerpt',
+					2 => 'custom_fields',
+					3 => 'discussion',
+					4 => 'comments',
+					5 => 'revisions',
+					6 => 'slug',
+					7 => 'author',
+					8 => 'format',
+					9 => 'page_attributes',
+					10 => 'featured_image',
+					11 => 'categories',
+					12 => 'tags',
+					13 => 'send-trackbacks',
+				),
+			);
 
-            $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
+			if( is_array( $position ) )
+	            $group = array_merge( $group, $position );
 
-            $ll = getGoogleMapsLatLng( $google_address, $country );
-            $lat = $ll['lat'];
-            $lng = $ll['lng'];
+	        return $group;
 
-            $_POST['acf'][SCM_ACF_LUOGO_LATITUDE] = $lat;
-            $_POST['acf'][SCM_ACF_LUOGO_LONGITUDE] = $lng; 
-        }
+		}
+	}
+
+	// Set Field Group Locations
+	if ( ! function_exists( 'scm_acf_group_location' ) ) {
+		function scm_acf_group_location( $list, $equal = 1, $param = 'post_type' ) {
+
+			$list = ( is_array( $list ) ? $list : array( array( $list, $equal, $param ) ) );
+			
+			$location = array();
+
+			foreach ($list as $loc) {
+				$value = ( isset( $loc[0] ) ? $loc[0] : '' );
+				if( !$value || !is_string( $value ) )
+					continue;
+				$equal = ( !isset( $loc[1] ) || ( isset( $loc[1] ) && $loc[1] ) ? '==' : '!=' );
+				$param = ( isset( $loc[2] ) ? $loc[2] : 'post_type' );
+				$location[] = array (
+					'param' => $param,
+					'operator' => $equal,
+					'value' => $value,
+				);
+			}
+
+			return $location;
+
+		}
+	}
+
+	// Set Fields Key
+	if ( ! function_exists( 'scm_acf_group_keys' ) ) {
+		function scm_acf_group_keys( $name, $list ) {
+
+			if( !$name || !$list )
+				return [];
+
+			$key = $name;
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ) {
+
+				//if(strpos($key, 'types') !== false){
+				/*if( !isset($list[$i]['key']) ){
+					printPre('----------------');
+					printPre($name);
+					printPre($list[$i]);
+				}*/
+				
+				$new = $key . ( substr( $key, -1 ) != '_' ? '_' : '' ) . $list[$i]['key'];
+				$list[$i]['key'] = $new;
+
+				if( isset( $list[$i]['layouts'] ) ){
+					
+					for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
+						
+						$lay = $list[$i]['layouts'][$j]['key'] = $new . $list[$i]['layouts'][$j]['name'];
+						$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_group_keys( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
+
+					}
+
+				}else if( isset( $list[$i]['sub_fields'] ) ){
+
+					$list[$i]['sub_fields'] = scm_acf_group_keys( $new, $list[$i]['sub_fields'] );
+
+				}
+
+				$list[$i]['key'] = 'field_' . $list[$i]['key'] . $list[$i]['type'];
+
+				//if(stripos($list[$i]['key'], 'repeater')!==false)
+					//printPre($list[$i]['name']);
+
+				$list[$i] = scm_acf_group_conditional( $list[$i], $list );
+			}
+
+			return $list;
+		}
 	}
 
 
+	// Merge Conditional Logics - [[ $object ]] [ $object ] $object
+	if ( ! function_exists( 'scm_acf_group_condition' ) ) {
+		function scm_acf_group_condition() {
+
+			if( !func_num_args() )
+				return;
+
+			$logic = func_get_args();
+
+			$arr = [];
+
+			foreach ($logic as $value) {
+
+				if( !$value || !is_array( $value ) )
+					continue;
+
+				$keys = array_keys($value);
+				
+				if( array_keys($keys) !== $keys ){
+					
+					$arr[] = $value;
+
+				}else{
+
+					foreach ($value as $sub) {
+						if( !$sub || !is_array( $sub ) )
+							continue;
+						$keys = array_keys($sub);
+						if( array_keys($keys) !== $keys ){
+
+							$arr[] = $sub;
+						
+						}else{
+
+							foreach ($sub as $last) {
+								if( !$last || !is_array( $last ) )
+									continue;
+								$keys = array_keys($last);
+								if( array_keys($keys) !== $keys ){
+
+									$arr[] = $last;
+
+								}
+							}
+
+						}
+					}
+
+				}
+			}
+
+			return [ $arr ];
+		}
+	}
+
+	// Set Fields Conditional Logic
+	if ( ! function_exists( 'scm_acf_group_conditional' ) ) {
+		function scm_acf_group_conditional( $elem, $list ) {
+
+			if( !$elem || !$list )
+				return $elem;
+
+			if( !isset( $elem['conditional_logic'] ) || empty( $elem['conditional_logic'] ) )
+				return $elem;
+
+			$cond = $elem['conditional_logic'];
+
+			for ( $i = 0; $i < sizeof( $cond ); $i++ ) {
+				for ( $j = 0; $j < sizeof( $cond[$i] ); $j++ ) {
+					$name = $cond[$i][$j]['field'];
+					$field = getByValueKey( $list, $name );
+					if( $field !== false )
+						$cond[$i][$j]['field'] = $list[$field]['key'];
+				}
+			}
+
+			$elem['conditional_logic'] = $cond;
+
+			return $elem;
+		}
+	}
+
+	// Register Field Group
+	if ( ! function_exists( 'scm_acf_group_register' ) ) {
+		function scm_acf_group_register( $group ) {
+
+			/*if( strpos( $group['key'], 'luoghi') !== false )
+				consoleLog( $group );*/
+
+			$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
+			$group['key'] = 'group-' . $group['key'];
+
+			//printPre($group['key']);
+
+			register_field_group( $group );
+
+		}
+	}
+
 // *****************************************************
-// *      GET FIELD
+// *      2.0 ACF FIELDS
 // *****************************************************
 
-	// Get ACF Field through: Post Option > default? > General Option > default? > Fallback
+	// Set Field
+	if ( ! function_exists( 'scm_acf_field' ) ) {
+		function scm_acf_field( $name, $type, $label = '', $width = '', $logic = 0, $instructions = '', $required = 0, $class = '' ) {
+
+			if( !isset( $name ) || !$type )
+				return;
+
+			/*if( strpos( $name, 'model') !== false )
+				consoleLog( $instructions );*/
+
+			//$typ = ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined' ) );
+
+			$field = array (
+				'key' => ( $name ? $name . '_' : '' ),
+				'label' => ( $label ?: 'Field' ),
+				'name' => ( $name ?: $type ),
+				'prefix' => '',
+				'instructions' => ( $instructions ?: '' ),
+				'required' => ( $required ?: 0 ),
+				'conditional_logic' => ( isset( $logic ) && !is_string( $logic ) && !empty( $logic ) ? scm_acf_group_condition( $logic ) : '' ),
+				'wrapper' => array (
+					'width' => ( is_numeric( $width ) ? $width : '' ),
+					'class' => ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) . ( $class ? ' ' . $class : '' ) ),
+					'id' => '',
+				)
+			);
+
+	        if( $width === 'required' || $logic === 'required' || $instructions === 'required' )
+	        	$field['required'] = 1;
+
+	        $field = array_merge( $field, scm_acf_field_type( $type ) );
+
+			return $field;
+
+		}
+	}
+
+	// Get Field
     if ( ! function_exists( 'scm_field' ) ) {
         function scm_field( $name, $fallback = '', $target = '', $no_option = 0, $before = '', $after = '' ) {
+			
+			// Get ACF Field through: Post Option > default? > General Option > default? > Fallback
 
+			if( !function_exists( 'get_field' ) )
+				return $fallback;
+        	
         	if( $target != 'option' ){
 
 	        	global $post;
 
 	        	if( !$post && !$target )
-	        		return;
+	        		return 'post e target non trovati';     	
 
 	        	$id = ( $target ?: $post->ID );
 
 	        	if( !$id )
-	        		return;
+	        		return 'id non trovato';
 
-	        	$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
+	        	if( function_exists( 'get_field' ) )
+	        		$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
+	        	else
+	        		$field = $fallback;
 
 	        	if( $field === 'no' )
 	        		return '';
@@ -157,7 +358,10 @@ function scm_force_fallback( $force_fallback ) {
 
         	if( !$no_option ){
 
-	        	$field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
+        		if( function_exists( 'get_field' ) )
+		        	$field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
+		        else
+	        		$field = $fallback;
 
 	        	if( $field === 'no' )
 	        		return '';
@@ -194,398 +398,91 @@ function scm_force_fallback( $force_fallback ) {
     	}
     }
 
-// *****************************************************
-// *      PRESETS
-// *****************************************************
 
-	// insert default select options from default presets
-	if ( ! function_exists( 'scm_acf_select_field' ) ) {
-        function scm_acf_select_field( $field ){
+    if ( ! function_exists( 'scm_field_objects' ) ) {
+        function scm_field_objects( $post_id, $fields = [], $type = 'text', $filter = [] ) {
+            $arr = [];
+            foreach ($fields as $key => $value) {
+                
+                $field = get_field_object($key, $post_id );
 
-            $default = scm_acf_select_preset($field['name']);
+                if ( $field['type'] == $type ) {
 
-            if( $default ){
+                    if( !empty( $filter ) ){
 
-            	$inherit = array();
-	            
-				if( isset( $field['choices'] ) ){
-			    	foreach ( $field['choices'] as $key => $value ) {
-			        	if( $key == 'default' || $key == 'no' )
-			        		$inherit[$key] = $value;
-			        }
-				}
-	        
-	        	$field['choices'] = $inherit + $default ;
-	    	}
-            
-            return $field;
+                        foreach ( $filter as $k => $v ) {
+                            if( !isset( $field[ $k ] ) || $field[ $k ] !== $v )
+                                continue;
+                            if( is_string( $field[ $k ] ) && strpos( $field[ $k ], $v ) === false )
+                                continue;
+                            if ( $field[ $k ] !== $v )
+                                continue;
+                        }
+                    }
+
+                    $arr[] = $field;
+                }
+            }
+            return $arr;
         }
-	}
+    }
 
-	// get default select options
-	if ( ! function_exists( 'scm_acf_select_preset' ) ) {
-        function scm_acf_select_preset( $list, $get = '', $separator = '' ){
+    /*if ( ! function_exists( 'scm_acf_field_keybytype' ) ) {
+        function scm_acf_field_keybytype( $fields = [], $type = '' ) {
 
-        	$arr = array();
-		        				
-			if( strpos( $list, 'select_types' ) !== false ):
-	    		global $SCM_types;
+            $arr = [];
 
-	    		$arr = array();
+            foreach ($fields as $key => $field) {
+                $k = explode( '_', $key );
+                if( $k[ sizeof($k) - 1 ] == $type )
+                    $arr[] = $key;
+            }
 
-	    		if( strpos( $list, '_complete') !== false )
-	    			$arr = $SCM_types['complete'];
-	    		else if( strpos( $list, '_private') !== false )
-	    			$arr = $SCM_types['private'];
-	    		else if( strpos( $list, '_public') !== false )
-	    			$arr = $SCM_types['public'];
-	    		else
-	    			$arr = $SCM_types['all'];
-
-	    	elseif( strpos( $list, 'select_menu' ) !== false ):
-
-	    		$menus = get_registered_nav_menus();
-
-				foreach ( $menus as $location => $description ) {
-
-					if( !strpos( $location, '__en' ) )
-						$arr[ $location ] = $description;
-				}
-
-	        elseif( strpos( $list, 'select_alignment' ) !== false ):
-	        	$arr = array(
-					'left' => 'Sinistra',
-					'right' => 'Destra',
-					'center' => 'Centrato',
-				);
-
-			elseif( strpos( $list, 'select_txt_alignment' ) !== false ):
-	        	$arr = array(
-					'left' => 'Sinistra',
-					'right' => 'Destra',
-					'center' => 'Centrato',
-					'justify' => 'Giustificato',
-				);
-
-			elseif( strpos( $list, 'select_float' ) !== false ):
-	        	$arr = array(
-					'no' => 'No float',
-					'float-left' => 'Sinistra',
-					'float-right' => 'Destra',
-					'float-center' => 'Centrato',
-				);
-
-			elseif( strpos( $list, 'select_headings' ) !== false ):
-	        	$arr = array(
-					"h1" => "h1",
-					"h2" => "h2",
-					"h3" => "h3",
-					"h4" => "h4",
-					"h5" => "h5",
-					"h6" => "h6",
-					".h7" => ".h7",
-					".h8" => ".h8",
-					".h9" => ".h9",
-					".h0" => ".h0",
-					"strong" => "strong",
-					"div" => "div",
-				);
-
-	        elseif( strpos( $list, 'select_complete_headings' ) !== false ):
-	        	$arr = array(
-	        		"select_headings_1" => "Primario",
-	        		"select_headings_2" => "Secondario",
-	        		"select_headings_3" => "Terziario",
-					"h1" => "h1",
-					"h2" => "h2",
-					"h3" => "h3",
-					"h4" => "h4",
-					"h5" => "h5",
-					"h6" => "h6",
-					".h7" => ".h7",
-					".h8" => ".h8",
-					".h9" => ".h9",
-					".h0" => ".h0",
-					"strong" => "strong",
-					"div" => "div",
-					"span" => "span",
-				);
-
-	        elseif( strpos( $list, 'select_default_headings_classes' ) !== false ):
-	        	$arr = array(
-	        		"select_headings_1" => "primary",
-	        		"select_headings_2" => "secondary",
-	        		"select_headings_3" => "tertiary",
-	        	);
-
-			elseif( strpos( $list, 'select_columns_width' ) !== false ):
-				$arr = array(
-					'11' => '1/1',
-					'12' => '1/2',
-					'13' => '1/3',
-					'23' => '2/3',
-					'14' => '1/4',
-					'34' => '3/4',
-					'15' => '1/5',
-					'25' => '2/5',
-					'35' => '3/5',
-					'45' => '4/5',
-					'16' => '1/6',
-					'56' => '5/6',
-				);
-			elseif( strpos( $list, 'select_txt_size' ) !== false ):
-				$arr = array(
-					'60' => 'XXX-Small',
-					'70' => 'XX-Small',
-					'80' => 'X-Small',
-					'90' => 'Smaller',
-					'95' => 'Small',
-					'100' => 'Normal',
-					'105' => 'Medium',
-					'110' => 'Large',
-					'120' => 'X-Large',
-					'130' => 'XX-Large',
-					'140' => 'XXX-Large',
-					'150' => 'Big',
-					'160' => 'X-Big',
-					'170' => 'XX-Big',
-					'180' => 'XXX-Big',
-					'200' => 'Huge',
-				);
-
-			elseif( strpos( $list, 'select_txt_font_size' ) !== false ):
-				$arr = array(
-					'10px' => 'XXX-Small',
-					'11px' => 'XX-Small',
-					'12px' => 'X-Small',
-					'13px' => 'Smaller',
-					'15px' => 'Small',
-					'16px' => 'Normal',
-					'17px' => 'Medium',
-					'18px' => 'Large',
-					'19px' => 'X-Large',
-					'20px' => 'XX-Large',
-					'21px' => 'XXX-Large',
-					'22px' => 'Big',
-					'23px' => 'X-Big',
-					'24px' => 'XX-Big',
-					'25px' => 'XXX-Big',
-					'26px' => 'Huge',
-				);
-			
-			elseif( strpos( $list, 'select_layout' ) !== false ):
-				$arr = array(
-					'responsive'		=> 'Responsive',
-					'full'				=> 'Full Width',
-				);
-			
-			elseif( strpos( $list, 'select_responsive_events' ) !== false ):
-				$arr = array(
-					'smart'			=> 'Mobile',
-					'portrait'		=> 'Tablet Portrait',
-					'tablet'		=> 'Tablet Landscape',
-					'desktop'		=> 'Desktop',
-				);
-
-			elseif( strpos( $list, 'select_responsive_up' ) !== false ):
-				$arr = array(
-					'smart'									=> 'Mobile',
-					'smart portrait'						=> 'Tablet Portrait',
-					'smart portrait landscape'				=> 'Tablet Landscape',
-					'smart portrait landscape desktop'		=> 'Desktop',
-				);
-
-			elseif( strpos( $list, 'select_responsive_down' ) !== false ):
-				$arr = array(
-					'desktop landscape portrait smart'		=> 'Mobile',
-					'desktop landscape portrait'			=> 'Tablet Portrait',
-					'desktop landscape'						=> 'Tablet Landscape',
-					'desktop'								=> 'Desktop',
-				);
-
-			elseif( strpos( $list, 'select_responsive_layouts' ) !== false ):
-				$arr = array(
-					'1400'			=> '1250px',
-					'1120'			=> '1120px',
-					'1030'			=> '1030px',
-					'940'			=> '940px',
-					'800'			=> '800px',
-					'700'			=> '700px',
-				);
-			
-			elseif( strpos( $list, 'select_head_layout' ) !== false ):
-				$arr = array(
-					'menu_down'			=> 'Menu sotto a Logo',
-					'menu_right'		=> 'Menu alla destra del Logo',
-				);
-			
-			elseif( strpos( $list, 'select_bg_repeat' ) !== false ):
-				$arr = array(
-					'no-repeat'			=> 'No repeat',
-					'repeat'			=> 'Repeat',
-					'repeat-x'			=> 'Repeat x',
-					'repeat-y'			=> 'Repeat y',
-				);
-			
-			elseif( strpos( $list, 'select_bg_position' ) !== false ):
-				$arr = array(
-					'center center'			=> 'center center',
-					'center top'			=> 'center top',
-					'center bottom'			=> 'center bottom',
-					'left center'			=> 'left center',
-					'left top'				=> 'left top',
-					'left bottom'			=> 'left bottom',
-					'right center'			=> 'right center',
-					'right top'				=> 'right top',
-					'right bottom'			=> 'right bottom',
-				);
-
-			elseif( strpos( $list, 'select_webfonts_families' ) !== false ):
-				$arr = array('no' => 'No Google font');
-				$arr['Roboto'] = 'Roboto';
-				$fonts = scm_field( 'webfonts', array(), 'option' );
-				foreach ( $fonts as $font):
-					$arr[$font['family']] = $font['family'];
-				endforeach;
-
-			elseif( strpos( $list, 'select_webfonts_default_families' ) !== false ):
-				$arr = array(
-					'Helvetica_Arial_sans-serif'						=> 'Helvetica, Arial, sans-serif',
-					'Lucida Sans Unicode_Lucida Grande_sans-serif'		=> 'Lucida Sans Unicode, Lucida Grande, sans-serif',
-					'Trebuchet MS_Helvetica_sans-serif'					=> 'Trebuchet MS, Helvetica, sans-serif',
-					'Verdana_Geneva_sans-serif'							=> 'Verdana, Geneva, sans-serif',
-					'Georgia_serif'										=> 'Georgia, serif',
-					'Times New Roman_Times_serif'						=> 'Times New Roman, Times, serif',
-					'Palatino Linotype_Book Antiqua_Palatino_serif'		=> 'Palatino Linotype, Book Antiqua, Palatino, serif',
-					'cursive_serif'										=> 'cursive, serif',
-					'Courier New_Courier_monospace'						=> 'Courier New, Courier, monospace',
-					'Lucida Console_Monaco_monospace'					=> 'Lucida Console, Monaco, monospace',
-				);
-
-			elseif( strpos( $list, 'select_webfonts_styles' ) !== false ):
-				$arr = array(
-					'300' => 'Light',
-					'300italic' => 'Light Italic',
-					'400' => 'Normal',
-					'400italic' => 'Normal Italic',
-					'600' => 'Semi Bold',
-					'600italic' => 'Semi Bold Italic',
-					'700' => 'Bold',
-					'700italic' => 'Bold Italic',
-					'800' => 'Extra Bold',
-					'800italic' => 'Extra Bold Italic',
-				);
-
-			elseif( strpos( $list, 'select_font_weight' ) !== false ):
-				$arr = array(
-					'300' => 'Light',
-					'400' => 'Normal',
-					'600' => 'Semi Bold',
-					'700' => 'Bold',
-					'800' => 'Extra Bold',
-				);
-
-			elseif( strpos( $list, 'select_line_height' ) !== false ):
-				$arr = array(
-					'0.0' => 'Nessuno spazio',
-					'0.25' => '1 quarto di linea',
-					'0.5' => 'Mezza linea',
-					'1' => 'Una linea',
-					'1.25' => 'Una linea e 1 quarto',
-					'1.5' => 'Una linea e mezza',
-					'1.75' => 'Una linea e 3 quarti',
-					'2' => 'Doppia linea',
-					'2.5' => 'Doppia linea e mezza',
-					'3' => 'Tripla linea',
-					'4' => 'Quadrupla linea',
-				);
-
-			elseif( strpos( $list, 'select_slider' ) !== false ):
-				$arr = array(
-					'nivo' => 'Nivo Slider',
-				);
-
-			elseif( strpos( $list, 'select_effect' ) !== false ):
-				if( strpos( $list, '_nivo' ) !== false ):
-					$arr = array(
-						'sliceDown' => 'Slice Down',
-						'sliceDownLeft' => 'Slice Down Left',
-						'sliceUp' => 'Slice Up',
-						'sliceUpLeft' => 'Slice Up Left',
-						'sliceUpDown' => 'Slice Up Down',
-						'sliceUpDownLeft' => 'Slice Up Down Left',
-						'fold' => 'Fold',
-						'fade' => 'Fade',
-						'random' => 'Random',
-						'slideInRight' => 'Slide In Right',
-						'slideInLeft' => 'Slide In Left',
-						'boxRandom' => 'Box Random',
-						'boxRain' => 'Box Rain',
-						'boxRainReverse' => 'Box Rain Reverse',
-						'boxRainGrow' => 'Box Rain Grow',
-						'boxRainGrowReverse' => 'Box Rain Grow Reverse'
-					);
-				endif;
-
-			elseif( strpos( $list, 'select_social_shape' ) !== false ):
-				$arr = array(
-					'square' 		=> 'Quadrati',
-					'square_neg' 	=> 'Quadrati, negativo',
-					'circle' 		=> 'Cerchi',
-					'rounded' 		=> 'Arrotondati',
-					'hexagonal' 	=> 'Esagonali',
-				);
-
-			elseif( strpos( $list, 'select_ease' ) !== false ):
-				$arr = array(
-					'linear' 			=> 'Linear',
-					'swing' 			=> 'Swing',
-					'easeInQuad' 		=> 'Quad In',
-					'easeOutQuad' 		=> 'Quad Out',
-					'easeInOutQuad' 	=> 'Quad InOut',
-					'easeInCubic' 		=> 'Cubic In',
-					'easeOutCubic' 		=> 'Cubic Out',
-					'easeInOutCubic' 	=> 'Cubic InOut',
-					'easeInQuart' 		=> 'Quart In',
-					'easeOutQuart' 		=> 'Quart Out',
-					'easeInOutQuart' 	=> 'Quart InOut',
-					'easeInQuint' 		=> 'Quint In',
-					'easeOutQuint' 		=> 'Quint Out',
-					'easeInOutQuint' 	=> 'Quint InOut',
-					'easeInExpo' 		=> 'Expo In',
-					'easeOutExpo' 		=> 'Expo Out',
-					'easeInOutExpo' 	=> 'Expo InOut',
-					'easeInSine' 		=> 'Sine In',
-					'easeOutSine' 		=> 'Sine Out',
-					'easeInOutSine' 	=> 'Sine InOut',
-					'easeInCirc' 		=> 'Circ In',
-					'easeOutCirc' 		=> 'Circ Out',
-					'easeInOutCirc' 	=> 'Circ InOut',
-					'easeInElastic' 	=> 'Elastic In',
-					'easeOutElastic' 	=> 'Elastic Out',
-					'easeInOutElastic' 	=> 'Elastic InOut',
-					'easeInBack' 		=> 'Back In',
-					'easeOutBack' 		=> 'Back Out',
-					'easeInOutBack' 	=> 'Back InOut',
-					'easeInBounce' 		=> 'Bounce In',
-					'easeOutBounce' 	=> 'Bounce Out',
-					'easeInOutBounce' 	=> 'Bounce InOut',
-				);
-
-			endif;
-
-			if( $get )
-				return ( isset( $arr[ $get ] ) ? $arr[ $get ] . $separator : '' );
-
-			return $arr;
+            return $arr;
 
         }
     }
 
+    if ( ! function_exists( 'scm_acf_field_keybyneedle' ) ) {
+        function scm_acf_field_keybyneedle( $fields = [], $needle = '' ) {
+
+            $arr = [];
+
+            foreach ($fields as $key => $field) {
+                if( strpos( $key, $needle ) !== false )
+                    $arr[] = $key;
+            }
+
+            return $arr;
+
+        }
+    }*/
+
+
 // *****************************************************
-// *      INCLUDE ACF PLUGIN
+// *      3.0 ACF FLEXIBLE LAYOUTS
 // *****************************************************
 
-    include( SCM_DIR_ACF_PLUGIN . 'acf.php' );
+
+	if ( ! function_exists( 'scm_acf_layout' ) ) {
+		function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $fields = array() ) {
+
+			if( !$name )
+				return;
+
+			$layout = array (
+				'key' => $name,
+				'name' => 'layout-' . $name,
+				'label' => $label,
+				'display' => $type,
+				'sub_fields' => $fields,
+				'min' => '',
+				'max' => '',
+			);
+
+			return $layout;
+
+		}
+	}
 
 ?>

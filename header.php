@@ -93,14 +93,14 @@ $page_class = scm_field( 'select_layout_page', 'full', 'option' ) . ' float-' . 
 
 $fade_in = scm_field( 'fade_in', 0, 'option' );
 $fade_out = scm_field( 'fade_out', 0, 'option' );
-$fade_wait = scm_field( 'fade_wait', 'no', 'option' );
+$fade_wait = scm_field( 'select_waitfor', 'no', 'option' );
 
 $smooth_duration = scm_field( 'tools_smoothscroll_duration', 0, 'option' );
 $smooth_offset = scm_field( 'tools_smoothscroll_offset', 0, 'option' );
 $smooth_ease = scm_field( 'select_ease_smoothscroll', 'swing', 'option' );
 $smooth_delay = scm_field( 'tools_smoothscroll_delay', 0, 'option' );
 $smooth_new = scm_field( 'tools_smoothscroll_delay_new', 0, 'option' );
-$smooth_post = scm_field( 'tools_smoothscroll_where', 'all', 'option' );
+$smooth_post = scm_field( 'select_enable_smoothpage', 'on', 'option' );
 
 $single_class = scm_field( 'tools_singlepagenav_activeclass', 'active', 'option' );
 $single_interval = scm_field( 'tools_singlepagenav_interval', 1, 'option' );
@@ -109,21 +109,19 @@ $single_threshold = scm_field( 'tools_singlepagenav_threshold', 0, 'option' );
 
 $style_body = scm_options_get_style( get_queried_object_id(), 1, '_sc' );
 $style_page = scm_options_get_style( get_queried_object_id(), 1, 'nobg' );
-
             
 $head_id = scm_field( 'id_header', 'site-header', 'option' );
-$head_row_id = $head_id . '-row';
 
 $head_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'full', 'option' ) );
 
 $head_class = 'site-header full ' . $site_align;
-$head_row_class = 'row scm-row ' . $head_layout . ' left';
+$head_row_class = 'row scm-row object scm-object ' . $head_layout . ' left';
 
 
-$menu_position = scm_field( 'position_menu', 'inline', 'option' );
+$menu_position = scm_field( 'select_position_menu', 'inline', 'option' );
 $menu_align = scm_field( 'select_alignment_menu', 'right', 'option' );
 
-$follow_position = scm_field( 'position_social_follow', 'top', 'option' );
+$follow_position = scm_field( 'select_head_social_position', 'top', 'option' );
 
 $cont_id = scm_field( 'id_content', 'site-content', 'option' );
 $cont_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_content', 'full', 'option' ) );
@@ -171,7 +169,7 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 
     $SCM_indent += 1;
 
         // Menu row
-        indent( $SCM_indent, '<div id="' . $head_row_id . '" class="' . $head_row_class . '">', 2 );
+        indent( $SCM_indent, '<div class="' . $head_row_class . '">', 2 );
 
             // Logo
             scm_logo();

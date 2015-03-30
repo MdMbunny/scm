@@ -3,118 +3,74 @@
 class Custom_Type {
 
     protected $menu_pos;
-    protected $categories;
-    protected $tags;
  
-    function __construct( $plural, $singular = '', $plural_short = '', $singular_short = '', $slug = '', $categories = 0, $categories_plural = '', $categories_singular = '', $tags = 0, $tags_plural = '', $tags_singular = '', $icon = '', $folder = 0, $orderby = 'title', $order = '' ) {
+    function __construct( $build ) {
         
-        if( !$plural )
+        if( !$build )
             return;
 
-        if( is_array( $plural ) ){
+        $attr = array(
+            'public'                => 1,
+            'hidden'                => 0,
+            'post'                  => 1,
+            'singular'              => '',
+            'plural'                => '',
+            'short-singular'        => '',
+            'short-plural'          => '',
+            'slug'                  => '',
+            'icon'                  => 'f111',
+            'orderby'               => 'title',
+            'ordertype'             => ''
+        );
 
-            $default = array(
-                'singular'              => null,
-                'plural'                => null,
-                'singular_short'        => null,
-                'plural_short'          => null,
-                'slug'                  => null,
-                'categories'            => 0,
-                'tags'                  => 0,
-                'categories_singular'   => null,
-                'categories_plural'     => null,
-                'tags_singular'         => null,
-                'tags_plural'           => null,
-                'icon'                  => '',
-                'folder'                => 0,
-                'orderby'               => 'title',
-                'order'                 => ''
-            );
+        if( is_array( $build ) )
+            $attr = array_merge( $attr, $build );
+        else if( is_string( $build ) )
+            $attr['plural'] = $build;
+        else
+            return;
 
-            extract( wp_parse_args( $plural, $default ) );
+        $this->post = $attr['post'];
 
-        }else{
-            $singular = $plural;
-        }
-
-        if(!$slug)
-            $slug = sanitize_title($plural);
-
-        if( !$plural_short )
-            $plural_short = $plural;
-
-        if( !$singular_short )
-            $singular_short = $singular;
-
-        if( !$categories_plural )
-            $categories_plural = 'Categorie ' . $plural;
-
-        if( !$categories_singular )
-            $categories_singular = 'Categoria ' . $singular;
-
-        if( !$tags_plural )
-            $tags_plural = 'Tags ' . $plural;
-
-        if( !$categories_singular )
-            $tags_singular = 'Tag ' . $singular;
+        $plural = $attr['plural'];
+        $singular = ( $attr['singular'] ?: $plural );
+        $slug = ( $attr['slug'] ?: sanitize_title($plural) );
 
         $this->attributes = array();
-        $this->taxonomies = array();
+
+        $this->public = $attr['public'];
+        $this->hidden = $attr['hidden'];
         
-        $this->singular = $singular;
-        $this->singular_short = $singular_short;
         $this->plural = $plural;
-        $this->plural_short = $plural_short;
+        $this->singular = $singular;
         $this->slug = $slug;
-        $this->icon = $icon;
-        $this->uploads_post_folder = $folder;
+        
+        $this->short_singular = ( $attr['short-singular'] ?: $singular );
+        $this->short_plural = ( $attr['short-plural'] ?: $plural );
+        
+        $this->icon = $attr['icon'];
         $this->supports = array( 'title' );
-        $this->orderby = $orderby;
-        $this->order = $order;
+        $this->orderby = ( $attr['orderby'] ?: 'title' );
+        $this->order = $attr['ordertype'];
 
         //$this->menu_pos = 9;
-
-        if( $categories ) {
-            $this->categories = new Custom_Taxonomy( $categories_plural , $categories_singular, 'categories-' . $slug, array( $slug ), false );
-            $this->taxonomies[] = 'categories-' . $slug;
-            add_action( 'admin_menu', array( &$this, 'CT_remove_cat_metabox' ) );
-        }
-        if( $tags ) {
-            $this->tags = new Custom_Taxonomy( $tags_plural, $tags_singular, 'tags-' . $slug, array( $slug ), 1 );
-            $this->taxonomies[] = 'tags-' . $slug;
-            add_action( 'admin_menu', array(&$this, 'CT_remove_tag_metabox') );
-        }
 
         add_filter( 'manage_edit-' . $this->slug . '_columns', array(&$this, 'CT_admin_columns') ) ;
         add_action( 'manage_' . $this->slug . '_posts_custom_column', array(&$this, 'CT_manage_admin_columns'), 10, 2 );
         add_action( 'load-edit.php', array(&$this, 'CT_admin_edit_page') );
-
+                
         if($this->icon) { add_action( 'admin_head', array(&$this, 'CT_admin_icon') ); }
 
         $this->CT_type();
+    }
+
+    function CT_register() {
         register_post_type( $this->slug, $this->attributes);
         flush_rewrite_rules();
     }
 
-    function CT_default( $args = array() ) {
-        
-        $default = array(
-            'singular'      => null,
-            'plural'        => null,
-            'slug'          => null,
-            'categories'    => 0,
-            'tags'          => 0,
-            'icon'          => '',
-            'folder'        => 0,
-        );
-
-        return $default;
-            
-    }
-
     function CT_type() {
         $this->menu_pos++;
-
 
         $this->attributes = array(
             'labels'    => array(
@@ -128,32 +84,28 @@ class Custom_Type {
                 'add_new'             => __( 'Aggiungi', SCM_THEME ),
                 'edit_item'           => __( 'Modifica', SCM_THEME ),
                 'update_item'         => __( 'Aggiorna', SCM_THEME ),
-                'search_items'        => __( 'Cerca ', SCM_THEME ) . $this->plural_short,
+                'search_items'        => __( 'Cerca ', SCM_THEME ) . $this->short_plural,
                 'not_found'           => __( 'Non trovato', SCM_THEME ),
                 'not_found_in_trash'  => __( 'Non trovato nel Cestino', SCM_THEME ),
             ),
             'label'               => $this->slug,
             'description'         => __( 'Descrizione', SCM_THEME ),
             'supports'            => $this->supports,
-            'hierarchical'        => false,
-            'taxonomies'          => $this->taxonomies,
+            'hierarchical'        => ( !$this->post ? true : false ),
+            //'taxonomies'          => $this->taxonomies,
             'public'              => true,
-            'show_ui'             => true,
-            'show_in_menu'        => true,
-            'show_in_nav_menus'   => true,
-            'show_in_admin_bar'   => true,
-            //'menu_position'       => $this->menu_pos,
+            'show_ui'             => !$this->hidden,
+            'show_in_menu'        => !$this->hidden,
+            'show_in_nav_menus'   => !$this->hidden,
+            'show_in_admin_bar'   => !$this->hidden,
+            'menu_position'       => 60,
             'can_export'          => true,
-            'has_archive'         => true,
-            'exclude_from_search' => false,
+            'has_archive'         => $this->public,
+            'exclude_from_search' => !$this->public,
             'publicly_queryable'  => true,
-            'capability_type'     => 'post',
+            'capability_type'     => ( !$this->post ? 'page' : 'post' ),
         );
 
-        /*if($this->post == false){
-            $this->attributes['capability_type'] = 'page';
-            $this->attributes['hierarchical'] = true;
-        }*/
     }
 
     function CT_admin_columns( $columns ) {
@@ -198,14 +150,6 @@ class Custom_Type {
           content: "' . $this->icon . '";
         }
         </style>';
-    }
-
-    function CT_remove_cat_metabox() {
-        remove_meta_box('categories-' . $this->slug . 'div', $this->slug, 'side');
-    }
-
-    function CT_remove_tag_metabox() {
-        remove_meta_box('tags-' . $this->slug . 'div', $this->slug, 'side');
     }
 }
 

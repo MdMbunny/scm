@@ -136,7 +136,6 @@
 					minw 			= parseInt( $elem.data( 'min-width' ), 10 ),
 					minh 			= parseInt( $elem.data( 'min-height' ), 10 );
 
-
 				$($elems).each( function( i ) {
 
 					var $this 	= $( this ),
@@ -145,18 +144,12 @@
 					switch( equal ){
 						case 'height': m = parseInt( $this.css( 'height' ), 10 ); break;
 						case 'width': m = parseInt( $this.css( 'width' ), 10 ); break;
-					}
-
-					
-
-					
+					}					
 
 					if( !max )
 						current = ( m < current ? m : current );
 					else
 						current = ( m > current ? m : current );
-
-
 				
 				});
 

@@ -37,11 +37,11 @@ $repeater = scm_field( $flexible, array(), $id, 1 );
 			$section_class .= $odd;
 			$section_class .= 'count-' . ( $current );
 
-			$section_class .= ( $row['row_classes'] ? ' ' . $row['row_classes'] : '' );
+			$section_class .= ( $row['class_section'] ? ' ' . $row['class_section'] : '' );
 
-			$section_id = ( $row['row_id'] ?: '' ) ;
+			$section_id = ( $row['id_section'] ?: '' ) ;
 
-			$section_attributes = ( $row['row_attributes'] ?: '' ) ;
+			$section_attributes = ( $row['section_attributes'] ?: '' ) ;
 
 			$element = ( isset( $row['acf_fc_layout'] ) ? $row['acf_fc_layout'] : '' );
 			if( !$element ) continue;
@@ -51,9 +51,9 @@ $repeater = scm_field( $flexible, array(), $id, 1 );
 					
 					$single = $row[ 'select_section' ];
             		if(!$single) continue;
-		            $post = $single;
+            		$post = ( is_numeric( $single ) ? get_post( $single ) : $single );
 		            setup_postdata( $post );
-		            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-scm-sections.php', array(
+		            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-sections.php', array(
 		            	'page_id' => $id,
 		            	'add_id' => $section_id,
                     	'add_class' => $section_class,

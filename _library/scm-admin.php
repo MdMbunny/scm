@@ -1,56 +1,42 @@
 <?php
-
-//if( is_admin() ) :
+/**
+ * @package SCM
+ */
 
 // *****************************************************
-// *      ACTIONS AND FILTERS
+// *    SCM ADMIN
 // *****************************************************
 
-
-/*add_filter('wp_handle_upload_prefilter', 'spacepad_pre_upload', 2);
-add_filter('wp_handle_upload', 'spacepad_post_upload', 2);
-
-// Change the upload path to the one we want
-function spacepad_pre_upload($file){
-    add_filter('upload_dir', 'spacepad_custom_upload_dir');
-    return $file;
-}
- 
-// Change the upload path back to the one Wordpress uses by default
-function spacepad_post_upload($fileinfo){
-    remove_filter('upload_dir', 'spacepad_custom_upload_dir');
-    return $fileinfo;
-}
- 
-function spacepad_custom_upload_dir($path){    
-
-    $use_default_dir = ( isset($_REQUEST['post_id'] ) && $_REQUEST['post_id'] == 0 ) ? true : false; 
-    if( !empty( $path['error'] ) || $use_default_dir )
-        return $path; //error or uploading not from a post/page/cpt 
- 
-
-    $the_cat = get_the_category( $_REQUEST['post_id'] );
-    $customdir = '/' . strtolower(str_replace(" ", "-", $the_cat[0]->cat_name));
- 
-    $path['path']    = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
-    $path['url']     = str_replace($path['subdir'], '', $path['url']);      
-    $path['subdir']  = $customdir;
-    $path['path']   .= $customdir; 
-    $path['url']    .= $customdir;  
- 
-    return $path;
-}*/
+/*
+*****************************************************
+*
+*   0.0 Actions and Filters
+*   1.0 Functions
+**      Duplicate Post
+*   2.0 Hooks
+**      UI
+**      Uploads
+*
+*****************************************************
+*/
 
 
+// *****************************************************
+// *      0.0 ACTIONS AND FILTERS
+// *****************************************************
 
+    add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
+    add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
+    add_filter( 'post_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
     
     add_action( 'admin_menu', 'scm_admin_remove_menus' );
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
     add_action( 'pre_user_query','scm_admin_hide_from_users');
+    
 
     add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
-    add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3);
+    add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3 );
 
     add_action( 'admin_init', 'scm_upload_sizes' );
     add_filter( 'image_size_names_choose', 'scm_custom_sizes' );
@@ -58,17 +44,107 @@ function spacepad_custom_upload_dir($path){
     //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
     //add_filter( 'upload_dir', 'scm_upload_set_directory' );
     
-
-
 // *****************************************************
-// *      HOOKS
+// *      1.0 FUNCTIONS
 // *****************************************************
 
 // *********************************************
-// ***************************** ADMIN HOOKS ***
+//  Duplicate Post
 // *********************************************
 
+// Function creates post duplicate as a draft and redirects then to the edit post screen
+    if ( ! function_exists( 'scm_admin_duplicate_post' ) ) {
+        function scm_admin_duplicate_post(){
 
+            global $wpdb;
+
+            if ( !( isset( $_GET['post']) || isset( $_POST['post']) || ( isset($_REQUEST['action']) && 'scm_admin_duplicate_post' == $_REQUEST['action'] ) ) ) {
+                wp_die('No post to duplicate has been supplied!');
+            }
+
+            $post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
+            $post = get_post( $post_id );
+            $current_user = wp_get_current_user();
+            $new_post_author = $current_user->ID;
+         
+            if (isset( $post ) && $post != null) {
+
+                $args = array(
+                    'comment_status' => $post->comment_status,
+                    'ping_status'    => $post->ping_status,
+                    'post_author'    => $new_post_author,
+                    'post_content'   => $post->post_content,
+                    'post_excerpt'   => $post->post_excerpt,
+                    'post_name'      => $post->post_name,
+                    'post_parent'    => $post->post_parent,
+                    'post_password'  => $post->post_password,
+                    'post_status'    => 'draft',
+                    'post_title'     => $post->post_title,
+                    'post_type'      => $post->post_type,
+                    'to_ping'        => $post->to_ping,
+                    'menu_order'     => $post->menu_order
+                );
+
+                $new_post_id = wp_insert_post( $args );
+
+                $taxonomies = get_object_taxonomies( $post->post_type );
+                foreach ( $taxonomies as $taxonomy ) {
+
+                    $post_terms = wp_get_object_terms( $post_id, $taxonomy, array( 'fields' => 'slugs' ) );
+                    wp_set_object_terms( $new_post_id, $post_terms, $taxonomy, false );
+
+                }
+
+                $post_meta_infos = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$post_id" );
+                
+                if (count($post_meta_infos)!=0) {
+
+                    $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
+
+                    foreach ( $post_meta_infos as $meta_info ) {
+                        $meta_key = $meta_info->meta_key;
+                        $meta_value = addslashes( $meta_info->meta_value );
+                        $sql_query_sel[] = "SELECT $new_post_id, '$meta_key', '$meta_value'";
+                    }
+
+                    $sql_query.= implode( " UNION ALL ", $sql_query_sel );
+                    $wpdb->query( $sql_query );
+
+                }
+
+                wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_post_id ) );
+
+                exit;
+
+            } else {
+
+                wp_die('Post creation failed, could not find original post: ' . $post_id);
+
+            }
+        }
+    }
+
+// Add the duplicate link to action list
+    if ( ! function_exists( 'scm_admin_duplicate_post_link' ) ) {
+        function scm_admin_duplicate_post_link( $actions, $post ) {
+            if (current_user_can('edit_posts')) {
+                $actions['duplicate'] = '<a href="admin.php?action=scm_admin_duplicate_post&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', SCM_THEME ) . '" rel="permalink">' . __( 'Duplica', SCM_THEME ) . '</a>';
+            }
+            return $actions;
+        }
+    }
+
+ 
+
+// *****************************************************
+// *      2.0 HOOKS
+// *****************************************************
+
+// *********************************************
+//  UI
+// *********************************************
+
+// Remove Menu Elements
     if ( ! function_exists( 'scm_admin_remove_menus' ) ) {
         function scm_admin_remove_menus(){
 
@@ -104,6 +180,7 @@ function spacepad_custom_upload_dir($path){
     if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
         function scm_admin_remove_dashboard_widgets(){
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
+            remove_meta_box('synved_connect_dashboard_widget', 'dashboard', 'normal');   // Sociual Feather
             remove_meta_box('dashboard_activity', 'dashboard', 'normal');   // Activity
             remove_meta_box('dashboard_right_now', 'dashboard', 'normal');   // Right Now
             remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal'); // Recent Comments
@@ -139,9 +216,8 @@ function spacepad_custom_upload_dir($path){
         }
     }
 
-
 // *********************************************
-// **************************** UPLOAD HOOKS ***
+// UPLOAD
 // *********************************************
     
     add_action( 'current_screen', 'scm_current_screen' );
