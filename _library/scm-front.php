@@ -443,7 +443,7 @@
                     $link = '<div class="toggle-button">' . $link . '</div>';
                 }
                 
-                $output .= indent( $ind + $depth ) . '<li class="menu-item link-' . $type . $class . '"' . $data . '>' . $link;
+                $output .= indent( $ind + $depth ) . '<li class="' . sanitize_title( $link ) . ' menu-item link-' . $type . $class . '"' . $data . '>' . $link;
             
             }
 
@@ -865,7 +865,7 @@
             
             $id = scm_field( 'id_topofpage', 'site-topofpage', 'option' );
             $icon = scm_field( 'tools_topofpage_icon', 'fa-angle-up', 'option' );
-            $text = scm_field( 'tools_topofpage_title', 'Inizio Pagina', 'option' );
+            $text = scm_field( 'tools_topofpage_title', __( 'Inizio Pagina', SCM_THEME ), 'option' );
             $offset = scm_field( 'tools_topofpage_offset', 0, 'option' );
             $title = $text;
 

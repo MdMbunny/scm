@@ -28,45 +28,100 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
    
-	add_action( 'acf/include_fields', 'scm_install' );                                              // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
-
+	add_action( 'acf/include_fields', 'scm_typekit_install' );                                      // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
+    add_action( 'acf/include_fields', 'scm_roles_install' );
+    
     add_action( 'acf/include_fields', 'scm_option_pages_install' );                                 // 3.0      Creo Main Options Pages ( SCM, Types, Taxonomies )
 
-    add_action('acf/include_fields', 'scm_acf_types_install');                                      // 6.0      Creo, registro e assegno Custom Fields a Custom Types e Taxonomies
+    add_action( 'acf/include_fields', 'scm_acf_types_install' );                                      // 6.0      Creo, registro e assegno Custom Fields a Custom Types e Taxonomies
     
     add_action( 'acf/include_fields', 'scm_types_install' );                                        // 2.0      Installo Default e Custom Types e Taxonomies
     
 	add_action( 'acf/include_fields', 'scm_option_subpages_install' );                              // 3.0      Creo Sub Options Pages
 
-    add_action('acf/include_fields', 'scm_acf_install');                                            // 6.0      Creo, registro e assegno Custom Fields a tutto il resto
+    add_action( 'acf/include_fields', 'scm_acf_install' );                                            // 6.0      Creo, registro e assegno Custom Fields a tutto il resto
     
-    add_filter('acf/settings/dir', 'scm_acf_settings_dir');                                         // 4.0
-    add_filter('acf/settings/path', 'scm_acf_settings_path');
+    add_filter( 'acf/settings/dir', 'scm_acf_settings_dir' );                                         // 4.0
+    add_filter( 'acf/settings/path', 'scm_acf_settings_path' );
     //add_filter('acf/settings/show_admin', '__return_false');                                      // Hide ACF from Admin
     add_filter( 'bfa_force_fallback', 'scm_force_fallback' );
 
     
-    add_filter('acf/load_field', 'scm_acf_loadfield_hook_choices_get', 100);                             // 5.1
-    add_filter('acf/load_field/type=repeater', 'scm_acf_loadfield_hook_template_list', 100);
+    add_filter( 'acf/load_field', 'scm_acf_loadfield_hook_choices_get', 100) ;                             // 5.1
+    add_filter( 'acf/load_field/type=repeater', 'scm_acf_loadfield_hook_template_list', 100 );
 
-    add_action('acf/save_post', 'scm_acf_savepost_hook_templates', 1);                                   // 5.2
-    add_action('acf/save_post', 'scm_acf_savepost_hook_luoghi_latlng', 1);
-    add_action('acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 1);
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 1) ;                                   // 5.2
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_luoghi_latlng', 1 );
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 1 );
 
     add_action( 'tgmpa_register', 'scm_plugins_install' );                                          // 7.0
+
+    add_action( 'after_setup_theme', 'scm_theme_install' );                                          // 1.0
 
 
 // *****************************************************
 // *      1.0 THEME INSTALLATION
 // *****************************************************
 
-	if ( ! function_exists( 'scm_install' ) ) {
-		function scm_install() {
+	if ( ! function_exists( 'scm_typekit_install' ) ) {
+		function scm_typekit_install() {
 
-            global $SCM_version, $SCM_typekit;
+// *** Install TypeKit
+
+            global $SCM_typekit;
 
             $SCM_typekit = new Typekit();
+
+        }
+    }
             
+// *** Adminitration Roles
+
+    if ( ! function_exists( 'scm_roles_install' ) ) {
+        function scm_roles_install() {
+            if( !get_role( 'staff' ) ){
+                add_role(
+                    'staff',
+                    'Staff',
+                    array(
+                        'read' => true,
+                        'read_private_pages' => true,
+                        'read_private_posts' => true,
+                        'list_users' => true,
+                        'remove_users' => true,
+                        'add_users' => true,
+                        'upload_files' => true,
+                    )
+                );
+                
+            }
+            //remove_role('staff');
+
+            if( !get_role( 'utente' ) ){
+                add_role(
+                    'utente',
+                    'Utente',
+                    array(
+                        'read' => true,
+                        'read_private_pages' => true,
+                        'read_private_posts' => true,
+                    )
+                );
+                
+            }
+            //remove_role('utente');
+
+            
+        }
+    }
+        
+// *** Theme Activation
+
+    if ( ! function_exists( 'scm_theme_install' ) ) {
+        function scm_theme_install() {
+
+            global $SCM_version;
+
             $themeStatus = get_option( 'scm-settings-installed' );
             $version = get_option( 'scm-version' );
 
@@ -75,7 +130,7 @@
 
 			if ( ! $themeStatus ) {
 				update_option( 'scm-settings-installed', 1 );
-				header( 'Location: themes.php?page=' . SCM_SETTINGS_MAIN );		// Redirect alla pagina SCM Options
+				header( 'Location: themes.php?page=acf-options-opzioni' );		// Redirect alla pagina SCM Options
 				die;
 			}
 		}
@@ -85,24 +140,57 @@
 // *      2.0 CUSTOM TYPES INSTALLATION
 // *****************************************************
 
+    if ( ! function_exists( 'scm_types_capabilities' ) ) {
+        function scm_types_capabilities( $singular, $plural ){
+
+            $roles = array('staff', 'administrator');
+            
+            foreach($roles as $the_role) { 
+
+                $role = get_role($the_role);
+
+                if ( !$role )
+                    continue;
+
+
+
+                //consoleLog( 'read_' . $singular );
+                
+                $role->add_cap( 'read' );
+                $role->add_cap( 'read_private_' . $singular );
+                $role->add_cap( 'read_private_' . $plural );
+                $role->add_cap( 'edit_' . $singular );
+                $role->add_cap( 'edit_' . $plural );
+                $role->add_cap( 'edit_private_' . $plural );
+                $role->add_cap( 'edit_others_' . $plural );
+                $role->add_cap( 'edit_published_' . $plural );
+                $role->add_cap( 'publish_' . $plural );
+                $role->add_cap( 'delete_' . $plural );
+                $role->add_cap( 'delete_others_' . $plural );
+                $role->add_cap( 'delete_private_' . $plural );
+                $role->add_cap( 'delete_published_' . $plural );
+            }
+        }
+    }
+
     if ( ! function_exists( 'scm_types_install' ) ) {
         function scm_types_install(){
-
+ 
             global $SCM_types;
 
             $SCM_types = array(
                 'objects' => array(),
                 'private' => array(),
                 'public' => array(
-                    'post'                  => 'Articoli',
+                    //'post'                  => 'Articoli',
                 ),
                 'all' => array(
-                    'post'                  => 'Articoli',
+                    //'post'                  => 'Articoli',
                     'wpcf7_contact_form'    => 'Contact Form',
                 ),
                 'complete' => array(
                     'page'                  => 'Pagine',
-                    'post'                  => 'Articoli',
+                    //'post'                  => 'Articoli',
                     'wpcf7_contact_form'    => 'Contact Form',
                 ),
             );
@@ -111,27 +199,27 @@
             $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'option' );
             
 			$default_types = array(
-				'sections'				=> array( 'active' => 1,      'public' => 0,       'hidden' => 0,     	'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'sections', 			'icon' => 'f489',      'orderby' => 'title',       'ordertype' => '',      'post' => 0 ),
-				'slides'                => array( 'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Slide', SCM_THEME),                   'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'f128',      'orderby' => 'date',        'ordertype' => '' ),
-                'soggetti'				=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Soggetto', SCM_THEME), 				'plural' => __('Soggetti', SCM_THEME), 				'slug' => 'soggetti', 			'icon' => 'f338',      'orderby' => 'title',       'ordertype' => '',      'post' => 0 ),
-				'luoghi'				=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Luogo', SCM_THEME), 					'plural' => __('Luoghi', SCM_THEME), 				'slug' => 'luoghi', 			'icon' => 'f230',      'orderby' => 'title',       'ordertype' => '',      'post' => 0 ),
-				'news'					=> array( 'active' => 0,      'public' => 1,       'hidden' => 0,       'singular' => __('News', SCM_THEME), 					'plural' => __('News', SCM_THEME), 					'slug' => 'news', 				'icon' => 'f488',      'orderby' => 'date',        'ordertype' => '' ),
-				'documenti'				=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Documento', SCM_THEME), 				'plural' => __('Documenti', SCM_THEME), 			'slug' => 'documenti', 			'icon' => 'f322',      'orderby' => 'title',       'ordertype' => '' ),
-				'gallerie'				=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Galleria', SCM_THEME), 				'plural' => __('Gallerie', SCM_THEME), 				'slug' => 'gallerie', 			'icon' => 'f161',      'orderby' => 'title',       'ordertype' => '' ),
-				'video'					=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Video', SCM_THEME), 					'plural' => __('Video', SCM_THEME), 				'slug' => 'video', 				'icon' => 'f236',      'orderby' => 'title',       'ordertype' => '' ),
-				'rassegne-stampa'		=> array( 'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Rassegna Stampa', SCM_THEME),		    'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'rassegne-stampa', 	'icon' => 'f336',      'orderby' => 'date',        'ordertype' => '',        'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME), 	),
+				'sections'				=> array( 'admin' => 1,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'sections', 			'icon' => 'f489',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,        'menu' => 0,      'post' => 0                                                                                          ),
+				'slides'                => array( 'admin' => 0,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Slide', SCM_THEME),                'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'f128',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'gallerie'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Galleria', SCM_THEME),             'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'f161',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+				'video'					=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Video', SCM_THEME), 				'plural' => __('Video', SCM_THEME), 				'slug' => 'video', 				'icon' => 'f236',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'news'                  => array( 'admin' => 0,      'active' => 0,      'public' => 1,       'hidden' => 0,       'singular' => __('News', SCM_THEME),                 'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'f488',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'documenti'             => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Documento', SCM_THEME),            'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'f322',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+				'rassegne-stampa'		=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'rassegne-stampa', 	'icon' => 'f336',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME), 	),
+                'soggetti'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Soggetto', SCM_THEME),             'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'f338',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
+                'luoghi'                => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Luogo', SCM_THEME),                'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'f230',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
 			);
 
             $default_taxonomies = array(
-                'sliders'               => array( 'hierarchical' => 1,          'plural' => 'Sliders',         'singular' => 'Slider',         'slug' => 'sliders',                 'types' => [ 'slides' ] ),
-                'soggetti-tipologie'    => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'soggetti-tipologie',      'types' => [ 'soggetti' ] ),
-                'luoghi-categorie'      => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'soggetti-categorie',      'types' => [ 'luoghi' ] ),
-                'documenti-tipologie'   => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'documenti-tipologie',     'types' => [ 'documenti' ] ),
-                'video-categorie'       => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'video-categorie',         'types' => [ 'video' ] ),
-                'gallerie-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'gallerie-categorie',      'types' => [ 'gallerie' ] ),
-                'rassegne-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'rassegne-categorie',      'types' => [ 'rassegne-stampa' ] ),
-                'rassegne-autori'       => array( 'hierarchical' => 0,          'plural' => 'Autori',          'singular' => 'Autore',         'slug' => 'rassegne-autori',         'types' => [ 'rassegne-stampa' ] ),
-                'rassegne-testate'      => array( 'hierarchical' => 0,          'plural' => 'Testate',         'singular' => 'Testata',        'slug' => 'rassegne-testate',        'types' => [ 'rassegne-stampa' ] ),
+                'sliders'               => array( 'hierarchical' => 1,          'plural' => 'Sliders',         'singular' => 'Slider',         'slug' => 'sliders',                 'types' => [ 'slides' ],               'manage' => 1            ),
+                'soggetti-tipologie'    => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'soggetti-tipologie',      'types' => [ 'soggetti' ],                                      ),
+                'luoghi-categorie'      => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'soggetti-categorie',      'types' => [ 'luoghi' ],                                        ),
+                'documenti-tipologie'   => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'documenti-tipologie',     'types' => [ 'documenti' ],                                     ),
+                'video-categorie'       => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'video-categorie',         'types' => [ 'video' ],                                         ),
+                'gallerie-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'gallerie-categorie',      'types' => [ 'gallerie' ],                                      ),
+                'rassegne-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'rassegne-categorie',      'types' => [ 'rassegne-stampa' ],                               ),
+                'rassegne-autori'       => array( 'hierarchical' => 0,          'plural' => 'Autori',          'singular' => 'Autore',         'slug' => 'rassegne-autori',         'types' => [ 'rassegne-stampa' ],                               ),
+                'rassegne-testate'      => array( 'hierarchical' => 0,          'plural' => 'Testate',         'singular' => 'Testata',        'slug' => 'rassegne-testate',        'types' => [ 'rassegne-stampa' ],                               ),
             );
 
             $types = array_merge( $saved_types, $default_types );
@@ -143,6 +231,8 @@
                     continue;
 
                 $plural = $type['plural'];
+
+                $type['admin'] = ( isset( $type['admin'] ) && $type['admin'] ? ( $type['admin'] !== 'off' ? 1 : 0 ) : 0 );
 
                 $type['active'] = ( isset( $type['active'] ) && $type['active'] ? ( $type['active'] !== 'off' ? 1 : 0 ) : 0 );
 
@@ -166,6 +256,9 @@
                     $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                     $obj->CT_register();
 
+                    if( is_admin() && !$type['admin'] )
+                        scm_types_capabilities( $obj->cap_singular, $obj->cap_plural, $type['admin'] );
+
                     if( $type['public'] === 1 ){
 
                         $SCM_types['public'][ $type['slug'] ] = $plural;
@@ -173,6 +266,7 @@
                         $type['public'] = 0;
                         $type['hidden'] = 1;
                         $type['slug'] = $type['slug'] . '_temp';
+                        $type['menu'] = 0;
 
                         $temp = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                         $temp->CT_register();
@@ -222,7 +316,7 @@
                     'menu_title'    => 'SCM',
                     'menu_slug'     => 'acf-options-general',
                     'position'      => '0.1',
-                    'capability'    => 'administrator',
+                    'capability'    => 'manage_options',
                     'redirect'      => true,
                 ));
 
@@ -231,7 +325,7 @@
                     'menu_title'    => 'SCM Types',
                     'menu_slug'     => 'acf-types-general',
                     'position'      => '0.2',
-                    'capability'    => 'administrator',
+                    'capability'    => 'manage_options',
                     'redirect'      => true,
                 ));
 
@@ -240,8 +334,8 @@
                     'menu_title'    => 'SCM Templates',
                     'menu_slug'     => 'acf-templates-general',
                     'position'      => '0.3',
-                    'capability'    => 'administrator',
-                    'redirect'      => true,
+                    'capability'    => 'manage_options',
+                    'redirect'      => false,
                 ));
             }
         }
@@ -256,30 +350,35 @@
                     'page_title'    => 'SCM Main Settings',
                     'menu_title'    => 'Opzioni',
                     'parent_slug'   => 'acf-options-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Layout Settings',
                     'menu_title'    => 'Layout',
                     'parent_slug'   => 'acf-options-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Design Settings',
                     'menu_title'    => 'Stili',
                     'parent_slug'   => 'acf-options-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Header Settings',
                     'menu_title'    => 'Header',
                     'parent_slug'   => 'acf-options-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Footer Settings',
                     'menu_title'    => 'Footer',
                     'parent_slug'   => 'acf-options-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
@@ -287,6 +386,7 @@
                     'menu_title'    => 'Types',
                     'menu_slug'     => 'acf-types-custom',
                     'parent_slug'   => 'acf-types-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
@@ -294,6 +394,7 @@
                     'menu_title'    => 'Taxonomies',
                     'menu_slug'     => 'acf-types-taxonomies',
                     'parent_slug'   => 'acf-types-general',
+                    'capability'    => 'manage_options',
                 ));
 
                 global $SCM_types;
@@ -304,6 +405,7 @@
                         'menu_title'    => $title,
                         'menu_slug'     => 'acf-templates-' . $slug,
                         'parent_slug'   => 'acf-templates-general',
+                        'capability'    => 'manage_options',
                     ));
                 }
 
@@ -634,7 +736,7 @@
                 // + OPT FOOTER
                 $footer = scm_acf_group( 'Componi Footer', 'foot-options' );
                 $footer['location'][] = scm_acf_group_location( 'acf-options-footer', 1, 'options_page' );
-                $footer['fields'][] = scm_acf_options_foot();
+                $footer['fields'] = array_merge( $footer['fields'], scm_acf_options_foot() );
 
                 $groups[] = $footer;
 
@@ -725,18 +827,17 @@
 
                     $template = scm_acf_group( 'Componi Modello', 'template-' . $slug );
                     $template['location'][] = scm_acf_group_location( 'acf-templates-' . $slug, 1, 'options_page' );
-                    $template['fields'][] = scm_acf_fields_template( $slug );
+                    $template['fields'] = scm_acf_fields_template( $slug );
 
                     $groups[] = $template;
 
                     $template = scm_acf_group( 'Modello ' . $title, $slug . '_temp-single' );
                     $template['location'][] = scm_acf_group_location( $slug . '_temp' );
                     
-                    $part = strpos( $slug, '-' );
-                    $slug = ( $part !== false ? substr( $slug, 0, $part ) : $slug );
+                    $slug = str_replace( '-', '_', $slug );
 
-                    if( function_exists( 'scm_acf_layout_' . $slug ) )
-                        $template['fields'] = array_merge( $template['fields'], call_user_func( 'scm_acf_layout_' . $slug ) );
+                    if( function_exists( 'scm_acf_element_' . $slug ) )
+                        $template['fields'] = array_merge( $template['fields'], call_user_func( 'scm_acf_element_' . $slug ) );
 
                     $groups[] = $template;
                 }
@@ -746,14 +847,14 @@
                 // + ATTACHMENTS
                 $attachments = scm_acf_group( 'Allegati', 'attachments-single' );
                 $attachments['location'][] = scm_acf_group_location( 'post' );
-                $attachments['fields'][] = scm_acf_preset_repeater_files();
+                $attachments['fields'] = scm_acf_object_elenco_file();
 
                 $groups[] = $attachments;
 
                 // + EXTERNAL LINKS
                 $external = scm_acf_group( 'Link Esterni', 'externals-single' );
                 $external['location'][] = scm_acf_group_location( 'post' );
-                $external['fields'][] = scm_acf_preset_repeater_links();
+                $external['fields'] = scm_acf_object_elenco_link();
 
                 $groups[] = $external;
 
@@ -912,32 +1013,6 @@
 
                 // +++
 
-                array(
-                    'name'               => 'Admin Menu Editor', // The plugin name.
-                    'slug'               => 'admin-menu-editor', // The plugin slug (typically the folder name).
-                    'source'             => 'admin-menu-editor.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
-                    'name'               => 'Optimize Database', // The plugin name.
-                    'slug'               => 'rvg-optimize-database', // The plugin slug (typically the folder name).
-                    'source'             => 'rvg-optimize-database.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
-                    'name'               => 'GitHub Updater', // The plugin name.
-                    'slug'               => 'github-updater', // The plugin slug (typically the folder name).
-                    'source'             => 'github-updater.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
 
             );
 

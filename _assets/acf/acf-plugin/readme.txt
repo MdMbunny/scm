@@ -106,6 +106,18 @@ http://support.advancedcustomfields.com/
 
 == Changelog ==
 
+= 5.2.2 =
+* Image field: Fixed UI bug when image has been removed via media library
+* Relationship field: Added new minimum selection setting
+* Select field: Fixed bug when searching for a numeric value
+* Tab field: Fixed conditional logic bug
+* Field group: Added compatibility for custom status in 'Post Status' location rule
+* Core: Added new `show_updates` setting to prevent plugin updates
+* Core: Added compatibility for 3rd party update management websites
+* Core: Added spinner when saving taxonomy term, user and front end form
+* Core: Minor fixes and improvements
+* Language: Updated Slovak translation - thanks to Ján Fajčák
+ 
 = 5.2.1 =
 * Core: Fixed bug where 'Taxonomy' field group location rule would change to 'Post Taxonomy'
 * Core: Fixed bug where field group postboxes would disappear from post edit screen

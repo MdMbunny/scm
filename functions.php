@@ -51,9 +51,11 @@ if ( ! isset( $content_width ) ) {
 	}
 
 	$SCM_uploads 		= wp_upload_dir();
-	$SCM_types 			= array();
-	$SCM_galleries 		= array();
-	$SCM_acf_elements 	= array();
+	$SCM_types 			= [];
+	$SCM_galleries 		= [];
+	$SCM_acf_objects 	= [];
+	$SCM_acf_elements 	= [];
+	$SCM_acf_layouts 	= [];
 	
 	$SCM_typekit;
 
@@ -141,6 +143,8 @@ require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';
 require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
 require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
+
+require SCM_DIR_LIBRARY . 'scm-svg.php';
 
 require SCM_DIR_LIBRARY . 'scm-functions.php';
 

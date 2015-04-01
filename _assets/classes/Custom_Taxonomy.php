@@ -13,6 +13,10 @@ class Custom_Taxonomy {
             'plural'                => '',
             'slug'                  => '',
             'types' 				=> [],
+            'manage'                => 0,
+            'edit'                  => 0,
+            'delete'                => 0,
+            'assign'                => 1,
         );
 
         if( is_array( $build ) )
@@ -29,6 +33,10 @@ class Custom_Taxonomy {
         $this->slug = ( $default['slug'] ?: sanitize_title( $this->plural ) );
         $this->types = $default['types'];
         $this->tag = $default['hierarchical'];
+        $this->manage = ( $default['manage'] ? 'list_users' : 'manage_options' );
+        $this->edit = ( $default['manage'] ? 'list_users' : 'manage_options' );
+        $this->delete = ( $default['manage'] ? 'list_users' : 'manage_options' );
+        $this->assign = ( $default['assign'] ? 'list_users' : 'manage_options' );
 
         $this->CT_taxonomy();
         if( !empty( $this->types ) ){
@@ -74,7 +82,13 @@ class Custom_Taxonomy {
 			'show_ui'                    => true,
 			'show_admin_column'          => false,
 			'show_in_nav_menus'          => true,
-			'show_tagcloud'              => false
+			'show_tagcloud'              => false,
+            'capabilities' => array(
+                'manage_terms' => $this->manage,
+                'edit_terms' => $this->edit,
+                'delete_terms' => $this->delete,
+                'assign_terms' => $this->assign
+            ),
 		);
 
  	}

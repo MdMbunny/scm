@@ -471,7 +471,7 @@
 
 				case 'datetime':
 
-	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'slider' );
+	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'select' );
 	        		$date = ( isset( $arg[2] ) ? $arg[2] : 'd/m/y' );
 	        		$time = ( isset( $arg[3] ) ? $arg[3] : 'hh:mm' );
 	        		$week = ( isset( $arg[4] ) ? $arg[4] : 0 );
@@ -490,11 +490,13 @@
 
 					);
 
+					consoleLog($field);
+
 	        	break;
 
 	        	case 'time':
 
-	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'slider' );
+	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'select' );
 	        		$time = ( isset( $arg[2] ) ? $arg[2] : 'hh:mm' );
 	        		$save = ( isset( $arg[3] ) ? $arg[3] : 1 );
 	        		$get = ( isset( $arg[4] ) ? $arg[4] : 0 );
@@ -544,7 +546,7 @@
 	        			case 'msecond': 	$place = '1000';	$min = 0;			$step = 100;		$append = 'ms';		break;
 	        		}
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : ( isset( $default ) ? $default : '' ) );
+	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
 	        		$place = ( isset( $arg[2] ) ? $arg[2] : ( isset( $place ) ? $place : '' ) );
 	        		$prepend = ( isset( $arg[3] ) ? $arg[3] : ( isset( $prepend ) ? $prepend : '' ) );
 	        		$append = ( isset( $arg[4] ) ? $arg[4] : ( isset( $append ) ? $append : '' ) );
@@ -586,7 +588,7 @@
 	        			case 'video': 			$prepend = 'YouTube'; 		$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16';			break;
 	        		}
 	        		
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : ( isset( $default ) ? $default : '' ) );
+	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
 	        		$place = ( isset( $arg[2] ) ? $arg[2] : ( isset( $place ) ? $place : '' ) );
 	        		$prepend = ( isset( $arg[3] ) ? $arg[3] : ( isset( $prepend ) ? $prepend : '' ) );
 	        		$append = ( isset( $arg[4] ) ? $arg[4] : ( isset( $append ) ? $append : '' ) );
@@ -609,15 +611,16 @@
 
 	        	case 'textarea':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : ( isset( $default ) ? $default : '' ) );
-	        		$place = ( isset( $arg[2] ) ? $arg[2] : ( isset( $place ) ? $place : '' ) );
-	        		$rows = ( isset( $arg[3] ) ? $arg[3] : ( isset( $prepend ) ? $prepend : 8 ) );
-	        		$maxl = ( isset( $arg[4] ) ? $arg[4] : ( isset( $maxl ) ? $maxl : '' ) );
-	        		$format = ( isset( $arg[5] ) ? $arg[5] : ( isset( $format ) ? $format : ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ) );
-	        		$read = ( isset( $arg[6] ) ? $arg[6] : ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) );
-	        		$dis = ( isset( $arg[7] ) ? $arg[7] : ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) );
+	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
+	        		$place = ( isset( $arg[2] ) ? $arg[2] : '' );
+	        		$rows = ( isset( $arg[3] ) ? $arg[3] : 8 );
+	        		$maxl = ( isset( $arg[4] ) ? $arg[4] : '' );
+	        		$format = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) );
+	        		$read = ( isset( $arg[6] ) ? $arg[6] : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) );
+	        		$dis = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) );
 					
 					$field = array(
+						'type' => 'textarea',
 						'default_value' => $default,
 						'placeholder' => $place,
 						'rows' => $rows,
@@ -631,7 +634,7 @@
 
 	        	case 'editor':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : ( isset( $default ) ? $default : '' ) );
+	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
 	        		$tabs = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-visual' ) !== false ? 'visual' : 'all' ) );
 	        		$toolbar = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-basic' ) !== false ? 'basic' : 'normal' ) );
 	        		$media = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-media' ) !== false ? 1 : 0 ) );
@@ -882,13 +885,6 @@
 					'single' => 'Single',
 					'archive' => 'Archive',
 				);
-
-			elseif( strpos( $list, 'archive_format' ) !== false ):
-				$choices = array(
-					'min' => 'Minima',
-					'preview' => 'Anteprima',
-					'complete' => 'Completo',
-				);
 			
 			elseif( strpos( $list, 'archive_complete' ) !== false ):
 				$choices = array(
@@ -1006,6 +1002,34 @@
 					'rand' => 'Random',
 				);
 
+	        elseif( strpos( $list, 'line_style' ) !== false ):
+	        	$choices = array(
+	        		'none' => 'Vuoto',
+	        		'line' => 'Linea',
+	        		'dashed' => 'Tratteggiato',
+	        		'dotted' => 'Punteggiato'
+				);
+
+	        elseif( strpos( $list, 'line_cap' ) !== false ):
+	        	$choices = array(
+	        		'round' => 'Tondeggiato',
+	        		'square' => 'Squadrato',
+	        		'butt' => 'Squadrato a filo',
+				);
+			
+			elseif( strpos( $list, 'list_type' ) !== false ):
+	        	$choices = array(
+	        		'disc' => '<li style="list-style:disc;">Cerchio</li>',
+	        		'circle' => 'Cerchio vuoto',
+	        		'square' => 'Quadrato',
+	        		'decimal' => 'Decimali',
+	        		'decimal-leading-zero' => 'Decimali con zero',
+	        		'lower-latin' => 'Lettere minuscole',
+	        		'upper-latin' => 'Lettere maiuscole',
+					'lower-roman' => 'Roman minuscolo',
+					'upper-roman' => 'Roman maiuscolo',
+				);
+	        
 	        elseif( strpos( $list, 'alignment' ) !== false ):
 
 	        	if( strpos( $list, 'txt_alignment' ) !== false ){
@@ -1044,9 +1068,9 @@
 	        elseif( strpos( $list, 'headings' ) !== false ):
 
 	        	$default = array(
-	        		"headings_1" => "primary",
+	        		/*"headings_1" => "primary",
 	        		"headings_2" => "secondary",
-	        		"headings_3" => "tertiary",
+	        		"headings_3" => "tertiary",*/
 	        	);
 
 	        	$choices = array(

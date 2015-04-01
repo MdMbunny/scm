@@ -12,10 +12,10 @@
 *
 *   0.0 Actions and Filters
 *   1.0 Functions
-**      Duplicate Post
+**          Duplicate Post
 *   2.0 Hooks
-**      UI
-**      Uploads
+**          UI
+**          Uploads
 *
 *****************************************************
 */
@@ -25,14 +25,21 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
+    
+
     add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
     add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
     add_filter( 'post_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
     
-    add_action( 'admin_menu', 'scm_admin_remove_menus' );
+    add_filter( 'custom_menu_order', 'scm_admin_menu_order' );
+    add_filter( 'menu_order', 'scm_admin_menu_order' );
+    add_action( 'admin_head', 'scm_admin_menu_icons');
+    add_action( 'admin_menu', 'scm_admin_menu_remove' );
+    add_action( 'admin_menu', 'scm_admin_menu');
+
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
-    add_action( 'pre_user_query','scm_admin_hide_from_users');
-    
+    add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
+    add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
     add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
@@ -43,7 +50,9 @@
     //add_filter('wp_handle_upload_prefilter', 'scm_upload_set_filename', 1, 1);
     //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
     //add_filter( 'upload_dir', 'scm_upload_set_directory' );
-    
+
+   
+
 // *****************************************************
 // *      1.0 FUNCTIONS
 // *****************************************************
@@ -145,31 +154,112 @@
 // *********************************************
 
 // Remove Menu Elements
-    if ( ! function_exists( 'scm_admin_remove_menus' ) ) {
-        function scm_admin_remove_menus(){
-
-        // HAI UN PLUG IN per questi
-            //remove_menu_page( 'index.php' );                  //Dashboard
-            //remove_menu_page( 'edit-comments.php' );          //Comments
-            //remove_menu_page( 'edit.php' );                   //Posts
+    if ( ! function_exists( 'scm_admin_menu_order' ) ) {
+        function scm_admin_menu_order( $menu_ord ) {
             
-            if(!current_user_can( 'administrator' )){
 
-                remove_menu_page( 'themes.php' );                 //Appearance
-                remove_menu_page( 'plugins.php' );                //Plugins
-                remove_menu_page( 'tools.php' );                  //Tools
-                remove_menu_page( 'options-general.php' );        //Settings
-                remove_menu_page( 'wpcf7' );
+            
+            if ( !$menu_ord ) return true;
 
-                if(!current_user_can( 'editor' )){
+            //consoleLog($menu_ord);
 
-                    remove_menu_page( 'upload.php' );                 //Media
-                    remove_menu_page( 'edit.php?post_type=page' );    //Pages
+           // "acf-options-opzioni", "acf-types-custom", "acf-templates-progetti-deafal", "acf-options-home", "separator1", "upload.php", "edit.php?post_type=page", "wpcf7", "edit.php?post_type=sections", "edit-tags.php?taxonomy=rassegne-categorie&amp;post_type=rassegne-stampa", "separator2", "themes.php", "plugins.php", "users.php", "tools.php", "options-general.php", "edit.php?post_type=acf-field-group", "separator-last"
+            return $menu_ord;
 
-                    if(!current_user_can( 'author' )){
-                        remove_menu_page( 'users.php' );                  //Users
-                    }
-                }
+            return array(
+                //'index.php', // Dashboard
+                //'edit.php', // Posts
+                //'link-manager.php', // Links
+                //'edit-comments.php', // Comments
+                
+                'separator1',
+                
+                'edit.php?post_type=page', // Pages
+                
+                'separator2',
+                
+                'upload.php', // Media
+                                
+                'users.php', // Users
+
+                'options-general.php', // Settings
+                'themes.php', // Appearance
+                'plugins.php', // Plugins
+                'tools.php', // Tools
+
+                'separator-last',
+            );
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_menu' ) ) {
+        function scm_admin_menu(){
+
+            global $menu;
+            ksort( $menu );
+
+            $media = $menu[10];
+            $pages = $menu[20];
+            $cf7 = $menu[26];
+            $acf = $menu['80.025'];
+            $acf[6] = 'dashicons-admin-star';
+            $users = $menu[70];
+
+            if( isset( $cf7 ) && isset( $cf7[0] ) && $cf7[0] == 'C F 7' ){
+                $menu[57] = $cf7;
+            }
+
+            //consoleLog($menu);
+            $menu[5] = $pages;
+            $menu[10] = array('','read',"separator3",'','wp-menu-separator');
+            $menu[20] = array('','read',"separator4",'','wp-menu-separator');
+            $menu[26] = array('','read',"separator5",'','wp-menu-separator');
+            $menu[27] = $media;
+            $menu[42] = array('','read',"separator6",'','wp-menu-separator');
+            
+            $menu[56] = $users;
+            unset( $menu[70] );
+            $menu[81] = array('','read',"separator7",'','wp-menu-separator');
+            unset( $menu['80.025'] );
+            $menu[83] = $acf;
+
+            ksort( $menu );
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_menu_icons' ) ) {
+        function scm_admin_menu_icons(){
+            echo '<style type="text/css">';
+                echo '#adminmenu #toplevel_page_acf-options-opzioni div.wp-menu-image:before { content: "\f511"; }';
+                echo '#adminmenu #toplevel_page_acf-types-custom div.wp-menu-image:before { content: "\f155"; }';
+                echo '#adminmenu #toplevel_page_acf-templates-general div.wp-menu-image:before { content: "\f309"; }';
+                echo '#adminmenu #toplevel_page_edit-post_type-acf-field-group div.wp-menu-image:before { content: "\f313"; }';
+            echo '</style>';
+        }
+    }
+
+// Remove Menu Elements
+    if ( ! function_exists( 'scm_admin_menu_remove' ) ) {
+        function scm_admin_menu_remove(){
+
+            global $SCM_types;
+
+            remove_menu_page( 'index.php' );                  //Dashboard
+            remove_menu_page( 'edit.php' );                   //Posts
+
+            remove_menu_page( 'edit-comments.php' );          //Comments
+            remove_menu_page( 'link-manager.php' );           //Links
+            remove_menu_page( 'edit-tags.php?taxonomy=link_category' );           //Links
+
+            remove_submenu_page ('upload.php', 'upload.php');
+            remove_submenu_page ('upload.php', 'media-new.php');
+            
+            global $submenu;
+            
+            foreach ($SCM_types['complete'] as $key => $value) {
+
+                remove_submenu_page ('edit.php?post_type=' . $key, 'edit.php?post_type=' . $key);
+                remove_submenu_page ('edit.php?post_type=' . $key, 'post-new.php?post_type=' . $key);
             }
         }
     }
@@ -201,7 +291,6 @@
         function scm_admin_hide_from_users($user_search) {
             $user = wp_get_current_user();
             if (!is_admin()) { // Is Not Administrator - Remove Administrator
-                //if (!current_user_can('administrator')) { // Is Not Administrator - Remove Administrator
                 global $wpdb;
 
                 $user_search->query_where = 
@@ -213,6 +302,18 @@
                     $user_search->query_where
                 );
             }
+        }
+    }
+
+// Hide Tools from Toolbar (Top Bar)
+    if ( ! function_exists( 'scm_admin_hide_tools' ) ) {
+        function scm_admin_hide_tools( $wp_admin_bar ) {
+            $wp_admin_bar->remove_node( 'wp-logo' );
+            $wp_admin_bar->remove_node( 'comments' );
+            $wp_admin_bar->remove_node( 'new-post' );
+            $wp_admin_bar->remove_node( 'new-media' );
+            $wp_admin_bar->remove_node( 'new-page' );
+            $wp_admin_bar->remove_node( 'new-sections' );
         }
     }
 

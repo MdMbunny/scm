@@ -638,15 +638,17 @@ class acf_admin_field_group {
 			
 			case "post_status" :
 				
-				$choices = array(
-					'publish'	=> __('Publish', 'acf'),
-					'pending'	=> __('Pending Review', 'acf'),
-					'draft'		=> __('Draft', 'acf'),
-					'future'	=> __('Future', 'acf'),
-					'private'	=> __('Private', 'acf'),
-					'inherit'	=> __('Revision', 'acf'),
-					'trash'		=> __('Trash', 'acf')
-				);
+				global $wp_post_statuses;
+				
+				if( !empty($wp_post_statuses) ) {
+					
+					foreach( $wp_post_statuses as $status ) {
+						
+						$choices[ $status->name ] = $status->label;
+						
+					}
+					
+				}
 								
 				break;
 			

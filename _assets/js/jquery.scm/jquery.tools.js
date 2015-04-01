@@ -126,7 +126,10 @@
 			event.stopPropagation();
 			$( 'body' ).css( 'pointer-events', 'none' );
 
-	        if( current.indexOf( link ) === 0 )
+	        var curpath		= current.replace( /\//g,'' ),
+				linkpath 	= link.replace( /\//g,'' );
+
+			if( curpath === linkpath )
 	            $this.data( 'href', '#top' );
 	        else if( link.indexOf( '#' ) === 0 && url_parent && ( current.indexOf( url_parent ) < 0 && url_parent != '#top' ) )
 	            $this.data( 'href', url_parent + link );

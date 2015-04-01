@@ -560,16 +560,15 @@ var acf;
 			
 			
 			// compatibility with object
-			if( $.isEmptyObject(s) ) {
+			if( $.isPlainObject(s) ) {
 				
-				s = '';
+				if( $.isEmptyObject(s) ) {
 				
-			} else if( $.isPlainObject(s) ) {
-				
-				for( k in s ) {
-				
-					s = s[k];
-					break;
+					s = '';
+					
+				} else {
+					
+					for( k in s ) { s = s[k]; break; }
 					
 				}
 				
@@ -1763,8 +1762,10 @@ var acf;
 		// vars
 		type:		'',
 		o:			{},
+		
 		actions:	{},
 		events:		{},
+		
 		$field:		null,
 		
 		extend: function( args ){
@@ -1773,36 +1774,51 @@ var acf;
 			var model = $.extend( {}, this, args );
 			
 			
+			// vars
+			var selector = acf.get_selector(model.type);
+			
+			
 			// setup actions
-			$.each(model.actions, function( action, callback ){
+			$.each(model.actions, function( k, callback ){
 				
 				// vars
-				var action = action + '_field/type=' + model.type;
+				var action = k + '_field/type=' + model.type;
 				
-				acf.add_action(action, function(){
+				acf.add_action(action, function( $el ){
 					
-					[].unshift.apply(arguments, [callback]);
+					// focus
+					model.doFocus( $el );
 					
-					model.doAction.apply(model, arguments);
+					
+					// callback
+					model[ callback ].apply(model, arguments);
 					
 				});
-			
+				
 			});
+
 			
 			
 			// setup events
-			var context = acf.get_selector(model.type);
-			
 			$.each(model.events, function( k, callback ){
 				
+				// vars
 				var event = k.substr(0,k.indexOf(' ')),
-					selector = k.substr(k.indexOf(' ')+1);
+					trigger = k.substr(k.indexOf(' ')+1);					
 				
-				$(document).on(event, context + ' ' + selector, function( e ){
+				
+				$(document).on(event, selector + ' ' + trigger, function( e ){
 					
+					// append $(this)
 					e.$el = $(this);
 					
-					model.doEvent.apply(model, [ callback, e ]);
+					
+					// focus
+					model.doFocus( acf.get_closest_field( $(this), model.type ) );
+					
+					
+					// callback
+					model[ callback ].apply(model, [ e ]);
 					
 				});
 				
@@ -1830,40 +1846,6 @@ var acf;
 			
 			// return for chaining
 			return this;
-			
-		},
-		
-		doAction: function(){
-			
-			// debug
-			//console.log('doAction(%o)', arguments);
-			
-			
-			// remove callback from arguments
-			var callback = [].shift.apply(arguments);
-			
-			
-			// focus
-			this.doFocus( arguments[0] );
-			
-			
-			// callback
-			this[ callback ].apply(this, arguments);
-			
-		},
-		
-		doEvent: function( callback, e ){
-			
-			// debug
-			//console.log('doEvent(%o, %o, %o)', callback, $el, e);
-			
-			
-			// focus
-			this.doFocus( acf.get_closest_field( e.$el, this.type ) );
-			
-			
-			// callback
-			this[ callback ].apply(this, [e]);
 			
 		}
 		
@@ -1991,25 +1973,6 @@ var acf;
 	});
 	
 	
-	/*
-	*  preventDefault helper
-	*
-	*  This function will prevent default of any link with an href of #
-	*
-	*  @type	function
-	*  @date	24/07/2014
-	*  @since	5.0.0
-	*
-	*  @param	$post_id (int)
-	*  @return	$post_id (int)
-	*/
-	
-	$(document).on('click', '.acf-field a[href="#"]', function( e ){
-		
-		e.preventDefault();
-		
-	});
-	
 	
 	/*
 	*  Force revisions
@@ -2036,6 +1999,26 @@ var acf;
 		
 		// action for 3rd party customization
 		acf.do_action('change', $(this));
+		
+	});
+	
+	
+	/*
+	*  preventDefault helper
+	*
+	*  This function will prevent default of any link with an href of #
+	*
+	*  @type	function
+	*  @date	24/07/2014
+	*  @since	5.0.0
+	*
+	*  @param	$post_id (int)
+	*  @return	$post_id (int)
+	*/
+	
+	$(document).on('click', '.acf-field a[href="#"]', function( e ){
+		
+		e.preventDefault();
 		
 	});
 	
@@ -2885,7 +2868,7 @@ console.time("acf_test_ready");
 			
 			
 			// action for 3rd party customization
-			acf.do_action('refresh', $input);
+			acf.do_action('refresh', $parent);
 			
 		},
 		
@@ -3023,7 +3006,7 @@ console.time("acf_test_ready");
 			// remove "disabled"
 			// ignore inputs which have a class of 'acf-disabled'. These inputs are disabled for life
 			// ignore inputs which are hidden by conditiona logic of a sub field
-			$field.find('.acf-clhi').not('.hidden-by-conditional-logic .acf-clhi').removeAttr('disabled');
+			$field.find('.acf-clhi').removeAttr('disabled');
 			
 			
 			// action for 3rd party customization
@@ -3305,9 +3288,9 @@ console.time("acf_test_ready");
 		},
 		
 		events: {
-			'click [data-name="add"]': 		'add',
-			'click [data-name="edit"]': 	'edit',
-			'click [data-name="remove"]':	'remove',
+			'click a[data-name="add"]': 	'add',
+			'click a[data-name="edit"]': 	'edit',
+			'click a[data-name="remove"]':	'remove',
 			'change input[type="file"]':	'change'
 		},
 		
@@ -4091,9 +4074,9 @@ console.time("acf_test_ready");
 		},
 		
 		events: {
-			'click [data-name="add"]': 		'add',
-			'click [data-name="edit"]': 	'edit',
-			'click [data-name="remove"]':	'remove',
+			'click a[data-name="add"]': 	'add',
+			'click a[data-name="edit"]': 	'edit',
+			'click a[data-name="remove"]':	'remove',
 			'change input[type="file"]':	'change'
 		},
 		
@@ -5629,6 +5612,20 @@ var scroll_timer = null;
 		
 		remove_item : function( e ){
 			
+			// max posts
+			if( this.o.min > 0 ) {
+			
+				if( this.$values.find('.acf-rel-item').length <= this.o.min ) {
+				
+					alert( acf._e('relationship', 'min').replace('{min}', this.o.min) );
+					
+					return;
+					
+				}
+				
+			}
+			
+			
 			// vars
 			var $span = e.$el.parent(),
 				id = $span.data('id');
@@ -6119,6 +6116,8 @@ var scroll_timer = null;
 			if( this.$field.hasClass('hidden-by-conditional-logic') ) {
 				
 				$li.addClass('hidden-by-conditional-logic');
+				
+				this.hide_tab_fields( this.$field );
 				
 				return;
 				

@@ -10,6 +10,7 @@ class Custom_Type {
             return;
 
         $attr = array(
+            'admin'                 => 0,
             'public'                => 1,
             'hidden'                => 0,
             'post'                  => 1,
@@ -20,7 +21,9 @@ class Custom_Type {
             'slug'                  => '',
             'icon'                  => 'f111',
             'orderby'               => 'title',
-            'ordertype'             => ''
+            'ordertype'             => '',
+            'menupos'               => 0,
+            'menu'                  => 0
         );
 
         if( is_array( $build ) )
@@ -38,13 +41,14 @@ class Custom_Type {
 
         $this->attributes = array();
 
+        $this->admin = $attr['admin'];
         $this->public = $attr['public'];
         $this->hidden = $attr['hidden'];
         
         $this->plural = $plural;
         $this->singular = $singular;
         $this->slug = $slug;
-        
+       
         $this->short_singular = ( $attr['short-singular'] ?: $singular );
         $this->short_plural = ( $attr['short-plural'] ?: $plural );
         
@@ -53,7 +57,33 @@ class Custom_Type {
         $this->orderby = ( $attr['orderby'] ?: 'title' );
         $this->order = $attr['ordertype'];
 
-        //$this->menu_pos = 9;
+        $this->menupos = $attr['menupos'];
+        $this->menu = $attr['menu'];
+
+        if( !$this->menupos ){
+
+            switch ( $this->menu ) {
+                                                        //          0.1 : SCM                 0.2 : SCM Types                 0.3 : SCM Templates                     1 > 3 : (empty)
+                                                        // 4 -
+                case 0: $this->menupos = 6; break;      //          5 : Pages                   6 > 9 : (private)
+                                                        // 10 -
+                case 1: $this->menupos = 12; break;     //          12 > 19 : (empty)
+                                                        // 20 - 
+                case 2: $this->menupos = 22; break;     //          22 > 25 (empty)
+                                                        // 26 -
+                case 3: $this->menupos = 28; break;     //          27 : Media                   28 > 41 : (multimedia)
+                                                        // 42 —
+                case 4: $this->menupos = 44; break;     //          44 > 55 : (contacts)         56 : Users                  57 : CF7
+                                                        // 59 —
+                                                        // ...
+                default: $this->menupos = 91; break;    //          91 > (empty)
+                
+            }
+        }
+
+        $this->cap_singular = sanitize_title( $this->singular );
+        $this->cap_plural = sanitize_title( $this->plural );
+        $this->cap_plural = ( $this->cap_plural == $this->cap_singular ? $this->cap_plural . 's' : $this->cap_plural );
 
         add_filter( 'manage_edit-' . $this->slug . '_columns', array(&$this, 'CT_admin_columns') ) ;
         add_action( 'manage_' . $this->slug . '_posts_custom_column', array(&$this, 'CT_manage_admin_columns'), 10, 2 );
@@ -98,15 +128,17 @@ class Custom_Type {
             'show_in_menu'        => !$this->hidden,
             'show_in_nav_menus'   => !$this->hidden,
             'show_in_admin_bar'   => !$this->hidden,
-            'menu_position'       => 60,
+            'menu_position'       => $this->menupos,
             'can_export'          => true,
             'has_archive'         => $this->public,
             'exclude_from_search' => !$this->public,
             'publicly_queryable'  => true,
-            'capability_type'     => ( !$this->post ? 'page' : 'post' ),
+            'capability_type'     => ( $this->admin ? ( !$this->post ? 'page' : 'post' ) : array( $this->cap_singular, $this->cap_plural ) ),
+            'map_meta_cap'        => !$this->admin,
         );
 
     }
+    
 
     function CT_admin_columns( $columns ) {
             $columns['cb'] = '<input type="checkbox" />';

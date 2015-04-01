@@ -42,10 +42,10 @@
 }
 
 #adminmenu .wp-menu-image img {
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 70%;
+	max-height: 70%;
 	width: auto;
-	padding: 6px 7px;
+	padding: 15%;
 	min-height: 0;
 	min-width: 0;
 	opacity: 1;
@@ -613,8 +613,8 @@ input.acf-is-prepended {
 .no-value-message,
 .acf-flexible-content > .acf-label > label,
 .acf-flexible-content .acf-field > .acf-label,
-.acf-field-repeater > .acf-label > label,
-.acf-field-repeater .acf-field > .acf-label {
+.acf-field-repeater:not(.repeater-labels) > .acf-label > label,
+.acf-field-repeater:not(.repeater-labels) .acf-field > .acf-label {
 	display: none !important;
 }
 
@@ -823,25 +823,25 @@ input.acf-is-prepended {
 	clear: none !important;
 }
 
-.special-repeater .acf-input-table{
+.special-repeater > .acf-input > .acf-repeater > table {
 	border-width: 0 !important;
 	/*border-bottom-width: 1px !important;*/
 	background-color: transparent !important;
 }
 
-.special-repeater .acf-table tbody,
-.special-repeater .acf-table td{
+.special-repeater > .acf-input > .acf-repeater > table > tbody,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > td{
 	background-color: transparent !important;
 }
 
-.special-repeater .acf-row,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row,
 .special-repeater .layout{
 	margin-top: 10px;
 	margin-bottom: 0;
 }
 
-.special-repeater .acf-row,
-.special-repeater .acf-row > td{
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > td{
 	width: 100%;
 	display: inline-block;
 	float: left;
@@ -849,7 +849,7 @@ input.acf-is-prepended {
 	border: none !important;
 }
 
-.special-repeater .acf-row > td > div,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > td > div,
 .special-repeater .layout > td > div {
 	border: none !important;
 	/*padding: 0 !important;*/
@@ -929,7 +929,7 @@ input.acf-is-prepended {
 
 /* 10.1 TOP ORDER */
 
-.special-repeater .acf-row > td.order {
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > td.order {
 	position: relative;
 	width: 50px !important;
 	padding: 0;
@@ -945,11 +945,11 @@ input.acf-is-prepended {
 	margin-bottom: -2.2em;
 }
 
-.special-repeater .acf-row > td.order:hover{
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > td.order:hover{
 	opacity: .7;
 }
 
-.special-repeater .acf-row.column:not(.column-11) > td.order {
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > td.order {
 	width: 30px !important;
 }
 

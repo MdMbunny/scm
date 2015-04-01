@@ -271,8 +271,7 @@
 			if( !isset( $name ) || !$type )
 				return;
 
-			/*if( strpos( $name, 'model') !== false )
-				consoleLog( $instructions );*/
+			
 
 			//$typ = ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined' ) );
 
@@ -295,6 +294,9 @@
 	        	$field['required'] = 1;
 
 	        $field = array_merge( $field, scm_acf_field_type( $type ) );
+
+	        /*if( $type === 'textarea' )
+				consoleLog( $field );*/
 
 			return $field;
 
@@ -427,37 +429,6 @@
         }
     }
 
-    /*if ( ! function_exists( 'scm_acf_field_keybytype' ) ) {
-        function scm_acf_field_keybytype( $fields = [], $type = '' ) {
-
-            $arr = [];
-
-            foreach ($fields as $key => $field) {
-                $k = explode( '_', $key );
-                if( $k[ sizeof($k) - 1 ] == $type )
-                    $arr[] = $key;
-            }
-
-            return $arr;
-
-        }
-    }
-
-    if ( ! function_exists( 'scm_acf_field_keybyneedle' ) ) {
-        function scm_acf_field_keybyneedle( $fields = [], $needle = '' ) {
-
-            $arr = [];
-
-            foreach ($fields as $key => $field) {
-                if( strpos( $key, $needle ) !== false )
-                    $arr[] = $key;
-            }
-
-            return $arr;
-
-        }
-    }*/
-
 
 // *****************************************************
 // *      3.0 ACF FLEXIBLE LAYOUTS
@@ -482,6 +453,31 @@
 
 			return $layout;
 
+		}
+	}
+
+	// ELEMENTS WIDTH
+	if ( ! function_exists( 'scm_acf_column_width' ) ) {
+		function scm_acf_column_width( $name = 'column-width', $list = array() ) {
+
+			array_unshift( $list, scm_acf_field_select_column_width( $name, 0, 100, 0, '1/1', 'Larghezza', 'Larghezza' ) );
+
+			return $list;
+
+		}
+	}
+
+	// LAYOUT ELEMENTS WIDTH
+	if ( ! function_exists( 'scm_acf_layouts_width' ) ) {
+		function scm_acf_layouts_width( $name = 'column-width', $list = array() ) {
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_width( $name, $list[$i]['sub_fields'] );
+
+			}
+
+			return $list;
 		}
 	}
 

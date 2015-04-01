@@ -2343,7 +2343,7 @@ function acf_get_valid_post_id( $post_id = 0 ) {
 	
 		$autosave = wp_get_post_autosave( $_GET['preview_id'] );
 		
-		if( $autosave->post_parent == $post_id ) {
+		if( $autosave && $autosave->post_parent == $post_id ) {
 		
 			$post_id = (int) $autosave->ID;
 			

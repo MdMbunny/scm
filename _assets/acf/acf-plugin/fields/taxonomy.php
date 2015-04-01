@@ -115,10 +115,15 @@ class acf_field_taxonomy extends acf_field {
 		// sort into hierachial order!
 		if( is_taxonomy_hierarchical( $field['taxonomy'] ) ) {
 			
+			// get parent
+			$parent = acf_maybe_get( $args, 'parent', 0 );
+			$parent = acf_maybe_get( $args, 'child_of', $parent );
+			
+			
 			// this will fail if a search has taken place because parents wont exist
 			if( empty($args['search']) ) {
 			
-				$terms = _get_term_children( 0, $terms, $field['taxonomy'] );
+				$terms = _get_term_children( $parent, $terms, $field['taxonomy'] );
 				
 			}
 			
