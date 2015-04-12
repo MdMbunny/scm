@@ -14,6 +14,7 @@
 // printPre:            <pre>print_r(%array)</pre>
 // alert:               JS alert - second parameter will be merged to the first one, separated by the third one (default ': ')
 // consoleLog:          JS console.log
+// stringOperator       evalues 2 strings by a string operator
 // startsWith           return true if string starts with $needle
 // endsWith             return true if string ends with $needle
 // getByValue:          get array by $value
@@ -29,15 +30,17 @@
 // lbreak:              return n line break
 // addHTTP:             add http:// to a link
 // fontSizeLimiter:     add font-size based on #characters
-// getGoogleMapsLatLng: get GM Lat and Lng from an address (es. "Address+Country+State")
-// getYouTubeDuration:  get YT video duration (00:06:13)
 // fileSizeConvert:     convert bytes to B, KB, MB, GB, TB
 // numberToStyle:       convert a positive number to a string like "450px"
 //                      convert a negative number to a string like "20%" ( -1 = "100%" | -2, -3, -11, ... = "20%", "30%", "110%", ...)
 // hex2rgba:            converts a hexadecimal color to an array containing rgba values
 // font2string:         converts an optional google webfont (eg Open Sans) + an optional default family list to comma separated string (add css font-family attribute if a third argument is true)
-//
-//
+
+// Wordpress Functions
+
+// updatePostMeta:      update, insert or delete post $id $meta with $value
+// getGoogleMapsLatLng: get GM Lat and Lng from an address (es. "Address+Country+State")
+// getYouTubeDuration:  get YT video duration (00:06:13)
 
 
 /**
@@ -102,6 +105,33 @@ function consoleLog( $obj ){
 }
 
 /**
+* Evalues 2 strings by a string operator
+* @param misc $a
+* @param string $op
+* @param misc $b
+* @return boolean
+* @author SCM
+*/
+function stringOperator($a = '', $op = '==', $b = '') {
+
+    switch ( $op ) {
+        case '==': return $a == $b; break;
+        case '===': return $a === $b; break;
+        case '!=': return $a != $b; break;
+        case '!==': return $a !== $b; break;
+        case '>': return $a > $b; break;
+        case '>=': return $a >= $b; break;
+        case '<': return $a < $b; break;
+        case '<=': return $a <= $b; break;
+        case 'ends': return endsWith( $a, $b ); break;
+        case 'starts': return startsWith( $a, $b ); break;
+    }
+
+    return false;
+}
+
+
+/**
 * String Starts With
 * @param string $str
 * @param string $needle
@@ -109,6 +139,9 @@ function consoleLog( $obj ){
 * @author SCM
 */
 function startsWith($str, $needle) {
+
+    if( !is_string( $str ) )
+        return false;
     
     return $needle === "" || strrpos($str, $needle, -strlen($str)) !== FALSE;
 
@@ -122,6 +155,9 @@ function startsWith($str, $needle) {
 * @author SCM
 */
 function endsWith($str, $needle) {
+
+    if( !is_string( $str ) )
+        return false;
 
     return $needle === "" || (($temp = strlen($str) - strlen($needle)) >= 0 && strpos($str, $needle, $temp) !== FALSE);
 
@@ -340,47 +376,6 @@ function fontSizeLimiter($txt, $char, $size){
 	return $str;
 }
 
-/**
-* Get Latitude and Longitude from an address string (es. "Address+Country+State")
-*/
-
-function getGoogleMapsLatLng($address, $country){
-
-    $google_address = str_replace('  ', '+', $address);
-    $google_address = str_replace(' ', '+', $google_address);
-
-    $json = wp_remote_fopen("http://maps.google.com/maps/api/geocode/json?address=$google_address&sensor=false&region=$country");
-    $json = json_decode($json);
-
-    $ret = array(
-        'lat'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'},
-        'lng'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'},
-    );
-
-    return $ret;
-}
-
-
-/**
-* Get the Duration of a YouTube Video from a URL
-*/
-
-function getYouTubeDuration($url){
-
-    parse_str(parse_url($url,PHP_URL_QUERY),$arr);
-    $video_id=$arr['v'];
-    if(!$video_id)
-        $video_id = $arr['amp;v'];
-    if(!$video_id)
-        return '';
-
-    $data=wp_remote_fopen('http://gdata.youtube.com/feeds/api/videos/'.$video_id.'?v=2&alt=jsonc');
-    if (false===$data) return false;
-
-    $obj=json_decode($data);
-
-    return $obj->data->duration;
-}
 
 /** 
 * Converts bytes into human readable file size. 
@@ -427,7 +422,6 @@ function fileSizeConvert($bytes, $dec = 0)
     }
     return $result;
 }
-
 
 /**
 * Converts a number to a string "450px" if positive or "100%" if negative
@@ -489,6 +483,80 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
         }
     }
 
+
+
+/***********************/
+/* Wordpress Functions */
+/***********************/
+
+
+// updatePostMeta:      update, insert or delete post $id $meta with $value
+
+function updatePostMeta( $id, $meta, $value = '' ){
+
+    if ( empty( $value ) OR ! $value ){
+
+        delete_post_meta( $id, $meta );
+
+    }elseif ( ! get_post_meta( $id, $meta ) ){
+
+        add_post_meta( $id, $meta, $value );
+
+    }else{
+
+        update_post_meta( $id, $meta, $value );
+
+    }
+    
+}
+
+/**
+* Get Latitude and Longitude from an address string (es. "Address+Country+State")
+*/
+
+function getGoogleMapsLatLng($address = '', $country = ''){
+
+    if( str_replace(' ', '', $address) === '' ){
+        $address = 'Roma';
+        if( !$country )
+            $country = 'Italy';
+    }
+
+    $google_address = str_replace('  ', '+', $address);
+    $google_address = str_replace(' ', '+', $google_address);
+
+    $json = wp_remote_fopen("http://maps.google.com/maps/api/geocode/json?address=$google_address&sensor=false&region=$country");
+    $json = json_decode($json);
+
+    $ret = array(
+        'lat'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'},
+        'lng'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'},
+    );
+
+    return $ret;
+}
+
+
+/**
+* Get the Duration of a YouTube Video from a URL
+*/
+
+function getYouTubeDuration($url){
+
+    parse_str(parse_url($url,PHP_URL_QUERY),$arr);
+    $video_id=$arr['v'];
+    if(!$video_id)
+        $video_id = $arr['amp;v'];
+    if(!$video_id)
+        return '';
+
+    $data=wp_remote_fopen('http://gdata.youtube.com/feeds/api/videos/'.$video_id.'?v=2&alt=jsonc');
+    if (false===$data) return false;
+
+    $obj=json_decode($data);
+
+    return $obj->data->duration;
+}
 
 
 ?>

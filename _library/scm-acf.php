@@ -20,6 +20,7 @@
 *   2.0 ACF Field
 **		Set Field
 **		Get Field
+** 		Get Key by Field Name
 *
 *   3.0 ACF Flexible Layout
 *
@@ -137,7 +138,7 @@
 					
 					for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
 						
-						$lay = $list[$i]['layouts'][$j]['key'] = $new . $list[$i]['layouts'][$j]['name'];
+						$lay = $list[$i]['layouts'][$j]['key'] = 'layout_' . hash('ripemd160', $new . $list[$i]['layouts'][$j]['name'] );
 						$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_group_keys( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
 
 					}
@@ -148,10 +149,11 @@
 
 				}
 
-				$list[$i]['key'] = 'field_' . $list[$i]['key'] . $list[$i]['type'];
+				$list[$i]['key'] = 'field_' . hash('ripemd160', $list[$i]['key'] . $list[$i]['type'] );
 
 				//if(stripos($list[$i]['key'], 'repeater')!==false)
 					//printPre($list[$i]['name']);
+
 
 				$list[$i] = scm_acf_group_conditional( $list[$i], $list );
 			}
@@ -251,7 +253,7 @@
 				consoleLog( $group );*/
 
 			$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
-			$group['key'] = 'group-' . $group['key'];
+			$group['key'] = 'group_' . hash('ripemd160', $group['key'] );
 
 			//printPre($group['key']);
 
@@ -400,7 +402,7 @@
     	}
     }
 
-
+    // Get Fields by type and filter
     if ( ! function_exists( 'scm_field_objects' ) ) {
         function scm_field_objects( $post_id, $fields = [], $type = 'text', $filter = [] ) {
             $arr = [];
@@ -426,6 +428,54 @@
                 }
             }
             return $arr;
+        }
+    }
+
+    // Get Key by Field Name
+    if ( ! function_exists( 'scm_field_key' ) ) {
+        function scm_field_key( $post_id, $fields = [], $name = '', $filter = '' ) {
+
+            if( !isset( $post_id ) )
+                return '';
+
+            foreach ( $fields as $key => $value ) {
+                
+                $field = get_field_object( $key, $post_id, false );
+
+                if( !isset( $field['name'] ) )
+                    continue;
+
+                $op = '==';
+                if( is_array( $name ) ){
+                    $op = $name[0];
+                    $name = $name[1];
+                }
+
+                $is = stringOperator( $field['name'], $op, $name );
+
+                if( !$is )
+                    continue;
+
+                if( !empty( $filter ) ){
+
+                    $op = '==';
+                    if( is_array( $filter ) ){
+                        $value = ( sizeof( $filter ) === 3 ? $field[ $filter[2] ] : $value );
+                        $op = $filter[0];
+                        $filter = $filter[1];
+                    }
+
+                    $is = stringOperator( $value, $op, $filter );
+
+                    if( !$is )
+                        continue;
+                }
+
+                return $field['key'];
+
+            }
+
+            return '';
         }
     }
 
@@ -456,24 +506,49 @@
 		}
 	}
 
-	// ELEMENTS WIDTH
+	// COLUMN WIDTH
 	if ( ! function_exists( 'scm_acf_column_width' ) ) {
-		function scm_acf_column_width( $name = 'column-width', $list = array() ) {
-
-			array_unshift( $list, scm_acf_field_select_column_width( $name, 0, 100, 0, '1/1', 'Larghezza', 'Larghezza' ) );
+		function scm_acf_column_width( $name = 'column-width', $list = array(), $width = 100 ) {
+			
+			array_unshift( $list, scm_acf_field_select_column_width( $name, 0, $width, 0, '1/1', 'Larghezza', 'Larghezza' ) );
 
 			return $list;
 
 		}
 	}
 
-	// LAYOUT ELEMENTS WIDTH
+	// LAYOUT COLUMNS WIDTH
 	if ( ! function_exists( 'scm_acf_layouts_width' ) ) {
-		function scm_acf_layouts_width( $name = 'column-width', $list = array() ) {
+		function scm_acf_layouts_width( $name = 'column-width', $list = array(), $width = 100 ) {
 
 			for ( $i = 0; $i < sizeof( $list ); $i++ ){
 
-				$list[$i]['sub_fields'] = scm_acf_column_width( $name, $list[$i]['sub_fields'] );
+				$list[$i]['sub_fields'] = scm_acf_column_width( $name, $list[$i]['sub_fields'], $width );
+
+			}
+
+			return $list;
+		}
+	}
+
+	// COLUMN LINK
+	if ( ! function_exists( 'scm_acf_column_link' ) ) {
+		function scm_acf_column_link( $name = 'column-link', $list = array(), $width = 100 ) {
+			
+			array_unshift( $list, scm_acf_field_select1( 'link', 0, 'template_link-no', 50 ) );
+
+			return $list;
+
+		}
+	}
+
+	// LAYOUT LINK
+	if ( ! function_exists( 'scm_acf_layouts_link' ) ) {
+		function scm_acf_layouts_link( $name = 'column-link', $list = array(), $width = 100 ) {
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_link( $name, $list[$i]['sub_fields'], $width );
 
 			}
 

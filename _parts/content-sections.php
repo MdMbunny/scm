@@ -1,71 +1,98 @@
 <?php
 
-global $post;
+global $post, $SCM_indent;
 
 // --
 // Pages search for the flexible_rows option, into page $id [ get_template_part(template) ]
 // Other elements, like the Footer, may search for the flexible_rows_[element] option, in the general options [ Get_Template_Part(template, element) ]
 $id = ( ( isset($this) && isset($this->option) ) ? 'option' : $post->ID );
-$flexible = 'flexible_rows';
-$flexible .= ( ( isset($this) && isset($this->option) ) ? '_' . $this->option : '' );
+//$flexible = 'page-row';
+$name = ( ( isset($this) && isset($this->option) ) ? $this->option . '-sections' : 'sections' );
 // --
 
-$repeater = scm_field( $flexible, array(), $id, 1 );
+$site_align = scm_field( 'layout-alignment', 'center', 'option' );
+
+$repeater = scm_field( $name, array(), $id, 1 );
 
 	if( sizeof( $repeater ) ){
 
 		$id = ( $id == 'option' ? '' : $id );
 
 		$current = 0;
-
 		$odd = '';
 
 		$total = sizeof( $repeater );
 
-		foreach ($repeater as $row) {
-
-			$section_class = '';
+		foreach ( $repeater as $section ) {
 
 	    	$current++;
-			
-			if( $current == 1 )
-				$section_class .= 'first ';
-			if( $current == $total )
-				$section_class .= 'last ';
+			$odd = ( $odd ? '' : ' odd' );
 
-			$odd = ( $odd ? '' : 'odd ' );
+			$section_class = 'section scm-section object scm-object full ' . $site_align;
 			$section_class .= $odd;
-			$section_class .= 'count-' . ( $current );
+			$section_class .= scm_count_class( $current, $total );
+			$section_class .= ( $section['class'] ? ' ' . $section['class'] : '' );
 
-			$section_class .= ( $row['class_section'] ? ' ' . $row['class_section'] : '' );
+			$section_id = ( $section['id'] ? ' id="' . $section['id'] . '"' : '' );
+			$section_attributes = ( $section['attributes'] ?: '' ) ;
+			
+			$indent = $SCM_indent + 1;
 
-			$section_id = ( $row['id_section'] ?: '' ) ;
+			indent( $indent + 1, '<div' . $section_id . ' class="' . $section_class . '"' . $section_attributes . '>', 1 );
 
-			$section_attributes = ( $row['section_attributes'] ?: '' ) ;
+				$rows = ( $section['rows'] ?: [] );
+				if( sizeof( $rows ) ){
 
-			$element = ( isset( $row['acf_fc_layout'] ) ? $row['acf_fc_layout'] : '' );
-			if( !$element ) continue;
+					$row_current = 0;
+					$row_odd = '';
 
-			switch ($element) {
-				case 'section_element':
-					
-					$single = $row[ 'select_section' ];
-            		if(!$single) continue;
-            		$post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-		            setup_postdata( $post );
-		            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-sections.php', array(
-		            	'page_id' => $id,
-		            	'add_id' => $section_id,
-                    	'add_class' => $section_class,
-                    	'add_attributes' => $section_attributes,
-                    ));
+					$row_total = sizeof( $rows );
+			
+					foreach ( $rows as $row ) {
 
-				break;
-			}
+						$row_current++;
+						$row_odd = ( $row_odd ? '' : ' odd ' );
+
+						$row_class = '';
+						$row_class .= $row_odd;
+						$row_class .= scm_count_class( $row_current, $row_total );
+						$row_class .= ( $row['class'] ? ' ' . $row['class'] : '' );
+
+						$row_id = $row['id'];
+						$row_attributes = $row['attributes'];
+						$row_layout = $row['layout'];
+
+						$row_fc = ( isset( $row['acf_fc_layout'] ) ? $row['acf_fc_layout'] : '' );
+						if( !$row_fc ) continue;
+
+						switch ($row_fc) {
+							case 'layout-select-module':
+								
+								$single = $row[ 'module' ];
+			            		if(!$single) continue;
+			            		$post = ( is_numeric( $single ) ? get_post( $single ) : $single );
+					            setup_postdata( $post );
+					            
+					            // +++ todo: row in nuovo file single-row.php
+
+					            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-row.php', array(
+					            	'row_id' => $row_id,
+					            	'row_class' => $row_class,
+					            	'row_attributes' => $row_attributes,
+					            	'row_layout' => $row_layout,
+			                    ));
+
+							break;
+						}
+
+					}
+				}
+
+			indent( $indent + 1, '</div><!-- section -->', 2 );
 	    }
 	   
 	}else{
-	    // no layouts found
+	    // no sections found
 	}
 
 ?>

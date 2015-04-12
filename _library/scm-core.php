@@ -24,6 +24,8 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
+    add_filter('query_vars', 'scm_query_vars');
+
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts_adobe' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_webfonts_google' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
@@ -41,6 +43,9 @@
     add_action( 'wp_ajax_nopriv_scm_anchor', 'scm_anchor' );
 
     add_action( 'wp_footer', 'scm_jquery_init' );
+
+
+
 
 // *****************************************************
 // *       1.0 THEME SUPPORT
@@ -140,10 +145,10 @@
 
             // Fancybox
             
-            if( get_field( 'select_disable_fancybox', 0, 'option' ) ){
+            if( scm_field( 'opt-tools-fancybox', 0, 'option' ) ){
                 wp_register_style( 'fancybox', SCM_URI_CSS . 'fancybox-2.1.5/jquery.fancybox.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_register_style( 'fancybox-thumbs', SCM_URI_CSS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_register_style( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/source/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_register_style( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'fancybox' );
                 wp_enqueue_style( 'fancybox-thumbs' );
                 wp_enqueue_style( 'fancybox-buttons' );
@@ -151,7 +156,7 @@
 
             // Nivo Slider
 
-            if( get_field( 'select_slider', 'option' ) == 'nivo' ){
+            if( get_field( 'opt-tools-slider', 'option' ) == 'nivo' ){
                 wp_register_style( 'nivo', SCM_URI_CSS . 'nivoSlider-3.2/nivo-slider.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 //wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/scm/scm.css', false, SCM_SCRIPTS_VERSION, 'all' );
@@ -272,7 +277,7 @@
 
             // Fancybox
 
-            if( get_field( 'select_disable_fancybox', 0, 'option' ) ){
+            if( get_field( 'opt-tools-fancybox', 0, 'option' ) ){
                 wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox-2.1.5/jquery.fancybox.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-thumbs', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
@@ -285,7 +290,7 @@
 
             // Nivo Slider
 
-            if( get_field( 'select_slider', 'option' ) == 'nivo' ){
+            if( get_field( 'opt-tools-slider', 'option' ) == 'nivo' ){
                 wp_register_script( 'nivo', SCM_URI_JS . 'nivoSlider-3.2/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_enqueue_script( 'nivo' );
             }
@@ -294,6 +299,9 @@
 
             wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, '', true );
             wp_enqueue_script( 'gmapapi' );
+
+            wp_register_script( 'gmapmarker', 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js', false, '', true );
+            wp_enqueue_script( 'gmapmarker' );
 
             // SCM
 
@@ -354,19 +362,19 @@
             $body .= scm_options_get( 'shadow', 'option', 1 );
             $body .= scm_options_get( 'margin', 'option', 1 );
             $body .= scm_options_get( 'padding', 'option', 1 );
-            $body .= scm_options_get( 'bg_image', 'sc', 1 );
+            /*$body .= scm_options_get( 'bg_image', 'sc', 1 );
             $body .= scm_options_get( 'bg_repeat', 'sc', 1 );
             $body .= scm_options_get( 'bg_position', 'sc', 1 );
             $body .= scm_options_get( 'bg_size', 'sc', 1 );
-            $body .= scm_options_get( 'bg_color', 'sc', 1 );
+            $body .= scm_options_get( 'bg_color', 'sc', 1 );*/
 
-            $content = scm_options_get( 'bg_image', 'option', 1 );
-            $content .= scm_options_get( 'bg_repeat', 'option', 1 );
-            $content .= scm_options_get( 'bg_position', 'option', 1 );
-            $content .= scm_options_get( 'bg_size', 'option', 1 );
-            $content .= scm_options_get( 'bg_color', 'option', 1 );
+            $body .= scm_options_get( 'bg_image', 'option', 1 );
+            $body .= scm_options_get( 'bg_repeat', 'option', 1 );
+            $body .= scm_options_get( 'bg_position', 'option', 1 );
+            $body .= scm_options_get( 'bg_size', 'option', 1 );
+            $body .= scm_options_get( 'bg_color', 'option', 1 );
             
-            $primary = scm_options_get( 'font', 'heading_1', 1 );
+            /*$primary = scm_options_get( 'font', 'heading_1', 1 );
             $primary .= scm_options_get( 'weight', 'heading_1', 1 ) ?: '700';
             $primary .= scm_options_get( 'color', 'heading_1', 1 );
             $primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) ?: '0' ) . 'em;';
@@ -382,7 +390,7 @@
             $tertiary .= scm_options_get( 'weight', 'heading_3', 1 ) ?: '700';
             $tertiary .= scm_options_get( 'color', 'heading_3', 1 );
             $tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) ?: '0' ) . 'em;';
-            //$tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';
+            //$tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';*/
 
             $menu_font = scm_options_get( 'font', 'menu', 1 );
 
@@ -400,13 +408,13 @@
 
             $css .= '.site-page { ' . $opacity . ' }' . lbreak();
 
-            $css .= '.site-content{ ' . $content . ' }' . lbreak();
+            //$css .= '.site-content{ ' . $content . ' }' . lbreak();
 
             $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
 
-            $css .= '.primary, .primary i { ' . $primary . ' }' . lbreak();
+            /*$css .= '.primary, .primary i { ' . $primary . ' }' . lbreak();
             $css .= '.secondary, .secondary i { ' . $secondary . ' }' . lbreak();
-            $css .= '.tertiary, .tertiary i { ' . $tertiary . ' }' . lbreak();
+            $css .= '.tertiary, .tertiary i { ' . $tertiary . ' }' . lbreak();*/
 
             $css .= '.navigation { ' . $menu_font . ' }' . lbreak();
 
@@ -453,19 +461,19 @@
 
             $css .= '.smart .responsive { width: 100%; }' . lbreak();
 
-            $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_desktop', -1, 'option' );
+            $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-desktop', -1, 'option' );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
 
-            $r_wide = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_wide', 0, 'option' );
+            $r_wide = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-wide', 0, 'option' );
             $css .= 'body.wide { font-size: ' . $r_wide . 'px; }' . lbreak();
 
-            $r_landscape = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_landscape', 1, 'option' );
+            $r_landscape = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-landscape', 1, 'option' );
             $css .= 'body.landscape { font-size: ' . $r_landscape . 'px; }' . lbreak();
 
-            $r_portrait = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_portrait', 2, 'option' );
+            $r_portrait = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-portrait', 2, 'option' );
             $css .= 'body.portrait { font-size: ' . $r_portrait . 'px; }' . lbreak();
 
-            $r_smart = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'font_size_smart', 3, 'option' );
+            $r_smart = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-smart', 3, 'option' );
             $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
 
             
@@ -478,6 +486,16 @@
 // *****************************************************
 // *      5.0 INITIALIZE
 // *****************************************************
+
+    if ( ! function_exists( 'scm_query_vars' ) ) {
+        function scm_query_vars( $public_query_vars ) {
+
+            $public_query_vars[] = 'template';
+
+            return $public_query_vars;
+
+        }
+    }
 
     // Used by jQuery to get stored ANCHOR data - [ for smooth scroll from page to page ]
     if ( ! function_exists( 'scm_anchor' ) ) {

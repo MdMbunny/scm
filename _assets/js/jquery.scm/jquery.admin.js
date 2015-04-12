@@ -34,8 +34,8 @@
 						$this.children( '.acf-fields' ).css( 'width', '100%' );
 					}
 					
-					if( $this.hasClass( 'column-' + value ) )
-						return this;
+					/*if( $this.hasClass( 'column-' + value ) )
+						return this;*/
 					
 					$this.removeClass( function (index, css) {
 					    return (css.match (/\bcolumn-\S+/g) || []).join(' ');
@@ -46,6 +46,38 @@
 
 			//};
 
+		} );
+
+	}
+
+	jQuery.fn.setLayoutWidth = function(){
+
+		return this.each( function(){
+
+			var $this = jQuery(this);
+			var $row = $this.children( '.acf-fields' );
+			var sel = [];
+			if( $row.length ){
+				var $select = $row.children( '.select2-layout_main' );
+				sel = $select.find( '.select2-offscreen' );
+
+			}else{		
+				sel = $this.find( 'table > tbody > tr > .acf-fields > .select2-layout_main .select2-offscreen' );
+			}
+
+			if( sel[0] )
+				var $sel = jQuery( sel[0] );
+			else
+				return this;
+
+			var value = $sel.val();
+
+			if( value.indexOf( 'responsive' ) > -1 ){
+				$this.removeClass( 'full' );
+			}else{
+				$this.addClass( 'full' );
+			}
+					
 		} );
 
 	}
@@ -118,10 +150,42 @@
 				}
 		    });
 
+		    // OPEN FIELDs COLUMN
+
+		    jQuery( 'body' ).on('click', function(e){
+		    	var $this = jQuery( e.target );
+		    	if( $this.hasClass( 'order' ) || $this.hasClass( 'fc-layout-order' ) ){
+		    		e.stopPropagation();
+					e.preventDefault();
+					console.log( $this );
+					var $parent = jQuery( $this.parent( '.column' ) );
+					if( !$parent.length )
+						$parent = jQuery( $this.parent( '.acf-fc-layout-handle' ).parent( '.column' ) );
+					if( $parent.length ){
+						if( $parent.hasClass( 'full' ) ){
+							//jQuery( '.acf-row' ).setColumnWidth();
+							//jQuery('.layout' ).setColumnWidth();
+							$parent.removeClass( 'column-11' );
+							$parent.removeClass( 'full' );						
+						}else{
+							$parent.addClass( 'column-11' );
+							$parent.addClass( 'full' );
+						}
+					}
+
+				}
+
+		    });
+
+		    //jQuery( '.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > td.order' ).setColumnWidth();
+
 			// COLUMNS WIDTH
 
 			jQuery( '.acf-row' ).setColumnWidth();
 			jQuery('.layout' ).setColumnWidth();
+
+			//jQuery( '.acf-row' ).setLayoutWidth();
+			jQuery('.layout' ).setLayoutWidth();
 
 			$('*').on('change', function(e) {
 				var $elem = jQuery( e.target );
@@ -140,9 +204,30 @@
 				}
 			});
 
+			// ROWS WIDTH
+
+			$('*').on('change', function(e) {
+				var $elem = jQuery( e.target );
+				if( $elem.hasClass('select2-offscreen') ){
+
+					var $col = $elem.parent( '.select2-container' );
+					if ( $col.length )
+						$col = jQuery( $col ).parent( '.acf-input' ).parent( '.select2-layout_main' );
+					else
+						$col = $elem.parent( '.acf-input' ).parent( '.select2-layout_main' );
+					if( $col.length ){
+						e.stopPropagation();
+						//jQuery( '.acf-row' ).setLayoutWidth();
+						jQuery('.layout' ).setLayoutWidth();
+					}
+
+
+				}
+			});
+
 			// CONTROL MENU
 
-			var $publish = jQuery( '#publishing-action' );
+			var $publish = jQuery( '#publishing-action, #edittag p.submit' );
 			$publish.prepend( '<i class="fa fa-floppy-o"></i>' );
 			$publish.prepend( '<i class="fa fa-spin fa-cog"></i>' );
 
@@ -150,7 +235,7 @@
 			jQuery( 'body:not(.post-new-php):not(.post-php) #options-action' ).css( 'display', 'none' );
 			jQuery( 'body.post-php #save-action' ).css( 'display', 'none' );
 			
-			jQuery( '#delete-action' ).prepend( '<i class="fa fa-trash-o"></i>' );
+			//jQuery( '#delete-action' ).prepend( '<i class="fa fa-trash-o"></i>' );
 
 			var $stuff = jQuery( '#poststuff' );
 			/*$stuff.addClass( 'options' );*/
@@ -167,6 +252,18 @@
 				}
 			} );
 
+			/*jQuery( 'body' ).on('mousedow', function(e){
+		    	var $this = jQuery( e.target );
+				if( $this.attr('id') !== 'postbox-container-1' ){
+					if( $stuff.hasClass( 'options' ) )
+					$stuff.removeClass( 'options' );
+				}
+		    });*/
+
+				jQuery( '#delete-action' ).prepend( '<i class="fa fa-trash-o"></i>' );
+				jQuery( '#delete-action' ).prepend( '<i class="fa fa-spin fa-cog"></i>' );
+		
+
 			var $save = jQuery( '#save-action' );
 			if( $save.find( '.button' ).size() > 0 ){
 				$save.prepend( '<i class="fa fa-file-o"></i>' );
@@ -176,14 +273,30 @@
 			jQuery( '#preview-action' ).prepend( '<i class="fa fa-search"></i>' );
 
 
-			jQuery( '#delete-action .button, #save-action .button, #publishing-action .button' ).on( 'click', function(e){
-				jQuery( this ).parent( 'div' ).addClass( 'loading' );
+			jQuery( '#delete-action .deletion, #save-action .button, #publishing-action .button, #edittag p.submit' ).on( 'click', function(e){
+				jQuery( 'div' ).remove( '.acf-error-message' );
+				jQuery( 'body' ).addClass( 'loading' );
+				checkDOMChange();
 			});
+
+			function checkDOMChange( cdc ){
+			    
+			    var $error = jQuery( '.acf-error-message' );
+			    //console.log($error);
+			    
+			    if( !$error.length ){
+				    setTimeout( checkDOMChange, 500 );
+				    return;
+				}
+
+				jQuery( 'body' ).removeClass( 'loading' );
+
+			}
 
 			
 
 			jQuery(window).load(function() {
-				$stuff.addClass( 'loaded' );
+				jQuery( 'body' ).addClass( 'loaded' );
 			});
 
 			// TEMPLATES
@@ -214,6 +327,35 @@
 				var id = $prev.find( '[data-name="id"] input' ).val();
 				window.location.href = 'admin.php?action=scm_admin_duplicate_post&amp;post=' . id;
 			} );*/
+
+			// ADMIN MENU
+
+			/*var $sub_menus = jQuery( '#adminmenu li.wp-has-submenu' );
+			$sub_menus.each( function(){
+
+				var $this = jQuery( this );
+				var $link = $this.children( 'a.wp-has-submenu' );
+				var href = '';
+				if( $link.length )
+					href = $link.attr( 'href' );
+
+				if( href.indexOf( 'edit.php?' ) === 0 ){
+					var $links = $this.find( '.wp-submenu .wp-first-item' );
+					if( $links.length ){
+						$links.css( 'display', 'none' );
+						//$links.next( 'li' ).find( 'a' ).html( '+' ).css({ 'text-align' : 'center', 'font-size' : '2em', 'line-height' : '1em' });
+					}
+
+				}
+
+
+
+			});*/
+
+			// HIDE LABEL IF PREPEND
+
+			//var $prep = jQuery( '.acf-input-prepend, .acf-color_picker' ).parent( '.acf-input' ).siblings( '.acf-label' ).css( 'display', 'none' );
+
 
 		});
 	});

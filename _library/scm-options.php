@@ -169,7 +169,7 @@
     if ( ! function_exists( 'scm_options_get_align' ) ) {
         function scm_options_get_align( $type = '', $target = 'option', $add = false ) {
 			
-			$align = scm_field( 'select_txt_alignment' . $type, '', $target, 1 );
+			$align = scm_field( 'style-txt-set-alignment' . $type, '', $target, 1 );
         	
         	if( !$align && ( $type || $target != 'option' ) )
         		return '';
@@ -185,10 +185,10 @@
         function scm_options_get_size( $type = '', $target = 'option', $add = false ) {
 
         	if( $type || $target != 'option' ){
-                $size = ( get_field( 'select_txt_size' . $type, $target ) ?: 'default' );
+                $size = ( get_field( 'style-txt-set-size' . $type, $target ) ?: 'default' );
                 $size = ( $size == 'default' ? $size : $size . '%' );
 			}else{
-                $obj = get_field_object( 'select_txt_size' . $type, $target );
+                $obj = get_field_object( 'style-txt-set-size' . $type, $target );
                 
                if( !$obj )
                     return '';
@@ -196,7 +196,7 @@
                 $value = $obj['value'];
                 $choices = $obj['choices'];
                 $label = $choices[ $value ];
-                $sizes = scm_acf_field_choices_preset( 'select_txt_font_size' );
+                $sizes = scm_acf_field_choices_preset( 'txt_font_size' );
                 $size = getByValue( $sizes, $label );
             }
 
@@ -216,22 +216,32 @@
     if ( ! function_exists( 'scm_options_get_fonts' ) ) {
         function scm_options_get_fonts( $type = '', $target = 'option', $add = false ) {
 
-            $webfont = ( get_field( 'select_webfonts_google' . $type, $target ) ?: 'default' );
-            $family = ( get_field( 'select_webfonts_fallback' . $type, $target ) ?: 'default' );
+            $adobe = ( get_field( 'style-txt-webfonts-adobe' . $type, $target ) ?: 'default' );
+            $google = ( get_field( 'style-txt-webfonts-google' . $type, $target ) ?: 'default' );
+            $family = ( get_field( 'style-txt-webfonts-fallback' . $type, $target ) ?: 'default' );
 
-            if( $webfont == 'default' && ( $type || $target != 'option' ) ){
+            if( $adobe == 'default' && ( $type || $target != 'option' ) ){
+
+                if( $google == 'default' && $family == 'default' )
+                    return '';
+
+                $adobe = ( get_field( 'style-txt-webfonts-adobe', 'option' ) ?: '' );
+
+            }
+
+            if( $google == 'default' && ( $type || $target != 'option' ) ){
 
             	if( $family == 'default' )
             		return '';
 
-            	$webfont = ( get_field( 'select_webfonts_google', 'option' ) ?: '' );
+            	$google = ( get_field( 'style-txt-webfonts-google', 'option' ) ?: '' );
 
 			}
 
 			if( $family == 'default' && ( $type || $target != 'option' ) )
-				$family = get_field( 'select_webfonts_defult_families', 'option' );
+				$family = get_field( 'style-txt-webfonts-fallback', 'option' );
             
-            return font2string( $webfont, $family, $add ) ;
+            return font2string( $google, $family, $add ) ;
 
         }
     }
@@ -239,8 +249,8 @@
     if ( ! function_exists( 'scm_options_get_color' ) ) {
         function scm_options_get_color( $type = '', $target = 'option', $add = false ) {
 
-        	$alpha = ( get_field('text_alpha' . $type, $target) ?: '' );
-        	$color = ( get_field('text_color' . $type, $target) ?: '' );
+        	$alpha = ( get_field('style-txt-rgba-alpha' . $type, $target) ?: 1 );
+        	$color = ( get_field('style-txt-rgba-color' . $type, $target) ?: '' );
         	
         	if( !$color && ( $type || $target != 'option' ) )
         		return '';
@@ -256,9 +266,9 @@
         function scm_options_get_line_height( $type = '', $target = 'option', $add = false, $units = '%' ) {
 			
 			if( $units == '%' )
-				$line_height = ( get_field( 'select_line_height' . $type, $target ) != 'default' ? (string)(100 * (float)get_field( 'select_line_height' . $type, $target )) : '' );
+				$line_height = ( get_field( 'style-txt-set-line-height' . $type, $target ) != 'default' ? (string)(100 * (float)get_field( 'style-txt-set-line-height' . $type, $target )) : '' );
 			else
-				$line_height = scm_field( 'select_line_height' . $type, '', $target, 1 );
+				$line_height = scm_field( 'style-txt-set-line-height' . $type, '', $target, 1 );
         	
         	if( !$line_height && ( $type || $target != 'option' ) )
         		return '';
@@ -273,12 +283,12 @@
     if ( ! function_exists( 'scm_options_get_weight' ) ) {
         function scm_options_get_weight( $type = '', $target = 'option', $add = false ) {
 
-			$weight = scm_field( 'select_font_weight' . $type, '', $target, 1 );
+			$weight = scm_field( 'style-txt-set-weight' . $type, '', $target, 1 );
 
         	if( !$weight && ( $type || $target != 'option' ) )
         		return '';
 
-        	$weight = ( $weight ?: '400' );
+        	$weight = ( $weight ?: 'normal' );
 
             return ( !$add ? $weight : 'font-weight:' . $weight . ';' );
 
@@ -288,24 +298,25 @@
     if ( ! function_exists( 'scm_options_get_shadow' ) ) {
         function scm_options_get_shadow( $type = '', $target = 'option', $add = false ) {
 
-        	$shadow = ( scm_field( 'select_disable_text_shadow' . $type, $target) ?: 'none' );
+        	$shadow = ( get_field( 'style-txt-shadow' . $type, $target) ?: 'none' );
+
 
 			if( $shadow === 'none' || $shadow === 'default' ){
 
 				if( $type || $target != 'option' )
         			return '';
 
-        	}else if( $shadow === 'off' ){
+        	}else if( !$shadow || $shadow === 'off' ){
 
                 $shadow = 'none';
 
             }else{
 
-        		$shadow_x = ( get_field('text_shadow_x' . $type, $target) ?: '0' ) . 'px';
-	        	$shadow_y = ( get_field('text_shadow_y' . $type, $target) ?: '0' ) . 'px';
-	        	$shadow_size = ( get_field('text_shadow_size' . $type, $target) ?: '0' ) . 'px';
-	        	$shadow_alpha = ( get_field('text_shadow_alpha' . $type, $target) ?: '0' );
-	        	$shadow_color = ( get_field('text_shadow_color' . $type, $target) ?: '#000000' );
+        		$shadow_x = ( get_field('style-txt-txt-shadow-x-number' . $type, $target) ?: '0' ) . ( get_field('style-txt-txt-shadow-x-units' . $type, $target) ?: 'px' );
+	        	$shadow_y = ( get_field('style-txt-txt-shadow-y-number' . $type, $target) ?: '0' ) . ( get_field('style-txt-txt-shadow-y-units' . $type, $target) ?: 'px' );
+	        	$shadow_size = ( get_field('style-txt-txt-shadow-size-number' . $type, $target) ?: '0' ) . ( get_field('style-txt-txt-shadow-x-units' . $type, $target) ?: 'px' );
+	        	$shadow_alpha = ( get_field('style-txt-txt-shadow-color-alpha' . $type, $target) ?: '0' );
+	        	$shadow_color = ( get_field('style-txt-txt-shadow-color-color' . $type, $target) ?: '#000000' );
 	        	$shadow = $shadow_x . ' ' . $shadow_y . ' ' . $shadow_size . ' ' . hex2rgba( $shadow_color, $shadow_alpha );
 
         	}
@@ -318,7 +329,7 @@
 	if ( ! function_exists( 'scm_options_get_opacity' ) ) {
         function scm_options_get_opacity( $type = '', $target = 'option', $add = false ) {
 
-			$opacity = get_field('opacity' . $type, $target);
+			$opacity = get_field('style-box-alpha' . $type, $target);
         	if( !is_string( $opacity && ( $type || $target != 'option' ) ) )
         		return '';
 
@@ -332,7 +343,7 @@
     if ( ! function_exists( 'scm_options_get_margin' ) ) {
         function scm_options_get_margin( $type = '', $target = 'option', $add = false ) {
 
-			$margin = get_field('margin' . $type, $target);
+			$margin = get_field('style-box-margin' . $type, $target);
 
         	if( !$margin && ( $type || $target != 'option' ) )
         		return '';
@@ -347,7 +358,7 @@
     if ( ! function_exists( 'scm_options_get_padding' ) ) {
         function scm_options_get_padding( $type = '', $target = 'option', $add = false ) {
 
-			$padding = get_field('padding' . $type, $target);
+			$padding = get_field('style-box-padding' . $type, $target);
 
         	if( !$padding && ( $type || $target != 'option' ) )
         		return '';
@@ -362,7 +373,7 @@
     if ( ! function_exists( 'scm_options_get_bg_image' ) ) {
         function scm_options_get_bg_image( $type = '', $target = 'option', $add = false ) {
 
-			$bg_image = scm_field( 'background_image' . $type, 'none', $target, 1 );
+			$bg_image = scm_field( 'style-bg-image' . $type, 'none', $target, 1 );
 
 			if( $bg_image === 'none' ){
                 if( $type || $target !== 'option' )
@@ -379,7 +390,7 @@
 	if ( ! function_exists( 'scm_options_get_bg_repeat' ) ) {
         function scm_options_get_bg_repeat( $type = '', $target = 'option', $add = false ) {
 
-            $bg_repeat = ( get_field('select_bg_repeat' . $type, $target) ?: 'default' );
+            $bg_repeat = ( get_field('style-bg-repeat' . $type, $target) ?: 'default' );
 			$bg_repeat = ( $bg_repeat != 'default' ? $bg_repeat : 'no-repeat' );
 			return ( !$add ? $bg_repeat : 'background-repeat:' . $bg_repeat . ';' );
 
@@ -389,7 +400,7 @@
 	if ( ! function_exists( 'scm_options_get_bg_position' ) ) {
         function scm_options_get_bg_position( $type = '', $target = 'option', $add = false ) {
             
-            $bg_position = ( get_field('select_bg_position' . $type, $target) ?: 'center center' );
+            $bg_position = ( get_field('style-bg-position' . $type, $target) ?: 'center center' );
             return ( !$add ? $bg_position : 'background-position:' . $bg_position . ';' );
 
         }
@@ -398,7 +409,7 @@
 	if ( ! function_exists( 'scm_options_get_bg_size' ) ) {
         function scm_options_get_bg_size( $type = '', $target = 'option', $add = false ) {
 
-            $bg_size = ( get_field('background_size' . $type, $target) ?: 'default' );
+            $bg_size = ( get_field('style-bg-size' . $type, $target) ?: 'default' );
             $bg_size = ( $bg_size != 'default' ? $bg_size : 'auto' );
             return ( !$add ? $bg_size : 'background-size:' . $bg_size . ';' );
 
@@ -408,8 +419,8 @@
 	if ( ! function_exists( 'scm_options_get_bg_color' ) ) {
         function scm_options_get_bg_color( $type = '', $target = 'option', $add = false ) {
 
-            $bg_alpha = ( get_field('background_alpha' . $type, $target) ?: '' );
-            $bg_color = ( get_field('background_color' . $type, $target) ? hex2rgba( get_field( 'background_color' . $type, $target ), $bg_alpha ) : 'transparent' );
+            $bg_alpha = ( get_field('style-bg-rgba-alpha' . $type, $target) ?: 1 );
+            $bg_color = ( get_field('style-bg-rgba-color' . $type, $target) ? hex2rgba( get_field( 'style-bg-rgba-color' . $type, $target ), $bg_alpha ) : 'transparent' );
 
             if( $bg_color == 'transparent' && ( $type || $target != 'option' ) )
 				return '';
@@ -424,6 +435,8 @@
 
             if( !$target )
                 return '';
+
+            $style = '';
 
             if( strpos( $type, '_' ) === 0 ){
 

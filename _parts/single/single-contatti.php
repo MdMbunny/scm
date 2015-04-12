@@ -1,5 +1,7 @@
 <?php
 
+// +++ todo: attualmente non in uso. Una volta creato il type Contatti, che includere un CF7 + aggiunte ( e magari filtri per creare dinamicamente un CF7 )
+
 	global $SCM_indent;
 
 	$indent = 0;

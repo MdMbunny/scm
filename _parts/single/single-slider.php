@@ -1,7 +1,5 @@
 <?php
 
-// +++ todo: Slide diventa un nuovo Post Type e avrà il suo ID
-
 global $post, $SCM_indent;
 
 $type = $post->post_type;
@@ -9,37 +7,39 @@ $slug = $post->post_name;
 
 $id = $post->ID;
 
-$slides = scm_field( 'slides_slider', array() );
+$default = ( scm_field( 'layout-page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'layout-head', 'responsive', 'option' ) );
+$layout = scm_field( 'slider-layout', $default );
 
-$default = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'responsive', 'option' ) );
-$layout = scm_field( 'select_layout_slider', $default );
+$terms = scm_field( 'slider-slides-terms', '' );
+$slides = get_posts( array( 'order' => 'ASC', 'post_type' => 'slides', 'taxonomies' => 'sliders', 'terms' => $terms ) );
 
-$slider = scm_field( 'select_slider', 'nivo', 'option' );
+$slider = scm_field( 'opt-tools-slider', 'nivo', 'option' );
 $slider_class = 'slider ' . $slider . ' ' . $layout . ' mask';
 
-$height = scm_field( 'height_slider', 'initial' );
+$height = scm_field( 'slider-height-number', '' );
+$height = ( $height ? $height . scm_field( 'slider-height-units', '' ) : 'auto' );
 
-$theme = scm_field( 'select_themes_nivo_slider', 'scm' );
+$theme = scm_field( 'slider-theme', 'scm' );
 
 $effect = scm_field( 'select_effect_nivo', 'fold' );
-$slices = scm_field( 'slices_options_slider', '15' );
-$cols = scm_field( 'cols_options_slider', '8' );
-$rows = scm_field( 'rows_options_slider', '4' );
-$speed = (float)scm_field( 'speed_options_slider', '.5' ) * 1000;
-$time = (float)scm_field( 'pause_options_slider', '5' ) * 1000;
-$start = scm_field( 'start_options_slider', '0' );
+$slices = scm_field( 'slider-slices', '15' );
+$cols = scm_field( 'slider-cols', '8' );
+$rows = scm_field( 'slider-rows', '4' );
+$speed = (float)scm_field( 'slider-speed', '.5' ) * 1000;
+$time = (float)scm_field( 'slider-pause', '5' ) * 1000;
+$start = scm_field( 'slider-start', '0' );
 $random = 'false';
 if( $start == -1 ){
 	$start = '0';
 	$random = 'true';
 }
-$hover = scm_field( 'select_enable_hover_slider', 'true' );
-$manual = scm_field( 'select_enable_manual_slider', 'false' );
-$direction = scm_field( 'select_enable_direction_slider', 'true' );
-$control = scm_field( 'select_enable_control_slider', 'false' );
-$thumbs = scm_field( 'select_enable_thumbs_slider', 'false' );
-$next = scm_field( 'next_options_slider', 'fa-angle-right' );
-$prev = scm_field( 'prev_options_slider', 'fa-angle-left' );
+$hover = scm_field( 'slider-pause', 'true' );
+$manual = scm_field( 'slider-manual', 'false' );
+$direction = scm_field( 'slider-direction', 'true' );
+$control = scm_field( 'slider-control', 'false' );
+$thumbs = scm_field( 'slider-thumbs', 'false' );
+$next = scm_field( 'slider-next', 'fa-angle-right' );
+$prev = scm_field( 'slider-prev', 'fa-angle-left' );
 
 $indent = $SCM_indent + 1;
     
@@ -71,25 +71,21 @@ $indent = $SCM_indent + 1;
 	
 	$i = 0;
 
-    // ++ todo: aggiungi field (objects-slides) categories-slides, pesca slide da categorie scelte
-    if( !sizeof( $slides ) )
-        $slides = get_posts( array( 'order' => 'ASC', 'post_type' => 'slides' ) );
-
     foreach ($slides as $elem) {
         $elem = ( is_numeric( $elem ) ? $elem : $elem->ID );
         $slide = get_fields($elem);
         $i++;
-        $img = $slide[ 'immagine' ];
-        $link = ( $slide[ 'select_links' ] == 'page' ? $slide[ 'slide_internal' ] : ( $slide[ 'select_links' ] == 'link' ? $slide[ 'slide_external' ] : '' ) );
+        $img = $slide[ 'slide-image' ];
+        $link = ( $slide[ 'slide-link' ] == 'page' ? $slide[ 'slide-internal' ] : ( $slide[ 'slide-link' ] == 'link' ? $slide[ 'slide-external' ] : '' ) );
         $caption = '';
-        $slide_id = ( $slide[ 'slide_id' ] ? ' id="' . $slide[ 'slide_id' ] . '"' : '' );
-        $slide_class = 'caption box center' . ( $slide[ 'slide_class' ] ? ' ' . $slide[ 'slide_class' ] : '' );
+        $slide_id = ( $slide[ 'selectors-id' ] ? ' id="' . $slide[ 'selectors-id' ] . '"' : '' );
+        $slide_class = 'caption box center' . ( $slide[ 'selectors-class' ] ? ' ' . $slide[ 'selectors-class' ] : '' );
         $title = '';
 
-        $top = ( $slide[ 'caption_top' ] != '' ? $slide[ 'caption_top' ] . '%' : 'initial' );
-        $right = ( $slide[ 'caption_right' ] != '' ? $slide[ 'caption_right' ] . '%' : 'initial' );
-        $bottom = ( $slide[ 'caption_bottom' ] != '' ? $slide[ 'caption_bottom' ] . '%' : 'initial' );
-        $left = ( $slide[ 'caption_left' ] != '' ? $slide[ 'caption_left' ] . '%' : 'initial' );
+        $top = ( $slide[ 'slide-caption-top' ] != '' ? $slide[ 'slide-caption-top' ] . '%' : 'initial' );
+        $right = ( $slide[ 'slide-caption-right' ] != '' ? $slide[ 'slide-caption-right' ] . '%' : 'initial' );
+        $bottom = ( $slide[ 'slide-caption-bottom' ] != '' ? $slide[ 'slide-caption-bottom' ] . '%' : 'initial' );
+        $left = ( $slide[ 'slide-caption-left' ] != '' ? $slide[ 'slide-caption-left' ] . '%' : 'initial' );
         $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
             
         $caption_id = 'slide-' . $id . '-' . $i;
@@ -99,8 +95,8 @@ $indent = $SCM_indent + 1;
 
                 //if( $slide[ 'select_disable_caption' ] == 'on' ){
                 
-                    $caption .= ( $slide[ 'caption_title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'caption_title' ] . '</h3>' . lbreak() : '' );
-                    $caption .= indent( $indent + 4 ) . $slide['caption'];
+                    $caption .= ( $slide[ 'slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
+                    $caption .= indent( $indent + 4 ) . $slide['slide-caption-cont'];
                 //}
                 
             $caption .= indent( $indent + 3 ) . '</div>' . lbreak();

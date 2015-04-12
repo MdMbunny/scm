@@ -31,9 +31,6 @@
     add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
     add_filter( 'post_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
     
-    add_filter( 'custom_menu_order', 'scm_admin_menu_order' );
-    add_filter( 'menu_order', 'scm_admin_menu_order' );
-    add_action( 'admin_head', 'scm_admin_menu_icons');
     add_action( 'admin_menu', 'scm_admin_menu_remove' );
     add_action( 'admin_menu', 'scm_admin_menu');
 
@@ -41,6 +38,7 @@
     add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
+    add_action( 'current_screen', 'scm_current_screen' );
     add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3 );
@@ -153,45 +151,8 @@
 //  UI
 // *********************************************
 
-// Remove Menu Elements
-    if ( ! function_exists( 'scm_admin_menu_order' ) ) {
-        function scm_admin_menu_order( $menu_ord ) {
-            
 
-            
-            if ( !$menu_ord ) return true;
-
-            //consoleLog($menu_ord);
-
-           // "acf-options-opzioni", "acf-types-custom", "acf-templates-progetti-deafal", "acf-options-home", "separator1", "upload.php", "edit.php?post_type=page", "wpcf7", "edit.php?post_type=sections", "edit-tags.php?taxonomy=rassegne-categorie&amp;post_type=rassegne-stampa", "separator2", "themes.php", "plugins.php", "users.php", "tools.php", "options-general.php", "edit.php?post_type=acf-field-group", "separator-last"
-            return $menu_ord;
-
-            return array(
-                //'index.php', // Dashboard
-                //'edit.php', // Posts
-                //'link-manager.php', // Links
-                //'edit-comments.php', // Comments
-                
-                'separator1',
-                
-                'edit.php?post_type=page', // Pages
-                
-                'separator2',
-                
-                'upload.php', // Media
-                                
-                'users.php', // Users
-
-                'options-general.php', // Settings
-                'themes.php', // Appearance
-                'plugins.php', // Plugins
-                'tools.php', // Tools
-
-                'separator-last',
-            );
-        }
-    }
-
+// Set Menu Elements
     if ( ! function_exists( 'scm_admin_menu' ) ) {
         function scm_admin_menu(){
 
@@ -200,14 +161,19 @@
 
             $media = $menu[10];
             $pages = $menu[20];
-            $cf7 = $menu[26];
-            $acf = $menu['80.025'];
-            $acf[6] = 'dashicons-admin-star';
-            $users = $menu[70];
-
-            if( isset( $cf7 ) && isset( $cf7[0] ) && $cf7[0] == 'C F 7' ){
+            if( isset( $menu[26] ) && isset( $menu[26][0] ) && $menu[26][0] == 'C F 7' ){
+                $cf7 = $menu[26];
                 $menu[57] = $cf7;
             }
+
+            if( isset( $menu['80.025'] ) ){
+                $acf = $menu['80.025'];
+                unset( $menu['80.025'] );
+                $menu[83] = $acf;
+            }
+            
+            $users = $menu[70];
+            
 
             //consoleLog($menu);
             $menu[5] = $pages;
@@ -220,21 +186,9 @@
             $menu[56] = $users;
             unset( $menu[70] );
             $menu[81] = array('','read',"separator7",'','wp-menu-separator');
-            unset( $menu['80.025'] );
-            $menu[83] = $acf;
+            
 
             ksort( $menu );
-        }
-    }
-
-    if ( ! function_exists( 'scm_admin_menu_icons' ) ) {
-        function scm_admin_menu_icons(){
-            echo '<style type="text/css">';
-                echo '#adminmenu #toplevel_page_acf-options-opzioni div.wp-menu-image:before { content: "\f511"; }';
-                echo '#adminmenu #toplevel_page_acf-types-custom div.wp-menu-image:before { content: "\f155"; }';
-                echo '#adminmenu #toplevel_page_acf-templates-general div.wp-menu-image:before { content: "\f309"; }';
-                echo '#adminmenu #toplevel_page_edit-post_type-acf-field-group div.wp-menu-image:before { content: "\f313"; }';
-            echo '</style>';
         }
     }
 
@@ -244,23 +198,22 @@
 
             global $SCM_types;
 
+            //global $submenu;
+
+
             remove_menu_page( 'index.php' );                  //Dashboard
             remove_menu_page( 'edit.php' );                   //Posts
 
             remove_menu_page( 'edit-comments.php' );          //Comments
-            remove_menu_page( 'link-manager.php' );           //Links
+            //remove_menu_page( 'link-manager.php' );           //Links
             remove_menu_page( 'edit-tags.php?taxonomy=link_category' );           //Links
 
-            remove_submenu_page ('upload.php', 'upload.php');
-            remove_submenu_page ('upload.php', 'media-new.php');
+            //remove_submenu_page ('upload.php', 'upload.php');
+            //remove_submenu_page ('upload.php', 'media-new.php');
+            //remove_submenu_page ('users.php', 'users.php');
+            //remove_submenu_page ('users.php', 'user-new.php');
+            //remove_submenu_page ('users.php', 'profile.php');
             
-            global $submenu;
-            
-            foreach ($SCM_types['complete'] as $key => $value) {
-
-                remove_submenu_page ('edit.php?post_type=' . $key, 'edit.php?post_type=' . $key);
-                remove_submenu_page ('edit.php?post_type=' . $key, 'post-new.php?post_type=' . $key);
-            }
         }
     }
 
@@ -270,7 +223,6 @@
     if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
         function scm_admin_remove_dashboard_widgets(){
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
-            remove_meta_box('synved_connect_dashboard_widget', 'dashboard', 'normal');   // Sociual Feather
             remove_meta_box('dashboard_activity', 'dashboard', 'normal');   // Activity
             remove_meta_box('dashboard_right_now', 'dashboard', 'normal');   // Right Now
             remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal'); // Recent Comments
@@ -321,13 +273,12 @@
 // UPLOAD
 // *********************************************
     
-    add_action( 'current_screen', 'scm_current_screen' );
 
     if ( ! function_exists( 'scm_current_screen' ) ) {
         function scm_current_screen( $current_screen ){
-            global $currentScreen;
+            global $SCM_current_screen;
 
-            $currentScreen = $current_screen;
+            $SCM_current_screen = $current_screen;
 
             //printPre( $current_screen );
         }
@@ -423,7 +374,7 @@
     }
 
     //Change the Name of the Uploaded File
-    /*if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
+    /*if ( ! function_exists( 'scm_upload_set_filename' ) ) {
         function scm_upload_set_filename( $image ) {
 
             if ( isset( $_REQUEST['post_id'] ) ) {

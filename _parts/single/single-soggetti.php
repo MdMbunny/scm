@@ -3,8 +3,30 @@
  * @package SCM
  */
 
-global $post, $SCM_indent;
+global $SCM_indent;
 
+$title = get_the_title();
+$id = get_the_ID();
+$type = get_post_type();
+$date = get_the_date();
+$taxes = get_the_taxonomies();
+
+//$wrap = ( isset( $this->wrap ) ? $this->wrap : '<div>%a</div>' );
+$href = ( isset( $this->href ) ? $this->href : '' );
+$target = ( isset( $this->target ) ? $this->target : '' );
+$build = ( isset( $this->build ) ? $this->build : [] );
+
+foreach ( $build as $value ) {
+
+// switch 'acf_fc_layout'
+
+
+}
+
+
+printPre('SOGGETTO ' . $post->ID);
+
+/*
 $type = get_post_type();
 $title = get_the_title();
 
@@ -97,5 +119,5 @@ indent( $indent, '<div class="' . $classes . '"' . $data . '>', 2 );
 	}
 
 indent( $indent, '</div><!-- soggetto -->', 2 );
-
+*/
 ?>

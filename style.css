@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.0.9
+Version:			v2.1.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -30,6 +30,7 @@ GitHub Branch:		master
 	2.6 Attributes Clearings
 	2.7 Attributes Cursor
 	2.8 Attributes Layout
+	2.9 Attributes Shapes
 3.0 Elements
 	3.1 Elements Links
 	3.2 Elements Buttons
@@ -38,10 +39,9 @@ GitHub Branch:		master
 	3.5 Elements Slider
 4.0 Plugins
 	4.1 Plugins Google Maps
-	4.2 Plugins Social Feather
-	4.3 Plugins Fancybox
-	4.4 Plugins Font Awesome
-	4.5 Plugins Contact Form 7
+	4.2 Plugins Fancybox
+	4.3 Plugins Font Awesome
+	4.4 Plugins Contact Form 7
 
 0.0 Accesibility
 	
@@ -124,7 +124,7 @@ body {
 }
 
 article, aside, details, figcaption, figure, footer, header, nav, hr,
-.section, .row, .column {
+.section, .row, .column-layout {
 	display: inline-block;
 	vertical-align: top;
 	padding: 0;
@@ -182,6 +182,7 @@ caption, th, td {
 
 .h0, h1, h2, h3, h4, h5, h6, .h7, .h8, .h9, b, strong, dt, th {
 	font-weight: bold;
+	line-height: 1em;
 }
 
 dfn, cite, em, i {
@@ -427,13 +428,16 @@ h6 { font-size: 1.2em; }
 /*--------------------------------------------------------------
 2.5 Attributes Floating
 --------------------------------------------------------------*/
-.align-left, .alignleft, .float-left, .floatleft {
+.align-left, .alignleft, .float-left, .floatleft,
+.content-float-left > *, .all-float-left * {
 	float: left;
+	clear: none;
 }
 
 .align-right, .alignright, .float-right, .floatright,
 .content-float-right > *, .all-float-right * {
 	float: right;
+	clear: none;
 }
 
 .align-center, .aligncenter, .float-center, .floatcenter,
@@ -506,77 +510,81 @@ h6 { font-size: 1.2em; }
 .module p:last-child{
 	margin-bottom: 0;
 }
-
-.column {
+/*
+.column-layout {
 	width: 100%;
 	clear: none;
 	float: left;
+}*/
+
+.half-width, *[data-column-width="12"] { width: 50%; }
+
+.third-width, *[data-column-width="13"] { width: 33.33%; }
+
+*[data-column-width="23"] { width: 66.66%; }
+
+*[data-column-width="14"] { width: 25%; }
+
+*[data-column-width="34"] { width: 75%; }
+
+*[data-column-width="15"] { width: 20%; }
+
+*[data-column-width="25"] { width: 40%; }
+
+*[data-column-width="35"] { width: 60%; }
+
+*[data-column-width="45"] { width: 80%; }
+
+*[data-column-width="16"] { width: 16.66%; }
+
+*[data-column-width="56"] { width: 83.34%; }
+
+*[data-column-width="17"] { width: 14.28%; }
+
+*[data-column-width="18"] { width: 12.5%; }
+
+*[data-column-width="19"] { width: 11.11%; }
+
+.first:before { clear: both; }
+
+*[data-column="auto"], *[data-column-width="auto"] {
+	width: auto;
 }
 
-.half-width, .column-12 { width: 50%; }
-
-.third-width, .column-13 { width: 33.33%; }
-
-.column-23 { width: 66.66%; }
-
-.column-14 { width: 25%; }
-
-.column-34 { width: 75%; }
-
-.column-15 { width: 20%; }
-
-.column-25 { width: 40%; }
-
-.column-35 { width: 60%; }
-
-.column-45 { width: 80%; }
-
-.column-16 { width: 16.66%; }
-
-.column-56 { width: 83.34%; }
-
-.column-17 { width: 14.28%; }
-
-.column-18 { width: 12.5%; }
-
-.column-19 { width: 11.11%; }
-
-.column.first:before { clear: both; }
-
-.column-solo {
+*[data-column="solo"] {
 	float: none;
 	clear: both;
 	padding: 1em 0;
 }
 
-.column-solo.first {
+*[data-column="solo"].first {
 	padding-top: 0;
 }
 
-.column-solo.last {
+*[data-column="solo"].last {
 	padding-bottom: 0;
 }
 
-.column-last { padding: 1em 0 1em 1em; }
+*[data-column="last"] { padding: 1em 0 1em 1em; }
 
-.column-middle { padding: 1em 1em; }
+*[data-column="middle"] { padding: 1em 1em; }
 
-.column-first {
+*[data-column="first"] {
 	padding: 1em 1em 1em 0;
 	clear: both;
 }
 
-.column.last:after { clear: both; }
+.last:after { clear: both; }
 
-.r700 .column,
-.smart .column {
+.r700 .column-layout,
+.smart .column-layout {
 	width: 100%;
 	padding-left: 0;
 	padding-right: 0;
 }
 
-.r700 .column-first,
-.r700 .column-middle{
+.r700 [data-column="first"],
+.r700 [data-column="middle"]{
 	padding-bottom: 2em;
 }
 
@@ -586,6 +594,128 @@ h6 { font-size: 1.2em; }
 	padding: 1em;
 }
 
+/*--------------------------------------------------------------
+2.9 Attributes Shapes
+--------------------------------------------------------------*/
+
+.square{
+	border-radius: 0;
+}
+
+.rounded{
+	border-radius: .6em;
+}
+
+.rounded.min{
+	border-radius: .2em;
+}
+
+.rounded.small{
+	border-radius: .4em;
+}
+
+.rounded.big{
+	border-radius: .8em;
+}
+
+.rounded.max{
+	border-radius: 1em;
+}
+
+.circle{
+	border-radius: 50%;
+}
+
+.circle.min{
+	border-radius: 20%;
+}
+
+.circle.small{
+	border-radius: 35%;
+}
+
+.circle.big{
+	border-radius: 75%;
+}
+
+.circle.max{
+	border-radius: 100%;
+}
+
+.round-top{
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.round-bottom{
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.round-left{
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.round-right{
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.round-head,
+.round-head-left{
+	border-bottom-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.round-head-right{
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.round-foot,
+.round-foot-left{
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.round-foot-right{
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.round-leaf,
+.round-leaf-left{
+	border-bottom-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.round-leaf-right{
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.round-petal,
+.round-petal-left{
+	border-bottom-left-radius: 0;
+}
+
+.round-petal-right{
+	border-bottom-right-radius: 0;
+}
+
+.round-drop,
+.round-drop-left{
+	border-top-left-radius: 0;
+}
+
+.round-drop-right{
+	border-top-right-radius: 0;
+}
 
 /*--------------------------------------------------------------
 3.0 Elements
@@ -640,6 +770,7 @@ a:hover{
 /*--------------------------------------------------------------
 3.2 Elements Buttons
 --------------------------------------------------------------*/
+.button,
 button,
 input[type="button"],
 input[type="reset"],
@@ -664,6 +795,28 @@ blockquote,
 	text-align: center;
 	padding: 1em;
 	text-decoration: none;
+}
+
+.button-list li{
+	width: auto;
+	height: auto;
+	display: inline-block;
+}
+
+.button-list.horizontal li{
+	margin-right: .5em;
+}
+
+.button-list.horizontal li:last-child{
+	margin-right: 0;
+}
+
+.button-list.vertical li{
+	margin-bottom: .5em;
+}
+
+.button-list.vertical li:last-child{
+	margin-bottom: 0;
 }
 
 /* Blockquote */
@@ -984,6 +1137,12 @@ body.mouse .sub-menu li:hover > ul {
 	display: none !important;
 }
 
+/* Social Menu */
+
+/*.site-social-follow{
+	float: right;
+}*/
+
 /*--------------------------------------------------------------
 3.4 Elements Contacts
 --------------------------------------------------------------*/
@@ -1091,24 +1250,7 @@ body.mouse .sub-menu li:hover > ul {
 }
 
 /*--------------------------------------------------------------
-4.2 Plugins Social Feather
---------------------------------------------------------------*/
-.site-social-follow{
-	float: right;
-}
-
-.synved-social-button{
-	vertical-align: top;
-	margin: 0px !important;
-	margin-right: 5px !important;
-}
-
-.synved-social-button:last-child{
-	margin-right: 0px !important;
-}
-
-/*--------------------------------------------------------------
-4.3 Plugins Fancybox
+4.2 Plugins Fancybox
 --------------------------------------------------------------*/
 .fancybox-overlay:hover {
 	cursor: zoom-out;
@@ -1205,7 +1347,7 @@ a.fancybox-next *{
 }
 
 /*--------------------------------------------------------------
-4.4 Plugins Font Awesome
+4.3 Plugins Font Awesome
 --------------------------------------------------------------*/
 i.fa {
 	font-size: 1em;
@@ -1215,7 +1357,7 @@ i.fa {
 }
 
 /*--------------------------------------------------------------
-4.5 Plugins Contact Form 7
+4.4 Plugins Contact Form 7
 --------------------------------------------------------------*/
 .wpcf7 br{
 	display: none;

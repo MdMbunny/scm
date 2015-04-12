@@ -25,12 +25,12 @@
 // [ 2 ] = HTML5 SUPPORT IF IE < 9
 
 $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
-$redirect = scm_field( 'ie_redirect', '', 'option' );
-$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ? $redirect : SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
+$redirect = scm_field( 'opt-ie-redirect', '', 'option' );
+$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ?: SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
 
 if( function_exists('get_browser_name') ) :
     if( is_ie() ) :
-        if( get_browser_version() <= (int)scm_field( 'ie_version', '10', 'option' ) && $redirect ) :
+        if( get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' ) && $redirect ) :
 //[ 1 ]
 ?>
 <meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
@@ -51,7 +51,7 @@ else :
         if( $redirect ) :
 //[ 1 ]
 ?>
-<!--[if lte IE <?php echo (int)scm_field( 'ie_version', '10', 'option' ); ?>]>
+<!--[if lte IE <?php echo (int)scm_field( 'opt-ie-version', '10', 'option' ); ?>]>
 <meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
 <![endif]-->
 <?php
@@ -82,50 +82,53 @@ endif;
 //***************** END HEAD *****
 //********************************
 
-global $SCM_indent;
+global $SCM_indent, $post;
+
+$id = $post->ID;
 
 $skip = __( "Vai al contenuto", SCM_THEME );
 
-$site_align = scm_field( 'select_alignment_site', 'center', 'option' );
+$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
-$page_id = scm_field( 'id_page', 'site-page', 'option' );
-$page_class = scm_field( 'select_layout_page', 'full', 'option' ) . ' float-' . $site_align . ' site-page hfeed site';
+$page_id = scm_field( 'opt-ids-pagina', 'site-page', 'option' );
+$page_layout = scm_field( 'page-layout', 'full', $id );
+$page_layout = ( $page_layout != 'default' ? $page_layout : scm_field( 'layout-page', 'full', 'option' ) );
+$page_class = $page_layout . ' float-' . $site_align . ' site-page hfeed site';
 
-$fade_in = scm_field( 'fade_in', 0, 'option' );
-$fade_out = scm_field( 'fade_out', 0, 'option' );
-$fade_wait = scm_field( 'select_waitfor', 'no', 'option' );
+$fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
+$fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
+$fade_wait = scm_field( 'opt-tools-fade-waitfor', 'no', 'option' );
 
-$smooth_duration = scm_field( 'tools_smoothscroll_duration', 0, 'option' );
-$smooth_offset = scm_field( 'tools_smoothscroll_offset', 0, 'option' );
-$smooth_ease = scm_field( 'select_ease_smoothscroll', 'swing', 'option' );
-$smooth_delay = scm_field( 'tools_smoothscroll_delay', 0, 'option' );
-$smooth_new = scm_field( 'tools_smoothscroll_delay_new', 0, 'option' );
-$smooth_post = scm_field( 'select_enable_smoothpage', 'on', 'option' );
+$smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 0, 'option' );
+$smooth_offset = scm_field( 'opt-tools-smoothscroll-offset', 0, 'option' );
+$smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
+$smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
+$smooth_new = scm_field( 'opt-tools-smoothscroll-delay_new', 0, 'option' );
+$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
 
-$single_class = scm_field( 'tools_singlepagenav_activeclass', 'active', 'option' );
-$single_interval = scm_field( 'tools_singlepagenav_interval', 1, 'option' );
-$single_offset = scm_field( 'tools_singlepagenav_offset', 0, 'option' );
-$single_threshold = scm_field( 'tools_singlepagenav_threshold', 0, 'option' );
+$single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
+$single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );
+$single_offset = scm_field( 'opt-tools-singlepagenav-offset', 0, 'option' );
+$single_threshold = scm_field( 'opt-tools-singlepagenav-threshold', 0, 'option' );
 
-$style_body = scm_options_get_style( get_queried_object_id(), 1, '_sc' );
-$style_page = scm_options_get_style( get_queried_object_id(), 1, 'nobg' );
+//$style_body = scm_options_get_style( get_queried_object_id(), 1, 'bg' );
+//$style_page = scm_options_get_style( get_queried_object_id(), 1, 'nobg' );
             
-$head_id = scm_field( 'id_header', 'site-header', 'option' );
+$head_id = scm_field( 'opt-ids-header', 'site-header', 'option' );
 
-$head_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_head', 'full', 'option' ) );
+$head_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-head', 'full', 'option' ) );
 
 $head_class = 'site-header full ' . $site_align;
 $head_row_class = 'row scm-row object scm-object ' . $head_layout . ' left';
 
+$menu_position = scm_field( 'head-menu-position', 'inline', 'option' );
+$menu_align = scm_field( 'head-menu-alignment', 'right', 'option' );
 
-$menu_position = scm_field( 'select_position_menu', 'inline', 'option' );
-$menu_align = scm_field( 'select_alignment_menu', 'right', 'option' );
+$follow_position = scm_field( 'head-follow-position', 'top', 'option' );
 
-$follow_position = scm_field( 'select_head_social_position', 'top', 'option' );
-
-$cont_id = scm_field( 'id_content', 'site-content', 'option' );
-$cont_layout = ( scm_field( 'select_layout_page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'select_layout_content', 'full', 'option' ) );
-$cont_class = 'site-content full';
+$cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
+$cont_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-content', 'full', 'option' ) );
+$cont_class = 'site-content ' . $cont_layout;
 
 ?>
 
@@ -139,7 +142,7 @@ $cont_class = 'site-content full';
     data-smooth-delay="<?php echo $smooth_delay; ?>"
     data-smooth-new="<?php echo $smooth_new; ?>"
     data-smooth-post="<?php echo $smooth_post; ?>"
-    <?php echo $style_body; echo lbreak(); ?>
+    <?php /*echo $style_body; echo lbreak();*/ ?>
 >
 
 <?php
@@ -200,10 +203,10 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 
 
         $SCM_indent += 1;
         
-        indent( $SCM_indent, '<div id="primary" class="content-area">' );
+        indent( $SCM_indent, '<div id="primary" class="content-area full">' );
 
             $SCM_indent += 1;
             
-            indent( $SCM_indent, '<main id="main" class="site-main" role="main">', 2 );
+            indent( $SCM_indent, '<main id="main" class="site-main full" role="main">', 2 );
 
 ?>

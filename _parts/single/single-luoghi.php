@@ -5,6 +5,9 @@
 
 global $post, $SCM_indent;
 
+printPre('LUOGO ' . $post->ID);
+
+/*
 $type = get_post_type();
 $id = $post->ID;
 
@@ -133,5 +136,5 @@ indent( $indent, '<div class="' . $classes . '">' );
 indent( $indent, '</div><!-- ' . $type . ' -->' );
 
 $SCM_indent -= 4;
-
+*/
 ?>

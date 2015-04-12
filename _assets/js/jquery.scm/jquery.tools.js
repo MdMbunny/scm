@@ -145,10 +145,12 @@
 				path 		= elem.pathname.replace( /^\//,'' );
 
 			if( lochost === host ){
-				if ( locpath !== path ){
+
+				if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
 					result = $this.trigger( 'linkSite' ).data( 'done' );
 					state = 'site';
 				}else if ( locpath === path ){
+
 					result = $this.trigger( 'linkPage' ).data( 'done' );
 					state = 'page';
 				}
@@ -383,9 +385,9 @@
 				height 			= $body.height(),
 				position 		= $( document ).scrollTop(),
 
-				hash 			= this.hash,
-				target 			= $( hash ),
-				name 			= hash.slice( 1 ),
+				hash 			= ( typeof( this.hash ) !== undefined ? this.hash : '' ),
+				target 			= ( hash ? $( hash ) : [] ),
+				name 			= ( hash ? hash.slice( 1 ) : '' ),
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0;
@@ -746,10 +748,12 @@
 
 		return this.each(function() {
 
-			var $this 		= $( this ),
-				latlng 		= new google.maps.LatLng( $this.data( 'lat' ), $this.data( 'lng' ) ),
-				marker_img 	= $this.data( 'img' ),
-				marker 		= [];
+			var $this 			= $( this ),
+				latlng 			= new google.maps.LatLng( $this.data( 'lat' ), $this.data( 'lng' ) ),
+				marker_img 		= $this.data( 'img' ),
+				marker_color	= $this.data( 'icon-color' ),
+				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : '' ),
+				marker 			= [];
 			
 			//var image = new google.maps.MarkerImage(
 					//marker_img
@@ -772,16 +776,24 @@
 				};
 			*/
 
-			marker = new google.maps.Marker({
+
+
+			//marker = new google.maps.Marker({
+			marker = new MarkerWithLabel({
 				raiseOnDrag : false,
 				clickable   : true,
+				draggable 	: false,
+				icon 		: ' ',
 				//icon        : image,
 				//shadow      : shadow,
 				//shape       : shape,
 				cursor      : 'pointer',
 				animation   : google.maps.Animation.BOUNCE,
 				position	: latlng,
-				map			: map
+				map			: map,
+				labelContent: marker_icon,
+			    labelAnchor: new google.maps.Point(22, 50),
+			    labelClass: "labels" // the CSS class for the label
 			});
 
 			if ( marker_img )
@@ -1093,19 +1105,29 @@
 		return this.each( function() {
 
 			var $this 			= $( this ),
-				id 				= $this.attr( 'id' ),
+				id 				= ( $this.data( 'gallery' ) ? $this.data( 'gallery' ) : '' ),
 				init 			= ( $this.data( 'init' ) ? $this.data( 'init' ) : 0 ),
 				name 			= ( $this.data( 'title' ) ? $this.data( 'title' ) : '' ),
 				gallery 		= GALLERIES[ id ],
-				images 			= [],
+				images 			= gallery,
 				titles 			= [],
 				descriptions 	= [],
 				i 				= 0;
 
 			for ( i = 0; i < gallery.length; i++ ) {
 				
+				if( typeof( gallery[i].href ) !== undefined )
+					continue;
+
+				// +++ todo: se array con 'url', 'title' e 'description', uniscili in un oggetto { href: '', title: '', description: '' } (description è da controllare se supportata)
+
+				var url = gallery[i];
+
+				if( !typeof( gallery[i] ) )
+					url = gallery[i]['url']
+
 				images.push( {
-					href: gallery[i]['url'],
+					href: url,
 				});
 				
 				titles.push( gallery[i]['title'] );
@@ -1321,7 +1343,7 @@
 
 // TOUCH CLASS
 
-        if ( ( Modernizr && ( Modernizr.touchEvents || Modernizr.touch ) ) && ( $body.hasClass('is-iphone') || $body.hasClass('is-tablet') || $body.hasClass('is-mobile') ) ) {
+        if ( ( typeof Modernizr !== 'undefined' && ( Modernizr.touchEvents || Modernizr.touch ) ) && ( $body.hasClass('is-iphone') || $body.hasClass('is-tablet') || $body.hasClass('is-mobile') ) ) {
             $body.addClass( 'touch' );
             $body.removeClass( 'mouse' );
         }else{

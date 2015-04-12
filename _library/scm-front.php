@@ -14,7 +14,7 @@
 *   1.0 Front Hooks
 *   2.0 Front Pagination
 *   3.0 Front Head
-*   4.0 Front Content
+*   (4.0 Front Content) moved to scm-content.php
 *   5.0 Front Footer
 *
 *****************************************************
@@ -26,7 +26,6 @@
 
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_favicon' );
     add_filter('body_class','scm_body_hook_class');
-    add_filter('synved_social_skin_image_list', 'scm_custom_social_icons');
 
 // *****************************************************
 // *      1.0 FRONT HOOKS
@@ -38,12 +37,12 @@
     if ( ! function_exists( 'scm_site_assets_favicon' ) ) {
         function scm_site_assets_favicon() {
 
-            $ico144 = scm_field('branding_icon_144', '', 'option');
-            $ico114 = scm_field('branding_icon_114', '', 'option');
-            $ico72 = scm_field('branding_icon_72', '', 'option');
-            $ico54 = scm_field('branding_icon_54', '', 'option');
-            $png = scm_field('branding_favicon_png', '', 'option');
-            $ico = scm_field('branding_favicon_ico', '', 'option');
+            $ico144 = scm_field('opt-branding-144', '', 'option');
+            $ico114 = scm_field('opt-branding-114', '', 'option');
+            $ico72 = scm_field('opt-branding-72', '', 'option');
+            $ico54 = scm_field('opt-branding-54', '', 'option');
+            $png = scm_field('opt-branding-png', '', 'option');
+            $ico = scm_field('opt-branding-ico', '', 'option');
 
             indent( 0, lbreak() . '<!------ Favicon and Touch Icons ------>', 2 );
 
@@ -132,57 +131,6 @@
         }
     }
 
-
-//**************************** SOCIAL HOOKS ***
-
-    if ( ! function_exists( 'scm_custom_social_icons' ) ) {
-        function scm_custom_social_icons($image_list) {
-
-            include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-            if ( is_plugin_active( 'social-media-feather/social-media-feather.php' ) ) {
-
-                $soc_shape = scm_field('select_social_shape', 'square', 'option');
-
-                $path = SCM_DIR_IMG . 'icons/social/typeB/' . $soc_shape;
-                $baseURL = SCM_URI_IMG . 'icons/social/typeB/' . $soc_shape;
-
-                $dirs = glob($path . '/*', GLOB_ONLYDIR);
-                $dirs = array_map('basename', $dirs);
-                $sizes = array();
-                
-                foreach ($dirs as $dirname) {
-
-                    $parts = explode('x', $dirname);
-
-                    if (!empty($parts[0])) {
-                        $sizes[] = (int) $parts[0];
-                    }
-                }
-                sort($sizes, SORT_NUMERIC);
-
-                foreach (array_keys($image_list) as $site) {
-                    $icons = array();
-                    foreach ($sizes as $size) {
-                        $imagepath = "$path/{$size}x{$size}/$site.png";
-                        if (file_exists($imagepath)) {
-                            $icons[$size] = array (
-                                'name' => "{$size}x{$size}",
-                                'sub' => "/$site.png",
-                                'path' => $imagepath,
-                                'uri' => "$baseURL/{$size}x{$size}/$site.png",
-                            );
-                        }
-                    }
-
-                    if (count($icons) > 0)
-                        $image_list[$site] = $icons;
-                }
-
-                return $image_list;
-            }
-        }
-    }
-
 // *****************************************************
 // *      2.0 FRONT PAGINATION
 // *****************************************************
@@ -236,19 +184,21 @@
 
             global $SCM_indent;
             
-            $logo_id = scm_field( 'id_branding', 'site-branding', 'option' );
+            $logo_id = scm_field( 'opt-ids-branding', 'site-branding', 'option' );
 
-            $follow = scm_field( 'select_disable_social_active', 0, 'option' );
+            $follow = scm_field( 'follow-enabled', 0, 'option' );
 
-            $logo_image = esc_url( scm_field( 'branding_header_logo', '', 'option' ) );
-            $logo_height= numberToStyle( scm_field( 'branding_header_logo_height', 40, 'option' ) );
-            $logo_align = scm_field( 'select_alignment_logo', 'left', 'option' );
+            $logo_image = esc_url( scm_field( 'brand-logo', '', 'option' ) );
+            $logo_height = scm_field( 'brand-height-number', 'auto', 'option' );
+            $logo_height = ( is_numeric( $logo_height ) ? $logo_height . scm_field( 'brand-height-units', 'px', 'option' ) : $logo_height );
+            //$logo_height= numberToStyle( scm_field( 'branding_header_logo_height', 40, 'option' ) );
+            $logo_align = scm_field( 'brand-alignment', 'left', 'option' );
 
             $logo_title = get_bloginfo( 'name' );
             $logo_slogan = get_bloginfo( 'description' );
-            $show_slogan = scm_field( 'select_disable_branding_slogan', 0, 'option' );
+            $show_slogan = scm_field( 'brand-slogan', 0, 'option' );
             
-            $logo_type = scm_field( 'select_branding_header', 'text', 'option' );
+            $logo_type = scm_field( 'brand-head', 'text', 'option' );
 
             $logo_class = 'header-column site-branding ';
             $logo_class .= ( ( $logo_align != 'center' || $follow ) ? 'half-width ' : 'full ' );
@@ -286,30 +236,74 @@
     if ( ! function_exists( 'scm_social_follow' ) ) {
         function scm_social_follow() {
 
-            global $SCM_indent;
+            global $SCM_indent, $SCM_fa;
 
-            $follow = scm_field( 'select_disable_social_active', 0, 'option' );
-
-            if( !$follow || !shortcode_exists( 'feather_follow' ) )
+            $follow = scm_field( 'follow-enabled', 0, 'option' );
+            $follow_soggetto = scm_field( 'follow-soggetto', 0, 'option' );
+            
+            if( !$follow || !$follow_soggetto )
                 return;
             
-            $follow_id = scm_field( 'id_social_follow', 'site-social-follow', 'option' );
+            $follow_id = scm_field( 'opt-ids-social-follow', 'site-social-follow', 'option' );
 
-            $follow_align = scm_field( 'select_alignment_social_follow', 'right', 'option' );
-            $follow_size = scm_field( 'select_size_icon_social_follow', '64x64', 'option' );
-            $follow_size = substr( $follow_size , strpos( $follow_size, 'x' ) + 1 );
+            $follow_align = scm_field( 'follow-alignment', 'right', 'option' );
+            $follow_size = scm_field( 'follow-size-number', 16, 'option' );
+            $follow_size = ( is_numeric( $follow_size ) ? $follow_size . scm_field( 'follow-size-units', 'px', 'option' ) : $follow_size );
 
-            $follow_class = 'header-column site-social-follow ';
-            $follow_class .= ( $follow_align != 'center' ? 'half-width ' : 'full ' );
+            $follow_color = scm_field( 'follow-rgba-color', '', 'option' );
+            $follow_color = ( $follow_color ? hex2rgba( $follow_color, scm_field( 'follow-rgba-alpha', 1, 'option' ) ) : '' );
+
+            $follow_shape = scm_field( 'follow-shape', 'no', 'option' );
+
+            $follow_shape_size = ( $follow_shape != 'square' ? ' ' . scm_field( 'follow-shape-size', 'normal', 'option' ) : '' );
+            $follow_shape_angle = ( $follow_shape != 'square' ? ' ' . scm_field( 'follow-shape-angle', 'all', 'option' ) : '' );
+
+            //printPre($follow_shape);
+
+            $follow_bg = scm_field( 'follow-box-color', '', 'option' );
+            $follow_bg = ( $follow_bg ? hex2rgba( $follow_bg, scm_field( 'follow-box-alpha', 1, 'option' ) ) : 'transparent' );
+
+            $follow_social = get_field( 'soggetto-follow-contatti', $follow_soggetto->ID );
+
+
+            $follow_class = 'button-list horizontal header-column site-social-follow ';
+            $follow_class .= ( $follow_align != 'center' ? 'half-width float-' . $follow_align . ' ' : 'full ' );
             $follow_class .= $follow_align . ' inlineblock';
 
             $in = $SCM_indent + 1;
 
-            indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
+            indent( $in, '<ul id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
+
+            foreach ($follow_social as $social) {
+
+                if( !$follow_color ){
+                    foreach ($SCM_fa['social'] as $value) {
+                        $index = getByValue( $value['choices'], $social['icon'] );
+                        if( $index !== false ){
+                            $social['color'] = ( $value['color'] ?: $follow_color );
+                            break;
+                        }
+                    }
+                }else{
+                    $social['color'] = $follow_color;
+                }
+
+                $style = 'font-size:' . $follow_size . '; color:' . $social['color'] . '; background-color:' . $follow_bg . ';';
+
+                $class = 'social-follow button-icon';
+                $class .= ( $follow_shape != 'no' ? ' button ' . $follow_shape . $follow_shape_size . $follow_shape_angle : '' );
                 
-                indent( $in + 1, do_shortcode( '[feather_follow size="' . $follow_size . '"]' ), 2 );
+                indent( $in + 1, '<li><a class="' . $class . '" style="' . $style . '" href="' . $social['link'] . '" target="_blank" title="' . ( $social['name'] ?: '' ) . '" alt="' . $social['link'] . '"><i class="fa ' . $social['icon'] . '"></i></a></li>', 2 );
             
-            indent( $in, '</div><!-- #site-social-follow -->', 2 );
+            }
+
+            indent( $in, '</ul><!-- #site-social-follow -->', 2 );
+
+            // +++ todo: in scm-front.php dove costruisco i vari elementi, ci sarebbe da aggiungere il .button (forse per ora anche il .social-follow)
+            // così in casi come questo creo solo il div che conterrà una lista di .button
+
+            // +++ todo: devi creare un elemento button-icon (e button-image) in scm-acf-fields.php, o forse in scm-acf-layouts.php
+            // che conterrà ICON, TEXT e LINK, come ora i social e i contacts
 
         }
     }
@@ -318,26 +312,27 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
 
-            $sticky = scm_field( 'select_sticky_active', 'no', 'option' );
-            $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'offset_sticky_menu', 0, 'option' ) );
-            $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'select_sticky_attach', 'nav-top', 'option' ) );
-            
-            $menu = scm_field( 'select_menu', 'primary' );
-            
-            $id = scm_field( 'id_menu', 'site-navigation', 'option' );
-            
-            $site_align = scm_field( 'select_alignment_site', 'center', 'option' );
+            $sticky = scm_field( 'head-menu-sticky', 'no', 'option' );
+            $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'head-menu-sticky-offset', 0, 'option' ) );
+            $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'head-menu-sticky-attach', 'nav-top', 'option' ) );
 
-            $toggle_active = scm_field( 'select_responsive_up_toggle', 'smart', 'option' );
-            $home_active = scm_field( 'select_home_active', 'no', 'option' );
-            $image_active = scm_field( 'select_responsive_down_logo', 'no', 'option' );
+            $menu = scm_field( 'page-menu', '' );
+            $menu = ( $menu ?: scm_field( 'head-menu-wp', 'primary', 'option' ) );
+            
+            $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );
+            
+            $site_align = scm_field( 'layout-alignment', 'center', 'option' );
+
+            $toggle_active = scm_field( 'head-menu-toggle', 'smart', 'option' );
+            $home_active = scm_field( 'head-menu-home', 'no', 'option' );
+            $image_active = scm_field( 'head-menu-home-logo', 'no', 'option' );
 
             $menu_id = $id;
             $menu_class = 'navigation ';
-            $menu_class .= ( scm_field( 'select_disable_overlay_menu', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
+            $menu_class .= ( scm_field( 'head-menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
 
-            $menu_layout = scm_field( 'select_layout_page', 'full', 'option' );
-            $row_layout = scm_field( 'select_layout_menu', 'full', 'option' );
+            $menu_layout = scm_field( 'layout-page', 'full', 'option' );
+            $row_layout = scm_field( 'layout-menu', 'full', 'option' );
             
             if( $position == 'inline' ){
                 $menu_class .= 'half-width float-' . $align;
@@ -366,10 +361,10 @@
 
                 $sticky_id = $id . '-sticky';
 
-                $sticky_layout = scm_field( 'select_layout_page', 'full', 'option' );
+                $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
                 $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' ) . $sticky_layout . ' ' . $site_align;
 
-                $sticky_row_layout = scm_field( 'select_layout_sticky_menu', 'full', 'option' );
+                $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
                 $sticky_row_class = $sticky_row_layout . ' ' . $align;
 
                 $sticky_data_toggle = $toggle_active;
@@ -483,9 +478,9 @@
 
             $toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
 
-            $toggle_icon = 'fa ' . scm_field( 'toggle_icon', 'fa-bars', 'option' );
-            $home_icon = 'fa ' . scm_field( 'home_icon', 'fa-home', 'option' );
-            $image_icon = scm_field( 'image_icon', '', 'option' );
+            $toggle_icon = 'fa ' . scm_field( 'head-menu-toggle-icon', 'fa-bars', 'option' );
+            $home_icon = 'fa ' . scm_field( 'head-menu-home-icon', 'fa-home', 'option' );
+            $image_icon = scm_field( 'head-menu-home-image', '', 'option' );
 
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
@@ -561,261 +556,39 @@
 //*      4.0 FRONT CONTENT
 //*****************************************************
 
-    //Prints Element Flexible Contents
-    if ( ! function_exists( 'scm_flexible_content' ) ) {
-        function scm_flexible_content( $content ) {
 
-            if( !$content )
-                return;
+// vedi scm-content.php
 
-            global $post, $SCM_indent;
+    if ( ! function_exists( 'scm_column_data' ) ) {
+        function scm_column_data( $counter = 0, $size = 0 ) {
 
-            $SCM_indent += 1;
+            if( $counter == 1 && $size == 1 )
+                return [ 'count' => 0, 'data' => 'solo' ];
+            elseif( $counter == $size || $counter > 1 )
+                return [ 'count' => $counter, 'data' => 'first' ];
+            elseif( $counter == 1 )
+                return [ 'count' => 0, 'data' => 'last' ];
+            else
+                return [ 'count' => $counter, 'data' => 'middle' ];
 
-            foreach ($content as $cont) {
-
-                $element = ( isset( $cont[ 'acf_fc_layout' ] ) ? $cont[ 'acf_fc_layout' ] : '' );
-
-                switch ($element) {
-
-                    case 'layout_divider':
-
-                        $height = ( $cont['dimensione_divider'] ?: 1 );
-
-                        indent( $SCM_indent, '<hr style="height:' . $height . $cont[ 'select_units_divider' ] . ';" />', 2 );
-
-                    break;
-
-                    case 'layout_archive':
-
-                        $args = array(
-                            'post_type' => $cont[ 'select_types_public_archive' ],
-                            'orderby' => $cont[ 'orderby_archive' ],
-                            'order' => $cont[ 'order_archive' ],
-                            'posts_per_page' => ( (int)$cont[ 'all_archive' ] ? -1 : $cont[ 'max_archive' ] ),
-                        );
-
-                        if( $cont[ 'categories_archive' ] ){
-                            $args[ 'tax_query' ] = array(
-                                array(
-                                    'taxonomy' => 'categories-' . $cont[ 'select_types_public_archive' ],
-                                    'field'    => 'slug',
-                                    'terms'    => explode( ' ', $cont[ 'categories_archive' ] ),
-                                ),
-                            );
-                        }
-
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-archive.php', array(
-                            'pargs' => $args,
-                            'pagination' => ( (int)$cont['all_archive'] ? 'no' : $cont[ 'pagination_archive' ] ),
-                            'layout' => $cont[ 'layout_archive' ],
-                        ));
-
-                    break;
-
-                    case 'layout_galleria':
-
-                        $single = $cont[ 'select_galleria' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                            'b_init'    => $cont[ 'module_galleria_init' ],
-                            'b_type'    => $cont[ 'select_gallerie_button' ],
-                            'b_img'     => $cont[ 'module_galleria_img_num' ],
-                            'b_size'    => $cont[ 'dimensione_galleria' ],
-                            'b_units'    => $cont[ 'select_units_galleria' ],
-                            'b_txt'     => $cont[ 'module_galleria_txt' ],
-                            'b_bg'      => $cont[ 'module_galleria_txt_bg' ],
-                            'b_section' => $cont[ 'module_galleria_section' ],
-                        ));
-
-                    break;
-
-                    case 'layout_soggetto':
-
-                        $single = $cont[ 'select_soggetto' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        $build = $cont[ 'flexible_soggetto' ];
-                        $link = $cont[ 'select_soggetto_link' ];
-                        $neg = $cont[ 'select_positive_negative_soggetto' ];
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                            'soggetto_rows' => $build,
-                            'soggetto_link' => $link,
-                            'soggetto_neg' => $neg,
-                        ));
-
-                    break;
-
-                    case 'layout_map':
-
-                        $luoghi = $cont[ 'select_luogo' ];
-                        if(!$luoghi) continue;
-                        /*$width = ( isset( $cont[ 'dimensione_map' ] ) ? $cont[ 'dimensione_map' ] : 100);
-                        $units = ( $cont[ 'select_units_map' ] ?: '%');
-                        $zoom = ( isset( $cont[ 'zoom_map' ] ) ? $cont[ 'zoom_map' ] : 10);*/
-                        $width = $cont[ 'dimensione_map' ];
-                        $units = $cont[ 'select_units_map' ];
-                        $zoom = $cont[ 'zoom_map' ];
-
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
-                            'map_luoghi' => $luoghi,
-                            'map_width' => $width,
-                            'map_units' => $units,
-                            'map_zoom' => $zoom
-                        ));
-
-                    break;
-
-                    case 'layout_luogo':
-
-                        $luoghi = $cont[ 'select_luogo' ];
-                        if(!$luoghi) continue;
-                        $build = $cont[ 'build_cont_luogo' ];
-                        $width = ( $cont[ 'larghezza_luogo' ] >= 0 ? $cont[ 'larghezza_luogo' ] : 100);
-                        $legend = ( $cont[ 'legend_luogo' ] ?: 0);
-
-                        foreach ($luoghi as $luogo) {
-                            $single_type = $luogo->post_type;
-                            $post = $luogo;
-                            setup_postdata( $post );
-                            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                                'luogo_rows' => $build,
-                                'luogo_width' => $width,
-                                'luogo_legend' => $legend
-                            ));
-                        }
-
-                    break;
-
-                    case 'layout_contact_form':
-
-                        $single = $cont[ 'select_contact_form' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        get_template_part( SCM_DIR_PARTS_SINGLE, $single_type );
-
-                    break;
-
-                    case 'layout_login_form':
-
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'login-form' );
-
-                    break;
-
-                    case 'layout_icon':
-
-                        $icon_float = ( ( $cont[ 'select_float_icon' ] && $cont[ 'select_float_icon' ] != 'no' ) ? $cont[ 'select_float_icon' ] : 'no-float' );
-                        $icon_float = ( $icon_float == 'float-center' ? 'float-center text-center' : $icon_float );
-                        $icon = $cont[ 'cont_icon' ];
-                        $icon_size = $cont[ 'dimensione_icon' ];
-                        $icon_units = ( $cont[ 'select_units_icon' ] ?: 'px' );
-                        $icon_class = 'scm-img img ' . $icon_float;
-                        $icon_style = 'line-height:0;font-size:' . ( $icon_size ? $icon_size . $icon_units : 'inherit' );
-
-                        indent( $SCM_indent, '<div class="' . $icon_class . '" style="' . $icon_style . '">', 1 );
-
-                            indent( $SCM_indent+1, '<i class="fa ' . $icon . '"></i>', 1 );
-
-                        indent( $SCM_indent, '</div><!-- icon -->', 2 );
-
-                    break;
-
-                    case 'layout_image':
-
-                        $image = ( $cont[ 'cont_image' ] ?: '' );
-                        $image_fissa = ( $cont[ 'select_image_format' ] ?: 'norm' );
-                        
-                        $image_float = ( ( $cont[ 'select_float_image' ] && $cont[ 'select_float_image' ] != 'no' ) ? $cont[ 'select_float_image' ] : 'no-float' );
-                        $image_float = ( $image_float == 'float-center' ? 'float-center text-center' : $image_float );
-
-                        $image_class = 'scm-img img ' . $image_float;
-                        
-                        switch ($image_fissa) {
-                            case 'full':
-                                $image_float = '';
-                                $image_units = ( $cont[ 'select_units_image_full' ] ?: 'px' );
-                                $image_height = ( isset( $cont[ 'dimensione_image_full' ] ) ? $cont[ 'dimensione_image_full' ] : 'initial' );
-                                $image_height = ( is_numeric( $image_height ) ? $image_height . $image_units : ( $image_height ?: 'initial' ) );
-                                $image_style = 'max-height:' . $image_height . ';';
-                                $image_class = 'scm-full-image full-image mask full';
-                            break;
-
-                            case 'quad':
-                                $image_units = ( $cont[ 'select_units_image' ] ?: 'px' );
-                                $image_size = ( isset( $cont[ 'dimensione_image' ] ) ? $cont[ 'dimensione_image' ] : 'auto' );
-                                $image_size = ( is_numeric( $image_size ) ? $image_size . $image_units : ( $image_size ?: 'auto' ) );
-                                $image_style = 'width:' . $image_size . '; height:' . $image_size . ';';
-                            break;
-                            
-                            default:
-                                $image_units_w = ( $cont[ 'select_units_image_width' ] ?: '%' );
-                                $image_units_h = ( $cont[ 'select_units_image_height' ] ?: '%' );
-                                $image_width = ( isset( $cont[ 'dimensione_image_width' ] ) ? $cont[ 'dimensione_image_width' ] : 'auto' );
-                                $image_height = ( isset( $cont[ 'dimensione_image_height' ] ) ? $cont[ 'dimensione_image_height' ] : $image_width );
-                                $image_width = ( is_numeric( $image_width ) ? $image_width . $image_units_w : 'auto' );
-                                $image_height = ( is_numeric( $image_height ) ? $image_height . $image_units_h : ( $image_height ?: $image_width ) );
-                                $image_style = 'width:' . $image_width . '; height:' . $image_height . ';';
-                            break;
-                        }
-
-                        if( !$image )
-                            continue;
-
-                        indent( $SCM_indent, '<div class="' . $image_class . '" style="' . $image_style . '">', 1 );
-
-                            indent( $SCM_indent+1, '<img src="' . $image . '" alt="">', 1 );
-
-                        indent( $SCM_indent, '</div><!-- image -->', 2 );
-
-                    break;
-
-                    case 'layout_title':
-
-                        $text = $cont[ 'cont_title' ];
-                        $text_default = ( $cont[ 'select_headings_complete_title' ] ?: '' );
-                        $text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'select_headings_complete_title' ] : scm_field( $text_default , 'h1', 'option') );
-                        $text_align = ( $cont[ 'select_txt_alignment_title' ] != 'default' ? $cont[ 'select_txt_alignment_title' ] . ' ' : '' );
-                        $text_class = scm_acf_field_choices_preset( 'select_headings_default',  $text_default ) . ' ';
-                        $text_class .= $text_align . 'scm-title title clear';
+        }
+    }
 
 
-                        if( strpos( $text_tag, '.' ) !== false ){
-                            $text_class .= ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
-                            $text_tag = 'h1';
-                        }
+    if ( ! function_exists( 'scm_count_class' ) ) {
+        function scm_count_class( $current = 0, $total = 0 ) {
 
-                        indent( $SCM_indent, '<' . $text_tag . ' class="' . $text_class . '">' . $text . '</' . $text_tag . '><!-- title -->', 2 );
+            $class = '';
 
-                    break;
+            if( $current == 1 )
+                $class .= ' first';
+            if( $current == $total )
+                $class .= ' last';
 
-                    case 'layout_text':
+            $class .= ' count-' . ( $current );
 
-                        $content = $cont['cont_text'];
-                        if(!$content) continue;
-                        indent( $SCM_indent, $content, 2 );
+            return $class;
 
-                    break;
-
-                    case 'layout_section':
-
-                        $single = $cont[ 'select_section' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'sections' );
-
-                    break;                    
-                }
-            }
-
-            $SCM_indent -= 1;
         }
     }
 
@@ -869,15 +642,17 @@
             $offset = scm_field( 'tools_topofpage_offset', 0, 'option' );
             $title = $text;
 
-            indent( $SCM_indent+1, '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">' );
+            echo lbreak(2);
+
+            indent( $SCM_indent+2, '<div id="' . $id . '" class="topofpage" data-affix="top" data-affix-offset="' . $offset . '">' );
                 
-                indent( $SCM_indent+2, '<a href="#top" title="' . $title . '">' );
+                indent( $SCM_indent+3, '<a href="#top" title="' . $title . '">' );
                     
-                    indent( $SCM_indent+3, '<i class="fa ' . $icon . '"></i>' );
+                    indent( $SCM_indent+4, '<i class="fa ' . $icon . '"></i>' );
                 
-                indent( $SCM_indent+2, '</a>' );
+                indent( $SCM_indent+3, '</a>' );
             
-            indent( $SCM_indent+1, '</div>', 2 );
+            indent( $SCM_indent+2, '</div>', 2 );
 
         }
     }

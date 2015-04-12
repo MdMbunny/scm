@@ -30,6 +30,7 @@ if ( ! isset( $content_width ) ) {
 
 //Getting website data
 	
+	
 	$SCM_site			 = site_url();
 	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
@@ -51,11 +52,13 @@ if ( ! isset( $content_width ) ) {
 	}
 
 	$SCM_uploads 		= wp_upload_dir();
+	$SCM_current_screen;
 	$SCM_types 			= [];
 	$SCM_galleries 		= [];
 	$SCM_acf_objects 	= [];
 	$SCM_acf_elements 	= [];
 	$SCM_acf_layouts 	= [];
+	$SCM_fa 		= [];
 	
 	$SCM_typekit;
 
@@ -148,6 +151,7 @@ require SCM_DIR_LIBRARY . 'scm-svg.php';
 
 require SCM_DIR_LIBRARY . 'scm-functions.php';
 
+require SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php';
 require SCM_DIR_LIBRARY . 'scm-acf-preset.php';
 require SCM_DIR_LIBRARY . 'scm-acf-layouts.php';
 require SCM_DIR_LIBRARY . 'scm-acf-fields.php';
@@ -157,6 +161,7 @@ require SCM_DIR_LIBRARY . 'scm-install.php';
 require SCM_DIR_LIBRARY . 'scm-options.php';
 
 require SCM_DIR_LIBRARY . 'scm-core.php';
+require SCM_DIR_LIBRARY . 'scm-content.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
 require SCM_DIR_LIBRARY . 'scm-admin.php';
 

@@ -45,14 +45,19 @@
     add_filter( 'acf/settings/path', 'scm_acf_settings_path' );
     //add_filter('acf/settings/show_admin', '__return_false');                                      // Hide ACF from Admin
     add_filter( 'bfa_force_fallback', 'scm_force_fallback' );
-
     
     add_filter( 'acf/load_field', 'scm_acf_loadfield_hook_choices_get', 100) ;                             // 5.1
-    add_filter( 'acf/load_field/type=repeater', 'scm_acf_loadfield_hook_template_list', 100 );
+    add_filter( 'acf/load_field/type=repeater', 'scm_acf_loadfield_hook_repeater_list', 100 );
+    //add_filter( 'acf/load_field/type=flexible_content', 'scm_acf_loadfield_hook_flexible_list', 100 );
+    add_filter( 'acf/load_field/type=font-awesome', 'scm_acf_loadfield_hook_fontawesome_list', 100 );
 
-    add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 1) ;                                   // 5.2
-    add_action( 'acf/save_post', 'scm_acf_savepost_hook_luoghi_latlng', 1 );
-    add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 1 );
+   
+    //add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates_new', 100) ;
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 10) ;                                   // 5.2
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_luoghi_latlng', 10 );
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 10 );
+
+    add_filter('acf/fields/post_object/query', 'scm_acf_queryfield_hook_objects', 10, 3);
 
     add_action( 'tgmpa_register', 'scm_plugins_install' );                                          // 7.0
 
@@ -91,6 +96,7 @@
                         'remove_users' => true,
                         'add_users' => true,
                         'upload_files' => true,
+                        'manage_categories' => true,
                     )
                 );
                 
@@ -130,7 +136,7 @@
 
 			if ( ! $themeStatus ) {
 				update_option( 'scm-settings-installed', 1 );
-				header( 'Location: themes.php?page=acf-options-opzioni' );		// Redirect alla pagina SCM Options
+				header( 'Location: themes.php?page=scm-options-opzioni' );		// Redirect alla pagina SCM Options
 				die;
 			}
 		}
@@ -140,35 +146,60 @@
 // *      2.0 CUSTOM TYPES INSTALLATION
 // *****************************************************
 
+   /* function give_permissions( $allcaps, $cap, $args ) {
+        consoleLog($cap);
+        return $allcaps;
+}
+add_filter( 'user_has_cap', 'give_permissions', 0, 3 );*/
+
     if ( ! function_exists( 'scm_types_capabilities' ) ) {
-        function scm_types_capabilities( $singular, $plural ){
+        function scm_types_capabilities( $objs ){
 
-            $roles = array('staff', 'administrator');
-            
-            foreach($roles as $the_role) { 
-
-                $role = get_role($the_role);
-
-                if ( !$role )
-                    continue;
-
-
-
-                //consoleLog( 'read_' . $singular );
+            if ( is_admin() ) {
                 
-                $role->add_cap( 'read' );
-                $role->add_cap( 'read_private_' . $singular );
-                $role->add_cap( 'read_private_' . $plural );
-                $role->add_cap( 'edit_' . $singular );
-                $role->add_cap( 'edit_' . $plural );
-                $role->add_cap( 'edit_private_' . $plural );
-                $role->add_cap( 'edit_others_' . $plural );
-                $role->add_cap( 'edit_published_' . $plural );
-                $role->add_cap( 'publish_' . $plural );
-                $role->add_cap( 'delete_' . $plural );
-                $role->add_cap( 'delete_others_' . $plural );
-                $role->add_cap( 'delete_private_' . $plural );
-                $role->add_cap( 'delete_published_' . $plural );
+                //consoleLog('assign');
+                
+                $roles = array('staff', 'administrator');
+                
+                foreach($roles as $the_role) { 
+
+                    $role = get_role( $the_role );
+
+                    if ( !$role )
+                        continue;
+
+                    foreach ($objs as $key => $obj) {
+                    
+                        $singular = $obj->cap_singular;
+                        $plural = $obj->cap_plural;
+                        $admin = $obj->admin;
+
+                        if( $the_role != 'administrator' && $admin )
+                            continue;
+
+                        if( isset( $role->capabilities[ 'edit_' . $plural ] ) )
+                            continue;
+
+                        //consoleLog('real assign');
+                        
+                        //$role->add_cap( 'read' );
+                        //$role->add_cap( 'read_' . $singular );
+                        //$role->add_cap( 'read_' . $plural );
+                        //$role->add_cap( 'read_private_' . $singular );
+                        $role->add_cap( 'read_private_' . $plural );
+                        //$role->add_cap( 'edit_' . $singular );
+                        $role->add_cap( 'edit_' . $plural );
+                        $role->add_cap( 'edit_private_' . $plural );
+                        $role->add_cap( 'edit_others_' . $plural );
+                        $role->add_cap( 'edit_published_' . $plural );
+                        $role->add_cap( 'publish_' . $plural );
+                        //$role->add_cap( 'delete_' . $singular );
+                        $role->add_cap( 'delete_' . $plural );
+                        $role->add_cap( 'delete_others_' . $plural );
+                        $role->add_cap( 'delete_private_' . $plural );
+                        $role->add_cap( 'delete_published_' . $plural );
+                    }
+                }
             }
         }
     }
@@ -199,25 +230,25 @@
             $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'option' );
             
 			$default_types = array(
-				'sections'				=> array( 'admin' => 1,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'sections', 			'icon' => 'f489',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,        'menu' => 0,      'post' => 0                                                                                          ),
-				'slides'                => array( 'admin' => 0,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Slide', SCM_THEME),                'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'f128',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'gallerie'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Galleria', SCM_THEME),             'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'f161',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-				'video'					=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Video', SCM_THEME), 				'plural' => __('Video', SCM_THEME), 				'slug' => 'video', 				'icon' => 'f236',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'news'                  => array( 'admin' => 0,      'active' => 0,      'public' => 1,       'hidden' => 0,       'singular' => __('News', SCM_THEME),                 'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'f488',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'documenti'             => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Documento', SCM_THEME),            'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'f322',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-				'rassegne-stampa'		=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'rassegne-stampa', 	'icon' => 'f336',      'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME), 	),
-                'soggetti'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Soggetto', SCM_THEME),             'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'f338',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
-                'luoghi'                => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Luogo', SCM_THEME),                'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'f230',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
+				'sections'				=> array( 'admin' => 1,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'sections', 			'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,        'menu' => 0,      'post' => 0                                                                                          ),
+				'slides'                => array( 'admin' => 0,      'active' => 1,      'public' => 0,       'hidden' => 0,       'singular' => __('Slide', SCM_THEME),                'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'gallerie'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Galleria', SCM_THEME),             'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+				'video'					=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Video', SCM_THEME), 				'plural' => __('Video', SCM_THEME), 				'slug' => 'video', 				'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'news'                  => array( 'admin' => 0,      'active' => 0,      'public' => 1,       'hidden' => 0,       'singular' => __('News', SCM_THEME),                 'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'documenti'             => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Documento', SCM_THEME),            'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+				'rassegne-stampa'		=> array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'rassegne-stampa', 	'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME), 	),
+                'soggetti'              => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Soggetto', SCM_THEME),             'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
+                'luoghi'                => array( 'admin' => 0,      'active' => 1,      'public' => 1,       'hidden' => 0,       'singular' => __('Luogo', SCM_THEME),                'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'post' => 0                                                                                          ),
 			);
 
             $default_taxonomies = array(
                 'sliders'               => array( 'hierarchical' => 1,          'plural' => 'Sliders',         'singular' => 'Slider',         'slug' => 'sliders',                 'types' => [ 'slides' ],               'manage' => 1            ),
                 'soggetti-tipologie'    => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'soggetti-tipologie',      'types' => [ 'soggetti' ],                                      ),
-                'luoghi-categorie'      => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'soggetti-categorie',      'types' => [ 'luoghi' ],                                        ),
-                'documenti-tipologie'   => array( 'hierarchical' => 1,          'plural' => 'Tipologie',       'singular' => 'Tipologia',      'slug' => 'documenti-tipologie',     'types' => [ 'documenti' ],                                     ),
-                'video-categorie'       => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'video-categorie',         'types' => [ 'video' ],                                         ),
-                'gallerie-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'gallerie-categorie',      'types' => [ 'gallerie' ],                                      ),
-                'rassegne-categorie'    => array( 'hierarchical' => 1,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'rassegne-categorie',      'types' => [ 'rassegne-stampa' ],                               ),
+                'luoghi-categorie'      => array( 'hierarchical' => 0,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'luoghi-categorie',        'types' => [ 'luoghi' ],                                        ),
+                'documenti-categorie'   => array( 'hierarchical' => 0,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'documenti-categorie',     'types' => [ 'documenti' ],                                     ),
+                'video-categorie'       => array( 'hierarchical' => 0,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'video-categorie',         'types' => [ 'video' ],                                         ),
+                'gallerie-categorie'    => array( 'hierarchical' => 0,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'gallerie-categorie',      'types' => [ 'gallerie' ],                                      ),
+                'rassegne-categorie'    => array( 'hierarchical' => 0,          'plural' => 'Categorie',       'singular' => 'Categoria',      'slug' => 'rassegne-categorie',      'types' => [ 'rassegne-stampa' ],                               ),
                 'rassegne-autori'       => array( 'hierarchical' => 0,          'plural' => 'Autori',          'singular' => 'Autore',         'slug' => 'rassegne-autori',         'types' => [ 'rassegne-stampa' ],                               ),
                 'rassegne-testate'      => array( 'hierarchical' => 0,          'plural' => 'Testate',         'singular' => 'Testata',        'slug' => 'rassegne-testate',        'types' => [ 'rassegne-stampa' ],                               ),
             );
@@ -256,8 +287,7 @@
                     $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                     $obj->CT_register();
 
-                    if( is_admin() && !$type['admin'] )
-                        scm_types_capabilities( $obj->cap_singular, $obj->cap_plural, $type['admin'] );
+                    
 
                     if( $type['public'] === 1 ){
 
@@ -295,6 +325,8 @@
 
             }
 
+            scm_types_capabilities( $SCM_types['objects'] );
+
             //scm_save_posts();
         }
     }
@@ -314,7 +346,8 @@
                 acf_add_options_page(array(
                     'page_title'    => 'SCM Settings',
                     'menu_title'    => 'SCM',
-                    'menu_slug'     => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-general',
+                    'icon_url'      => 'dashicons-carrot',
                     'position'      => '0.1',
                     'capability'    => 'manage_options',
                     'redirect'      => true,
@@ -323,7 +356,8 @@
                 acf_add_options_page(array(
                     'page_title'    => 'SCM Types',
                     'menu_title'    => 'SCM Types',
-                    'menu_slug'     => 'acf-types-general',
+                    'menu_slug'     => 'scm-types-general',
+                    'icon_url'      => 'dashicons-star-filled',
                     'position'      => '0.2',
                     'capability'    => 'manage_options',
                     'redirect'      => true,
@@ -332,7 +366,8 @@
                 acf_add_options_page(array(
                     'page_title'    => 'SCM Templates',
                     'menu_title'    => 'SCM Templates',
-                    'menu_slug'     => 'acf-templates-general',
+                    'menu_slug'     => 'scm-templates-general',
+                    'icon_url'      => 'dashicons-art',
                     'position'      => '0.3',
                     'capability'    => 'manage_options',
                     'redirect'      => false,
@@ -349,51 +384,56 @@
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Main Settings',
                     'menu_title'    => 'Opzioni',
-                    'parent_slug'   => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-opzioni',
+                    'parent_slug'   => 'scm-options-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Layout Settings',
                     'menu_title'    => 'Layout',
-                    'parent_slug'   => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-layout',
+                    'parent_slug'   => 'scm-options-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Design Settings',
                     'menu_title'    => 'Stili',
-                    'parent_slug'   => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-stili',
+                    'parent_slug'   => 'scm-options-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Header Settings',
                     'menu_title'    => 'Header',
-                    'parent_slug'   => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-header',
+                    'parent_slug'   => 'scm-options-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Footer Settings',
                     'menu_title'    => 'Footer',
-                    'parent_slug'   => 'acf-options-general',
+                    'menu_slug'     => 'scm-options-footer',
+                    'parent_slug'   => 'scm-options-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Custom Types',
                     'menu_title'    => 'Types',
-                    'menu_slug'     => 'acf-types-custom',
-                    'parent_slug'   => 'acf-types-general',
+                    'menu_slug'     => 'scm-types-custom',
+                    'parent_slug'   => 'scm-types-general',
                     'capability'    => 'manage_options',
                 ));
 
                 acf_add_options_sub_page(array(
                     'page_title'    => 'SCM Taxonomies Types',
                     'menu_title'    => 'Taxonomies',
-                    'menu_slug'     => 'acf-types-taxonomies',
-                    'parent_slug'   => 'acf-types-general',
+                    'menu_slug'     => 'scm-types-taxonomies',
+                    'parent_slug'   => 'scm-types-general',
                     'capability'    => 'manage_options',
                 ));
 
@@ -403,8 +443,8 @@
                     acf_add_options_sub_page(array(
                         'page_title'    => 'SCM ' . $title . ' Template',
                         'menu_title'    => $title,
-                        'menu_slug'     => 'acf-templates-' . $slug,
-                        'parent_slug'   => 'acf-templates-general',
+                        'menu_slug'     => 'scm-templates-' . $slug,
+                        'parent_slug'   => 'scm-templates-general',
                         'capability'    => 'manage_options',
                     ));
                 }
@@ -458,6 +498,9 @@
 // *      5.1 LOAD FIELD
 // *****************************************************
 
+
+    
+
     // ALL - SELECT CHOICES
     // merge default choices with preset choices
     if ( ! function_exists( 'scm_acf_loadfield_hook_choices_get' ) ) {
@@ -469,21 +512,34 @@
 
                 if( $preset )           
                     $field['choices'] = array_merge( $field['choices'], $preset );
+
+                if( getByKey( $field['choices'], $field['default_value'] ) === false ) {
+                    
+                    foreach ( $field['choices'] as $key => $value ) {
+                        $field['choices'][ $key ] = $value . ' ' . $field['default_value'];
+                    }
+
+                    reset( $field['choices'] );
+                    $default = key( $field['choices'] );
+
+                    $field['default_value'] = $default;
+
+                }
             }
             
             return $field;
         }
     }
 
-    // REPEATER - REPEATER TEMPLATES
-    if ( ! function_exists( 'scm_acf_loadfield_hook_template_list' ) ) {
-        function scm_acf_loadfield_hook_template_list( $field ){
+    // REPEATER - TEMPLATES
+    if ( ! function_exists( 'scm_acf_loadfield_hook_repeater_list' ) ) {
+        function scm_acf_loadfield_hook_repeater_list( $field ){
 
             if( !endsWith( $field['name'], '-templates' ) )
                 return $field;
 
             $type = str_replace( '-templates', '_temp', $field['name'] );
-            $posts = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date' ] );
+            $posts = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ] );
 
             foreach ( $posts as $p ) {
 
@@ -492,14 +548,48 @@
                 $field['value'][ $id ] = [];
 
                 foreach ($field['sub_fields'] as $v) {
-                    if( endsWith( $v['key'], '-templates_id_text' ) ){
+                    if( $v['name'] == 'id' ){
                         $field['value'][ $id ][ $v['key'] ] = $p->ID;
                     }
 
-                    if( endsWith( $v['key'], '-templates_name_text' ) ){
+                    if( $v['name'] == 'name' ){
                         $field['value'][ $id ][ $v['key'] ] = $p->post_title;
                     }
                 }
+            }
+            
+            return $field;
+        }
+    }
+
+    // FONT AWESOME - SELECTED ICONS
+    // filter FA icons using groups/presets
+    if ( ! function_exists( 'scm_acf_loadfield_hook_fontawesome_list' ) ) {
+        function scm_acf_loadfield_hook_fontawesome_list( $field ){
+
+            $choices = [];
+            $new = [];
+
+            if( isset( $field['filter_group'] ) && isset( $field['filter'] ) ){
+                $choices = scm_acf_field_fa_preset( $field['filter_group'], $field['filter'] );
+            }
+
+            if( !empty( $choices ) ){
+
+                foreach ( $choices as $key) {
+
+                    if( isset( $field['choices'][$key] ) )
+                        $new[ $key ] = $field['choices'][$key];
+
+                }
+
+                if( !empty( $new ) )
+                    $field['choices'] = $new;
+            }
+
+            foreach ( $field['choices'] as $key => $value) {
+                if( isset( $field['choices'][ $key ] ) )
+                    $field['choices'][ $key ] = substr( $value, strpos( $value, ' fa-' ) + 4 );
             }
             
             return $field;
@@ -511,115 +601,183 @@
 // *****************************************************
 
     // TEMPLATES
+    if ( ! function_exists( 'scm_acf_savepost_hook_templates_new' ) ) {
+        function scm_acf_savepost_hook_templates_new( $post_id ) {
+
+            if( empty($_POST['acf']) )
+                return;
+
+            if( $post_id != 'options' && isset( $_POST['post_type'] ) && $_POST['post_type'] == 'sections'){
+
+                $fields = $_POST['acf'];
+                $k_rows = scm_field_key( $post_id, $fields, 'section-elem' );
+                $rows =  ( isset( $fields[ $k_rows ] ) ? $fields[ $k_rows ] : '' );
+                //$rows =  $fields[ 'field_2fb85b5b0a317e54b2097bd6ee143726fada32f7' ];
+
+                if( isset( $rows ) && !empty( $rows ) ){
+
+                    foreach ( $rows as $layout => $row ) {
+                        
+                        //$k_cont = '';
+                        $k_name = scm_field_key( $post_id, $row, 'name' );
+                        $k_model = scm_field_key( $post_id, $row, 'new', 'build' );
+
+                        if( $k_model === false )
+                            continue;
+
+                        if( $k_name /*&& $k_cont*/ && $k_model ){
+                            $type = str_replace( 'layout-', '', $row['acf_fc_layout'] );
+                            $type .= '_temp';
+
+                            $name = $row[ $k_name ];
+                            //$cont = $row[ $k_cont ];
+
+                            //if( is_array( $cont ) && sizeof( $cont ) > 0 ){
+                            if( isset( $name ) && is_string( $name ) && $name ){
+
+                                $the_post = array(
+                                    'post_title'    => $name,
+                                    'post_type'     => $type,
+                                    'post_name'     => sanitize_title( $name ),
+                                    'post_status'   => 'publish',
+                                    'post_author'   => 1,
+                                );
+
+                                $id = wp_insert_post( $the_post );
+                                $new_post = get_post( $id );
+                            
+                                // INSERISCI META
+                                // for( $cont ){
+                                //  updatePostMeta( $id, $meta, $value );
+                                // }
+                                
+                                $_POST['acf'][ $k_rows ][$layout][ $k_model ] = $new_post->post_name;
+                                $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
+                                //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = [];
+
+                            }
+
+                        }else{
+                            $_POST['acf'][ $k_rows ][$layout][ $k_model ] = 'build';
+                            $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
+                            //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = [];
+                        }                        
+                    }
+                }
+            }
+        }
+    }
+
+    // TEMPLATES
     if ( ! function_exists( 'scm_acf_savepost_hook_templates' ) ) {
         function scm_acf_savepost_hook_templates( $post_id ) {
 
             if( empty($_POST['acf']) )
                 return;
-            if( $post_id != 'options' )
-                return;
 
-            $fields = $_POST['acf'];
+            if( $post_id == 'options'){
+
+                $fields = $_POST['acf'];
+
+                //$repeater = scm_field_key( $post_it, $fields, [ 'ends', '-templates' ], [ '==', 'repeater', 'value' ] );
+                //if( $repeater ){
+
+                foreach ( $fields as $key => $value ) {
+
+                    $field = get_field_object($key, $post_id, false);
+                    if( $field['type'] == 'repeater' && endsWith( $field['name'], '-templates' ) ){
+                        
+                        $type = str_replace( '-templates', '_temp', $field['name']);
+
+                        $key_id = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'id' ) ]['key'];
+                        $key_name = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'name' ) ]['key'];;
+
+                        $posts = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date' ] );
+                        $pub = [];
+                        foreach ( $posts as $p ) {
+                            $pub[$p->ID] = $p->ID;
+                        }
+
+                        if( isset( $value ) && !empty( $value ) ){
+
+                            $i = sizeof( $value );
 
 
-            foreach ( $fields as $key => $value ) {
-                $field = get_field_object($key, $post_id, false);
-                if( $field['type'] == 'repeater' && endsWith( $field['name'], '-templates' ) ){
-                    
-                    $type = str_replace( '-templates', '_temp', $field['name']);
+                            foreach ( $value as $ui => $temp ) {
 
-                    $posts = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date' ] );
-                    $pub = [];
-                    foreach ( $posts as $p ) {
-                        $pub[$p->ID] = $p->ID;
-                    }
-
-                    $i = sizeof( $value );
-
-                    if( isset( $value ) && !empty( $value ) ){
-
-                        foreach ( $value as $ui => $temp ) {
-
-                            $i--;
-                            $id = 0;
-                            $name = '';
-                            $id_key = '';
-
-                            foreach ( $temp as $k => $v ) {
-                                if( endsWith( $k, '-templates_id_text' ) )
-                                    $id = (int)$v;
-
-                                if( endsWith( $k, '-templates_name_text' ) )
-                                    $name = $v;
-                            }
-                            
-                            $name = ( $name ?: (string)$id );
-
-                            $the_post = array(
-                                'post_title'    => $name,
-                                'post_name'     => $ui,
-                                'post_status'   => 'publish',
-                                'post_author'   => 1,
-                                'menu_order'    => $i,
-                            );
-                            
-                           
-                            if( $id ){
+                                $i--;
+                                $id = (int)$temp[ $key_id ];
+                                $name = $temp[ $key_name ];
                                 
-                                $the_post['ID'] = $id;
+                                $the_post = array(
+                                    'post_title'    => $name,
+                                    'post_name'     => sanitize_title( $name ),
+                                    'post_status'   => 'publish',
+                                    'post_author'   => 1,
+                                    'menu_order'    => $i,
+                                );
                                 
-                                if( is_string( get_post_status( $id ) ) ){
-                                    wp_update_post( $the_post );
-                                    unset( $pub[ $id ] );
+                               
+                                if( $id ){
+                                    
+                                    $the_post['ID'] = $id;
+                                    
+                                    if( is_string( get_post_status( $id ) ) ){
+                                        wp_update_post( $the_post );
+                                        unset( $pub[ $id ] );
+                                    }
+                                }else{
+
+                                    $the_post['post_type'] = $type;
+
+                                    $id = wp_insert_post( $the_post );
+
                                 }
-                            }else{
-
-                                $the_post['post_type'] = $type;
-
-                                $id = wp_insert_post( $the_post );
-
                             }
                         }
-                    }
 
-                    foreach ($pub as $key => $value) {
-                        wp_delete_post( $key, true );
-                    }
+                        foreach ($pub as $key => $value) {
+                            wp_delete_post( $key, true );
+                        }
 
-                    $_POST['acf'] = [];
+                        $_POST['acf'] = [];
+                    }
                 }
             }
         }
     }
+
 
     // LUOGHI - Lat and Lng
     // +++ todo: con jQuery aggiorni i campi dinamicamente, ogni volta che uno degli altri campi cambia
     if ( ! function_exists( 'scm_acf_savepost_hook_luoghi_latlng' ) ) {
         function scm_acf_savepost_hook_luoghi_latlng( $post_id ) {
            
-            if( empty($_POST['acf']) || !isset( $_POST['post_type'] ) )
-                return;
-            if( $_POST['post_type'] != 'luoghi' )
+            if( empty($_POST['acf']) )
                 return;
 
-            $fields = $_POST['acf'];
-            
-            $country = $fields['field_luoghi-single_luogo-paese_text'];
-            $region = $fields['field_luoghi-single_luogo-regione_text'];
-            $province = $fields['field_luoghi-single_luogo-provincia_text'];
-            $code = $fields['field_luoghi-single_luogo-cap_text'];
-            $city = $fields['field_luoghi-single_luogo-citta_text'];
-            $town = $fields['field_luoghi-single_luogo-frazione_text'];
-            $address = $fields['field_luoghi-single_luogo-indirizzo_text'];
+            if( isset( $_POST['post_type'] ) && $_POST['post_type'] == 'luoghi' && !isset( $_POST['taxonomy'] ) ){
 
-            $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
+                $fields = $_POST['acf'];
+               
+                $country = $fields[ scm_field_key( $post_id, $fields, 'luogo-paese' ) ];
+                $region = $fields[ scm_field_key( $post_id, $fields, 'luogo-regione' ) ];
+                $province = $fields[ scm_field_key( $post_id, $fields, 'luogo-provincia' ) ];
+                $code = $fields[ scm_field_key( $post_id, $fields, 'luogo-cap' ) ];
+                $city = $fields[ scm_field_key( $post_id, $fields, 'luogo-citta' ) ];
+                $town = $fields[ scm_field_key( $post_id, $fields, 'luogo-frazione' ) ];
+                $address = $fields[ scm_field_key( $post_id, $fields, 'luogo-indirizzo' ) ];
 
-            $ll = getGoogleMapsLatLng( $google_address, $country );
-            $lat = $ll['lat'];
-            $lng = $ll['lng'];
+                $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
 
-            $_POST['acf']['field_luoghi-single_luogo-lat_number'] = $lat;
-            $_POST['acf']['field_luoghi-single_luogo-lng_number'] = $lng; 
+                $ll = getGoogleMapsLatLng( $google_address, $country );
+                $lat = $ll['lat'];
+                $lng = $ll['lng'];
+
+                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lat' ) ] = $lat;
+                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lng' ) ] = $lng;
+
+            }
         }
     }
 
@@ -627,34 +785,55 @@
     if ( ! function_exists( 'scm_acf_savepost_hook_all_taxonomies' ) ) {
         function scm_acf_savepost_hook_all_taxonomies( $post_id ) {
 
-            if( empty( $_POST['acf'] ) )
+            if( empty($_POST['acf']) )
                 return;
 
-            $fields = $_POST['acf'];
+            if( isset( $_POST['post_type'] ) && $_POST['post_type'] != 'page' && $_POST['post_type'] != 'sections' && sizeof( get_object_taxonomies( $_POST['post_type'] ) ) ){
+                
+                $fields = $_POST['acf'];
 
-            $list = scm_field_objects( $post_id, $fields, 'taxonomy', [ 'load_save_terms' => 1, 'name' => 'terms' ] );
-            $add = scm_field_objects( $post_id, $fields, 'text', [ 'name' => 'new-term' ] );
+                $list = scm_field_objects( $post_id, $fields, 'taxonomy', [ 'load_save_terms' => 1, 'name' => 'terms' ] );
+                $add = scm_field_objects( $post_id, $fields, 'text', [ 'name' => 'add' ] );
 
-            foreach ($list as $field) {
-                $tax = $field['taxonomy'];
-                $name = str_replace( 'terms', '', $field['name']);
-                $news = getByValueKey( $add, $name . 'new-term' );
+                if( isset( $list ) && is_numeric( sizeof( $list ) ) && isset( $add ) && is_numeric( sizeof( $add ) ) ){
 
-                if( $news !== false ){
-                    $key = $add[ $news ]['key'];
-                    $value = $fields[ $key ];
-                    $new = explode( ',', $value );
-                    $_POST['acf'][ $key ] = '';
-                    foreach ( $new as $term ) {
+                    foreach ($list as $field) {
+                        $tax = $field['taxonomy'];
+                        $name = str_replace( 'terms', '', $field['name']);
+                        $news = getByValueKey( $add, $name . 'add' );
 
-                        $term = ( strpos( $term, ' ') === 0 ? substr( $term, 1 ) : $term );
+                        if( $news !== false ){
+                            $key = $add[ $news ]['key'];
+                            $value = $fields[ $key ];
+                            $new = explode( ',', $value );
+                            $_POST['acf'][ $key ] = '';
+                            foreach ( $new as $term ) {
 
-                        $t = wp_insert_term( $term, $tax );
-                        if( !is_wp_error( $t ) )
-                            $_POST['acf'][ $field['key'] ][] = $t['term_id'];
+                                $term = ( strpos( $term, ' ') === 0 ? substr( $term, 1 ) : $term );
+
+                                $t = wp_insert_term( $term, $tax );
+                                if( !is_wp_error( $t ) )
+                                    $_POST['acf'][ $field['key'] ][] = $t['term_id'];
+                            }
+                        }
                     }
                 }
             }
+        }
+    }
+
+// *****************************************************
+// *      5.3 QUERY FIELD
+// *****************************************************
+
+    // POST OBJECT - HIDE DRAFT
+    if ( ! function_exists( 'scm_acf_queryfield_hook_objects' ) ) {
+        function scm_acf_queryfield_hook_objects( $options, $field, $the_post ) {
+            
+            $options['post_status'] = array('publish');
+
+            return $options;
+
         }
     }
 
@@ -670,14 +849,14 @@
             if( function_exists('register_field_group') ) {
 
                 $types = scm_acf_group( 'Types', 'types-options' );
-                $types['location'][] = scm_acf_group_location( 'acf-types-custom', 1, 'options_page' );
+                $types['location'][] = scm_acf_group_location( 'scm-types-custom', 1, 'options_page' );
                 $types['fields'] = scm_acf_options_types();
 
                 $groups[] = $types;
                 
                 // + TAXONOMIES
                 $taxonomies = scm_acf_group( 'Taxonomies', 'taxonomies-options' );
-                $taxonomies['location'][] = scm_acf_group_location( 'acf-types-taxonomies', 1, 'options_page' );
+                $taxonomies['location'][] = scm_acf_group_location( 'scm-types-taxonomies', 1, 'options_page' );
                 $taxonomies['fields'] = scm_acf_options_taxonomies();
 
                 $groups[] = $taxonomies;
@@ -696,46 +875,56 @@
 // SCM Filter: Passing empty Array - Receiving Array of Groups
                 $groups = apply_filters( 'scm_filter_acf_register_before', array() );
 
+
+                // + TAXONOMIES LUOGHI
+                $tax_luoghi = scm_acf_group( 'Icona Mappe', 'map-icon-options' );
+                $tax_luoghi['location'][] = scm_acf_group_location( 'soggetti-tipologie', 1, 'taxonomy' );
+                $msg = 'Verrà utilizzata sulle mappe per indicare i <strong>Luoghi</strong> assegnati a questa <strong>Categoria</strong>. Comparirà anche nella legenda, se sulla mappa sono presenti più <strong>Luoghi</strong>.
+                Selezionando l\'opzione <em>Default</em> dal menu a tendina <strong>Icona Mappa</strong>, verrà utilizzata un\'icona standard. Viene sostituita nei <strong>Luoghi</strong> ai quali è stata assegnata un\'icona specifica.';
+                $tax_luoghi['fields'] = scm_acf_preset_map_icon( 'tax-soggetti-tipologie-map', 1,  100, 100, 0, 'Icona Mappa specifica per questa Categoria', $msg );
+
+                $groups[] = $tax_luoghi;
+
 // OPTIONS
 
                 // + OPT GENERAL
                 $general = scm_acf_group( 'Opzioni Stili', 'general-options' );
-                $general['location'][] = scm_acf_group_location( 'acf-options-opzioni', 1, 'options_page' );
+                $general['location'][] = scm_acf_group_location( 'scm-options-opzioni', 1, 'options_page' );
                 $general['fields'] = scm_acf_options_general();
 
                 $groups[] = $general;
 
                 // + OPT STYLE
                 $style = scm_acf_group( 'Stili', 'styles-options' );
-                $style['location'][] = scm_acf_group_location( 'acf-options-stili', 1, 'options_page' );
+                $style['location'][] = scm_acf_group_location( 'scm-options-stili', 1, 'options_page' );
                 $style['fields'] = scm_acf_options_styles();
 
                 $groups[] = $style;
 
                 // + OPT STILI
                 $options_default = scm_acf_group( 'Opzioni', 'style-options' );
-                $options_default['location'][] = scm_acf_group_location( 'acf-options-stili', 1, 'options_page' );
+                $options_default['location'][] = scm_acf_group_location( 'scm-options-stili', 1, 'options_page' );
                 $options_default['fields'] = array_merge( $options_default['fields'], scm_acf_options_style() );
 
                 $groups[] = $options_default;
 
                 // + OPT LAYOUT
                 $layout = scm_acf_group( 'Layout', 'layout-options' );
-                $layout['location'][] = scm_acf_group_location( 'acf-options-layout', 1, 'options_page' );
+                $layout['location'][] = scm_acf_group_location( 'scm-options-layout', 1, 'options_page' );
                 $layout['fields'] = scm_acf_options_layout();
 
                 $groups[] = $layout;
                 
                 // + OPT HEAD
                 $head = scm_acf_group( 'Header', 'head-options' );
-                $head['location'][] = scm_acf_group_location( 'acf-options-header', 1, 'options_page' );
+                $head['location'][] = scm_acf_group_location( 'scm-options-header', 1, 'options_page' );
                 $head['fields'] = array_merge( $head['fields'], scm_acf_options_head() );
 
                 $groups[] = $head;
 
                 // + OPT FOOTER
                 $footer = scm_acf_group( 'Componi Footer', 'foot-options' );
-                $footer['location'][] = scm_acf_group_location( 'acf-options-footer', 1, 'options_page' );
+                $footer['location'][] = scm_acf_group_location( 'scm-options-footer', 1, 'options_page' );
                 $footer['fields'] = array_merge( $footer['fields'], scm_acf_options_foot() );
 
                 $groups[] = $footer;
@@ -785,11 +974,11 @@
                 $groups[] = $rassegna;
 
                 // + CONTATTO
-                $contatto = scm_acf_group( 'Contatti', 'contatti-single' );
+                /*$contatto = scm_acf_group( 'Contatti', 'contatti-single' );
                 $contatto['location'][] = scm_acf_group_location( 'luoghi' );
                 $contatto['fields'] = scm_acf_fields_contatto();
 
-                $groups[] = $contatto;
+                $groups[] = $contatto;*/
 
                 // + LUOGO
                 $luogo = scm_acf_group( 'Luogo', 'luoghi-single' );
@@ -825,8 +1014,8 @@
 
                 foreach ($SCM_types['public'] as $slug => $title) {
 
-                    $template = scm_acf_group( 'Componi Modello', 'template-' . $slug );
-                    $template['location'][] = scm_acf_group_location( 'acf-templates-' . $slug, 1, 'options_page' );
+                    $template = scm_acf_group( 'Elenco Modelli', 'template-' . $slug );
+                    $template['location'][] = scm_acf_group_location( 'scm-templates-' . $slug, 1, 'options_page' );
                     $template['fields'] = scm_acf_fields_template( $slug );
 
                     $groups[] = $template;
@@ -836,8 +1025,9 @@
                     
                     $slug = str_replace( '-', '_', $slug );
 
-                    if( function_exists( 'scm_acf_element_' . $slug ) )
-                        $template['fields'] = array_merge( $template['fields'], call_user_func( 'scm_acf_element_' . $slug ) );
+                    //if( function_exists( 'scm_acf_element_' . $slug ) )
+                        $template['fields'] = array_merge( $template['fields'], scm_acf_build_element( $slug ) );
+                        //$template['fields'] = array_merge( $template['fields'], call_user_func( 'scm_acf_element_' . $slug ) );
 
                     $groups[] = $template;
                 }
@@ -878,7 +1068,7 @@
                 $slider['location'][] = scm_acf_group_location( 'page' );
 
                 //$slider['fields'][] = scm_acf_field( 'tab-options-slider', 'tab-left', 'Slider' );
-                    $slider['fields'] = array_merge( $slider['fields'], scm_acf_options_slider( '', 1 ) );
+                    $slider['fields'] = array_merge( $slider['fields'], scm_acf_options_slider( 'slider', 1 ) );
 
                 $groups[] = $slider;
 
@@ -908,8 +1098,8 @@
                 array(
                     'name'               => 'ACF PayPal', // The plugin name.
                     'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
-                    'source'             => 'acf-paypal-field-master.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    //'source'             => 'acf-paypal-field-master.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
@@ -917,8 +1107,8 @@
                 array(
                     'name'               => 'ACF Font Awesome', // The plugin name.
                     'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
-                    'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    //'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
@@ -926,8 +1116,8 @@
                 array(
                     'name'               => 'ACF Limiter', // The plugin name.
                     'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
-                    'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    //'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
@@ -935,8 +1125,8 @@
                 array(
                     'name'               => 'ACF Date Time', // The plugin name.
                     'slug'               => 'acf-field-date-time-picker', // The plugin slug (typically the folder name).
-                    'source'             => 'acf-field-date-time-picker.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+                    //'source'             => 'acf-field-date-time-picker.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
@@ -944,16 +1134,16 @@
                 array(
                     'name'               => 'Contact Form 7', // The plugin name.
                     'slug'               => 'contact-form-7', // The plugin slug (typically the folder name).
-                    'source'             => 'contact-form-7.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    //'source'             => 'contact-form-7.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
                 array(
                     'name'               => 'Captcha 7', // The plugin name.
                     'slug'               => 'really-simple-captcha', // The plugin slug (typically the folder name).
-                    'source'             => 'really-simple-captcha.zip', // The plugin source.
+                    //'source'             => 'really-simple-captcha.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
@@ -962,7 +1152,7 @@
                 array(
                     'name'               => 'Polylang', // The plugin name.
                     'slug'               => 'polylang', // The plugin slug (typically the folder name).
-                    'source'             => 'polylang.zip', // The plugin source.
+                    //'source'             => 'polylang.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
@@ -971,16 +1161,7 @@
                 array(
                     'name'               => 'Replace Media', // The plugin name.
                     'slug'               => 'enable-media-replace', // The plugin slug (typically the folder name).
-                    'source'             => 'enable-media-replace.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
-                    'name'               => 'Thumbs Regenerator', // The plugin name.
-                    'slug'               => 'regenerate-thumbnails', // The plugin slug (typically the folder name).
-                    'source'             => 'regenerate-thumbnails.zip', // The plugin source.
+                    //'source'             => 'enable-media-replace.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
@@ -989,37 +1170,115 @@
                 array(
                     'name'               => 'Browser Detection', // The plugin name.
                     'slug'               => 'php-browser-detection', // The plugin slug (typically the folder name).
-                    'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-
-                // +++ todo: elimina plugin social e renditi autonomo
-
-                // - FOLLOW:    opzioni [ quali, link, stile ]         back - single Soggetti / Persone    [ quali, link, stile ]          front - single $post->Soggetti/Persone  [ attiva, dove ]
-                // - SHARE:     opzioni [ quali, stile ]                                                                                   front - single $post->All               [ attiva, dove ]
-                // - LIKES:     opzioni [ quali, stile ]                                                                                   front - single $post->All               [ attiva, dove ]
-
-                array(
-                    'name'               => 'Social Media Feather', // The plugin name.
-                    'slug'               => 'social-media-feather', // The plugin slug (typically the folder name).
-                    'source'             => 'social-media-feather.zip', // The plugin source.
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),
 
-                // +++
+                array(
+                    'name'               => 'Optimize Database', // The plugin name.
+                    'slug'               => 'rvg-optimize-database', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
 
+                array(
+                    'name'               => 'Share Buttons', // The plugin name.
+                    'slug'               => 'simple-share-buttons-adder', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'GitHub Updater', // The plugin name.
+                    'slug'               => 'github-updater', // The plugin slug (typically the folder name).
+                    'source'             => 'github-updater.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+            // PLUS
+
+                array(
+                    'name'               => 'PLUS - WP Optimizer', // The plugin name.
+                    'slug'               => 'wp-clean-up-optimizer', // The plugin slug (typically the folder name).
+                    //'source'             => 'regenerate-thumbnails.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - Thumbs Regenerator', // The plugin name.
+                    'slug'               => 'regenerate-thumbnails', // The plugin slug (typically the folder name).
+                    //'source'             => 'regenerate-thumbnails.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - WP Security', // The plugin name.
+                    'slug'               => 'better-wp-security', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - Menu Editor', // The plugin name.
+                    'slug'               => 'admin-menu-editor', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - Theme Check', // The plugin name.
+                    'slug'               => 'theme-check', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - Role Editor', // The plugin name.
+                    'slug'               => 'user-role-editor', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
+
+                array(
+                    'name'               => 'PLUS - Reset Database', // The plugin name.
+                    'slug'               => 'wordpress-database-reset', // The plugin slug (typically the folder name).
+                    //'source'             => 'php-browser-detection.zip', // The plugin source.
+                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
+                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                ),
 
             );
+            
+            $msg = false;
+            if ( current_user_can( 'manage_options' ) ) {
+                $msg = true;
+            }
 
             $config = array(
                 'default_path' => SCM_DIR_PLUGINS,         // Default absolute path to pre-packaged plugins.
                 'menu'         => 'scm-install-plugins',   // Menu slug.
-                'has_notices'  => true,                    // Show admin notices or not.
+                'has_notices'  => $msg,                    // Show admin notices or not.
                 'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
                 'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
                 'is_automatic' => true,                    // Automatically activate plugins after installation or not.

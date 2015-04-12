@@ -3,7 +3,12 @@
  * @package SCM
  */
 
+
 global $SCM_galleries, $SCM_indent, $post;
+
+printPre('GALLERIA ' . $post->ID);
+
+/*
 
 $id = $post->ID;
 $type = $post->post_type;
@@ -31,7 +36,7 @@ $SCM_galleries[ $custom_id ] = $gallery;
 $indent = $SCM_indent + 1;
 
 indent( $indent, '<div id="' . $custom_id . '" class="' . $classes . '"' . $style . '
-			data-gallery="' . $b_type . '" 
+			data-gallery="' . $custom_id . '" 
 			data-init="' . $b_init . '" 
 			data-title="' .$title . '"
 		>' );
@@ -52,7 +57,7 @@ indent( $indent, '<div id="' . $custom_id . '" class="' . $classes . '"' . $styl
 
 			$post = $b_section;
 			setup_postdata( $post );
-			get_template_part( SCM_DIR_PARTS_SINGLE, 'sections' );
+			get_template_part( SCM_DIR_PARTS_SINGLE, 'row' );
 
 			$SCM_indent -= 1;
 
@@ -60,5 +65,5 @@ indent( $indent, '<div id="' . $custom_id . '" class="' . $classes . '"' . $styl
 	}
 
 indent( $indent, '</div><!-- ' . $type . ' -->' );
-
+*/
 ?>

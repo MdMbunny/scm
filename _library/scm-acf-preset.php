@@ -11,8 +11,9 @@
 *****************************************************
 *
 *	1.0 Field Type
-*	2.0 Field Choices
-*	3.0 Field Choices Presets
+*	2.0 Font Awesome Choices
+*	3.0 Field Choices
+**		3.1 Field Choices Presets
 *
 *****************************************************
 */
@@ -135,7 +136,7 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'icon'					$default = 'fa-star' 						$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
+*		'icon'					$default = 'star'	 						$filter = [ 'social', 'job', ... ]	$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
 *		'color'					$default = '' || '#000000' etc.
 *		'date'					$return_format = 'd/m/y' 					$display_format = 'd/m/y'			$first_day' = 1
 *		'datetime'				$picker = 'slider | select' 				$date_format = 'd/m/y'				$time_format' = 'hh:mm' 		$show_week_number = 0 			$save_as_timestamp = 1 			$get_as_timestamp = 0
@@ -346,8 +347,12 @@
 	        		$tax = ( isset( $arg[1] ) ? $arg[1] : ( $extra ?: 'category' ) );
 					
 					$save = ( isset( $arg[3] ) ? $arg[3] : $multi );
+					
 	        		$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'multi_select' : 'checkbox' ) : 'select' ) );
 	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
+
+//printPre( $name . ' : ' . $tax . ' save: ' . $save. ' arg: ' . $arg[3] . ' multi: ' . $multi );
+
 
 	        		$field = array(
 						'type' => 'taxonomy',
@@ -419,7 +424,7 @@
 					$maxh = ( isset( $arg[6] ) ? $arg[6] : 0 );
 					$mins = ( isset( $arg[7] ) ? $arg[7] : 0 );
 					$maxs = ( isset( $arg[8] ) ? $arg[8] : 0 );
-					$mime = ( isset( $arg[9] ) ? $arg[9] : 'jpg, png, gif' );
+					$mime = ( isset( $arg[9] ) ? $arg[9] : 'jpg, png, gif, ico' );
 					$ret = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) );
 	        		$field = array(
 						'type' => 'image',
@@ -440,9 +445,21 @@
 	        	case 'icon':
 
 	        		$default = ( isset( $arg[1] ) ? $arg[1] : 'fa-star' );
-	        		$format = ( isset( $arg[2] ) ? $arg[2] : 'class' );
-	        		$enqueue = ( isset( $arg[3] ) ? $arg[3] : 0 );
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
+	        		$filter = ( isset( $arg[2] ) ? $arg[2] : '' );
+	        		$format = ( isset( $arg[3] ) ? $arg[3] : 'class' );
+	        		$enqueue = ( isset( $arg[4] ) ? $arg[4] : 0 );
+	        		$null = ( isset( $arg[5] ) ? $arg[5] : 0 );
+
+	        		$filter_group = '';
+	        		$new = '';
+
+	        		$is_filter = strpos( $default, '_' );
+	        		if( $is_filter !== false ){
+	        			$new = substr( $default, 0, $is_filter );
+	        			$filter_group = substr( $default, $is_filter + 1 );
+	        			$default = $new;
+	        		}
+
 	        		$field = array(
 	        			'type' => 'font-awesome',
 	        			'default_value' => ( strpos( $default, 'fa-' ) === 0 ? '' : 'fa-' ) . $default,
@@ -450,6 +467,8 @@
 						'enqueue_fa' => $enqueue,
 						'allow_null' => $null,
 						'fa_live_preview' => 1,
+						'filter_group' => $filter_group,
+						'filter' => $filter,
 					);
 
 	        	break;
@@ -489,8 +508,6 @@
 						'get_as_timestamp' => $get,
 
 					);
-
-					consoleLog($field);
 
 	        	break;
 
@@ -711,11 +728,54 @@
 		}
 	}
 
+
 // *****************************************************
 // *****************************************************
 // *****************************************************
 
-// *  2.0 Field Choices
+// *  2.0 Font Awesome Choices
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+	if ( ! function_exists( 'scm_acf_field_fa_preset' ) ) {
+        function scm_acf_field_fa_preset( $group = '', $list = '' ){
+
+        	global $SCM_fa;
+
+        	$choices = [];
+
+        	if( isset( $SCM_fa[ $group ] ) ){
+
+        		if( is_string( $list ) )
+        			$list = [ $list ];
+        		
+        		if( isset( $list ) && !empty( $list ) && is_array( $list ) ){
+
+					foreach ( $list as $value) {
+    					if( isset( $SCM_fa[ $group ][ $value ] ) )
+        					$choices = array_merge( $choices, $SCM_fa[ $group ][ $value ][ 'choices' ] );
+    				}
+        		}
+				
+				if( empty( $choices ) ){
+	        		foreach ( $SCM_fa[ $group ] as $key => $value) {
+	    				$choices = array_merge( $choices, $value[ 'choices' ] );
+	    			}
+				}
+        	}
+
+        	return $choices;
+
+        }
+    }
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+// *  3.0 Field Choices
 
 // *****************************************************
 // *****************************************************
@@ -731,7 +791,7 @@
 
 				if( is_array( $default ) && !empty( $default ) ){
 
-					$choices = array_merge( $default, $choices );
+					$choices = array_merge( $choices, $default );
 
 				}else{
 					$key = $default;
@@ -754,7 +814,7 @@
 // *****************************************************
 // *****************************************************
 
-// *  3.0 Field Choices Preset
+// *  3.1 Field Choices Preset
 
 // *****************************************************
 // *****************************************************
@@ -792,9 +852,10 @@
 				$pos = strpos( $list, 'templates_' ) + strlen( 'templates_' );
 				$type = substr( $list, $pos ) . '_temp';
 
-				$temps = get_posts( [ 'post_type' => $type ] );
+				$temps = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ] );
 				foreach ( $temps as $temp):
-					$choices[ $temp->ID ] = $temp->post_title;
+					//$choices[ '_' . $temp->ID ] = $temp->post_title;
+					$choices[ $temp->post_name ] = $temp->post_title;
 				endforeach;
 
 			elseif( strpos( $list, 'side_position' ) !== false ):
@@ -882,8 +943,8 @@
 
 			elseif( strpos( $list, 'archive_mode' ) !== false ):
 				$choices = array(
-					'single' => 'Single',
-					'archive' => 'Archive',
+					'single' => 'Singoli',
+					'archive' => 'Archivio',
 				);
 			
 			elseif( strpos( $list, 'archive_complete' ) !== false ):
@@ -907,12 +968,24 @@
 					'section' => 'Sezione',
 				);
 
-			elseif( strpos( $list, 'soggetto_link' ) !== false ):
-				$choices = array(
-					'none' => 'Nessun Link',
-					'subject' => 'Link Soggetto',
-					'add' => 'Inserisci Link',
-				);
+			// +++ todo: non più 2, con _complete, ma spostati in alto, dove c'è template_ e lo fai simile
+			// chiami tamplate_link{type}, recuperi type, in qualche modo risali alle fields di quel type, becchi la field link/url/file e aggiungi la choice Link Oggetto
+			elseif( strpos( $list, 'template_link' ) !== false ):
+				if( strpos( $list, '_complete' ) !== false ):
+
+					$choices = array(
+						'template' => 'Link Template (tutto)',
+						'template-single' => 'Link Template (singoli elementi)',
+						'link' => 'Inserisci Link (tutto)',
+						'link-single' => 'Inserisci Link (singoli elementi)',
+					);
+				else:
+					$choices = array(
+						'self' => 'Link Oggetto',
+						'template' => 'Link Template',
+						'link' => 'Link Inserito',
+					);
+				endif;
 			
 			elseif( strpos( $list, 'luogo_data' ) !== false ):
 				$choices = array(
@@ -961,17 +1034,30 @@
 					'maps' => 'Maps',
 				);
 
-			elseif( strpos( $list, 'options_show' ) !== false ):
-				$choices = array(
-					'hide' 		=> 'Nascondi Opzioni',
-					'options' 	=> 'Opzioni',
-					'advanced' 	=> 'Opzioni avanzate',
-				);
-
 			elseif( strpos( $list, 'positive_negative' ) !== false ):
 	        	$choices = array(
 					'off' => 'Versione positiva',
 					'on' => 'Versione negativa',
+				);
+
+	        elseif( strpos( $list, 'show' ) !== false ):
+	        	if( strpos( $list, 'options_show' ) !== false ):
+					$choices = array(
+						'hide' 		=> 'Nascondi Opzioni',
+						'options' 	=> 'Opzioni',
+						'advanced' 	=> 'Opzioni avanzate',
+					);
+				else:
+		        	$choices = array(
+						'on' => 'Mostra',
+						'off' => 'Nascondi',
+					);
+		        endif;
+
+	        elseif( strpos( $list, 'hide' ) !== false ):
+	        	$choices = array(
+	        		'off' => 'Nascondi',
+					'on' => 'Mostra',
 				);
 
 			elseif( strpos( $list, 'enable' ) !== false ):
@@ -1004,7 +1090,7 @@
 
 	        elseif( strpos( $list, 'line_style' ) !== false ):
 	        	$choices = array(
-	        		'none' => 'Vuoto',
+	        		'no' => 'Vuoto',
 	        		'line' => 'Linea',
 	        		'dashed' => 'Tratteggiato',
 	        		'dotted' => 'Punteggiato'
@@ -1278,11 +1364,11 @@
 
 			elseif( strpos( $list, 'font_weight' ) !== false ):
 				$choices = array(
-					'300' => 'Light',
-					'400' => 'Normal',
-					'600' => 'Semi Bold',
-					'700' => 'Bold',
-					'800' => 'Extra Bold',
+					'lighter' => 'Light',
+					'normal' => 'Normal',
+					//'semi' => 'Semi Bold',
+					'bold' => 'Bold',
+					//'extra' => 'Extra Bold',
 				);
 
 			elseif( strpos( $list, 'line_height' ) !== false ):
@@ -1332,13 +1418,39 @@
 					'scm' 		=> 'SCM',
 				);
 
-			elseif( strpos( $list, 'social_shape' ) !== false ):
+			elseif( strpos( $list, 'box_shape' ) !== false ):
 				$choices = array(
-					'square' 		=> 'Quadrati',
-					'square_neg' 	=> 'Quadrati, negativo',
-					'circle' 		=> 'Cerchi',
-					'rounded' 		=> 'Arrotondati',
-					'hexagonal' 	=> 'Esagonali',
+					'square' 		=> 'Quadrato',
+					'circle' 		=> 'Cerchio',
+					'rounded' 		=> 'Arrotondato',
+				);
+
+			elseif( strpos( $list, 'box_angle_size' ) !== false ):
+				$choices = array(
+					'normal' 	=> 'Normale',
+					'min' 		=> 'Minima',
+					'small' 	=> 'Piccola',
+					'big' 		=> 'Grande',
+					'max' 		=> 'Massima',
+				);
+			
+			elseif( strpos( $list, 'box_angle_type' ) !== false ):
+				$choices = array(
+					'all' 					=> 'Tutti',
+					'round-top' 			=> 'Sopra',
+					'round-left' 			=> 'Sinistra',
+					'round-right' 			=> 'Destra',
+					'round-bottom' 			=> 'Sotto',
+					'round-leaf-left' 		=> 'Foglia A',
+					'round-leaf-right' 		=> 'Foglia B',
+					'round-petal-left' 		=> 'Petalo A',
+					'round-petal-right' 	=> 'Petalo B',
+					'round-drop-left' 		=> 'Petalo C',
+					'round-drop-right' 		=> 'Petalo D',
+					'round-head-left' 		=> 'Singolo A',
+					'round-head-right' 		=> 'Singolo B',
+					'round-foot-left' 		=> 'Singolo C',
+					'round-foot-right' 		=> 'Singolo D',
 				);
 
 			elseif( strpos( $list, 'ease' ) !== false ):

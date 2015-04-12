@@ -23,7 +23,8 @@ class Custom_Type {
             'orderby'               => 'title',
             'ordertype'             => '',
             'menupos'               => 0,
-            'menu'                  => 0
+            'menu'                  => 0,
+            'description'           => '',
         );
 
         if( is_array( $build ) )
@@ -52,13 +53,15 @@ class Custom_Type {
         $this->short_singular = ( $attr['short-singular'] ?: $singular );
         $this->short_plural = ( $attr['short-plural'] ?: $plural );
         
-        $this->icon = $attr['icon'];
+        $this->icon = ( strpos( $attr['icon'], 'dashicons-' ) === 0 ? $attr['icon'] : 'dashicons-' . $attr['icon'] );
         $this->supports = array( 'title' );
         $this->orderby = ( $attr['orderby'] ?: 'title' );
         $this->order = $attr['ordertype'];
 
         $this->menupos = $attr['menupos'];
         $this->menu = $attr['menu'];
+
+        $this->description = $attr['description'];
 
         if( !$this->menupos ){
 
@@ -85,12 +88,10 @@ class Custom_Type {
         $this->cap_plural = sanitize_title( $this->plural );
         $this->cap_plural = ( $this->cap_plural == $this->cap_singular ? $this->cap_plural . 's' : $this->cap_plural );
 
-        add_filter( 'manage_edit-' . $this->slug . '_columns', array(&$this, 'CT_admin_columns') ) ;
-        add_action( 'manage_' . $this->slug . '_posts_custom_column', array(&$this, 'CT_manage_admin_columns'), 10, 2 );
-        add_action( 'load-edit.php', array(&$this, 'CT_admin_edit_page') );
-                
-        if($this->icon) { add_action( 'admin_head', array(&$this, 'CT_admin_icon') ); }
-
+        add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'CT_admin_columns' ) ) ;
+        add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'CT_manage_admin_columns' ), 10, 2 );
+        add_action( 'load-edit.php', array( &$this, 'CT_admin_edit_page_load' ) );
+        
         $this->CT_type();
     }
 
@@ -109,17 +110,17 @@ class Custom_Type {
                 'menu_name'           => $this->plural,
                 'parent_item_colon'   => __( 'Genitore:', SCM_THEME ),
                 'all_items'           => __( 'Elenco', SCM_THEME ),
-                'view_item'           => __( 'Visualizza', SCM_THEME ),
-                'add_new_item'        => __( 'Aggiungi', SCM_THEME ),
+                'view_item'           => __( 'Visualizza', SCM_THEME ) . ' ' . $this->short_singular,
+                'add_new_item'        => __( 'Aggiungi', SCM_THEME ) . ' ' . $this->short_singular,
                 'add_new'             => __( 'Aggiungi', SCM_THEME ),
-                'edit_item'           => __( 'Modifica', SCM_THEME ),
-                'update_item'         => __( 'Aggiorna', SCM_THEME ),
-                'search_items'        => __( 'Cerca ', SCM_THEME ) . $this->short_plural,
-                'not_found'           => __( 'Non trovato', SCM_THEME ),
-                'not_found_in_trash'  => __( 'Non trovato nel Cestino', SCM_THEME ),
+                'edit_item'           => __( 'Modifica', SCM_THEME ) . ' ' . $this->short_singular,
+                'update_item'         => __( 'Aggiorna', SCM_THEME ) . ' ' . $this->short_singular,
+                'search_items'        => __( 'Cerca', SCM_THEME ) . ' ' . $this->short_plural,
+                'not_found'           => $this->short_singular . ' ' . __( 'non trovato', SCM_THEME ),
+                'not_found_in_trash'  => $this->short_singular . ' ' . __( 'non trovato nel Cestino', SCM_THEME ),
             ),
             'label'               => $this->slug,
-            'description'         => __( 'Descrizione', SCM_THEME ),
+            'description'         => $this->description,
             'supports'            => $this->supports,
             'hierarchical'        => ( !$this->post ? true : false ),
             //'taxonomies'          => $this->taxonomies,
@@ -129,12 +130,13 @@ class Custom_Type {
             'show_in_nav_menus'   => !$this->hidden,
             'show_in_admin_bar'   => !$this->hidden,
             'menu_position'       => $this->menupos,
+            'menu_icon'           => $this->icon,
             'can_export'          => true,
             'has_archive'         => $this->public,
             'exclude_from_search' => !$this->public,
             'publicly_queryable'  => true,
-            'capability_type'     => ( $this->admin ? ( !$this->post ? 'page' : 'post' ) : array( $this->cap_singular, $this->cap_plural ) ),
-            'map_meta_cap'        => !$this->admin,
+            'capability_type'     => array( $this->cap_singular, $this->cap_plural ), //( $this->admin ? ( !$this->post ? 'page' : 'post' ) : $this->cap_plural ), //( $this->admin ? ( !$this->post ? 'page' : 'post' ) : array( $this->cap_singular, $this->cap_plural ) ),
+            'map_meta_cap'        => true, //!$this->admin,
         );
 
     }
@@ -154,7 +156,7 @@ class Custom_Type {
         }
     }
 
-    function CT_admin_edit_page() {
+    function CT_admin_edit_page_load() {
         add_filter( 'request', array(&$this, 'CT_admin_orderby') );
     }
 
@@ -175,14 +177,6 @@ class Custom_Type {
     
     }
 
-    function CT_admin_icon(){
-        echo '
-        <style>
-        #adminmenu #menu-posts-' . $this->slug . ' .menu-icon-post div.wp-menu-image:before {
-          content: "' . $this->icon . '";
-        }
-        </style>';
-    }
 }
 
 ?>
