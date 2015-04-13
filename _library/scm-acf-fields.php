@@ -310,7 +310,7 @@
 	if ( ! function_exists( 'scm_acf_field_select_layout' ) ) {
 		function scm_acf_field_select_layout( $name = '', $default = 0, $label = 'Layout', $width = '', $logic = 0, $placeholder = '', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'select2-layout_main' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'select-layout_main' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -1805,11 +1805,11 @@
 			// conditional
 			$fields[] = scm_acf_field_select_layout( $name . 'layout-page', $default, 'Larghezza Pagine', 100, 0, 'responsive' );
 			
-			$layout = [[[
+			$layout = [
 				'field' => $name . 'layout-page',
 				'operator' => '==',
 				'value' => 'full',
-			]]];
+			];
 
 				$fields[] = scm_acf_field_select_layout( $name . 'layout-head', $default, 'Larghezza Header', 33, $layout, 'responsive' );
 				$fields[] = scm_acf_field_select_layout( $name . 'layout-content', $default, 'Larghezza Contenuti', 33, $layout, 'responsive' );

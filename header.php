@@ -121,10 +121,10 @@ $head_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-hea
 $head_class = 'site-header full ' . $site_align;
 $head_row_class = 'row scm-row object scm-object ' . $head_layout . ' left';
 
-$menu_position = scm_field( 'head-menu-position', 'inline', 'option' );
-$menu_align = scm_field( 'head-menu-alignment', 'right', 'option' );
+$menu_position = scm_field( 'menu-position', 'inline', 'option' );
+$menu_align = scm_field( 'menu-alignment', 'right', 'option' );
 
-$follow_position = scm_field( 'head-follow-position', 'top', 'option' );
+$follow_position = scm_field( 'follow-position', 'top', 'option' );
 
 $cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-content', 'full', 'option' ) );

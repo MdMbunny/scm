@@ -570,6 +570,10 @@ add_filter( 'user_has_cap', 'give_permissions', 0, 3 );*/
             $choices = [];
             $new = [];
 
+            // +++ todo:
+
+            //printPre( 'INSTALLA PLUGIN FONT AWESOME - Metti Blocco IF' );
+
             if( isset( $field['filter_group'] ) && isset( $field['filter'] ) ){
                 $choices = scm_acf_field_fa_preset( $field['filter_group'], $field['filter'] );
             }

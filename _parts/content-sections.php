@@ -14,7 +14,7 @@ $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
 $repeater = scm_field( $name, array(), $id, 1 );
 
-	if( sizeof( $repeater ) ){
+	if( isset( $repeater ) && !empty( $repeater ) ){
 
 		$id = ( $id == 'option' ? '' : $id );
 

@@ -291,6 +291,12 @@
                     break;
 
                     case 'layout-form':
+                        $single = $cont[ 'form' ];
+                        if(!$single) continue;
+                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
+                        setup_postdata( $post );
+
+                        get_template_part( SCM_DIR_PARTS_SINGLE, 'wpcf7_contact_form' );
                     break;
 
                     case 'layout-elenco_puntato':

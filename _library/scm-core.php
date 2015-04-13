@@ -132,7 +132,7 @@
             foreach ($fonts as $value) {    
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
-                $styles = implode( ',', $value['select_webfonts_google_styles'] );
+                $styles = implode( ',', $value['style'] );
                 wp_register_style( 'webfonts-google-' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'webfonts-google-' . $slug );                
             }

@@ -9,7 +9,7 @@ $row_id = ( ( isset($this) && isset($this->row_id) && $this->row_id ) ?  ' id="'
 $row_layout = ( ( isset($this) && isset($this->row_layout) ) ?  ' ' . $this->row_layout : ' responsive' );
 $row_attributes = ( ( isset($this) && isset($this->row_attributes) && $this->row_attributes ) ?  ' ' . $this->row_attributes : '' );
 
-$row_class = 'row scm-row object scm-object ' . scm_options_get( 'align', 'option', 0 ) . $row_layout;
+$row_class = 'row scm-row object scm-object ' . scm_options_get( 'align', 'option', 0 ) . $row_layout . ' ' . $post->post_name;
 $row_class .= ( ( isset($this) && isset($this->row_class) ) ?  ' ' . $this->row_class : '' );
 
 $row_style = scm_options_get_style( $id, 1 );
@@ -60,7 +60,7 @@ indent( $indent + 1, '<div' . $row_id . ' class="' . $row_class . '"' . $row_sty
 
 			indent( $indent + 2 , '<div' . $col_id . ' class="' . $col_class . '"' . $col_attributes . '>', 2 );
 						
-				if( sizeof( $modules ) ){
+				if( isset( $modules ) && !empty( $modules ) ){
 
 					$mod_current_column = 0;
 					$mod_counter = 0;

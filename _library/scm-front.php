@@ -312,24 +312,24 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
 
-            $sticky = scm_field( 'head-menu-sticky', 'no', 'option' );
-            $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'head-menu-sticky-offset', 0, 'option' ) );
-            $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'head-menu-sticky-attach', 'nav-top', 'option' ) );
+            $sticky = scm_field( 'menu-sticky', 'no', 'option' );
+            $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
+            $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
             $menu = scm_field( 'page-menu', '' );
-            $menu = ( $menu ?: scm_field( 'head-menu-wp', 'primary', 'option' ) );
+            $menu = ( $menu ?: scm_field( 'menu-wp', 'primary', 'option' ) );
             
             $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );
             
             $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
-            $toggle_active = scm_field( 'head-menu-toggle', 'smart', 'option' );
-            $home_active = scm_field( 'head-menu-home', 'no', 'option' );
-            $image_active = scm_field( 'head-menu-home-logo', 'no', 'option' );
+            $toggle_active = scm_field( 'menu-toggle', 'smart', 'option' );
+            $home_active = scm_field( 'menu-home', 'no', 'option' );
+            $image_active = scm_field( 'menu-home-logo', 'no', 'option' );
 
             $menu_id = $id;
             $menu_class = 'navigation ';
-            $menu_class .= ( scm_field( 'head-menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
+            $menu_class .= ( scm_field( 'menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
 
             $menu_layout = scm_field( 'layout-page', 'full', 'option' );
             $row_layout = scm_field( 'layout-menu', 'full', 'option' );
@@ -478,9 +478,9 @@
 
             $toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
 
-            $toggle_icon = 'fa ' . scm_field( 'head-menu-toggle-icon', 'fa-bars', 'option' );
-            $home_icon = 'fa ' . scm_field( 'head-menu-home-icon', 'fa-home', 'option' );
-            $image_icon = scm_field( 'head-menu-home-image', '', 'option' );
+            $toggle_icon = 'fa ' . scm_field( 'menu-toggle-icon', 'fa-bars', 'option' );
+            $home_icon = 'fa ' . scm_field( 'menu-home-icon', 'fa-home', 'option' );
+            $image_icon = scm_field( 'menu-home-image', '', 'option' );
 
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
