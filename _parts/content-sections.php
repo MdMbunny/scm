@@ -36,9 +36,9 @@ $repeater = scm_field( $name, array(), $id, 1 );
 			$section_id = ( $section['id'] ? ' id="' . $section['id'] . '"' : '' );
 			$section_attributes = ( $section['attributes'] ?: '' ) ;
 			
-			$indent = $SCM_indent + 1;
+			$indent = $SCM_indent;
 
-			indent( $indent + 1, '<div' . $section_id . ' class="' . $section_class . '"' . $section_attributes . '>', 1 );
+			indent( $indent, '<div' . $section_id . ' class="' . $section_class . '"' . $section_attributes . '>', 1 );
 
 				$rows = ( $section['rows'] ?: [] );
 				if( sizeof( $rows ) ){
@@ -51,7 +51,7 @@ $repeater = scm_field( $name, array(), $id, 1 );
 					foreach ( $rows as $row ) {
 
 						$row_current++;
-						$row_odd = ( $row_odd ? '' : ' odd ' );
+						$row_odd = ( $row_odd ? '' : ' odd' );
 
 						$row_class = '';
 						$row_class .= $row_odd;
@@ -88,7 +88,7 @@ $repeater = scm_field( $name, array(), $id, 1 );
 					}
 				}
 
-			indent( $indent + 1, '</div><!-- section -->', 2 );
+			indent( $indent, '</div><!-- section -->', 2 );
 	    }
 	   
 	}else{

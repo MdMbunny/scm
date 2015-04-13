@@ -312,6 +312,7 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
 
+
             $sticky = scm_field( 'menu-sticky', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
@@ -370,7 +371,7 @@
                 $sticky_data_toggle = $toggle_active;
                 $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
                 $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
-                
+
                 // Print Sticky Menu
                 scm_get_menu( array(
                     'id' => $sticky_id,
@@ -467,6 +468,7 @@
                 'attach'           => 'nav-top',
             );
 
+
             if( is_array( $id ) )
                 extract( wp_parse_args( $id, $default ) );
 
@@ -523,17 +525,19 @@
 
                 }
 
-                    $wrap .= indent( $in + 2 ) . '<ul class="toggle-content %2$s">' . lbreak(2);
+                    $wrap .= indent( $in + 2 ) . '<ul class="toggle-content %2$s">%3$s</ul>' . lbreak(2);
 
-                        $wrap .= '%3$s' . lbreak();
+                        /*$wrap .= '%3$s' . lbreak();
 
-                    $wrap .= indent( $in + 2 ) . '</ul>' . lbreak(2);
+                    $wrap .= indent( $in + 2 ) . '</ul>' . lbreak(2);*/
 
                 $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
             $wrap .= indent( $in ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
 
             $SCM_indent += 2;
+
+            //consoleLog($wrap);
 
             // Print Menu
             wp_nav_menu( array(

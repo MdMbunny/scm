@@ -186,7 +186,7 @@
 
         	if( $type || $target != 'option' ){
                 $size = ( get_field( 'style-txt-set-size' . $type, $target ) ?: 'default' );
-                $size = ( $size == 'default' ? $size : $size . '%' );
+                //$size = ( $size == 'default' ? $size : $size . '%' );
 			}else{
                 $obj = get_field_object( 'style-txt-set-size' . $type, $target );
                 

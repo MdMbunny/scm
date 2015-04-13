@@ -460,9 +460,9 @@
 			if( $index !== false )
 				$layouts[ $index ]['sub_fields'][0] = scm_acf_field_select1( 'link', $default, 'template_link-no', 50, 0, [ 'self' => 'Link Galleria' ], 'Link' );*/
 
-				$layout_thumb = scm_acf_layout( 'thumb', 'block', 'Thumb' );
+				$layout_thumb = scm_acf_layout( 'thumbs', 'block', 'Thumbs' );
 					//$layout_thumb['sub_fields'][] = scm_acf_field_select1( 'link', $default, 'template_link-no', 50, 0, [ 'self' => 'Link Galleria' ], 'Link' );
-					$layout_thumb['sub_fields'][] = scm_acf_field_positive( 'btn-img', $default, 100, 0, 0, 'Thumb' );
+					$layout_thumb['sub_fields'][] = scm_acf_field_option( 'btn-img', $default, 100, 0, 0, 'Thumb' );
 					$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'size', $default, '150', 'px', 'Dimensione' ) );
 
 				$layouts[] = $layout_thumb;

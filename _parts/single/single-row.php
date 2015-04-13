@@ -10,7 +10,7 @@ $row_layout = ( ( isset($this) && isset($this->row_layout) ) ?  ' ' . $this->row
 $row_attributes = ( ( isset($this) && isset($this->row_attributes) && $this->row_attributes ) ?  ' ' . $this->row_attributes : '' );
 
 $row_class = 'row scm-row object scm-object ' . scm_options_get( 'align', 'option', 0 ) . $row_layout . ' ' . $post->post_name;
-$row_class .= ( ( isset($this) && isset($this->row_class) ) ?  ' ' . $this->row_class : '' );
+$row_class .= ( ( isset($this) && isset($this->row_class) ) ? $this->row_class : '' );
 
 $row_style = scm_options_get_style( $id, 1 );
 
@@ -80,7 +80,7 @@ indent( $indent + 1, '<div' . $row_id . ' class="' . $row_class . '"' . $row_sty
 				    	$mod_current_column++;
 				    	$mod_odd = ( $mod_odd ? '' : ' odd' );
 
-				    	$mod_class = 'module scm-module column-layout object scm-object floatleft';
+				    	$mod_class = 'module scm-module' . ( $module['acf_fc_layout'] ? ' module-' . str_replace( 'layout-', '', $module['acf_fc_layout'] ) : '' ) . ' column-layout object scm-object floatleft';
 
 				    	$mod_data = scm_column_data( $mod_counter, $mod_size );
 				    	$mod_counter = $mod_data['count'];
@@ -102,9 +102,9 @@ indent( $indent + 1, '<div' . $row_id . ' class="' . $row_class . '"' . $row_sty
 				
 						indent( $indent + 3 , '<div' . $mod_id . ' class="' . $mod_class . '"' . $mod_attributes . '>', 2 );
 							
-							$SCM_indent += 5;
+							$SCM_indent += 4;
 							scm_flexible_content( [ $module ] );
-							$SCM_indent -= 5;
+							$SCM_indent -= 4;
 						
 						indent( $indent + 3, '</div><!-- module -->', 2 );
 
@@ -120,7 +120,7 @@ indent( $indent + 1, '<div' . $row_id . ' class="' . $row_class . '"' . $row_sty
 	    // no layouts found
 	}
 
-indent( $indent + 1, '</div><!-- row -->', 2 );
+indent( $indent + 1, '</div><!-- row -->', 1 );
 
 
 ?>

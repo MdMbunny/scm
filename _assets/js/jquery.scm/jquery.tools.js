@@ -135,6 +135,10 @@
 	            $this.data( 'href', url_parent + link );
 	        else
 	        	$this.data( 'href', link );
+	        /*else if( link.indexOf( '$' ) !== 0 )
+	        	$this.data( 'href', link );
+	        else
+	        	return; // +++ toccato*/
 
 	        var elem = document.createElement( 'a' );
     		elem.href = $this.data( 'href' );
@@ -275,6 +279,8 @@
 
 		if( !name )
 			name = ( classes ? name : 'switch' );
+
+		//console.log(data);
 
 		return this.each(function() {
 
@@ -1106,32 +1112,35 @@
 
 			var $this 			= $( this ),
 				id 				= ( $this.data( 'gallery' ) ? $this.data( 'gallery' ) : '' ),
-				init 			= ( $this.data( 'init' ) ? $this.data( 'init' ) : 0 ),
-				name 			= ( $this.data( 'title' ) ? $this.data( 'title' ) : '' ),
+				init 			= ( $this.data( 'gallery-init' ) ? $this.data( 'gallery-init' ) : 0 ),
+				name 			= ( $this.data( 'gallery-title' ) ? $this.data( 'gallery-title' ) : '' ),
+				type 			= ( $this.data( 'gallery-type' ) ? $this.data( 'gallery-type' ) : 'image' ),
 				gallery 		= GALLERIES[ id ],
-				images 			= gallery,
+				images 			= [],
 				titles 			= [],
 				descriptions 	= [],
+				content 		= '',
 				i 				= 0;
 
+
 			for ( i = 0; i < gallery.length; i++ ) {
-				
-				if( typeof( gallery[i].href ) !== undefined )
-					continue;
 
-				// +++ todo: se array con 'url', 'title' e 'description', uniscili in un oggetto { href: '', title: '', description: '' } (description è da controllare se supportata)
+				// +++ todo: ora se passi array di string li considera html, ma potresti passare un array di url immagine, per esempio, quindi vedi di aggiungere l'opzione data-gallery-type
 
-				var url = gallery[i];
+				if( typeof( gallery[i] ) === 'string' ){
 
-				if( !typeof( gallery[i] ) )
-					url = gallery[i]['url']
+					images.push( gallery[i] );
 
-				images.push( {
-					href: url,
-				});
-				
-				titles.push( gallery[i]['title'] );
-				descriptions.push( gallery[i]['description'] );
+				}else if( typeof( gallery[i].url ) !== undefined ){
+
+					images.push( {
+						href: gallery[i].url,
+						title: gallery[i].title,
+						description: gallery[i].description,
+					});
+
+				}
+
 			};
 
 			$this.click( function() {
@@ -1147,6 +1156,7 @@
 					            },
 			    			},
 				   		},
+				   		type: type,
 				   		openEffect: 'elastic',
 				   		closeEffect: 'elastic',
 				   		nextEffect: 'elastic',
@@ -1161,6 +1171,7 @@
 				   		prevSpeed: 200,
 				   		openOpacity: false,
 				   		closeOpacity: false,
+				   		closeClick: true,
 				   		tpl: {
 				   			wrap: '<div class="fancybox-wrap" tabIndex="-1"><h1 class="text-center">' + name + '</h1><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				   		},

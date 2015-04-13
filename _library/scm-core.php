@@ -148,7 +148,7 @@
             if( scm_field( 'opt-tools-fancybox', 0, 'option' ) ){
                 wp_register_style( 'fancybox', SCM_URI_CSS . 'fancybox-2.1.5/jquery.fancybox.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_register_style( 'fancybox-thumbs', SCM_URI_CSS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-                wp_register_style( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+                wp_register_style( 'fancybox-buttons', SCM_URI_CSS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'fancybox' );
                 wp_enqueue_style( 'fancybox-thumbs' );
                 wp_enqueue_style( 'fancybox-buttons' );
@@ -277,7 +277,7 @@
 
             // Fancybox
 
-            if( get_field( 'opt-tools-fancybox', 0, 'option' ) ){
+            if( scm_field( 'opt-tools-fancybox', 0, 'option' ) ){
                 wp_register_script( 'fancybox', SCM_URI_JS . 'fancybox-2.1.5/jquery.fancybox.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-thumbs', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-thumbs.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_register_script( 'fancybox-buttons', SCM_URI_JS . 'fancybox-2.1.5/helpers/jquery.fancybox-buttons.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );

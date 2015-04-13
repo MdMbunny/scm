@@ -13,6 +13,12 @@
 
 body.loading{
 	opacity: .8;
+	cursor: wait !important;
+}
+
+body.loading *{
+	cursor: wait !important;
+	pointer-events: none;
 }
 
 #wpfooter{

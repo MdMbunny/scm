@@ -348,7 +348,7 @@
 					
 					$save = ( isset( $arg[3] ) ? $arg[3] : $multi );
 					
-	        		$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'multi_select' : 'checkbox' ) : 'select' ) );
+	        		$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'checkbox' : 'checkbox' ) : 'select' ) );
 	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
 
 //printPre( $name . ' : ' . $tax . ' save: ' . $save. ' arg: ' . $arg[3] . ' multi: ' . $multi );
@@ -1199,22 +1199,22 @@
 
 			elseif( strpos( $list, 'txt_size' ) !== false ):
 				$choices = array(
-					'100' => 'Normal',
-					'60' => 'XXX-Small',
-					'70' => 'XX-Small',
-					'80' => 'X-Small',
-					'90' => 'Smaller',
-					'95' => 'Small',
-					'105' => 'Medium',
-					'110' => 'Large',
-					'120' => 'X-Large',
-					'130' => 'XX-Large',
-					'140' => 'XXX-Large',
-					'150' => 'Big',
-					'160' => 'X-Big',
-					'170' => 'XX-Big',
-					'180' => 'XXX-Big',
-					'200' => 'Huge',
+					'100%' => 'Normal',
+					'60%' => 'XXX-Small',
+					'70%' => 'XX-Small',
+					'80%' => 'X-Small',
+					'90%' => 'Smaller',
+					'95%' => 'Small',
+					'105%' => 'Medium',
+					'110%' => 'Large',
+					'120%' => 'X-Large',
+					'130%' => 'XX-Large',
+					'140%' => 'XXX-Large',
+					'150%' => 'Big',
+					'160%' => 'X-Big',
+					'170%' => 'XX-Big',
+					'180%' => 'XXX-Big',
+					'200%' => 'Huge',
 				);
 
 			elseif( strpos( $list, 'txt_font_size' ) !== false ):

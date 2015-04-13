@@ -3,28 +3,51 @@
  * @package SCM
  */
 
-global $SCM_indent;
+global $post, $SCM_indent;
 
-$title = get_the_title();
+/*$title = get_the_title();
 $id = get_the_ID();
 $type = get_post_type();
 $date = get_the_date();
-$taxes = get_the_taxonomies();
+$taxes = get_the_taxonomies();*/
 
 //$wrap = ( isset( $this->wrap ) ? $this->wrap : '<div>%a</div>' );
-$href = ( isset( $this->href ) ? $this->href : '' );
-$target = ( isset( $this->target ) ? $this->target : '' );
-$build = ( isset( $this->build ) ? $this->build : [] );
 
-foreach ( $build as $value ) {
+$template = ( isset( $this->template ) ? $this->template : return );
+$build = ( $template['build'] ?: [] );
+$link_template = ( isset( $this->temp ) ? $this->temp : 0 );
+$link_url = ( isset( $this->url ) ? $this->url : '' );
+$link_object = ( isset( $this->object ) ? $this->object : '' );
+$class = ( isset( $this->class ) ? $this->class : '' );
 
-// switch 'acf_fc_layout'
+//$attr = ( isset( $this->attr ) ? $this->attr : '' );
+//$build = ( isset( $this->build ) ? $this->build : [] );
+
+$SCM_indent++;
 
 
+
+foreach ( $build as $content ) {
+
+	if( !isset( $content['acf_fc_layout'] ) )
+	    return '';
+
+	$content['acf_fc_layout'] = str_replace( 'layout-', '', $content['acf_fc_layout'] );
+
+	switch ( $content['acf_fc_layout'] ) {
+	    case 'post-title':
+	        indent( $SCM_indent, scm_content_title( $content, $attr, $SCM_indent ), 1 );
+	    break;
+	    
+	    default:
+	    break;
+
+	}
 }
 
+$SCM_indent--;
 
-printPre('SOGGETTO ' . $post->ID);
+//printPre('SOGGETTO ' . $post->ID);
 
 /*
 $type = get_post_type();

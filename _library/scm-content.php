@@ -11,7 +11,7 @@
 
             global $post, $SCM_indent, $SCM_types;
 
-            $SCM_indent += 1;
+            //$SCM_indent++;
 
             foreach ( $content as $cont ) {
 
@@ -277,7 +277,7 @@
 
                         $content = $cont['editor'];
                         if(!$content) continue;
-                        indent( $SCM_indent, $content, 2 );
+                        indent( $SCM_indent, $content, 1 );
 
                     break;
 
@@ -329,12 +329,6 @@
                         if ( empty( $template ) )
                         	continue;
 
-                        $link = ( $template['link'] ?: 'no' );
-                        $single = strpos( $link, 'single') !== false;
-                        $block = ( $link != 'no' && !$single );
-						$url = ( strpos( $link, 'template' ) !== false ? $template['template'] : ( strpos( $link, 'link' ) !== false ? ( $template['url'] ? '' : '#' ) : '' ) );
-						$target = ( strpos( $link, 'link' ) !== false ? '_blank' : '_self' );
-						$link = $template['link'] = str_replace( '-single', '', $link);
 
                         if( $archive ){
 
@@ -347,7 +341,7 @@
                         			$taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
 
 	                        		//$terms = ( $cont['archive-soggetti-tipologie-terms'] ?: [] );
-		                            if( sizeof( $terms ) ){
+		                            if( isset( $terms ) && !empty( $terms ) ){
 		                                $tax[ 'relation' ] = 'OR';
 		                                foreach ( $terms as $term) {
 		                                    $tax[] = array( 
@@ -388,7 +382,7 @@
 
                             }
 
-                        }			
+                        }
 						
 
                         $loop = new WP_Query( $query );
@@ -400,11 +394,11 @@
 						$odd = '';
 						$class = '';
 
-						$total = 2;
+						//$total = 2;
 
 						$data = [ 'data' => 'auto' ];
 
-						printPre( $template );
+						//printPre( $template['build'] );
 
                         $total = sizeof( $loop->posts );
 
@@ -413,10 +407,12 @@
                             while ( $loop->have_posts() ) {
                                 $loop->the_post();
 
-                                // Open LI o DIV con data-href in base a $template['link']['template/url']
-                                // Vedi di pescare la field principale Link in caso di $template['link'] = 'object'
+                                $link = ( $template['link'] ?: 'no' );
+                                $link_template = ( $template['template'] ? ' data-href="' . get_permalink() . '?template=' . $template['template'] : '' ) . '"';
+                                $link_url = ( $template['url'] ? ' data-href="' . $template['url'] . '"' : '' );
+                                $link_object = scm_object_link();
 
-								$class = 'post scm-post object scm-object inlineblock floatleft';
+								$class = 'post scm-post post-' . $type . ' column-layout object scm-object inlineblock floatleft';
 								$attributes = '';
 
 						    	$odd = ( $odd ? '' : ' odd' );
@@ -424,31 +420,32 @@
 
 					            $current_column++;
 								$class .= scm_count_class( $current_column, $total );
-
-// if self crea funzione scm_object_link() dove controlli type e restituisci un link (soggetti, files, ecc) oppure niente
-
-						    	$href = ( $link == 'template' && $block ? get_permalink() . ( $url ? '?template=' . $url : '' ) : $url );
-// e lo aggiungi agli attributes
-								$attributes .= ( $block ? ' data-href="' . $href . '" data-target="' . $target . '"' : '' );
+                                
+                                $href = ( $link == 'self' ? $link_object : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
+                                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
+								$attributes .= ( $link != 'no' ? $href . $target : '' );
 
 								$layout = ( $width ? str_replace( '/', '', $width ) : '11' );
 
 								if( $layout != 'auto' ){
 						    		$size = (int)$layout[0] / (int)$layout[1];
 						    		$counter += $size;
-						    		$data = scm_column_data( $counter, $size );
-						    		$counter = $data['count'];
+                                    $data = scm_column_data( $counter, $size );
+                                    $counter = $data['count'];
                                     $attributes .= ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"';
 						    	}
 
 								indent( $SCM_indent, '<div class="' . $class . '"' . $attributes . '>', 2 );
 
-	                                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php', array(
-                                        //'wrap' => '<div class="' . $class . '"' . $attributes . '>%a</div><!-- ' . $type . '-' . $post->ID . ' -->',
-                                        'href' => ( $single ? $href : '' ),
-                                        'target' => ( $single ? $target : '' ),
-                                        'build' => ( $template['build'] ?: [] ),
-	                                ));
+                                    scm_content( $template['build'], $link_template, $link_url, $link_object );
+                                    
+	                                /*Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php', array(
+                                        'class' => 'content scm-content object scm-object inlineblock floatleft',
+                                        'temp' => $link_template,
+                                        'link' => $link_url,
+                                        'self' => $link_object,
+                                        'template' => $template,
+	                                ));*/
 
                                 indent( $SCM_indent, '</div><!-- ' . $type . '-' . $post->ID . ' -->', 2 );
                                 
@@ -468,21 +465,193 @@
                 }
             }
 
-            $SCM_indent -= 1;
+            //$SCM_indent--;
         }
     }
 
-    //Prints Post Contents
-    /*if ( ! function_exists( 'scm_content' ) ) {
-        function scm_content( $template ) {
 
-            $href = ( $template['href'] ?: '' );
-            $target = ( $template['target'] ?: '' );
-            $build = ( $template['build'] ?: '' );
+    if ( ! function_exists( 'scm_object_link' ) ) {
+        function scm_object_link( $id = 0, $content = [] ) {
+            
+            global $post;
 
+            if( $id ){
+                $post = ( is_numeric( $id ) ? get_post( $id ) : $id );
+                setup_postdata( $post );
+            }
 
+            $type = $post->post_type;
+            $id = $post->ID;
+            $link = '';
+
+            $attr = '';
+
+            switch ( $type ) {
+                case 'soggetti':
+                    $link = scm_field( 'soggetto-link', '', $id );
+                break;
+                
+                case 'luoghi':
+                    $lat = scm_field( 'luogo-lat', 0, $id );
+                    $lng = scm_field( 'luogo-lng', 0, $id );
+                    $link = 'http://maps.google.com/maps?q=' . $lat . ',' . $lng;
+                break;
+
+                case 'documenti':
+                    $link = scm_field( 'documento-file', '', $id );
+                break;
+
+                case 'rassegne-stampa':
+                    $typ = scm_field( 'rassegna-type', 'file', $id );
+                    $link = ( $typ == 'file' ? scm_field( 'rassegna-file', '', $id ) : scm_field( 'rassegna-link', '', $id ) );
+                break;
+
+                case 'gallerie':
+                    global $SCM_galleries;
+                    $link = '';
+                    $images = scm_field( 'galleria-images', [], $id );
+                    $custom_id = uniqid( 'gallery-' );
+                    $SCM_galleries[ $custom_id ] = $images;
+                    $init = ( !empty( $content ) && isset( $content['btn-img'] ) ? $content['btn-img'] : 0 );
+                    $attr = ' data-gallery="' . $custom_id . '"';
+                    $attr .= ' data-gallery-init="' . $init . '"';
+                    $attr .= ' data-gallery-title="' . get_the_title( $id ) . '"';
+                break;
+
+                case 'video':
+                    global $SCM_galleries;
+                    $link = '';
+                    $video = scm_field( 'video-url', [], $id );
+                    $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
+                    $images = [ '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>', '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>' ];
+                    $custom_id = uniqid( 'video-' );
+                    $SCM_galleries[ $custom_id ] = $images;
+                    $attr = ' data-gallery="' . $custom_id . '"';
+                    $attr .= ' data-gallery-init="0"';
+                    $attr .= ' data-gallery-title="' . get_the_title( $id ) . '"';
+                    $attr .= ' data-gallery-type="html"';
+                break;
+
+                default:
+                    $link = apply_filters( 'scm_filter_object_link/' . $type, $link, $id );
+                break;
+            }
+
+            return $attr . ( $link ? ' data-href="' . addHTTP( $link ) . '"' : '' );
 
         }
-    }*/
+    }
+
+    if ( ! function_exists( 'scm_content' ) ) {
+        function scm_content( $build, $link_template, $link_url, $link_object ) {
+
+            global $SCM_indent;
+
+            $size = 0;
+            $current_column = 0;
+            $counter = 0;
+
+            $odd = '';
+            $class = '';
+
+            $total = sizeof( $build );
+
+            $SCM_indent++;
+
+            foreach ( $build as $content ) {
+
+                if( !isset( $content['acf_fc_layout'] ) )
+                    return '';
+
+                $element = str_replace( 'layout-', '', $content['acf_fc_layout'] );
+                $slug = ( startsWith( $element, 'post-' ) ? 'post' : $element );
+
+                $width = $content['column-width'];
+                $link = ( $content['link'] ?: 'no' );
+
+                $class = 'content scm-content content-' . $element . ' column-layout object scm-object inlineblock floatleft';
+                $odd = ( $odd ? '' : ' odd' );
+                $class .= $odd;
+
+                $current_column++;
+                $class .= scm_count_class( $current_column, $total );
+                
+                $attributes = '';
+                $layout = ( $width ? str_replace( '/', '', $width ) : '11' );
+                if( $layout != 'auto' ){
+                    $size = (int)$layout[0] / (int)$layout[1];
+                    $counter += $size;
+                    $data = scm_column_data( $counter, $size );
+                    $counter = $data['count'];
+                    $attributes .= ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"';
+                }
+                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
+                $href = ( $link == 'self' ? scm_object_link( 0, $content ) : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
+                $attributes .= ( $link != 'no' ? $href . $target : '' );
+
+                $attributes = ' class="' . $class . '"' . $attributes;
+
+
+
+                switch ( $slug ) {
+                    case 'post':
+                        if( strpos( $element, '-title' ) )
+                            indent( $SCM_indent, scm_content_title( $content, $attributes, $SCM_indent ), 1 );
+                        else if( strpos( $element, '-date' ) )
+                            indent( $SCM_indent, scm_content_date( $content, $attributes, $SCM_indent ), 1 ); // todo
+                        else
+                            indent( $SCM_indent, scm_content_tax( $content, $attributes, $SCM_indent ), 1 ); // todo
+                    break;
+                    
+                    default:
+                        // FILTER
+
+                        //GALLERY: aggiungi opzioni [mostra thumb/title/description] a Gallery Temp > Thumbs
+                        // quando printi le gallery, per ogni Thumb assegni un data-init diverso
+
+                    break;
+
+                }
+            }
+
+            $SCM_indent--;
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_content_title' ) ) {
+        function scm_content_title( $content, $attr = '', $ind = 0 ) {
+
+            $title = get_the_title();
+            $tag = $content['tag'];
+
+            indent( $ind, '<' . $tag . $attr . '>' . $title . '</' . $tag . '>', 2 );
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_content_date' ) ) {
+        function scm_content_date( $content, $attr = '', $ind = 0 ) {
+
+            $date = get_the_date();
+            $tag = $content['tag'];
+
+            // +++ todo: in layout_date separi giorno mese e anno, aggiungi ora e qui separi il tutto con <span> vari
+
+            indent( $ind, '<' . $tag . $attr . '>' . $date . '</' . $tag . '>', 2 );
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_content_tax' ) ) {
+        function scm_content_tax( $content, $attr = '', $ind = 0 ) {
+
+            /*$title = get_the_title();
+            $tag = $content['tag'];
+
+            indent( $ind, '<' . $tag . $attr . '>' . $title . '</' . $tag . '>', 2 );*/
+
+        }
+    }
 
 ?>

@@ -91,8 +91,7 @@ $skip = __( "Vai al contenuto", SCM_THEME );
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
 $page_id = scm_field( 'opt-ids-pagina', 'site-page', 'option' );
-$page_layout = scm_field( 'page-layout', 'full', $id );
-$page_layout = ( $page_layout != 'default' ? $page_layout : scm_field( 'layout-page', 'full', 'option' ) );
+$page_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
 $page_class = $page_layout . ' float-' . $site_align . ' site-page hfeed site';
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
@@ -128,7 +127,7 @@ $follow_position = scm_field( 'follow-position', 'top', 'option' );
 
 $cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-content', 'full', 'option' ) );
-$cont_class = 'site-content ' . $cont_layout;
+$cont_class = 'site-content ' . $cont_layout . ' float' . $site_align ;
 
 ?>
 
