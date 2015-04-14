@@ -104,6 +104,34 @@
 	}
 
 	// *****************************************************
+	// *      ENABLE/DISABLE
+	// *****************************************************
+
+	$.fn.enableIt = function( event ){
+
+		return this.each(function() {
+
+		    var $this = $( this );
+
+			$this.css( 'pointer-events', 'all' );
+			$this.trigger( 'enabled' );
+
+		});
+	};
+
+	$.fn.disableIt = function( event ){
+
+		return this.each(function() {
+
+		    var $this = $( this );
+
+			$this.css( 'pointer-events', 'none' );
+			$this.trigger( 'disabled' );
+
+		});
+	};
+
+	// *****************************************************
 	// *      LINK
 	// *****************************************************
 
@@ -111,7 +139,7 @@
 
 		return this.each(function() {
 
-		    var $this 		= $( this );
+		    var $this 		= $( this ),
 		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
 				current 	= document.URL,
 		        parent 		= $this.parents( '.sub-menu' ),
@@ -124,7 +152,8 @@
 
 		    event.preventDefault();
 			event.stopPropagation();
-			$( 'body' ).css( 'pointer-events', 'none' );
+
+			$( 'body' ).disableIt();
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -408,7 +437,7 @@
 
 					}, parseFloat( duration ), ease, function() {
 
-						$body.css( 'pointer-events', 'all' );
+						$body.enableIt();
 					}
 				);
 			};
@@ -430,7 +459,7 @@
 
 			}else{
 
-				$( 'body' ).css( 'pointer-events', 'all' );
+				$( 'body' ).enableIt();
 				return this;
 
 			}
@@ -438,15 +467,16 @@
 			difference = Math.abs( destination - position );
 
 			if( !difference ){
-				$( 'body' ).css( 'pointer-events', 'all' );
+				$( 'body' ).enableIt();
 				return this;
 			}
 
 			$this.data('done', false);
 			$( 'body' ).css( 'pointer-events', 'none' );
 
-			duration = time * difference / 1000;
-			duration = ( duration < 500 ? 500 : ( duration > 1500 ? 1500 : duration ) );
+			duration = time * ( difference < 6000 ? difference : 6000 );
+
+			duration = ( duration < 500 ? 500 : duration );
 
 			if( delay )
 				setTimeout( pageScroll, delay );
@@ -532,32 +562,64 @@
 	            didScroll = false;
 
 	        };
+
+	        var removeActiveClasses = function(index, classNames) {
+				
+				var current_classes = classNames.split(" "), // change the list into an array
+					classes_to_remove = []; // array of classes which are to be removed
+
+				$.each(current_classes, function (index, class_name) {
+					// if the classname begins with bg add it to the classes_to_remove array
+					if (/current-.*/.test(class_name)) {
+						classes_to_remove.push(class_name);
+					}
+				});
+				// turn the array back into a string
+				return classes_to_remove.join(" ");
+
+			}
 	        
 	        var setActiveClass = function() {
-	            var i, coords, link, $link, $anchor;
+	            //var i;
 
 	            var $win 		= $( window ),
+	            	$body 		= $( 'body' ),
 	            	scrollPos 	= $win.scrollTop(),
 	            	heightWin 	= $win.height(),
-	            	heightBody 	= $( 'body' ).outerHeight();
+	            	heightBody 	= $body.outerHeight(),
+	            	current 	= '';
 
-	            for( i = 0; i < $anchors.length; i++ ) {
+	            for( var i = 0; i < $anchors.length; i++ ) {
 
-	                $anchor = $anchors[i];
+	                var $anchor = $anchors[i];
 
-	                coords = {
+	                var coords = {
 	                    top: Math.round( $anchor.offset().top ) - offset,
 	                    bottom: Math.round( $anchor.offset().top + $anchor.outerHeight() ) - offset
 	                };
 
-	                link = $( $hash[i] ).parent();
-	                $link = $( link );
-	                
-	                if ( scrollPos >= coords.top - threshold && scrollPos < coords.bottom - threshold )
-	                    $link.addClass( currentClass );
-	                else
-	                    $link.removeClass( currentClass );
+	                var link = $( $hash[i] ).parent();
+	                var $link = $( link );
+	                var hs = $hash[i][0]['hash'];
+	                var cBody = 'current-' + hs.substring(1,hs.length);
 
+	                
+	                if ( scrollPos >= coords.top - threshold && scrollPos < coords.bottom - threshold ){
+	                	if( !$link.hasClass( currentClass ) ){
+	                		if( !$body.hasClass( cBody ) ){
+	                			$body.trigger( 'onCurrent', [ cBody ] );
+		                		$body.removeClass( removeActiveClasses );
+			                	$body.addClass( cBody );
+			                }
+		                    $link.addClass( currentClass );
+	                	}
+	                }else{
+	                	if( $link.hasClass( currentClass ) ){
+							$link.removeClass( currentClass );
+	                	}
+	                	//$body.removeClass( cBody );
+	                    //
+	                }
 	            }
 
 	            if ( scrollPos + heightWin >= heightBody ) {
@@ -567,7 +629,12 @@
 	                $( $hash ).each( function(){
 	                    $( this ).parent().removeClass( currentClass );
 	                });
+
+	                //hs = $hash[$hash.length-1][0]['hash'];
+	                //cBody = 'current-' + hs.substring(1,hs.length);
+	                
 	                $link.addClass( currentClass );
+	                //$body.addClass( cBody );
 
 	            }
 	        }
@@ -880,7 +947,7 @@
 					'left': '0px'
 
 				}, speed, function(){
-					$slider.css( 'pointer-events', 'all' );
+					$slider.enableIt();
 				} );
 
 		});
@@ -1111,6 +1178,8 @@
 		return this.each( function() {
 
 			var $this 			= $( this ),
+				fancybox		= ( $this.data( 'fancybox' ) ? $this.data( 'fancybox' ) : '' ),
+				fancy_type		= ( $this.data( 'fancybox-type' ) ? $this.data( 'fancybox-type' ) : 'image' ),
 				id 				= ( $this.data( 'gallery' ) ? $this.data( 'gallery' ) : '' ),
 				init 			= ( $this.data( 'gallery-init' ) ? $this.data( 'gallery-init' ) : 0 ),
 				name 			= ( $this.data( 'gallery-title' ) ? $this.data( 'gallery-title' ) : '' ),
@@ -1122,26 +1191,44 @@
 				content 		= '',
 				i 				= 0;
 
+			
+			if( fancybox ){
 
-			for ( i = 0; i < gallery.length; i++ ) {
+				// +++ todo: larghezza altezza e altre variabili passate da data-fancybox-{opzione}
 
-				// +++ todo: ora se passi array di string li considera html, ma potresti passare un array di url immagine, per esempio, quindi vedi di aggiungere l'opzione data-gallery-type
-
-				if( typeof( gallery[i] ) === 'string' ){
-
-					images.push( gallery[i] );
-
-				}else if( typeof( gallery[i].url ) !== undefined ){
-
-					images.push( {
-						href: gallery[i].url,
-						title: gallery[i].title,
-						description: gallery[i].description,
-					});
-
+				if( fancy_type == 'video' ){
+					images = '<iframe width="854" height="510" src="' + fancybox + '" frameborder="0" allowfullscreen></iframe>'
+					type = 'html';
+				}else{
+					images = fancybox;
+					type = fancy_type;
 				}
 
-			};
+				
+
+			}else{
+
+				for ( i = 0; i < gallery.length; i++ ) {
+
+					// +++ todo: ora se passi array di string li considera html, ma potresti passare un array di url immagine, per esempio, quindi vedi di aggiungere l'opzione data-gallery-type
+
+					if( typeof( gallery[i] ) === 'string' ){
+
+						images.push( gallery[i] );
+
+					}else if( typeof( gallery[i].url ) !== undefined ){
+
+						images.push( {
+							href: gallery[i].url,
+							title: gallery[i].title,
+							description: gallery[i].description,
+						});
+
+					}
+
+				};
+
+			}
 
 			$this.click( function() {
 
@@ -1181,17 +1268,21 @@
 						    
 						    if (!list.length) {  
 
-						        list = $( '<ul id="fancybox-links">' );
-						        for (var i = 0; i < this.group.length; i++) {
-						        	var item = '<li data-index="' + i + '"><label></label></li>';
-						            $( item ).click( function() {
+						    	if( this.group.length > 1 ){
 
-						            	$.fancybox.jumpto( $( this ).data( 'index' ) );
+							        list = $( '<ul id="fancybox-links">' );
+							        for (var i = 0; i < this.group.length; i++) {
+							        	var item = '<li data-index="' + i + '"><label></label></li>';
+							            $( item ).click( function() {
 
-						            }).appendTo( list );
-						        }
-						        
-						        list.appendTo( 'body' );
+							            	$.fancybox.jumpto( $( this ).data( 'index' ) );
+
+							            }).appendTo( list );
+							        }
+							        
+							        list.appendTo( 'body' );
+							    }
+
 						    }
 
 						    list.find( 'li' ).removeClass( 'active' ).eq( this.index ).addClass( 'active' );
@@ -1255,7 +1346,7 @@
 
 				if( post != 'all' ){
 
-					$body.css( 'pointer-events', 'all' );
+					$body.enableIt();
 					$doc.scrollTop( $anchor.offset().top );
 
 				}else{
@@ -1268,7 +1359,7 @@
 				$all.animate({
 					scrollTop: $anchor.offset().top
 				}, 1000, function() {
-					$body.css( 'pointer-events', 'all' );
+					$body.enableIt();
 				});
 			}
 
@@ -1286,7 +1377,7 @@
 				
 			}else{
 
-				$body.css( 'pointer-events', 'all' );
+				$body.enableIt();
 				//$body.css( 'opacity', 1 );
 			}
     	};
@@ -1330,7 +1421,7 @@
 
 		}else{
 
-			$body.css( 'pointer-events', 'all' );
+			$body.enableIt();
 			$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
 
 		}
@@ -1479,7 +1570,7 @@
 
 // TOOLS
 
-		$( '[data-gallery]' ).setFancybox();
+		$( '[data-gallery], [data-fancybox]' ).setFancybox();
 		$( '[data-slider]' ).initSlider();
 		$( '[data-current-link]' ).currentLink();
 		$( 'iframe[src*="youtube.com"]' ).youtubeFix();

@@ -288,6 +288,14 @@
                 wp_enqueue_script( 'fancybox-media' );
             }
 
+            // Parallax Scrolling
+
+            //wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, '', true );
+            //wp_enqueue_script( 'parallax' );
+
+            //wp_register_script( 'sequence',  SCM_URI_JS . 'Sequence/jquery.sequence-min.js', false, '', true );
+            //wp_enqueue_script( 'sequence' );
+
             // Nivo Slider
 
             if( get_field( 'opt-tools-slider', 'option' ) == 'nivo' ){
@@ -521,6 +529,8 @@
         ?>
 
 <script type="text/javascript">
+
+console.log( 'read' );
 
     var GALLERIES = <?php echo json_encode($SCM_galleries); ?>;
 

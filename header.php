@@ -128,7 +128,6 @@ $follow_position = scm_field( 'follow-position', 'top', 'option' );
 $cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-content', 'full', 'option' ) );
 $cont_class = 'site-content ' . $cont_layout . ' float' . $site_align ;
-
 ?>
 
 <body <?php body_class(); ?> 

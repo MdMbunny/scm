@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.1.4
+Version:			v2.1.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -9,7 +9,7 @@ Author:				Studio Creativo M
 Text Domain:		scm
 Template Version:	1.0.0
 GitHub Theme URI:	MdMbunny/scm
-GitHub Branch:		to3
+GitHub Branch:		master
 */
 
 /*--------------------------------------------------------------
@@ -314,7 +314,7 @@ textarea:focus {
 
 textarea {
 	overflow: auto; /* Removes default vertical scrollbar in IE6/7/8/9 */
-	padding-left: 10px;
+	/*padding-left: 10px;*/
 	vertical-align: top; /* Improves readability and alignment in all browsers */
 	width: 100%;
 	height: 175px;
