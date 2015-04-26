@@ -204,7 +204,19 @@ function toArray( $var ){
 
 function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes = '', $href = '', $target = '' ){
 
-    
+    // +++ todo: leva sta roba e integra la field Attributes per ogni elemento, con Select > Attributes, e tutte cose
+
+    $str = 'data-href="';
+    $len = strlen( $str );
+    $start = strpos( $attributes, 'data-href="' );
+
+    if( $start !== false ){
+
+        $url = substr( $attributes, $start + $len );
+        $url = substr( $url, 0, strpos( $url, '"' ) );
+        $attributes = str_replace( $url, getURL( $url ), $attributes);
+
+    }
 
 
     return str_replace( [ ' " ', '=" ', '< ', ' >', ' ">' ], [ '" ', '="', '<', '>', '">' ], '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . doublesp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
@@ -628,6 +640,17 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
         }
     }
 
+    if ( ! function_exists( 'rstrpos' ) ) {
+        function rstrpos( $haystack, $needle ){
+            $size = strlen( $haystack );
+            $pos = strpos( strrev( $haystack ), $needle );
+            
+            if( $pos === false )
+                return false;
+            
+            return $size - $pos - 1;
+        }
+    }
 
 
 /***********************/
@@ -640,19 +663,25 @@ function getURL( $url ){
     if( !$url )
         return;
 
+    $add = '';
+
     if( $url == 'localhost' )
         return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
-
-    consoleLog( $url );
 
     if( startsWith( $url, [ 'page:' ] ) !== false ){
 
         $url = str_replace( 'page:', '', $url );
+        
+        if( strpos( $url, '#' ) === 0 ){
+            $add = $url;
+            $url = str_replace( '#', '', $url);
+            $url = substr( $url, 0, rstrpos( $url, '-' ) );
+        }
 
         if( !is_numeric( $url ) )
-            $url = get_page_by_title( $url )->ID;
+            $url = get_page_by_path( $url )->ID;
         
-        return get_page_link( $url );
+        return get_page_link( $url ) . $add;
     }
 
     if( startsWith( $url, [ 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ] ) !== false )

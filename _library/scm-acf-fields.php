@@ -1325,6 +1325,7 @@
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', 'Quote', '', '', scm_acf_object_quote( 0, 0, 1) );
                 $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti', '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', 'Elenco Puntato', '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'section', 'block', 'Banner', '', '', scm_acf_object_section( 0, 0, 'sections-cat:banners' ) );
 
                 //$flexible['sub_fields'][] = scm_acf_field_object_tax( 'banner-section', 0, 'sections', 'sections-cat:banners', '', $deafal_ban );
@@ -1345,13 +1346,13 @@
 
 			$fields = [];
 			
-			$flexible = scm_acf_field_flexible( 'modules', 0, 'Componi', '+', '', 0, 0, 10 );
+			$flexible = scm_acf_field_flexible( 'modules', 0, 'Componi', '+', '', 0, 0, 30 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', 'Testo', '', '', scm_acf_object_testo( 0, 0, 1) ); // Se vedi che i testi inseriti fanno casino, togli sostituisci 1 con 0
                 $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', 'Elenco Puntato', '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', 'Quote', '', '', scm_acf_object_quote( 0, 0, 1) );
                 $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti', '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
-                $flexible['layouts'][] = scm_acf_layout( 'separatore', 'block', 'Separatore', '', '', scm_acf_object_separatore( 0, 0, 1 ) );
+                //$flexible['layouts'][] = scm_acf_layout( 'separatore', 'block', 'Separatore', '', '', scm_acf_object_separatore( 0, 0, 1 ) );
 			
 			$fields[] = $flexible;
 

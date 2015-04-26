@@ -26,9 +26,14 @@ if( $archive || ( $single &&
 	$page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
 	
 	//$page_style = scm_options_get_style( $id, 1 );
+
+	$def = get_field( 'main-slider-active' );
 	
-	$page_slider = scm_field( 'main-slider-active' );
-	$page_slider_terms = scm_field( 'main-slider-terms' );
+	$page_slider = scm_field( 'main-slider-active', '', $id );
+	if( $def === 'default' )
+		$page_slider_terms = scm_field( 'main-slider-terms', '', 'option' );
+	else
+		$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
 
 
 	if( $single ){

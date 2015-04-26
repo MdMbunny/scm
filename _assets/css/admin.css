@@ -662,7 +662,7 @@ body.loading *{
 
 .acf-editor-wrap iframe {
   min-height: 100px;
-  /*height: 120px !important;*/
+  height: 120px !important;
   max-height: 1000px;
 }
 

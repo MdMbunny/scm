@@ -440,7 +440,7 @@
 						'max_height' => $maxh,
 						'min_size' => $mins,
 						'max_size' => $maxs,
-						'mime_types' => $mime,
+						//'mime_types' => $mime,
 						'return_format' => $ret,
 					);
 

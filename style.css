@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.1.7
+Version:			v2.1.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -157,6 +157,7 @@ blockquote, q {
 
 ul {
 	list-style: none;
+
 }
 
 ol {
@@ -275,6 +276,10 @@ sup {
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
    color:    #ddd;
+}
+
+form br{
+	display: none;
 }
 
 input,

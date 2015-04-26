@@ -11,8 +11,8 @@ $args = [
 	'acf_fc_layout' => 'layout-titolo',
 	'title' => '',
 	'tag' => 'h1',
-	'prepend' => '',
-	'append' => '',
+	'prepend' => 'no',
+	'append' => 'no',
 	'id' => '',
     'class' => '',
     'attributes' => '',
@@ -82,9 +82,8 @@ if( !$text ){
     }
 }
 
-
-$prepend = ( $args['prepend'] ? ( $layout !== 'layout-quote' ? '<span class="prepend">' . $args['prepend'] . '</span>' : ( $args['prepend'] !== 'fa-no' ? '<i class="prepend fa ' . $args['prepend'] . '"></i>' : '' ) ) : '' );
-$append = ( $args['append'] ? ( $layout !== 'layout-quote' ? '<span class="append">' . $args['append'] . '</span>' : ( $args['append'] !== 'fa-no' ? '<i class="append fa ' . $args['append'] . '"></i>' : '' ) ) : '' );
+$prepend = ( $args['prepend'] && $args['prepend'] != 'no' ? ( $layout !== 'layout-quote' ? '<span class="prepend">' . $args['prepend'] . '</span>' : ( $args['prepend'] !== 'fa-no' ? '<i class="prepend fa ' . $args['prepend'] . '"></i>' : '' ) ) : '' );
+$append = ( $args['append'] && $args['append'] != 'no' ? ( $layout !== 'layout-quote' ? '<span class="append">' . $args['append'] . '</span>' : ( $args['append'] !== 'fa-no' ? '<i class="append fa ' . $args['append'] . '"></i>' : '' ) ) : '' );
 //$text = ( startsWith( $text, '<p>' ) ? str_replace( '<p>', '', $text ) : $text );
 //$text = ( endsWith( $text, '</p>' ) ? str_replace( '</p>', '', $text ) : $text );
 $text = $prepend . $text . $append;
