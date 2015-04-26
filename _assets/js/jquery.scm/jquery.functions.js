@@ -48,7 +48,7 @@
 	} 
 
 	// WORDPRESS
-
+/*
 	$.wpUpdateOption = function( name, value, fun ) {
 
 		$.post(
@@ -60,5 +60,5 @@
 		);
 
     }
-
+*/
 })( jQuery );

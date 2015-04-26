@@ -211,8 +211,6 @@
 
                 $id = $value['id'];
                 $slug = ( $value['name'] ? sanitize_title( $value['name'] ) : $id );
-                $family = str_replace( ' ', '+', $value['family'] );
-                $styles = implode( ',', $value['select_webfonts_google_styles'] );
                 wp_register_script( 'webfonts-adobe-' . $slug , '//use.typekit.net/' . $id . '.js', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_script( 'webfonts-adobe-' . $slug );
                 
@@ -353,58 +351,36 @@
     if ( ! function_exists( 'scm_site_assets_styles_inline' ) ) {
         function scm_site_assets_styles_inline() {
 
-            $html = scm_options_get( 'bg_color', 'loading', 1 );
-            $html .= ( scm_options_get( 'bg_image', 'loading', 1 ) ?: '' );
-            $html .= scm_options_get( 'bg_size', 'loading', 1 );
+            $html = scm_options_get( 'bg_color', 'styles-loading', 1 );
+            $html .= ( scm_options_get( 'bg_image', 'styles-loading', 1 ) ?: '' );
+            $html .= scm_options_get( 'bg_size', 'styles-loading', 1 );
 
             $font = scm_options_get( 'font', 'option', 1 );
+
 
             $opacity = scm_options_get( 'opacity', 'option', 1 );
 
             $line_height = scm_options_get( 'line_height', 'option', 1 );
 
             $body = scm_options_get( 'align', 'option', 1 );
+
             $body .= scm_options_get( 'size', 'option', 1 );
             $body .= scm_options_get( 'color', 'option', 1 );
             $body .= scm_options_get( 'weight', 'option', 1 );
             $body .= scm_options_get( 'shadow', 'option', 1 );
             $body .= scm_options_get( 'margin', 'option', 1 );
             $body .= scm_options_get( 'padding', 'option', 1 );
-            /*$body .= scm_options_get( 'bg_image', 'sc', 1 );
-            $body .= scm_options_get( 'bg_repeat', 'sc', 1 );
-            $body .= scm_options_get( 'bg_position', 'sc', 1 );
-            $body .= scm_options_get( 'bg_size', 'sc', 1 );
-            $body .= scm_options_get( 'bg_color', 'sc', 1 );*/
 
             $body .= scm_options_get( 'bg_image', 'option', 1 );
             $body .= scm_options_get( 'bg_repeat', 'option', 1 );
             $body .= scm_options_get( 'bg_position', 'option', 1 );
             $body .= scm_options_get( 'bg_size', 'option', 1 );
             $body .= scm_options_get( 'bg_color', 'option', 1 );
-            
-            /*$primary = scm_options_get( 'font', 'heading_1', 1 );
-            $primary .= scm_options_get( 'weight', 'heading_1', 1 ) ?: '700';
-            $primary .= scm_options_get( 'color', 'heading_1', 1 );
-            $primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) ?: '0' ) . 'em;';
-            //$primary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_1', 0, '' ) - .3 ?: '0' ) . 'em;';
-
-            $secondary = scm_options_get( 'font', 'heading_2', 1 );
-            $secondary .= scm_options_get( 'weight', 'heading_2', 1 ) ?: '700';
-            $secondary .= scm_options_get( 'color', 'heading_2', 1 );
-            $secondary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_2', 0, '' ) ?: '0' ) . 'em;';
-            //$secondary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_2', 0, '' ) - .3 ?: '0' ) . 'em;';
-
-            $tertiary = scm_options_get( 'font', 'heading_3', 1 );
-            $tertiary .= scm_options_get( 'weight', 'heading_3', 1 ) ?: '700';
-            $tertiary .= scm_options_get( 'color', 'heading_3', 1 );
-            $tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) ?: '0' ) . 'em;';
-            //$tertiary .= 'margin-bottom:' . ( (float)scm_options_get( 'after', 'heading_3', 0, '' ) - .3 ?: '0' ) . 'em;';*/
 
             $menu_font = scm_options_get( 'font', 'menu', 1 );
 
-            $top_bg = scm_options_get( 'bg_color', 'topofpage', 1 );
-            $top_icon = scm_options_get( 'text_color', 'topofpage', 1 );
-
+            $top_bg = scm_options_get( 'bg_color', 'opt-tools-topofpage-bg', 1 );
+            $top_icon = scm_options_get( 'text_color', 'opt-tools-topofpage-txt', 1 );
 
             // Print Main Style
 
@@ -420,10 +396,6 @@
 
             $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
 
-            /*$css .= '.primary, .primary i { ' . $primary . ' }' . lbreak();
-            $css .= '.secondary, .secondary i { ' . $secondary . ' }' . lbreak();
-            $css .= '.tertiary, .tertiary i { ' . $tertiary . ' }' . lbreak();*/
-
             $css .= '.navigation { ' . $menu_font . ' }' . lbreak();
 
             $css .= '.topofpage { ' . $top_bg . ' }' . lbreak();
@@ -432,7 +404,7 @@
 
             // Responsive
 
-            $r_max = (int)scm_field( 'select_responsive_layouts_max', '1400', 'option' );
+            $r_max = (int)scm_field( 'layout-max', '1400', 'option' );
             
             if( $r_max >= 1400 )
                 $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
@@ -462,12 +434,13 @@
             if( $r_max >= 700 )
                 $css .= '.r700 .responsive { width: 700px; }' . lbreak();
 
-            $r_full = scm_field( 'select_responsive_events_tofull', '', 'option' );
-        
-            if( $r_full )
-                $css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
+            $r_full = scm_field( 'layout-tofull', '', 'option' );
 
-            $css .= '.smart .responsive { width: 100%; }' . lbreak();
+            //if( $r_full )
+                //$css .= '{ width: 100%; }' . lbreak();
+            //$css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
+
+            $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
             $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-desktop', -1, 'option' );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
@@ -508,6 +481,7 @@
     // Used by jQuery to get stored ANCHOR data - [ for smooth scroll from page to page ]
     if ( ! function_exists( 'scm_anchor' ) ) {
         function scm_anchor() {
+
             $new_value = ( $_POST['data'] ?: '' );
 
                 update_option( 'scm-utils-anchor', $new_value );
@@ -529,8 +503,6 @@
         ?>
 
 <script type="text/javascript">
-
-console.log( 'read' );
 
     var GALLERIES = <?php echo json_encode($SCM_galleries); ?>;
 

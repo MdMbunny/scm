@@ -33,7 +33,7 @@
 * 		scm_acf_field_type()
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-*
+* 		
 *		'message'				$message = ''								$esc_html = 0
 *		'tab'					$placement = 'top | side' || 0 | 1
 *			'-side'					$placement = 'side'
@@ -118,9 +118,10 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'category | tag | taxonomy'				$taxonomy = ''							$multiple = 0 | 1 || 'select | checkbox'				$load_save_terms = $multiple				$allow_null = 0 			$return_format = 'object'
+*		'category | tag | taxonomy'				$taxonomy = ''						$add = 0				$load_save_terms = $multiple		$allow_null = 0 				$return_format = 'object'
 * ———		'categories | tags | taxonomies' 		$multiple = 1
 * ———		'-id'									$return_format = 'id'
+* ———		'-add'									$add = 1
 * ———		'-{tax}'								$taxonomy = '{tax}'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -138,8 +139,8 @@
 *
 *		'icon'					$default = 'star'	 						$filter = [ 'social', 'job', ... ]	$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
 *		'color'					$default = '' || '#000000' etc.
-*		'date'					$return_format = 'd/m/y' 					$display_format = 'd/m/y'			$first_day' = 1
-*		'datetime'				$picker = 'slider | select' 				$date_format = 'd/m/y'				$time_format' = 'hh:mm' 		$show_week_number = 0 			$save_as_timestamp = 1 			$get_as_timestamp = 0
+*		'date'					$return_format = 'Y-m-d' 					$display_format = 'd F Y'			$first_day' = 1
+*		'datetime'				$picker = 'slider | select' 				$date_format = 'd F Y'				$time_format' = 'hh:mm' 		$show_week_number = 0 			$save_as_timestamp = 1 			$get_as_timestamp = 0
 *		'time'					$picker = 'slider | select' 				$time_format' = 'hh:mm' 			$save_as_timestamp = 1 			$get_as_timestamp = 0
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -164,20 +165,21 @@
 				$elem = $elem[0];
 			}
 			
-			$type = $elem;
-			$needle = strpos( $elem, '-' );
-			$extra = '';
 			$choices = array();
+
+			if( strpos( $elem, '-default' ) !== false ){
+				$choices['default'] = 'Default';
+				$elem = str_replace( '-default', '', $elem);
+			}
 	
-			if( strpos( $elem , '-no' ) !== false ){
+			if( endsWith( $elem, '-no' ) ){
 				$choices['no'] = '-';
 				$elem = str_replace( '-no', '', $elem);
 			}
 
-			if( strpos( $elem , '-default' ) !== false ){
-				$choices['default'] = 'Default';
-				$elem = str_replace( '-default', '', $elem);
-			}
+			$type = $elem;
+			$needle = strpos( $elem, '-' );
+			$extra = '';
 
 			if( $needle > 0 ){
 				$type = substr( $elem, 0, $needle );
@@ -338,21 +340,22 @@
 	        	case 'taxonomy':
 	        	case 'taxonomies':
 
-	        		$multi = ( strpos( $type, 's' ) !== false ?: ( isset( $arg[2] ) ? $arg[2] : 0 ) );
-	        		
+	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
 	        		$ret = ( isset( $arg[5] ) && $arg[5] && $arg[5] !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
 	        		$extra = str_replace( '-id', '', $extra );
 	        		$extra = str_replace( '-', '', $extra );
 
 	        		$tax = ( isset( $arg[1] ) ? $arg[1] : ( $extra ?: 'category' ) );
 					
-					$save = ( isset( $arg[3] ) ? $arg[3] : $multi );
-					
-	        		$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'checkbox' : 'checkbox' ) : 'select' ) );
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
+					$multi = ( strpos( $type, 's' ) !== false ?: 0 );
+					$add = ( isset( $arg[2] ) ? $arg[2] : 0 );
+					$save = ( $add ?: isset( $arg[3] ) ? $arg[3] : 0 );
 
+					$typ = ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'checkbox' : 'select' ) );
+										
+	        		//$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'checkbox' : 'checkbox' ) : 'select' ) );
+	        		
 //printPre( $name . ' : ' . $tax . ' save: ' . $save. ' arg: ' . $arg[3] . ' multi: ' . $multi );
-
 
 	        		$field = array(
 						'type' => 'taxonomy',
@@ -362,6 +365,7 @@
 						'allow_null' => $null,
 						'return_format' => $ret,
 						'field_type' => $typ,
+						'add_term' => $add
 					);
 
 	        	break;
@@ -450,9 +454,11 @@
 	        		$enqueue = ( isset( $arg[4] ) ? $arg[4] : 0 );
 	        		$null = ( isset( $arg[5] ) ? $arg[5] : 0 );
 
+	        		$no = isset( $choices['no'] );
+
 	        		$filter_group = '';
 	        		$new = '';
-
+	        		
 	        		$is_filter = strpos( $default, '_' );
 	        		if( $is_filter !== false ){
 	        			$new = substr( $default, 0, $is_filter );
@@ -469,6 +475,7 @@
 						'fa_live_preview' => 1,
 						'filter_group' => $filter_group,
 						'filter' => $filter,
+						'no_option' => $no,
 					);
 
 	        	break;
@@ -476,8 +483,8 @@
 
 	        	case 'date':
 
-	        		$ret = ( isset( $arg[1] ) ? $arg[1] : 'd/m/y' );
-	        		$dis = ( isset( $arg[2] ) ? $arg[2] : 'd/m/y' );
+	        		$ret = ( isset( $arg[1] ) ? $arg[1] : 'Y-m-d' );
+	        		$dis = ( isset( $arg[2] ) ? $arg[2] : 'd F Y' );
 	        		$first = ( isset( $arg[3] ) ? $arg[3] : 1 );
 	        		$field = array(
 						'type' => 'date_picker',
@@ -491,8 +498,8 @@
 				case 'datetime':
 
 	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'select' );
-	        		$date = ( isset( $arg[2] ) ? $arg[2] : 'd/m/y' );
-	        		$time = ( isset( $arg[3] ) ? $arg[3] : 'hh:mm' );
+	        		$date = ( isset( $arg[2] ) ? $arg[2] : 'd F y' );
+	        		$time = ( isset( $arg[3] ) ? $arg[3] : 'H:i' );
 	        		$week = ( isset( $arg[4] ) ? $arg[4] : 0 );
 	        		$save = ( isset( $arg[5] ) ? $arg[5] : 1 );
 	        		$get = ( isset( $arg[5] ) ? $arg[5] : 0 );
@@ -771,6 +778,8 @@
         }
     }
 
+
+
 // *****************************************************
 // *****************************************************
 // *****************************************************
@@ -824,6 +833,8 @@
 	if ( ! function_exists( 'scm_acf_field_choices_preset' ) ) {
         function scm_acf_field_choices_preset( $list, $get = '' ){
 
+        	global $post;
+
         	$choices = array();
 		        				
 			if( strpos( $list, 'types_' ) !== false ):
@@ -841,16 +852,26 @@
 	    	elseif( strpos( $list, 'wp_menu' ) !== false ):
 
 	    		$menus = get_registered_nav_menus();
+	    		$lang = '';
+	    		$def = '';
+
+	    		/*if( function_exists('pll_get_post_language') )
+            		$lang = pll_get_post_language( $post->ID );
+
+            	if( function_exists('pll_default_language') )
+            		$def = pll_default_language();
+
+            	$needle = ( $def === $lang ? $def : ( $lang ? '___' . $lang : $def ) );*/
 
 				foreach ( $menus as $location => $description ) {
 
-					if( !strpos( $location, '__en' ) )
+					//if( ( strpos( $location, '___' ) === false && $needle == $def ) || strpos( $location, $needle ) !== false )
 						$choices[ $location ] = $description;
 				};
 
 			elseif( strpos( $list, 'templates_' ) !== false ):
 				$pos = strpos( $list, 'templates_' ) + strlen( 'templates_' );
-				$type = substr( $list, $pos ) . '_temp';
+				$type = substr( $list, $pos ) . SCM_TEMPLATE_APP;
 
 				$temps = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ] );
 				foreach ( $temps as $temp):
@@ -1093,7 +1114,7 @@
 	        		'no' => 'Vuoto',
 	        		'line' => 'Linea',
 	        		'dashed' => 'Tratteggiato',
-	        		'dotted' => 'Punteggiato'
+	        		//'dotted' => 'Punteggiato'
 				);
 
 	        elseif( strpos( $list, 'line_cap' ) !== false ):
@@ -1105,7 +1126,8 @@
 			
 			elseif( strpos( $list, 'list_type' ) !== false ):
 	        	$choices = array(
-	        		'disc' => '<li style="list-style:disc;">Cerchio</li>',
+	        		'none' => 'Non puntato',
+	        		'disc' => 'Cerchio',
 	        		'circle' => 'Cerchio vuoto',
 	        		'square' => 'Quadrato',
 	        		'decimal' => 'Decimali',
@@ -1139,9 +1161,17 @@
 
 			elseif( strpos( $list, 'float' ) !== false ):
 	        	$choices = array(
-					'float-left' => 'Sinistra',
-					'float-right' => 'Destra',
-					'float-center' => 'Centrato',
+	        		'float-none' => 'No Float',
+					'float-left' => 'Float Sinistra',
+					'float-right' => 'Float Destra',
+					'float-center' => 'Float Centrato',
+				);
+
+	        elseif( strpos( $list, 'overlay' ) !== false ):
+	        	$choices = array(
+					'no-overlay' => 'No Overlay',
+					'overlay' => 'Overlay',
+					'underlay' => 'Underlay',
 				);
 
 			elseif( strpos( $list, 'units' ) !== false ):
@@ -1153,32 +1183,54 @@
 
 	        elseif( strpos( $list, 'headings' ) !== false ):
 
-	        	$default = array(
-	        		/*"headings_1" => "primary",
-	        		"headings_2" => "secondary",
-	        		"headings_3" => "tertiary",*/
-	        	);
-
-	        	$choices = array(
-					"h1" => "h1",
-					"h2" => "h2",
-					"h3" => "h3",
-					"h4" => "h4",
-					"h5" => "h5",
-					"h6" => "h6",
-					".h7" => ".h7",
-					".h8" => ".h8",
-					".h9" => ".h9",
-					".h0" => ".h0",
-					"strong" => "strong",
-					"div" => "div",
-					"span" => "span",
+	        	$max = array(
+					'h2' => 'Primario',
+					'h3' => 'Secondario',
+					'h4' => 'Terziario',
 				);
 
-				if( strpos( $list, 'headings_complete' ) !== false ){
-					$choices = array_merge( $default, $choices );
-				}else if( strpos( $list, 'headings_default' ) !== false ){
-					$choices = $default;
+	        	$min = array(
+					'p' => 'p',
+					'span' => 'span',
+					'strong' => 'strong',
+				);
+
+	        	$low = array(
+					'p' => 'p',
+					'span' => 'span',
+					'strong' => 'strong',
+					'div' => 'div',
+					'h6' => 'h6',
+					'h5' => 'h5',
+					'h4' => 'h4',
+					'h3' => 'h3',
+					'h2' => 'h2',
+					'h1' => 'h1',
+				);
+
+	        	$choices = array(
+					'h1' => 'h1',
+					'h2' => 'h2',
+					'h3' => 'h3',
+					'h4' => 'h4',
+					'h5' => 'h5',
+					'h6' => 'h6',
+					'.h7' => '.h7',
+					'.h8' => '.h8',
+					'.h9' => '.h9',
+					'.h0' => '.h0',
+					'strong' => 'strong',
+					'div' => 'div',
+					'span' => 'span',
+					'p' => 'p',
+				);
+
+				if( strpos( $list, 'headings_low' ) !== false ){
+					$choices = $low;
+				}else if( strpos( $list, 'headings_min' ) !== false ){
+					$choices = $min;
+				}else if( strpos( $list, 'headings_max' ) !== false ){
+					$choices = $max;
 				};
 
 			elseif( strpos( $list, 'columns_width' ) !== false ):
@@ -1244,12 +1296,28 @@
 				);
 			
 			elseif( strpos( $list, 'responsive_events' ) !== false ):
-				$choices = array(
-					'smart'			=> 'Mobile',
-					'portrait'		=> 'Tablet Portrait',
-					'tablet'		=> 'Tablet Landscape',
-					'desktop'		=> 'Desktop',
-				);
+
+
+
+				if( strpos( $list, '_width' ) !== false ):
+
+					$choices = array(
+						'700px'			=> 'Mobile',
+						'800px'			=> 'Tablet Portrait',
+						'1030px'		=> 'Tablet Landscape',
+						'1120px'		=> 'Desktop',
+					);
+				
+				else:		
+
+					$choices = array(
+						'smart'			=> 'Mobile',
+						'portrait'		=> 'Tablet Portrait',
+						'tablet'		=> 'Tablet Landscape',
+						'desktop'		=> 'Desktop',
+					);
+
+				endif;
 
 			elseif( strpos( $list, 'responsive_up' ) !== false ):
 				$choices = array(
@@ -1317,9 +1385,10 @@
 
 					$choices = array('no' => 'No Adobe font');
 					$kits = scm_field( 'styles-adobe', array(), 'option' );
-					//consoleLog( $kits );
 					foreach ( $kits as $field):
 						$kit = $SCM_typekit->get( $field['id'] );
+						if( !$kit || !$kit['kit'] )
+							continue;
 						foreach ( $kit['kit']['families'] as $family):
 							$choices[$family['slug']] = $family['name'];
 						endforeach;
@@ -1364,11 +1433,11 @@
 
 			elseif( strpos( $list, 'font_weight' ) !== false ):
 				$choices = array(
-					'lighter' => 'Light',
-					'normal' => 'Normal',
+					'300' => 'Light',
+					'400' => 'Normal',
 					//'semi' => 'Semi Bold',
-					'bold' => 'Bold',
-					//'extra' => 'Extra Bold',
+					'700' => 'Bold',
+					//'900' => 'Extra Bold',
 				);
 
 			elseif( strpos( $list, 'line_height' ) !== false ):
@@ -1425,13 +1494,22 @@
 					'rounded' 		=> 'Arrotondato',
 				);
 
-			elseif( strpos( $list, 'box_angle_size' ) !== false ):
+			elseif( strpos( $list, 'simple_size' ) !== false ):
 				$choices = array(
 					'normal' 	=> 'Normale',
-					'min' 		=> 'Minima',
-					'small' 	=> 'Piccola',
+					'min' 		=> 'Minimo',
+					'small' 	=> 'Piccolo',
+					'medium' 	=> 'Medio',
 					'big' 		=> 'Grande',
-					'max' 		=> 'Massima',
+					'max' 		=> 'Massimo',
+				);
+
+			elseif( strpos( $list, 'date_format' ) !== false ):
+				$choices = array(
+					'dmy' 		=> '09 06 15',
+					'dmY' 		=> '09 06 2015',
+					'd F Y' 	=> '09 Giugno 2015',
+					'd M y' 	=> '09 Giu 15',
 				);
 			
 			elseif( strpos( $list, 'box_angle_type' ) !== false ):

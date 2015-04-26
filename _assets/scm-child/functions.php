@@ -12,97 +12,129 @@
  Text Domain:  scm-child
 */
 
+/* CUSTOM FRONT (Front End) */
 
-/* CUSTOM LAYOUT */
+// Define the Object Link ( for Template Link option )
+add_filter('scm_filter_object_link/{post_type}', 'my_object_link', 10, 2 );
 
-add_filter('scm_filter_element_before', 'scm_custom_element_before', 10, 2 );
+    if ( ! function_exists( 'my_object_link' ) ) {
+        function my_object_link( $link, $id ){
 
-    !function_exists( 'scm_custom_element_before' ) ) {
-        function scm_custom_element_before( $layouts, $type ){
-            return $layouts;
+            return scm_field( '{field_name}', '', $id );
+
         }
     }
 
-add_filter('scm_filter_element', 'scm_custom_element', 10, 2 );
 
-    !function_exists( 'scm_custom_element' ) ) {
-        function scm_custom_element( $layouts, $type ){
-            return $layouts;
-        }
-    }
-
-add_filter('scm_filter_acf_layout/title/link', 'scm_custom_layout_title_link', 10, 2 );
-add_filter('scm_filter_acf_layout/tax/link', 'scm_custom_layout_tax_link', 10, 2 );
-add_filter('scm_filter_acf_layout/date/link', 'scm_custom_layout_date_link', 10, 2 );
+// Modidy Existing Field Content before it is elaborated
+add_filter('scm_filter_echo_content/layout-{name}', 'my_content', 10, 2 );
     
-    !function_exists( 'scm_custom_layout_title_link' ) ) {
-        function scm_custom_layout_title_link( $field, $type ){
-            return $field;
+    if ( ! function_exists( 'my_content' ) ) {
+        function my_content( $content ){
+
+            $content = [
+                'acf_fc_layout' => 'layout-{name}',
+                'id' => '...',
+                'class' => '...',
+                'attributes' => '...',
+                'link' => '...',
+                'float' => '...',
+                'alignment' => '...',
+                'overlay' => '...',
+                'auto_width' => '...',
+                '{field}' => '...',
+                ...
+            ];
+
+            return $content;
+
         }
     }
-    !function_exists( 'scm_custom_layout_tax_link' ) ) {
-        function scm_custom_layout_tax_link( $field, $tax, $type ){
-            return $field;
-        }
-    }
-    !function_exists( 'scm_custom_layout_date_link' ) ) {
-        function scm_custom_layout_date_link( $field, $type ){
-            return $field;
-        }
-    }
-add_filter('scm_filter_acf_layout/title', 'scm_custom_layout_title', 10, 2 );
-add_filter('scm_filter_acf_layout/tax', 'scm_custom_layout_tax', 10, 2 );
-add_filter('scm_filter_acf_layout/date', 'scm_custom_layout_date', 10, 2 );
+
+// Echo Custom Content
+add_filter('scm_filter_echo_content/{content}', 'my_content', 10, 2 );
     
-    !function_exists( 'scm_custom_layout_title' ) ) {
-        function scm_custom_layout_title( $fields, $type ){
+    if ( ! function_exists( 'my_content' ) ) {
+        function my_content( $content, $indent ){
+
+            if ( isset( $content[ 'acf_fc_layout' ] ){
+            
+                switch ( $content[ 'acf_fc_layout' ] ) {
+                    case 'layout-...':
+                        echo indent( $indent ) . '<div class="' . $content['class'] . '">' $content['{custom_field}'] . '</div>' . lbreak();
+                    break;
+
+                    default:
+                    break;
+                }
+            }
+
+            
+
+        }
+    }
+
+
+/* CUSTOM LAYOUT (Admin End) */
+
+add_filter('scm_filter_layout/title/{post_type}', '_my_layout_title', 10, 2 );
+add_filter('scm_filter_layout/tax/{post_type}', '_my_layout_tax', 10, 2 );
+add_filter('scm_filter_layout/date/{post_type}', '_my_layout_date', 10, 2 );
+add_filter('scm_filter_layout/title', 'my_layout_title', 10, 2 );
+add_filter('scm_filter_layout/tax', 'my_layout_tax', 10, 2 );
+add_filter('scm_filter_layout/date', 'my_layout_date', 10, 2 );
+    
+    !function_exists( 'my_layout_title' ) ) {
+        function my_layout_title( $fields, $type ){
             return $fields;
         }
     }
-    !function_exists( 'scm_custom_layout_tax' ) ) {
-        function scm_custom_layout_tax( $fields, $tax, $type ){
+    !function_exists( 'my_layout_tax' ) ) {
+        function my_layout_tax( $fields, $tax, $type ){
             return $fields;
         }
     }
-    !function_exists( 'scm_custom_layout_date' ) ) {
-        function scm_custom_layout_date( $fields, $type ){
+    !function_exists( 'my_layout_date' ) ) {
+        function my_layout_date( $fields, $type ){
             return $fields;
         }
     }
 
-add_filter('scm_filter_acf_layout/width', 'scm_custom_layout_width', 10, 2 );
+add_filter('scm_filter_layout/width/{post_type}', '_my_layout_width', 10, 2 );
+add_filter('scm_filter_layout/width', 'my_layout_width', 10, 2 );
 
-    !function_exists( 'scm_custom_layout_width' ) ) {
-        function scm_custom_layout_width( $layouts, $type ){
+    !function_exists( 'my_layout_width' ) ) {
+        function my_layout_width( $layouts, $type ){
             return $layouts;
         }
     }
 
-add_filter('scm_filter_acf_layout', 'scm_custom_layout', 10, 2 );
+add_filter('scm_filter_layout/{post_type}', '_my_layout', 10, 2 );
+add_filter('scm_filter_layout', 'my_layout', 10, 2 );
 
-    !function_exists( 'scm_custom_layout' ) ) {
-        function scm_custom_layout( $layouts, $type ){
+    !function_exists( 'my_layout' ) ) {
+        function my_layout( $layouts, $type ){
             return $layouts;
         }
     }
 
     
-/* CUSTOM FIELDS */
+/* CUSTOM FIELDS (Back End) */
 
-add_filter('scm_filter_acf_register_before', 'scm_custom_fields_before' );
-add_filter('scm_filter_acf_register', 'scm_custom_fields' );
+add_filter('scm_filter_register_before', 'my_fields_before' );
+add_filter('scm_filter_register', 'my_fields' );
 
 
-    if ( ! function_exists( 'scm_custom_fields_before' ) ) {
-        function scm_custom_fields_before( $groups ){
+    if ( ! function_exists( 'my_fields_before' ) ) {
+        function my_fields_before( $groups ){
 
             return $groups;
 
         }
     }
 
-    if ( ! function_exists( 'scm_custom_fields' ) ) {
-        function scm_custom_fields( $groups ){
+    if ( ! function_exists( 'my_fields' ) ) {
+        function my_fields( $groups ){
 
             /*$group = scm_acf_group( 'Custom', 'cliente-custom-single' );
             $group['location'][] = scm_acf_group_location( 'custom-cliente' );
@@ -119,17 +151,17 @@ add_filter('scm_filter_acf_register', 'scm_custom_fields' );
 
 /* CUSTOM PAGES */
 
-add_action( 'scm_action_acf_option_pages_before', 'scm_custom_option_pages_before' );
-add_action( 'scm_action_acf_option_pages', 'scm_custom_option_pages' );
+add_action( 'scm_action_option_pages_before', 'my_option_pages_before' );
+add_action( 'scm_action_option_pages', 'my_option_pages' );
 
-    if ( ! function_exists( 'scm_custom_option_pages_before' ) ) {
-        function scm_custom_option_pages_before(){
+    if ( ! function_exists( 'my_option_pages_before' ) ) {
+        function my_option_pages_before(){
 
         }
     }
 
-    if ( ! function_exists( 'scm_custom_option_pages' ) ) {
-        function scm_custom_option_pages(){
+    if ( ! function_exists( 'my_option_pages' ) ) {
+        function my_option_pages(){
 
             /*if( function_exists('acf_add_options_page') ) {
 

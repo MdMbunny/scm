@@ -123,9 +123,8 @@
             }
 
             // LANGUAGE classes - NEEDS PolyLang Plugin - (includerlo nel tema?)
-            if(function_exists('pll_current_language')){
-                $classes[] = 'lang-' . pll_current_language();
-            }
+            if( function_exists('pll_current_language') )
+                $classes[] = 'lang-' . ( pll_current_language() ?: language_attributes() );
 
             return $classes;
         }
@@ -186,7 +185,7 @@
             
             $logo_id = scm_field( 'opt-ids-branding', 'site-branding', 'option' );
 
-            $follow = scm_field( 'follow-enabled', 0, 'option' );
+            //$follow = scm_field( 'follow-enabled', 0, 'option' );
 
             $logo_image = esc_url( scm_field( 'brand-logo', '', 'option' ) );
             $logo_height = scm_field( 'brand-height-number', 'auto', 'option' );
@@ -201,7 +200,7 @@
             $logo_type = scm_field( 'brand-head', 'text', 'option' );
 
             $logo_class = 'header-column site-branding ';
-            $logo_class .= ( ( $logo_align != 'center' || $follow ) ? 'half-width ' : 'full ' );
+            $logo_class .= ( ( $logo_align != 'center' ) ? 'half-width float-' . $logo_align . ' ' : 'full ' );
             $logo_class .= $logo_align . ' inlineblock';
             
             //SEO logo HTML tag
@@ -244,66 +243,34 @@
             if( !$follow || !$follow_soggetto )
                 return;
             
-            $follow_id = scm_field( 'opt-ids-social-follow', 'site-social-follow', 'option' );
-
             $follow_align = scm_field( 'follow-alignment', 'right', 'option' );
-            $follow_size = scm_field( 'follow-size-number', 16, 'option' );
-            $follow_size = ( is_numeric( $follow_size ) ? $follow_size . scm_field( 'follow-size-units', 'px', 'option' ) : $follow_size );
 
-            $follow_color = scm_field( 'follow-rgba-color', '', 'option' );
-            $follow_color = ( $follow_color ? hex2rgba( $follow_color, scm_field( 'follow-rgba-alpha', 1, 'option' ) ) : '' );
-
-            $follow_shape = scm_field( 'follow-shape', 'no', 'option' );
-
-            $follow_shape_size = ( $follow_shape != 'square' ? ' ' . scm_field( 'follow-shape-size', 'normal', 'option' ) : '' );
-            $follow_shape_angle = ( $follow_shape != 'square' ? ' ' . scm_field( 'follow-shape-angle', 'all', 'option' ) : '' );
-
-            //printPre($follow_shape);
-
-            $follow_bg = scm_field( 'follow-box-color', '', 'option' );
-            $follow_bg = ( $follow_bg ? hex2rgba( $follow_bg, scm_field( 'follow-box-alpha', 1, 'option' ) ) : 'transparent' );
-
-            $follow_social = get_field( 'soggetto-follow-contatti', $follow_soggetto->ID );
-
-
-            $follow_class = 'button-list horizontal header-column site-social-follow ';
+            $follow_id = scm_field( 'opt-ids-social-follow', 'site-social-follow', 'option' );
+            $follow_class = 'header-column site-social-follow ';
             $follow_class .= ( $follow_align != 'center' ? 'half-width float-' . $follow_align . ' ' : 'full ' );
             $follow_class .= $follow_align . ' inlineblock';
 
             $in = $SCM_indent + 1;
 
-            indent( $in, '<ul id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
+            indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
 
-            foreach ($follow_social as $social) {
+                scm_contents( [
+                'acf_fc_layout' => 'layout-social_follow',
+                'display' => 'inlineblock',
+                'element' => $follow_soggetto,
+                'alignment' => $follow_align,
+                'size-number' => scm_field( 'follow-size-number', 16, 'option' ),
+                'size-units' => scm_field( 'follow-size-units', 'px', 'option' ),
+                'rgba-color' => scm_field( 'follow-rgba-color', '', 'option' ),
+                'rgba-alpha' => scm_field( 'follow-rgba-alpha', 1, 'option' ),
+                'shape' => scm_field( 'follow-shape', 'no', 'option' ),
+                'shape-size' => scm_field( 'follow-shape-size', 'normal', 'option' ),
+                'shape-angle' => scm_field( 'follow-shape-angle', 'all', 'option' ),
+                'box-color' => scm_field( 'follow-box-color', '', 'option' ),
+                'box-alpha' => scm_field( 'follow-box-alpha', 1, 'option' ),
+            ] );
 
-                if( !$follow_color ){
-                    foreach ($SCM_fa['social'] as $value) {
-                        $index = getByValue( $value['choices'], $social['icon'] );
-                        if( $index !== false ){
-                            $social['color'] = ( $value['color'] ?: $follow_color );
-                            break;
-                        }
-                    }
-                }else{
-                    $social['color'] = $follow_color;
-                }
-
-                $style = 'font-size:' . $follow_size . '; color:' . $social['color'] . '; background-color:' . $follow_bg . ';';
-
-                $class = 'social-follow button-icon';
-                $class .= ( $follow_shape != 'no' ? ' button ' . $follow_shape . $follow_shape_size . $follow_shape_angle : '' );
-                
-                indent( $in + 1, '<li><a class="' . $class . '" style="' . $style . '" href="' . $social['link'] . '" target="_blank" title="' . ( $social['name'] ?: '' ) . '" alt="' . $social['link'] . '"><i class="fa ' . $social['icon'] . '"></i></a></li>', 2 );
-            
-            }
-
-            indent( $in, '</ul><!-- #site-social-follow -->', 2 );
-
-            // +++ todo: in scm-front.php dove costruisco i vari elementi, ci sarebbe da aggiungere il .button (forse per ora anche il .social-follow)
-            // così in casi come questo creo solo il div che conterrà una lista di .button
-
-            // +++ todo: devi creare un elemento button-icon (e button-image) in scm-acf-fields.php, o forse in scm-acf-layouts.php
-            // che conterrà ICON, TEXT e LINK, come ora i social e i contacts
+            indent( $in, '</div><!-- #site-social-follow -->', 2 );
 
         }
     }
@@ -334,14 +301,15 @@
 
             $menu_layout = scm_field( 'layout-page', 'full', 'option' );
             $row_layout = scm_field( 'layout-menu', 'full', 'option' );
+            $row_class = '';
             
-            if( $position == 'inline' ){
+            if( $position == 'inline' && $align != 'center' ){
                 $menu_class .= 'half-width float-' . $align;
                 $row_class = 'full';
             }else{
                 $menu_class .= $menu_layout . ' ' . $site_align;
                 $row_class = $row_layout . ' ' . $align;
-            }            
+            }
 
             $menu_data_toggle = $toggle_active;
             $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
@@ -363,10 +331,18 @@
                 $sticky_id = $id . '-sticky';
 
                 $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
-                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' ) . $sticky_layout . ' ' . $site_align;
+                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' );// . $sticky_layout . ' ' . $site_align;
 
                 $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
-                $sticky_row_class = $sticky_row_layout . ' ' . $align;
+                $sticky_row_class = '';// $sticky_row_layout . ' ' . $align;
+
+                if( $position == 'inline' && $align != 'center' ){
+                    $sticky_row_class .= ' half-width float-' . $align . ' ' . $align;
+                    //$sticky_row_class = ' full ';
+                }else{
+                    $sticky_class .= $sticky_layout . ' ' . $site_align;
+                    $sticky_row_class = $sticky_row_layout . ' ' . $align;
+                }
 
                 $sticky_data_toggle = $toggle_active;
                 $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
@@ -429,7 +405,9 @@
                     $type = 'external';
                 }
 
-                $has_children = getByValue( $object->classes, 'menu-item-has-children' );
+                $classes = $object->classes;
+
+                $has_children = ( isset( $classes ) ? getByValue( $object->classes, 'menu-item-has-children' ) : false );
                 
                 $link = '<a href="' . $url . '"' . $anchor . '>' . $content . '</a>';
 
@@ -472,17 +450,16 @@
             if( is_array( $id ) )
                 extract( wp_parse_args( $id, $default ) );
 
-            $perma = get_permalink();
+            //$perma = get_permalink();
             $home = get_home_url();
 
-            //consoleLog($perma);
-            //consoleLog($home);
+            //$toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
+            $toggle_link = ( $sticky ? '#top' : $home );
 
-            $toggle_link = ( strpos($perma, $home) !== false ? '#top' : $home );
-
-            $toggle_icon = 'fa ' . scm_field( 'menu-toggle-icon', 'fa-bars', 'option' );
-            $home_icon = 'fa ' . scm_field( 'menu-home-icon', 'fa-home', 'option' );
+            $toggle_icon = 'fa ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
+            $home_icon = 'fa ' . ( $sticky ? scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' ) : scm_field( 'menu-home-icon', 'fa-home', 'option' ) );
             $image_icon = scm_field( 'menu-home-image', '', 'option' );
+
 
             $ul_id = $id . '-menu';
             $ul_class = 'menu';
@@ -492,6 +469,8 @@
                 data-sticky-type="' . $type . '" 
                 data-sticky-offset="' . $offset . '" 
                 data-sticky-attach="' . $attach . '" ' : '' );
+
+
 
             $in = $SCM_indent + 1;
 
@@ -506,7 +485,7 @@
                     $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 
                         $wrap .= indent( $in + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
-                        $wrap .= indent( $in + 3 ) . '<a href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
+                        $wrap .= indent( $in + 3 ) . '<a class="icon-home" href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
 
                     $wrap .= indent( $in + 2 ) . '</div>' . lbreak(2);
                 
@@ -525,19 +504,13 @@
 
                 }
 
-                    $wrap .= indent( $in + 2 ) . '<ul class="toggle-content %2$s">%3$s</ul>' . lbreak(2);
-
-                        /*$wrap .= '%3$s' . lbreak();
-
-                    $wrap .= indent( $in + 2 ) . '</ul>' . lbreak(2);*/
+                    $wrap .= indent( $in + 2 ) . '<ul class="toggle-content %2$s">' . lbreak(2) . '%3$s' . lbreak() . indent( $in + 2 ) . '</ul>' . lbreak(2);
 
                 $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
             $wrap .= indent( $in ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
 
             $SCM_indent += 2;
-
-            //consoleLog($wrap);
 
             // Print Menu
             wp_nav_menu( array(
@@ -640,10 +613,10 @@
 
             global $SCM_indent;
             
-            $id = scm_field( 'id_topofpage', 'site-topofpage', 'option' );
-            $icon = scm_field( 'tools_topofpage_icon', 'fa-angle-up', 'option' );
-            $text = scm_field( 'tools_topofpage_title', __( 'Inizio Pagina', SCM_THEME ), 'option' );
-            $offset = scm_field( 'tools_topofpage_offset', 0, 'option' );
+            $id = scm_field( 'opt-ids-topofpage', 'site-topofpage', 'option' );
+            $icon = scm_field( 'opt-tools-topofpage-icon', 'fa-angle-up', 'option' );
+            $text = scm_field( 'opt-tools-topofpage-title', __( 'Inizio Pagina', SCM_THEME ), 'option' );
+            $offset = scm_field( 'opt-tools-topofpage-offset', 0, 'option' );
             $title = $text;
 
             echo lbreak(2);

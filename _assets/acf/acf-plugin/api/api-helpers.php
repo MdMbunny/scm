@@ -561,7 +561,7 @@ function acf_get_post_types( $exclude = array(), $include = array() ) {
 	
 	
 	// core exclude
-	$exclude = wp_parse_args( $exclude, array( 'acf-field', 'acf-field-group', 'revision', 'nav_menu_item' ) );
+	$exclude = wp_parse_args( $exclude, array('acf-field', 'acf-field-group', 'revision', 'nav_menu_item') );
 	
 	
 	// include
@@ -588,6 +588,10 @@ function acf_get_post_types( $exclude = array(), $include = array() ) {
 		unset( $post_types[ $i ] );
 		
 	}
+	
+	
+	// simplify keys
+	$post_types = array_values($post_types);
 	
 	
 	// return
@@ -1845,17 +1849,6 @@ function acf_debug_end() {
 
 function acf_get_updates() {
 	
-	// cache
-	$found = false;
-	$cache = wp_cache_get( 'acf_get_updates', 'acf', false, $found );
-	
-	if( $found ) {
-	
-		return $cache;
-		
-	}
-	
-	
 	// vars
 	$updates = array();
 	$plugin_version = acf_get_setting('version');
@@ -1907,10 +1900,6 @@ function acf_get_updates() {
         
     }
     
-    
-    // set cache
-	wp_cache_set( 'acf_get_updates', $updates, 'acf' );
-	
     
     // return
     return $updates;

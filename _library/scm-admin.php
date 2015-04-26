@@ -35,16 +35,18 @@
     add_action( 'admin_menu', 'scm_admin_menu');
 
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
-    add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
+    add_action( 'admin_head', 'scm_admin_remove_metalinks' );
+    //add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
-    add_action( 'current_screen', 'scm_current_screen' );
+    //add_action( 'current_screen', 'scm_current_screen' );
     add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
     add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3 );
+    add_action( 'admin_init', 'scm_admin_plugins' );
 
-    add_action( 'admin_init', 'scm_upload_sizes' );
-    add_filter( 'image_size_names_choose', 'scm_custom_sizes' );
+    add_action( 'admin_init', 'scm_admin_upload_sizes' );
+    add_filter( 'image_size_names_choose', 'scm_admin_custom_sizes' );
     //add_filter('wp_handle_upload_prefilter', 'scm_upload_set_filename', 1, 1);
     //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
     //add_filter( 'upload_dir', 'scm_upload_set_directory' );
@@ -174,8 +176,6 @@
             
             $users = $menu[70];
             
-
-            //consoleLog($menu);
             $menu[5] = $pages;
             $menu[10] = array('','read',"separator3",'','wp-menu-separator');
             $menu[20] = array('','read',"separator4",'','wp-menu-separator');
@@ -233,13 +233,21 @@
             remove_meta_box('dashboard_primary', 'dashboard', 'side');   // WordPress blog
             remove_meta_box('dashboard_secondary', 'dashboard', 'side');   // Other WordPress News
         }
+    }
 
-        //$screen = get_current_screen();
-        //alert( $screen->base );
+// Remove Screen Meta Links to Users
+    if ( ! function_exists( 'scm_admin_remove_metalinks' ) ) {
+        function scm_admin_remove_metalinks(){
+
+            if( current_user_can( 'manage_options' ) )
+                return;
+
+            echo '<style>#screen-meta-links{display: none !important;}</style>';  
+        }
     }
 
 // Hide Administrator From User List
-    if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
+    /*if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
         function scm_admin_hide_from_users($user_search) {
             $user = wp_get_current_user();
             if (!is_admin()) { // Is Not Administrator - Remove Administrator
@@ -255,7 +263,7 @@
                 );
             }
         }
-    }
+    }*/
 
 // Hide Tools from Toolbar (Top Bar)
     if ( ! function_exists( 'scm_admin_hide_tools' ) ) {
@@ -265,7 +273,7 @@
             $wp_admin_bar->remove_node( 'new-post' );
             $wp_admin_bar->remove_node( 'new-media' );
             $wp_admin_bar->remove_node( 'new-page' );
-            $wp_admin_bar->remove_node( 'new-sections' );
+            //$wp_admin_bar->remove_node( 'new-sections' );
         }
     }
 
@@ -274,7 +282,7 @@
 // *********************************************
     
 
-    if ( ! function_exists( 'scm_current_screen' ) ) {
+    /*if ( ! function_exists( 'scm_current_screen' ) ) {
         function scm_current_screen( $current_screen ){
             global $SCM_current_screen;
 
@@ -282,7 +290,7 @@
 
             //printPre( $current_screen );
         }
-    }
+    }*/
 
 
 // Change the upload path to the one we want
@@ -350,8 +358,8 @@
 
 
 //Add Sizes for Uploaded Images
-    if ( ! function_exists( 'scm_upload_sizes' ) ) {
-        function scm_upload_sizes(){
+    if ( ! function_exists( 'scm_admin_upload_sizes' ) ) {
+        function scm_admin_upload_sizes(){
 
             add_image_size('square', 700, 700, true);
             add_image_size('square-medium', 500, 500, true);
@@ -362,8 +370,8 @@
         }
     }
 
-    if ( ! function_exists( 'scm_custom_sizes' ) ) {
-        function scm_custom_sizes( $sizes ) {
+    if ( ! function_exists( 'scm_admin_custom_sizes' ) ) {
+        function scm_admin_custom_sizes( $sizes ) {
             return array_merge( $sizes, array(
                 'square' => __( 'Quadrata', SCM_THEME ),
                 'square-medium' => __( 'Quadrata Media', SCM_THEME ),
@@ -451,6 +459,14 @@ function scm_upload_set_meta($meta, $file, $sourceImageType) {
         }
     }
 
-//endif;
+//Checks if ACF Font Awesome Add On is active
+    if ( ! function_exists( 'scm_admin_plugins' ) ) {
+        function scm_admin_plugins(){
+            global $SCM_plugin_fa;
+
+            $SCM_plugin_fa = is_plugin_active( 'advanced-custom-fields-font-awesome/acf-font-awesome.php' );
+            
+        }
+    }
 
 ?>

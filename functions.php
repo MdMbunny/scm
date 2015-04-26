@@ -30,6 +30,7 @@ if ( ! isset( $content_width ) ) {
 
 //Getting website data
 	
+	$SCM_capability 	 = is_admin();
 	
 	$SCM_site			 = site_url();
 	$SCM_parse			 = parse_url($SCM_site);
@@ -58,7 +59,8 @@ if ( ! isset( $content_width ) ) {
 	$SCM_acf_objects 	= [];
 	$SCM_acf_elements 	= [];
 	$SCM_acf_layouts 	= [];
-	$SCM_fa 		= [];
+	$SCM_fa 			= [];
+	$SCM_plugin_fa 		= 0;
 	
 	$SCM_typekit;
 
@@ -72,6 +74,10 @@ if ( ! isset( $content_width ) ) {
 
 //TypeKit constants
 	define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
+
+//Append constants
+
+	define( 'SCM_TEMPLATE_APP',			'_t' );
 
 //Basic constants
 	define( 'SCM_SITE',				    $SCM_site );
@@ -146,6 +152,7 @@ require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';
 require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
 require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
+require SCM_DIR_CLASSES . 'Backup_Restore_Options.php';
 
 require SCM_DIR_LIBRARY . 'scm-svg.php';
 
@@ -154,15 +161,18 @@ require SCM_DIR_LIBRARY . 'scm-functions.php';
 require SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php';
 require SCM_DIR_LIBRARY . 'scm-acf-preset.php';
 require SCM_DIR_LIBRARY . 'scm-acf-layouts.php';
+require SCM_DIR_LIBRARY . 'scm-acf-templates.php';
 require SCM_DIR_LIBRARY . 'scm-acf-fields.php';
 require SCM_DIR_LIBRARY . 'scm-acf.php';
 
 require SCM_DIR_LIBRARY . 'scm-install.php';
 require SCM_DIR_LIBRARY . 'scm-options.php';
-
 require SCM_DIR_LIBRARY . 'scm-core.php';
+
+require SCM_DIR_LIBRARY . 'scm-content-preset.php';
 require SCM_DIR_LIBRARY . 'scm-content.php';
 require SCM_DIR_LIBRARY . 'scm-front.php';
+
 require SCM_DIR_LIBRARY . 'scm-admin.php';
 
 

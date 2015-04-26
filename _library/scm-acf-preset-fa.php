@@ -6,7 +6,27 @@
 // *** SOCIAL ***
 // **************
 
-    
+	$SCM_fa['typography'] = [
+		'quote' => [
+			'name' => 'Virgolette',
+			'color' => '#333333',
+			'choices' => [
+				'fa-quote-left',
+				'fa-quote-right',
+				'fa-angle-double-left',
+				'fa-angle-double-right',
+				'fa-angle-left',
+				'fa-angle-right',
+				'fa-hand-o-left',
+				'fa-hand-o-right',
+				'fa-minus',
+			],
+		],
+	];
+
+// **************
+// *** SOCIAL ***
+// **************
 
 	$SCM_fa['social'] = [
 		'deviantart' => [

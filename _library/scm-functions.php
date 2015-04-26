@@ -14,6 +14,15 @@
 // printPre:            <pre>print_r(%array)</pre>
 // alert:               JS alert - second parameter will be merged to the first one, separated by the third one (default ': ')
 // consoleLog:          JS console.log
+// is
+// exists
+// ifExists
+// equal
+// ifnotequal
+// isNumber
+// toArray
+// openTag
+// openDiv
 // stringOperator       evalues 2 strings by a string operator
 // startsWith           return true if string starts with $needle
 // endsWith             return true if string ends with $needle
@@ -104,6 +113,130 @@ function consoleLog( $obj ){
     <?php
 }
 
+
+
+
+function exists( $var = '' ){
+
+    return $var || $var === 0 ;
+
+}
+
+// NO: '', 0, []
+function is( $var = '', $fall = '', $pre = '', $app = '' ){
+
+    if( !$var )
+        return $fall;
+        //return ( $fall ? ( is_string( $fall ) ? $pre . $fall . $app : ( is_numeric( $fall ) ? (int)$pre + $fall - (int)$app : $fall ) ) : '' );
+
+    return ( is_string( $var ) ? $pre . $var . $app : ( is_numeric( $var ) ? (int)$pre + $var - (int)$app : $var ) );
+
+}
+
+// NO: '', [] - SI: 0
+function ifexists( $var = '', $fall = '', $pre = '', $app = '' ){
+
+    if( !exists( $var ) )
+        return $fall;
+        //return ( $fall ? ( is_string( $fall ) ? $pre . $fall . $app : ( is_numeric( $fall ) ? (int)$pre + $fall - (int)$app : $fall ) ) : '' );
+
+    return ( is_string( $var ) ? $pre . $var . $app : ( is_numeric( $var ) ? (int)$pre + $var - (int)$app : $var ) );
+
+}
+
+function isNumber( $var = '', $fall = '', $pre = 0, $app = 0 ){
+
+    if( !exists( $var ) || !is_numeric( $var ) )
+        return $fall;
+        //return ( exists( $fall ) && is_numeric( $fall ) ? (int)$pre + $fall - (int)$app : 0 );
+
+    return (int)$pre + $var - (int)$app;
+
+}
+
+function ifequal( $var = '', $equal = [], $fall = '', $pre = '', $app = ''  ){
+
+    if( !$var )
+        return '';
+
+    $equal = toArray( $equal );
+    foreach ( $equal as $cond ) {
+        if( $var === $cond )
+            return ( is_string( $var ) ? $pre . $var . $app : ( is_numeric( $var ) ? (int)$pre + $var - (int)$app : $var ) );
+    }
+
+    return $fall;
+    //return ( is( $fall ) ? ( is_string( $fall ) ? $pre . $fall . $app : ( is_numeric( $fall ) ? (int)$pre + $fall - (int)$app : $fall ) ) : '' );
+    
+}
+
+function ifnotequal( $var = '', $equal = [], $fall = '', $pre = '', $app = ''  ){
+
+    if( !$var )
+        return '';
+
+    $equal = toArray( $equal );
+    foreach ( $equal as $cond ) {
+        if( $var === $cond )
+            return $fall;
+            //return ( is( $fall ) ? ( is_string( $fall ) ? $pre . $fall . $app : ( is_numeric( $fall ) ? (int)$pre + $fall - (int)$app : $fall ) ) : '' );
+    }
+
+    //return $fall;
+    return ( is_string( $var ) ? $pre . $var . $app : ( is_numeric( $var ) ? (int)$pre + $var - (int)$app : $var ) );
+}
+
+
+
+
+
+
+function toArray( $var ){
+
+    return ( is_array( $var ) ? $var : [ $var ] );
+
+}
+
+
+
+
+
+
+function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes = '', $href = '', $target = '' ){
+
+    
+
+
+    return str_replace( [ ' " ', '=" ', '< ', ' >', ' ">' ], [ '" ', '="', '<', '>', '">' ], '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . doublesp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
+
+}
+
+function openDiv( $id = '', $class = '', $style = '', $attributes = '' ){
+
+    return getTag( 'div', $id, $class, $style, $attributes );
+
+}
+
+function closeTag( $tag = 'div', $app = '' ){
+
+    return '</' . $tag . '>' . $app;
+
+}
+
+
+
+
+function doublesp( $str = '' ){
+    if( !$str )
+        return '';
+    return preg_replace( '/\s+/', ' ', $str );
+
+}
+
+
+
+
+
 /**
 * Evalues 2 strings by a string operator
 * @param misc $a
@@ -138,12 +271,19 @@ function stringOperator($a = '', $op = '==', $b = '') {
 * @return boolean
 * @author SCM
 */
-function startsWith($str, $needle) {
+function startsWith( $str, $needle = '' ) {
+
+    $needle = toArray( $needle );
 
     if( !is_string( $str ) )
         return false;
+
+    foreach ( $needle as $value ) {
+        if( !$value || strrpos($str, $value, -strlen($str)) !== FALSE )
+            return true;
+    }
     
-    return $needle === "" || strrpos($str, $needle, -strlen($str)) !== FALSE;
+    return false;
 
 }
 
@@ -350,7 +490,6 @@ function lbreak( $break = 1 ){
 
 function addHTTP($url){
     if(!$url) return;
-    if($url == 'localhost') return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
     if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
         $url = "http://" . $url;
     }
@@ -445,7 +584,7 @@ function numberToStyle( $value ){
 
 function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
-    $hex = str_replace("#", "", $hex);
+    $hex = str_replace('#', '', $hex);
 
     if(strlen($hex) == 3) {
         $r = hexdec(substr($hex,0,1).substr($hex,0,1));
@@ -470,16 +609,22 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
     //Get Webfont + Family Font as a correct String (just comma separated families, or css attribute ready)
     if ( ! function_exists( 'font2string' ) ) {
-        function font2string($webfont = '', $family = 'default', $add = false) {
+        function font2string($webfont = [], $family = 'default', $add = false) {
 
-            $webfont = ( ( $webfont && $webfont != 'no' && $webfont != 'default' ) ? $webfont : '' );
-            $family = ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
-            $font = ( $webfont ? $webfont . ( $family ? ', ' : '' ) : '' ) . $family;
-            if( $add ){
-                $font = 'font-family:' . $font . ';';
+            $str = '';
+
+            toArray( $webfont );
+            foreach ( $webfont as $font ) {
+                $str .= ( ( $font && $font != 'no' && $font != 'default' ) ? $font . ', ' : '' );
             }
 
-            return str_replace( '"', '\'', $font );
+            $str .= ( $family != 'default' ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );
+            
+            if( $add ){
+                $str = 'font-family:' . $str . ';';
+            }
+
+            return str_replace( '"', '\'', $str );
         }
     }
 
@@ -488,6 +633,49 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 /***********************/
 /* Wordpress Functions */
 /***********************/
+
+
+function getURL( $url ){
+
+    if( !$url )
+        return;
+
+    if( $url == 'localhost' )
+        return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
+
+    consoleLog( $url );
+
+    if( startsWith( $url, [ 'page:' ] ) !== false ){
+
+        $url = str_replace( 'page:', '', $url );
+
+        if( !is_numeric( $url ) )
+            $url = get_page_by_title( $url )->ID;
+        
+        return get_page_link( $url );
+    }
+
+    if( startsWith( $url, [ 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ] ) !== false )
+        return $url;
+
+    if( strpos( $url, '@' ) !== false )
+        
+        return 'mailto:' . $url;
+
+    if ( is_numeric( $url ) ){
+
+        if( !startsWith( $url, '+' ) !== false )
+            return 'tel:+' . $url;
+
+        return 'tel:' . $url;
+
+    }
+
+    if (!preg_match("~^(?:f|ht)tps?://~i", $url))
+        return "http://" . $url;
+
+    return addHTTP( $url );
+}
 
 
 // updatePostMeta:      update, insert or delete post $id $meta with $value

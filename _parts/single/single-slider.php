@@ -1,70 +1,118 @@
 <?php
+/**
+ * @package SCM
+ */
 
 global $post, $SCM_indent;
+$post_id = $post->ID;
 
-$type = $post->post_type;
-$slug = $post->post_name;
+$args = [
+    'acf_fc_layout' => 'layout-slider',
+    'slider' => 0,
+    'type' => 'nivo',
+    'height-number' => 300,
+    'height-units' => 'px',
+    'theme' => 'scm',
+    'effect' => 'sliceDown',
+    'slices' => 30,
+    'cols' => 8,
+    'rows' => 8,
+    'speed' => 1,
+    'pause' => 'on',
+    'start' => 0,
+    'manual' => 'off',
+    'direction' => 'on',
+    'control' => 'off',
+    'thumbs' => 'off',
+    'prev' => 'fa-angle-left',
+    'next' => 'fa-angle-right',
+    'id' => '',
+    'class' => '',
+    'attributes' => '',
+    'style' => '',
+];
 
-$id = $post->ID;
+if( isset( $this ) )
+    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
 
-$default = ( scm_field( 'layout-page', 'full', 'option' ) === 'responsive' ? 'full' : scm_field( 'layout-head', 'responsive', 'option' ) );
-$layout = scm_field( 'slider-layout', $default );
+/***************/
 
-$terms = scm_field( 'slider-slides-terms', '' );
-$slides = get_posts( array( 'order' => 'ASC', 'post_type' => 'slides', 'taxonomies' => 'sliders', 'terms' => $terms ) );
 
-$slider = scm_field( 'opt-tools-slider', 'nivo', 'option' );
-$slider_class = 'slider ' . $slider . ' ' . $layout . ' mask';
+$class = 'slider scm-slider ' . $args['type'] . ' full mask ' . $args['class'];
 
-$height = scm_field( 'slider-height-number', '' );
-$height = ( $height ? $height . scm_field( 'slider-height-units', '' ) : 'auto' );
 
-$theme = scm_field( 'slider-theme', 'scm' );
+$attributes = $args['attributes'];
+$style = $args['style'];
+$id = $args['id'];
 
-$effect = scm_field( 'select_effect_nivo', 'fold' );
-$slices = scm_field( 'slider-slices', '15' );
-$cols = scm_field( 'slider-cols', '8' );
-$rows = scm_field( 'slider-rows', '4' );
-$speed = (float)scm_field( 'slider-speed', '.5' ) * 1000;
-$time = (float)scm_field( 'slider-pause', '5' ) * 1000;
-$start = scm_field( 'slider-start', '0' );
+
+/***************/
+
+$slider = get_term( $args['slider'], 'sliders' );
+// +++ todo:  diventa wp query? che poi chiama single-slide?
+$slides = get_posts( [
+    'order' => 'ASC',
+    'post_type' => 'slides',
+    'numberposts' => -1,
+    'taxonomy' => 'sliders',
+    'term' => $slider->slug,
+] );
+
+$type = $args['type'];
+$height = scm_field( 'height-number', '', $slider );
+$height = ( $height ? $height . scm_field( 'height-units', '', $slider ) : 'auto' );
+
+$theme = scm_field( 'theme', 'scm', $slider );
+
+$effect = scm_field( 'effect', 'fold', $slider );
+$slices = scm_field( 'slices', '15', $slider );
+$cols = scm_field( 'cols', '8', $slider );
+$rows = scm_field( 'rows', '4', $slider );
+$speed = (float)scm_field( 'speed', '.5', $slider ) * 1000;
+$time = (float)scm_field( 'pause', '5', $slider ) * 1000;
+$start = scm_field( 'start', '0', $slider );
 $random = 'false';
 if( $start == -1 ){
 	$start = '0';
 	$random = 'true';
 }
-$hover = scm_field( 'slider-pause', 'true' );
-$manual = scm_field( 'slider-manual', 'false' );
-$direction = scm_field( 'slider-direction', 'true' );
-$control = scm_field( 'slider-control', 'false' );
-$thumbs = scm_field( 'slider-thumbs', 'false' );
-$next = scm_field( 'slider-next', 'fa-angle-right' );
-$prev = scm_field( 'slider-prev', 'fa-angle-left' );
+$hover = scm_field( 'hover', 'true', $slider );
+$manual = scm_field( 'manual', 'false', $slider );
+$direction = scm_field( 'direction', 'true', $slider );
+$control = scm_field( 'control', 'false', $slider );
+$thumbs = scm_field( 'thumbs', 'false', $slider );
+$next = scm_field( 'next', 'fa-angle-right', $slider );
+$prev = scm_field( 'prev', 'fa-angle-left', $slider );
 
 $indent = $SCM_indent + 1;
-    
-    echo indent( $indent + 2 ) . '<div class="' . $slider_class . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider="' . $slider . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-theme="' . $theme . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-effect="' . $effect . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-slices="' . $slices . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-cols="' . $cols . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-rows="' . $rows . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-speed="' . $speed . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-time="' . $time . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-start="' . $start . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-random="' . $random . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-hover="' . $hover . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-manual="' . $manual . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-direction="' . $direction . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-control="' . $control . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-thumbs="' . $thumbs . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-prev="' . $prev . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-slider-next="' . $next . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-max-height="' . $height . '" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-equal="img" ' . lbreak() .
-            indent( $indent + 3 ) . 'data-equal-max="height" ' . lbreak() .
-        indent( $indent + 2 ) . '>' . lbreak( 2 );
+
+$attributes .=  ' ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider="' . $type . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-theme="' . $theme . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-effect="' . $effect . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-slices="' . $slices . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-cols="' . $cols . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-rows="' . $rows . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-speed="' . $speed . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-time="' . $time . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-start="' . $start . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-random="' . $random . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-hover="' . $hover . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-manual="' . $manual . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-direction="' . $direction . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-control="' . $control . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-thumbs="' . $thumbs . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-prev="' . $prev . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-next="' . $next . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-max-height="' . $height . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-equal="img" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-equal-max="height"' . lbreak() . indent( $indent + 2 );
+
+
+/***************/
+
+
+indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
 
     $captions = '';
     $images = '';
@@ -73,29 +121,49 @@ $indent = $SCM_indent + 1;
 
     foreach ($slides as $elem) {
         $elem = ( is_numeric( $elem ) ? $elem : $elem->ID );
-        $slide = get_fields($elem);
+        $slide = [
+            'slide-image' => '',
+            'slide-link' => 'page',
+            'slide-internal' => '',
+            'slide-external' => '',
+            'selectors-id' => '',
+            'selectors-class' => '',
+            'slide-caption-top' => '',
+            'slide-caption-right' => '',
+            'slide-caption-bottom' => '',
+            'slide-caption-left' => '',
+            'slide-caption-title' => '',
+            'slide-caption-cont' => '',
+        ];
+
+        $slide = array_merge( $slide, get_fields($elem) );
         $i++;
         $img = $slide[ 'slide-image' ];
+        
+        if( !$img )
+            continue;
+
         $link = ( $slide[ 'slide-link' ] == 'page' ? $slide[ 'slide-internal' ] : ( $slide[ 'slide-link' ] == 'link' ? $slide[ 'slide-external' ] : '' ) );
         $caption = '';
-        $slide_id = ( $slide[ 'selectors-id' ] ? ' id="' . $slide[ 'selectors-id' ] . '"' : '' );
-        $slide_class = 'caption box center' . ( $slide[ 'selectors-class' ] ? ' ' . $slide[ 'selectors-class' ] : '' );
+        $slide_id = $slide[ 'selectors-id' ];
+        $slide_class = 'caption box center ' . $slide[ 'selectors-class' ];
         $title = '';
 
-        $top = ( $slide[ 'slide-caption-top' ] != '' ? $slide[ 'slide-caption-top' ] . '%' : 'initial' );
-        $right = ( $slide[ 'slide-caption-right' ] != '' ? $slide[ 'slide-caption-right' ] . '%' : 'initial' );
-        $bottom = ( $slide[ 'slide-caption-bottom' ] != '' ? $slide[ 'slide-caption-bottom' ] . '%' : 'initial' );
-        $left = ( $slide[ 'slide-caption-left' ] != '' ? $slide[ 'slide-caption-left' ] . '%' : 'initial' );
-        $style = ' style="top:' . $top . ';right:' . $right . ';bottom:' . $bottom . ';left:' . $left . ';"';
-            
-        $caption_id = 'slide-' . $id . '-' . $i;
-            
-        	$caption = indent( $indent + 2 ) . '<div id="' . $caption_id . '" class="nivo-html-caption count-' . $i . '">' . lbreak();
-            $caption .= indent( $indent + 3 ) . '<div' . $slide_id . ' class="' . $slide_class . '"' . $style . '>' . lbreak();
+        $top = is( $slide[ 'slide-caption-top' ], '', '', '%' );
+        $right = is( $slide[ 'slide-caption-right' ], '', '', '%' );
+        $bottom = is( $slide[ 'slide-caption-bottom' ], '', '', '%' );
+        $left = is( $slide[ 'slide-caption-left' ], '', '', '%' );
+        $slide_style = ' top:' . is( $top, 'initial' ) . '; right:' . is( $right, 'initial' ) . '; bottom:' . is( $bottom, 'initial' ) . '; left:' . is( $left, 'initial' ) . ';';
+
+        $caption_id = uniqid();
+        $caption_class = 'slide-' . $post_id . ' nivo-html-caption count-' . $i;
+
+        	$caption = indent( $indent + 2 ) . openTag( 'div', $caption_id, $caption_class ) . lbreak();
+            $caption .= indent( $indent + 3 ) . openTag( 'div', $slide_id, $slide_class, $slide_style, '' ) . lbreak();
 
                 //if( $slide[ 'select_disable_caption' ] == 'on' ){
                 
-                    $caption .= ( $slide[ 'slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
+                    $caption .= ( $slide['slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
                     $caption .= indent( $indent + 4 ) . $slide['slide-caption-cont'];
                 //}
                 

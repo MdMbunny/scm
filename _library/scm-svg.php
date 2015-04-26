@@ -25,7 +25,7 @@
 			$attr['y1'] = ( $attr['y1'] ?: (int)$attr['stroke'] * .5 );
 			$attr['y2'] = ( $attr['y2'] ?: (int)$attr['stroke'] * .5 );
 			$attr['x1'] = ( $attr['x1'] ?: ( $attr['cap'] == 'butt' ? '0' : (int)$attr['stroke'] * .5 ) );
-			$attr['dash'] = ( $type == 'dotted' ? '0.1' : $attr['dash'] );
+			$attr['dash'] = ( $type == 'dotted' ? $attr['stroke'] : $attr['dash'] );
 
 			indent( $SCM_indent + 1, '<svg width="' . $attr['width'] . '" height="' . $attr['height'] . '">', 1 );
 			if( $type == 'solid' )

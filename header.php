@@ -89,10 +89,12 @@ $id = $post->ID;
 $skip = __( "Vai al contenuto", SCM_THEME );
 
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
+$txt_align = scm_options_get( 'align', 'option', 0 );
 
 $page_id = scm_field( 'opt-ids-pagina', 'site-page', 'option' );
 $page_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
-$page_class = $page_layout . ' float-' . $site_align . ' site-page hfeed site';
+$page_layout = ( $page_layout === 'full' ? 'full ' : 'responsive float-' );
+$page_class = 'site-page hfeed site ' . $page_layout . $site_align;
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -102,7 +104,7 @@ $smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 0, 'option' );
 $smooth_offset = scm_field( 'opt-tools-smoothscroll-offset', 0, 'option' );
 $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
 $smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
-$smooth_new = scm_field( 'opt-tools-smoothscroll-delay_new', 0, 'option' );
+$smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
 $smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
@@ -110,15 +112,16 @@ $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );
 $single_offset = scm_field( 'opt-tools-singlepagenav-offset', 0, 'option' );
 $single_threshold = scm_field( 'opt-tools-singlepagenav-threshold', 0, 'option' );
 
-//$style_body = scm_options_get_style( get_queried_object_id(), 1, 'bg' );
-//$style_page = scm_options_get_style( get_queried_object_id(), 1, 'nobg' );
+$tofull = scm_field( 'layout-tofull', '', 'option' );
+$tocolumn = scm_field( 'layout-tocolumn', '', 'option' );
             
 $head_id = scm_field( 'opt-ids-header', 'site-header', 'option' );
 
-$head_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-head', 'full', 'option' ) );
+$head_layout = scm_field( 'layout-head', 'full', 'option' );
+$head_layout = ( $page_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
 $head_class = 'site-header full ' . $site_align;
-$head_row_class = 'row scm-row object scm-object ' . $head_layout . ' left';
+$head_row_class = 'row scm-row object scm-object ' . $head_layout . $site_align;
 
 $menu_position = scm_field( 'menu-position', 'inline', 'option' );
 $menu_align = scm_field( 'menu-alignment', 'right', 'option' );
@@ -126,8 +129,9 @@ $menu_align = scm_field( 'menu-alignment', 'right', 'option' );
 $follow_position = scm_field( 'follow-position', 'top', 'option' );
 
 $cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
-$cont_layout = ( $page_layout === 'responsive' ? 'full' : scm_field( 'layout-content', 'full', 'option' ) );
-$cont_class = 'site-content ' . $cont_layout . ' float' . $site_align ;
+$cont_layout = scm_field( 'layout-content', 'full', 'option' );
+$cont_layout = ( $page_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
+$cont_class = 'site-content ' . $cont_layout . $site_align ;
 ?>
 
 <body <?php body_class(); ?> 
@@ -139,7 +143,9 @@ $cont_class = 'site-content ' . $cont_layout . ' float' . $site_align ;
     data-smooth-ease="<?php echo $smooth_ease; ?>"
     data-smooth-delay="<?php echo $smooth_delay; ?>"
     data-smooth-new="<?php echo $smooth_new; ?>"
-    data-smooth-post="<?php echo $smooth_post; ?>"
+    data-smooth-post="<?php echo $smooth_post; ?>" 
+    data-tofull="<?php echo $tofull; ?>" 
+    data-tocolumn="<?php echo $tocolumn; ?>"
     <?php /*echo $style_body; echo lbreak();*/ ?>
 >
 

@@ -1,6 +1,6 @@
 <?php
 
-global $SCM_types;
+global $post, $SCM_indent, $SCM_types;
 $type = get_post_type();
 $single = is_single();
 $archive = is_archive();
@@ -16,62 +16,53 @@ if( $archive || ( $single &&
 	// WP Header
 	get_header();
 
-	global $post, $SCM_indent;
-
 	$id = get_the_ID();
 	
 	$site_align = scm_field( 'layout-alignment', 'center', 'option' );
-	
-	$tempA = SCM_DIR_PARTS;
-	$tempB = 'sections';
-	//$page_id = '';
+
 	$page_class = 'page scm-page object scm-object ' . $post->post_name;
-	//$head_active = 0;
 
 	$page_id = scm_field( 'page-selectors-id', '', $id, 1, ' id="', '"' );
 	$page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
 	
-	$page_style = scm_options_get_style( $id, 1 );
+	//$page_style = scm_options_get_style( $id, 1 );
 	
-	$head_active = scm_field( 'slider-enabled', 0, $id, 1 );
-	
-	if( $single ){
+	$page_slider = scm_field( 'main-slider-active' );
+	$page_slider_terms = scm_field( 'main-slider-terms' );
 
-		// QUI I TEMPLATES
-		
-		$tempA = SCM_DIR_PARTS_SINGLE;
-		$tempB = $type;
-		$head_active = scm_field( 'slider-enabled', 0, 'option', 1 ); // DA TEMPLATE
-		//$page_id = '';		// Da TEMPLATE
-		//$page_class .= '';	// Da TEMPLATE
-		//$head_active = 0;		// Da TEMPLATE
+
+	if( $single ){
+		$page_slider = scm_field( 'slider-enabled', 0, 'option', 1 ); // serve?
 	}
 
 
 	$SCM_indent += 1;
-	indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '" ' . $page_style . '>', 2 );
+	indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
 		$SCM_indent += 1;
 
 		
 		// Page Header
-		if( $head_active ){
+		if( $page_slider ){
 
 			indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
 
-				get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
+				indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
+
+					scm_contents( [ [ 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ] ] );
+					//get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
+
+				indent( $SCM_indent + 1, '</div><!-- row -->', 2 );
 
 			indent( $SCM_indent, '</header><!-- header -->', 2 );
 		}
 
 		if( $single ){
 
-			$site_align = scm_field( 'layout-alignment', 'center', 'option' );
-
-			indent( $SCM_indent + 1, '<div class="section scm-section object scm-object full ' . $site_align . '">', 2 );
+			indent( $SCM_indent + 1, '<div class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
 				indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
 
 					$SCM_indent += 3;
-					scm_flexible_content( [ [ 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'single' => [ $id ] ] ] );
+					scm_contents( [ 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'single' => [ $id ] ] );
 					$SCM_indent -= 3;
 
 				indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
@@ -80,12 +71,14 @@ if( $archive || ( $single &&
 			
 		}else{
 
-			// Page Content
-			// if single o archive crea <section><row>
-			// if single chiama flexible_content( [ 'acf_fc_layout' => 'layout-' . $type ] )
-			get_template_part( $tempA, $tempB );
-		}
 
+
+			// Page Content
+			//$repeater = scm_field( 'rows', [], $id, 1 );
+			//scm_containers( $repeater, 'section' );
+			scm_content( get_fields( $id ) );
+
+		}
 
 	$SCM_indent -= 1;
 	echo lbreak(2);

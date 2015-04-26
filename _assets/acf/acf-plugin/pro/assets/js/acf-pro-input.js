@@ -357,8 +357,8 @@
 			$html.removeClass('acf-clone');
 			
 			
-			// enable inputs (ignore inputs hidden by conditional logic)
-			$html.find('input, textarea, select').not('.acf-clhi').removeAttr('disabled');
+			// enable inputs (ignore inputs disabled for life)
+			$html.find('input, textarea, select').not('.acf-disabled').removeAttr('disabled');
 			
 			
 			// add row
@@ -871,8 +871,8 @@
 				$html = $( html );
 			
 			
-			// enable inputs (ignore inputs hidden by conditional logic)
-			$html.find('input, textarea, select').not('.acf-clhi').removeAttr('disabled');
+			// enable inputs (ignore inputs disabled for life)
+			$html.find('input, textarea, select').not('.acf-disabled').removeAttr('disabled');
 			
 							
 			// hide no values message

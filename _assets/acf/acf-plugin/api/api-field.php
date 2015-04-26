@@ -619,32 +619,6 @@ function acf_render_field_wrap( $field, $el = 'div', $instruction = 'label' ) {
 
 
 /*
-*  acf_render_field_settings
-*
-*  This function will render the available field options using an action to trigger the field's render function
-*
-*  @type	function
-*  @date	23/01/13
-*  @since	3.6.0
-*
-*  @param	$field (array)
-*  @return	n/a
-*/
-
-function acf_render_field_settings( $field ) {
-	
-	// get valid field
-	$field = acf_get_valid_field( $field );
-	
-	
-	// create field specific html
-	do_action( "acf/render_field_settings", $field);
-	do_action( "acf/render_field_settings/type={$field['type']}", $field);
-	
-}
-
-
-/*
 *  acf_render_field_setting
 *
 *  This function will render a tr element containing a label and field cell, but also setting the tr data attribute for AJAX 

@@ -99,3 +99,9 @@ Supports Thumbs: true
     color:#fff;
     text-decoration: none;
 }
+
+.nivo-caption:not(.box){
+	display: none !important;
+}
+
+

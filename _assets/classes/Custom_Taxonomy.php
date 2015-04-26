@@ -8,7 +8,8 @@ class Custom_Taxonomy {
             return;
 
         $default = array(
-        	'hierarchical' 			=> 1,
+        	'template'              => 0,
+            'hierarchical' 			=> 1,
             'singular'              => '',
             'plural'                => '',
             'slug'                  => '',
@@ -33,6 +34,7 @@ class Custom_Taxonomy {
         $this->slug = ( $default['slug'] ?: sanitize_title( $this->plural ) );
         $this->types = $default['types'];
         $this->tag = $default['hierarchical'];
+        $this->template = $default['template'];
         $this->manage = ( $default['manage'] ? 'list_users' : 'manage_options' );
         $this->edit = ( $default['manage'] ? 'list_users' : 'manage_options' );
         $this->delete = ( $default['manage'] ? 'list_users' : 'manage_options' );

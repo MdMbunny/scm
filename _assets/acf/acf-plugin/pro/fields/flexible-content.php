@@ -1058,9 +1058,8 @@ class acf_field_flexible_content extends acf_field {
 				
 				// get layout
 				$l = $old_order[ $i ];
-						
-				/*if( !is_string( $l ) )
-					$l = $l['acf_fc_layout'];*/
+				
+				
 				// loop through sub fields
 				if( !empty($layouts[ $l ]) ) {
 					

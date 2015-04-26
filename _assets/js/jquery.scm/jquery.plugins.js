@@ -70,7 +70,9 @@
 	if ( !$.fn.getBoxShadow ) {
 
 		$.fn.getBoxShadow = function() {
-
+			var proceed = this.css('box-shadow');
+			if( !proceed )
+				return { color: 0, x: 0, y: 0, blur: 0, exp: 0 };
 			var result = this.css('box-shadow').match(/(-?\d)|(rgba\(.+\))/g);
 			if( !result )
 				return { color: 0, x: 0, y: 0, blur: 0, exp: 0 };
@@ -250,13 +252,12 @@
 				ext 		= ( this.attr('target') == '_blank' ? true : ( this.data( 'target' ) == '_blank' ? true : this.hasClass( 'external' ) ) ),
 				title 		= ( typeof title !== 'undefined' ? title : 'Arrivederci!' );
 				//ext 		= ( typeof this.attr( 'target' ) !== 'undefined' ? ( this.attr('target') == '_blank' ? true : false ) : this.hasClass( 'external' ) ),
-				
 			if( !link ){
 				if ( fallback ) fallback();
 				return this;
 			}
 
-			if( !ext ){
+			if( !ext || link.indexOf( 'mailto:' ) === 0 || link.indexOf( 'callto:' ) === 0 || link.indexOf( 'fax:' ) === 0 || link.indexOf( 'tel:' ) === 0 || link.indexOf( 'skype:' ) === 0 ){
 				
 				window.location = link;
 				return false;

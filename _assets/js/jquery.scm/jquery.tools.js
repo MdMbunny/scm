@@ -20,6 +20,9 @@
 
 ( function($){
 
+	/*var READY = false;
+	var LOADED = false;*/
+
 // ******************************************************
 // ******************************************************
 // *      jQuery INIT
@@ -32,11 +35,13 @@
 
 	$.fn.responsiveClasses = function( event ) {
 
-		var w 		= $( window ).width();
-			a 		= '',
-			r 		= '',
-			state 	= 'all',
-			old 	= this.attr( 'class' );
+		var w 			= $( window ).width();
+			a 			= '',
+			r 			= '',
+			state 		= 'all',
+			old 		= this.attr( 'class' ),
+			tofull 		= this.attr( 'data-tofull' ),
+			tocolumn 	= this.attr( 'data-tocolumn' );
 
 		if( w > 700 ){
 
@@ -68,8 +73,8 @@
 
 		}else{
 
-			a += 'tablet smart ';
-			r += 'wide desktop landscape notebook portrait r1400 r1120 r1030 r940 r800 r700 ';
+			a += 'tablet portrait smart tofull tocolumn ';
+			r += 'wide desktop landscape notebook r1400 r1120 r1030 r940 r800 r700 ';
 
 			if( w < 331 ) a += 'smartold ';
 			else r += 'smartold ';					
@@ -88,6 +93,13 @@
 		if( event != 'init' ){
 			this.removeClass( r );
 			this.addClass( a );
+
+			if( this.hasClass( tofull ) ) this.addClass( 'tofull' );
+			else this.removeClass( 'tofull' );
+
+			if( this.hasClass( tocolumn ) ) this.addClass( 'tocolumn' );
+			else this.removeClass( 'tocolumn' );
+
 			if(old != this.attr( 'class' )){
 				if ( this.hasClass( 'smart' ) )			state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
@@ -97,6 +109,13 @@
 
 				this.trigger( 'responsive', [ state ] );
 			}
+			/*if( !READY ){
+				READY = true;
+				this.trigger( 'documentReady' );
+			}else if( !LOADED ){
+				LOADED = true;
+				this.trigger( 'windowLoaded' );
+			}*/
 		}else{
 			return a;
 		}
@@ -145,7 +164,8 @@
 		        parent 		= $this.parents( '.sub-menu' ),
 		        a_parent 	= $( parent ).siblings().find( 'a' ),
 		        url_parent 	= $( a_parent ).attr( 'href' ),
-		        result 		= true;
+		        result 		= true,
+		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : $this.data( 'target' ) );
 
 		    if( !link )
 		    	return;
@@ -153,7 +173,7 @@
 		    event.preventDefault();
 			event.stopPropagation();
 
-			$( 'body' ).disableIt();
+			
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -169,6 +189,10 @@
 	        else
 	        	return; // +++ toccato*/
 
+
+	        // +++ todo: temo che questo passaggio pesi abbastanza
+	        // verifica come paragonare l'host senza dover creare un elemento a
+
 	        var elem = document.createElement( 'a' );
     		elem.href = $this.data( 'href' );
 
@@ -177,7 +201,9 @@
 				locpath		= location.pathname.replace( /^\//,'' ),
 				path 		= elem.pathname.replace( /^\//,'' );
 
-			if( lochost === host ){
+			if( ( target !== '_blank' && lochost === host ) || target === '_self' ){
+
+				$( 'body' ).disableIt();
 
 				if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
 					result = $this.trigger( 'linkSite' ).data( 'done' );
@@ -309,8 +335,6 @@
 		if( !name )
 			name = ( classes ? name : 'switch' );
 
-		//console.log(data);
-
 		return this.each(function() {
 
 			var $this 	= $( this ),
@@ -426,7 +450,6 @@
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0;
-
 
 
 			var pageScroll = function(){
@@ -655,8 +678,8 @@
 		return this.each(function() {
 
 			var $this 	= $( this ),
-				ref 	= $this.data( 'affix' ),
-				offset 	= $this.data( 'affix-offset' );
+				ref 	= $this.attr( 'data-affix' ),
+				offset 	= $this.attr( 'data-affix-offset' );
 
 			$this.off('.affix');
 			$this
@@ -825,7 +848,7 @@
 				latlng 			= new google.maps.LatLng( $this.data( 'lat' ), $this.data( 'lng' ) ),
 				marker_img 		= $this.data( 'img' ),
 				marker_color	= $this.data( 'icon-color' ),
-				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : '' ),
+				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : 0 ),
 				marker 			= [];
 			
 			//var image = new google.maps.MarkerImage(
@@ -849,14 +872,11 @@
 				};
 			*/
 
-
-
-			//marker = new google.maps.Marker({
 			marker = new MarkerWithLabel({
 				raiseOnDrag : false,
 				clickable   : true,
 				draggable 	: false,
-				icon 		: ' ',
+				icon 		: ( marker_icon ? ' ' : '' ),
 				//icon        : image,
 				//shadow      : shadow,
 				//shape       : shape,
@@ -865,10 +885,10 @@
 				position	: latlng,
 				map			: map,
 				labelContent: marker_icon,
-			    labelAnchor: new google.maps.Point(22, 50),
-			    labelClass: "labels" // the CSS class for the label
+			    labelAnchor: new google.maps.Point(13, 40),
+			    labelClass: 'labels' // the CSS class for the label
 			});
-
+			
 			if ( marker_img )
 				marker.setIcon( marker_img );
 
@@ -1058,8 +1078,6 @@
 
 			    	var $next = $this.find( 'a.nivo-nextNav' ),
 			    		$prev = $this.find( 'a.nivo-prevNav' );
-
-			    		//console.log($next.css( 'right' ));
 
 			    	$next.append( '<i class="fa ' + $this.data( 'slider-next' ) + '">' );
 			    	$prev.append( '<i class="fa ' + $this.data( 'slider-prev' ) + '">' );
@@ -1328,7 +1346,7 @@
 	$.bodyIn = function( event ){
 
 		var $body 			= $( 'body' ),
-			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
+			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : .3 ),
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
 			anchor 			= $body.data( 'anchor' ),
@@ -1336,15 +1354,13 @@
 			$doc 			= $( document ),
 			$all 			= $( 'html, body' );
 
-			//console.log( 'B: ' + $body.data( 'anchor'));
-
 		var pageScroll = function(){
 
 			var $anchor = $( '#' + anchor );
 
 			if( button.length ){
 
-				if( post != 'all' ){
+				if( !post ){
 
 					$body.enableIt();
 					$doc.scrollTop( $anchor.offset().top );
@@ -1370,7 +1386,7 @@
 			if( anchor && anchor != 'none' ){
 
 				if( delay ){
-					setTimeout( pageScroll, delay );
+					setTimeout( pageScroll, delay * 1000 );
 				}else{
 					pageScroll();
 				}
@@ -1401,15 +1417,15 @@
 		var $body 		= $( 'body' ),
 			$elem 		= this,
 			link 		= $elem.data( 'href' ),
-			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : 0 ),
+			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
 			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
-			opacity 	= ( wait != 'no' ? 0 : .6 );
-
-
+			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
 
 		$elem.data( 'done', false );
 		if( link )
 			$elem.data( 'done', true );
+
+
 
 		if( state != 'external' && duration > 0 ){
 
@@ -1458,6 +1474,19 @@
         //$body.removeClass( 'mouse' );
 
 // EVENTS
+
+		var loc = $location.attr( 'href' );
+
+		if( loc.indexOf( '#' ) > -1 ){
+			$body.data( 'anchor', loc.split('#')[1] );
+			
+			window.location.replace("#");
+			
+			//console.log($body.data( 'anchor'));
+			if ( typeof window.history.replaceState == 'function' ) {
+				window.history.replaceState({}, '', location.href.slice(0, -1));
+			}
+		}
 		
 		$body.on( 'resizing resized imagesLoaded', function(e){
 		
@@ -1465,6 +1494,7 @@
 			$( '[data-equal]' ).equalChildrenSize();
 		
 		} );
+
 		
 		$body.on( 'responsive', function( e, state ) {
 
@@ -1474,6 +1504,8 @@
 			$( '[data-affix]' ).affixIt();
 
 		} );
+
+		$body.css( 'opacity', ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-wait' ) ) : .6 ) );
 
 		switch( $body.data( 'fade-wait' ) ){
 			case 'window':
@@ -1495,7 +1527,7 @@
 					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
 			break;
 			default:
-				$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
+				$body.on( 'documentReady', function(e){ $.bodyIn(e); } );
 				$body.css( 'opacity', .6 );
 			break;
 		}
@@ -1523,7 +1555,7 @@
 
 		$body.on( 'link', 'a, [data-href]', function( e, state ){
 
-			var $this = $( this );
+			var $this = $( this );			
 	
 			if( state != 'page' )
 				$this.bodyOut( e, state );
@@ -1634,37 +1666,28 @@
 
 		} );
 
-		// Trigger DOCUMENT READY event
 		$body.trigger( 'documentReady' );
 
 		// Trigger WINDOW LOADED event
 		$(window).load(function(e){
 				
-			var loc = $location.attr( 'href' );
+			
 
-			if( loc.indexOf( '#' ) > -1 ){
-				$body.data( 'anchor', loc.split('#')[1] );
-				window.location.replace("#");
-				
-				//console.log($body.data( 'anchor'));
-				if ( typeof window.history.replaceState == 'function' ) {
-					window.history.replaceState({}, '', location.href.slice(0, -1));
-				}
-			}
-
+			//$body.responsiveClasses( e );
 			$body.trigger( 'windowLoaded' );
 
 		});
 
 		// Call NivoSlider and wait for NIVO LOADED event
 		$body.imagesLoaded( function( instance ) {
+
 		    $body.trigger( 'imagesLoaded' );
 		    
 		    $( '[data-slider="nivo"]' ).setNivoSlider();
 		    
 		    $( '[data-equal]' ).equalChildrenSize();
 
-		    $( '.map' ).googleMap();
+		    $( '.scm-map' ).googleMap();
 
 		    /*if( $nivo.length ){
 		    	// +++ todo: anche le Slider come le Mappe vengono contate e restituiscono sliderLoaded e slidersLoaded
@@ -1696,7 +1719,11 @@
 
 		});
 
+
+
 		$body.responsiveClasses();
+		// Trigger DOCUMENT READY event
+		
 
 	});
 

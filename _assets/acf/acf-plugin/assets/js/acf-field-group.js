@@ -1010,7 +1010,7 @@
 			acf.open_popup({
 				title	: acf._e('move_field'),
 				loading	: true,
-				height	: 220
+				height	: 145
 			});
 			
 			

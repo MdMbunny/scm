@@ -22,7 +22,19 @@
 // 1.0 FIELDS
 // *****************************************************
 
+/* Checkbox */
+
+	// HAS GROUP
+	if ( ! function_exists( 'scm_acf_field_hidden' ) ) {
+		function scm_acf_field_hidden( $name = '' ) {
+
+			return scm_acf_field( $name, [ 'number-read', 1, 1 ], $name );
+		}
+	}
+
 /* Number */
+
+	
 
 	// NUMBER
 	if ( ! function_exists( 'scm_acf_field_number' ) ) {
@@ -160,6 +172,32 @@
 		}
 	}
 
+	// EDITOR VISUAL MEDIA
+	if ( ! function_exists( 'scm_acf_field_editor_media' ) ) {
+		function scm_acf_field_editor_media( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Inserisci testo', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'editor-basic-visual-media', $placeholder ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// EDITOR VISUAL
+	if ( ! function_exists( 'scm_acf_field_editor_basic' ) ) {
+		function scm_acf_field_editor_basic( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Inserisci testo', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'editor-basic-visual', $placeholder ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+/* Date */
+	
+	// DATE
+	if ( ! function_exists( 'scm_acf_field_date' ) ) {
+		function scm_acf_field_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Colore', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'date', ( $placeholder ?: '' ) ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
 /* Color */
 	
 	// COLOR
@@ -177,6 +215,14 @@
 		function scm_acf_field_icon( $name = '', $default = 0, $placeholder = 'star', $filter = '', $width = '', $logic = 0, $label = 'Seleziona un\'icona', $instr = '', $required = 0 ) {
 
 			return scm_acf_field( $name, [ 'icon', $placeholder, $filter ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// ICON
+	if ( ! function_exists( 'scm_acf_field_icon_no' ) ) {
+		function scm_acf_field_icon_no( $name = '', $default = 0, $placeholder = 'no', $filter = '', $width = '', $logic = 0, $label = 'Seleziona un\'icona', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'icon-no', $placeholder, $filter ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -202,7 +248,7 @@
 
 /* Select */
 
-	// SELECT
+	// SELECT 1
 	if ( ! function_exists( 'scm_acf_field_select1' ) ) {
 		function scm_acf_field_select1( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = 'Elementi', $instr = '', $required = 0 ) {
 
@@ -210,11 +256,19 @@
 		}
 	}
 
-	// SELECT
+	// SELECT 2
 	if ( ! function_exists( 'scm_acf_field_select' ) ) {
 		function scm_acf_field_select( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = 'Elementi', $instr = '', $required = 0 ) {
 
 			return scm_acf_field( $name, [ 'select2' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// DATE FORMAT
+	if ( ! function_exists( 'scm_acf_field_select_date' ) ) {
+		function scm_acf_field_select_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Formato', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'select-date_format' . ( $default ? '-default' : '' ), $placeholder, $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -300,9 +354,9 @@
 	
 	// HEADINGS
 	if ( ! function_exists( 'scm_acf_field_select_headings' ) ) {
-		function scm_acf_field_select_headings( $name = '', $default = 0, $complete = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Stile', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_headings( $name = '', $default = 0, $opt = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Stile', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'select-headings' . ( $complete ? '_complete' : '' ) . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'select-headings' . ( $opt === 1 ? '_low' : ( $opt === -1 ? '_min' : ( $opt === 2 ? '_max' : '' ) ) ) . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -318,7 +372,7 @@
 	if ( ! function_exists( 'scm_acf_field_select_image_format' ) ) {
 		function scm_acf_field_select_image_format( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Formato', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'select2-image_format' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'select-image_format' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -326,15 +380,23 @@
 	if ( ! function_exists( 'scm_acf_field_select_float' ) ) {
 		function scm_acf_field_select_float( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Allineamento', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'select2-float' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'select-float' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
+	
+	// OVERLAY
+	if ( ! function_exists( 'scm_acf_field_select_overlay' ) ) {
+		function scm_acf_field_select_overlay( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Overlay', $instr = '', $required = 0 ) {
 
+			return scm_acf_field( $name, [ 'select-overlay' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+		}
+	}
+	
 	// ALIGN
 	if ( ! function_exists( 'scm_acf_field_select_align' ) ) {
 		function scm_acf_field_select_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Allineamento', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'select2-alignment' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'select-alignment' . ( $default ? '-default' : '' ), $placeholder, 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -357,7 +419,31 @@
 
 /* Object */
 
-	// INTERNAL OBJECT
+	// INTERNAL OBJECT ID BY TAXONOMY
+	if ( ! function_exists( 'scm_acf_field_object_tax' ) ) {
+		function scm_acf_field_object_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
+			
+			return scm_acf_field( $name, [ 'object-id', $type, $tax , 'Seleziona ' . $label], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// INTERNAL OBJECTS ID BY TAXONOMY
+	if ( ! function_exists( 'scm_acf_field_objects_tax' ) ) {
+		function scm_acf_field_objects_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'objects-id', $type, $tax , 'Seleziona ' . $label], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// INTERNAL OBJECT ID
+	if ( ! function_exists( 'scm_acf_field_object_obj' ) ) {
+		function scm_acf_field_object_obj( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'object', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// INTERNAL OBJECT ID
 	if ( ! function_exists( 'scm_acf_field_object' ) ) {
 		function scm_acf_field_object( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
 
@@ -365,19 +451,35 @@
 		}
 	}
 
-	// INTERNAL OBJECTS
-	if ( ! function_exists( 'scm_acf_field_objects_rel' ) ) {
-		function scm_acf_field_objects_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuti', $instr = '', $required = 0 ) {
+	// INTERNAL OBJECT ID REL
+	if ( ! function_exists( 'scm_acf_field_object_rel' ) ) {
+		function scm_acf_field_object_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
 
-			return scm_acf_field( $name, [ 'objects-rel-id', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, [ 'object-rel-id', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS
+	if ( ! function_exists( 'scm_acf_field_object_objs' ) ) {
+		function scm_acf_field_object_objs( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuto', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'objects', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// INTERNAL OBJECTS ID
 	if ( ! function_exists( 'scm_acf_field_objects' ) ) {
 		function scm_acf_field_objects( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuti', $instr = '', $required = 0 ) {
 
 			return scm_acf_field( $name, [ 'objects-id', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
+		}
+	}
+
+	// INTERNAL OBJECTS ID REL
+	if ( ! function_exists( 'scm_acf_field_objects_rel' ) ) {
+		function scm_acf_field_objects_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = 'Contenuti', $instr = '', $required = 0 ) {
+
+			return scm_acf_field( $name, [ 'objects-rel-id', $type, '', 'Seleziona ' . $label ], $label, $width, $logic, $instr, $required );
 		}
 	}
 
@@ -711,11 +813,30 @@
 		}
 	}
 
+	// BOX SHAPE
+	if ( ! function_exists( 'scm_acf_preset_box_shape' ) ) {
+		function scm_acf_preset_box_shape( $name = 'box-shape', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
+
+			$fields = [];
+
+			$fields[] = scm_acf_field_select1( $name . 'shape', $default, 'box_shape-no', $width, $logic, 'Forma', 'Forma Box' );
+				
+				$shape = [ $logic, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'no' ] ];
+				$rounded = scm_acf_group_condition( $logic, $shape, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ] );
+
+					$fields[] = scm_acf_field_select1( $name . 'shape-angle', $default, 'box_angle_type', $width * .5, $rounded, 'Angoli', 'Angoli Box' );
+					$fields[] = scm_acf_field_select1( $name . 'shape-size', $default, 'simple_size', $width * .5, $rounded, 'Dimensione', 'Dimensione angoli Box' );
+			
+			return $fields;
+
+		}
+	}
+
 	// BOX STYLE
 	if ( ! function_exists( 'scm_acf_preset_box_style' ) ) {
 		function scm_acf_preset_box_style( $name = 'box-style', $default = 0, $instr = '', $req = 0 ) {
 
-			$fields = array();
+			$fields = [];
 
 			if( $instr )
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], 'Impostazioni Box' );
@@ -725,6 +846,7 @@
 			$fields[] = scm_acf_field_text( $name . 'margin', $default, 100, 0, '0 0 0 0', 'Margin' );
 			$fields[] = scm_acf_field_text( $name . 'padding', $default, 100, 0, '0 0 0 0', 'Padding' );
 			$fields[] = scm_acf_field_alpha( $name . 'alpha', $default, 100, 0, '1', 'Trasparenza' );
+			$fields = array_merge( $fields, scm_acf_preset_box_shape( $name, $default ) );
 
 			return $fields;
 
@@ -733,7 +855,7 @@
 	
 	// MAP ICON
 	if ( ! function_exists( 'scm_acf_preset_map_icon' ) ) {
-		function scm_acf_preset_map_icon( $name = 'map-icon', $default = 0, $w1 = 100, $w2 = '', $logic = 0, $label = 'Icona Mappa', $instr = '', $req = 0 ) {
+		function scm_acf_preset_map_icon( $name = 'map-icon', $default = 0, $w1 = 100, $logic = 0, $label = 'Icona', $instr = '', $req = 0 ) {
 	
 			$fields = array();
 
@@ -749,9 +871,9 @@
 			$img = [ 'field' => $name . 'icon', 'operator' => '==', 'value' => 'img' ];
 			$img = ( $logic ? scm_acf_group_condition( $img, $logic ) : $img );
 				
-				$fields[] = scm_acf_field_icon( $name . 'icon-fa', $default, 'map-marker', '', $w1, $icon, 'Seleziona un\'icona' );
-				$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'rgba', $default, '#e3695f', 1, $icon, $w1, $w2 ) );
-				$fields[] = scm_acf_field_image( $name . 'icon-img', $default, $w1, $img, 'Carica un\'immagine' );
+				$fields[] = scm_acf_field_icon( $name . 'icon-fa', $default, 'map-marker', '', '', $icon, 'Seleziona un\'icona' );
+				$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'rgba', $default, '#e3695f', 1, $icon ) );
+				$fields[] = scm_acf_field_image( $name . 'icon-img', $default, '', $img, 'Carica un\'immagine' );
 
 			return $fields;
 
@@ -760,7 +882,7 @@
 
 	// TERM
 	if ( ! function_exists( 'scm_acf_preset_term' ) ) {
-		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = 'Termine', $logic = 0, $add = 0, $save = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = 'Termine', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -768,11 +890,8 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: ( $add ? 60 : 100 ) );
 
 			$fields[] = scm_acf_field_taxonomy( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic );
-			if( $add )
-				$fields[] = scm_acf_field_text( $name . 'add', $default, $w2, $logic, $placeholder . ' 1, ' . $placeholder . ' 2', $lb2 . ' ' . $placeholder, ' + ' );
 
 			return $fields;
 		}
@@ -780,7 +899,7 @@
 
 	// TERMS
 	if ( ! function_exists( 'scm_acf_preset_terms' ) ) {
-		function scm_acf_preset_terms( $name = 'terms', $default = 0, $tax = 'category', $placeholder = 'Termini', $logic = 0, $add = 0, $save = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_terms( $name = 'terms', $default = 0, $tax = 'category', $placeholder = 'Termini', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -788,11 +907,8 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: ( $add ? 60 : 100 ) );
 
 			$fields[] = scm_acf_field_taxonomies( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic );
-			if( $add )
-				$fields[] = scm_acf_field_text( $name . 'add', $default, $w2, $logic, $placeholder . ' 1, ' . $placeholder . ' 2', $lb2 . ' ' . $placeholder, ' + ' );
 
 			return $fields;
 		}
@@ -800,7 +916,7 @@
 
 	// TAXONOMY
 	if ( ! function_exists( 'scm_acf_preset_taxonomy' ) ) {
-		function scm_acf_preset_taxonomy( $name = 'taxonomy', $default = 0, $type = 'post', $placeholder = 'Gestisci Relazioni', $logic = 0, $add = 0, $save = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomy( $name = 'taxonomy', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Relazione', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -808,12 +924,11 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: ( $add ? 60 : 100 ) );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
-				$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, $add, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+				$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -822,7 +937,7 @@
 
 	// TAXONOMIES
 	if ( ! function_exists( 'scm_acf_preset_taxonomies' ) ) {
-		function scm_acf_preset_taxonomies( $name = 'taxonomies', $default = 0, $type = 'post', $placeholder = 'Gestisci Relazioni', $logic = 0, $add = 0, $save = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomies( $name = 'taxonomies', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Relazioni', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -832,11 +947,10 @@
 			$taxes = get_object_taxonomies( $type, 'objects' );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: ( $add ? 60 : ( sizeof( $taxes ) ? 100 / sizeof( $taxes ) : 100 ) ) );
 
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
-				$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name,$value->label, $logic, $add, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+				$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name,$value->label, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -845,7 +959,7 @@
 
 	// CATEGORY
 	if ( ! function_exists( 'scm_acf_preset_category' ) ) {
-		function scm_acf_preset_category( $name = 'category', $default = 0, $type = 'post', $save = 1, $placeholder = 'Gestisci Categorie', $logic = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {		
+		function scm_acf_preset_category( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Tipologia', $required = 0, $class = '' ) {		
 
 			$fields = array();
 
@@ -853,13 +967,12 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: 60 );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $value->hierarchical )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name,$value->labels->singular_name, $logic,  0, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name,$value->labels->singular_name, $logic,  0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -868,7 +981,7 @@
 
 	// CATEGORIES
 	if ( ! function_exists( 'scm_acf_preset_categories' ) ) {
-		function scm_acf_preset_categories( $name = 'categories', $default = 0, $type = 'post', $save = 1, $placeholder = 'Gestisci Categorie', $logic = 0, $w1 = 100, $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_categories( $name = 'categories', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Tipologie', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -876,13 +989,12 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: 60 );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $value->hierarchical )
-					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 0, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -891,7 +1003,7 @@
 
 	// TAG
 	if ( ! function_exists( 'scm_acf_preset_tag' ) ) {
-		function scm_acf_preset_tag( $name = 'tag', $default = 0, $type = 'post_tag', $save = 1, $placeholder = 'Gestisci Tag', $logic = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tag( $name = 'tag', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Categoria', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -899,13 +1011,12 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: 60 );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( !$value->hierarchical )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -914,7 +1025,7 @@
 
 	// TAGS
 	if ( ! function_exists( 'scm_acf_preset_tags' ) ) {
-		function scm_acf_preset_tags( $name = 'tags', $default = 0, $type = 'post_tag', $save = 1, $placeholder = 'Gestisci Tags', $logic = 0, $w1 = '', $w2 = 40, $lb1 = 'Seleziona', $lb2 = 'Aggiungi', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tags( $name = 'tags', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = 'Seleziona', $instr = '', $placeholder = 'Seleziona Categorie', $required = 0, $class = '' ) {
 			
 			$fields = array();
 
@@ -922,13 +1033,12 @@
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], $placeholder );
 			
 			$name = ( $name ? $name . '-' : '');
-			$w1 = ( $w1 ?: 60 );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
-				if( !$value->hierarchical )
-					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 1, $save, $w1, $w2, $lb1, $lb2, '', $required, $class ) );
+				if( !$value->hierarchical && $key != 'language' && $key != 'post_translations' )
+					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 1, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
@@ -958,6 +1068,47 @@
 		}
 	}
 
+	// BUTTON
+	if ( ! function_exists( 'scm_acf_preset_button' ) ) {
+		function scm_acf_preset_button( $name = '', $default = 0, $type = 'link', $placeholder = '', $filter = '', $tooltip = 0, $pl2 = 'Nome', $pl3 = '', $logic = 0, $instr = '', $required = 0 ) {
+			
+			$fields = [];
+
+			$name = ( $name ? $name . '-' : '');
+
+			$fields[] = scm_acf_field_icon_no( $name . 'icon', $default, ( $placeholder ?: 'no' ), $filter, 25, 0, 'Seleziona un\'icona' );
+			$fields[] = scm_acf_field_name( $name . 'name', $default, 30, 30, 0, $pl2 );
+
+			switch ( $type ) {
+				case 'link':
+					$fields[] = scm_acf_field_link( $name . 'link', $default, 45, 0, ( $pl3 ?: 'Inserisci un Link' ) );
+				break;
+				
+				case 'file':
+					$fields[] = scm_acf_field_file( $name . 'link', $default, 45, 0, $pl3 );
+				break;
+
+				case 'page':
+					$fields[] = scm_acf_field_object_link( $name . 'link', $default, 'page', 45, 0, ( $pl3 ?: 'Pagina' ) );
+				break;
+				
+				case 'media':
+					$fields[] = scm_acf_field_object( $name . 'link', $default, [ 'rassegne-stampa', 'documenti', 'gallerie', 'video' ], 45, 0, ( $pl3 ?: 'Media' ) );
+				break;
+				
+				default:
+					$fields[] = scm_acf_field_object( $name . 'link', $default, $type, 45, 0, ( $pl3 ?: 'Elemento' ) );
+				break;
+			}
+			
+			if( $tooltip )
+				$fields[] = scm_acf_field_text( $name . 'tooltip', $default, 100, 0, '', 'Tooltip' );
+
+			return $fields;
+
+		}
+	}
+
 	// ICONS
 	if ( ! function_exists( 'scm_acf_preset_flexible_buttons' ) ) {
 		function scm_acf_preset_flexible_buttons( $name = '', $default = 0, $group = '', $label = '', $logic = 0, $instr = '', $required = 0, $class = 'buttons-flexible' ) {
@@ -982,10 +1133,9 @@
 						continue;
 					
 					$layout = scm_acf_layout( $key, 'block', $value[ 'name' ] );
-					// +++ todo: crea preset_button
-						$layout['sub_fields'][] = scm_acf_field_icon( 'icon', $default, $key . '_' . $group, $key, 25, 0, 'Seleziona un\'icona' );
-						$layout['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, $value[ 'name' ] );
-						$layout['sub_fields'][] = scm_acf_field_link( 'link', $default, 45, 0, 'Inserisci un Link' );
+
+						$layout['sub_fields'] = scm_acf_preset_button( '', $default, 'link', $key . '_' . $group, $key, 0, $value[ 'name' ], 'Inserisci un Link' );
+
 					$contacts['layouts'][] = $layout;
 				}
 
@@ -993,6 +1143,29 @@
 
 			return $fields;
 
+		}
+	}
+
+	// BUTTON SHAPE
+	if ( ! function_exists( 'scm_acf_preset_button_shape' ) ) {
+		function scm_acf_preset_button_shape( $name = 'but-style', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
+
+			$fields = [];
+			
+			//$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'rgba', $default ) );
+
+			$fields[] = scm_acf_field_select1( $name . 'shape', $default, 'box_shape-no', 100, $logic, 'Forma', 'Forma Box' );
+				
+				$shape = [ $logic, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'no' ] ];
+				$rounded = scm_acf_group_condition( $logic, $shape, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ] );
+
+					$fields[] = scm_acf_field_select1( $name . 'shape-angle', $default, 'box_angle_type', 50, $rounded, 'Angoli', 'Angoli Box' );
+					$fields[] = scm_acf_field_select1( $name . 'shape-size', $default, 'simple_size', 50, $rounded, 'Dimensione', 'Dimensione angoli Box' );
+					
+				//$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'box', $default, '', 1, $shape ) );
+
+			return $fields;
+			
 		}
 	}
 
@@ -1012,30 +1185,32 @@
 				$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', $default, 25, 25 ) );
 				$sections['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 50 );
 
-				$rows = scm_acf_field_flexible( 'rows', $default, 'Moduli' );
+				$flexible = scm_acf_field_flexible( 'rows', $default, 'Moduli' );
 
-					$row = scm_acf_layout( 'select-module', 'block', 'Seleziona' );
-
-						$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', $default, 25, 25 ) );
-						$row['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 50 );
-
-						$row['sub_fields'][] = scm_acf_field_select_layout( 'layout', 0, 'Layout', 25, 0, 'responsive' );
-					
-						$row['sub_fields'][] = scm_acf_field_object( 'module', $default, 'sections', 75, 0, 'Sezione' );
-
-					/*$build = scm_acf_layout( 'build-module', 'block', 'Componi' );
-
+					$row = scm_acf_layout( 'row', 'block', 'Section' );
 						
-						$build['sub_fields'] = array_merge( $build['sub_fields'], scm_acf_preset_selectors( '', $default, 25, 25 ) );
-						$build['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 50 );
+						$row['sub_fields'][] = scm_acf_field_select_layout( 'layout', 1, 'Layout', 20 );
+						$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', $default, 20, 20 ) );
+						$row['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 40 );
+						$row['sub_fields'][] = scm_acf_field_object( 'row', $default, 'sections' );
 
-						$build['sub_fields'][] = scm_acf_field_select_layout( 'layout', 0, 'Layout', 25, 0, 'responsive' );
+					$module = scm_acf_layout( 'module', 'block', 'Module' );
 
-						$build['sub_fields'] = array_merge( $build['sub_fields'], scm_acf_preset_flexible_elements( 'module', $default, $elements ) );*/
+						$module['sub_fields'][] = scm_acf_field_select_layout( 'layout', 1, 'Layout', 20 );
+						$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', $default, 20, 20 ) );
+						$module['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 40 );
+						$module['sub_fields'][] = scm_acf_field_object( 'row', $default, 'modules' );
 
-					$rows['layouts'] = [ $row ];
+					$banner = scm_acf_layout( 'banner', 'block', 'Banner' );
 
-				$sections['sub_fields'][] = $rows;
+						$banner['sub_fields'][] = scm_acf_field_select_layout( 'layout', 1, 'Layout', 20 );
+						$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', $default, 20, 20 ) );
+						$banner['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 40 );
+						$banner['sub_fields'][] = scm_acf_field_object( 'row', $default, 'banners' );
+
+					$flexible['layouts'] = [ $row, $module, $banner ];
+
+				$sections['sub_fields'][] = $flexible;
 
 			$fields[] = $sections;
 			
@@ -1058,19 +1233,6 @@
 
 			$flexible = scm_acf_field_flexible( $name . 'modules', $default, 'Componi', '+', 100, $logic, '', '', '', $required, $class );
 
-				/*$all = [
-					'posts' => __( 'Post', SCM_THEME ),
-					'divider' => __( 'Separatore', SCM_THEME ),
-				    'image' => __( 'Immagine', SCM_THEME ),
-				    'icon' => __( 'Icona', SCM_THEME ),
-				    'title' => __( 'Titolo', SCM_THEME ),
-				    'text' => __( 'Testo', SCM_THEME ),
-				    'list' => __( 'Elenco Puntato', SCM_THEME ),
-				    'links' => __( 'Elenco Link', SCM_THEME ),
-				    'files' => __( 'Elenco File', SCM_THEME ),
-				    'section' => __( 'Sezione', SCM_THEME ),
-				];*/
-
 				if( !$elements ){
 					$elements = [];
 					foreach ( $SCM_types['public'] as $slug => $value) {
@@ -1089,22 +1251,16 @@
 
 					$layout = scm_acf_layout( $key, 'block', $element );
 
-					$layout['sub_fields'][] = scm_acf_field_select_column_width( 'column-width', 0, 34, 0, '1/1', 'Larghezza', 'Larghezza' );
-					$layout['sub_fields'] = array_merge( $layout['sub_fields'], scm_acf_preset_selectors( '', $default, 33, 33 ) );
-					$layout['sub_fields'][] = scm_acf_field_select_align( 'alignment', 1, 34 );
-					$layout['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 66 );
-
 					if( function_exists( 'scm_acf_object_' . $key ) )
 						$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( 'scm_acf_object_' . $key, $default ) ); // Call Elements function in scm-acf-layouts.php
 					else
 						$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( 'scm_acf_object', $key, $default ) ); // Call Elements function in scm-acf-layouts.php
 					
-					//$layout['sub_fields'] = scm_acf_column_width( 'column-width', $layout['sub_fields'] );
-
-					//if( $layout )
 					$flexible['layouts'][] = $layout;
 					
 				}
+
+				$flexible['layouts'] = scm_acf_layouts_preset( '', $flexible['layouts'] );
 
 			$fields[] = $flexible;
 			
@@ -1149,14 +1305,61 @@
 
 			$fields = array_merge( $fields, scm_acf_preset_selectors( $name . 'page-selectors', $default, 33, 33 ) );
 
-			$fields[] = scm_acf_field_select( $name . 'page-menu', $default, 'wp_menu', 100, 0, '', 'Menu Principale' );
+			$fields[] = scm_acf_field_select1( $name . 'page-menu', $default, 'wp_menu', 100, 0, '', 'Menu Principale' );
 			
 			$fields = array_merge( $fields, scm_acf_preset_flexible_sections( $name, $default ) );
 
 			return $fields;
 		}
 	}
+
+	// BANNERS
+	if ( ! function_exists( 'scm_acf_fields_banner' ) ) {
+		function scm_acf_fields_banner( $name = '', $default = 0, $elements = '' ) {
+
+			//$name = ( $name ? $name . '-' : '');
+
+			$fields = [];
+			
+			$flexible = scm_acf_field_flexible( 'modules', 0, 'Aggiungi Contesto', 'Contesto', 100, 0, 1 );
+                $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', 'Quote', '', '', scm_acf_object_quote( 0, 0, 1) );
+                $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti', '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'section', 'block', 'Banner', '', '', scm_acf_object_section( 0, 0, 'sections-cat:banners' ) );
+
+                //$flexible['sub_fields'][] = scm_acf_field_object_tax( 'banner-section', 0, 'sections', 'sections-cat:banners', '', $deafal_ban );
+                //$flexible['sub_fields'] = array_merge( $flexible['sub_fields'], scm_acf_object_titolo( 0, 0, 1, '', $deafal_but ) );
+                //$flexible['sub_fields'] = array_merge( $flexible['sub_fields'], scm_acf_object_pulsanti( 0, 0, 1, '', $deafal_but ) );
+
+            $fields[] = $flexible;
+
+			return $fields;
+		}
+	}
 	
+	// MODULES
+	if ( ! function_exists( 'scm_acf_fields_module' ) ) {
+		function scm_acf_fields_module( $name = '', $default = 0, $elements = '' ) {
+
+			//$name = ( $name ? $name . '-' : '');
+
+			$fields = [];
+			
+			$flexible = scm_acf_field_flexible( 'modules', 0, 'Componi', '+', '', 0, 0, 10 );
+                $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', 'Testo', '', '', scm_acf_object_testo( 0, 0, 1) ); // Se vedi che i testi inseriti fanno casino, togli sostituisci 1 con 0
+                $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', 'Elenco Puntato', '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', 'Quote', '', '', scm_acf_object_quote( 0, 0, 1) );
+                $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti', '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
+                $flexible['layouts'][] = scm_acf_layout( 'separatore', 'block', 'Separatore', '', '', scm_acf_object_separatore( 0, 0, 1 ) );
+			
+			$fields[] = $flexible;
+
+			return $fields;
+		}
+	}
+
+
 	// SECTIONS
 	if ( ! function_exists( 'scm_acf_fields_section' ) ) {
 		function scm_acf_fields_section( $name = '', $default = 0, $elements = '' ) {
@@ -1165,14 +1368,12 @@
 
 			$fields = [];
 
-			/*$fields[] = scm_acf_field_select_layout( $name . 'section-layout', $default, 'Layout', 25 );
+			$fields[] = scm_acf_field_select_layout( 'layout', $default, 'Layout', 20 );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( '', $default, 20, 20 ) );
+			$fields[] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 40 );
 
-			$fields = scm_acf_preset_selectors( $name . 'section', $default, 25, 25 );
-
-			$fields[] = scm_acf_field( $name . 'section-attr', 'attr', 'Attributi', 25 );*/
-						
-			//$fields = scm_acf_preset_flexible_elements( $name . 'module', $default, $elements );
-			$fields = scm_acf_preset_repeater_columns( $name, $default, $elements );
+			$fields = array_merge( $fields, scm_acf_preset_repeater_columns( '', $default, $elements ) );
+			$fields = array_merge( $fields, scm_acf_preset_tags( 'section', $default, 'sections' ) );
 
 			return $fields;
 		}
@@ -1380,67 +1581,43 @@
 
 					$fields[] = scm_acf_field_name_req( $name . 'luogo-nome', $default, '', 100, 0, 'es. Sede Operativa, Distaccamento, …' );
 
-				$fields[] = scm_acf_field( 'msg-luogo-dati', [
-					'message',
-					'Più dettagliati sono i dati geografici, più preciso sarà il puntatore sulla mappa. Nello stesso tempo, più dati si inseriscono, più lungo e completo sarà l\'indirizzo, dove presente. Se inseriti tutti, l\'indirizzo risulterà: [ Icona ] Indirizzo — Codice Postale, Località, Frazione, (Provincia) — Regione, Paese.',
-				], 'Dati geografici' );
-
-					$fields[] = scm_acf_field_icon( $name . 'luogo-icon', $default, 'location-arrow', '', 30, 0, 'Seleziona un\'icona' );
 					$fields[] = scm_acf_field_text( $name . 'luogo-indirizzo', $default, 70, 0, 'Corso Giulio Cesare 1', 'Indirizzo' );
-					$fields[] = scm_acf_field_text( $name . 'luogo-cap', $default, 30, 0, '12345', 'CAP' );
-					$fields[] = scm_acf_field_text( $name . 'luogo-citta', $default, 70, 0, 'Roma', 'Località' );
 					$fields[] = scm_acf_field_text( $name . 'luogo-provincia', $default, 30, 0, 'RM', 'Provincia' );
+					
+					$fields[] = scm_acf_field_text( $name . 'luogo-citta', $default, 70, 0, 'Roma', 'Città/Località' );
+					$fields[] = scm_acf_field_text( $name . 'luogo-cap', $default, 30, 0, '12345', 'CAP' );
+					
 					$fields[] = scm_acf_field_text( $name . 'luogo-frazione', $default, 70, 0, 'S. Pietro', 'Frazione' );
 					$fields[] = scm_acf_field_text( $name . 'luogo-regione', $default, 30, 0, 'Lazio', 'Regione' );
+					
 					$fields[] = scm_acf_field_text( $name . 'luogo-paese', $default, 70, 0, 'Italy', 'Paese' );
+					$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'luogo-mappa', 1, 30, 0, 'Icona Luogo' ) );
 
-			$fields[] = scm_acf_field( 'tab-mappa-luogo', 'tab-left', 'Mappa' );
-
-				$msg = 'Verrà utilizzata sulle mappe per indicare questo esatto <strong>Luogo</strong>. Comparirà anche nella legenda, se sulla mappa sono presenti più <strong>Luoghi</strong>.
-				Selezionando l\'opzione <em>Default</em> dal menu a tendina <strong>Icona Mappa</strong>, verrà utilizzata un\'icona standard. Se è stata assegnata una <strong>Categoria</strong> a questo <strong>Luogo</strong> e l\'opzione Icona Mappa è impostata su <em>Default</em>, verrà utilizzata l\'icona associata alla <strong>Categoria</strong> selezionata';
-
-				$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'luogo-mappa', 1,  100, '', 0, 'Icona Mappa specifica per questo Luogo', $msg ) );
-
-				$fields[] = scm_acf_field( 'msg-luogo-coord', [
-					'message',
-					'Questi valori vengono calcolati automaticamente in base ai dati inseriti nella sezione Dati e veranno utilizzati per localizzare questo Luogo sulle mappe.',
-				], 'Coordinate geografiche', 100 );
-
-				$fields[] = scm_acf_field( $name . 'luogo-lat', [ 'number-read', '', '0', 'Lat.' ], 'Latitude', 50 );
-				$fields[] = scm_acf_field( $name . 'luogo-lng', [ 'number-read', '', '0', 'Long.' ], 'Longitude', 50 );
+					$fields[] = scm_acf_field( $name . 'luogo-lat', [ 'number-read', '', '0', 'Lat.' ], 'Latitudine', 50 );
+					$fields[] = scm_acf_field( $name . 'luogo-lng', [ 'number-read', '', '0', 'Long.' ], 'Longitudine', 50 );
 
 			$fields[] = scm_acf_field( 'tab-contatti-luogo', 'tab-left', 'Contatti' );
 
 				$contacts = scm_acf_field_flexible( $name . 'luogo-contatti', $default, 'Aggiungi Contatti', '+' );
 
-					$web = scm_acf_layout( 'layout-web', 'block', 'Web' );
-						$web['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'web', 25, 0, 'Seleziona un\'icona' );
-						$web['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Web Site' );
-						$web['sub_fields'][] = scm_acf_field_link( 'link', $default, 45 );
+					$web = scm_acf_layout( 'web', 'block', 'Web' );
+						$web['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'globe_contact', 'web', 0, 'Web' );
 					$contacts['layouts'][] = $web;
 
-					$email = scm_acf_layout( 'layout-email', 'block', 'Email' );
-						$email['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'email', 25, 0, 'Seleziona un\'icona' );
-						$email['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Email' );
-						$email['sub_fields'][] = scm_acf_field_email( 'link', $default, 45 );
+					$email = scm_acf_layout( 'email', 'block', 'Email' );
+						$email['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'envelope_contact', 'email', 0, 'Email' );
 					$contacts['layouts'][] = $email;
 
-					$skype = scm_acf_layout( 'layout-skype', 'block', 'Skype' );
-						$skype['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'skype', 25, 0, 'Seleziona un\'icona' );
-						$skype['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Skype Name', 'Nome' );
-						$skype['sub_fields'][] = scm_acf_field_text( 'link', $default, 45, 0, 'User Name', 'User' );
+					$skype = scm_acf_layout( 'skype', 'block', 'Skype' );
+						$skype['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'skype_contact', 'skype', 0, 'Skype Name', 'User Name' );
 					$contacts['layouts'][] = $skype;
 
-					$phone = scm_acf_layout( 'layout-phone', 'block', 'Telefono' );
-						$phone['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'phone', 25, 0, 'Seleziona un\'icona' );
-						$phone['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Tel.' );
-						$phone['sub_fields'][] = scm_acf_field_phone( 'link', $default, 45 );
+					$phone = scm_acf_layout( 'phone', 'block', 'Telefono' );
+						$phone['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'phone_contact', 'phone', 0, 'Tel.' );
 					$contacts['layouts'][] = $phone;
 
-					$fax = scm_acf_layout( 'layout-fax', 'block', 'Fax' );
-						$fax['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'fax', 25, 0, 'Seleziona un\'icona' );
-						$fax['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Fax' );
-						$fax['sub_fields'][] = scm_acf_field_phone( 'link', $default, 45 );
+					$fax = scm_acf_layout( 'fax', 'block', 'Fax' );
+						$fax['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'file-text_contact', 'fax', 0, 'Fax' );
 					$contacts['layouts'][] = $fax;
 
 				$fields[] = $contacts;
@@ -1448,53 +1625,6 @@
 			$fields[] = scm_acf_field( 'tab-tax-luogo', 'tab-left', 'Categorie' );
 				$fields = array_merge( $fields, scm_acf_preset_category( $name . 'luogo', $default, 'luoghi' ) );
 				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'luogo', $default, 'luoghi' ) );
-
-			return $fields;
-
-		}
-	}
-
-	// CONTATTI
-	if ( ! function_exists( 'scm_acf_fields_contatto' ) ) {
-		function scm_acf_fields_contatto( $name = '', $default = 0 ) {
-
-			$name = ( $name ? $name . '-' : '');
-
-			$fields = array();
-
-			$contacts = scm_acf_field_flexible( $name . 'contatti', $default, 'Aggiungi Contatti', '+' );
-
-				$web = scm_acf_layout( 'layout-web', 'block', 'Web' );
-					$web['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'web', 25, 0, 'Seleziona un\'icona' );
-					$web['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Web Site' );
-					$web['sub_fields'][] = scm_acf_field_link( 'link', $default, 45 );
-				$contacts['layouts'][] = $web;
-
-				$email = scm_acf_layout( 'layout-email', 'block', 'Email' );
-					$email['sub_fields'][] = scm_acf_field_icon( 'emicon', $default, '_contact', 'email', 25, 0, 'Seleziona un\'icona' );
-					$email['sub_fields'][] = scm_acf_field_name( 'emname', $default, '', 30, 0, 'Email' );
-					$email['sub_fields'][] = scm_acf_field_email( 'emlink', $default, 45 );
-				$contacts['layouts'][] = $email;
-
-				$skype = scm_acf_layout( 'layout-skype', 'block', 'Skype' );
-					$skype['sub_fields'][] = scm_acf_field_icon( 'skicon', $default, '_contact', 'skype', 25, 0, 'Seleziona un\'icona' );
-					$skype['sub_fields'][] = scm_acf_field_name( 'skname', $default, '', 30, 0, 'Skype Name', 'Nome' );
-					$skype['sub_fields'][] = scm_acf_field_text( 'sklink', $default, 45, 0, 'User Name', 'User' );
-				$contacts['layouts'][] = $skype;
-
-				$phone = scm_acf_layout( 'layout-phone', 'block', 'Telefono' );
-					$phone['sub_fields'][] = scm_acf_field_icon( 'phicon', $default, '_contact', 'phone', 25, 0, 'Seleziona un\'icona' );
-					$phone['sub_fields'][] = scm_acf_field_name( 'phname', $default, '', 30, 0, 'Tel.' );
-					$phone['sub_fields'][] = scm_acf_field_phone( 'phlink', $default, 45 );
-				$contacts['layouts'][] = $phone;
-
-				$fax = scm_acf_layout( 'layout-fax', 'block', 'Fax' );
-					$fax['sub_fields'][] = scm_acf_field_icon( 'icon', $default, '_contact', 'fax', 25, 0, 'Seleziona un\'icona' );
-					$fax['sub_fields'][] = scm_acf_field_name( 'name', $default, '', 30, 0, 'Fax' );
-					$fax['sub_fields'][] = scm_acf_field_phone( 'link', $default, 45 );
-				$contacts['layouts'][] = $fax;
-
-			$fields[] = $contacts;
 
 			return $fields;
 
@@ -1535,7 +1665,7 @@
 			$fields[] = scm_acf_field( 'tab-soggetto-luogo', 'tab-left', 'Luoghi' );
 				$fields[] = scm_acf_field( 'msg-soggetto-luoghi', [
 					'message',
-					'Assegna dei Luoghi a questo Soggetto. Clicca sul pulsante Luoghi nella barra laterale per crearne uno.',
+					'Assegna dei Luoghi a questo Soggetto. Clicca sul pulsante Luoghi nella barra laterale per crearne uno. Il primo Luogo dell\'elenco sarà considerato Luogo Principale per questo Soggetto.',
 				], 'Luoghi' );
 
 				$fields[] = scm_acf_field_objects_rel( $name . 'soggetto-luoghi', $default, 'luoghi', 100, 0, 'Seleziona Luoghi' );
@@ -1544,7 +1674,7 @@
 				$fields = array_merge( $fields, scm_acf_preset_flexible_buttons( $name . 'soggetto', $default, 'social', 'Social' ) );
 
 			$fields[] = scm_acf_field( 'tab-tax-soggetto', 'tab-left', 'Categorie' );
-				$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'soggetto', $default, 'soggetti' ) );
+				$fields = array_merge( $fields, scm_acf_preset_category( $name . 'soggetto', $default, 'soggetti' ) );
 				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'soggetto', $default, 'soggetti' ) );
 
 			return $fields;
@@ -1565,16 +1695,17 @@
 			$fields = array();
 
 			$types = scm_acf_field_repeater( $name . 'types-list', $default, 'Aggiungi Type', 'Types' );
-
+			$types['sub_fields'][] = scm_acf_field_name_req( 'plural', $default, 18, 100, 0, 'Produzioni', 'Plurale' );
+			
 				$types['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab-left', 'Labels' );
-					$types['sub_fields'][] = scm_acf_field_text_req( 'plural', $default, 100, 0, 'Produzioni', 'Plurale' );
-					$types['sub_fields'][] = scm_acf_field_text( 'singular', $default, 100, 0, 'Produzione', 'Singolare' );
-					$types['sub_fields'][] = scm_acf_field_text( 'slug', $default, 100, 0, 'produzioni', 'Slug' );
-					$types['sub_fields'][] = scm_acf_field_text( 'short-singular', $default, 100, 0, 'Prod.', 'Singolare Corto' );
-					$types['sub_fields'][] = scm_acf_field_text( 'short-plural', $default, 100, 0, 'Prods.', 'Plurale Corto' );
+					
+					$types['sub_fields'][] = scm_acf_field_name( 'singular', $default, 18, 100, 0, 'Produzione', 'Singolare' );
+					$types['sub_fields'][] = scm_acf_field_name( 'slug', $default, 18, 100, 0, 'produzioni', 'Slug' );
+					$types['sub_fields'][] = scm_acf_field_name( 'short-singular', $default, 18, 100, 0, 'Prod.', 'Singolare Corto' );
+					$types['sub_fields'][] = scm_acf_field_name( 'short-plural', $default, 18, 100, 0, 'Prods.', 'Plurale Corto' );
 
 				$types['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab-left', 'Admin' );
-					$types['sub_fields'][] = scm_acf_field_select_disable( 'active', $default, '', 25 );
+					$types['sub_fields'][] = scm_acf_field_select_disable( 'active', $default, 'Type', 25 );
 					$types['sub_fields'][] = scm_acf_field_select_disable( 'public', $default, 'Archivi', 25 );
 					$types['sub_fields'][] = scm_acf_field_text( 'icon', $default, 50, 0, 'admin-site', 'Icona', 'Icona', '', 'Visita <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> per un elenco delle icone disponibili e dei corrispettivi nomi, da inserire nel seguente campo.' );
 					$types['sub_fields'][] = scm_acf_field_positive( 'menu', $default, 100, 0, '0', 'Zona Menu', 0, 3 );
@@ -1639,10 +1770,11 @@
 
 			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', $default, 'Aggiungi Taxonomy', 'Taxonomies' );
 
-				$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', [ 'select' . ( $default ? '-default' : '' ), [ 'Categoria', 'Tag' ] ], 'Seleziona Tipologia' );
-				$taxes['sub_fields'][] = scm_acf_field_text_req( 'plural', $default, 100, 0, 'Nome Categorie', 'Plurale' );
-				$taxes['sub_fields'][] = scm_acf_field_text( 'singular', $default, 100, 0, 'Nome Categoria', 'Singolare' );
-				$taxes['sub_fields'][] = scm_acf_field_text( 'slug', $default, 100, 0, 'slug-categoria', 'Slug' );
+				$taxes['sub_fields'][] = scm_acf_field_select_disable( 'template', $default, 'Template', 50 );
+				$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', [ 'select' . ( $default ? '-default' : '' ), [ 'Categoria', 'Tag' ] ], 'Seleziona Tipologia', 50 );
+				$taxes['sub_fields'][] = scm_acf_field_name_req( 'plural', $default, 18, 100, 0, 'Nome Categorie', 'Plurale' );
+				$taxes['sub_fields'][] = scm_acf_field_name( 'singular', $default, 18, 100, 0, 'Nome Categoria', 'Singolare' );
+				$taxes['sub_fields'][] = scm_acf_field_name( 'slug', $default, 18, 100, 0, 'slug-categoria', 'Slug' );
 				$taxes['sub_fields'][] = scm_acf_field( 'types', [ 'select2-multi-types_complete-horizontal' . ( $default ? '-default' : '' ) ], 'Seleziona Locations' );
 
 			$fields[] = $taxes;
@@ -1650,6 +1782,37 @@
 			return $fields;
 		}
 	}
+
+	// MODULE OPTIONS
+	/*if ( ! function_exists( 'scm_acf_options_module_p' ) ) {
+		function scm_acf_options_module_p( $name = '', $default = 0, $width = 100, $placeholder = '', $label = 'Link a Pagina' ) {
+
+			$name = ( $name ? $name . '-' : '' );
+
+			$fields = [];
+
+			$fields[] = scm_acf_field_object( $name . 'page', $default, 'page', $width, '', 'Pagina Modulo' );
+
+            return $fields;
+		}
+	}*/
+
+	// SLIDER OPTIONS
+	if ( ! function_exists( 'scm_acf_options_slider' ) ) {
+		function scm_acf_options_slider( $name = '', $default = 0, $width = 100, $placeholder = '', $label = 'Attiva Slider' ) {
+
+			$name = ( $name ? $name . '-' : '' );
+
+			$fields = [];
+			
+			$fields[] = scm_acf_field_select1( $name . 'slider-active', $default, 'slider_model-no', $width, 0, [ 'no' => 'Disattiva' ], $label );
+                $slider_enabled = [ [ 'field' => $name . 'slider-active', 'operator' => '!=', 'value' => 'no' ], [ 'field' => $name . 'slider-active', 'operator' => '!=', 'value' => 'default' ] ];
+                    $fields = array_merge( $fields, scm_acf_preset_term( $name . 'slider', 0, 'sliders', 'Slider', $slider_enabled, 0, 0, $width ) );
+
+            return $fields;
+		}
+	}
+
 
 	// GENERAL OPTIONS
 	if ( ! function_exists( 'scm_acf_options_general' ) ) {
@@ -1681,13 +1844,13 @@
 					$fields[] = scm_acf_field( $name . 'opt-tools-topofpage-offset', [ 'pixel', 200, 200, 'Offset' ], 'Offset' );
 					$fields[] = scm_acf_field_icon( $name . 'opt-tools-topofpage-icon', $default, 'angle-up' );
 					$fields[] = scm_acf_field( $name . 'opt-tools-topofpage-title', [ 'name', 'Inizio pagina', 'Inizio pagina'], 'Titolo' );
-					$fields = array_merge( $fields, scm_acf_preset_rgba_txt( $name . 'opt-tools-topofpage-txt', $default ) );
-					$fields = array_merge( $fields, scm_acf_preset_rgba_bg( $name . 'opt-tools-topofpage-bg', $default, '#DDDDDD' ) );
+					$fields = array_merge( $fields, scm_acf_preset_rgba_txt( $name . 'opt-tools-topofpage-txt-rgba', $default ) );
+					$fields = array_merge( $fields, scm_acf_preset_rgba_bg( $name . 'opt-tools-topofpage-bg-rgba', $default, '#DDDDDD' ) );
 				$fields[] = scm_acf_field( 'msg-smooth', 'message', 'Smooth Scroll' );
 					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-duration', [ 'second-max', '', '0', 'Durata' ], 'Durata' );
 					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-delay', [ 'second', '', '0', 'Delay' ], 'Delay' );
 					$fields[] = scm_acf_field_select_enable( $name . 'opt-tools-smoothscroll-page', $default, 'Smooth Scroll (su nuove pagine)' );
-					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-delay-new', [ 'second', '', '300', 'Delay su nuova pagina' ], 'Delay su nuova pagina' );
+					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-delay-new', [ 'second', '', '0,3', 'Delay su nuova pagina' ], 'Delay su nuova pagina' );
 					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-offset', [ 'pixel', 50, 50, 'Offset' ], 'Offset' );
 					$fields[] = scm_acf_field_select( $name . 'opt-tools-smoothscroll-ease', $default, 'ease', 100, 0, '', 'Ease' );
 				$fields[] = scm_acf_field( 'msg-singlenav', 'message', 'Single Page Nav' );
@@ -1698,7 +1861,7 @@
 				$fields[] = scm_acf_field( 'msg-fancybox', 'message', 'Fancybox' );
 					$fields[] = scm_acf_field_select_disable( $name . 'opt-tools-fancybox', $default, 'Fancybox' );
 				$fields[] = scm_acf_field( 'msg-slider', 'message', 'Slider' );
-					$fields[] = scm_acf_field_select( $name . 'opt-tools-slider', $default, 'slider_model', 100, 0, '', 'Slider' );
+					$fields = array_merge( $fields, scm_acf_options_slider( 'main', $default ) );
 				$fields[] = scm_acf_field( 'msg-gmaps', 'message', 'Google Maps' );
 					$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'opt-tools-mappa', $default ) );
 				/*$fields[] = scm_acf_field( 'msg-accordion', 'message', 'Accordion' );
@@ -1712,7 +1875,7 @@
 				$fields[] = scm_acf_field( $name . 'opt-ids-header', [ 'id', 'site-header' ], 'Header ID' );
 				$fields[] = scm_acf_field( $name . 'opt-ids-branding', [ 'id', 'site-branding' ], 'Branding ID' );
 				$fields[] = scm_acf_field( $name . 'opt-ids-menu', [ 'id', 'site-navigation' ], 'Main Menu ID' );
-				$fields[] = scm_acf_field( $name . 'opt-ids-follow', [ 'id', 'site-follow' ], 'Social Follow Menu ID' );
+				//$fields[] = scm_acf_field( $name . 'opt-ids-follow', [ 'id', 'site-follow' ], 'Social Follow Menu ID' );
 				$fields[] = scm_acf_field( $name . 'opt-ids-content', [ 'id', 'site-content' ], 'Content ID' );
 				$fields[] = scm_acf_field( $name . 'opt-ids-footer', [ 'id', 'site-footer' ], 'Footer ID' );
 				$fields[] = scm_acf_field( $name . 'opt-ids-topofpage', [ 'id', 'site-topofpage' ], 'Top Of Page ID' );
@@ -1811,14 +1974,15 @@
 				'value' => 'full',
 			];
 
-				$fields[] = scm_acf_field_select_layout( $name . 'layout-head', $default, 'Larghezza Header', 33, $layout, 'responsive' );
+				$fields[] = scm_acf_field_select_layout( $name . 'layout-head', $default, 'Larghezza Header', 34, $layout, 'responsive' );
 				$fields[] = scm_acf_field_select_layout( $name . 'layout-content', $default, 'Larghezza Contenuti', 33, $layout, 'responsive' );
 				$fields[] = scm_acf_field_select_layout( $name . 'layout-foot', $default, 'Larghezza Footer', 33, $layout, 'responsive' );
-				$fields[] = scm_acf_field_select_layout( $name . 'layout-menu', $default, 'Larghezza Menu', 33, $layout, 'responsive' );
-				$fields[] = scm_acf_field_select_layout( $name . 'layout-sticky', $default, 'Larghezza Sticky Menu', 33, $layout, 'responsive' );
+				$fields[] = scm_acf_field_select_layout( $name . 'layout-menu', $default, 'Larghezza Menu', 50, $layout, 'responsive' );
+				$fields[] = scm_acf_field_select_layout( $name . 'layout-sticky', $default, 'Larghezza Sticky Menu', 50, $layout, 'responsive' );
 
-			$fields[] = scm_acf_field_select( $name . 'layout-tofull',  $default, 'responsive_events', 100, 0, '', 'Responsive to Full' );
-			$fields[] = scm_acf_field_select( $name . 'layout-max',  $default, 'responsive_layouts', 100, 0, '', 'Max Responsive Width' );
+			$fields[] = scm_acf_field_select1( $name . 'layout-tofull',  $default, 'responsive_events', 34, 0, '', 'Responsive to Full' );
+			$fields[] = scm_acf_field_select1( $name . 'layout-tocolumn',  $default, 'responsive_events', 33, 0, '', 'Responsive Columns' );
+			$fields[] = scm_acf_field_select1( $name . 'layout-max',  $default, 'responsive_layouts', 33, 0, '', 'Max Responsive Width' );
 
 			return $fields;
 
@@ -1843,9 +2007,6 @@
 
             $fields[] = scm_acf_field( 'tab-head-social', 'tab-left', 'Social' );
                 $fields = array_merge( $fields, scm_acf_options_head_social( $name . 'follow' ) );
-
-            $fields[] = scm_acf_field( 'tab-head-slider', 'tab-left', 'Slider' );
-                $fields = array_merge( $fields, scm_acf_options_slider( $name . 'slider' ) );
 
 			return $fields;
 		}
@@ -1895,8 +2056,9 @@
 				$fields = array_merge( $fields, scm_acf_preset_text_font( $name . 'webfonts', $default, 0, 33, 33, 33 ) );
 
 			$fields[] = scm_acf_field( 'msg-toggle', 'message', 'Toggle Menu' );
-				$fields[] = scm_acf_field_select( $name . 'toggle', $default, 'responsive_up', 50, 0, '', 'Attiva Toggle Menu');
-				$fields[] = scm_acf_field_icon( $name . 'toggle-icon', $default, 'bars', '', 50, 0, 'Icona Toggle Menu' );
+				$fields[] = scm_acf_field_select( $name . 'toggle', $default, 'responsive_up', 34, 0, '', 'Attiva Toggle Menu');
+				$fields[] = scm_acf_field_icon( $name . 'toggle-icon-open', $default, 'bars', '', 33, 0, 'Icona Apri Toggle Menu' );
+				$fields[] = scm_acf_field_icon( $name . 'toggle-icon-close', $default, 'arrow-circle-up', '', 33, 0, 'Icona Chiudi Toggle Menu' );
 
 			$fields[] = scm_acf_field( 'msg-home', 'message', 'Home Button' );
 				$fields[] = scm_acf_field_select( $name . 'home', $default, 'home_active', 50, 0, '', 'Attiva Home Button' );
@@ -1919,6 +2081,8 @@
 		}
 	}
 
+// MANNAGGIA ALLE COZZE, VEDI DI LEVARE STE OPZIONI COMPLESSE
+
 	// HEAD SOCIAL OPTIONS
 	if ( ! function_exists( 'scm_acf_options_head_social' ) ) {
 		function scm_acf_options_head_social( $name = '', $default = 0 ) {
@@ -1931,14 +2095,7 @@
 			$fields[] = scm_acf_field_select_hide( $name . 'enabled', $default, 'Social' );
 			$social = [ 'field' => $name . 'enabled', 'operator' => '==', 'value' => 'on' ];
 
-			// +++ todo A: in scm-acf-layouts.php ci sarebbe da aggiungere il .button ( ora commentato come scm_acf_object_social_follow )
-			// così in casi come questo ottimizzi il tutto in un scm_acf_object_button( $default );
-
-			// oppure
-
-			// +++ todo B: qui, aggiungi scm_acf_preset_button();
-
-				$fields[] = scm_acf_field_object( $name . 'soggetto', $default, 'soggetti', 100, $social, 'Soggetto' );
+				$fields[] = scm_acf_field_object( 'element', $default, 'soggetti', 100, $social, 'Soggetto' ); // mmmh
 				$fields[] = scm_acf_field_select( $name . 'position', $default, 'head_social_position', 50, $social, '', 'Posizione' );
 				$fields[] = scm_acf_field_select_align( $name . 'alignment', $default, 50, $social );
 				
@@ -1951,7 +2108,7 @@
 				$shape = scm_acf_group_condition( $social, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'no' ] );
 				$rounded = scm_acf_group_condition( $shape, [ 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ] );
 
-					$fields[] = scm_acf_field_select1( $name . 'shape-size', $default, 'box_angle_size', 50, $rounded, 'Dimensione', 'Dimensione angoli Box' );
+					$fields[] = scm_acf_field_select1( $name . 'shape-size', $default, 'simple_size', 50, $rounded, 'Dimensione', 'Dimensione angoli Box' );
 					$fields[] = scm_acf_field_select1( $name . 'shape-angle', $default, 'box_angle_type', 50, $rounded, 'Angoli', 'Angoli Box' );
 
 					$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'box', $default, '', 1, $shape ) );
@@ -1971,48 +2128,6 @@
 			$fields = array_merge( $fields, scm_acf_preset_flexible_sections( $name . 'footer', $default ) );
 
 			return $fields;
-		}
-	}
-
-	// SLIDER OPTIONS
-	if ( ! function_exists( 'scm_acf_options_slider' ) ) {
-		function scm_acf_options_slider( $name = '', $default = 0 ) {
-
-			$name = ( $name ? $name . '-' : '');
-
-			$fields = array();
-
-				$fields = array_merge( $fields, scm_acf_preset_term( $name . 'slides', $default, 'sliders', 'Slider' ) );
-
-				//$fields[] = scm_acf_field_select( $name . 'layout', $default, 'layout_main', 100, 0, '', 'Layout' );
-				$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', 'Altezza Massima' ) );
-				$fields[] = scm_acf_field_select( $name . 'theme', $default, 'themes_nivo', 100, 0, '', 'Tema' );
-				
-				// conditional options
-				$fields[] = scm_acf_field_select_options( $name . 'options', 0, 100, 0, 'hide' );
-
-				$hide = [ 'field' => $name . 'options', 'operator' => '==', 'value' => 'hide' ];
-				$options = [ 'field' => $name . 'options', 'operator' => '==', 'value' => 'options' ];
-				$advanced = [ 'field' => $name . 'options', 'operator' => '==', 'value' => 'advanced' ];
-
-					$fields[] = scm_acf_field_select( $name . 'effect', $default, 'effect_nivo', 100, $options, '', 'Effetto Slider' );
-					$fields[] = scm_acf_field_number( $name . 'slices', $default, 33, $options, '30', 'Slices', 1, 30 );
-					$fields[] = scm_acf_field_number( $name . 'cols', $default, 33, $options, '8', 'Colonne', 1, 8 );
-					$fields[] = scm_acf_field_number( $name . 'rows', $default, 33, $options, '8', 'Righe', 1, 100 );
-					$fields[] = scm_acf_field_number( $name . 'speed', $default, 50, $options, '1', 'Velocità' );
-					$fields[] = scm_acf_field_number( $name . 'pause', $default, 50, $options, '5', 'Pausa' );
-
-					$fields[] = scm_acf_field_option( $name . 'start', $default, 33, $advanced, '0', 'Start Slide' );
-					$fields[] = scm_acf_field_select_enable( $name . 'pause', $default, 'Pause on Hover', 33, $advanced );
-					$fields[] = scm_acf_field_select_disable( $name . 'manual', $default, 'Avanzamento Manuale', 33, $advanced );
-					$fields[] = scm_acf_field_select_enable( $name . 'direction', $default, 'Direction Nav', 33, $advanced );
-					$fields[] = scm_acf_field_select_disable( $name . 'control', $default, 'Control Nav', 33, $advanced );
-					$fields[] = scm_acf_field_select_disable( $name . 'thumbs', $default, 'Thumbs Nav', 33, $advanced );
-					$fields[] = scm_acf_field_icon( $name . 'prev', $default, 'angle-left', '', 50, $advanced, 'Prev Icon' );
-					$fields[] = scm_acf_field_icon( $name . 'next', $default, 'angle-right', '', 50, $advanced, 'Next Icon' );
-
-				return $fields;
-			
 		}
 	}
 

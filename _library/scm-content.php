@@ -1,463 +1,541 @@
 <?php
+/**
+ * @package SCM
+ */
+
+// *****************************************************
+// *    SCM CONTENT
+// *****************************************************
+
+/*
+*****************************************************
+*
+*   0.0 Actions and Filters
+*   1.0 Print Contents
+**      1.1 Content (filter single module to 1.2 or 1.3)
+**      1.2 Containers (section, row, column, module, post, content)
+**      1.3 Contents (section, indirizzo, map, social_follow, ...)
+*   2.0 Post Content
+**      2.1 Post (soggetti, luoghi, ...)
+**      2.2 Post Link (self, template, link)
+*
+*****************************************************
+*/
+
+// *****************************************************
+// *      0.0 ACTIONS AND FILTERS
+// *****************************************************
+
+
+// *****************************************************
+// *      1.0 PRINT CONTENTS
+// *****************************************************
+
+    // *****************************************************
+    // *      1.1 CONTENT
+    // *****************************************************
+
+    if ( ! function_exists( 'scm_content' ) ) {
+        function scm_content( $content = [] ) {
+
+            global $post, $SCM_indent;
+
+            $type = $post->name;
+
+            $container = '';
+
+            if( isset( $content['sections'] ) ){
+                $container = 'section';
+                $content = $content['sections'];
+            }else if( isset( $content['rows'] ) ){
+                $container = 'row';
+                $content = $content['rows'];
+            }else if( isset( $content['columns'] ) ){
+                $container = 'column';
+                $content = $content['columns'];
+            }else if( isset( $content['modules'] ) ){
+                $container = 'module';
+                $content = $content['modules'];
+            }else if( isset( $content['acf_fc_layout'] ) ){
+                if( isset( $content['row'] ) && !$content['row'] )
+                    return;
+                $container = 'content';
+            }
+            
+            switch ( $container ) {
+                
+                case 'section':
+                case 'row':
+                case 'post':
+                case 'column':
+                case 'module':
+
+                    scm_containers( $content, $container );
+
+                    
+                    /*if( !empty( $content['sections'] ){
+                        $build = $content['sections'];
+                        $type = 'row';
+                    }else*/
+                    
+                    /*$section = is( $content['columns'], 'NONE' );
+                    
+                    $section = is( $content['modules'], 'NONE' );*/
+
+                    //scm_containers( ( isset( $content['columns'] ) && is( $content['columns'] ) ? $content['columns'] : ( isset( $content['modules'] ) && is( $content['modules'] ) ? $content['modules'] : [] ) ), ( $container == 'section' ? 'row' : ( $container == 'row' ? 'column' : ( $container == 'column' ? 'module' : 'content' ) ) ) );
+                
+                break;
+
+                
+                /*case 'content':
+
+                    $SCM_indent++;
+                    scm_contents( $content );
+                    $SCM_indent--;
+
+                break;*/
+
+                case 'content':
+
+                    $SCM_indent++;
+
+        // SCM FILTER - $content before it is elaborated - scm_filter_echo_content/{content}
+                    $content = apply_filters( 'scm_filter_echo_content' . is( $content['acf_fc_layout'], '', '/' ), $content );
+
+                    // TRY default contents - scm_contents
+                    scm_contents( $content );
+
+                    // TRY scm_single_content_{type}
+                    if( function_exists( 'scm_single_content_' . $type ) )
+                        call_user_func( 'scm_single_content_' . $type, $content, $SCM_indent );
+
+                    // +++ todo: GALLERY: aggiungi opzioni [mostra thumb/title/description] a Gallery Temp > Thumbs
+                    // quando printi le gallery, per ogni Thumb assegni un data-init diverso
+
+        // SCM ACTION - with $content - scm_action_echo_content/{type}
+                    do_action( 'scm_action_echo_content' . is( $type, '', '/' ), $content, $SCM_indent );
+
+                    $SCM_indent--;
+
+                break;
+                
+                default:
+                    if( function_exists( (string)$container ) )
+                        call_user_func( (string)$container, $content );
+                break;
+            }
+        }
+    }
+
+    // *****************************************************
+    // *      1.2 CONTAINERS
+    // *****************************************************
+
+    if ( ! function_exists( 'scm_containers' ) ) {
+        function scm_containers( $build = [], $container = 'module', $action = '' ) {
+
+            if( is( $container == 'post' ) ){
+                $builder = $build;
+                $build = ( isset( $build['posts'] ) ? $build['posts'] : [] );
+            }
+
+            if( !is( $build ) )
+                return;
+
+            global $post, $SCM_indent;
+
+            $current = 0;
+            $counter = 0;
+            $odd = '';
+            $total = sizeof( $build );
+
+            $SCM_indent++;
+            $count = 0;
+
+            foreach ( $build as $content ) {
+
+                $count++;
+
+                $args = [
+
+                    'column-width' => '',
+                    'layout' => 'full',
+                    
+                    'acf_fc_layout' => '',
+                    'inherit' => false,
+
+                    'id' => '',
+                    'class' => '',
+                    'attributes' => '',
+                    'style' => '',
+
+                    'alignment' => 'default',
+                    'float' => '',
+                    'overlay' => '',
+                    
+                    'link' => 'no',
+                    'template' => 0,
+                    'url' => '#',
+                    
+                ];
+
+                if( $container == 'post' ){
+                    $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
+                    setup_postdata( $post );
+                    $content = $builder;
+                }
+
+                $content = ( is_array( $content ) ? array_merge( $args, $content ) : [] );
+
+                if( isset( $content['row'] ) && !empty( $content['row'] ) ){
+
+
+
+                    $mod_post = $content['row'];
+                    $mod_post = ( is_numeric( $mod_post ) ? $mod_post : $mod_post->ID );
+                    $module = get_fields( $mod_post );
+
+                    if( is( $module ) ){
+
+                        $mod_layout = ( isset( $content['layout'] ) ? $content['layout'] : '' );
+                        $mod_id = ( isset( $content['id'] ) ? $content['id'] : '' );
+                        $mod_class = ( isset( $content['class'] ) ? $content['class'] : '' );
+                        $mod_attr = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
+
+                        $content = array_merge( $content, $module );
+
+                        //printPre( $orig );
+                        $content['layout'] = ( $mod_layout && $mod_layout != 'default' ? $mod_layout : $content['layout'] );
+                        $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
+                        $content['id'] = is( $mod_id, $content['id'] );
+                        $content['class'] = $mod_class . ' ' . $content['class'];
+                        $content['attributes'] = $mod_attr . ' ' . $content['attributes'];
+                    }
+                }
+
+                // -- Layout
+
+                $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $count : '' ) );
+
+                $name = $content['acf_fc_layout'];
+                $slug = str_replace( 'layout-', '', $name );
+
+                // -- Width
+
+                $current++;
+                $odd = ( $odd ? '' : 'odd' );
+                
+                $layout = $content['column-width'];
+                $content['inherit'] = ( $layout === 'auto' );
+                
+                // -- Link
+
+                $link = ( $content['link'] ?: 'no' );
+
+                if( !$container == 'post' ){
+                    $link_object = scm_post_link( 0, $content );
+                }else{
+                    $link_object = scm_post_link();
+                    $link_template = ( $content['template'] ? ' data-href="' . get_permalink() . '?template=' . $content['template'] . '"' : '' );
+                    $link_url = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
+                }
+
+                $href = ( $link == 'self' ? $link_object : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
+                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
+                $content['attributes'] .= ( $link && $link != 'no' ? $href . $target : '' );
+
+                // -- Class
+                $content['class'] .= ' ' . $odd;
+                $content['class'] .= ' ' . scm_count_class( $current, $total );
+                $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
+                $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
+                $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );                
+
+                if( !$content['inherit'] ){
+
+                // -- Column Width
+                
+                    if( strpos( $layout, '/' ) !== false ){
+
+                        $layout = str_replace( '/', '', $layout );
+                        $size = (int)$layout[0] / (int)$layout[1];
+                        $counter += $size;
+                        $data = scm_column_data( $counter, $size );
+                        $counter = $data['count'];
+
+                        $content['attributes'] = ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"' . $content['attributes'];
+                        $content['class'] .= ' ' . 'column-layout';
+
+                    }else{
+
+                        $content['class'] .= ' ' . $content['layout'];
+
+                    }
+
+                    $content['class'] = $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
+                    // container
+                    indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
+
+                    $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
+
+                }
+
+                // content
+                scm_content( $content );
+
+                if( function_exists( (string)$action ) )
+                    call_user_func( (string)$action, $content );
+
+                if( !$content['inherit'] )
+                    indent( $SCM_indent, '</div><!-- ' . $container . ' -->', 2 );
+            }
+
+            $SCM_indent--;
+        }
+    }
+
+    // *****************************************************
+    // *      1.3 CONTENTS
+    // *****************************************************
 
     //Prints Element Flexible Contents
-    if ( ! function_exists( 'scm_flexible_content' ) ) {
-        function scm_flexible_content( $content ) {
+    if ( ! function_exists( 'scm_contents' ) ) {
+        function scm_contents( $content ) {
 
             if( !$content )
                 return;
 
-            //$content = ( !is_array( $content ) ? array( [ 'acf_fc_layout' => $content ] ) : $content );
+            $content = ( !isset( $content[0] ) ? array( $content ) : $content );
 
-            global $post, $SCM_indent, $SCM_types;
+            global $post, $SCM_indent;
 
-            //$SCM_indent++;
+            foreach ( $content as $args ) {
 
-            foreach ( $content as $cont ) {
+                $default = [
+                    'acf_fc_layout' => '',
+                    'id' => '',
+                    'class' => '',
+                    'attributes' => '',
+                    'style' => '',
+                ];
 
-                $element = ( isset( $cont[ 'acf_fc_layout' ] ) ? $cont[ 'acf_fc_layout' ] : '' );
+                $args = array_merge( $default, $args );
+
+                $element = $args[ 'acf_fc_layout' ];
+                $class = $args['class'];
+                $id = $args['id'];
+                $attributes = $args['attributes'];
+                $style = $args['style'];
 
                 switch ($element) {
 
-                    
+// *** Dynamic Objects
 
-                    /*case 'layout_archive':
-
-                        $args = array(
-                            'post_type' => $cont[ 'select_types_public_archive' ],
-                            'orderby' => $cont[ 'orderby_archive' ],
-                            'order' => $cont[ 'order_archive' ],
-                            'posts_per_page' => ( (int)$cont[ 'all_archive' ] ? -1 : $cont[ 'max_archive' ] ),
-                        );
-
-                        if( $cont[ 'categories_archive' ] ){
-                            $args[ 'tax_query' ] = array(
-                                array(
-                                    'taxonomy' => 'categories-' . $cont[ 'select_types_public_archive' ],
-                                    'field'    => 'slug',
-                                    'terms'    => explode( ' ', $cont[ 'categories_archive' ] ),
-                                ),
-                            );
-                        }
-
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-archive.php', array(
-                            'pargs' => $args,
-                            'pagination' => ( (int)$cont['all_archive'] ? 'no' : $cont[ 'pagination_archive' ] ),
-                            'layout' => $cont[ 'layout_archive' ],
-                        ));
-
-                    break;
-
-                    case 'layout_galleria':
-
-                        $single = $cont[ 'select_galleria' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                            'b_init'    => $cont[ 'module_galleria_init' ],
-                            'b_type'    => $cont[ 'select_gallerie_button' ],
-                            'b_img'     => $cont[ 'module_galleria_img_num' ],
-                            'b_size'    => $cont[ 'dimensione_galleria' ],
-                            'b_units'    => $cont[ 'select_units_galleria' ],
-                            'b_txt'     => $cont[ 'module_galleria_txt' ],
-                            'b_bg'      => $cont[ 'module_galleria_txt_bg' ],
-                            'b_section' => $cont[ 'module_galleria_section' ],
-                        ));
-
-                    break;
-
-                    case 'layout_soggetto':
-
-                        $single = $cont[ 'select_soggetto' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        $build = $cont[ 'flexible_soggetto' ];
-                        $link = $cont[ 'select_soggetto_link' ];
-                        $neg = $cont[ 'select_positive_negative_soggetto' ];
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                            'soggetto_rows' => $build,
-                            'soggetto_link' => $link,
-                            'soggetto_neg' => $neg,
-                        ));
-
-                    break;
-
-                    case 'layout_map':
-
-                        $luoghi = $cont[ 'select_luogo' ];
-                        if(!$luoghi) continue;
-                        $width = $cont[ 'dimensione_map' ];
-                        $units = $cont[ 'select_units_map' ];
-                        $zoom = $cont[ 'zoom_map' ];
-
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
-                            'map_luoghi' => $luoghi,
-                            'map_width' => $width,
-                            'map_units' => $units,
-                            'map_zoom' => $zoom
-                        ));
-
-                    break;
-
-                    case 'layout_luogo':
-
-                        $luoghi = $cont[ 'select_luogo' ];
-                        if(!$luoghi) continue;
-                        $build = $cont[ 'build_cont_luogo' ];
-                        $width = ( $cont[ 'larghezza_luogo' ] >= 0 ? $cont[ 'larghezza_luogo' ] : 100);
-                        $legend = ( $cont[ 'legend_luogo' ] ?: 0);
-
-                        foreach ($luoghi as $luogo) {
-                            $single_type = $luogo->post_type;
-                            $post = $luogo;
-                            setup_postdata( $post );
-                            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $single_type . '.php', array(
-                                'luogo_rows' => $build,
-                                'luogo_width' => $width,
-                                'luogo_legend' => $legend
-                            ));
-                        }
-
-                    break;
-
-                    case 'layout_contact_form':
-
-                        $single = $cont[ 'select_contact_form' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-                        $single_type = $post->post_type;
-                        get_template_part( SCM_DIR_PARTS_SINGLE, $single_type );
-
-                    break;
-
-                    case 'layout_login_form':
-
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'login-form' );
-
-                    break;*/
-
+                    case 'layout-banner':
+                    case 'layout-module':
                     case 'layout-section':
 
-                        $single = $cont[ 'sections' ];
+                        scm_containers( [ $args ], 'row' );
+
+                    break;
+
+                    case 'layout-indirizzo':
+
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-address.php', array(
+                            'cont' => $args,
+                        ));
+
+                    break;
+
+                    case 'layout-map':
+
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
+                            'cont' => $args,
+                        ));
+
+                    break;
+                    
+                    case 'layout-contatti':
+                    case 'layout-social_follow':
+                    case 'layout-elenco_puntato':
+                    case 'layout-pulsanti':
+                    case 'layout-link':
+                    case 'layout-pagine':
+                    case 'layout-media':
+
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-list.php', array(
+                            'cont' => $args
+                        ));
+
+                    break;
+
+                    case 'layout-slider':
+                        
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-slider.php', array(
+                            'cont' => $args
+                        ));
+
+                    break;
+
+                    // +++ todo: non in uso - attualmente inclusa in single-slider
+                    // quando diventerà un template a sé, immaginalo come elemento utilizzabile da solo, tipo animazioni
+                    // e leva Nivo Slider, se ogni singola slide ha animazioni d'entrata e uscita, ti serve solo una classe per il timer, al massimo uno slide orizzontale o verticale
+                    case 'layout-slide':
+
+                        $slide = $args[ 'slide' ];
+                        if(!$slide) continue;
+                        $post = ( is_numeric( $slide ) ? get_post( $slide ) : $slide );
+                        setup_postdata( $slide );
+                        
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-slide.php', array(
+                            'cont' => $args
+                        ));
+
+                    break;
+
+                    case 'layout-form':
+
+                        $single = $args[ 'form' ];
                         if(!$single) continue;
                         $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
                         setup_postdata( $post );
 
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'row' );
+                        indent( $SCM_indent + 1, do_shortcode('[contact-form-7 id="' . get_the_ID() . '" title="' . get_the_title() . '"]'), 2 );
 
-                        //Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-row.php', array(
-                        //));
-
+                        //get_template_part( SCM_DIR_PARTS_SINGLE, 'wpcf7_contact_form' );
                     break;
+
+// *** Static Objects
 
                     case 'layout-separatore':
 
-                        $height = ( $cont['divider-height-number'] ?: 1 );
-                        $height = $height . ( $cont['divider-height-units'] ?: 'px' );
+                        $height = scm_content_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 1 );
+                        $style = 'height:' . $height . ';';
 
-                        $line = ( $cont['divider-line'] ?: 'no' );
+                        $line = ( $args['line'] ?: 'no' );
 
                         if( $line != 'no' ){
 
-                            $args['color'] = ( $cont['divider-color-color'] ?: '#ddd' );
-                            $args['color'] = hex2rgba( $args['color'], ( $cont['divider-color-alpha'] ?: 1 ) );
+                            $svg_args = [];
+                            $svg_args['height'] = $height;
+                            $svg_args['y1'] = $svg_args['y2'] = scm_content_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
+                            $svg_args['color'] = scm_content_preset_rgba( $args['color-color'], $args['color-alpha'], '#ddd' );
+                            $svg_args['stroke'] = scm_content_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 5 );
+                            $svg_args['cap'] = ( $args['cap'] ?: 'round' );
+                            $svg_args['space'] = scm_content_preset_size( $args[ 'space-number' ], $args[ 'space-units' ], 26 );
+                            $svg_args['dash'] = scm_content_preset_size( $args[ 'dash-number' ], $args[ 'dash-units' ], 8 );
 
-                            $args['stroke'] = ( $cont['divider-size-number'] ?: 1 );
-                            $args['stroke'] = $args['stroke'] . ( $cont['divider-size-units'] ?: 'px' );
-
-                            $args['cap'] = ( $cont['divider-cap'] ?: 'round' );
-
-                            $args['space'] = ( $cont['divider-space-dash-number'] ?: 26 );
-                            $args['space'] = $args['space'] . ( $cont['divider-space-dash-units'] ?: 'px' );
-
-                            $args['dash'] = ( $cont['divider-dash-number'] ?: 8 );
-                            $args['dash'] = $args['dash'] . ( $cont['divider-dash-units'] ?: 'px' );
-
-                            indent( $SCM_indent, scm_svg_line( $args, $line ), 2 );
+                            indent( $SCM_indent, scm_svg_line( $svg_args, $line ), 2 );
                         
                         }else{
-                            indent( $SCM_indent, '<hr style="height:' . $height . ';" />', 2 );
+
+                            indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ) . '<!-- divider -->', 2 );
+                            
                         }
 
                     break;
 
                     case 'layout-icona':
 
-                        $icon = $cont[ 'icon' ];
-                        $icon_float = ( ( $cont[ 'icon-float' ] && $cont[ 'icon-float' ] != 'no' ) ? $cont[ 'icon-float' ] : 'no-float' );
-                        $icon_float = ( $icon_float == 'float-center' ? 'float-center text-center' : $icon_float );
-                        $icon_size = $cont[ 'icon-size-number' ];
-                        $icon_units = ( $cont[ 'icon-size-units' ] ?: 'px' );
-                        $icon_class = 'scm-img img ' . $icon_float;
-                        $icon_style = 'line-height:0;font-size:' . ( is_numeric( $icon_size ) ? $icon_size . $icon_units : ( $icon_size ?: 'inherit' ) );
-
-                        indent( $SCM_indent, '<div class="' . $icon_class . '" style="' . $icon_style . '">', 1 );
-
-                            indent( $SCM_indent+1, '<i class="fa ' . $icon . '"></i>', 1 );
-
-                        indent( $SCM_indent, '</div><!-- icon -->', 2 );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-icon.php', array(
+                            'cont' => $args
+                        ));
 
                     break;
 
+                    case 'layout-logo-icona':
+                    case 'layout-logo':
                     case 'layout-immagine':
 
-                        $image = ( $cont[ 'image' ] ?: '' );
-                        $image_fissa = ( $cont[ 'image' ] ?: 'norm' );
-                        
-                        $image_float = ( ( $cont[ 'image-float' ] && $cont[ 'image-float' ] != 'no' ) ? $cont[ 'image-float' ] : 'no-float' );
-                        $image_float = ( $image_float == 'float-center' ? 'float-center text-center' : $image_float );
-
-                        $image_class = 'scm-img img ' . $image_float;
-                        
-                        switch ($image_fissa) {
-                            case 'full':
-                                $image_float = '';
-                                $image_units = ( $cont[ 'image-full-units' ] ?: 'px' );
-                                $image_height = ( isset( $cont[ 'image-full-number' ] ) ? $cont[ 'image-full-number' ] : 'initial' );
-                                $image_height = ( is_numeric( $image_height ) ? $image_height . $image_units : ( $image_height ?: 'initial' ) );
-                                $image_style = 'max-height:' . $image_height . ';';
-                                $image_class = 'scm-full-image full-image mask full';
-                            break;
-
-                            case 'quad':
-                                $image_units = ( $cont[ 'image-size-units' ] ?: 'px' );
-                                $image_size = ( isset( $cont[ 'image-size-number' ] ) ? $cont[ 'image-size-number' ] : 'auto' );
-                                $image_size = ( is_numeric( $image_size ) ? $image_size . $image_units : ( $image_size ?: 'auto' ) );
-                                $image_style = 'width:' . $image_size . '; height:' . $image_size . ';';
-                            break;
-                            
-                            default:
-                                $image_units_w = ( $cont[ 'image-width-units' ] ?: '%' );
-                                $image_units_h = ( $cont[ 'image-height-units' ] ?: '%' );
-                                $image_width = ( isset( $cont[ 'image-width-number' ] ) ? $cont[ 'image-width-number' ] : 'auto' );
-                                $image_height = ( isset( $cont[ 'image-height-units' ] ) ? $cont[ 'image-height-units' ] : $image_width );
-                                $image_width = ( is_numeric( $image_width ) ? $image_width . $image_units_w : 'auto' );
-                                $image_height = ( is_numeric( $image_height ) ? $image_height . $image_units_h : ( $image_height ?: $image_width ) );
-                                $image_style = 'width:' . $image_width . '; height:' . $image_height . ';';
-                            break;
-                        }
-
-                        if( !$image )
-                            continue;
-
-                        indent( $SCM_indent, '<div class="' . $image_class . '" style="' . $image_style . '">', 1 );
-
-                            indent( $SCM_indent+1, '<img src="' . $image . '" alt="">', 1 );
-
-                        indent( $SCM_indent, '</div><!-- image -->', 2 );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-image.php', array(
+                            'cont' => $args
+                        ));
 
                     break;
 
+                    case 'layout-quote':
+                    case 'layout-copy':
+                    case 'layout-cf':
+                    case 'layout-piva':
+                    case 'layout-intestazione':
                     case 'layout-titolo':
 
-                        $text = $cont[ 'title' ];
-                        $text_tag = ( $cont[ 'title-tag' ] ?: 'h1' );
-                        //$text_default = ( $cont[ 'title-tag' ] ?: '' );
-                        //$text_tag = ( strpos( $text_default, 'select_' ) === false ? $cont[ 'title-tag' ] : scm_field( $text_default , 'h1', 'option') );
-                        $text_align = ( $cont[ 'alignment' ] != 'default' ? ( $cont[ 'alignment' ] ? $cont[ 'alignment' ] . ' ' : '' ) : '' );
-                        //$text_class = scm_acf_field_choices_preset( 'select_headings_default',  $text_default ) . ' ';
-                        $text_class = $text_align . 'scm-title title clear';
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                            'cont' => $args
+                        ));
+
+                    break;
+
+                    case 'layout-data':
+
+                        // +++ todo: rimane comunque da splittare in più span, perlomeno
+                        
+                        $unformat = ( isset( $args[ 'date' ] ) ? $args[ 'date' ] : ( get_the_date() ?: '' ) );
+                        $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
+                        $date = date_format( date_create( $unformat ), $date_format );
+                        $tag = ( $args[ 'tag' ] ?: 'h1' );
+                        $date_class = 'scm-date date' . is( $class );
 
 
-                        if( strpos( $text_tag, '.' ) !== false ){
-                            $text_class .= ' ' . substr( $text_tag, strpos($text_tag, '.') + 1 );
-                            $text_tag = 'h1';
+                        if( strpos( $tag, '.' ) !== false ){
+                            $date_class .= ' ' . substr( $tag, strpos($tag, '.') + 1 );
+                            $tag = 'div';
                         }
 
-                        indent( $SCM_indent, '<' . $text_tag . ' class="' . $text_class . '">' . (string)$text . '</' . $text_tag . '><!-- title -->', 2 );
+                        indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$date . '</' . $tag . '><!-- date -->', 2 );
 
                     break;
 
                     case 'layout-testo':
 
-                        $content = $cont['editor'];
-                        if(!$content) continue;
-                        indent( $SCM_indent, $content, 1 );
+                    
+
+                        $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : '' ) );
+                        if(!$text) continue;
+                        
+                        indent( $SCM_indent, $text, 1 ); // +++ todo: se non è un <p> aggiungilo, e comunque aggiungi class id style e attr
 
                     break;
-
-                    case 'layout-map':
-                    break;
-
-                    case 'layout-social_follow':
-                    break;
-
-                    case 'layout-slider':
-                    break;
-
-                    case 'layout-form':
-                        $single = $cont[ 'form' ];
-                        if(!$single) continue;
-                        $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                        setup_postdata( $post );
-
-                        get_template_part( SCM_DIR_PARTS_SINGLE, 'wpcf7_contact_form' );
-                    break;
-
-                    case 'layout-elenco_puntato':
-                    break;
-
-                    case 'layout-elenco_link':
-                    break;
-
-                    case 'layout-elenco_file':
-                    break;
+                    
 
                     default:
 
-                        $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
+                        if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
 
-                        if ( getByKey( $SCM_types['public'], $type ) === false )
-                            continue;
+                            $tax = str_replace( 'layout-SCMTAX-', '', $element );
+                            $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: [] ) );
+                            //printPre( $args );
+                            $tag = $args['tag'];
+                            $pre = $args['prepend'];
+                            $app = $args['append'];
+                            $sep = $args['separator'];
 
-                        $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
-                        $archive = ( isset( $cont['type'] ) ? $cont['type'] === 'archive' : 0 );
-                        $width = ( isset( $cont['width'] ) ? $cont['width'] : 'auto' );
-                        $query = [];
+                            if ( ! empty( $terms ) ) {
+                                if ( ! is_wp_error( $terms ) ) {
 
-                        // +++ todo: se non c'è template, tira fuori tutti i campi, uno via l'altro
-                        if( !$template_id )
-                            continue;
+                                    indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ), 2 );
+                                    
+                                        indent( $SCM_indent + 1, '<span class="prepend">' . $pre . '</span>', 1 );
 
-                        $template = get_fields( $template_id );
+                                        for ($i=0; $i < sizeof( $terms ) ; $i++){
 
-                        if ( empty( $template ) )
-                        	continue;
+                                            $term = $terms[ $i ];
+                                            $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
+                                            
+                                            indent( $SCM_indent + 1, '<a class="term"' . $href . '>' . esc_html( $term->name ) . '</a>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : $app ) , 2 );
 
+                                        }
+                                    
+                                    indent( $SCM_indent, '</' . $tag . '>', 2 );
 
-                        if( $archive ){
-
-                        	$tax = [];
-
-                        	foreach ($cont as $key => $terms) {
-
-                        		if( startsWith( $key, 'archive-' ) && endsWith( $key, '-terms' ) ){
-
-                        			$taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
-
-	                        		//$terms = ( $cont['archive-soggetti-tipologie-terms'] ?: [] );
-		                            if( isset( $terms ) && !empty( $terms ) ){
-		                                $tax[ 'relation' ] = 'OR';
-		                                foreach ( $terms as $term) {
-		                                    $tax[] = array( 
-		                                        'taxonomy' => $taxonomy, //(string)$term->taxonomy,
-		                                        'field' => 'term_id',
-		                                        'terms' => array( $term /*$term->term_id*/),
-		                                        'operator' => 'IN',
-		                                    );
-		                                }
-		                            }
-	                        	}
-                        	}
-
-                            $complete = $cont['archive-complete'] === 'complete';
-                            $perpage = ( $cont['archive-perpage'] ?: get_option( 'posts_per_page' ) );
-                            $pagination = $cont['archive-pagination'] === 'yes';
-                            $more = $cont['archive-pagination'] === 'more';
-                            $all = $cont['archive-pagination'] === 'all';
-                            $orderby = ( $cont['archive-orderby'] ?: 'date' );
-                            $ordertype = ( $cont['archive-ordertype'] ?: 'ASC' );
-                            $query = [
-                                'post_type' => $type,
-                                'tax_query' => $tax,
-                                'posts_per_page' => $perpage,
-                                'order' => $ordertype,
-                                'orderby' => $orderby
-                            ];
+                                }
+                            }
 
                         }else{
 
-                            if( !empty( $cont['single'] ) ){
-
-                                $query = [
-                                    'post_type' => $type,
-                                    'post__in' => ( $cont['single'] ?: [] ),
-                                    'posts_per_page' => -1,
-                                ];
-
-                            }
+                            scm_post( $args );
 
                         }
-						
-
-                        $loop = new WP_Query( $query );
-
-                        $size = 0;
-                        $current_column = 0;
-						$counter = 0;
-
-						$odd = '';
-						$class = '';
-
-						//$total = 2;
-
-						$data = [ 'data' => 'auto' ];
-
-						//printPre( $template['build'] );
-
-                        $total = sizeof( $loop->posts );
-
-                        if ( $loop->have_posts() ) {
-                            
-                            while ( $loop->have_posts() ) {
-                                $loop->the_post();
-
-                                $link = ( $template['link'] ?: 'no' );
-                                $link_template = ( $template['template'] ? ' data-href="' . get_permalink() . '?template=' . $template['template'] : '' ) . '"';
-                                $link_url = ( $template['url'] ? ' data-href="' . $template['url'] . '"' : '' );
-                                $link_object = scm_object_link();
-
-								$class = 'post scm-post post-' . $type . ' column-layout object scm-object inlineblock floatleft';
-								$attributes = '';
-
-						    	$odd = ( $odd ? '' : ' odd' );
-					            $class .= $odd;
-
-					            $current_column++;
-								$class .= scm_count_class( $current_column, $total );
-                                
-                                $href = ( $link == 'self' ? $link_object : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
-                                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
-								$attributes .= ( $link != 'no' ? $href . $target : '' );
-
-								$layout = ( $width ? str_replace( '/', '', $width ) : '11' );
-
-								if( $layout != 'auto' ){
-						    		$size = (int)$layout[0] / (int)$layout[1];
-						    		$counter += $size;
-                                    $data = scm_column_data( $counter, $size );
-                                    $counter = $data['count'];
-                                    $attributes .= ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"';
-						    	}
-
-								indent( $SCM_indent, '<div class="' . $class . '"' . $attributes . '>', 2 );
-
-                                    scm_content( $template['build'], $link_template, $link_url, $link_object );
-                                    
-	                                /*Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php', array(
-                                        'class' => 'content scm-content object scm-object inlineblock floatleft',
-                                        'temp' => $link_template,
-                                        'link' => $link_url,
-                                        'self' => $link_object,
-                                        'template' => $template,
-	                                ));*/
-
-                                indent( $SCM_indent, '</div><!-- ' . $type . '-' . $post->ID . ' -->', 2 );
-                                
-                            }
-
-                            
-
-                        } else {
-                            // no posts found
-                        }
-
-                        wp_reset_postdata();
 
                     break;
 
@@ -470,8 +548,115 @@
     }
 
 
-    if ( ! function_exists( 'scm_object_link' ) ) {
-        function scm_object_link( $id = 0, $content = [] ) {
+
+// *****************************************************
+// *      2.0 POST CONTENT
+// *****************************************************
+
+    // *****************************************************
+    // *      2.1 POST
+    // *****************************************************
+
+    if ( ! function_exists( 'scm_post' ) ) {
+        function scm_post( $cont = [] ) {
+
+            global $SCM_types, $SCM_indent;
+
+            $element = ( isset( $cont[ 'acf_fc_layout' ] ) ? $cont[ 'acf_fc_layout' ] : '' );
+
+            $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
+
+            if ( getByKey( $SCM_types['public'], $type ) === false )
+                return;
+
+            $archive = ( isset( $cont['type'] ) ? $cont['type'] === 'archive' : 0 );
+            $width = ( isset( $cont['width'] ) ? $cont['width'] : 'auto' );
+            $query = [];
+
+            $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
+            // +++ todo: se non c'è template, tira fuori tutti i campi, uno via l'altro, o solo titolo con link oggetto se c'è
+            if( !$template_id )
+                return;
+
+            $template = get_fields( $template_id );
+            $template_post = get_post( $template_id );
+            $template_name = $template_post->post_name;
+            $template['column-width'] = $width;
+
+            if ( empty( $template ) )
+                return;
+
+
+            if( $archive ){
+
+                $tax = [];
+
+                foreach ($cont as $key => $terms) {
+
+                    if( startsWith( $key, 'archive-' ) && endsWith( $key, '-terms' ) ){
+
+                        $taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
+
+                        if( isset( $terms ) && !empty( $terms ) ){
+                            $tax[ 'relation' ] = 'OR';
+                            foreach ( $terms as $term) {
+                                $tax[] = array( 
+                                    'taxonomy' => $taxonomy,
+                                    'field' => 'term_id',
+                                    'terms' => array( $term ),
+                                    'operator' => 'IN',
+                                );
+                            }
+                        }
+                    }
+                }
+
+                $complete = $cont['archive-complete'] === 'complete';
+                $perpage = ( $cont['archive-perpage'] ?: get_option( 'posts_per_page' ) );
+                $pagination = $cont['archive-pagination'] === 'yes';
+                $more = $cont['archive-pagination'] === 'more';
+                $all = $cont['archive-pagination'] === 'all';
+                $orderby = ( $cont['archive-orderby'] ?: 'date' );
+                $ordertype = ( $cont['archive-ordertype'] ?: 'ASC' );
+                $query = [
+                    'post_type' => $type,
+                    'tax_query' => $tax,
+                    'posts_per_page' => $perpage,
+                    'order' => $ordertype,
+                    'orderby' => $orderby
+                ];
+
+            }else{
+
+                if( !empty( $cont['single'] ) ){
+
+                    $query = [
+                        'post_type' => $type,
+                        'post__in' => ( $cont['single'] ?: [] ),
+                        'posts_per_page' => -1,
+                    ];
+
+                }
+
+            }
+            
+            $loop = new WP_Query( $query );
+
+            $template['posts'] = $loop->posts;
+            $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
+            scm_containers( $template, 'post' );
+
+            wp_reset_postdata();
+
+        }
+    }
+
+    // *****************************************************
+    // *      2.1 POST LINK
+    // *****************************************************
+
+    if ( ! function_exists( 'scm_post_link' ) ) {
+        function scm_post_link( $id = 0, $content = [] ) {
             
             global $post;
 
@@ -488,7 +673,7 @@
 
             switch ( $type ) {
                 case 'soggetti':
-                    $link = scm_field( 'soggetto-link', '', $id );
+                    $link = scm_field( 'soggetto-link', '#', $id );
                 break;
                 
                 case 'luoghi':
@@ -498,12 +683,12 @@
                 break;
 
                 case 'documenti':
-                    $link = scm_field( 'documento-file', '', $id );
+                    $link = scm_field( 'documento-file', '#', $id );
                 break;
 
                 case 'rassegne-stampa':
                     $typ = scm_field( 'rassegna-type', 'file', $id );
-                    $link = ( $typ == 'file' ? scm_field( 'rassegna-file', '', $id ) : scm_field( 'rassegna-link', '', $id ) );
+                    $link = ( $typ == 'file' ? scm_field( 'rassegna-file', '#', $id ) : scm_field( 'rassegna-link', '#', $id ) );
                 break;
 
                 case 'gallerie':
@@ -537,121 +722,10 @@
                 break;
             }
 
-            return $attr . ( $link ? ' data-href="' . addHTTP( $link ) . '"' : '' );
+            return $attr . ( $link ? ' data-href="' . getURL( $link ) . '"' : '' );
 
         }
     }
 
-    if ( ! function_exists( 'scm_content' ) ) {
-        function scm_content( $build, $link_template, $link_url, $link_object ) {
-
-            global $SCM_indent;
-
-            $size = 0;
-            $current_column = 0;
-            $counter = 0;
-
-            $odd = '';
-            $class = '';
-
-            $total = sizeof( $build );
-
-            $SCM_indent++;
-
-            foreach ( $build as $content ) {
-
-                if( !isset( $content['acf_fc_layout'] ) )
-                    return '';
-
-                $element = str_replace( 'layout-', '', $content['acf_fc_layout'] );
-                $slug = ( startsWith( $element, 'post-' ) ? 'post' : $element );
-
-                $width = $content['column-width'];
-                $link = ( $content['link'] ?: 'no' );
-
-                $class = 'content scm-content content-' . $element . ' column-layout object scm-object inlineblock floatleft';
-                $odd = ( $odd ? '' : ' odd' );
-                $class .= $odd;
-
-                $current_column++;
-                $class .= scm_count_class( $current_column, $total );
-                
-                $attributes = '';
-                $layout = ( $width ? str_replace( '/', '', $width ) : '11' );
-                if( $layout != 'auto' ){
-                    $size = (int)$layout[0] / (int)$layout[1];
-                    $counter += $size;
-                    $data = scm_column_data( $counter, $size );
-                    $counter = $data['count'];
-                    $attributes .= ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"';
-                }
-                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
-                $href = ( $link == 'self' ? scm_object_link( 0, $content ) : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
-                $attributes .= ( $link != 'no' ? $href . $target : '' );
-
-                $attributes = ' class="' . $class . '"' . $attributes;
-
-
-
-                switch ( $slug ) {
-                    case 'post':
-                        if( strpos( $element, '-title' ) )
-                            indent( $SCM_indent, scm_content_title( $content, $attributes, $SCM_indent ), 1 );
-                        else if( strpos( $element, '-date' ) )
-                            indent( $SCM_indent, scm_content_date( $content, $attributes, $SCM_indent ), 1 ); // todo
-                        else
-                            indent( $SCM_indent, scm_content_tax( $content, $attributes, $SCM_indent ), 1 ); // todo
-                    break;
-                    
-                    default:
-                        // FILTER
-
-                        //GALLERY: aggiungi opzioni [mostra thumb/title/description] a Gallery Temp > Thumbs
-                        // quando printi le gallery, per ogni Thumb assegni un data-init diverso
-
-                    break;
-
-                }
-            }
-
-            $SCM_indent--;
-
-        }
-    }
-
-    if ( ! function_exists( 'scm_content_title' ) ) {
-        function scm_content_title( $content, $attr = '', $ind = 0 ) {
-
-            $title = get_the_title();
-            $tag = $content['tag'];
-
-            indent( $ind, '<' . $tag . $attr . '>' . $title . '</' . $tag . '>', 2 );
-
-        }
-    }
-
-    if ( ! function_exists( 'scm_content_date' ) ) {
-        function scm_content_date( $content, $attr = '', $ind = 0 ) {
-
-            $date = get_the_date();
-            $tag = $content['tag'];
-
-            // +++ todo: in layout_date separi giorno mese e anno, aggiungi ora e qui separi il tutto con <span> vari
-
-            indent( $ind, '<' . $tag . $attr . '>' . $date . '</' . $tag . '>', 2 );
-
-        }
-    }
-
-    if ( ! function_exists( 'scm_content_tax' ) ) {
-        function scm_content_tax( $content, $attr = '', $ind = 0 ) {
-
-            /*$title = get_the_title();
-            $tag = $content['tag'];
-
-            indent( $ind, '<' . $tag . $attr . '>' . $title . '</' . $tag . '>', 2 );*/
-
-        }
-    }
 
 ?>

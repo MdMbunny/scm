@@ -1,7 +1,7 @@
 === Advanced Custom Fields Pro ===
 Contributors: elliotcondon
 Tags: custom, field, custom field, advanced, simple fields, magic fields, more fields, repeater, matrix, post, type, text, textarea, file, image, edit, admin
-Requires at least: 3.5.0
+Requires at least: 3.6.0
 Tested up to: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -105,6 +105,17 @@ http://support.advancedcustomfields.com/
 
 
 == Changelog ==
+
+= 5.2.3 =
+* Taxonomy field: Added button and popup to create new terms
+* Taxonomy field: Added new 'Create Terms' setting to prevent popup
+* Core: Added network database upgrade admin page and functionality
+* Core: Increased required WP version from 3.5 to 3.6
+* Core: Fixed Select2 dependancy conflict with WooCommerce
+* Core: Fixed WPML bug where field group translation information is lost
+* Core: Fixed conditional logic bug where showing a parent field would override sub field conditional logic
+* Core: Minor fixes and improvements
+* Language: Updated Persian translation - thanks to Kamel
 
 = 5.2.2 =
 * Image field: Fixed UI bug when image has been removed via media library

@@ -1,0 +1,119 @@
+<?php
+/**
+ * @package SCM
+ */
+
+global $post, $SCM_indent;
+$post_id = $post->ID;
+
+$args = [
+	'element' => 0,
+	'separator' => '-',
+	'icon' => 'on',
+	'alignment' => 'left',
+	'id' => '',
+    'class' => '',
+    'attributes' => '',
+    'style' => '',
+];
+
+if( isset( $this ) )
+	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+
+/***************/
+
+
+$element = $args[ 'element' ];
+if( !$element ){
+
+	if( $post->post_type === 'luoghi' )
+		$element = [ $post_id ];
+	else if( $post->post_type === 'soggetti' )
+		$element = scm_field( 'soggetto-luoghi', [], $post_id );
+	else
+		return;
+
+}else if( !is_array( $element ) ){
+	if( is_numeric( $element ) )
+		$element = [ $element ];
+	else
+		$element = [ $element->ID ];
+}
+
+/***************/
+
+$icon = ( $args['icon'] != 'no' ? $args['icon'] : '' );
+
+$class = 'address scm-address scm-object object scm-list list ' . $icon . ' ' . $args['class'];
+
+$attributes = $args['attributes'];
+$style = $args['style'];
+$id = $args['id'];
+
+$align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
+
+/***************/
+
+indent( $SCM_indent + 1, openTag( 'ul', $id, $class, $style, $attributes ), 2 );
+
+if( is( $element ) ){
+
+	foreach( $element as $luogo ){
+
+		$fields = get_fields( $luogo );
+		$marker = scm_content_preset_marker( $luogo, $fields );
+
+		//printPre($fields);
+
+		$country = $fields['luogo-paese'];
+		$region = $fields['luogo-regione'];
+		$province = is( $fields['luogo-provincia'], '', '(', ')' );
+		$code = $fields['luogo-cap'];
+		$city = $fields['luogo-citta'];
+		$town = $fields['luogo-frazione'];
+		$address = $fields['luogo-indirizzo'];
+
+		$town = ( ( $town && ( $city || $code || $province ) ) ? $town . ' ' : $town );
+		$code = ( ( $code && ( $city || $province ) ) ? $code . ' ' : $code );
+		$city = ( ( $city && $province ) ? $city . ' ' : $city );
+		$region = ( ( $region && $country ) ? $region . ', ' : $region );
+		$country = ( $country ? $country : '' );
+
+		$inline_address = '<span class="street">' . $address . '</span>';
+		if( $town || $city || $code || $province ){
+			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span>' : '<br>' );
+			$inline_address .= '<span class="town">' . $town . $code . $city . $province . '</span>';
+		}
+
+		if( $region || $country ){
+			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span>' : '<br>' );;
+			$inline_address .= '<span class="country">' . $region . $country . '</span>';
+		}
+		
+		$li_class = 'button scm-button ' . $align;
+		$i_style = ifnotequal( $marker['data'], 'img', '', ' color:', ';' );
+		$i_class = 'bullet ' . ( $icon == 'inside' ? ' float-' . $align : '' );
+        
+// +++ todo: ma questo deve essere un BUTTON a se, se no vedi che lo ripeti anche in single-list e fai casino coi vari attributi
+
+// +++ todo: che possano essere linkati a Google Maps, un po' come il modello luogo, un po' come i Terms (scm_post_link)
+
+		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', '' ), 1 );
+
+        if( $icon !== 'no' ){
+        	if( !$i_style )
+        		indent( $SCM_indent + 1, '<img src="' . $marker['icon'] . '" class="' . $i_class . '" />', 1 );
+        	else
+	            indent( $SCM_indent + 1, openTag( 'i', '', $i_class . ' fa ' . $marker['icon'], $i_style, '' ) . '</i>', 1 );
+        }
+
+        	indent( $SCM_indent + 1, openTag( 'span', '', ( $icon == 'outside' ? $li_class : '' ), '', '' ) . $inline_address . '</span>', 1 );
+
+        indent( $SCM_indent, '</li>', 2 );
+		
+	}
+}
+
+indent( $SCM_indent, '</ul><!-- address -->' );
+
+?>

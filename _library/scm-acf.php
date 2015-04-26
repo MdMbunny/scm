@@ -89,22 +89,27 @@
 
 	// Set Field Group Locations
 	if ( ! function_exists( 'scm_acf_group_location' ) ) {
-		function scm_acf_group_location( $list, $equal = 1, $param = 'post_type' ) {
+		function scm_acf_group_location( $list = [], $param = 'post_type', $equal = '==' ) {
 
-			$list = ( is_array( $list ) ? $list : array( array( $list, $equal, $param ) ) );
+			$list = ( is_array( $list ) ? $list : [ $list, $equal, $param ] );
+			if( !ifexists( $list ) || !isset( $list[0] ) )
+				return [];
+
+			$list = ( !is_array( $list[0] ) ? [ $list ] : $list );
 			
-			$location = array();
+			$location = [];
 
-			foreach ($list as $loc) {
-				$value = ( isset( $loc[0] ) ? $loc[0] : '' );
-				if( !$value || !is_string( $value ) )
+			foreach ( $list as $loc ) {				
+				$val = ( isset( $loc[0] ) ? $loc[0] : '' );
+				$val = ( strpos( $val, 'admin' ) === 0 ? 'administrator' : $val );
+				if( !$val || !is_string( $val ) )
 					continue;
-				$equal = ( !isset( $loc[1] ) || ( isset( $loc[1] ) && $loc[1] ) ? '==' : '!=' );
-				$param = ( isset( $loc[2] ) ? $loc[2] : 'post_type' );
+				$equal = ( isset( $loc[1] ) ? $loc[1] : '==' );
+				$param = ( isset( $loc[2] ) ? $loc[2] : ( $val == 'administrator' ? 'current_user_role' : 'post_type') );
 				$location[] = array (
 					'param' => $param,
 					'operator' => $equal,
-					'value' => $value,
+					'value' => $val,
 				);
 			}
 
@@ -178,11 +183,9 @@
 
 				if( !$value || !is_array( $value ) )
 					continue;
-
-				$keys = array_keys($value);
 				
-				if( array_keys($keys) !== $keys ){
-					
+				if( !isset( $value[0] ) ){
+
 					$arr[] = $value;
 
 				}else{
@@ -190,8 +193,8 @@
 					foreach ($value as $sub) {
 						if( !$sub || !is_array( $sub ) )
 							continue;
-						$keys = array_keys($sub);
-						if( array_keys($keys) !== $keys ){
+
+						if( !isset( $sub[0] ) ){
 
 							$arr[] = $sub;
 						
@@ -200,21 +203,19 @@
 							foreach ($sub as $last) {
 								if( !$last || !is_array( $last ) )
 									continue;
-								$keys = array_keys($last);
-								if( array_keys($keys) !== $keys ){
+
+								if( !isset( $last[0] ) ){
 
 									$arr[] = $last;
 
 								}
 							}
-
 						}
 					}
-
 				}
 			}
 
-			return [ $arr ];
+			return $arr;
 		}
 	}
 
@@ -225,7 +226,7 @@
 			if( !$elem || !$list )
 				return $elem;
 
-			if( !isset( $elem['conditional_logic'] ) || empty( $elem['conditional_logic'] ) )
+			if( !is( $elem['conditional_logic'] ) )
 				return $elem;
 
 			$cond = $elem['conditional_logic'];
@@ -249,13 +250,9 @@
 	if ( ! function_exists( 'scm_acf_group_register' ) ) {
 		function scm_acf_group_register( $group ) {
 
-			/*if( strpos( $group['key'], 'luoghi') !== false )
-				consoleLog( $group );*/
-
+			$group['fields'][] = scm_acf_field_hidden( 'g_' . $group['key'] );
 			$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
 			$group['key'] = 'group_' . hash('ripemd160', $group['key'] );
-
-			//printPre($group['key']);
 
 			register_field_group( $group );
 
@@ -273,10 +270,6 @@
 			if( !isset( $name ) || !$type )
 				return;
 
-			
-
-			//$typ = ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined' ) );
-
 			$field = array (
 				'key' => ( $name ? $name . '_' : '' ),
 				'label' => ( $label ?: 'Field' ),
@@ -284,7 +277,7 @@
 				'prefix' => '',
 				'instructions' => ( $instructions ?: '' ),
 				'required' => ( $required ?: 0 ),
-				'conditional_logic' => ( isset( $logic ) && !is_string( $logic ) && !empty( $logic ) ? scm_acf_group_condition( $logic ) : '' ),
+				'conditional_logic' => ( is( $logic ) && !is_string( $logic ) ? [ scm_acf_group_condition( $logic ) ] : '' ),
 				'wrapper' => array (
 					'width' => ( is_numeric( $width ) ? $width : '' ),
 					'class' => ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) . ( $class ? ' ' . $class : '' ) ),
@@ -296,9 +289,6 @@
 	        	$field['required'] = 1;
 
 	        $field = array_merge( $field, scm_acf_field_type( $type ) );
-
-	        /*if( $type === 'textarea' )
-				consoleLog( $field );*/
 
 			return $field;
 
@@ -416,11 +406,11 @@
 
                         foreach ( $filter as $k => $v ) {
                             if( !isset( $field[ $k ] ) || $field[ $k ] !== $v )
-                                continue;
+                                continue 2;
                             if( is_string( $field[ $k ] ) && strpos( $field[ $k ], $v ) === false )
-                                continue;
+                                continue 2;
                             if ( $field[ $k ] !== $v )
-                                continue;
+                                continue 2;
                         }
                     }
 
@@ -486,7 +476,7 @@
 
 
 	if ( ! function_exists( 'scm_acf_layout' ) ) {
-		function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $fields = array() ) {
+		function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = '', $max = '', $fields = array() ) {
 
 			if( !$name )
 				return;
@@ -497,8 +487,8 @@
 				'label' => $label,
 				'display' => $type,
 				'sub_fields' => $fields,
-				'min' => '',
-				'max' => '',
+				'min' => $min,
+				'max' => $max,
 			);
 
 			return $layout;
@@ -506,11 +496,62 @@
 		}
 	}
 
+	// LAYOUT OVERLAY
+	if ( ! function_exists( 'scm_acf_layouts_preset' ) ) {
+		function scm_acf_layouts_preset( $name = '', $list = [], $link = 0 ) {
+
+			$row1 = 4 + $link;
+			$row2 = 3;
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_selectors( $name, $list[$i]['sub_fields'], floor( 75/$row2 ), floor( 75/$row2 ), floor( 150/$row2 ) );
+				if( $link )
+					$list[$i]['sub_fields'] = scm_acf_column_link( $name, $list[$i]['sub_fields'], floor( 100/$row1 ) );
+				$list[$i]['sub_fields'] = scm_acf_column_overlay( $name, $list[$i]['sub_fields'], floor( 100/$row1 ) );
+				$list[$i]['sub_fields'] = scm_acf_column_float( $name, $list[$i]['sub_fields'], floor( 100/$row1 ) );
+				$list[$i]['sub_fields'] = scm_acf_column_align( $name, $list[$i]['sub_fields'], floor( 100/$row1 ) );
+				$list[$i]['sub_fields'] = scm_acf_column_width( $name, $list[$i]['sub_fields'], floor( 100/$row1 ) );
+
+			}
+
+			return $list;
+		}
+	}
+
+	// COLUMN SELECTORS
+	if ( ! function_exists( 'scm_acf_column_selectors' ) ) {
+		function scm_acf_column_selectors( $name = '', $list = array(), $w1 = 30, $w2 = 30, $w3 = 40 ) {
+			
+			array_unshift( $list, scm_acf_field( $name . 'attributes', 'attributes', 'Attributi', $w3 ) );
+			array_unshift( $list, scm_acf_field_class( $name . 'class', 0, $w2 ) );
+			array_unshift( $list, scm_acf_field_id( $name . 'id', 0, $w1 ) );
+
+			return $list;
+
+		}
+	}
+
+	// LAYOUT COLUMNS SELECTORS
+	if ( ! function_exists( 'scm_acf_layouts_selectors' ) ) {
+		function scm_acf_layouts_selectors( $name = '', $list = array(), $w1 = 30, $w2 = 30, $w3 = 40 ) {
+			
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_selectors( $name, $list[$i]['sub_fields'], $w1, $w2, $w3 );
+
+			}
+
+			return $list;
+		}
+	}
+
 	// COLUMN WIDTH
 	if ( ! function_exists( 'scm_acf_column_width' ) ) {
-		function scm_acf_column_width( $name = 'column-width', $list = array(), $width = 100 ) {
+		function scm_acf_column_width( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_column_width( $name, 0, $width, 0, '1/1', 'Larghezza', 'Larghezza' ) );
+			array_unshift( $list, scm_acf_field_select_column_width( $name . 'column-width', 0, $width, 0, [ '1/1' => 'Larghezza piena', 'auto' => 'Auto' ], 'Larghezza', 'Larghezza' ) );
 
 			return $list;
 
@@ -519,7 +560,8 @@
 
 	// LAYOUT COLUMNS WIDTH
 	if ( ! function_exists( 'scm_acf_layouts_width' ) ) {
-		function scm_acf_layouts_width( $name = 'column-width', $list = array(), $width = 100 ) {
+		function scm_acf_layouts_width( $name = '', $list = array(), $width = 100 ) {
+			
 
 			for ( $i = 0; $i < sizeof( $list ); $i++ ){
 
@@ -533,9 +575,9 @@
 
 	// COLUMN LINK
 	if ( ! function_exists( 'scm_acf_column_link' ) ) {
-		function scm_acf_column_link( $name = 'column-link', $list = array(), $width = 100 ) {
+		function scm_acf_column_link( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select1( 'link', 0, 'template_link-no', 50 ) );
+			array_unshift( $list, scm_acf_field( $name . 'link', [ 'select-template_link', [ 'no' => 'Nessun Link' ] ], 'Link', $width ) );
 
 			return $list;
 
@@ -544,10 +586,11 @@
 
 	// LAYOUT LINK
 	if ( ! function_exists( 'scm_acf_layouts_link' ) ) {
-		function scm_acf_layouts_link( $name = 'column-link', $list = array(), $width = 100 ) {
+		function scm_acf_layouts_link( $name = '', $list = array(), $width = 100 ) {
+			
 
 			for ( $i = 0; $i < sizeof( $list ); $i++ ){
-
+			
 				$list[$i]['sub_fields'] = scm_acf_column_link( $name, $list[$i]['sub_fields'], $width );
 
 			}
@@ -556,4 +599,81 @@
 		}
 	}
 
+	// COLUMN ALIGN
+	if ( ! function_exists( 'scm_acf_column_align' ) ) {
+		function scm_acf_column_align( $name = '', $list = array(), $width = 100 ) {
+						
+			array_unshift( $list, scm_acf_field( $name . 'alignment', [ 'select-alignment', [ 'default' => 'Allineamento di default' ] ], 'Allineamento', $width ) );
+			
+			return $list;
+
+		}
+	}
+
+	// LAYOUT ALIGN
+	if ( ! function_exists( 'scm_acf_layouts_align' ) ) {
+		function scm_acf_layouts_align( $name = '', $list = array(), $width = 100 ) {
+			
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_align( $name, $list[$i]['sub_fields'], $width );
+
+			}
+
+			return $list;
+		}
+	}
+
+	// COLUMN FLOAT
+	if ( ! function_exists( 'scm_acf_column_float' ) ) {
+		function scm_acf_column_float( $name = '', $list = array(), $width = 100 ) {
+			
+			array_unshift( $list, scm_acf_field_select_float( $name . 'float', 0, $width, 0, ' - (se auto)' ) );
+			
+			return $list;
+
+		}
+	}
+
+	// LAYOUT FLOAT
+	if ( ! function_exists( 'scm_acf_layouts_float' ) ) {
+		function scm_acf_layouts_float( $name = '', $list = array(), $width = 100 ) {
+			
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_float( $name, $list[$i]['sub_fields'], $width );
+
+			}
+
+			return $list;
+		}
+	}
+
+	// COLUMN OVERLAY
+	if ( ! function_exists( 'scm_acf_column_overlay' ) ) {
+		function scm_acf_column_overlay( $name = '', $list = array(), $width = 100 ) {
+			
+			array_unshift( $list, scm_acf_field_select_overlay( $name . 'overlay', 0, 20, 0 ) );
+			
+			return $list;
+
+		}
+	}
+
+	// LAYOUT OVERLAY
+	if ( ! function_exists( 'scm_acf_layouts_overlay' ) ) {
+		function scm_acf_layouts_overlay( $name = '', $list = array(), $width = 100 ) {
+			
+
+			for ( $i = 0; $i < sizeof( $list ); $i++ ){
+
+				$list[$i]['sub_fields'] = scm_acf_column_overlay( $name, $list[$i]['sub_fields'], $width );
+
+			}
+
+			return $list;
+		}
+	}
 ?>

@@ -25,6 +25,9 @@
 
 				var value = $sel.val();
 
+				if( value == 'auto' )
+					value = '1/1';
+
 				if( value.indexOf( '/' ) > -1 ){
 					value = ( value ? value : '1/1' );
 					value = value.replace('/', '');
@@ -111,7 +114,6 @@
 				var $this = jQuery(this);
 
 				if( $this.hasClass( 'acf-field' ) ){
-					//console.log($this);
 					jQuery( '.show-field-key' ).remove();
 					if ( e.altKey ){
 						e.stopPropagation();
@@ -157,7 +159,6 @@
 		    	if( $this.hasClass( 'order' ) || $this.hasClass( 'fc-layout-order' ) ){
 		    		e.stopPropagation();
 					e.preventDefault();
-					console.log( $this );
 					var $parent = jQuery( $this.parent( '.column' ) );
 					if( !$parent.length )
 						$parent = jQuery( $this.parent( '.acf-fc-layout-handle' ).parent( '.column' ) );
@@ -172,7 +173,6 @@
 							$parent.addClass( 'full' );
 						}
 					}
-
 				}
 
 		    });
@@ -260,8 +260,12 @@
 				}
 		    });*/
 
-				jQuery( '#delete-action' ).prepend( '<i class="fa fa-trash-o"></i>' );
-				jQuery( '#delete-action' ).prepend( '<i class="fa fa-spin fa-cog"></i>' );
+				jQuery( '#delete-action a' ).prepend( '<i class="fa fa-trash-o"></i>' );
+				jQuery( '#delete-action a' ).prepend( '<i class="fa fa-spin fa-cog"></i>' );
+
+			function htmlEntities(str) {
+			    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+			}
 		
 
 			var $save = jQuery( '#save-action' );
@@ -270,7 +274,7 @@
 				$save.prepend( '<i class="fa fa-spin fa-cog"></i>' );
 			}
 
-			jQuery( '#preview-action' ).prepend( '<i class="fa fa-search"></i>' );
+			jQuery( '#preview-action a' ).prepend( '<i class="fa fa-search"></i>' );
 
 
 			jQuery( '#delete-action .deletion, #save-action .button, #publishing-action .button, #edittag p.submit' ).on( 'click', function(e){
@@ -282,7 +286,6 @@
 			function checkDOMChange( cdc ){
 			    
 			    var $error = jQuery( '.acf-error-message' );
-			    //console.log($error);
 			    
 			    if( !$error.length ){
 				    setTimeout( checkDOMChange, 500 );

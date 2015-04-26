@@ -11,6 +11,7 @@ class Custom_Type {
 
         $attr = array(
             'admin'                 => 0,
+            'add_cap'               => 1,
             'public'                => 1,
             'hidden'                => 0,
             'post'                  => 1,
@@ -43,6 +44,7 @@ class Custom_Type {
         $this->attributes = array();
 
         $this->admin = $attr['admin'];
+        $this->add_cap = $attr['add_cap'];
         $this->public = $attr['public'];
         $this->hidden = $attr['hidden'];
         
@@ -88,16 +90,48 @@ class Custom_Type {
         $this->cap_plural = sanitize_title( $this->plural );
         $this->cap_plural = ( $this->cap_plural == $this->cap_singular ? $this->cap_plural . 's' : $this->cap_plural );
 
-        add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'CT_admin_columns' ) ) ;
-        add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'CT_manage_admin_columns' ), 10, 2 );
-        add_action( 'load-edit.php', array( &$this, 'CT_admin_edit_page_load' ) );
-        
+        //add_action( 'publish_' . $this->slug, array( &$this, 'CT_default_term' ) );
+        add_filter( 'manage_edit-' . $this->slug . '_columns', [ &$this, 'CT_admin_columns' ] ) ;
+        add_action( 'manage_' . $this->slug . '_posts_custom_column', [ &$this, 'CT_manage_admin_columns' ], 10, 2 );
+        //add_filter( 'manage_edit' . $this->slug . '_sortable_columns', [ &$this, 'CT_sort_admin_columns' ] );
+        add_action( 'load-edit.php', [ &$this, 'CT_admin_edit_page_load' ] );
+        add_action( 'admin_menu', [ &$this, 'CT_admin_menu_hide' ] );
+        add_action( 'admin_head', [ &$this, 'CT_admin_elems_hide' ] );
+        add_action( 'admin_bar_menu', [ &$this, 'CT_admin_bar_hide' ], 999 );
+
         $this->CT_type();
     }
+
+    /*function CT_default_term( $post_id ) {
+        global $wpdb;
+
+        $taxes = get_object_taxonomies( get_post( $post_id ) );
+
+        foreach ( $taxes as $tax_name ) {
+            $tax = get_taxonomy( $tax_name );
+            if( $tax->hierarchical ){
+                $terms = get_object_terms( $post_id );
+                consoleLog($terms);
+            }
+            
+            
+            //$terms = get_terms( $tax_name, [ 'fields' => 'name' ] );
+            //consoleLog($terms);
+        }
+
+        
+
+        //if( !has_term( '', 'default', $post_id ) ){
+            //$cat = array(4);
+            //wp_set_object_terms($post_id, $cat, 'category');
+        //}
+    }*/
 
     function CT_register() {
         register_post_type( $this->slug, $this->attributes);
         flush_rewrite_rules();
+
+        //add_action('publish_stiwti', 'add_stiwti_category_automatically');
     }
 
     function CT_type() {
@@ -135,8 +169,8 @@ class Custom_Type {
             'has_archive'         => $this->public,
             'exclude_from_search' => !$this->public,
             'publicly_queryable'  => true,
-            'capability_type'     => array( $this->cap_singular, $this->cap_plural ), //( $this->admin ? ( !$this->post ? 'page' : 'post' ) : $this->cap_plural ), //( $this->admin ? ( !$this->post ? 'page' : 'post' ) : array( $this->cap_singular, $this->cap_plural ) ),
-            'map_meta_cap'        => true, //!$this->admin,
+            'capability_type'     => array( $this->cap_singular, $this->cap_plural ),
+            'map_meta_cap'        => true,
         );
 
     }
@@ -145,18 +179,72 @@ class Custom_Type {
     function CT_admin_columns( $columns ) {
             $columns['cb'] = '<input type="checkbox" />';
             $columns['id'] = __( 'ID', SCM_THEME );
+
+            $taxonomies = get_object_taxonomies( $this->slug, 'objects' );
+            foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+                if( $taxonomy_slug != 'language' && $taxonomy_slug != 'post_translations' )
+                    $columns[ 'tax-' . $taxonomy_slug ] = $taxonomy->label;
+            }
+
         return $columns;
     }
 
     function CT_manage_admin_columns( $column, $post_id ) {
-        global $post;
+
         switch( $column ) {
-            case 'id' : echo $post_id; break;
-            default : break;
+            case 'id':
+                echo $post_id;
+            break;
+
+            default:
+                
+                $tax = str_replace( 'tax-', '', $column );
+                if( taxonomy_exists( $tax ) ){
+
+                    
+
+                    $terms = get_the_terms( $post_id, $tax );
+                    
+                    if ( !empty( $terms ) ) {
+
+                        $out = array();
+
+                        foreach ( $terms as $term ) {
+                            $out[] = sprintf( '<a href="%s">%s</a>',
+                                esc_url( add_query_arg( array( 'post_type' => get_post_type( $post_id ), $tax => $term->slug ), 'edit.php' ) ),
+                                esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, $tax, 'display' ) )
+                            );
+                        }
+
+                        /* Join the terms, separating them with a comma. */
+                        echo join( ', ', $out );
+
+                        /*$tot = sizeof( $terms );
+                        $i = 0;
+
+                        foreach ( $terms as $term ) {
+
+                            $i++;
+                            echo $term->name;
+                            if( $i == $tot )
+                                continue;
+
+                            echo ', ';
+
+                        }*/
+                    }
+                }
+
+            break;
+
         }
     }
 
+    //function CT_sort_admin_columns( $columns ) {}
+
+
     function CT_admin_edit_page_load() {
+    
         add_filter( 'request', array(&$this, 'CT_admin_orderby') );
     }
 
@@ -175,6 +263,49 @@ class Custom_Type {
 
         return $vars;
     
+    }
+
+    function CT_admin_elems_hide(){
+
+        if( current_user_can( 'publish_' . $this->cap_plural ) )
+            return;
+
+        global $current_screen;
+
+        $current = $current_screen->id;
+
+        if( $current == 'edit-' . $this->slug || $current == $this->slug )
+            echo '<style>#titlewrap, #edit-slug-box, .add-new-h2{display: none !important;}</style>';  
+        
+    }
+
+    function CT_admin_bar_hide( $wp_admin_bar ){
+
+        if( current_user_can( 'publish_' . $this->cap_plural ) )
+            return;
+
+        $wp_admin_bar->remove_node( 'new-' . $this->slug );
+        
+    }
+
+    function CT_admin_menu_hide(){
+
+        if( current_user_can( 'publish_' . $this->cap_plural ) )
+            return;
+
+        global $submenu;
+
+        $sub = isset( $submenu[ 'edit.php?post_type=' . $this->slug ] ) ? $submenu[ 'edit.php?post_type=' . $this->slug ] : '';
+        if( $sub ){
+            $subind = isset( $sub[10] ) ? $sub[10] : '';
+            if( $subind ){
+                $subel = isset( $subind[1] ) ? $subind[1] : '';
+                if( $subel )
+                    $submenu['edit.php?post_type=' . $this->slug][10][1] = 'publish_' . $this->cap_plural;
+            }
+
+        }
+
     }
 
 }
