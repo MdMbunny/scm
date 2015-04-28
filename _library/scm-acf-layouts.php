@@ -159,7 +159,7 @@
 	if ( ! function_exists( 'scm_acf_object_separatore' ) ) {
 		function scm_acf_object_separatore( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
 
-			$fields = [];
+			$fields = array();
 
 			// conditional
 			$fields[] = scm_acf_field_select1( 'line', 0, 'line_style', $width, $logic, '', 'Stile' );
@@ -425,7 +425,7 @@
 	if ( ! function_exists( 'scm_acf_object_link' ) ) {
 		function scm_acf_object_link( $default = 0, $obj = 0 ) {
 			
-			$fields = [];
+			$fields = array();
 
 			if ( !$obj ){
 				$links = scm_acf_field_repeater( 'list', $default, 'Aggiungi Link', 'Link', 100, 0, 1 );
@@ -556,12 +556,12 @@
 				$layout_date['sub_fields'] = scm_acf_object_data( $default, 1 );
 			
 
-			$layout_taxes = [];
+			$layout_taxes = array();
 			$taxes = get_object_taxonomies( $slug, 'objects' );
 			reset( $taxes );
 			if( sizeof( $taxes ) ){
 				foreach ($taxes as $value) {
-					$layout_tax = [];
+					$layout_tax = array();
 					$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
 
 						$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', [ 'text', $value->label . ': ', ( $default ? 'default' : '' ), 'Inizio' ], 'Inizio', 25 );
@@ -603,7 +603,7 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_gallerie' ) ) {
-		function scm_acf_element_gallerie( $fields = [], $default = 0 ) {
+		function scm_acf_element_gallerie( $fields = array(), $default = 0 ) {
 			
 			// +++ todo: 'sti scm_acf_element_ non li usi, e qui hai un init da utilizzare
 			// magari torna all'idea di associare queste field e il loro name, con data- che verrà assegnato all'oggetto intero
@@ -615,7 +615,7 @@
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_gallerie' ) ) {
-		function scm_acf_layout_gallerie( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_gallerie( $layouts = array(), $default = 0 ) {
 
 				$layout_thumb = scm_acf_layout( 'thumbs', 'block', 'Thumbs' );
 					//$layout_thumb['sub_fields'][] = scm_acf_field_select1( 'link', $default, 'template_link-no', 50, 0, [ 'self' => 'Link Galleria' ], 'Link' );
@@ -633,7 +633,7 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_soggetti' ) ) {
-		function scm_acf_element_soggetti( $fields = [], $default = 0 ) {
+		function scm_acf_element_soggetti( $fields = array(), $default = 0 ) {
 
 			return $fields;
 
@@ -641,7 +641,7 @@
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_soggetti' ) ) {
-		function scm_acf_layout_soggetti( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_soggetti( $layouts = array(), $default = 0 ) {
 				
 				$layout_logo = scm_acf_layout( 'logo', 'block', 'Logo' );
 					$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'width', $default, 'auto', '%', 'Larghezza' ) );
@@ -694,7 +694,7 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_luoghi' ) ) {
-		function scm_acf_element_luoghi( $fields = [], $default = 0 ) {
+		function scm_acf_element_luoghi( $fields = array(), $default = 0 ) {
 
 			return $fields;
 
@@ -702,7 +702,7 @@
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_luoghi' ) ) {
-		function scm_acf_layout_luoghi( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_luoghi( $layouts = array(), $default = 0 ) {
 
 				$layout_map = scm_acf_layout( 'map', 'block', 'Mappa', '', 1 );
 					$layout_map['sub_fields'] = scm_acf_object_map( $default, 1 );
@@ -731,7 +731,7 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_rassegne_stampa' ) ) {
-		function scm_acf_element_rassegne_stampa( $fields = [], $default = 0 ) {
+		function scm_acf_element_rassegne_stampa( $fields = array(), $default = 0 ) {
 
 			return $fields;
 
@@ -739,7 +739,7 @@
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_rassegne_stampa' ) ) {
-		function scm_acf_layout_rassegne_stampa( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_rassegne_stampa( $layouts = array(), $default = 0 ) {
 			
 			return $layouts;
 		}
@@ -749,14 +749,14 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_documenti' ) ) {
-		function scm_acf_element_documenti( $fields = [], $default = 0 ) {
+		function scm_acf_element_documenti( $fields = array(), $default = 0 ) {
 
 			return $fields;
 		}
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_documenti' ) ) {
-		function scm_acf_layout_documenti( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_documenti( $layouts = array(), $default = 0 ) {
 						
 			return $layouts;
 		}
@@ -766,14 +766,14 @@
 
 	// general fields
 	if ( ! function_exists( 'scm_acf_element_video' ) ) {
-		function scm_acf_element_video( $fields = [], $default = 0 ) {
+		function scm_acf_element_video( $fields = array(), $default = 0 ) {
 
 			return $fields;
 		}
 	}
 	// layout fields
 	if ( ! function_exists( 'scm_acf_layout_video' ) ) {
-		function scm_acf_layout_video( $layouts = [], $default = 0 ) {
+		function scm_acf_layout_video( $layouts = array(), $default = 0 ) {
 
 			return $layouts;
 		}

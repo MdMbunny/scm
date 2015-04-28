@@ -36,7 +36,7 @@
     // *****************************************************
 
     if ( ! function_exists( 'scm_content' ) ) {
-        function scm_content( $content = [] ) {
+        function scm_content( $content = array() ) {
 
             global $post, $SCM_indent;
 
@@ -132,7 +132,7 @@
     // *****************************************************
 
     if ( ! function_exists( 'scm_containers' ) ) {
-        function scm_containers( $build = [], $container = 'module', $action = '' ) {
+        function scm_containers( $build = array(), $container = 'module', $action = '' ) {
 
             if( is( $container == 'post' ) ){
                 $builder = $build;
@@ -416,7 +416,7 @@
 
                         if( $line != 'no' ){
 
-                            $svg_args = [];
+                            $svg_args = array();
                             $svg_args['height'] = $height;
                             $svg_args['y1'] = $svg_args['y2'] = scm_content_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
                             $svg_args['color'] = scm_content_preset_rgba( $args['color-color'], $args['color-alpha'], '#ddd' );
@@ -558,7 +558,7 @@
     // *****************************************************
 
     if ( ! function_exists( 'scm_post' ) ) {
-        function scm_post( $cont = [] ) {
+        function scm_post( $cont = array() ) {
 
             global $SCM_types, $SCM_indent;
 
@@ -571,7 +571,7 @@
 
             $archive = ( isset( $cont['type'] ) ? $cont['type'] === 'archive' : 0 );
             $width = ( isset( $cont['width'] ) ? $cont['width'] : 'auto' );
-            $query = [];
+            $query = array();
 
             $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
             // +++ todo: se non c'è template, tira fuori tutti i campi, uno via l'altro, o solo titolo con link oggetto se c'è
@@ -589,7 +589,7 @@
 
             if( $archive ){
 
-                $tax = [];
+                $tax = array();
 
                 foreach ($cont as $key => $terms) {
 
@@ -656,7 +656,7 @@
     // *****************************************************
 
     if ( ! function_exists( 'scm_post_link' ) ) {
-        function scm_post_link( $id = 0, $content = [] ) {
+        function scm_post_link( $id = 0, $content = array() ) {
             
             global $post;
 

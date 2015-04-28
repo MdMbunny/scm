@@ -42,7 +42,7 @@ class Custom_Taxonomy {
 
         $this->CT_taxonomy();
         if( !empty( $this->types ) ){
-            $arr = [];
+            $arr = array();
             foreach ( $this->types as $key ) {
                 if( post_type_exists( $key . '_temp' ) )
                     $arr[] = $key . '_temp';

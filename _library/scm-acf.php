@@ -89,7 +89,7 @@
 
 	// Set Field Group Locations
 	if ( ! function_exists( 'scm_acf_group_location' ) ) {
-		function scm_acf_group_location( $list = [], $param = 'post_type', $equal = '==' ) {
+		function scm_acf_group_location( $list = array(), $param = 'post_type', $equal = '==' ) {
 
 			$list = ( is_array( $list ) ? $list : [ $list, $equal, $param ] );
 			if( !ifexists( $list ) || !isset( $list[0] ) )
@@ -97,7 +97,7 @@
 
 			$list = ( !is_array( $list[0] ) ? [ $list ] : $list );
 			
-			$location = [];
+			$location = array();
 
 			foreach ( $list as $loc ) {				
 				$val = ( isset( $loc[0] ) ? $loc[0] : '' );
@@ -177,7 +177,7 @@
 
 			$logic = func_get_args();
 
-			$arr = [];
+			$arr = array();
 
 			foreach ($logic as $value) {
 
@@ -394,8 +394,8 @@
 
     // Get Fields by type and filter
     if ( ! function_exists( 'scm_field_objects' ) ) {
-        function scm_field_objects( $post_id, $fields = [], $type = 'text', $filter = [] ) {
-            $arr = [];
+        function scm_field_objects( $post_id, $fields = array(), $type = 'text', $filter = array() ) {
+            $arr = array();
             foreach ($fields as $key => $value) {
                 
                 $field = get_field_object($key, $post_id );
@@ -423,7 +423,7 @@
 
     // Get Key by Field Name
     if ( ! function_exists( 'scm_field_key' ) ) {
-        function scm_field_key( $post_id, $fields = [], $name = '', $filter = '' ) {
+        function scm_field_key( $post_id, $fields = array(), $name = '', $filter = '' ) {
 
             if( !isset( $post_id ) )
                 return '';
@@ -498,7 +498,7 @@
 
 	// LAYOUT OVERLAY
 	if ( ! function_exists( 'scm_acf_layouts_preset' ) ) {
-		function scm_acf_layouts_preset( $name = '', $list = [], $link = 0 ) {
+		function scm_acf_layouts_preset( $name = '', $list = array(), $link = 0 ) {
 
 			$row1 = 4 + $link;
 			$row2 = 3;

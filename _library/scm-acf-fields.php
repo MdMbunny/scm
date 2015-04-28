@@ -817,7 +817,7 @@
 	if ( ! function_exists( 'scm_acf_preset_box_shape' ) ) {
 		function scm_acf_preset_box_shape( $name = 'box-shape', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
 
-			$fields = [];
+			$fields = array();
 
 			$fields[] = scm_acf_field_select1( $name . 'shape', $default, 'box_shape-no', $width, $logic, 'Forma', 'Forma Box' );
 				
@@ -836,7 +836,7 @@
 	if ( ! function_exists( 'scm_acf_preset_box_style' ) ) {
 		function scm_acf_preset_box_style( $name = 'box-style', $default = 0, $instr = '', $req = 0 ) {
 
-			$fields = [];
+			$fields = array();
 
 			if( $instr )
 				$fields[] = scm_acf_field( 'msg-open-' . $name, [ 'message', $instr ], 'Impostazioni Box' );
@@ -1072,7 +1072,7 @@
 	if ( ! function_exists( 'scm_acf_preset_button' ) ) {
 		function scm_acf_preset_button( $name = '', $default = 0, $type = 'link', $placeholder = '', $filter = '', $tooltip = 0, $pl2 = 'Nome', $pl3 = '', $logic = 0, $instr = '', $required = 0 ) {
 			
-			$fields = [];
+			$fields = array();
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1150,7 +1150,7 @@
 	if ( ! function_exists( 'scm_acf_preset_button_shape' ) ) {
 		function scm_acf_preset_button_shape( $name = 'but-style', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
 
-			$fields = [];
+			$fields = array();
 			
 			//$fields = array_merge( $fields, scm_acf_preset_rgba( $name . 'rgba', $default ) );
 
@@ -1234,7 +1234,7 @@
 			$flexible = scm_acf_field_flexible( $name . 'modules', $default, 'Componi', '+', 100, $logic, '', '', '', $required, $class );
 
 				if( !$elements ){
-					$elements = [];
+					$elements = array();
 					foreach ( $SCM_types['public'] as $slug => $value) {
 						$elements[] = $slug;
 					}
@@ -1299,7 +1299,7 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields = [];
+			$fields = array();
 
 			$fields[] = scm_acf_field_select_layout( $name . 'page-layout', 1, 'Layout', 34, 0, 'default' );
 
@@ -1319,7 +1319,7 @@
 
 			//$name = ( $name ? $name . '-' : '');
 
-			$fields = [];
+			$fields = array();
 			
 			$flexible = scm_acf_field_flexible( 'modules', 0, 'Aggiungi Contesto', 'Contesto', 100, 0, 1 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
@@ -1344,7 +1344,7 @@
 
 			//$name = ( $name ? $name . '-' : '');
 
-			$fields = [];
+			$fields = array();
 			
 			$flexible = scm_acf_field_flexible( 'modules', 0, 'Componi', '+', '', 0, 0, 30 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', 'Titolo', '', '', scm_acf_object_titolo( 0, 0, 2 ) );
@@ -1367,7 +1367,7 @@
 
 			//$name = ( $name ? $name . '-' : '');
 
-			$fields = [];
+			$fields = array();
 
 			$fields[] = scm_acf_field_select_layout( 'layout', $default, 'Layout', 20 );
 			$fields = array_merge( $fields, scm_acf_preset_selectors( '', $default, 20, 20 ) );
@@ -1790,7 +1790,7 @@
 
 			$name = ( $name ? $name . '-' : '' );
 
-			$fields = [];
+			$fields = array();
 
 			$fields[] = scm_acf_field_object( $name . 'page', $default, 'page', $width, '', 'Pagina Modulo' );
 
@@ -1804,7 +1804,7 @@
 
 			$name = ( $name ? $name . '-' : '' );
 
-			$fields = [];
+			$fields = array();
 			
 			$fields[] = scm_acf_field_select1( $name . 'slider-active', $default, 'slider_model-no', $width, 0, [ 'no' => 'Disattiva' ], $label );
                 $slider_enabled = [ [ 'field' => $name . 'slider-active', 'operator' => '!=', 'value' => 'no' ], [ 'field' => $name . 'slider-active', 'operator' => '!=', 'value' => 'default' ] ];

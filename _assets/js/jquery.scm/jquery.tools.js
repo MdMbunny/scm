@@ -171,9 +171,7 @@
 		    	return;
 
 		    event.preventDefault();
-			event.stopPropagation();
-
-			
+			event.stopPropagation();			
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -189,6 +187,8 @@
 	        else
 	        	return; // +++ toccato*/
 
+	        if( $this.data( 'href' ).indexOf( '#' ) === 0 )
+	        	target = '_self';
 
 	        // +++ todo: temo che questo passaggio pesi abbastanza
 	        // verifica come paragonare l'host senza dover creare un elemento a
@@ -230,6 +230,7 @@
 				$this.trigger( 'link', [ state ] );
 				return $this;
 			}else{
+
 				$toggled = $( '.toggled' );
 				if( $toggled.length ){
 					$toggled.toggledOff( event );
@@ -432,7 +433,7 @@
 		return this.each(function(){
 					
 			var $this 			= $( this ),
-				link 			= $this.attr( 'href' ),
+				link 			= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
 				$body 			= $( 'body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
@@ -444,13 +445,12 @@
 				height 			= $body.height(),
 				position 		= $( document ).scrollTop(),
 
-				hash 			= ( typeof( this.hash ) !== undefined ? this.hash : '' ),
+				hash 			= ( link.indexOf( '#' ) === 0 ? link : ( link.indexOf( '#' ) > 0 ? this.hash : '' ) ),
 				target 			= ( hash ? $( hash ) : [] ),
 				name 			= ( hash ? hash.slice( 1 ) : '' ),
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0;
-
 
 			var pageScroll = function(){
 
@@ -585,22 +585,6 @@
 	            didScroll = false;
 
 	        };
-
-	        var removeActiveClasses = function(index, classNames) {
-				
-				var current_classes = classNames.split(" "), // change the list into an array
-					classes_to_remove = []; // array of classes which are to be removed
-
-				$.each(current_classes, function (index, class_name) {
-					// if the classname begins with bg add it to the classes_to_remove array
-					if (/current-.*/.test(class_name)) {
-						classes_to_remove.push(class_name);
-					}
-				});
-				// turn the array back into a string
-				return classes_to_remove.join(" ");
-
-			}
 	        
 	        var setActiveClass = function() {
 	            //var i;
@@ -624,24 +608,15 @@
 	                var link = $( $hash[i] ).parent();
 	                var $link = $( link );
 	                var hs = $hash[i][0]['hash'];
-	                var cBody = 'current-' + hs.substring(1,hs.length);
-
-	                
+					
 	                if ( scrollPos >= coords.top - threshold && scrollPos < coords.bottom - threshold ){
 	                	if( !$link.hasClass( currentClass ) ){
-	                		if( !$body.hasClass( cBody ) ){
-	                			$body.trigger( 'onCurrent', [ cBody ] );
-		                		$body.removeClass( removeActiveClasses );
-			                	$body.addClass( cBody );
-			                }
 		                    $link.addClass( currentClass );
 	                	}
 	                }else{
 	                	if( $link.hasClass( currentClass ) ){
 							$link.removeClass( currentClass );
 	                	}
-	                	//$body.removeClass( cBody );
-	                    //
 	                }
 	            }
 
@@ -659,6 +634,134 @@
 	                $link.addClass( currentClass );
 	                //$body.addClass( cBody );
 
+	            }
+	        }
+
+	        didScroll = true;
+            setTimer();
+			    
+		});
+
+	}
+
+	// *****************************************************
+	// *      CURRENT SECTION CLASS
+	// *****************************************************
+
+	$.fn.currentSection = function( event, state ){
+
+		return this.each(function() {
+
+			var $elem 			= $( this ),
+				elem 			= this,
+				//$body 			= $( 'body' ),
+				current 		= 'current-',
+	            offset 			= 0,
+	            threshold 		= 0,
+	            interval 		= 500,
+	            $sections 		= $elem.find( '.scm-section' ),
+	            $hash 			= [],
+	            $anchors 		= [],
+	            didScroll 		= true,
+	            timer 			= null;
+
+            if( !$sections.length )
+                return this;
+
+            /*$sections.each( function(){
+                var hash, anchors;
+
+                hash = $( this ).attr( 'id' );
+                if( !hash )
+                    return this;
+                
+                anchors = $body.find( hash );
+
+                if( anchors.length ){
+                    $anchors.push( anchors );
+                    $hash.push( $( this ) );
+                }
+
+            } );*/
+
+            /*if( !$hash.length )
+            	return this;*/
+
+			        
+	        var setTimer = function() {
+	            
+	            $( window ).on( 'scroll.currentSection', function() {
+	                didScroll = true;
+	            });
+	            
+	            setActiveClass();
+	            timer = setInterval( function() {
+
+	                if ( didScroll ) {
+	                    didScroll = false;
+	                    setActiveClass();
+	                }
+
+	            }, interval );
+	        };
+	        
+	        var clearTimer = function() {	          
+
+	            clearInterval( timer );
+	            $( window ).off( 'scroll.currentSection' );
+	            didScroll = false;
+
+	        };
+
+	        var removeActiveClasses = function(index, classNames) {
+				
+				var current_classes = classNames.split(" "), // change the list into an array
+					classes_to_remove = []; // array of classes which has to be removed
+
+				$.each(current_classes, function (index, class_name) {
+					// if the classname begins with current add it to the classes_to_remove array
+					if (/current-.*/.test(class_name)) {
+						classes_to_remove.push(class_name);
+					}
+				});
+				// turn the array back into a string
+				return classes_to_remove.join(" ");
+
+			}
+	        
+	        var setActiveClass = function() {
+	            //var i;
+
+	            var $win 		= $( window ),
+	            	$body 		= $( 'body' ),
+	            	scrollPos 	= $win.scrollTop(),
+	            	heightWin 	= $win.height(),
+	            	heightBody 	= $body.outerHeight(),
+	            	current 	= '';
+
+	            for( var i = 0; i < $sections.length; i++ ) {
+
+	                var $section = $( $sections[i] );
+
+	                var coords = {
+	                    top: Math.round( $section.offset().top ) - offset,
+	                    bottom: Math.round( $section.offset().top + $section.outerHeight() ) - offset
+	                };
+
+	                var add = 'current-' + $section.attr( 'id' );
+				
+	                if ( scrollPos >= coords.top - threshold && scrollPos < coords.bottom - threshold ){
+                		if( !$elem.hasClass( add ) ){
+                			
+
+                			//$elem.trigger( 'onCurrent', [ add ] );
+	                		$elem.removeClass( removeActiveClasses );
+		                	$elem.addClass( add );
+		                }
+	                }else{
+	                	if( $elem.hasClass( add ) )
+	                		$elem.removeClass( removeActiveClasses );
+	                }
 	            }
 	        }
 
@@ -1555,8 +1658,8 @@
 
 		$body.on( 'link', 'a, [data-href]', function( e, state ){
 
-			var $this = $( this );			
-	
+			var $this = $( this );
+
 			if( state != 'page' )
 				$this.bodyOut( e, state );
 			else
@@ -1606,6 +1709,7 @@
 		$( '[data-slider]' ).initSlider();
 		$( '[data-current-link]' ).currentLink();
 		$( 'iframe[src*="youtube.com"]' ).youtubeFix();
+		$body.currentSection();
 
 
 // *** DEBUG		

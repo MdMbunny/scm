@@ -30,7 +30,7 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
    
-	//add_action( 'acf/include_fields', 'scm_typekit_install' );                                                  // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
+	add_action( 'acf/include_fields', 'scm_typekit_install' );                                                  // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
     add_action( 'acf/include_fields', 'scm_roles_install' );                                                    // 1.0      Assegno Ruoli
     
     add_action( 'acf/include_fields', 'scm_option_pages_install' );                                             // 3.0      Creo Main Options Pages ( SCM, Types, Taxonomies )
@@ -281,7 +281,7 @@
     }
 
     if ( ! function_exists( 'scm_types_install' ) ) {
-        function scm_types_install( $types = [] ){
+        function scm_types_install( $types = array() ){
 
             global $SCM_types;
 
@@ -345,7 +345,7 @@
     }
 
     if ( ! function_exists( 'scm_taxonomies_install' ) ) {
-        function scm_taxonomies_install( $taxonomies = [] ){
+        function scm_taxonomies_install( $taxonomies = array() ){
 
             global $SCM_types;
 
@@ -369,7 +369,7 @@
 
                     //printPre($plural);
                     
-                    $tax_type = [];
+                    $tax_type = array();
                                         
                     //$SCM_types['public'][ $tax['slug'] ] = $plural;
                     //$SCM_types['all'][ $tax['slug'] ] = $plural;
@@ -612,7 +612,7 @@
 
                 $id = $p->post_name;
 
-                $field['value'][ $id ] = [];
+                $field['value'][ $id ] = array();
 
                 foreach ($field['sub_fields'] as $v) {
                     if( $v['name'] == 'id' ){
@@ -636,8 +636,8 @@
 
             global $SCM_plugin_fa;
 
-            $choices = [];
-            $new = [];
+            $choices = array();
+            $new = array();
 
             if ( $SCM_plugin_fa ) {
 
@@ -728,14 +728,14 @@
                                 
                                 $_POST['acf'][ $k_rows ][$layout][ $k_model ] = $new_post->post_name;
                                 $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
-                                //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = [];
+                                //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
 
                             }
 
                         }else{
                             $_POST['acf'][ $k_rows ][$layout][ $k_model ] = 'build';
                             $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
-                            //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = [];
+                            //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
                         }                        
                     }
                 }
@@ -768,7 +768,7 @@
                         $key_name = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'name' ) ]['key'];;
 
                         $posts = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date' ] );
-                        $pub = [];
+                        $pub = array();
                         foreach ( $posts as $p ) {
                             $pub[$p->ID] = $p->ID;
                         }
@@ -815,7 +815,7 @@
                             wp_delete_post( $key, true );
                         }
 
-                        $_POST['acf'] = [];
+                        $_POST['acf'] = array();
                     }
                 }
             }

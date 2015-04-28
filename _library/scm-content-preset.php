@@ -25,7 +25,7 @@
 	}
 
 	if ( ! function_exists( 'scm_content_preset_marker' ) ) {
-        function scm_content_preset_marker( $luogo, $fields = [], $mark = 0 ) {
+        function scm_content_preset_marker( $luogo, $fields = array(), $mark = 0 ) {
 
 			$marker = is( $fields['luogo-mappa-icon'], 'default' );
 			$icon = [ 'icon' => 'fa-map-marker', 'data' => '#000000' ];

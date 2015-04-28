@@ -40,11 +40,11 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'repeater'				$button-label = '+'							$min = '' 						$max = '' 						$layout = 'row | table | block'				$sub-fields = []
+*		'repeater'				$button-label = '+'							$min = '' 						$max = '' 						$layout = 'row | table | block'				$sub-fields = array()
 * ———      	'-block':				$layout = 'block'
 * ———      	'-table':				$layout = 'table'
 *
-*		'flexible'				$button-label = '+'							$min = '' 						$max = '' 						$layouts = []
+*		'flexible'				$button-label = '+'							$min = '' 						$max = '' 						$layouts = array()
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
@@ -751,7 +751,7 @@
 
         	global $SCM_fa;
 
-        	$choices = [];
+        	$choices = array();
 
         	if( isset( $SCM_fa[ $group ] ) ){
 
@@ -792,7 +792,7 @@
 
 
 	if ( ! function_exists( 'scm_acf_field_choices' ) ) {
-        function scm_acf_field_choices( $default, $choices = [] ){
+        function scm_acf_field_choices( $default, $choices = array() ){
         	
         	$key = '';
 
@@ -1398,16 +1398,16 @@
 			elseif( strpos( $list, 'webfonts_google' ) !== false ):
 				if( strpos( $list, 'webfonts_google_styles' ) !== false ):
 					$choices = array(
-						'300' => 'Light',
-						'300italic' => 'Light Italic',
-						'400' => 'Normal',
-						'400italic' => 'Normal Italic',
-						'600' => 'Semi Bold',
-						'600italic' => 'Semi Bold Italic',
-						'700' => 'Bold',
-						'700italic' => 'Bold Italic',
-						'800' => 'Extra Bold',
-						'800italic' => 'Extra Bold Italic',
+						'300,' => 'Light',
+						'300italic,' => 'Light Italic',
+						'400,' => 'Normal',
+						'400italic,' => 'Normal Italic',
+						'600,' => 'Semi Bold',
+						'600italic,' => 'Semi Bold Italic',
+						'700,' => 'Bold',
+						'700italic,' => 'Bold Italic',
+						'800,' => 'Extra Bold',
+						'800italic,' => 'Extra Bold Italic',
 					);
 				else:
 					$choices = array('no' => 'No Google font');
@@ -1433,10 +1433,10 @@
 
 			elseif( strpos( $list, 'font_weight' ) !== false ):
 				$choices = array(
-					'300' => 'Light',
-					'400' => 'Normal',
+					'lighter' => 'Light',
+					'normal' => 'Normal',
 					//'semi' => 'Semi Bold',
-					'700' => 'Bold',
+					'bold' => 'Bold',
 					//'900' => 'Extra Bold',
 				);
 

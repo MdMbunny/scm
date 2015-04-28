@@ -1,7 +1,7 @@
 <?php
 
 	if ( ! function_exists( 'scm_svg_line' ) ) {
-		function scm_svg_line( $attr = [], $type = 'solid' ) {
+		function scm_svg_line( $attr = array(), $type = 'solid' ) {
 
 			global $SCM_indent;
 

@@ -91,13 +91,13 @@ class Custom_Type {
         $this->cap_plural = ( $this->cap_plural == $this->cap_singular ? $this->cap_plural . 's' : $this->cap_plural );
 
         //add_action( 'publish_' . $this->slug, array( &$this, 'CT_default_term' ) );
-        add_filter( 'manage_edit-' . $this->slug . '_columns', [ &$this, 'CT_admin_columns' ] ) ;
-        add_action( 'manage_' . $this->slug . '_posts_custom_column', [ &$this, 'CT_manage_admin_columns' ], 10, 2 );
-        //add_filter( 'manage_edit' . $this->slug . '_sortable_columns', [ &$this, 'CT_sort_admin_columns' ] );
-        add_action( 'load-edit.php', [ &$this, 'CT_admin_edit_page_load' ] );
-        add_action( 'admin_menu', [ &$this, 'CT_admin_menu_hide' ] );
-        add_action( 'admin_head', [ &$this, 'CT_admin_elems_hide' ] );
-        add_action( 'admin_bar_menu', [ &$this, 'CT_admin_bar_hide' ], 999 );
+        add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'CT_admin_columns' ) ) ;
+        add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'CT_manage_admin_columns' ), 10, 2 );
+        //add_filter( 'manage_edit' . $this->slug . '_sortable_columns', array( &$this, 'CT_sort_admin_columns' ) );
+        add_action( 'load-edit.php', array( &$this, 'CT_admin_edit_page_load' ) );
+        add_action( 'admin_menu', array( &$this, 'CT_admin_menu_hide' ) );
+        add_action( 'admin_head', array( &$this, 'CT_admin_elems_hide' ) );
+        add_action( 'admin_bar_menu', array( &$this, 'CT_admin_bar_hide' ), 999 );
 
         $this->CT_type();
     }

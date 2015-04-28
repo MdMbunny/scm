@@ -154,7 +154,7 @@ function isNumber( $var = '', $fall = '', $pre = 0, $app = 0 ){
 
 }
 
-function ifequal( $var = '', $equal = [], $fall = '', $pre = '', $app = ''  ){
+function ifequal( $var = '', $equal = array(), $fall = '', $pre = '', $app = ''  ){
 
     if( !$var )
         return '';
@@ -170,7 +170,7 @@ function ifequal( $var = '', $equal = [], $fall = '', $pre = '', $app = ''  ){
     
 }
 
-function ifnotequal( $var = '', $equal = [], $fall = '', $pre = '', $app = ''  ){
+function ifnotequal( $var = '', $equal = array(), $fall = '', $pre = '', $app = ''  ){
 
     if( !$var )
         return '';
@@ -621,7 +621,7 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
     //Get Webfont + Family Font as a correct String (just comma separated families, or css attribute ready)
     if ( ! function_exists( 'font2string' ) ) {
-        function font2string($webfont = [], $family = 'default', $add = false) {
+        function font2string($webfont = array(), $family = 'default', $add = false) {
 
             $str = '';
 

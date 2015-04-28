@@ -1,4 +1,7 @@
 <?php
+
+//phpinfo();
+
 /**
  * @package SCM
  */
@@ -54,12 +57,12 @@ if ( ! isset( $content_width ) ) {
 
 	$SCM_uploads 		= wp_upload_dir();
 	$SCM_current_screen;
-	$SCM_types 			= [];
-	$SCM_galleries 		= [];
-	$SCM_acf_objects 	= [];
-	$SCM_acf_elements 	= [];
-	$SCM_acf_layouts 	= [];
-	$SCM_fa 			= [];
+	$SCM_types 			= array();
+	$SCM_galleries 		= array();
+	$SCM_acf_objects 	= array();
+	$SCM_acf_elements 	= array();
+	$SCM_acf_layouts 	= array();
+	$SCM_fa 			= array();
 	$SCM_plugin_fa 		= 0;
 	
 	$SCM_typekit;
