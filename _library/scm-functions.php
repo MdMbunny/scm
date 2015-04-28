@@ -680,8 +680,13 @@ function getURL( $url ){
 
         if( !is_numeric( $url ) )
             $url = get_page_by_path( $url )->ID;
+
+        $page = get_page_link( $url );
+
+        if( $page === get_the_permalink() )
+            return $add;
         
-        return get_page_link( $url ) . $add;
+        return $page . $add;
     }
 
     if( startsWith( $url, [ 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ] ) !== false )

@@ -33,7 +33,7 @@
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_scripts' );
     add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
 
-    add_action( 'widgets_init', 'scm_widgets_default' );
+	add_action( 'widgets_init', 'scm_widgets_default' );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
     //add_action( 'after_setup_theme', 'scm_default_headers' );
@@ -133,7 +133,6 @@
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
                 $styles = implode( '', $value['style'] );
-                consoleLog($value);
                 wp_register_style( 'webfonts-google-' . $slug , 'http://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'webfonts-google-' . $slug );                
             }
@@ -187,6 +186,11 @@
 
             wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style( 'child' );
+
+            // Parallax
+
+            wp_register_style( 'parallax', SCM_URI_CSS . 'parallax.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style( 'parallax' );
 
             // SCM Print
 
@@ -289,8 +293,8 @@
 
             // Parallax Scrolling
 
-            //wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, '', true );
-            //wp_enqueue_script( 'parallax' );
+            wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, '', true );
+            wp_enqueue_script( 'parallax' );
 
             //wp_register_script( 'sequence',  SCM_URI_JS . 'Sequence/jquery.sequence-min.js', false, '', true );
             //wp_enqueue_script( 'sequence' );
@@ -358,14 +362,12 @@
 
             $font = scm_options_get( 'font', 'option', 1 );
 
-
             $opacity = scm_options_get( 'opacity', 'option', 1 );
+            $align = scm_options_get( 'align', 'option', 1 );
 
             $line_height = scm_options_get( 'line_height', 'option', 1 );
-
-            $body = scm_options_get( 'align', 'option', 1 );
-
-            $body .= scm_options_get( 'size', 'option', 1 );
+            
+            $body = scm_options_get( 'size', 'option', 1 );
             $body .= scm_options_get( 'color', 'option', 1 );
             $body .= scm_options_get( 'weight', 'option', 1 );
             $body .= scm_options_get( 'shadow', 'option', 1 );
@@ -392,6 +394,8 @@
             $css .= 'body { ' . $body . ' }' . lbreak();
 
             $css .= '.site-page { ' . $opacity . ' }' . lbreak();
+
+            $css .= '.scm-row { ' . $align . ' }' . lbreak();
 
             //$css .= '.site-content{ ' . $content . ' }' . lbreak();
 
