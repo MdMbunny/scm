@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.2.0
+Version:			v2.2.2
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -415,7 +415,7 @@ h6 { font-size: 1.2em; }
 /*--------------------------------------------------------------
 2.2 Attributes Display
 --------------------------------------------------------------*/
-.invisible, .none, .displaynone, .display-none { display: none; }
+.invisible, .none, .displaynone, .display-none { display: none !important; }
 
 .block, .displayblock, .display-block { display: block; }
 

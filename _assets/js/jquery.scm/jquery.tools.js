@@ -656,7 +656,7 @@
 				elem 			= this,
 				//$body 			= $( 'body' ),
 				current 		= 'current-',
-	            offset 			= 0,
+	            offset 			= 100,
 	            threshold 		= 0,
 	            interval 		= 500,
 	            $sections 		= $elem.find( '.scm-section' ),
@@ -742,11 +742,14 @@
 	            for( var i = 0; i < $sections.length; i++ ) {
 
 	                var $section = $( $sections[i] );
+	                var $next = $( $sections[i+1] );
 
 	                var coords = {
 	                    top: Math.round( $section.offset().top ) - offset,
-	                    bottom: Math.round( $section.offset().top + $section.outerHeight() ) - offset
+	                    bottom: Math.round( $section.offset().top + $section.outerHeight() ) - offset,
 	                };
+
+	                coords.middle = Math.round( coords.top + ( coords.bottom - coords.top ) * .5 );
 
 	                var add = 'current-' + $section.attr( 'id' );
 				
@@ -757,10 +760,32 @@
                 			//$elem.trigger( 'onCurrent', [ add ] );
 	                		$elem.removeClass( removeActiveClasses );
 		                	$elem.addClass( add );
+		                	$section.addClass( 'current-view' );
+		                	$section.addClass( 'current-view-act' );
+		                	$section.removeClass( 'current-view-pre' );
+		                }
+		                if( scrollPos >= coords.middle - threshold ){
+							if( !$elem.hasClass( 'current-half' ) ){
+								$elem.addClass( 'current-half' );
+								if( $next.length ){
+									$next.addClass( 'current-view' );
+									$next.addClass( 'current-view-pre' );
+								}
+							}
+		                }else{
+		                	if( $elem.hasClass( 'current-half' ) ){
+		                		$elem.removeClass( 'current-half' );
+		                		if( $next.length ){
+									$next.removeClass( 'current-view-pre' );
+								}
+							}
 		                }
 	                }else{
 	                	if( $elem.hasClass( add ) )
 	                		$elem.removeClass( removeActiveClasses );
+	                		if( !$section.hasClass( 'current-view-pre' ) )
+		                		$section.removeClass( 'current-view' );
+	                		$section.removeClass( 'current-view-act' );
 	                }
 	            }
 	        }

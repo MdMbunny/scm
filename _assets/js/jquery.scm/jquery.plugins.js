@@ -244,6 +244,15 @@
 
 	}
 
+	if ( !$.fn.outerHTML ) {
+
+		$.fn.outerHTML = function(s) {
+			return (s)
+			? this.before(s).remove()
+			: jQuery("<p>").append(this.eq(0).clone()).html();
+		}
+	}
+
 	if ( !$.fn.goToLink ) {
 
 		$.fn.goToLink = function( event, state, title, fallback ){
