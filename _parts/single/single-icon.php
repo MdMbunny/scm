@@ -7,7 +7,7 @@
 global $post, $SCM_indent;
 $post_id = $post->ID;
 
-$args = [
+$args = array(
 	'icon' => '',
 	'size-number' => '',
 	'size-units' => '',
@@ -15,10 +15,10 @@ $args = [
     'class' => '',
     'attributes' => '',
     'style' => '',
-];
+);
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 /***************/
 

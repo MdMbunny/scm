@@ -92,12 +92,12 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'select'				$default = '' || []	* 						$placeholder = ''									$ajax = 0							$allow_null = 0						$ui = 0						$multiple = 0 				$read-only = 0				$disable = 0
+*		'select'				$default = '' || array(]	* 						$placeholder = ''									$ajax = 0							$allow_null = 0						$ui = 0						$multiple = 0 				$read-only = 0				$disable = 0
 * ———		'select2'					$ui = 1
-*		'checkbox'				$default = '' || []	*						$layout = 'vertical | horizontal' || 0 | 1
-*		'radio'					$default = '' || []	*						$layout = 'vertical | horizontal' || 0 | 1			$more = 0							$load_save_terms = $more || 0
-* ———		'-default'				add 'default' 	=> 	'Default' 	to ['choices']
-* ———		'-no'					add 'no' 		=> 	'-' 		to ['choices']
+*		'checkbox'				$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1
+*		'radio'					$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1			$more = 0							$load_save_terms = $more || 0
+* ———		'-default'				add 'default' 	=> 	'Default' 	to array('choices']
+* ———		'-no'					add 'no' 		=> 	'-' 		to array('choices']
 * ———		'-multi'				$multiple | $more = 1
 * ———		'-read'					$read-only = 1
 * ———		'-disabled'				$disabled = 1
@@ -109,11 +109,11 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'object'				$post_types = '' || []					$taxonomy = '' || [] 				$placeholder = ''					$allow_null = 0					$multiple = 0						$return_format = 'object | id'	|| 0 | 1	$filters = [ 'search', 'post_type', 'taxonomy' ]	$ui = 1
-*		'object-rel'			$post_types = '' || []					$taxonomy = '' || []				$placeholder = ''					$elements = '' 					$max = 1							$return_format = 'object | id'	|| 0 | 1	$filters = [ 'search', 'post_type', 'taxonomy' ]
+*		'object'				$post_types = '' || array(]					$taxonomy = '' || array(] 				$placeholder = ''					$allow_null = 0					$multiple = 0						$return_format = 'object | id'	|| 0 | 1	$filters = array( 'search', 'post_type', 'taxonomy' )	$ui = 1
+*		'object-rel'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$elements = '' 					$max = 1							$return_format = 'object | id'	|| 0 | 1	$filters = array( 'search', 'post_type', 'taxonomy' )
 * ———		'-id'						$return_format = 'id'
 * ———		'-search'					$filters[] = 'search'
-*		'object-link'			$post_types = '' || []					$taxonomy = '' || []				$placeholder = ''					$allow_null = 0 				$multiple = 0
+*		'object-link'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$allow_null = 0 				$multiple = 0
 * ———		'objects'					$multiple = 1 | $max = 0			
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -137,7 +137,7 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'icon'					$default = 'star'	 						$filter = [ 'social', 'job', ... ]	$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
+*		'icon'					$default = 'star'	 						$filter = array( 'social', 'job', ... )	$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
 *		'color'					$default = '' || '#000000' etc.
 *		'date'					$return_format = 'Y-m-d' 					$display_format = 'd F Y'			$first_day' = 1
 *		'datetime'				$picker = 'slider | select' 				$date_format = 'd F Y'				$time_format' = 'hh:mm' 		$show_week_number = 0 			$save_as_timestamp = 1 			$get_as_timestamp = 0
@@ -219,7 +219,7 @@
 	        		$multi = ( isset( $arg[6] ) ? $arg[6] : ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
 	        		$read = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) );
 	        		$dis = ( isset( $arg[8] ) ? $arg[8] : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) );
-	        		$extra = str_replace( [ '-multi', '-read', '-disabled' ], '', $elem);
+	        		$extra = str_replace( array( '-multi', '-read', '-disabled' ), '', $elem);
 	        		$choices = scm_acf_field_choices( $default, $choices );
 
 	        		$field = array(
@@ -753,22 +753,22 @@
 
         	$choices = array();
 
-        	if( isset( $SCM_fa[ $group ] ) ){
+        	if( isset( $SCM_fa[$group] ) ){
 
         		if( is_string( $list ) )
-        			$list = [ $list ];
+        			$list = array( $list );
         		
         		if( isset( $list ) && !empty( $list ) && is_array( $list ) ){
 
 					foreach ( $list as $value) {
-    					if( isset( $SCM_fa[ $group ][ $value ] ) )
-        					$choices = array_merge( $choices, $SCM_fa[ $group ][ $value ][ 'choices' ] );
+    					if( isset( $SCM_fa[$group][$value] ) )
+        					$choices = array_merge( $choices, $SCM_fa[$group][$value]['choices'] );
     				}
         		}
 				
 				if( empty( $choices ) ){
-	        		foreach ( $SCM_fa[ $group ] as $key => $value) {
-	    				$choices = array_merge( $choices, $value[ 'choices' ] );
+	        		foreach ( $SCM_fa[$group] as $key => $value) {
+	    				$choices = array_merge( $choices, $value['choices'] );
 	    			}
 				}
         	}
@@ -866,17 +866,17 @@
 				foreach ( $menus as $location => $description ) {
 
 					//if( ( strpos( $location, '___' ) === false && $needle == $def ) || strpos( $location, $needle ) !== false )
-						$choices[ $location ] = $description;
+						$choices[$location] = $description;
 				};
 
 			elseif( strpos( $list, 'templates_' ) !== false ):
 				$pos = strpos( $list, 'templates_' ) + strlen( 'templates_' );
 				$type = substr( $list, $pos ) . SCM_TEMPLATE_APP;
 
-				$temps = get_posts( [ 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ] );
+				$temps = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ) );
 				foreach ( $temps as $temp):
-					//$choices[ '_' . $temp->ID ] = $temp->post_title;
-					$choices[ $temp->post_name ] = $temp->post_title;
+					//$choices[ '_' . $temp->ID ) = $temp->post_title;
+					$choices[$temp->post_name] = $temp->post_title;
 				endforeach;
 
 			elseif( strpos( $list, 'side_position' ) !== false ):
@@ -1570,7 +1570,7 @@
 			endif;
 
 			if( $get )
-				return ( isset( $choices[ $get ] ) ? $choices[ $get ] : '' );
+				return ( isset( $choices[$get] ) ? $choices[$get] : '' );
 
 			return $choices;
 

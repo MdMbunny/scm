@@ -36,7 +36,7 @@ $SCM_indent -= 3;
 
                 //printPre( $repeater );
 
-                scm_content( [ 'sections' => $repeater ] );
+                scm_content( array( 'sections' => $repeater ) );
 
             $SCM_indent -= 2;
 

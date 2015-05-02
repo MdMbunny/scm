@@ -6,11 +6,11 @@
 // *** SOCIAL ***
 // **************
 
-	$SCM_fa['typography'] = [
-		'quote' => [
+	$SCM_fa['typography'] = array(
+		'quote' => array(
 			'name' => 'Virgolette',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-quote-left',
 				'fa-quote-right',
 				'fa-angle-double-left',
@@ -20,146 +20,146 @@
 				'fa-hand-o-left',
 				'fa-hand-o-right',
 				'fa-minus',
-			],
-		],
-	];
+			),
+		),
+	);
 
 // **************
 // *** SOCIAL ***
 // **************
 
-	$SCM_fa['social'] = [
-		'deviantart' => [
+	$SCM_fa['social'] = array(
+		'deviantart' => array(
 			'name' => 'DeviantArt',
 			'color' => '#05cc47',
-			'choices' => [
+			'choices' => array(
 				'fa-deviantart',
-			],
-		],
-    	'facebook' => [
+			),
+		),
+    	'facebook' => array(
     		'name' => 'Facebook',
     		'color' => '#3b5998',
-    		'choices' => [
+    		'choices' => array(
 				'fa-facebook',
 				'fa-facebook-official',
 				'fa-facebook-square',
-			],
-		],
-		'flickr' => [
+			),
+		),
+		'flickr' => array(
 			'name' => 'Flickr',
 			'color' => '#ff0084',
-			'choices' => [
+			'choices' => array(
 				'fa-flickr',
-			],
-		],
-		'github' => [
+			),
+		),
+		'github' => array(
 			'name' => 'GitHub',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-github',
 				'fa-github-alt',
 				'fa-github-square',
-			],
-		],
-		'google' => [
+			),
+		),
+		'google' => array(
 			'name' => 'Google Plus',
 			'color' => '#db4733',
-			'choices' => [
+			'choices' => array(
 				'fa-google-plus',
 				'fa-google-plus-square',
-			],
-		],		
-		'instagram' => [
+			),
+		),		
+		'instagram' => array(
 			'name' => 'Instagram',
 			'color' => '#3f729b',
-			'choices' => [
+			'choices' => array(
 				'fa-instagram',
-			],
-		],
-		'lastfm' => [
+			),
+		),
+		'lastfm' => array(
 			'name' => 'LastFM',
 			'color' => '#2ebd59',
-			'choices' => [
+			'choices' => array(
 				'fa-lastfm',
 				'fa-lastfm-square',
-			],
-		],
-		'linkedin' => [
+			),
+		),
+		'linkedin' => array(
 			'name' => 'Linked In',
 			'color' => '#4875B4',
-			'choices' => [
+			'choices' => array(
 				'fa-linkedin',
 				'fa-linkedin-square',
-			],
-		],		
-		'pinterest' => [
+			),
+		),		
+		'pinterest' => array(
 			'name' => 'Pinterest',
 			'color' => '#bd081c',
-			'choices' => [
+			'choices' => array(
 				'fa-pinterest',
 				'fa-pinterest-p',
 				'fa-pinterest-square',
-			],
-		],
-		'reddit' => [
+			),
+		),
+		'reddit' => array(
 			'name' => 'Reddit',
 			'color' => '#ff4500',
-			'choices' => [
+			'choices' => array(
 				'fa-reddit',
 				'fa-reddit-square',
-			],
-		],
-		'soundcloud' => [
+			),
+		),
+		'soundcloud' => array(
 			'name' => 'SoundCloud',
 			'color' => '#2ebd59',
-			'choices' => [
+			'choices' => array(
 				'fa-soundcloud',
-			],
-		],
-		'spotify' => [
+			),
+		),
+		'spotify' => array(
 			'name' => 'Spotify',
 			'color' => '#2ebd59',
-			'choices' => [
+			'choices' => array(
 				'fa-spotify',
-			],
-		],
-		'tumblr' => [
+			),
+		),
+		'tumblr' => array(
 			'name' => 'Tumblr',
 			'color' => '#bd4364',
-			'choices' => [
+			'choices' => array(
 				'fa-tumblr',
 				'fa-tumblr-square',
-			],
-		],
-		'twitter' => [
+			),
+		),
+		'twitter' => array(
 			'name' => 'Twitter',
 			'color' => '#55acee',
-			'choices' => [
+			'choices' => array(
 				'fa-twitter',
 				'fa-twitter-square',
-			],
-		],
-		'xing' => [
+			),
+		),
+		'xing' => array(
 			'name' => 'Xing',
 			'color' => '#026466',
-			'choices' => [
+			'choices' => array(
 				'fa-xing',
 				'fa-xing-square',
-			],
-		],
-		'youtube' => [
+			),
+		),
+		'youtube' => array(
 			'name' => 'YouTube',
 			'color' => '#cc181e',
-			'choices' => [
+			'choices' => array(
 				'fa-youtube',
 				'fa-youtube-play',
 				'fa-youtube-square',
-			],
-		],
-		'other' => [
+			),
+		),
+		'other' => array(
 			'name' => 'Altri',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-dribbble',
 				'fa-digg',
 				'fa-delicious',
@@ -169,33 +169,33 @@
 				'fa-bitbucket-square',
 				'fa-share-alt',
 				'fa-share-alt-square',
-			],
-		],
+			),
+		),
 		
-    ];
+    );
 
 // ***************
 // *** CONTACT ***
 // ***************
 
-    $SCM_fa['contact'] = [
+    $SCM_fa['contact'] = array(
 
-    	'web' => [
+    	'web' => array(
     		'name' => 'Web',
     		'color' => '#333333',
-    		'choices' => [
+    		'choices' => array(
 				'fa-globe',
 				'fa-link',
 				'fa-external-link',
 				'fa-external-link-square',
 				'fa-sitemap',
-			],
-		],
+			),
+		),
 
-		'email' => [
+		'email' => array(
     		'name' => 'Email',
     		'color' => '#333333',
-    		'choices' => [
+    		'choices' => array(
 				'fa-envelope-o',
 				'fa-envelope',
 				'fa-envelope-square',
@@ -204,74 +204,74 @@
 				'fa-pencil-o',
 				'fa-pencil',
 				'fa-pencil-square',
-			],
-		],
+			),
+		),
 
-		'skype' => [
+		'skype' => array(
     		'name' => 'Skype',
     		'color' => '#333333',
-    		'choices' => [
+    		'choices' => array(
 				'fa-skype',
-			],
-		],
+			),
+		),
 
 		// +++ todo: Wait for Font Awesome update (o sbircia e fatti il tuo cazzo di plugin personale, idem con Limiter e PayPal)
-		/*'whatsapp' => [
+		/*'whatsapp' => array(
 			'name' => 'WhatsApp',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-whatsapp',
-			],
-		],*/
+			),
+		),*/
 
-    	'phone' => [
+    	'phone' => array(
     		'name' => 'Telefono',
     		'color' => '#333333',
-    		'choices' => [
+    		'choices' => array(
 				'fa-phone',
 				'fa-phone-square',
 				'fa-mobile',
-			],
-		],   	
+			),
+		),   	
 
-		'fax' => [
+		'fax' => array(
     		'name' => 'Fax',
     		'color' => '#333333',
-    		'choices' => [
+    		'choices' => array(
 				'fa-fax',
 				'fa-file',
 				'fa-file-o',
 				'fa-file-text',
 				'fa-file-text-o',
 				'fa-files-o',
-			],
-		],
+			),
+		),
 
-    ];
+    );
 
 // *************
 // *** BRAND ***
 // *************
 
-    $SCM_fa['brand'] = [
+    $SCM_fa['brand'] = array(
 
 	// CONTACTS
 
 		// CHAT
-		'chat' => [
+		'chat' => array(
 			'name' => 'Chat',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-skype',
 				'fa-whatsapp',
-			],
-		],
+			),
+		),
 
 		// SOCIAL
-		'social' => [
+		'social' => array(
 			'name' => 'Social',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-facebook',
 				'fa-facebook-official',
 				'fa-facebook-square',
@@ -295,48 +295,48 @@
 				'fa-bitbucket-square',
 				'fa-share-alt',
 				'fa-share-alt-square',
-			],
-		],
+			),
+		),
 
 		// SOCIAL JOB
-		'job' => [
+		'job' => array(
 			'name' => 'Job',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-linkedin',
 				'fa-linkedin-square',
 				'fa-xing',
 				'fa-xing-square',
-			],
-		],
+			),
+		),
 
 	// WEB
 
 		// CLOUD
-		'cloud' => [
+		'cloud' => array(
 			'name' => 'Cloud',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-dropbox',
-			],
-		],
+			),
+		),
 
 		// BLOGGING
-		'blog' => [
+		'blog' => array(
 			'name' => 'Blog',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-wordpress',
 				'fa-joomla',
 				'fa-drupal',
-			],
-		],
+			),
+		),
 
 		// CODING
-		'code' => [
+		'code' => array(
 			'name' => 'Code',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-html5',
 				'fa-css3',
 				'fa-jsfiddle',
@@ -348,83 +348,83 @@
 				'fa-github-alt',
 				'fa-github-square',
 				'fa-hacker-news',
-			],
-		],
+			),
+		),
 
 		// SEARCH ENGINE
-		'search' => [
+		'search' => array(
 			'name' => 'Search',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-google',
 				'fa-yahoo',
 				'fa-stack-exchange',
 				'fa-yelp',
-			],
-		],
+			),
+		),
 
 	// MULTIMEDIA
 
 		// VIDEO
-		'video' => [
+		'video' => array(
 			'name' => 'Video',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-twitch',
 				'fa-vimeo-square',
 				'fa-vine',
 				'fa-youtube',
 				'fa-youtube-play',
 				'fa-youtube-square',
-			],
-		],
+			),
+		),
 
 		// MUSIC
-		'music' => [
+		'music' => array(
 			'name' => 'Music',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-spotify',
 				'fa-soundcloud',
 				'fa-lastfm',
 				'fa-lastfm-square',
-			],
-		],
+			),
+		),
 
 		// IMAGES
-		'image' => [
+		'image' => array(
 			'name' => 'Images',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-flickr',
 				'fa-instagram',
 				'fa-deviantart',
-			],
-		],
+			),
+		),
 
 	// SOFTWARES
 
 		// APP & GAMES
-		'app' => [
+		'app' => array(
 			'name' => 'App and Games',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-apple',
 				'fa-windows',
 				'fa-linux',
 				'fa-android',
 				'fa-steam',
 				'fa-steam-square',
-			],
-		],
+			),
+		),
 
 	// COMMERCE
 
 		// PAGAMENTI
-		'pay' => [
+		'pay' => array(
 			'name' => 'Payments',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-paypal',
 				'fa-viacoin',
 				'fa-gratipay',
@@ -436,16 +436,16 @@
 				'fa-cc-stripe',
 				'fa-cc-visa',
 				'fa-btc',
-			],
-		],
+			),
+		),
 
 
 	// UNKNOWN
 
-		'other' => [
+		'other' => array(
 			'name' => 'Altri',
 			'color' => '#333333',
-			'choices' => [
+			'choices' => array(
 				'fa-adn',
 				'fa-angellist',
 				'fa-buysellads',
@@ -479,9 +479,9 @@
 				'fa-vk',
 				'fa-weibo',
 				'fa-weixin',
-			],
-		],
+			),
+		),
 
-	];
+	);
 
 ?>

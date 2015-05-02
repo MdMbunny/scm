@@ -5,7 +5,7 @@
 
 			global $SCM_indent;
 
-			$default = [
+			$default = array(
 				'width' => '100%',
 				'height' => '',
 				'x1' => '',
@@ -17,7 +17,7 @@
 				'cap' => 'butt',
 				'space' => '19',
 				'dash' => '0.1',
-			];
+			);
 
 			$attr = array_merge( $default, $attr );
 

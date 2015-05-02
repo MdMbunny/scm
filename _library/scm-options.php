@@ -244,7 +244,7 @@
 			if( $family == 'default' && ( $type || $target != 'option' ) )
 				$family = get_field( is( $type, 'style-txt-' ) .  'webfonts-fallback', 'option' );
 
-            return font2string( [ $adobe, $google ], $family, $add ) ;
+            return font2string( array( $adobe, $google ), $family, $add ) ;
 
         }
     }

@@ -6,9 +6,9 @@
 global $post, $SCM_indent, $SCM_fa;
 $post_id = $post->ID;
 
-$args = [
+$args = array(
 	'acf_fc_layout' => 'layout-list',
-	'list' => [],
+	'list' => array(),
 	'intro' => '',
 	'display' => 'block',
 	'alignment' => 'left',
@@ -30,10 +30,10 @@ $args = [
     'class' => '',
     'attributes' => '',
     'style' => '',
-];
+);
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 //***************
 
@@ -100,7 +100,7 @@ $size = ifnotequal( $args['size'], 'default', 'normal' );
 $color = scm_content_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
 $shape = ( $args['shape'] ? ifnotequal( $args['shape'], 'no', '' ) : '' );
 $shape_size = ( $shape ? ifnotequal( $shape, 'square', '', '', '-' . $args['shape-size'] ) : '' );
-$shape_angle = ifnotequal( $args['shape-angle'], [ 'all', 'square' ] );
+$shape_angle = ifnotequal( $args['shape-angle'], array( 'all', 'square' ) );
 $bg = scm_content_preset_rgba( $args['box-color'], $args['box-alpha'] );
 
 $icon_even = $args['icon-even'];

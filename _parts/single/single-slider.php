@@ -6,7 +6,7 @@
 global $post, $SCM_indent;
 $post_id = $post->ID;
 
-$args = [
+$args = array(
     'acf_fc_layout' => 'layout-slider',
     'slider' => 0,
     'type' => 'nivo',
@@ -30,10 +30,10 @@ $args = [
     'class' => '',
     'attributes' => '',
     'style' => '',
-];
+);
 
 if( isset( $this ) )
-    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 /***************/
 
@@ -50,13 +50,13 @@ $id = $args['id'];
 
 $slider = get_term( $args['slider'], 'sliders' );
 // +++ todo:  diventa wp query? che poi chiama single-slide?
-$slides = get_posts( [
+$slides = get_posts( array(
     'order' => 'ASC',
     'post_type' => 'slides',
     'numberposts' => -1,
     'taxonomy' => 'sliders',
     'term' => $slider->slug,
-] );
+) );
 
 $type = $args['type'];
 $height = scm_field( 'height-number', '', $slider );
@@ -121,7 +121,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
 
     foreach ($slides as $elem) {
         $elem = ( is_numeric( $elem ) ? $elem : $elem->ID );
-        $slide = [
+        $slide = array(
             'slide-image' => '',
             'slide-link' => 'page',
             'slide-internal' => '',
@@ -134,7 +134,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
             'slide-caption-left' => '',
             'slide-caption-title' => '',
             'slide-caption-cont' => '',
-        ];
+        );
 
         $slide = array_merge( $slide, get_fields($elem) );
         $i++;

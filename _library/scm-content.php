@@ -82,7 +82,7 @@
                     
                     $section = is( $content['modules'], 'NONE' );*/
 
-                    //scm_containers( ( isset( $content['columns'] ) && is( $content['columns'] ) ? $content['columns'] : ( isset( $content['modules'] ) && is( $content['modules'] ) ? $content['modules'] : [] ) ), ( $container == 'section' ? 'row' : ( $container == 'row' ? 'column' : ( $container == 'column' ? 'module' : 'content' ) ) ) );
+                    //scm_containers( ( isset( $content['columns'] ) && is( $content['columns'] ) ? $content['columns'] : ( isset( $content['modules'] ) && is( $content['modules'] ) ? $content['modules'] : array() ) ), ( $container == 'section' ? 'row' : ( $container == 'row' ? 'column' : ( $container == 'column' ? 'module' : 'content' ) ) ) );
                 
                 break;
 
@@ -136,7 +136,7 @@
 
             if( is( $container == 'post' ) ){
                 $builder = $build;
-                $build = ( isset( $build['posts'] ) ? $build['posts'] : [] );
+                $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
             }
 
             if( !is( $build ) )
@@ -156,7 +156,7 @@
 
                 $count++;
 
-                $args = [
+                $args = array(
 
                     'column-width' => '',
                     'layout' => 'full',
@@ -177,7 +177,7 @@
                     'template' => 0,
                     'url' => '#',
                     
-                ];
+                );
 
                 if( $container == 'post' ){
                     $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
@@ -185,7 +185,7 @@
                     $content = $builder;
                 }
 
-                $content = ( is_array( $content ) ? array_merge( $args, $content ) : [] );
+                $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
 
                 if( isset( $content['row'] ) && !empty( $content['row'] ) ){
 
@@ -311,17 +311,17 @@
 
             foreach ( $content as $args ) {
 
-                $default = [
+                $default = array(
                     'acf_fc_layout' => '',
                     'id' => '',
                     'class' => '',
                     'attributes' => '',
                     'style' => '',
-                ];
+                );
 
                 $args = array_merge( $default, $args );
 
-                $element = $args[ 'acf_fc_layout' ];
+                $element = $args['acf_fc_layout'];
                 $class = $args['class'];
                 $id = $args['id'];
                 $attributes = $args['attributes'];
@@ -335,7 +335,7 @@
                     case 'layout-module':
                     case 'layout-section':
 
-                        scm_containers( [ $args ], 'row' );
+                        scm_containers( array( $args ), 'row' );
 
                     break;
 
@@ -382,7 +382,7 @@
                     // e leva Nivo Slider, se ogni singola slide ha animazioni d'entrata e uscita, ti serve solo una classe per il timer, al massimo uno slide orizzontale o verticale
                     case 'layout-slide':
 
-                        $slide = $args[ 'slide' ];
+                        $slide = $args['slide'];
                         if(!$slide) continue;
                         $post = ( is_numeric( $slide ) ? get_post( $slide ) : $slide );
                         setup_postdata( $slide );
@@ -395,7 +395,7 @@
 
                     case 'layout-form':
 
-                        $single = $args[ 'form' ];
+                        $single = $args['form'];
                         if(!$single) continue;
                         $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
                         setup_postdata( $post );
@@ -503,7 +503,7 @@
                         if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
 
                             $tax = str_replace( 'layout-SCMTAX-', '', $element );
-                            $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: [] ) );
+                            $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
                             //printPre( $args );
                             $tag = $args['tag'];
                             $pre = $args['prepend'];
@@ -519,7 +519,7 @@
 
                                         for ($i=0; $i < sizeof( $terms ) ; $i++){
 
-                                            $term = $terms[ $i ];
+                                            $term = $terms[$i];
                                             $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
                                             
                                             indent( $SCM_indent + 1, '<a class="term"' . $href . '>' . esc_html( $term->name ) . '</a>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : $app ) , 2 );
@@ -618,23 +618,23 @@
                 $all = $cont['archive-pagination'] === 'all';
                 $orderby = ( $cont['archive-orderby'] ?: 'date' );
                 $ordertype = ( $cont['archive-ordertype'] ?: 'ASC' );
-                $query = [
+                $query = array(
                     'post_type' => $type,
                     'tax_query' => $tax,
                     'posts_per_page' => $perpage,
                     'order' => $ordertype,
                     'orderby' => $orderby
-                ];
+                );
 
             }else{
 
                 if( !empty( $cont['single'] ) ){
 
-                    $query = [
+                    $query = array(
                         'post_type' => $type,
-                        'post__in' => ( $cont['single'] ?: [] ),
+                        'post__in' => ( $cont['single'] ?: array() ),
                         'posts_per_page' => -1,
-                    ];
+                    );
 
                 }
 
@@ -694,7 +694,7 @@
                 case 'gallerie':
                     global $SCM_galleries;
                     $link = '';
-                    $images = scm_field( 'galleria-images', [], $id );
+                    $images = scm_field( 'galleria-images', array(), $id );
                     $custom_id = uniqid( 'gallery-' );
                     $SCM_galleries[ $custom_id ] = $images;
                     $init = ( !empty( $content ) && isset( $content['btn-img'] ) ? $content['btn-img'] : 0 );
@@ -706,9 +706,9 @@
                 case 'video':
                     global $SCM_galleries;
                     $link = '';
-                    $video = scm_field( 'video-url', [], $id );
+                    $video = scm_field( 'video-url', array(), $id );
                     $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
-                    $images = [ '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>', '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>' ];
+                    $images = array( '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>', '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>' );
                     $custom_id = uniqid( 'video-' );
                     $SCM_galleries[ $custom_id ] = $images;
                     $attr = ' data-gallery="' . $custom_id . '"';

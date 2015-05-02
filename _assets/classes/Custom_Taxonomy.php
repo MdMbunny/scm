@@ -13,7 +13,7 @@ class Custom_Taxonomy {
             'singular'              => '',
             'plural'                => '',
             'slug'                  => '',
-            'types' 				=> [],
+            'types' 				=> array(),
             'manage'                => 0,
             'edit'                  => 0,
             'delete'                => 0,

@@ -91,11 +91,11 @@
 	if ( ! function_exists( 'scm_acf_group_location' ) ) {
 		function scm_acf_group_location( $list = array(), $param = 'post_type', $equal = '==' ) {
 
-			$list = ( is_array( $list ) ? $list : [ $list, $equal, $param ] );
+			$list = ( is_array( $list ) ? $list : array( $list, $equal, $param ) );
 			if( !ifexists( $list ) || !isset( $list[0] ) )
-				return [];
+				return array();
 
-			$list = ( !is_array( $list[0] ) ? [ $list ] : $list );
+			$list = ( !is_array( $list[0] ) ? array( $list ) : $list );
 			
 			$location = array();
 
@@ -123,7 +123,7 @@
 		function scm_acf_group_keys( $name, $list ) {
 
 			if( !$name || !$list )
-				return [];
+				return array();
 
 			$key = $name;
 
@@ -168,7 +168,7 @@
 	}
 
 
-	// Merge Conditional Logics - [[ $object ]] [ $object ] $object
+	// Merge Conditional Logics - (( $object )) array( $object ) $object
 	if ( ! function_exists( 'scm_acf_group_condition' ) ) {
 		function scm_acf_group_condition() {
 
@@ -277,7 +277,7 @@
 				'prefix' => '',
 				'instructions' => ( $instructions ?: '' ),
 				'required' => ( $required ?: 0 ),
-				'conditional_logic' => ( is( $logic ) && !is_string( $logic ) ? [ scm_acf_group_condition( $logic ) ] : '' ),
+				'conditional_logic' => ( is( $logic ) && !is_string( $logic ) ? array( scm_acf_group_condition( $logic ) ) : '' ),
 				'wrapper' => array (
 					'width' => ( is_numeric( $width ) ? $width : '' ),
 					'class' => ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) . ( $class ? ' ' . $class : '' ) ),
@@ -405,11 +405,11 @@
                     if( !empty( $filter ) ){
 
                         foreach ( $filter as $k => $v ) {
-                            if( !isset( $field[ $k ] ) || $field[ $k ] !== $v )
+                            if( !isset( $field[$k] ) || $field[$k] !== $v )
                                 continue 2;
-                            if( is_string( $field[ $k ] ) && strpos( $field[ $k ], $v ) === false )
+                            if( is_string( $field[$k] ) && strpos( $field[$k], $v ) === false )
                                 continue 2;
-                            if ( $field[ $k ] !== $v )
+                            if ( $field[$k] !== $v )
                                 continue 2;
                         }
                     }
@@ -450,7 +450,7 @@
 
                     $op = '==';
                     if( is_array( $filter ) ){
-                        $value = ( sizeof( $filter ) === 3 ? $field[ $filter[2] ] : $value );
+                        $value = ( sizeof( $filter ) === 3 ? $field[$filter[2]] : $value );
                         $op = $filter[0];
                         $filter = $filter[1];
                     }
@@ -551,7 +551,7 @@
 	if ( ! function_exists( 'scm_acf_column_width' ) ) {
 		function scm_acf_column_width( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_column_width( $name . 'column-width', 0, $width, 0, [ '1/1' => 'Larghezza piena', 'auto' => 'Auto' ], 'Larghezza', 'Larghezza' ) );
+			array_unshift( $list, scm_acf_field_select_column_width( $name . 'column-width', 0, $width, 0, array( '1/1' => 'Larghezza piena', 'auto' => 'Auto' ), 'Larghezza', 'Larghezza' ) );
 
 			return $list;
 
@@ -577,7 +577,7 @@
 	if ( ! function_exists( 'scm_acf_column_link' ) ) {
 		function scm_acf_column_link( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field( $name . 'link', [ 'select-template_link', [ 'no' => 'Nessun Link' ] ], 'Link', $width ) );
+			array_unshift( $list, scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => 'Nessun Link' ) ), 'Link', $width ) );
 
 			return $list;
 
@@ -603,7 +603,7 @@
 	if ( ! function_exists( 'scm_acf_column_align' ) ) {
 		function scm_acf_column_align( $name = '', $list = array(), $width = 100 ) {
 						
-			array_unshift( $list, scm_acf_field( $name . 'alignment', [ 'select-alignment', [ 'default' => 'Allineamento di default' ] ], 'Allineamento', $width ) );
+			array_unshift( $list, scm_acf_field( $name . 'alignment', array( 'select-alignment', array( 'default' => 'Allineamento di default' ) ), 'Allineamento', $width ) );
 			
 			return $list;
 

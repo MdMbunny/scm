@@ -122,7 +122,7 @@ function exists( $var = '' ){
 
 }
 
-// NO: '', 0, []
+// NO: '', 0, array(]
 function is( $var = '', $fall = '', $pre = '', $app = '' ){
 
     if( !$var )
@@ -133,7 +133,7 @@ function is( $var = '', $fall = '', $pre = '', $app = '' ){
 
 }
 
-// NO: '', [] - SI: 0
+// NO: '', array(] - SI: 0
 function ifexists( $var = '', $fall = '', $pre = '', $app = '' ){
 
     if( !exists( $var ) )
@@ -193,7 +193,7 @@ function ifnotequal( $var = '', $equal = array(), $fall = '', $pre = '', $app = 
 
 function toArray( $var ){
 
-    return ( is_array( $var ) ? $var : [ $var ] );
+    return ( is_array( $var ) ? $var : array( $var ) );
 
 }
 
@@ -219,7 +219,7 @@ function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes 
     }
 
 
-    return str_replace( [ ' " ', '=" ', '< ', ' >', ' ">' ], [ '" ', '="', '<', '>', '">' ], '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . doublesp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
+    return str_replace( array( ' " ', '=" ', '< ', ' >', ' ">' ), array( '" ', '="', '<', '>', '">' ), '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . doublesp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
 
 }
 
@@ -668,7 +668,7 @@ function getURL( $url ){
     if( $url == 'localhost' )
         return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
 
-    if( startsWith( $url, [ 'page:' ] ) !== false ){
+    if( startsWith( $url, array( 'page:' ) ) !== false ){
 
         $url = str_replace( 'page:', '', $url );
         
@@ -689,7 +689,7 @@ function getURL( $url ){
         return $page . $add;
     }
 
-    if( startsWith( $url, [ 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ] ) !== false )
+    if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )
         return $url;
 
     if( strpos( $url, '@' ) !== false )

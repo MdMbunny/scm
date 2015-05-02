@@ -53,7 +53,7 @@ if( $archive || ( $single &&
 
 				indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
 
-					scm_contents( [ [ 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ] ] );
+					scm_contents( array( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) ) );
 					//get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
 
 				indent( $SCM_indent + 1, '</div><!-- row -->', 2 );
@@ -67,7 +67,7 @@ if( $archive || ( $single &&
 				indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
 
 					$SCM_indent += 3;
-					scm_contents( [ 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'single' => [ $id ] ] );
+					scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'single' => array( $id ) ) );
 					$SCM_indent -= 3;
 
 				indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
@@ -79,7 +79,7 @@ if( $archive || ( $single &&
 
 
 			// Page Content
-			//$repeater = scm_field( 'rows', [], $id, 1 );
+			//$repeater = scm_field( 'rows', array(], $id, 1 );
 			//scm_containers( $repeater, 'section' );
 			scm_content( get_fields( $id ) );
 

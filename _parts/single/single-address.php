@@ -6,7 +6,7 @@
 global $post, $SCM_indent;
 $post_id = $post->ID;
 
-$args = [
+$args = array(
 	'element' => 0,
 	'separator' => '-',
 	'icon' => 'on',
@@ -15,29 +15,29 @@ $args = [
     'class' => '',
     'attributes' => '',
     'style' => '',
-];
+);
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 /***************/
 
 
-$element = $args[ 'element' ];
+$element = $args['element'];
 if( !$element ){
 
 	if( $post->post_type === 'luoghi' )
-		$element = [ $post_id ];
+		$element = array( $post_id );
 	else if( $post->post_type === 'soggetti' )
-		$element = scm_field( 'soggetto-luoghi', [], $post_id );
+		$element = scm_field( 'soggetto-luoghi', array(), $post_id );
 	else
 		return;
 
 }else if( !is_array( $element ) ){
 	if( is_numeric( $element ) )
-		$element = [ $element ];
+		$element = array( $element );
 	else
-		$element = [ $element->ID ];
+		$element = array( $element->ID );
 }
 
 /***************/

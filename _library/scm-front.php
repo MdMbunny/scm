@@ -254,7 +254,7 @@
 
             indent( $in, '<div id="' . $follow_id . '" class="' . $follow_class . '">', 2 );
 
-                scm_contents( [
+                scm_contents( array(
                 'acf_fc_layout' => 'layout-social_follow',
                 'display' => 'inlineblock',
                 'element' => $follow_soggetto,
@@ -268,7 +268,7 @@
                 'shape-angle' => scm_field( 'follow-shape-angle', 'all', 'option' ),
                 'box-color' => scm_field( 'follow-box-color', '', 'option' ),
                 'box-alpha' => scm_field( 'follow-box-alpha', 1, 'option' ),
-            ] );
+            ) );
 
             indent( $in, '</div><!-- #site-social-follow -->', 2 );
 
@@ -540,13 +540,13 @@
         function scm_column_data( $counter = 0, $size = 0 ) {
 
             if( $counter == 1 && $size == 1 )
-                return [ 'count' => 0, 'data' => 'solo' ];
+                return array( 'count' => 0, 'data' => 'solo' );
             elseif( $counter == $size || $counter > 1 )
-                return [ 'count' => $counter, 'data' => 'first' ];
+                return array( 'count' => $counter, 'data' => 'first' );
             elseif( $counter == 1 )
-                return [ 'count' => 0, 'data' => 'last' ];
+                return array( 'count' => 0, 'data' => 'last' );
             else
-                return [ 'count' => $counter, 'data' => 'middle' ];
+                return array( 'count' => $counter, 'data' => 'middle' );
 
         }
     }

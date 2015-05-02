@@ -6,7 +6,7 @@
 global $post, $SCM_indent;
 $post_id = $post->ID;
 
-$args = [
+$args = array(
 	'acf_fc_layout' => 'layout-immagine',
 	'image' => '',
 	'format' => 'norm',
@@ -23,10 +23,10 @@ $args = [
     'attributes' => '',
     'style' => '',
     'negative' => 'off',
-];
+);
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : [] );
+	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 /***************/
 
