@@ -330,7 +330,7 @@
 
             // SCM Child
 
-            wp_register_script( 'jquery-scm-child', SCM_URI_JS_CHILD . '/jquery.scm-child.js', array( 'jquery-scm' ), SCM_SCRIPTS_VERSION, true );
+            wp_register_script( 'jquery-scm-child', SCM_URI_JS_CHILD . 'jquery.scm-child.js', array( 'jquery-scm' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'jquery-scm-child' );
 
         }
@@ -361,6 +361,7 @@
             $html .= scm_options_get( 'bg_size', 'styles-loading', 1 );
 
             $font = scm_options_get( 'font', 'option', 1 );
+            //$font .= scm_options_get( 'size', 'option', 1 );
 
             $opacity = scm_options_get( 'opacity', 'option', 1 );
             $align = scm_options_get( 'align', 'option', 1 );

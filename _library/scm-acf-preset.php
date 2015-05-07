@@ -351,7 +351,7 @@
 					$add = ( isset( $arg[2] ) ? $arg[2] : 0 );
 					$save = ( $add ?: isset( $arg[3] ) ? $arg[3] : 0 );
 
-					$typ = ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'checkbox' : 'select' ) );
+					$typ = ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'radio' : 'select' ) );
 										
 	        		//$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'checkbox' : 'checkbox' ) : 'select' ) );
 	        		
@@ -1140,7 +1140,15 @@
 	        
 	        elseif( strpos( $list, 'alignment' ) !== false ):
 
-	        	if( strpos( $list, 'txt_alignment' ) !== false ){
+	        	if( strpos( $list, 'vertical_alignment' ) !== false ){
+		        	
+		        	$choices = array(
+						'top' => 'Alto',
+						'middle' => 'Centro',
+						'bottom' => 'Basso',
+					);
+
+				}else if( strpos( $list, 'txt_alignment' ) !== false ){
 		        	
 		        	$choices = array(
 						'left' => 'Sinistra',

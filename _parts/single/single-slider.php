@@ -10,6 +10,7 @@ $args = array(
     'acf_fc_layout' => 'layout-slider',
     'slider' => 0,
     'type' => 'nivo',
+    /*'alignment' => 'top',
     'height-number' => 300,
     'height-units' => 'px',
     'theme' => 'scm',
@@ -25,7 +26,7 @@ $args = array(
     'control' => 'off',
     'thumbs' => 'off',
     'prev' => 'fa-angle-left',
-    'next' => 'fa-angle-right',
+    'next' => 'fa-angle-right',*/
     'id' => '',
     'class' => '',
     'attributes' => '',
@@ -37,9 +38,7 @@ if( isset( $this ) )
 
 /***************/
 
-
-$class = 'slider scm-slider ' . $args['type'] . ' full mask ' . $args['class'];
-
+$class = 'slider scm-slider full mask ' . $args['class'];
 
 $attributes = $args['attributes'];
 $style = $args['style'];
@@ -59,8 +58,12 @@ $slides = get_posts( array(
 ) );
 
 $type = $args['type'];
+
+$class .= ' ' . $type . ' ' . scm_field( 'alignment', 'top', $slider );
+
 $height = scm_field( 'height-number', '', $slider );
 $height = ( $height ? $height . scm_field( 'height-units', '', $slider ) : 'auto' );
+$style .= ' height:' . $height . ';';
 
 $theme = scm_field( 'theme', 'scm', $slider );
 

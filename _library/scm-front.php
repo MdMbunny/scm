@@ -279,12 +279,26 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline' ) {
 
+            global $post;
+            $id = $post->ID;
+            $type = $post->post_type;
+
+            if( is_single() ){
+
+                // If a Page named '_single-{post_type}' exists
+                $page = get_page_by_path( '_single-' . $type );
+                if( $page )
+                    $id = $page->ID;
+
+                //consoleLog( scm_field( 'page-menu', '', $id );
+            }
+
 
             $sticky = scm_field( 'menu-sticky', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
-            $menu = scm_field( 'page-menu', '' );
+            $menu = scm_field( 'page-menu', '', $id );
             $menu = ( $menu ?: scm_field( 'menu-wp', 'primary', 'option' ) );
             
             $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );

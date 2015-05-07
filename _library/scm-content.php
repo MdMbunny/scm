@@ -45,7 +45,10 @@
             $container = '';
 
             if( isset( $content['sections'] ) ){
-                $container = 'section';
+                if( isset( $content['page-menu'] ) )
+                    $container = 'section';
+                else
+                    $container = 'sub-section';
                 $content = $content['sections'];
             }else if( isset( $content['rows'] ) ){
                 $container = 'row';
@@ -56,6 +59,7 @@
             }else if( isset( $content['modules'] ) ){
                 $container = 'module';
                 $content = $content['modules'];
+
             }else if( isset( $content['acf_fc_layout'] ) ){
                 if( isset( $content['row'] ) && !$content['row'] )
                     return;
@@ -65,6 +69,7 @@
             switch ( $container ) {
                 
                 case 'section':
+                case 'sub-section':
                 case 'row':
                 case 'post':
                 case 'column':
@@ -100,6 +105,7 @@
                     $SCM_indent++;
 
         // SCM FILTER - $content before it is elaborated - scm_filter_echo_content/{content}
+                    $content = apply_filters( 'scm_filter_echo_content', $content );
                     $content = apply_filters( 'scm_filter_echo_content' . is( $content['acf_fc_layout'], '', '/' ), $content );
 
                     // TRY default contents - scm_contents
@@ -159,7 +165,7 @@
                 $args = array(
 
                     'column-width' => '',
-                    'layout' => 'full',
+                    'layout' => '',
                     
                     'acf_fc_layout' => '',
                     'inherit' => false,
@@ -187,13 +193,33 @@
 
                 $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
 
+                if( isset( $content['template'] ) && $content['acf_fc_layout'] === 'layout-template' ){
+                    
+                    if( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+
+                        if( (int)$content['post'] > 1 ){
+                            $content['single'] = array( (int)$content['post'] );
+                        }else{
+                            $content['single'] = array( scm_field( (string)$content['post'], null, 'option' ) );
+                        }
+
+                        if( !empty( $content['single'] ) ){
+                            $temp = get_post( $content['single'][0] );
+                            $content['acf_fc_layout'] = 'layout-' . $temp->post_type;
+                        }
+                    }else{
+                        $content['acf_fc_layout'] = 'layout-' . $post->post_type;
+                        $content['single'] = array( $post->ID );
+                    }
+
+                    $content['type'] = 'single';
+                }
+
                 if( isset( $content['row'] ) && !empty( $content['row'] ) ){
 
-
-
                     $mod_post = $content['row'];
-                    $mod_post = ( is_numeric( $mod_post ) ? $mod_post : $mod_post->ID );
-                    $module = get_fields( $mod_post );
+                    $mod_post = ( is_numeric( $mod_post ) ? $mod_post : ( isset( $mod_post->ID ) ? $mod_post->ID : $mod_post ) );
+                    $module = ( is_numeric( $mod_post ) ? get_fields( $mod_post ) : $mod_post );
 
                     if( is( $module ) ){
 
@@ -204,18 +230,22 @@
 
                         $content = array_merge( $content, $module );
 
-                        //printPre( $orig );
                         $content['layout'] = ( $mod_layout && $mod_layout != 'default' ? $mod_layout : $content['layout'] );
                         $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
                         $content['id'] = is( $mod_id, $content['id'] );
                         $content['class'] = $mod_class . ' ' . $content['class'];
                         $content['attributes'] = $mod_attr . ' ' . $content['attributes'];
                     }
+
                 }
 
                 // -- Layout
 
-                $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $count : '' ) );
+                if($container == 'sub-section'){
+                    $container = 'section';
+                }else{
+                    $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $count : '' ) );
+                }
 
                 $name = $content['acf_fc_layout'];
                 $slug = str_replace( 'layout-', '', $name );
@@ -226,17 +256,17 @@
                 $odd = ( $odd ? '' : 'odd' );
                 
                 $layout = $content['column-width'];
-                $content['inherit'] = ( $layout === 'auto' );
+                $content['inherit'] = ( $layout === 'auto' && $container !== 'post' );
                 
                 // -- Link
 
                 $link = ( $content['link'] ?: 'no' );
 
-                if( !$container == 'post' ){
+                if( $container != 'post' ){
                     $link_object = scm_post_link( 0, $content );
                 }else{
                     $link_object = scm_post_link();
-                    $link_template = ( $content['template'] ? ' data-href="' . get_permalink() . '?template=' . $content['template'] . '"' : '' );
+                    $link_template = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
                     $link_url = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
                 }
 
@@ -278,7 +308,11 @@
 
                     $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
 
+                }/*else{
+                    indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
                 }
+
+                $content['inherit'] = false;*/
 
                 // content
                 scm_content( $content );
@@ -385,7 +419,7 @@
                         $slide = $args['slide'];
                         if(!$slide) continue;
                         $post = ( is_numeric( $slide ) ? get_post( $slide ) : $slide );
-                        setup_postdata( $slide );
+                        setup_postdata( $post );
                         
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-slide.php', array(
                             'cont' => $args
@@ -459,6 +493,8 @@
                     case 'layout-piva':
                     case 'layout-intestazione':
                     case 'layout-titolo':
+                    case 'layout-sottotitolo':
+                    case 'layout-titolo-empty':
 
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
                             'cont' => $args
@@ -469,26 +505,19 @@
                     case 'layout-data':
 
                         // +++ todo: rimane comunque da splittare in più span, perlomeno
-                        
-                        $unformat = ( isset( $args[ 'date' ] ) ? $args[ 'date' ] : ( get_the_date() ?: '' ) );
                         $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
-                        $date = date_format( date_create( $unformat ), $date_format );
-                        $tag = ( $args[ 'tag' ] ?: 'h1' );
-                        $date_class = 'scm-date date' . is( $class );
+                        $unformat = ( isset( $args[ 'date' ] ) ? $args[ 'date' ] : ( get_the_date( $date_format ) ?: '' ) );
+                        
+                        $args['title'] = date_i18n( $date_format, strtotime( $unformat ) );
+                        $args['class'] = 'scm-date date' . is( $class );                        
 
-
-                        if( strpos( $tag, '.' ) !== false ){
-                            $date_class .= ' ' . substr( $tag, strpos($tag, '.') + 1 );
-                            $tag = 'div';
-                        }
-
-                        indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$date . '</' . $tag . '><!-- date -->', 2 );
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                            'cont' => $args
+                        ));
 
                     break;
 
                     case 'layout-testo':
-
-                    
 
                         $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : '' ) );
                         if(!$text) continue;
@@ -497,39 +526,49 @@
 
                     break;
                     
-
                     default:
 
                         if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
 
                             $tax = str_replace( 'layout-SCMTAX-', '', $element );
                             $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
-                            //printPre( $args );
-                            $tag = $args['tag'];
+
+                            /*$tag = $args['tag'];
                             $pre = $args['prepend'];
-                            $app = $args['append'];
+                            $app = $args['append'];*/
                             $sep = $args['separator'];
 
-                            if ( ! empty( $terms ) ) {
+                            $args['title'] = '';
+
+                            //if ( ! empty( $terms ) ) {
                                 if ( ! is_wp_error( $terms ) ) {
 
-                                    indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ), 2 );
+                                    //indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ), 2 );
                                     
-                                        indent( $SCM_indent + 1, '<span class="prepend">' . $pre . '</span>', 1 );
+                                        /*if( $pre )
+                                            indent( $SCM_indent + 1, '<span class="prepend">' . $pre . '</span>', 1 );*/
 
                                         for ($i=0; $i < sizeof( $terms ) ; $i++){
 
                                             $term = $terms[$i];
                                             $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
                                             
-                                            indent( $SCM_indent + 1, '<a class="term"' . $href . '>' . esc_html( $term->name ) . '</a>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : $app ) , 2 );
+                                            $args['title'] .= indent( $SCM_indent + 1 ) . '<' . ( $href ? 'a' : 'span' ) . ' class="term"' . $href . '>' . esc_html( $term->name ) . '</' . ( $href ? 'a' : 'span' ) . '>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : '' ) . lbreak();
 
                                         }
+
+
+
+                                        $args['title'] = ( $args['title'] ?: '—' );
+
+                                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                                            'cont' => $args
+                                        ));
                                     
-                                    indent( $SCM_indent, '</' . $tag . '>', 2 );
+                                    //indent( $SCM_indent, '</' . $tag . '>', 2 );
 
                                 }
-                            }
+                            //}
 
                         }else{
 
@@ -560,7 +599,7 @@
     if ( ! function_exists( 'scm_post' ) ) {
         function scm_post( $cont = array() ) {
 
-            global $SCM_types, $SCM_indent;
+            global $post, $SCM_types, $SCM_indent;
 
             $element = ( isset( $cont[ 'acf_fc_layout' ] ) ? $cont[ 'acf_fc_layout' ] : '' );
 
@@ -572,6 +611,7 @@
             $archive = ( isset( $cont['type'] ) ? $cont['type'] === 'archive' : 0 );
             $width = ( isset( $cont['width'] ) ? $cont['width'] : 'auto' );
             $query = array();
+            $loop = array( $post->ID );
 
             $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
             // +++ todo: se non c'è template, tira fuori tutti i campi, uno via l'altro, o solo titolo con link oggetto se c'è
@@ -612,7 +652,7 @@
                 }
 
                 $complete = $cont['archive-complete'] === 'complete';
-                $perpage = ( $cont['archive-perpage'] ?: get_option( 'posts_per_page' ) );
+                $perpage = ( $complete ? -1 : ( $cont['archive-perpage'] ?: get_option( 'posts_per_page' ) ) );
                 $pagination = $cont['archive-pagination'] === 'yes';
                 $more = $cont['archive-pagination'] === 'more';
                 $all = $cont['archive-pagination'] === 'all';
@@ -639,12 +679,17 @@
                 }
 
             }
+
+            // store current ID
             
-            $loop = new WP_Query( $query );
+            if( !empty( $query ) )
+                $loop = new WP_Query( $query );
 
             $template['posts'] = $loop->posts;
             $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
             scm_containers( $template, 'post' );
+
+            // setup stored ID
 
             wp_reset_postdata();
 
@@ -662,7 +707,7 @@
 
             if( $id ){
                 $post = ( is_numeric( $id ) ? get_post( $id ) : $id );
-                setup_postdata( $post );
+                //setup_postdata( $post );
             }
 
             $type = $post->post_type;

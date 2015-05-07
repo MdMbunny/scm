@@ -85,6 +85,15 @@ endif;
 global $SCM_indent, $post;
 
 $id = $post->ID;
+$type = $post->post_type;
+
+if( is_single() ){
+
+    // If a Page named '_single-{post_type}' exists
+    $page = get_page_by_path( '_single-' . $type );
+    if( $page )
+        $id = $page->ID;
+}
 
 $skip = __( "Vai al contenuto", SCM_THEME );
 

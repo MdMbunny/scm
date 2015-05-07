@@ -177,7 +177,7 @@
                         $admin = $obj->admin;
                         $add = $obj->add_cap;
 
-                        if( $the_role != 'administrator' && ( $admin || !isset( $role->capabilities['manage_categories'] ) || !$role->capabilities['manage_categories'] ) )
+                        if( $the_role != 'administrator' && ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
                             continue;
 
                         $role->add_cap( 'read_private_' . $plural );
@@ -311,15 +311,17 @@
 
                 if( $type['active'] === 1 ){
 
-                    $SCM_types['complete'][$type['slug']] = $plural;
+                    $SCM_types['complete'][ $type['slug'] ] = $plural;
                     
-                    $obj = $SCM_types['objects'][$type['slug']] = new Custom_Type( $type );
+                    //printPre($SCM_types['complete'][ $type['slug'] ]);
+
+                    $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                     $obj->CT_register();                    
 
                     if( $type['public'] === 1 ){
 
-                        $SCM_types['public'][$type['slug']] = 'Modello ' . $plural;
-                        $SCM_types['all'][$type['slug']] = 'Modello ' . $plural;
+                        $SCM_types['public'][ $type['slug'] ] = 'Modello ' . $plural;
+                        $SCM_types['all'][ $type['slug'] ] = 'Modello ' . $plural;
                         $type['plural'] = 'Modello ' . $plural;
                         $type['singular'] = 'Modello ' . $obj->singular;
                         $type['public'] = 0;
@@ -329,12 +331,12 @@
                         $type['menu'] = 0;
                         $type['post'] = 0;
 
-                        $temp = $SCM_types['objects'][$type['slug']] = new Custom_Type( $type );
+                        $temp = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                         $temp->CT_register();
 
                     }else{
 
-                        $SCM_types['private'][$type['slug']] = $plural;
+                        $SCM_types['private'][ $type['slug'] ] = $plural;
 
                     }
                 }
@@ -357,15 +359,20 @@
                 $tax['slug'] = ( isset( $tax['slug'] ) && $tax['slug'] ? sanitize_title( $tax['slug'] ) : sanitize_title( $plural ) );
 
                 if( $tax['hierarchical'] )
-                    $obj = $SCM_types['taxonomies'][$tax['slug']] = $SCM_types['categories'][$tax['slug']] = new Custom_Taxonomy( $tax );
+                    $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['categories'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
                 else
-                    $obj = $SCM_types['taxonomies'][$tax['slug']] = $SCM_types['tags'][$tax['slug']] = new Custom_Taxonomy( $tax );
+                    $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['tags'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
 
                 $tax['template'] = ( isset( $tax['template'] ) && $tax['template'] ? ( $tax['template'] !== 'off' ? 1 : 0 ) : 0 );
 
                 if( $tax['template'] ){
+
+                    //printPre($plural);
                     
                     $tax_type = array();
+                                        
+                    //$SCM_types['public'][ $tax['slug'] ] = $plural;
+                    //$SCM_types['all'][ $tax['slug'] ] = $plural;
 
                     $tax_type['plural'] = $plural;
                     $tax_type['singular'] = $obj->singular;
@@ -376,7 +383,9 @@
                     $tax_type['menu'] = 0;
                     $tax_type['post'] = 0;
 
-                    $tax_temp = $SCM_types['objects'][$tax_type['slug']] = new Custom_Type( $tax_type );
+                    //printPre($tax_type['slug']);
+
+                    $tax_temp = $SCM_types['objects'][ $tax_type['slug'] ] = new Custom_Type( $tax_type );
                     $tax_temp->CT_register();
                 }
 
@@ -574,7 +583,7 @@
                 if( getByKey( $field['choices'], $field['default_value'] ) === false ) {
                     
                     foreach ( $field['choices'] as $key => $value ) {
-                        $field['choices'][$key] = $value . ' ' . $field['default_value'];
+                        $field['choices'][ $key ] = $value . ' ' . $field['default_value'];
                     }
 
                     reset( $field['choices'] );
@@ -603,15 +612,15 @@
 
                 $id = $p->post_name;
 
-                $field['value'][$id] = array();
+                $field['value'][ $id ] = array();
 
                 foreach ($field['sub_fields'] as $v) {
                     if( $v['name'] == 'id' ){
-                        $field['value'][$id][$v['key']] = $p->ID;
+                        $field['value'][ $id ][ $v['key'] ] = $p->ID;
                     }
 
                     if( $v['name'] == 'name' ){
-                        $field['value'][$id][$v['key']] = $p->post_title;
+                        $field['value'][ $id ][ $v['key'] ] = $p->post_title;
                     }
                 }
             }
@@ -641,7 +650,7 @@
                     foreach ( $choices as $key) {
 
                         if( isset( $field['choices'][$key] ) )
-                            $new[$key] = $field['choices'][$key];
+                            $new[ $key ] = $field['choices'][$key];
 
                     }
 
@@ -650,8 +659,8 @@
                 }
 
                 foreach ( $field['choices'] as $key => $value) {
-                    if( isset( $field['choices'][$key] ) )
-                        $field['choices'][$key] = substr( $value, strpos( $value, ' fa-' ) + 4 );
+                    if( isset( $field['choices'][ $key ] ) )
+                        $field['choices'][ $key ] = substr( $value, strpos( $value, ' fa-' ) + 4 );
                 }
 
                 if( isset( $field['no_option'] ) && $field['no_option'] )
@@ -677,24 +686,28 @@
 
                 $fields = $_POST['acf'];
                 $k_rows = scm_field_key( $post_id, $fields, 'section-elem' );
-                $rows =  ( isset( $fields[$k_rows] ) ? $fields[$k_rows] : '' );
+                $rows =  ( isset( $fields[ $k_rows ] ) ? $fields[ $k_rows ] : '' );
+                //$rows =  $fields[ 'field_2fb85b5b0a317e54b2097bd6ee143726fada32f7' ];
 
                 if( isset( $rows ) && !empty( $rows ) ){
 
                     foreach ( $rows as $layout => $row ) {
                         
+                        //$k_cont = '';
                         $k_name = scm_field_key( $post_id, $row, 'name' );
                         $k_model = scm_field_key( $post_id, $row, 'new', 'build' );
 
                         if( $k_model === false )
                             continue;
 
-                        if( $k_name && $k_model ){
+                        if( $k_name /*&& $k_cont*/ && $k_model ){
                             $type = str_replace( 'layout-', '', $row['acf_fc_layout'] );
                             $type .= SCM_TEMPLATE_APP;
 
-                            $name = $row[$k_name];
+                            $name = $row[ $k_name ];
+                            //$cont = $row[ $k_cont ];
 
+                            //if( is_array( $cont ) && sizeof( $cont ) > 0 ){
                             if( isset( $name ) && is_string( $name ) && $name ){
 
                                 $the_post = array(
@@ -707,15 +720,22 @@
 
                                 $id = wp_insert_post( $the_post );
                                 $new_post = get_post( $id );
+                            
+                                // INSERISCI META
+                                // for( $cont ){
+                                //  updatePostMeta( $id, $meta, $value );
+                                // }
                                 
-                                $_POST['acf'][$k_rows][$layout][$k_model] = $new_post->post_name;
-                                $_POST['acf'][$k_rows][$layout][$k_name] = '';
+                                $_POST['acf'][ $k_rows ][$layout][ $k_model ] = $new_post->post_name;
+                                $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
+                                //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
 
                             }
 
                         }else{
-                            $_POST['acf'][$k_rows][$layout][$k_model] = 'build';
-                            $_POST['acf'][$k_rows][$layout][$k_name] = '';
+                            $_POST['acf'][ $k_rows ][$layout][ $k_model ] = 'build';
+                            $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
+                            //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
                         }                        
                     }
                 }
@@ -734,6 +754,9 @@
 
                 $fields = $_POST['acf'];
 
+                //$repeater = scm_field_key( $post_it, $fields, [ 'ends', '-templates' ], [ '==', 'repeater', 'value' ] );
+                //if( $repeater ){
+
                 foreach ( $fields as $key => $value ) {
 
                     $field = get_field_object($key, $post_id, false);
@@ -741,8 +764,8 @@
                         
                         $type = str_replace( '-templates', SCM_TEMPLATE_APP, $field['name']);
 
-                        $key_id = $field['sub_fields'][getByValueKey( $field['sub_fields'], 'id' )]['key'];
-                        $key_name = $field['sub_fields'][getByValueKey( $field['sub_fields'], 'name' )]['key'];;
+                        $key_id = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'id' ) ]['key'];
+                        $key_name = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'name' ) ]['key'];;
 
                         $posts = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date' ) );
                         $pub = array();
@@ -758,8 +781,8 @@
                             foreach ( $value as $ui => $temp ) {
 
                                 $i--;
-                                $id = (int)$temp[$key_id];
-                                $name = $temp[$key_name];
+                                $id = (int)$temp[ $key_id ];
+                                $name = $temp[ $key_name ];
                                 
                                 $the_post = array(
                                     'post_title'    => $name,
@@ -776,7 +799,7 @@
                                     
                                     if( is_string( get_post_status( $id ) ) ){
                                         wp_update_post( $the_post );
-                                        unset( $pub[$id] );
+                                        unset( $pub[ $id ] );
                                     }
                                 }else{
 
@@ -812,13 +835,13 @@
 
                 $fields = $_POST['acf'];
                
-                $country = $fields[scm_field_key( $post_id, $fields, 'luogo-paese' )];
-                $region = $fields[scm_field_key( $post_id, $fields, 'luogo-regione' )];
-                $province = $fields[scm_field_key( $post_id, $fields, 'luogo-provincia' )];
-                $code = $fields[scm_field_key( $post_id, $fields, 'luogo-cap' )];
-                $city = $fields[scm_field_key( $post_id, $fields, 'luogo-citta' )];
-                $town = $fields[scm_field_key( $post_id, $fields, 'luogo-frazione' )];
-                $address = $fields[scm_field_key( $post_id, $fields, 'luogo-indirizzo' )];
+                $country = $fields[ scm_field_key( $post_id, $fields, 'luogo-paese' ) ];
+                $region = $fields[ scm_field_key( $post_id, $fields, 'luogo-regione' ) ];
+                $province = $fields[ scm_field_key( $post_id, $fields, 'luogo-provincia' ) ];
+                $code = $fields[ scm_field_key( $post_id, $fields, 'luogo-cap' ) ];
+                $city = $fields[ scm_field_key( $post_id, $fields, 'luogo-citta' ) ];
+                $town = $fields[ scm_field_key( $post_id, $fields, 'luogo-frazione' ) ];
+                $address = $fields[ scm_field_key( $post_id, $fields, 'luogo-indirizzo' ) ];
 
                 $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
 
@@ -826,8 +849,8 @@
                 $lat = $ll['lat'];
                 $lng = $ll['lng'];
 
-                $_POST['acf'][scm_field_key( $post_id, $fields, 'luogo-lat' )] = $lat;
-                $_POST['acf'][scm_field_key( $post_id, $fields, 'luogo-lng' )] = $lng;
+                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lat' ) ] = $lat;
+                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lng' ) ] = $lng;
 
             }
         }
@@ -850,12 +873,30 @@
                 $fields = $_POST['acf'];
 
                 $list = scm_field_objects( $post_id, $fields, 'taxonomy', array( 'add_term' => 0, 'load_save_terms' => 1 ) );
+                //$add = scm_field_objects( $post_id, $fields, 'text', [ 'name' => 'add' ] );
 
                 if( isset( $list ) && is_numeric( sizeof( $list ) ) ){
 
                     foreach ($list as $field) {
                         $tax = $field['taxonomy'];
                         $terms = get_terms( $tax, array( 'fields' => 'name' ) );
+                        //printPre($terms);
+
+                        /// *   * * * * * * ***    ** * *
+
+                        /*
+                        if( !$_POST['acf'][ $field['key'] ] ){
+
+                            $_POST['acf'][ $field['key'] ] = 'Altro';*/
+                            
+                            //printPre($terms);
+                            /*if( sizeof( $terms ) ){
+                                if( getByValue( $terms, 'altro' ) )
+                                    $_POST['acf'][ $field['key'] ]['value'] = 'altro';
+                                else                                    
+                                    $_POST['acf'][ $field['key'] ]['value'] = $terms[0];
+                            }*/
+                        //}
                     }
                 }
             }
@@ -1077,7 +1118,14 @@
                 $page['location'][] = scm_acf_group_location( 'page' );
                 $page['fields'] = scm_acf_fields_page();
 
-                $groups[] = $page;                
+                $groups[] = $page;
+
+                // + PAGE FOOTER
+                $page_footer = scm_acf_group( 'Opzioni Footer', 'footer-single' );
+                $page_footer['location'][] = scm_acf_group_location( 'page' );
+                $page_footer['fields'][] = scm_acf_field_objects_rel( 'page-footer', 0, 'sections', 100, 0, 'Seleziona Sections' );
+
+                $groups[] = $page_footer;
 
                 // + SECTION
                 $section = scm_acf_group( 'Componi Sezione', 'sections-single' );

@@ -926,6 +926,7 @@
 	        args = {
 	        	center: new google.maps.LatLng(0, 0),
 				zoom: zoom,
+				disableDefaultUI: true,
 				draggableCursor : 'crosshair',
 			    draggingCursor  : 'crosshair',
 			    styles                : style,

@@ -11,8 +11,10 @@
 			//$fields = array_merge( $fields, scm_acf_preset_term( $name, $default, 'sliders', 'Slider' ) );
 
 			//$fields[] = scm_acf_field_select( $name . 'layout', $default, 'layout_main', 100, 0, '', 'Layout' );
+
 			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', 'Altezza Massima', 0, 69, 30 ) );
 			$fields[] = scm_acf_field_select( $name . 'theme', $default, 'themes_nivo', 100, 0, '', 'Tema' );
+			$fields[] = scm_acf_field_select_valign( $name . 'alignment', $default );
 			
 			// conditional options
 			/*$fields[] = scm_acf_field_select_options( $name . 'options', 0, 100, 0, 'hide' );

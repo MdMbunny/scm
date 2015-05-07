@@ -92,6 +92,7 @@ switch ( $layout ) {
 
 $list = $args['list'];
 $intro = $args['intro'];
+$intro = str_replace( '<p>', '<p class="intro">', $intro);
 $display = $args['display'];
 $direction = ( $args['display'] === 'block' ? 'vertical' : 'horizontal' );
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
@@ -154,18 +155,16 @@ if( is( $list ) ){
         $li_class .= ( $name ? '' : ' icon' ) . ' ' . $shape . ( $shape ? ' shape' : '' ) . ' ' . $shape_size . ' ' . $shape_angle;
         $li_class .= ' ' . $align . ' ' . $odd;
         
-
         if( isset( $button['link'] ) && is( $button['link'] ) ){
             switch ( $button_layout ) {
                 case 'layout-media':
                     $li_attributes .= scm_post_link( $button['link'] );
                 break;
 
-                case 'layout-page':
-                    $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '"';
+                case 'layout-paypal':
                 break;
 
-                case 'layout-tel':
+                case 'layout-phone':
                     $li_attributes .= ' data-href="tel:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '"';
                 break;
 
@@ -195,18 +194,29 @@ if( is( $list ) ){
             }
         }
 
-        indent( $SCM_indent, openTag( 'li', '', ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_class : '' ), ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_style : '' ), $li_attributes ), 1 );
+        if( $button_layout === 'layout-paypal' ){
 
-        if( $icon && $icon !== 'no' )
-            indent( $SCM_indent + 1, '<i class="bullet fa ' . $icon . ' ' . $align . ( $pos == 'inside' || $slug == 'elenco-puntato' ? ( $name ? ' float-' . $align : '' ) : '' ) . '"></i> ', 1 );
+            indent( $SCM_indent, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input name="cmd" type="hidden" value="_s-xclick" />', 1 );
+                indent( $SCM_indent, '<input name="hosted_button_id" type="hidden" value="' . $button['link'] . '" />', 1 );
+                indent( $SCM_indent, '<input class="' . ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_class : '' ) . '" style="' . ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_style : '' ) . '" alt="PayPal - Il metodo rapido, affidabile e innovativo per pagare e farsi pagare." name="submit" type="submit" value="' . $name . '" />', 1 );
+                indent( $SCM_indent, '<img src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" alt="" width="1" height="1" border="0" />', 1 );
+            indent( $SCM_indent, '</form>', 2 );        
+        
+        }else{
 
-        if( $name && $slug != 'elenco-puntato' )
-            indent( $SCM_indent + 1, openTag( 'span', '', ( $pos == 'outside' && $slug != 'elenco-puntato' ? $li_class : '' ) . ' ' . $align, ( $pos == 'outside' && !$slug == 'elenco-puntato' ? $li_style : '' ), '' ) . $name . '</span>', 1 );
+            indent( $SCM_indent, openTag( 'li', '', ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_class : '' ), ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_style : '' ), $li_attributes ), 1 );
 
-        else if( $name )
-            indent( $SCM_indent + 1, $name, 1 );
+            if( $icon && $icon !== 'no' )
+                indent( $SCM_indent + 1, '<i class="bullet fa ' . $icon . ' ' . $align . ( $pos == 'inside' || $slug == 'elenco-puntato' ? ( $name ? ' float-' . $align : '' ) : '' ) . '"></i> ', 1 );
 
-        indent( $SCM_indent, '</li>', 2 );
+            if( $name && $slug != 'elenco-puntato' )
+                indent( $SCM_indent + 1, openTag( 'span', '', ( $pos == 'outside' && $slug != 'elenco-puntato' ? $li_class : '' ) . ' ' . $align, ( $pos == 'outside' && !$slug == 'elenco-puntato' ? $li_style : '' ), '' ) . $name . '</span>', 1 );
+
+            else if( $name )
+                indent( $SCM_indent + 1, $name, 1 );
+
+            indent( $SCM_indent, '</li>', 2 );
+        }
 
     }
 

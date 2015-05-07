@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.2.3
+Version:			v2.2.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -37,6 +37,7 @@ GitHub Branch:		master
 	3.3 Elements Navigation
 	3.4 Elements Contacts
 	3.5 Elements Slider
+	3.6 Elements Parallax
 4.0 Plugins
 	4.1 Plugins Google Maps
 	4.2 Plugins Fancybox
@@ -128,7 +129,7 @@ div{
 }
 
 article, aside, details, figcaption, figure, footer, header, nav, hr,
-.section, .row, .post, .column-layout {
+.section, .row, .column-layout {
 	display: inline-block;
 	vertical-align: top;
 	padding: 0;
@@ -137,6 +138,11 @@ article, aside, details, figcaption, figure, footer, header, nav, hr,
 	width: 100%;
 	max-width: 100%;
 	background-color: transparent;
+}
+
+.post:not(.column-layout) {
+	display: inline-block;
+	/*float: left;*/
 }
 
 table { /* tables still need 'cellspacing="0"' in the markup */
@@ -278,6 +284,10 @@ sup {
    color:    #ddd;
 }
 
+form{
+	line-height: 0;
+}
+
 form br{
 	display: none;
 }
@@ -318,6 +328,7 @@ textarea,
 	max-width: 100%;
 	width: 100%;
 	font-size: .8em;
+	line-height: 1em;
 	margin-bottom: 15px;
 	-webkit-transition: all .3s;
 	transition: all .3s;
@@ -478,26 +489,34 @@ h6 { font-size: 1.2em; }
 .content-float-none > *, .all-float-none * {
 	float: none;
 	clear: both;
+	display: block;
 }
 
+/*.site-content.left .responsive,*/
 .align-left, .alignleft, .float-left, .floatleft,
 .content-float-left > *, .all-float-left * {
 	float: left;
 	clear: none;
 }
 
+/*.site-content.right .responsive,*/
 .align-right, .alignright, .float-right, .floatright,
 .content-float-right > *, .all-float-right * {
 	float: right;
 	clear: none;
 }
 
+/*.site-content.center .responsive,*/
 .align-center, .aligncenter, .float-center, .floatcenter,
 .content-float-center > *, .all-float-center * {
 	clear: both;
 	margin: 0 auto;
-	display: block;	
+	display: block;
 }
+/*
+.site-content.center .responsive{
+	display: flex;
+}*/
 
 /*--------------------------------------------------------------
 2.6 Attributes Clearings
@@ -529,18 +548,25 @@ h6 { font-size: 1.2em; }
 /*--------------------------------------------------------------
 2.8 Attributes Layout
 --------------------------------------------------------------*/
+.responsive{
+	/*display: block;*/
+	margin: 0 1%;
+}
+
+.tofull .responsive,
 .responsive.full, .responsive.fullwidth, .responsive.full-width,
 .full, .fullwidth, .full-width,
 .content-full > *, .all-full * {
 	width: 100%;
+	margin: 0;
 }
 
 .prepend{
-	margin-right: .5em;
+	margin-right: .3em;
 }
 
 .append{
-	margin-left: .5em;
+	margin-left: .3em;
 }
 
 blockquote .append{
@@ -575,7 +601,7 @@ blockquote .append{
   width: auto;
 }
 
-.scm-object{
+.scm-object.column-layout,  .scm-object.full,  .scm-object.responsive{
 	display: inline-block;
 	vertical-align: top;
 	height: 100%;
@@ -612,14 +638,20 @@ blockquote .append{
 	padding: 0;
 }
 
+.scm-module + .scm-module:not([data-column]),
+.scm-module > p.intro + .scm-list,
 .scm-content p + p,
 .scm-module p + p{
 	margin-top: 1em;
 }
 
-.scm-content p:last-child,
+/*.scm-content p:last-child,
 .scm-module p:last-child{
 	margin-bottom: 0;
+}*/
+
+.scm-module:not(.layout-titolo) + .scm-module:not([data-column]){
+	margin-top: 2em;
 }
 
 /* SCM Images */
@@ -708,7 +740,12 @@ blockquote .append{
 	clear: both;
 }
 
-.last:after { clear: both; }
+.last:after {
+	clear: both;
+	content: ' ';
+	display: block;
+	height: 0;
+}
 
 .tocolumn .column-layout {
 	width: 100%;
@@ -881,16 +918,18 @@ a:focus,
 a:focus *,
 a:active,
 a:active *,
-.button,
-.button * {
+.button[data-gallery],
+.button[data-gallery] *,
+.button[data-href],
+.button[data-href] * {
 	cursor: pointer;
 	outline: 0;
-	color: inherit;
+	/*color: inherit;*/
 }
 
 a, [data-href], [data-gallery], button, .button{
-	-webkit-transition: opacity .3s, color .3s;
-	transition: opacity .3s, color .3s;
+	/*-webkit-transition: opacity .3s, color .3s;
+	transition: opacity .3s, color .3s;*/
 }
 
 .toggle .toggle-button:hover i,
@@ -902,7 +941,7 @@ input[type="submit"]:hover,
 [data-gallery]:hover,
 a:hover{
 	text-decoration: none;
-	opacity: .5;
+	/*opacity: .5;*/
 }
 
 .current > .toggle-button > a, .active > .toggle-button > a,
@@ -910,7 +949,8 @@ a:hover{
 .current > [data-href], .active > [data-href],
 .current > button, .active > button{
 	cursor: default;
-	opacity: .5;
+	/*opacity: .5;*/
+	/*color: rgba(255,255,255,.5);*/
 }
 
 /*--------------------------------------------------------------
@@ -925,10 +965,10 @@ a:hover{
 	width: 100%;
 }
 
-.layout-elenco_puntato,
+/*.layout-elenco_puntato,
 .layout-elenco_puntato > p{
 	margin-bottom: 1em;
-}
+}*/
 
 .scm-list.elenco-puntato > .button,
 .scm-list.elenco-puntato > .button *{
@@ -1038,6 +1078,9 @@ span + .bullet.float-right{
 }
 
 .scm-list .button{
+	display: inline-block;
+	float: none;
+	clear: none;
 	/*width: auto;
 	height: auto;*/
 	/*display: inline-block;
@@ -1045,9 +1088,6 @@ span + .bullet.float-right{
 }
 
 .scm-list .button.horizontal{
-	display: inline-block;
-	float: none;
-	clear: none;
 	margin-bottom: .5em;
 	margin-right: .5em;
 	margin-left: .5em;
@@ -1073,7 +1113,7 @@ span + .bullet.float-right{
 
 .scm-list .block.vertical {
   display: block;
-  text-align: left;
+  /*text-align: left;*/
   width: auto;
 }
 
@@ -1498,12 +1538,29 @@ body.mouse .sub-menu li:hover > ul {
 	height: auto !important; /* Prevent Image Stretching */
 	width: 100%;
 	max-width: none;
-	position:absolute;
-	top:0;
+	position: absolute !important;
 	left:0;
 	display:none;
 	transition: all 0;
 	-webkit-transition: all 0;
+}
+
+.slider.top img{
+	top: 0;
+}
+
+.slider.middle img{
+	top: -100% !important;
+	bottom: -100%;
+	margin: auto;
+}
+
+.slider.bottom img{
+	bottom: 0;
+}
+
+.slider .nivo-slice{
+	height: 100% !important;
 }
 
 .slider .caption img{
@@ -1518,6 +1575,12 @@ body.mouse .sub-menu li:hover > ul {
 .slider .box > *{
 	padding: 1em 2em;
 }*/
+
+/*--------------------------------------------------------------
+3.6 Elements Parallax
+--------------------------------------------------------------*/
+
+
 
 /*--------------------------------------------------------------
 4.0 Plugins
@@ -1536,6 +1599,10 @@ body.mouse .sub-menu li:hover > ul {
 .map img{
 	max-width: none;
 }
+/*
+.map .gmnoprint{
+	display: none;
+}*/
 
 .map .gm-style-iw > div{
 	width: auto !important;

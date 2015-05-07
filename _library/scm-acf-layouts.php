@@ -321,7 +321,7 @@
 				$fields[] = scm_acf_field_select1( 'position', $default, 'list_position', $width/2, $logic, array( 'outside' => 'Esterni', 'inside' => 'Interni' ), 'Posizione punti' );
 
 				$fields[] = scm_acf_field_select1( 'size', $default, 'simple_size', $width/2, $logic, '', 'Dimensione' );
-				$fields[] = scm_acf_field_select1( 'display', $default, '', $width/2, $logic, array( 'block' => 'In colonna', 'inline-block' => 'In fila' ), 'Disposizione' );
+				$fields[] = scm_acf_field_select1( 'display', $default, '', $width/2, $logic, array( 'inline-block' => 'In fila', 'block' => 'In colonna' ), 'Disposizione' );
 
 			if( !$simple )
 				$fields = array_merge( $fields, scm_acf_preset_button_shape( '', $default ) );
@@ -399,7 +399,10 @@
 					$layout_file = scm_acf_layout( 'file', 'block', 'File' );
 						$layout_file['sub_fields'] = scm_acf_preset_button( '', $default, 'file', 'no' );
 
-				$flexible['layouts'] = array( $layout_link, $layout_page, $layout_media, $layout_file );
+					$layout_paypal = scm_acf_layout( 'paypal', 'block', 'PayPal' );
+						$layout_paypal['sub_fields'] = scm_acf_preset_button( '', $default, 'paypal', 'no' );
+
+				$flexible['layouts'] = array( $layout_link, $layout_page, $layout_media, $layout_file, $layout_paypal );
 
 				$fields[] = $flexible;
 
@@ -560,24 +563,38 @@
 			$taxes = get_object_taxonomies( $slug, 'objects' );
 			reset( $taxes );
 			if( sizeof( $taxes ) ){
-				foreach ($taxes as $value) {
-					$layout_tax = array();
-					$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
+				foreach ($taxes as $key => $value) {
+					if( $key != 'language' && $key != 'post_translations' ){
+						$layout_tax = array();
+						$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
 
-						$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), 'Inizio' ), 'Inizio', 25 );
-						$layout_tax['sub_fields'][] = scm_acf_field_select_headings( 'tag', $default, 1, 25, 0, 'span' );
-						$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), 'Separatore' ), 'Separatore', 25 );
-						$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), 'Fine' ), 'Fine', 25 );
+							$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), 'Inizio' ), 'Inizio', 25 );
+							$layout_tax['sub_fields'][] = scm_acf_field_select_headings( 'tag', $default, 1, 25, 0, 'span' );
+							$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), 'Separatore' ), 'Separatore', 25 );
+							$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), 'Fine' ), 'Fine', 25 );
 
-// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
-						$layout_tax = apply_filters( 'scm_filter_layout/tax/' . $slug, $layout_tax, $value->name );
-						$layout_taxes[] = apply_filters( 'scm_filter_layout/tax', $layout_tax, $value->name, $slug );
-
+	// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
+							$layout_tax = apply_filters( 'scm_filter_layout/tax/' . $slug, $layout_tax, $value->name );
+							$layout_taxes[] = apply_filters( 'scm_filter_layout/tax', $layout_tax, $value->name, $slug );
+					}
 				}
 			}
 
+	// Tools
+
+			$layout_empty = array();
+			
+			$layout_tit = scm_acf_layout( 'titolo-empty', 'block', 'Titolo Vuoto' );
+                $layout_tit['sub_fields'] = array_merge( $layout_tit['sub_fields'], scm_acf_object_titolo( $default ) );
+
+            $layout_list = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti' );
+                $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti( $default ) );
+
+            $layout_empty[] = $layout_tit;
+            $layout_empty[] = $layout_list;
+
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link will be applied )
-				$flexible['layouts'] = apply_filters( 'scm_filter_layout/' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes ) );
+				$flexible['layouts'] = apply_filters( 'scm_filter_layout/' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout', $flexible['layouts'], $layout_taxes, $slug );
 
 			// layout fields
