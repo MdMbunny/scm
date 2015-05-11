@@ -178,7 +178,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         
         $images .= indent( $indent + 3 );
         $images .= ( $link ? '<a href="' . $link . '">' : '' );
-            $images .= '<img class="slide-image" src="' . $img . '" alt=""' . $title . '>';
+            $images .= '<img class="slide-image" src="' . $img . '" alt="" ' . $title . '>';
             //$images .= '<img class="slide-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
         $images .= ( $link ? '</a>' : '' );
         $images .= lbreak();

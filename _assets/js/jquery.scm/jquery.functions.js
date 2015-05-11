@@ -29,18 +29,23 @@
 	    
 	}
 
-	$.getUrlParameter = function( param ) {
+	$.getUrlParameter = function( param, url ) {
 
-	    var sPageURL = window.location.search.substring( 1 );
-	    var sURLVariables = sPageURL.split( '&' );
+		if( !url )
+	    	url = window.location.search.substring( 1 );
+	    
+	    var sURLVariables = url.split( '?' );
 
-	    for ( var i = 0; i < sURLVariables.length; i++ ) {
+	    for ( var i = 1; i < sURLVariables.length; i++ ) {
 
 	        var sParameterName = sURLVariables[i].split( '=' );
 
-	        if ( sParameterName[0] == param ) {
+	        var name = sParameterName[0];
+	        var num = sParameterName[1].split( '#' )[0];
 
-	            return sParameterName[1];
+	        if ( name == param ) {
+
+	            return num;
 
 	        }
 	    }

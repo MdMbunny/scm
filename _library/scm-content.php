@@ -40,7 +40,7 @@
 
             global $post, $SCM_indent;
 
-            $type = $post->name;
+            $type = $post->post_type;
 
             $container = '';
 
@@ -105,13 +105,17 @@
                     $SCM_indent++;
 
         // SCM FILTER - $content before it is elaborated - scm_filter_echo_content/{content}
+                    //$content = apply_filters( 'scm_filter_echo_content', $content );
                     $content = apply_filters( 'scm_filter_echo_content', $content );
-                    $content = apply_filters( 'scm_filter_echo_content' . is( $content['acf_fc_layout'], '', '/' ), $content );
+                    if( $content['acf_fc_layout'] )
+                        $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );
 
                     // TRY default contents - scm_contents
                     scm_contents( $content );
 
                     // TRY scm_single_content_{type}
+                    if( function_exists( 'scm_single_content' ) )
+                        call_user_func( 'scm_single_content', $content, $SCM_indent );
                     if( function_exists( 'scm_single_content_' . $type ) )
                         call_user_func( 'scm_single_content_' . $type, $content, $SCM_indent );
 
@@ -119,7 +123,9 @@
                     // quando printi le gallery, per ogni Thumb assegni un data-init diverso
 
         // SCM ACTION - with $content - scm_action_echo_content/{type}
-                    do_action( 'scm_action_echo_content' . is( $type, '', '/' ), $content, $SCM_indent );
+                    do_action( 'scm_action_echo_content', $content, $SCM_indent );                    
+                    if( $type )
+                        do_action( 'scm_action_echo_content_' . $type, $content, $SCM_indent );
 
                     $SCM_indent--;
 
@@ -193,12 +199,71 @@
 
                 $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
 
+                // -- Layout
+
+                if($container == 'sub-section'){
+                    $container = 'section';
+                }else{
+                    $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $count : '' ) );
+                }
+
+                $name = $content['acf_fc_layout'];
+                $slug = str_replace( 'layout-', '', $name );
+
+
+                // -- Post
+
+                if( isset( $content['type'] ) ){
+
+                    if( $content['type'] == 'archive' ){
+
+                        if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
+                            $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
+                            $content['archive-paginated'] = $content['id'];
+                            $content['class'] .= ' paginated';
+                        }
+
+                        $content['class'] = 'scm-archive archive ' . $content['class'];
+
+                    }else if( $content['type'] == 'single' ){
+
+                        $content['class'] = 'scm-single single ' . $content['class'];
+
+                    }
+
+                }
+
+                // -- Single Post
+
                 if( isset( $content['template'] ) && $content['acf_fc_layout'] === 'layout-template' ){
                     
-                    if( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+                    if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
+
+                        $content['type'] = 'archive';
+
+                        $temp = explode( ':', $content['archive'] );
+                        $archive = $temp[0];
+                        $field = '';
+                        $value = '';
+                        if( isset( $temp[1] ) ){
+                            $filter = explode( '=', $temp[1] );
+                            $field = $filter[0];
+                            if( isset( $filter[1] ) )
+                                $value = $filter[1];
+                            else
+                                $value = $post->ID;
+                        }
+
+                        $content['acf_fc_layout'] = 'layout-' . $archive;
+                        $content['archive-field'] = $field;
+                        $content['archive-value'] = $value;
+
+                    }else if( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+
+                        $content['type'] = 'single';
 
                         if( (int)$content['post'] > 1 ){
-                            $content['single'] = array( (int)$content['post'] );
+                            $content['single'] = array_walk( explode( ',', str_replace( ' ', '', $content['post'] ) ), 'intval' );
                         }else{
                             $content['single'] = array( scm_field( (string)$content['post'], null, 'option' ) );
                         }
@@ -208,12 +273,17 @@
                             $content['acf_fc_layout'] = 'layout-' . $temp->post_type;
                         }
                     }else{
+
+                        $content['type'] = 'single';
+
                         $content['acf_fc_layout'] = 'layout-' . $post->post_type;
                         $content['single'] = array( $post->ID );
                     }
 
-                    $content['type'] = 'single';
+                    
                 }
+
+                // -- Row
 
                 if( isset( $content['row'] ) && !empty( $content['row'] ) ){
 
@@ -239,52 +309,16 @@
 
                 }
 
-                // -- Layout
-
-                if($container == 'sub-section'){
-                    $container = 'section';
-                }else{
-                    $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $count : '' ) );
-                }
-
-                $name = $content['acf_fc_layout'];
-                $slug = str_replace( 'layout-', '', $name );
-
-                // -- Width
+                // -- Width and Count
 
                 $current++;
                 $odd = ( $odd ? '' : 'odd' );
                 
                 $layout = $content['column-width'];
                 $content['inherit'] = ( $layout === 'auto' && $container !== 'post' );
-                
-                // -- Link
-
-                $link = ( $content['link'] ?: 'no' );
-
-                if( $container != 'post' ){
-                    $link_object = scm_post_link( 0, $content );
-                }else{
-                    $link_object = scm_post_link();
-                    $link_template = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
-                    $link_url = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
-                }
-
-                $href = ( $link == 'self' ? $link_object : ( $link == 'template' ? $link_template : ( $link == 'link' ? $link_url : '' ) ) );
-                $target = ( $link == 'template' ? ' data-target="_self"' : ' data-target="_blank"' );
-                $content['attributes'] .= ( $link && $link != 'no' ? $href . $target : '' );
-
-                // -- Class
-                $content['class'] .= ' ' . $odd;
-                $content['class'] .= ' ' . scm_count_class( $current, $total );
-                $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
-                $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
-                $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );                
-
+               
                 if( !$content['inherit'] ){
 
-                // -- Column Width
-                
                     if( strpos( $layout, '/' ) !== false ){
 
                         $layout = str_replace( '/', '', $layout );
@@ -302,19 +336,61 @@
 
                     }
 
+                }
+                
+                // -- Link
+
+                $link = ( $content['link'] ?: 'no' );
+
+                if( isset( $link ) && $link && $link != 'no' ){
+
+                    $href = '';
+                    $target = ' data-target="_blank"';
+
+                    if( $container != 'post' ){
+                        $href = scm_post_link( $content );
+                    }else{
+                        switch ( $link ) {
+                            case 'self':
+                                $href = scm_post_link( $content );
+                            break;
+
+                            case 'template':
+                                $target = ' data-target="_self"';
+                                $href = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
+                            break;
+
+                            case 'link':
+                                $href = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
+                            break;
+                            
+                        }
+                    }
+
+                    $content['attributes'] .= ( $href ? $href . $target : '' );
+                }
+
+                // -- Class
+
+                $content['class'] .= ' ' . $odd;
+                $content['class'] .= ' ' . scm_count_class( $current, $total );
+                $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
+                $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
+                $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );   
+
+                // -- Print Container
+
+                if( !$content['inherit'] ){
+
                     $content['class'] = $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
-                    // container
+
                     indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
 
                     $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
 
-                }/*else{
-                    indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
                 }
 
-                $content['inherit'] = false;*/
-
-                // content
+                // -- Print Content
                 scm_content( $content );
 
                 if( function_exists( (string)$action ) )
@@ -506,10 +582,9 @@
 
                         // +++ todo: rimane comunque da splittare in più span, perlomeno
                         $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
-                        $unformat = ( isset( $args[ 'date' ] ) ? $args[ 'date' ] : ( get_the_date( $date_format ) ?: '' ) );
-                        
-                        $args['title'] = date_i18n( $date_format, strtotime( $unformat ) );
-                        $args['class'] = 'scm-date date' . is( $class );                        
+                        $args['title'] = ( isset( $args[ 'date' ] ) ? date_i18n( $date_format, strtotime( $args[ 'date' ] ) ) : ( get_the_date( $date_format ) ?: '' ) );
+
+                        $args['class'] = 'scm-date date' . is( $class );
 
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
                             'cont' => $args
@@ -627,6 +702,7 @@
                 return;
 
 
+            $pagination = false;
             if( $archive ){
 
                 $tax = array();
@@ -651,19 +727,31 @@
                     }
                 }
 
-                $complete = $cont['archive-complete'] === 'complete';
-                $perpage = ( $complete ? -1 : ( $cont['archive-perpage'] ?: get_option( 'posts_per_page' ) ) );
-                $pagination = $cont['archive-pagination'] === 'yes';
-                $more = $cont['archive-pagination'] === 'more';
-                $all = $cont['archive-pagination'] === 'all';
-                $orderby = ( $cont['archive-orderby'] ?: 'date' );
-                $ordertype = ( $cont['archive-ordertype'] ?: 'ASC' );
+                //$page= ( is_front_page() ? 'page-' . $type : 'paged-' . $type );
+
+                
+
+                $complete = ( isset( $cont['archive-complete'] ) ? $cont['archive-complete'] === 'complete' : true );
+                $perpage = ( $complete ? -1 : ( isset( $cont['archive-perpage'] ) ? $cont['archive-perpage'] : get_option( 'posts_per_page' ) ) );
+                $pagination = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'yes' : '' );
+                $more = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'more' : '' ); // non in uso
+                $all = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'all' : '' ); // non in uso
+                $paginated = ( isset( $cont['archive-paginated'] ) ? $cont['archive-paginated'] : '' );
+                $page = 'page-' . $type;
+                $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
+                $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
+                $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'ASC' );
+                $field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : '' );
+                $value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
                 $query = array(
                     'post_type' => $type,
                     'tax_query' => $tax,
                     'posts_per_page' => $perpage,
                     'order' => $ordertype,
-                    'orderby' => $orderby
+                    'orderby' => $orderby,
+                    'paged' => $paged,
+                    'meta_key' => $field,
+                    'meta_value' => $value,
                 );
 
             }else{
@@ -680,7 +768,13 @@
 
             }
 
-            // store current ID
+            //update_option( 'scm-utils-galleries', array() );
+
+            consoleLog( 'Prima di SCM Posts Query' );
+            consoleLog( $post->ID );
+            consoleLog( $post->post_type );
+
+            $id = $post->ID;
             
             if( !empty( $query ) )
                 $loop = new WP_Query( $query );
@@ -689,9 +783,21 @@
             $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
             scm_containers( $template, 'post' );
 
-            // setup stored ID
+            if( $pagination ){
 
-            wp_reset_postdata();
+                indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '">', 1 );
+                    
+                    indent( $SCM_indent + 1, scm_pagination( $loop, $page, '#' . $paginated ), 1 );
+                
+                indent( $SCM_indent, '</div> <!-- pagination -->', 1 );
+            }
+
+            $post = get_post( $id );
+            setup_postdata( $post );
+
+            consoleLog( 'Dopo di SCM Posts Query (reset)' );
+            consoleLog( $post->ID );
+            consoleLog( $post->post_type );
 
         }
     }
@@ -701,8 +807,8 @@
     // *****************************************************
 
     if ( ! function_exists( 'scm_post_link' ) ) {
-        function scm_post_link( $id = 0, $content = array() ) {
-            
+        function scm_post_link( $content = array(), $id = 0 ) {
+    
             global $post;
 
             if( $id ){
@@ -714,60 +820,57 @@
             $id = $post->ID;
             $link = '';
 
-            $attr = '';
-
             switch ( $type ) {
                 case 'soggetti':
-                    $link = scm_field( 'soggetto-link', '#', $id );
+                    $link = ' data-href="' . scm_field( 'soggetto-link', '#', $id ) . '"';
                 break;
                 
                 case 'luoghi':
                     $lat = scm_field( 'luogo-lat', 0, $id );
                     $lng = scm_field( 'luogo-lng', 0, $id );
-                    $link = 'http://maps.google.com/maps?q=' . $lat . ',' . $lng;
+                    $link = ' data-href="http://maps.google.com/maps?q=' . $lat . ',' . $lng . '"';
                 break;
 
                 case 'documenti':
-                    $link = scm_field( 'documento-file', '#', $id );
+                    $link = ' data-href="' . scm_field( 'documento-file', '#', $id ) . '"';
                 break;
 
                 case 'rassegne-stampa':
                     $typ = scm_field( 'rassegna-type', 'file', $id );
-                    $link = ( $typ == 'file' ? scm_field( 'rassegna-file', '#', $id ) : scm_field( 'rassegna-link', '#', $id ) );
+                    $link = ' data-href="' . ( $typ == 'file' ? scm_field( 'rassegna-file', '#', $id ) : scm_field( 'rassegna-link', '#', $id ) ) . '"';
                 break;
 
                 case 'gallerie':
-                    global $SCM_galleries;
-                    $link = '';
-                    $images = scm_field( 'galleria-images', array(), $id );
-                    $custom_id = uniqid( 'gallery-' );
-                    $SCM_galleries[ $custom_id ] = $images;
+                    $stored = scm_field( 'galleria-images', array(), $id );
+                    $images = array();
+                    $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/uploads' ) + 8 ) : '' );
+                    foreach ( $stored as $image) {
+                        $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'] );
+                    }
+                    
                     $init = ( !empty( $content ) && isset( $content['btn-img'] ) ? $content['btn-img'] : 0 );
-                    $attr = ' data-gallery="' . $custom_id . '"';
-                    $attr .= ' data-gallery-init="' . $init . '"';
-                    $attr .= ' data-gallery-title="' . get_the_title( $id ) . '"';
+                    $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
+                    $link .= ' data-popup-path="' . $path . '"';
+                    $link .= ' data-popup-init="' . $init . '"';
+                    $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+
                 break;
 
                 case 'video':
-                    global $SCM_galleries;
-                    $link = '';
-                    $video = scm_field( 'video-url', array(), $id );
-                    $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
-                    $images = array( '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>', '<iframe width="800" height="600" src="' . $video . '" frameborder="0" allowfullscreen></iframe>' );
-                    $custom_id = uniqid( 'video-' );
-                    $SCM_galleries[ $custom_id ] = $images;
-                    $attr = ' data-gallery="' . $custom_id . '"';
-                    $attr .= ' data-gallery-init="0"';
-                    $attr .= ' data-gallery-title="' . get_the_title( $id ) . '"';
-                    $attr .= ' data-gallery-type="html"';
+                    $video = scm_field( 'video-url', '', $id );
+                    $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );                    
+                    $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
+                    $link .= ' data-popup-type="video"';
+                    $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+
                 break;
 
                 default:
-                    $link = apply_filters( 'scm_filter_object_link/' . $type, $link, $id );
+                    $link = apply_filters( 'scm_filter_object_link_' . $type, $link, $content, $id );
                 break;
             }
 
-            return $attr . ( $link ? ' data-href="' . getURL( $link ) . '"' : '' );
+            return $link;
 
         }
     }

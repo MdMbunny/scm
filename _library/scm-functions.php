@@ -668,9 +668,9 @@ function getURL( $url ){
     if( $url == 'localhost' )
         return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
 
-    if( startsWith( $url, array( 'page:' ) ) !== false ){
+    if( startsWith( $url, array( 'page:' ) ) !== false || startsWith( $url, array( 'page/' ) ) !== false || startsWith( $url, array( 'http://page/' ) ) !== false ){
 
-        $url = str_replace( 'page:', '', $url );
+        $url = str_replace( array( 'page:', 'page/', 'http://' ), '', $url );
         
         if( strpos( $url, '#' ) === 0 ){
             $add = $url;
@@ -705,10 +705,12 @@ function getURL( $url ){
 
     }
 
-    if (!preg_match("~^(?:f|ht)tps?://~i", $url))
-        return "http://" . $url;
+    str_replace( array( 'http://#', 'https://#' ), '#', $url);
 
-    return addHTTP( $url );
+    if ( !startsWith( $url, '#' ) && !preg_match( '~^(?:f|ht)tps?://~i', $url ) )
+        return addHTTP( $url );
+
+    return $url;
 }
 
 

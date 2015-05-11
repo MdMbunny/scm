@@ -1095,8 +1095,8 @@
 
 			elseif( strpos( $list, 'ordertype' ) !== false ):
 	        	$choices = array(
+	        		'DESC' => 'Discendente',
 	        		'ASC' => 'Ascendente',
-					'DESC' => 'Discendente',
 				);
 
 	        elseif( strpos( $list, 'orderby' ) !== false ):

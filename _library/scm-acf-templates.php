@@ -12,7 +12,7 @@
 
 			//$fields[] = scm_acf_field_select( $name . 'layout', $default, 'layout_main', 100, 0, '', 'Layout' );
 
-			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', 'Altezza Massima', 0, 69, 30 ) );
+			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', 'Altezza', 0, 100, 100 ) );
 			$fields[] = scm_acf_field_select( $name . 'theme', $default, 'themes_nivo', 100, 0, '', 'Tema' );
 			$fields[] = scm_acf_field_select_valign( $name . 'alignment', $default );
 			

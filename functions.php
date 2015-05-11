@@ -150,6 +150,8 @@ if ( ! isset( $content_width ) ) {
 *****************************************************
 */
 
+
+
 require SCM_DIR_CLASSES . 'typekit-client.php';
 require SCM_DIR_CLASSES . 'Get_Template_Part.php';
 require SCM_DIR_CLASSES . 'Custom_Type.php';

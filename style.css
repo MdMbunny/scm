@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.2.5
+Version:			v2.2.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -423,6 +423,15 @@ h6 { font-size: 1.2em; }
 	font-size: 200%;
 }
 
+
+.triple {
+	font-size: 3em;
+}
+
+.quadruple {
+	font-size: 4em;
+}
+
 /*--------------------------------------------------------------
 2.2 Attributes Display
 --------------------------------------------------------------*/
@@ -445,6 +454,18 @@ h6 { font-size: 1.2em; }
 .affix, .fixed, .positionfixed, .position-fixed { position: fixed; }
 .absolute, .positionabsolute, .position-absolute { position: absolute; }
 .relative, .positionrelative, .position-relative { position: relative; }
+
+.fixed.middle{
+	top: 50%;
+	left: 50%;
+	margin: -.5em 0 0 -.5em;
+}
+
+.absolute.middle{
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
 
 .overlay{
 	position: absolute;
@@ -489,7 +510,7 @@ h6 { font-size: 1.2em; }
 .content-float-none > *, .all-float-none * {
 	float: none;
 	clear: both;
-	display: block;
+	display: block !important;
 }
 
 /*.site-content.left .responsive,*/
@@ -601,10 +622,19 @@ blockquote .append{
   width: auto;
 }
 
+.scm-object{
+	position: relative;
+}
+
 .scm-object.column-layout,  .scm-object.full,  .scm-object.responsive{
 	display: inline-block;
 	vertical-align: top;
-	height: 100%;
+	/*height: 100%;
+}
+
+.scm-archive,
+.scm-archive .scm-object.scm-post{
+	height: auto !important;*/
 }
 
 
@@ -652,6 +682,30 @@ blockquote .append{
 
 .scm-module:not(.layout-titolo) + .scm-module:not([data-column]){
 	margin-top: 2em;
+}
+
+.scm-title{
+	display: inline-block;
+}
+
+.scm-archive{
+	-webkit-transition: max-height .7s;
+	transition: max-height .7s;
+}
+
+.scm-loading{
+	background-color: rgba(153,153,153,.7);
+	border-radius: 50%;
+	color: #FFF;
+	padding: .5em;
+	margin: -2em 0 0 -1em;
+	width: 2em;
+	height: 2em;
+}
+
+.scm-loading.relative{
+	top: 50%;
+	left: 50%;
 }
 
 /* SCM Images */
@@ -908,7 +962,7 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"],
 [data-href], [data-href] *,
-[data-gallery], [data-gallery] *,
+[data-popup], [data-popup] *,
 a, a *,
 a:visited,
 a:visited *,
@@ -918,8 +972,8 @@ a:focus,
 a:focus *,
 a:active,
 a:active *,
-.button[data-gallery],
-.button[data-gallery] *,
+.button[data-popup],
+.button[data-popup] *,
 .button[data-href],
 .button[data-href] * {
 	cursor: pointer;
@@ -927,7 +981,7 @@ a:active *,
 	/*color: inherit;*/
 }
 
-a, [data-href], [data-gallery], button, .button{
+a, [data-href], [data-popup], button, .button{
 	/*-webkit-transition: opacity .3s, color .3s;
 	transition: opacity .3s, color .3s;*/
 }
@@ -938,7 +992,7 @@ input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover,
 [data-href]:hover,
-[data-gallery]:hover,
+[data-popup]:hover,
 a:hover{
 	text-decoration: none;
 	/*opacity: .5;*/
@@ -1176,10 +1230,16 @@ input[type="submit"]:active {
 
 /* Pagination */
 
+.pagination{
+	text-align: center;
+}
+
 .page-numbers{
+	position: relative;
 	width: 3em;
 	background-color: transparent;
 	color: #666;
+	text-align: center;
 }
 
 .page-numbers:hover{
@@ -1638,9 +1698,16 @@ body.mouse .sub-menu li:hover > ul {
 4.2 Plugins Fancybox
 --------------------------------------------------------------*/
 
-.fancybox-overlay,
-.fancybox-inner{
+.fancybox-overlay{
 	cursor: zoom-out !important;
+}
+
+.fancybox-inner{
+	cursor: default !important;
+}
+
+.fancybox-inner > *{
+	margin: 0;
 }
 
 #fancybox-links {

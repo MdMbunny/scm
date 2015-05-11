@@ -135,7 +135,7 @@
 // *****************************************************
 
     if ( ! function_exists( 'scm_pagination' ) ) {
-        function scm_pagination( $query = null ) {
+        function scm_pagination( $query = null, $page = 'paged', $anchor = '' ) {
 
             global $wp_query, $wp_rewrite;
 
@@ -144,29 +144,34 @@
                 $wp_query = $query;
             }
 
+            $paged = $wp_query->query['paged'];
+
             //WordPress pagination settings
             $pagination = array(
-                    'base'      => @add_query_arg( 'paged', '%#%' ),
-                    'format'    => '',
-                    'current'   => max( 1, get_query_var( 'paged' ) ),
+                    'base'      => @add_query_arg( $page, '%#%' ),
+                    'format'    => '?' . $page . '=%#%',
+                    'current'   => max( 1, $paged ),
                     'total'     => $wp_query->max_num_pages,
                     'prev_text' => '<i class="fa fa-chevron-left"></i>',
                     'next_text' => '<i class="fa fa-chevron-right"></i>',
+                    //'add_args'  => array( $page => urlencode( $paged ) ),
                 );
 
             //Nice URLs
-            if ( $wp_rewrite->using_permalinks() ) {
-                $pagination['base'] = user_trailingslashit( trailingslashit( remove_query_arg( 's', get_pagenum_link( 1 ) ) ) . 'page/%#%/', 'paged' );
-            }
+            /*if ( $wp_rewrite->using_permalinks() ) {
+                $pagination['base'] = user_trailingslashit( trailingslashit( remove_query_arg( 's', get_pagenum_link( 1 ) ) ) . 'page' . $type . '/%#%/', $page );
+            }*/
 
             //Search page
             if ( get_query_var( 's' ) ) {
                 $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
             }
 
+            $pagination['base'] .=  $anchor;
+
             //Output
             if ( 1 < $wp_query->max_num_pages ) {
-                return '<div class="pagination">' . paginate_links( $pagination ) . '</div> <!-- pagination -->' . lbreak();
+                return paginate_links( $pagination );
             }
         }
     }
@@ -290,9 +295,7 @@
                 if( $page )
                     $id = $page->ID;
 
-                //consoleLog( scm_field( 'page-menu', '', $id );
             }
-
 
             $sticky = scm_field( 'menu-sticky', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
@@ -403,10 +406,10 @@
                 $current = $object->current;
                 $class = ( $current ? ' current' : '' );
                 
-                $url = $object->url;
+                $url = getURL( $object->url );
+
                 $content = $object->title;
                 $type = 'site';
-                $anchor = '';
                 $button = '';
                 $data = '';
 
@@ -423,7 +426,7 @@
 
                 $has_children = ( isset( $classes ) ? getByValue( $object->classes, 'menu-item-has-children' ) : false );
                 
-                $link = '<a href="' . $url . '"' . $anchor . '>' . $content . '</a>';
+                $link = '<a href="' . $url . '">' . $content . '</a>';
 
                 if( $has_children !== false ){
                     $data = 'data-toggle="true" ';

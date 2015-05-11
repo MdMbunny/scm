@@ -521,7 +521,7 @@
 			$fields[] = scm_acf_field_link( 'url', $default, 33, 0 );
 
 // SCM Filter: Passing Fields - Receiving Fields
-		$fields = apply_filters( 'scm_filter_element_before/' . $slug, $fields );
+		$fields = apply_filters( 'scm_filter_element_before_' . $slug, $fields );
 		$fields = apply_filters( 'scm_filter_element_before', $fields, $slug );
 
 
@@ -531,7 +531,7 @@
 			$fields = call_user_func( 'scm_acf_element_' . $type, $fields );
 
 // SCM Filter: Passing Fields - Receiving Fields
-		$fields = apply_filters( 'scm_filter_element/' . $slug, $fields );
+		$fields = apply_filters( 'scm_filter_element_' . $slug, $fields );
 		$fields = apply_filters( 'scm_filter_element', $fields, $slug );
 
 
@@ -544,19 +544,22 @@
 				$layout_name['sub_fields'] = scm_acf_object_titolo( $default, 1 );
 
 // SCM Filter: Passing Title Fields and Type - Receiving Title Fields
-			$layout_name = apply_filters( 'scm_filter_layout/title/' . $slug, $layout_name );
-			$layout_name = apply_filters( 'scm_filter_layout/title/', $layout_name, $slug );
+			$layout_name = apply_filters( 'scm_filter_layout_title_' . $slug, $layout_name );
+			$layout_name = apply_filters( 'scm_filter_layout_title_', $layout_name, $slug );
 
 			// DATE
 
 			$layout_date = scm_acf_layout( 'data', 'block', 'Data', '', 1 );
 
 // SCM Filter: Passing Date Fields and Type - Receiving Date Fields
-				$layout_date = apply_filters( 'scm_filter_layout/date/' . $slug, $layout_date );
-				$layout_date = apply_filters( 'scm_filter_layout/date', $layout_date, $slug );
+				$layout_date = apply_filters( 'scm_filter_layout_date_' . $slug, $layout_date );
+				$layout_date = apply_filters( 'scm_filter_layout_date', $layout_date, $slug );
 
 				// +++ todo: va bene tag, ma devi almeno aggiungere le fields: flexible date ( day/month/year/week/hour => format )
-				$layout_date['sub_fields'] = scm_acf_object_data( $default, 1 );
+				$layout_date['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), 'Inizio' ), 'Inizio', 50 );
+                $layout_date['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), 'Fine' ), 'Fine', 50 );
+                $layout_date['sub_fields'] = array_merge( $layout_date['sub_fields'], scm_acf_object_data( $default, 1 ) );
+				//$layout_date['sub_fields'] = scm_acf_object_data( $default, 1 );
 			
 
 			$layout_taxes = array();
@@ -574,8 +577,8 @@
 							$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), 'Fine' ), 'Fine', 25 );
 
 	// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
-							$layout_tax = apply_filters( 'scm_filter_layout/tax/' . $slug, $layout_tax, $value->name );
-							$layout_taxes[] = apply_filters( 'scm_filter_layout/tax', $layout_tax, $value->name, $slug );
+							$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $slug, $layout_tax, $value->name );
+							$layout_taxes[] = apply_filters( 'scm_filter_layout_tax', $layout_tax, $value->name, $slug );
 					}
 				}
 			}
@@ -590,11 +593,15 @@
             $layout_list = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti' );
                 $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti( $default ) );
 
+            $layout_icon = scm_acf_layout( 'icona', 'block', 'Icon' );
+                $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona( $default ) );
+
             $layout_empty[] = $layout_tit;
             $layout_empty[] = $layout_list;
+            $layout_empty[] = $layout_icon;
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link will be applied )
-				$flexible['layouts'] = apply_filters( 'scm_filter_layout/' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
+				$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout', $flexible['layouts'], $layout_taxes, $slug );
 
 			// layout fields
@@ -605,7 +612,7 @@
 			$flexible['layouts'] = scm_acf_layouts_preset( '', $flexible['layouts'], 1 );
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link won't be applied )
-				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after/' . $slug, $flexible['layouts'] );
+				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after_' . $slug, $flexible['layouts'] );
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after', $flexible['layouts'], $slug );
 
 

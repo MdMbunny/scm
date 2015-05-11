@@ -25,7 +25,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 	
 	//$page_style = scm_options_get_style( $id, 1 );
 	
-	$page_slider = scm_field( 'main-slider-active', '', $id );
+	$page_slider = scm_field( 'main-slider-active', 'default', $id, 1 );
 	$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
 
 	if( $page_slider === 'default' ){
@@ -44,7 +44,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 
 				indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
 
-					scm_contents( array( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) ) );
+					scm_contents( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) );
 					//get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
 
 				indent( $SCM_indent + 1, '</div><!-- row -->', 2 );
@@ -74,7 +74,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 
 			}else{
 
-				indent( $SCM_indent + 1, '<div class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
+				indent( $SCM_indent + 1, '<div id="post-' . $id . '" class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
 					indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
 
 						$SCM_indent += 3;

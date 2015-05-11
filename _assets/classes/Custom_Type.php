@@ -70,7 +70,7 @@ class Custom_Type {
             switch ( $this->menu ) {
                                                         //          0.1 : SCM                 0.2 : SCM Types                 0.3 : SCM Templates                     1 > 3 : (empty)
                                                         // 4 -
-                case 0: $this->menupos = 6; break;      //          5 : Pages                   6 > 9 : (private)
+                //case 0: $this->menupos = 6; break;      //          5 : Pages                   6 > 9 : (private)
                                                         // 10 -
                 case 1: $this->menupos = 12; break;     //          12 > 19 : (empty)
                                                         // 20 - 

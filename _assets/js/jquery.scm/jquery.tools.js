@@ -23,6 +23,8 @@
 	/*var READY = false;
 	var LOADED = false;*/
 
+	var ARCHIVES = {};
+
 // ******************************************************
 // ******************************************************
 // *      jQuery INIT
@@ -150,6 +152,52 @@
 		});
 	};
 
+	$.fn.eventTools = function( event ){
+		this.find( '[data-popup]' ).setFancybox();
+		this.find( '[data-slider]' ).initSlider();
+		this.find( '[data-current-link]' ).currentLink();
+		this.find( 'iframe[src*="youtube.com"]' ).youtubeFix();
+	}
+
+	$.fn.eventLinks = function( event ){
+
+		this.find( 'a, .navigation' ).off( 'mousedown' );
+		this.find( 'a, [data-href]' ).off( 'click' );
+		this.find( 'a, [data-href]' ).off( 'link' );
+
+		this.find( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
+		this.find( 'a, [data-href]' ).on( 'click', function(e){
+
+			var toggle = $( this ).parents( '.no-toggled' );
+
+			var cont = 0;
+			if( toggle.length )
+				cont = $( toggle ).parents( '.toggle-content' ).length;
+
+			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
+				$( this ).linkIt(e);
+			}else{
+				$( '.toggled' ).toggledOff(e);
+				e.preventDefault();
+			}
+		
+		});
+
+		this.find( 'a, [data-href]' ).on( 'link', function( e, state ){
+
+			var $this = $( this );
+
+			if( state != 'page' ){
+				$this.bodyOut( e, state );
+			}else{
+				e.preventDefault();
+				$this.smoothScroll();
+			}
+
+		} );
+
+	};
+
 	// *****************************************************
 	// *      LINK
 	// *****************************************************
@@ -160,6 +208,7 @@
 
 		    var $this 		= $( this ),
 		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
+		    	loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
 				current 	= document.URL,
 		        parent 		= $this.parents( '.sub-menu' ),
 		        a_parent 	= $( parent ).siblings().find( 'a' ),
@@ -171,7 +220,7 @@
 		    	return;
 
 		    event.preventDefault();
-			event.stopPropagation();			
+			event.stopPropagation();		    
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -205,13 +254,20 @@
 
 				$( 'body' ).disableIt();
 
-				if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
-					result = $this.trigger( 'linkSite' ).data( 'done' );
-					state = 'site';
-				}else if ( locpath === path ){
+				if( loadcontent ){
+					$this.loadContent( event, elem.href );
+					return $this;
+				}else{
 
-					result = $this.trigger( 'linkPage' ).data( 'done' );
-					state = 'page';
+					if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
+						result = $this.trigger( 'linkSite' ).data( 'done' );
+						state = 'site';
+					}else if ( locpath === path ){
+
+						result = $this.trigger( 'linkPage' ).data( 'done' );
+						state = 'page';
+					}
+
 				}
 			}else{
 				result = $this.trigger( 'linkExternal' ).data( 'done' );
@@ -428,7 +484,14 @@
 	// *      SMOOTH SCROLL
 	// *****************************************************
 
-	$.fn.smoothScroll = function( event, state ) {
+	$.fn.smoothScroll = function( off, onEnd ) {
+
+		var type = $.type( off );
+
+		if( type === 'function' ){
+			onEnd = off;
+			off = null;
+		}
 
 		return this.each(function(){
 					
@@ -437,7 +500,7 @@
 				$body 			= $( 'body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
-				offset 			= ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ),
+				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ) ),
 				ease 			= ( $body.data( 'smooth-ease' ) ? $body.data( 'smooth-ease' ) : 'swing' ),
 				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0 ),
 
@@ -452,20 +515,27 @@
 				difference 		= 0,
 				duration 		= 0;
 
+			var pageEnable = function(){
+
+				if( onEnd )
+					onEnd();
+				else
+					$body.enableIt();
+
+			}
+
 			var pageScroll = function(){
 
-				$( 'html, body' ).animate( {
+				$body.animate( {
 
 						scrollTop: destination
 
 					}, parseFloat( duration ), ease, function() {
 
-						$body.enableIt();
+						pageEnable();
 					}
 				);
 			};
-
-			event.preventDefault();
 
 			if( target.length ){
 
@@ -477,12 +547,11 @@
 
 			}else if( name == 'top' ){
 
-
 				destination = 0;
 
 			}else{
 
-				$( 'body' ).enableIt();
+				pageEnable();
 				return this;
 
 			}
@@ -490,12 +559,12 @@
 			difference = Math.abs( destination - position );
 
 			if( !difference ){
-				$( 'body' ).enableIt();
+				pageEnable();
 				return this;
 			}
 
 			$this.data('done', false);
-			$( 'body' ).css( 'pointer-events', 'none' );
+			$body.css( 'pointer-events', 'none' );
 
 			duration = time * ( difference < 6000 ? difference : 6000 );
 
@@ -1325,57 +1394,69 @@
 		return this.each( function() {
 
 			var $this 			= $( this ),
-				fancybox		= ( $this.data( 'fancybox' ) ? $this.data( 'fancybox' ) : '' ),
-				fancy_type		= ( $this.data( 'fancybox-type' ) ? $this.data( 'fancybox-type' ) : 'image' ),
-				id 				= ( $this.data( 'gallery' ) ? $this.data( 'gallery' ) : '' ),
-				init 			= ( $this.data( 'gallery-init' ) ? $this.data( 'gallery-init' ) : 0 ),
-				name 			= ( $this.data( 'gallery-title' ) ? $this.data( 'gallery-title' ) : '' ),
-				type 			= ( $this.data( 'gallery-type' ) ? $this.data( 'gallery-type' ) : 'image' ),
-				gallery 		= GALLERIES[ id ],
+				popup 			= ( $this.data( 'popup' ) ? $this.data( 'popup' ) : array() ),
+				path 			= ( $this.data( 'popup-path' ) ? $this.data( 'popup-path' ) : '' ),
+				init 			= ( $this.data( 'popup-init' ) ? $this.data( 'popup-init' ) : 0 ),
+				name 			= ( $this.data( 'popup-title' ) ? $this.data( 'popup-title' ) : '' ),
+				type 			= ( $this.data( 'popup-type' ) ? $this.data( 'popup-type' ) : 'image' ),
+				content 		= ( $this.data( 'popup-content' ) ? $this.data( 'popup-content' ) : '' ),
 				images 			= [],
 				titles 			= [],
 				descriptions 	= [],
-				content 		= '',
-				i 				= 0;
+				i 				= 0,
+				j 				= 0;
 
-			
-			if( fancybox ){
+			if( !popup || !popup.length )
+				return;
 
-				// +++ todo: larghezza altezza e altre variabili passate da data-fancybox-{opzione}
-
-				if( fancy_type == 'video' ){
-					images = '<iframe width="854" height="510" src="' + fancybox + '" frameborder="0" allowfullscreen></iframe>'
-					type = 'html';
-				}else{
-					images = fancybox;
-					type = fancy_type;
-				}
-
-				
-
-			}else{
-
-				for ( i = 0; i < gallery.length; i++ ) {
-
-					// +++ todo: ora se passi array di string li considera html, ma potresti passare un array di url immagine, per esempio, quindi vedi di aggiungere l'opzione data-gallery-type
-
-					if( typeof( gallery[i] ) === 'string' ){
-
-						images.push( gallery[i] );
-
-					}else if( typeof( gallery[i].url ) !== undefined ){
-
-						images.push( {
-							href: gallery[i].url,
-							title: gallery[i].title,
-							description: gallery[i].description,
-						});
-
-					}
-
-				};
+			var len = popup.length;
+			var countLoad = function(){
 
 			}
+
+			$this.css( 'pointer-events', 'none' );
+
+			for ( i = 0; i < len; i++ ) {
+
+				if( type == 'video' ){
+
+					images.push( '<iframe width="854" height="510" src="' + popup[i] + '" frameborder="0" allowfullscreen></iframe>' );
+
+				}else if( type == 'load' ){
+
+					$this.css( 'opacity', .3 );
+					$( $.iconLoading( 'double', 'absolute middle' ) ).appendTo( $this ).hide().fadeIn('slow');
+
+					$.get( popup[i], function ( response ) {
+						images.push( $( '<div>' + response + '</div>' ).find( content ).html() );
+						j++;
+						if( j == len ){
+							$this.find( '.loading' ).remove();
+							$this.css( 'pointer-events', 'all' );
+							$this.animate( { 'opacity' : 1 }, 'fast' );
+						}
+					});
+
+				}else if( typeof( popup[i] ) === 'string' ){
+
+					images.push( popup[i] );
+
+				}else if( typeof( popup[i].url ) !== undefined ){
+
+					images.push( {
+						href: path + popup[i].url,
+						title: popup[i].title,
+						//description: popup[i].description,
+					});
+				}
+
+			};
+
+			if( type != 'load' )
+				$this.css( 'pointer-events', 'all' );
+
+			if( type == 'video' || type == 'load' )
+				type = 'html';
 
 			$this.click( function() {
 
@@ -1386,30 +1467,32 @@
 			    		helpers: {
 			    			overlay: {
 			    				css : {
-					                'background' : 'rgba(0, 0, 0, 0.85)',
+					                'background-color' : 'rgba(0, 0, 0, .85)',
 					            },
 			    			},
 				   		},
 				   		type: type,
-				   		openEffect: 'elastic',
-				   		closeEffect: 'elastic',
+				   		openEffect: 'fade',
+				   		closeEffect: 'fade',
 				   		nextEffect: 'elastic',
 				   		prevEffect: 'elastic',
 				   		openEasing: 'easeOutSine',
 				   		closeEasing: 'easeInSine',
-				   		nextEasing: 'easeOutSine',
-				   		prevEasing: 'linear',
-				   		openSpeed: 250,
-				   		closeSpeed: 250,
-				   		nextSpeed: 550,
-				   		prevSpeed: 200,
-				   		openOpacity: false,
-				   		closeOpacity: false,
-				   		closeClick: true,
+				   		nextEasing: 'easeInOutSine',
+				   		prevEasing: 'easeInOutSine',
+				   		openSpeed: 50,
+				   		closeSpeed: 350,
+				   		nextSpeed: 600,
+				   		prevSpeed: 600,
+				   		openOpacity: true,
+				   		closeOpacity: true,
+				   		closeClick: false,
 				   		tpl: {
 				   			wrap: '<div class="fancybox-wrap" tabIndex="-1"><h1 class="text-center">' + name + '</h1><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				   		},
-				   		afterLoad: function() {
+				   		beforeLoad: function() {
+
+				   			//console.log('culo');
 						
 						    var list = $( '#fancybox-links' );
 						    
@@ -1433,6 +1516,14 @@
 						    }
 
 						    list.find( 'li' ).removeClass( 'active' ).eq( this.index ).addClass( 'active' );
+						},
+						beforeShow: function() {
+							//$( '.fancybox-overlay' ).css( 'opacity', 0 );
+							//$( '.fancybox-overlay' ).animate( { 'opacity' : 1 }, 500 );
+
+						    $( '.fancybox-inner' ).eventTools();
+							$( '.fancybox-inner' ).eventLinks();
+
 						},
 						beforeClose: function() {
 
@@ -1463,6 +1554,116 @@
 			else
 				srcAtt += '&amp;wmode=transparent';
 			$this.attr( 'src', srcAtt );
+
+		});
+	}
+
+	// *****************************************************
+	// *      LOAD CONTENT
+	// *****************************************************
+
+	$.fn.loadContent = function( event, link ){
+
+		return this.each( function() {
+
+			var $this 	= $( this ),
+				$element = $this.parent(),
+				id = ( $element.data( 'load-content' ) ? $element.data( 'load-content' ) : $this.data( 'load-content' ) ),
+				paged = ( $element.data( 'load-paged' ) ? $element.data( 'load-paged' ) : $this.data( 'load-paged' ) ),
+				page = $.getUrlParameter( ( $element.data( 'load-page' ) ? $element.data( 'load-page' ) : $this.data( 'load-page' ) ), link ),
+				$container = $( id ),
+				c_height = $container.outerHeight(),
+				$parent = $container.parent(),
+				p_height = $parent.outerHeight(),
+				elem = document.createElement( 'a' ),
+				loading = $.iconLoading();
+				$loading;
+
+			elem.href = id;
+
+    		$parent.css( 'overflow', 'hidden' );
+			$parent.css('height', p_height);
+
+			
+			if( !ARCHIVES[id] )
+				ARCHIVES[id] = {};
+			ARCHIVES[id][paged] = $container.html();
+
+			/*var loadingContent = function(){
+
+				$parent.append( '<div class="scm-loading loading quadruple relative middle"><i class="fa fa-spin fa-spinner"></i></div>' );
+				$loading = $parent.find( '.scm-loading' );
+				$loading.hide();
+				$loading.fadeIn('slow');
+
+			}*/
+
+			var buildContent = function(){
+
+				$( elem ).remove();
+
+				$container.fadeOut('fast', function(){
+
+					if( ARCHIVES[id] && ARCHIVES[id][page] ){
+
+						$container.html( ARCHIVES[id][page] );
+						adjustContent();
+
+					}else{
+
+						$loading = $( loading ).appendTo( $parent ).hide().fadeIn('slow');
+						
+						$container.html( '' );
+						// come secondo parametro puoi passare un oggetto con variabili POST
+						$container.load( link + ' ' + id + ' > *', function( response, status, xhr ) {
+							if ( status == 'error' ) {
+								var msg = 'Spiacenti, è stato riscontrato un errore: ';
+								$container.html( '<span class="scm-error error">' + msg + xhr.status + ' ' + xhr.statusText + '</span>' );
+							}else{
+								$loading.fadeOut('fast', function(){
+									$container = $(id);
+									$loading.remove();
+									adjustContent();
+
+								});
+							}
+						});
+					}
+				});
+			}
+
+			var adjustContent = function(){
+				$container.fadeIn('fast', function(){
+					//var newHeight = $container.actualHeight();
+					
+					var new_height = $container.outerHeight();
+
+					if( c_height != new_height ){
+					
+						$parent.animate({ 'height' : p_height - ( c_height - new_height ) }, 'slow', function(){
+							enableContent();
+						});
+
+					}else{
+						enableContent();
+					}
+				});
+			}
+
+			var enableContent = function(){
+
+				//$container.css('min-height', 0);
+				//$container.css('max-height', 9999);
+				//$parent.css('line-height', 'inherit');
+				$parent.css( 'height', 'auto' );
+				$parent.css( 'overflow', 'visible' );
+				$container.eventTools();
+				$container.eventLinks();
+				//$( 'body' ).enableIt();
+				$( elem ).smoothScroll();
+			}
+
+			$( elem ).smoothScroll( buildContent );
 
 		});
 	}
@@ -1573,13 +1774,20 @@
 
 	}
 
+
+
+
 // ******************************************************			
 // ******************************************************
 	// jQuery READY
 // ******************************************************
 // ******************************************************
 
+
+
 	jQuery(function($){
+
+		//$.ajaxSetup({cache:false});
 
 		var $window 	= $( window ),
 			$html 		= $( 'html' ),
@@ -1611,7 +1819,6 @@
 			
 			window.location.replace("#");
 			
-			//console.log($body.data( 'anchor'));
 			if ( typeof window.history.replaceState == 'function' ) {
 				window.history.replaceState({}, '', location.href.slice(0, -1));
 			}
@@ -1665,33 +1872,9 @@
 		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
 		$( '.site-page' ).on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
 		$( '.site-page' ).on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
-		$( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
-		$( 'a, [data-href]' ).on( 'click', function(e){
-			var toggle = $( this ).parents( '.no-toggled' );
+		
+		$body.eventLinks();
 
-			var cont = 0;
-			if( toggle.length )
-				cont = $( toggle ).parents( '.toggle-content' ).length;
-
-			if( !$body.hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
-				$( this ).linkIt(e);
-			}else{
-				$( '.toggled' ).toggledOff(e);
-				e.preventDefault();
-			}
-
-		} );
-
-		$body.on( 'link', 'a, [data-href]', function( e, state ){
-
-			var $this = $( this );
-
-			if( state != 'page' )
-				$this.bodyOut( e, state );
-			else
-				$this.smoothScroll( e, state );
-
-		} );
 			
 		if( $body.hasClass( 'touch' ) ){
 
@@ -1731,10 +1914,11 @@
 
 // TOOLS
 
-		$( '[data-gallery], [data-fancybox]' ).setFancybox();
-		$( '[data-slider]' ).initSlider();
-		$( '[data-current-link]' ).currentLink();
-		$( 'iframe[src*="youtube.com"]' ).youtubeFix();
+		$body.eventTools();
+		//$( '[data-popup]' ).setFancybox();
+		//$( '[data-slider]' ).initSlider();
+		//$( '[data-current-link]' ).currentLink();
+		//$( 'iframe[src*="youtube.com"]' ).youtubeFix();
 		$body.currentSection();
 
 

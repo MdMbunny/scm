@@ -39,13 +39,6 @@
     //add_action( 'after_setup_theme', 'scm_default_headers' );
     //add_action( 'comment_form_before', 'scm_enqueue_comments_reply' );
 
-    add_action( 'wp_ajax_scm_anchor', 'scm_anchor' );
-    add_action( 'wp_ajax_nopriv_scm_anchor', 'scm_anchor' );
-
-    add_action( 'wp_footer', 'scm_jquery_init' );
-
-
-
 
 // *****************************************************
 // *       1.0 THEME SUPPORT
@@ -316,6 +309,9 @@
 
             // SCM
 
+            wp_register_script( 'jquery-scm-presets', SCM_URI_JS . 'jquery.scm/jquery.presets.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-presets' );
+
             wp_register_script( 'jquery-scm-functions', SCM_URI_JS . 'jquery.scm/jquery.functions.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'jquery-scm-functions' );
             
@@ -481,47 +477,6 @@
 
             return $public_query_vars;
 
-        }
-    }
-
-    // Used by jQuery to get stored ANCHOR data - [ for smooth scroll from page to page ]
-    if ( ! function_exists( 'scm_anchor' ) ) {
-        function scm_anchor() {
-
-            $new_value = ( $_POST['data'] ?: '' );
-
-                update_option( 'scm-utils-anchor', $new_value );
-
-                if( !$new_value )
-                    die( false );
-                else
-                    die( true );
-
-        }
-    }
-
-    //Initialize
-    if ( ! function_exists( 'scm_jquery_init' ) ) {
-        function scm_jquery_init(){
-
-            global $SCM_site, $SCM_galleries;
-            
-        ?>
-
-<script type="text/javascript">
-
-    var GALLERIES = <?php echo json_encode($SCM_galleries); ?>;
-
-    jQuery(document).ready(function($){
-
-        var site = <?php echo json_encode( $SCM_site ); ?>;
-        $( 'body' ).data( 'site', site );
-
-    });
-    
-</script>
-
-        <?php
         }
     }
 

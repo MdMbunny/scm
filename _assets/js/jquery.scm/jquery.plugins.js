@@ -67,6 +67,33 @@
 		};
 	}
 
+	if ( !$.fn.actualHeight ) {
+
+		$.fn.actualHeight = function() {
+
+			var top = this.css( 'top' ),
+				overflow = this.css( 'overflow' ),
+				height = this.css( 'height' );
+			
+			this.css( {
+				top : 0,
+				height : 0,
+				overflow : 'scroll'
+			} );
+
+			var actual = this.prop( 'scrollHeight' );
+
+			this.css( {
+				//top : top,
+				//height : height,
+				overflow : overflow
+			} );
+
+			return actual;
+
+		}
+	}
+
 	if ( !$.fn.getBoxShadow ) {
 
 		$.fn.getBoxShadow = function() {

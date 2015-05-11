@@ -1228,6 +1228,7 @@
 						$template['sub_fields'][] = scm_acf_field_select_layout( 'layout', 1, 'Layout', 20 );
 						$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', $default, 20, 20 ) );
 						$template['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', 'Attributi', 40 );
+						$template['sub_fields'][] = scm_acf_field_text( 'archive', $default, 100, 0, 'type{:field=value}', 'Archivio' );
 						$template['sub_fields'][] = scm_acf_field_text( 'post', $default, 100, 0, 'ID or Option Name', 'Post' );
 						$template['sub_fields'][] = scm_acf_field_positive( 'template', $default, 100, 0, 0, 'Template' );
 
@@ -1754,52 +1755,59 @@
 					$types['sub_fields'][] = scm_acf_field_select_disable( 'public', $default, 'Archivi', 25 );
 					$types['sub_fields'][] = scm_acf_field_text( 'icon', $default, 50, 0, 'admin-site', 'Icona', 'Icona', '', 'Visita <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> per un elenco delle icone disponibili e dei corrispettivi nomi, da inserire nel seguente campo.' );
 					$types['sub_fields'][] = scm_acf_field_positive( 'menu', $default, 100, 0, '0', 'Zona Menu', 0, 3 );
-					$types['sub_fields'][] = scm_acf_field( 'msg-types-menupos', array(
-						'message',
-						'<strong>0 = 6 | 1 = 12 | 2 = 22 | 3 = 28 | 4 = 44 | default = 91</strong>
-
-						[ OPTIONS ] 0.1 (SCM) > 0.2 (SCM Types) > 0.3 (SCM Templates)
-
-						[ empty ] 1 > 3
-
-						[ — ] 4
-
-						[ PRIVATE ] 5 (Pages)
-
-						<strong>[ 0 ]</strong> 6 > 9
-
-						[ — ] 10
-
-						<strong>[ 1 ]</strong> 12 > 19
-
-						[ — ] 20
-
-						<strong>[ 2 ]</strong> 22 > 25
-
-						[ — ] 26
-
-						[ MULTIMEDIA ] 27 (Media)
-
-						<strong>[ 3 ]</strong> 28 > 41
-
-						[ — ] 42
-
-						<strong>[ 4 ]</strong> 44 > 55
-
-						[ CONTACTS ]  56 (Users) > 57 (CF7)
-
-						[ — ] 59
-
-						...
-
-						[ default ] 91 > ... ',
-					), 'Posizione in Menu' );
 
 				$types['sub_fields'][] = scm_acf_field( 'tab-archive', 'tab-left', 'Archivi' );
 					$types['sub_fields'][] = scm_acf_field_select( 'orderby', $default, 'orderby', 100, 0, '', 'Ordina per' );
 					$types['sub_fields'][] = scm_acf_field_select( 'ordertype', $default, 'ordertype', 100, 0, '', 'Ordinamento' );
 			
 			$fields[] = $types;
+
+			$fields[] = scm_acf_field( 'msg-types-menupos', array(
+						'message',
+						'<strong>Groups: 0 = Pages | 1 = Custom | 2 = Custom | 3 = Media | 4 = Contacts</strong>
+
+						0.1 [ SCM ]
+						0.2 [ SCM Types ]
+						0.3 [ SCM Templates ]
+
+						1 > 3 <strong>free</strong>
+
+						4 —
+
+						5 [ PAGES ]
+						6 [ SECTIONS ]
+						7 [ MODULES ]
+						8 [ BANNERS ]
+						9 <strong>free</strong>
+
+						10 —
+
+						11 <strong>free</strong>
+						12 > 19 <strong>[ 1 ]</strong>
+
+						20 —
+
+						21 <strong>free</strong>
+						22 > 25 <strong>[ 2 ]</strong>
+
+						26 —
+
+						27 [ MEDIA ]
+						28 > 41 <strong>[ 3 ]</strong>
+
+						42 —
+
+						44 > 55 <strong>[ 4 ]</strong>
+						56 [ USERS ]
+						57 [ CF7 ]
+						58 <strong>free</strong>
+
+						59 —
+
+						...
+
+						91 > ... default',
+					), 'Posizione in Menu' );
 
 			return $fields;
 		}
