@@ -397,7 +397,6 @@ function acf_form_data( $args = array() ) {
 	if( $args['ajax'] ) {
 		
 		add_action('admin_footer', 'acf_enqueue_uploader', 1);
-		//acf_enqueue_uploader();
 		
 	}
 	

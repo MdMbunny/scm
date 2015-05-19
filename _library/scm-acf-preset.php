@@ -400,7 +400,7 @@
 					$maxh = ( isset( $arg[8] ) ? $arg[8] : 0 );
 					$mins = ( isset( $arg[9] ) ? $arg[9] : 0 );
 					$maxs = ( isset( $arg[10] ) ? $arg[10] : 0 );
-					$mime = ( isset( $arg[11] ) ? $arg[11] : 'jpg, png' );
+					$mime = ( isset( $arg[11] ) ? $arg[11] : 'jpg, png, JPG, PNG, gif, GIF' );
 	        		$field = array(
 						'type' => 'gallery',
 						'library' => $lib,

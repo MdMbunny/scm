@@ -35,9 +35,9 @@
 				$fields[] = scm_acf_field_number( $name . 'pause', $default, 100, $options, '5', 'Pausa' );
 
 				$fields[] = scm_acf_field_option( $name . 'start', $default, 100, $advanced, '0', 'Start Slide' );
-				$fields[] = scm_acf_field_select_enable( $name . 'hover', $default, 'Pause on Hover', 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'hover', $default, 'Pause on Hover', 100, $advanced );
 				$fields[] = scm_acf_field_select_disable( $name . 'manual', $default, 'Avanzamento Manuale', 100, $advanced );
-				$fields[] = scm_acf_field_select_enable( $name . 'direction', $default, 'Direction Nav', 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'direction', $default, 'Direction Nav', 100, $advanced );
 				$fields[] = scm_acf_field_select_disable( $name . 'control', $default, 'Control Nav', 100, $advanced );
 				$fields[] = scm_acf_field_select_disable( $name . 'thumbs', $default, 'Thumbs Nav', 100, $advanced );
 				$fields[] = scm_acf_field_icon( $name . 'prev', $default, 'angle-left', '', 100, $advanced, 'Prev Icon' );

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.2.6
+Version:			v2.2.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1718,6 +1718,7 @@ body.mouse .sub-menu li:hover > ul {
     list-style: none;
     text-align: center;
     z-index: 99999;
+    padding: 0 2em;
 }
 
 #fancybox-links li {
@@ -1779,7 +1780,7 @@ a.fancybox-next *{
 }
 
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-	background-image: url('fancybox_sprite.png');
+	/*background-image: url('fancybox_sprite.png');*/
 }
 
 #fancybox-loading {

@@ -24,6 +24,7 @@
 	var LOADED = false;*/
 
 	var ARCHIVES = {};
+	var PREVIOUS_FANCYBOX = '';
 
 // ******************************************************
 // ******************************************************
@@ -1460,6 +1461,15 @@
 
 			$this.click( function() {
 
+				var $current = $( '.fancybox-overlay' );
+				if( $current.length ){
+					PREVIOUS_FANCYBOX = $current.html();
+					$current.remove();
+				}else{
+					//console.log('reset');
+					PREVIOUS_FANCYBOX = '';
+				}
+
 			    $.fancybox.open(
 			    	images,
 			    	{
@@ -1469,6 +1479,7 @@
 			    				css : {
 					                'background-color' : 'rgba(0, 0, 0, .85)',
 					            },
+					            //closeClick: ( !PREVIOUS_FANCYBOX ? true : false )
 			    			},
 				   		},
 				   		type: type,
@@ -1491,8 +1502,6 @@
 				   			wrap: '<div class="fancybox-wrap" tabIndex="-1"><h1 class="text-center">' + name + '</h1><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				   		},
 				   		beforeLoad: function() {
-
-				   			//console.log('culo');
 						
 						    var list = $( '#fancybox-links' );
 						    
@@ -1524,10 +1533,34 @@
 						    $( '.fancybox-inner' ).eventTools();
 							$( '.fancybox-inner' ).eventLinks();
 
+							//console.log(PREVIOUS_FANCYBOX);
+							
+							/*$( '.fancybox-overlay' ).on( 'click', function(e){
+								
+								
+									//e.preventDefault();
+									//e.stopPropagation();
+								if( PREVIOUS_FANCYBOX ){
+									console.log('pippo');
+									//$(this).remove();
+									//$.fancybox.close();
+									//PREVIOUS_FANCYBOX.trigger( 'link' );
+									//$this.previous = false;
+									$( this ).html( PREVIOUS_FANCYBOX );
+									$( '#fancybox-links' ).remove();
+									PREVIOUS_FANCYBOX = '';
+								}
+								
+								
+
+							} );*/
+						
+
 						},
 						beforeClose: function() {
 
-						    $( '#fancybox-links' ).remove();  
+						    $( '#fancybox-links' ).remove();
+						    //PREVIOUS_FANCYBOX = '';
 
 						},
 			    	}
@@ -1576,7 +1609,7 @@
 				$parent = $container.parent(),
 				p_height = $parent.outerHeight(),
 				elem = document.createElement( 'a' ),
-				loading = $.iconLoading();
+				loading = $.iconLoading(),
 				$loading;
 
 			elem.href = id;

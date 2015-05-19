@@ -357,6 +357,7 @@
                 $plural = $tax['plural'];
 
                 $tax['slug'] = ( isset( $tax['slug'] ) && $tax['slug'] ? sanitize_title( $tax['slug'] ) : sanitize_title( $plural ) );
+                $tax['manage'] = isset( $tax['manage'] ) && $tax['manage'] === 'on';
 
                 if( $tax['hierarchical'] )
                     $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['categories'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );

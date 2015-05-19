@@ -40,6 +40,9 @@ class Custom_Taxonomy {
         $this->delete = ( $default['manage'] ? 'list_users' : 'manage_options' );
         $this->assign = ( $default['assign'] ? 'list_users' : 'manage_options' );
 
+        /*consoleLog($this->plural);
+        consoleLog($this->manage);*/
+
         $this->CT_taxonomy();
         if( !empty( $this->types ) ){
             $arr = array();

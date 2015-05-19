@@ -740,7 +740,7 @@
                 $page = 'page-' . $type;
                 $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
                 $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
-                $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'ASC' );
+                $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'DESC' );
                 $field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : '' );
                 $value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
                 $query = array(
@@ -768,12 +768,6 @@
 
             }
 
-            //update_option( 'scm-utils-galleries', array() );
-
-            consoleLog( 'Prima di SCM Posts Query' );
-            consoleLog( $post->ID );
-            consoleLog( $post->post_type );
-
             $id = $post->ID;
             
             if( !empty( $query ) )
@@ -795,15 +789,11 @@
             $post = get_post( $id );
             setup_postdata( $post );
 
-            consoleLog( 'Dopo di SCM Posts Query (reset)' );
-            consoleLog( $post->ID );
-            consoleLog( $post->post_type );
-
         }
     }
 
     // *****************************************************
-    // *      2.1 POST LINK
+    // *      2.2 POST LINK
     // *****************************************************
 
     if ( ! function_exists( 'scm_post_link' ) ) {

@@ -1823,8 +1823,9 @@
 
 			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', $default, 'Aggiungi Taxonomy', 'Taxonomies' );
 
-				$taxes['sub_fields'][] = scm_acf_field_select_disable( 'template', $default, 'Template', 50 );
-				$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', array( 'select' . ( $default ? '-default' : '' ), array( 'Tag', 'Categoria' ) ), 'Seleziona Tipologia', 50 );
+				$taxes['sub_fields'][] = scm_acf_field_select_disable( 'template', $default, 'Template', 33 );
+				$taxes['sub_fields'][] = scm_acf_field_select_disable( 'manage', $default, 'Manage', 33 );
+				$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', array( 'select' . ( $default ? '-default' : '' ), array( 'Tag', 'Categoria' ) ), 'Seleziona Tipologia', 34 );
 				$taxes['sub_fields'][] = scm_acf_field_name_req( 'plural', $default, 18, 100, 0, 'Nome Categorie', 'Plurale' );
 				$taxes['sub_fields'][] = scm_acf_field_name( 'singular', $default, 18, 100, 0, 'Nome Categoria', 'Singolare' );
 				$taxes['sub_fields'][] = scm_acf_field_name( 'slug', $default, 18, 100, 0, 'slug-categoria', 'Slug' );

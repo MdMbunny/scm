@@ -63,8 +63,7 @@ if( is( $element ) ){
 		$fields = get_fields( $luogo );
 		$marker = scm_content_preset_marker( $luogo, $fields );
 
-		//printPre($fields);
-
+		$name = $fields['luogo-nome'];
 		$country = $fields['luogo-paese'];
 		$region = $fields['luogo-regione'];
 		$province = is( $fields['luogo-provincia'], '', '(', ')' );
@@ -78,16 +77,21 @@ if( is( $element ) ){
 		$city = ( ( $city && $province ) ? $city . ' ' : $city );
 		$region = ( ( $region && $country ) ? $region . ', ' : $region );
 		$country = ( $country ? $country : '' );
+		
+		$inline_address = '<strong class="name">' . $name . '</strong>';
+		
+		if( $address ){
+			$inline_address .= '<br><span class="street">' . $address . '</span>';
+		}
 
-		$inline_address = '<span class="street">' . $address . '</span>';
 		if( $town || $city || $code || $province ){
-			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span>' : '<br>' );
-			$inline_address .= '<span class="town">' . $town . $code . $city . $province . '</span>';
+			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span><span class="town">' : '<span class="float-none town">' );
+			$inline_address .= $town . $code . $city . $province . '</span>';
 		}
 
 		if( $region || $country ){
-			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span>' : '<br>' );;
-			$inline_address .= '<span class="country">' . $region . $country . '</span>';
+			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span><span class="country">' : '<span class="float-none country">' );
+			$inline_address .= $region . $country . '</span>';
 		}
 		
 		$li_class = 'button scm-button ' . $align;

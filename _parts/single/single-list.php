@@ -158,7 +158,8 @@ if( is( $list ) ){
         if( isset( $button['link'] ) && is( $button['link'] ) ){
             switch ( $button_layout ) {
                 case 'layout-media':
-                    $li_attributes .= scm_post_link( $button['link'] );
+                    $li_attributes .= scm_post_link( array(), $button['link'] );
+                    //consoleLog($button['link']);
                 break;
 
                 case 'layout-paypal':
