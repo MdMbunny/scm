@@ -32,6 +32,7 @@ if( isset( $this ) )
 
 $layout = $args['acf_fc_layout'];
 $image = $args[ 'image' ];
+$url = scm_field( 'image', '', $post_id );
 $negative = $args['negative'] === 'on';
 
 if( !$image ){
@@ -55,6 +56,9 @@ if( !$image ){
         
         if( !$image )
     		return;
+
+    }elseif( $url ){
+        $image = $url;
     }else{
     	return;
     }

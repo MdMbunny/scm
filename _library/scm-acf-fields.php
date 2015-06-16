@@ -192,7 +192,7 @@
 	
 	// DATE
 	if ( ! function_exists( 'scm_acf_field_date' ) ) {
-		function scm_acf_field_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Colore', $instr = '', $required = 0 ) {
+		function scm_acf_field_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = 'Date', $instr = '', $required = 0 ) {
 
 			return scm_acf_field( $name, array( 'date', ( $placeholder ?: '' ) ), $label, $width, $logic, $instr, $required );
 		}
@@ -1493,14 +1493,15 @@
 
 			$fields = array();
 
-			$fields[] = scm_acf_field( 'tab-set-post', 'tab-left', 'Impostazioni' );
-				$fields[] = scm_acf_field_image( $name . 'post-image', $default );
-				$fields[] = scm_acf_field_limiter( $name . 'post-excerpt', $default, 350, 1, 100, 0, 'Anteprima' );
-				$fields[] = scm_acf_field_editor( $name . 'post-content', $default );
+			//$fields[] = scm_acf_field( 'tab-set-post', 'tab-left', 'Impostazioni' );
+				$fields[] = scm_acf_field_image( 'image', $default );
+				$fields = array_merge( $fields, scm_acf_fields_module() );
+				//$fields[] = scm_acf_field_limiter( $name . 'post-excerpt', $default, 350, 1, 100, 0, 'Anteprima' );
+				//$fields[] = scm_acf_field_editor( $name . 'post-content', $default );
 
-			$fields[] = scm_acf_field( 'tab-tax-post', 'tab-left', 'Categorie' );
+			/*$fields[] = scm_acf_field( 'tab-tax-post', 'tab-left', 'Categorie' );
 				$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'post', $default, 'post' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'post', $default, 'post' ) );
+				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'post', $default, 'post' ) );*/
 				//$fields[] = scm_acf_field_category( $name . 'post-cat', $default, 'post' );
 
 			return $fields;

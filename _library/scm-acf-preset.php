@@ -483,9 +483,10 @@
 
 	        	case 'date':
 
-	        		$ret = ( isset( $arg[1] ) ? $arg[1] : 'Y-m-d' );
+	        		$ret = ( isset( $arg[1] ) ? $arg[1] : 'd-m-Y' );
 	        		$dis = ( isset( $arg[2] ) ? $arg[2] : 'd F Y' );
 	        		$first = ( isset( $arg[3] ) ? $arg[3] : 1 );
+	        		
 	        		$field = array(
 						'type' => 'date_picker',
 						'return_format' => $ret,
@@ -1310,6 +1311,7 @@
 				if( strpos( $list, '_width' ) !== false ):
 
 					$choices = array(
+						'500px'			=> 'Mobile Min',
 						'700px'			=> 'Mobile',
 						'800px'			=> 'Tablet Portrait',
 						'1030px'		=> 'Tablet Landscape',
@@ -1319,6 +1321,7 @@
 				else:		
 
 					$choices = array(
+						'smartmin'		=> 'Mobile Min',
 						'smart'			=> 'Mobile',
 						'portrait'		=> 'Tablet Portrait',
 						'tablet'		=> 'Tablet Landscape',
@@ -1329,14 +1332,16 @@
 
 			elseif( strpos( $list, 'responsive_up' ) !== false ):
 				$choices = array(
-					'smart'									=> 'Mobile',
-					'smart portrait'						=> 'Tablet Portrait',
-					'smart portrait landscape'				=> 'Tablet Landscape',
-					'smart portrait landscape desktop'		=> 'Desktop',
+					'smartmin'										=> 'Mobile Min',
+					'smart smartmin'								=> 'Mobile',
+					'smart portrait smartmin'						=> 'Tablet Portrait',
+					'smart portrait landscape smartmin'				=> 'Tablet Landscape',
+					'smart portrait landscape desktop smartmin'		=> 'Desktop',
 				);
 
 			elseif( strpos( $list, 'responsive_down' ) !== false ):
 				$choices = array(
+					'desktop landscape portrait smart smartmin'		=> 'Mobile Min',
 					'desktop landscape portrait smart'		=> 'Mobile',
 					'desktop landscape portrait'			=> 'Tablet Portrait',
 					'desktop landscape'						=> 'Tablet Landscape',

@@ -190,7 +190,8 @@ if( is( $list ) ){
                 break;
                 
                 default:
-                    $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '" data-target="_blank"';
+                    //consoleLog(getURL( (string)$button['link'] ));
+                    $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '"';//' data-target="_blank"';
                 break;
             }
         }

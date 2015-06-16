@@ -68,8 +68,9 @@
 					//$complete = [[[ 'field' => 'archive-complete', 'operator' => '==', 'value' => 'complete' )]];
 					$partial_cond = scm_acf_group_condition( array( 'field' => 'archive-complete', 'operator' => '==', 'value' => 'partial' ), $archive );
 
-						$fields[] = scm_acf_field_positive( 'archive-perpage', $default, 50, $partial_cond, '5', 'Post per pagina', 1 );
-						$fields[] = scm_acf_field_select1( 'archive-pagination', $default, 'archive_pagination', 50, $partial_cond, '', 'Paginazione' );
+						$fields[] = scm_acf_field_positive( 'archive-perpage', $default, 33, $partial_cond, '5', 'Post per pagina', 1 );
+						$fields[] = scm_acf_field_text( 'archive-offset', $default, 33, $partial_cond, '0', 'Offset' );
+						$fields[] = scm_acf_field_select1( 'archive-pagination', $default, 'archive_pagination', 34, $partial_cond, '', 'Paginazione' );
 					
 					
 			return $fields;
@@ -746,6 +747,30 @@
 					$layout_form['sub_fields'] = scm_acf_object_form( $default );*/
 
 			$layouts = array_merge( $layouts, array( $layout_map, $layout_address, $layout_data ) );
+
+			return $layouts;
+		}
+	}
+
+// NEWS
+
+	// general fields
+	if ( ! function_exists( 'scm_acf_element_news' ) ) {
+		function scm_acf_element_news( $fields = array(), $default = 0 ) {
+
+			return $fields;
+
+		}
+	}
+	// layout fields
+	if ( ! function_exists( 'scm_acf_layout_news' ) ) {
+		function scm_acf_layout_news( $layouts = array(), $default = 0 ) {
+
+				$layout_img = scm_acf_layout( 'immagine', 'block', 'Immagine' );
+
+				$layout_mod = scm_acf_layout( 'modules', 'block', 'News' );
+
+			$layouts = array_merge( $layouts, array( $layout_img, $layout_mod ) );
 
 			return $layouts;
 		}

@@ -643,6 +643,10 @@ body.loading *{
 	display: block;
 }
 
+.acf-input-table > tbody > tr > td{
+	background-color: transparent;
+}
+
 
 /* Specific Fields */
 
@@ -1041,7 +1045,6 @@ input.acf-is-prepended {
 
 /*** 5.0 REPEATER AND FLEXIBLE CONTENT ***/
 
-
 .repeater-table .acf-table > tbody > tr > td{
 	vertical-align: inherit;
 }
@@ -1113,6 +1116,10 @@ input.acf-is-prepended {
 .special-repeater .layout{
 	margin-top: 10px;
 	margin-bottom: 0;
+}
+
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.full{
+	width: 100% !important;
 }
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row,
@@ -1213,7 +1220,7 @@ input.acf-is-prepended {
 	width: 50px !important;
 	padding: 0;
 	margin-left: 10px;
-	line-height: 2.2em;
+	line-height: 1.9em;
 	text-align: center !important;
 	z-index: 1;
 	background-color: #ddd !important;
@@ -1283,7 +1290,7 @@ input.acf-is-prepended {
 	position: absolute;
 	text-align: center;
 	margin-left: -60px;
-	line-height: 2.2em;
+	line-height: 1.9em;
 	background-color: #ddd !important;
 	border-radius: 3px;
 }

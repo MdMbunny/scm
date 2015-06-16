@@ -104,7 +104,8 @@
 			else this.removeClass( 'tocolumn' );
 
 			if(old != this.attr( 'class' )){
-				if ( this.hasClass( 'smart' ) )			state = 'smart';
+				if ( this.hasClass( 'smartmin' ) )		state = 'smartmin';
+				else if ( this.hasClass( 'smart' ) )	state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
 				else if( this.hasClass( 'landscape' ) )	state = 'landscape';
 				else if( this.hasClass( 'wide' ) )		state = 'wide';
@@ -260,13 +261,12 @@
 					return $this;
 				}else{
 
-					if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
-						result = $this.trigger( 'linkSite' ).data( 'done' );
-						state = 'site';
-					}else if ( locpath === path ){
-
+					if ( locpath === path ){ // toccato
 						result = $this.trigger( 'linkPage' ).data( 'done' );
 						state = 'page';
+					}else if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
+						result = $this.trigger( 'linkSite' ).data( 'done' );
+						state = 'site';						
 					}
 
 				}
@@ -400,9 +400,12 @@
 
 			if( act && act != '' ){
 
-				if( act.indexOf( data ) >= 0 ){
+				//if( act.indexOf( data ) >= 0 ){
+				if( act == data ){
 					if( !classes ){
 						$this.show();
+						//console.log(data);
+						//console.log(name);
 						$this.siblings( '[data-' + name + '=""]' ).hide();
 					}else{
 						$this.addClass( classes );
@@ -491,7 +494,7 @@
 
 		if( type === 'function' ){
 			onEnd = off;
-			off = null;
+			off = $( 'body' ).data( 'smooth-offset' );
 		}
 
 		return this.each(function(){
@@ -501,7 +504,7 @@
 				$body 			= $( 'body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
-				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? parseFloat( $body.data( 'smooth-offset' ) ) : 0 ) ),
+				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset' ) : '0' ) ),
 				ease 			= ( $body.data( 'smooth-ease' ) ? $body.data( 'smooth-ease' ) : 'swing' ),
 				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0 ),
 
@@ -515,6 +518,13 @@
 				destination 	= 0,
 				difference 		= 0,
 				duration 		= 0;
+
+			type = $.type( offset );
+			if ( type == 'string' && offset.indexOf( '#' ) === 0 ){
+				hash = offset;
+				target = $( hash );
+				offset = $( 'body' ).data( 'smooth-offset' );
+			}
 
 			var pageEnable = function(){
 
@@ -1603,6 +1613,7 @@
 				$element = $this.parent(),
 				id = ( $element.data( 'load-content' ) ? $element.data( 'load-content' ) : $this.data( 'load-content' ) ),
 				paged = ( $element.data( 'load-paged' ) ? $element.data( 'load-paged' ) : $this.data( 'load-paged' ) ),
+				offset = ( $element.data( 'load-offset' ) ? $element.data( 'load-offset' ) : $this.data( 'load-offset' ) ),
 				page = $.getUrlParameter( ( $element.data( 'load-page' ) ? $element.data( 'load-page' ) : $this.data( 'load-page' ) ), link ),
 				$container = $( id ),
 				c_height = $container.outerHeight(),
@@ -1614,8 +1625,12 @@
 
 			elem.href = id;
 
-    		$parent.css( 'overflow', 'hidden' );
+    		//$parent.css( 'overflow', 'hidden' );
+    		$parent.css( 'overflow', 'visible' );
 			$parent.css('height', p_height);
+
+
+			$('body').trigger( 'loadContentBefore' );
 
 			
 			if( !ARCHIVES[id] )
@@ -1640,6 +1655,7 @@
 					if( ARCHIVES[id] && ARCHIVES[id][page] ){
 
 						$container.html( ARCHIVES[id][page] );
+						$('body').trigger( 'loadContent' );
 						adjustContent();
 
 					}else{
@@ -1653,6 +1669,7 @@
 								var msg = 'Spiacenti, è stato riscontrato un errore: ';
 								$container.html( '<span class="scm-error error">' + msg + xhr.status + ' ' + xhr.statusText + '</span>' );
 							}else{
+								$('body').trigger( 'loadContent' );
 								$loading.fadeOut('fast', function(){
 									$container = $(id);
 									$loading.remove();
@@ -1675,10 +1692,12 @@
 					
 						$parent.animate({ 'height' : p_height - ( c_height - new_height ) }, 'slow', function(){
 							enableContent();
+							$('body').trigger( 'loadContentAfter' );
 						});
 
 					}else{
 						enableContent();
+						$('body').trigger( 'loadContentAfter' );
 					}
 				});
 			}
@@ -1693,10 +1712,10 @@
 				$container.eventTools();
 				$container.eventLinks();
 				//$( 'body' ).enableIt();
-				$( elem ).smoothScroll();
+				$( elem ).smoothScroll( offset );
 			}
 
-			$( elem ).smoothScroll( buildContent );
+			$( elem ).smoothScroll( offset, buildContent );
 
 		});
 	}

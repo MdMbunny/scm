@@ -441,6 +441,11 @@
 
 // *** Dynamic Objects
 
+                    case 'layout-modules':
+                        $args['modules'] = scm_field( 'modules', '', $post->ID );
+                        scm_content( $args );
+                    break;
+
                     case 'layout-banner':
                     case 'layout-module':
                     case 'layout-section':
@@ -504,14 +509,14 @@
                     break;
 
                     case 'layout-form':
-
+                        $prev = $post->ID;
                         $single = $args['form'];
                         if(!$single) continue;
                         $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
                         setup_postdata( $post );
 
                         indent( $SCM_indent + 1, do_shortcode('[contact-form-7 id="' . get_the_ID() . '" title="' . get_the_title() . '"]'), 2 );
-
+                        wp_reset_query();
                         //get_template_part( SCM_DIR_PARTS_SINGLE, 'wpcf7_contact_form' );
                     break;
 
@@ -733,6 +738,7 @@
 
                 $complete = ( isset( $cont['archive-complete'] ) ? $cont['archive-complete'] === 'complete' : true );
                 $perpage = ( $complete ? -1 : ( isset( $cont['archive-perpage'] ) ? $cont['archive-perpage'] : get_option( 'posts_per_page' ) ) );
+                $offset = ( isset( $cont['archive-offset'] ) ? $cont['archive-offset'] : '0' );
                 $pagination = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'yes' : '' );
                 $more = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'more' : '' ); // non in uso
                 $all = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'all' : '' ); // non in uso
@@ -779,7 +785,7 @@
 
             if( $pagination ){
 
-                indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '">', 1 );
+                indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '" data-load-offset="' . $offset . '">', 1 );
                     
                     indent( $SCM_indent + 1, scm_pagination( $loop, $page, '#' . $paginated ), 1 );
                 
@@ -853,6 +859,12 @@
                     $link .= ' data-popup-type="video"';
                     $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
 
+                break;
+
+                case 'news':
+                    $link = ' data-popup="' . htmlentities( json_encode( array( get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) ) ) ) . '"';
+                    $link .= ' data-popup-content="' . ( $id ? '#post-' . $id : '' ) . '"';
+                    $link .= ' data-popup-type="load"';
                 break;
 
                 default:

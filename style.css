@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.2.7
+Version:			v2.2.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -96,7 +96,7 @@ html {
 	box-sizing: border-box; /* Apply a natural box layout model to the document; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 	background-position: center center;
 	background-repeat: no-repeat;
-	/*background-attachment: fixed;*/
+	background-attachment: fixed;
 	height: 100%;
 }
 
@@ -316,39 +316,51 @@ input[type="search"]::-webkit-search-decoration { /* Corrects inner padding disp
 	-webkit-appearance: none;
 }
 
-input[type="text"],
+/*input[type="text"],
 input[type="email"],
 input[type="url"],
 input[type="password"],
-input[type="search"],
+input[type="search"],*/
+select,
+input,
 textarea,
 .wpcf7 .destinatario { /*  +++ todo: mira a select e non nello specifico wpcf7 */
+	display: block;
 	color: #a7a7a7;
+	background-color: #FFF;
 	border: 1px solid #ccc;
 	max-width: 100%;
 	width: 100%;
-	font-size: .8em;
-	line-height: 1em;
+	min-height: 3em !important;
+	
+	font-size: 1em;
+	line-height: 1.5em;
 	margin-bottom: 15px;
+	padding: 0em 1em;
+	
+	-webkit-appearance: none;
+	-webkit-border-radius: 0px;
+	border-radius: 0 !important;
+	
 	-webkit-transition: all .3s;
 	transition: all .3s;
-	display: block;
 }
 
 select {
 	height: 3.4em;
-	border: 0;
 	width: 100%;
 	background-color: transparent;
 	color: #a7a7a7;
 	/*cursor: pointer;*/
 }
 
-input[type="text"]:focus,
+/*input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus,
-input[type="search"]:focus,
+input[type="search"]:focus,*/
+select:focus,
+input:focus,
 textarea:focus {
 	color: #666;
 	border-color: #666;
@@ -361,6 +373,8 @@ textarea {
 	width: 100%;
 	height: 175px;
 	max-height: 300px;
+	padding-top: .5em;
+	padding-bottom: .5em;
 }
 
 /*--------------------------------------------------------------
@@ -1026,8 +1040,12 @@ a:hover{
 
 .scm-list.elenco-puntato > .button,
 .scm-list.elenco-puntato > .button *{
+	/*line-height: 1.5em;*/
+}
+
+.scm-list.elenco-puntato > .button,
+.scm-list.elenco-puntato > .button *:not(a){
 	cursor: default;
-	line-height: 1.5em;
 }
 
 .scm-list.elenco-puntato > .button{
@@ -1078,7 +1096,7 @@ blockquote,
 }
 
 .scm-list.elenco-puntato > .button.shape,
-.scm-button,
+.scm-button:not(.elenco_puntato),
 button,
 input[type="button"],
 input[type="reset"],
