@@ -104,7 +104,7 @@ if( is( $element ) ){
 
 		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', '' ), 1 );
 
-        if( $icon !== 'no' ){
+        if( $icon && $icon !== 'no' ){
         	if( !$i_style )
         		indent( $SCM_indent + 1, '<img src="' . $marker['icon'] . '" class="' . $i_class . '" />', 1 );
         	else

@@ -1487,7 +1487,7 @@
 
 	// ARTICOLI
 	if ( ! function_exists( 'scm_acf_fields_articolo' ) ) {
-		function scm_acf_fields_articolo( $name = '', $default = 0 ) {
+		function scm_acf_fields_articolo( $name = '', $default = 0, $type = '0' ) {
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1495,7 +1495,11 @@
 
 			//$fields[] = scm_acf_field( 'tab-set-post', 'tab-left', 'Impostazioni' );
 				$fields[] = scm_acf_field_image( 'image', $default );
-				$fields = array_merge( $fields, scm_acf_fields_module() );
+				if( $type === '0' )
+					$fields = array_merge( $fields, scm_acf_fields_module() );
+				elseif( $type === '1' )
+					$fields[] = scm_acf_field_editor_basic( 'editor', $default );
+
 				//$fields[] = scm_acf_field_limiter( $name . 'post-excerpt', $default, 350, 1, 100, 0, 'Anteprima' );
 				//$fields[] = scm_acf_field_editor( $name . 'post-content', $default );
 
@@ -1877,7 +1881,9 @@
 
 			$fields = array();
 
-			$fields[] = scm_acf_field( 'tab-branding-settings', 'tab-left', 'Favicon', 33 );
+			$fields[] = scm_acf_field( 'tab-news-settings', 'tab-left', 'News' );
+				$fields[] = scm_acf_field_positive( 'opt-news-type', $default, 100, 0, 0, 'Type' );
+			$fields[] = scm_acf_field( 'tab-branding-settings', 'tab-left', 'Favicon' );
 				$fields[] = scm_acf_field_image( $name . 'opt-branding-ico', $default, 33, 0, 'ICO 16' );
 				$fields[] = scm_acf_field_image( $name . 'opt-branding-54', $default, 33, 0, 'ICO 54' );
 				$fields[] = scm_acf_field_image( $name . 'opt-branding-114', $default, 33, 0, 'Icon 114' );

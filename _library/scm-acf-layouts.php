@@ -591,6 +591,9 @@
 			$layout_tit = scm_acf_layout( 'titolo-empty', 'block', 'Titolo Vuoto' );
                 $layout_tit['sub_fields'] = array_merge( $layout_tit['sub_fields'], scm_acf_object_titolo( $default ) );
 
+            $layout_txt = scm_acf_layout( 'testo-empty', 'block', 'Testo Vuoto' );
+                $layout_txt['sub_fields'] = array_merge( $layout_txt['sub_fields'], scm_acf_object_testo( $default, 0, 2 ) );
+
             $layout_list = scm_acf_layout( 'pulsanti', 'block', 'Pulsanti' );
                 $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti( $default ) );
 
@@ -598,6 +601,7 @@
                 $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona( $default ) );
 
             $layout_empty[] = $layout_tit;
+            $layout_empty[] = $layout_txt;
             $layout_empty[] = $layout_list;
             $layout_empty[] = $layout_icon;
 
@@ -766,9 +770,14 @@
 	if ( ! function_exists( 'scm_acf_layout_news' ) ) {
 		function scm_acf_layout_news( $layouts = array(), $default = 0 ) {
 
+				$type = scm_field( 'opt-news-type', '0', 'option' );
+
 				$layout_img = scm_acf_layout( 'immagine', 'block', 'Immagine' );
 
-				$layout_mod = scm_acf_layout( 'modules', 'block', 'News' );
+				if( $type === '0' )
+					$layout_mod = scm_acf_layout( 'modules', 'block', 'News' );
+				elseif( $type === '1' )
+					$layout_mod = scm_acf_layout( 'testo', 'block', 'News' );
 
 			$layouts = array_merge( $layouts, array( $layout_img, $layout_mod ) );
 

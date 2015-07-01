@@ -44,14 +44,19 @@
 			state 		= 'all',
 			old 		= this.attr( 'class' ),
 			tofull 		= this.attr( 'data-tofull' ),
-			tocolumn 	= this.attr( 'data-tocolumn' );
+			tocolumn 	= this.attr( 'data-tocolumn' ),
+			sizes 		= {
+			wide 		: 1401,
+			landscape	: 1121,
+			notebook 	: 1031,
+			portrait 	: 801 };
 
 		if( w > 700 ){
 
 			a += 'desktop r1400 ';
 			r += 'smart smartmid smartmin smartmicro smartold ';
 
-			if( w < 1401 ){
+			if( w < sizes.wide ){
 				a += 'r1120 ';
 				r += 'wide ';
 			}else{
@@ -59,19 +64,19 @@
 				a += 'wide ';
 			}
 
-			if( w < 1121 ) a += 'tablet r1030 ';
+			if( w < sizes.landscape ) a += 'tablet r1030 ';
 			else r += 'tablet r1030 ';
 
-			if( w < 1121 && w > 800 ) a += 'landscape ';
+			if( w < sizes.landscape && w > sizes.portrait - 1 ) a += 'landscape ';
 			else r += 'landscape ';
 
-			if( w < 1031 ) a += 'notebook r940 ';
+			if( w < sizes.notebook ) a += 'notebook r940 ';
 			else r += 'notebook r940 ';
 
 			if( w < 941 ) a += 'r800 ';
 			else r += 'r800 ';
 
-			if( w < 801 ) a += 'portrait r700 ';
+			if( w < sizes.portrait ) a += 'portrait r700 ';
 			else r += 'portrait r700 ';
 
 		}else{
@@ -97,16 +102,17 @@
 			this.removeClass( r );
 			this.addClass( a );
 
-			if( this.hasClass( tofull ) ) this.addClass( 'tofull' );
+			if( w < sizes[ tofull ] ) this.addClass( 'tofull' );
 			else this.removeClass( 'tofull' );
 
-			if( this.hasClass( tocolumn ) ) this.addClass( 'tocolumn' );
+			if( w < sizes[ tocolumn ] ) this.addClass( 'tocolumn' );
 			else this.removeClass( 'tocolumn' );
 
 			if(old != this.attr( 'class' )){
 				if ( this.hasClass( 'smartmin' ) )		state = 'smartmin';
 				else if ( this.hasClass( 'smart' ) )	state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
+				else if( this.hasClass( 'notebook' ) )	state = 'notebook';
 				else if( this.hasClass( 'landscape' ) )	state = 'landscape';
 				else if( this.hasClass( 'wide' ) )		state = 'wide';
 				else if( this.hasClass( 'desktop' ) )	state = 'desktop';
@@ -238,6 +244,8 @@
 	        else
 	        	return; // +++ toccato*/
 
+	        
+
 	        if( $this.data( 'href' ).indexOf( '#' ) === 0 )
 	        	target = '_self';
 
@@ -260,7 +268,6 @@
 					$this.loadContent( event, elem.href );
 					return $this;
 				}else{
-
 					if ( locpath === path ){ // toccato
 						result = $this.trigger( 'linkPage' ).data( 'done' );
 						state = 'page';
@@ -400,12 +407,10 @@
 
 			if( act && act != '' ){
 
-				//if( act.indexOf( data ) >= 0 ){
-				if( act == data ){
+				if( act.indexOf( data ) >= 0 ){ // toccato
+				//if( act == data ){
 					if( !classes ){
 						$this.show();
-						//console.log(data);
-						//console.log(name);
 						$this.siblings( '[data-' + name + '=""]' ).hide();
 					}else{
 						$this.addClass( classes );
@@ -498,9 +503,9 @@
 		}
 
 		return this.each(function(){
-					
+
 			var $this 			= $( this ),
-				link 			= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
+				link 			= ( $this.data( 'href' ) ? $this.data( 'href' ) : ( $this.attr( 'href' ) ? $this.attr( 'href' ) : '#' ) ),
 				$body 			= $( 'body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
@@ -1057,8 +1062,8 @@
 				latlng 			= new google.maps.LatLng( $this.data( 'lat' ), $this.data( 'lng' ) ),
 				marker_img 		= $this.data( 'img' ),
 				marker_color	= $this.data( 'icon-color' ),
-				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : 0 ),
-				marker 			= [];
+				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : '' ),
+				marker 			= [];				
 			
 			//var image = new google.maps.MarkerImage(
 					//marker_img
@@ -1411,6 +1416,7 @@
 				name 			= ( $this.data( 'popup-title' ) ? $this.data( 'popup-title' ) : '' ),
 				type 			= ( $this.data( 'popup-type' ) ? $this.data( 'popup-type' ) : 'image' ),
 				content 		= ( $this.data( 'popup-content' ) ? $this.data( 'popup-content' ) : '' ),
+				list 			= ( $this.data( 'popup-list' ) ? $this.data( 'popup-list' ) : 'true' ),
 				images 			= [],
 				titles 			= [],
 				descriptions 	= [],
@@ -1508,33 +1514,36 @@
 				   		openOpacity: true,
 				   		closeOpacity: true,
 				   		closeClick: false,
+				   		index: init,
 				   		tpl: {
 				   			wrap: '<div class="fancybox-wrap" tabIndex="-1"><h1 class="text-center">' + name + '</h1><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				   		},
 				   		beforeLoad: function() {
 						
-						    var list = $( '#fancybox-links' );
-						    
-						    if (!list.length) {  
+							if( list == 'true' ){
+							    var list = $( '#fancybox-links' );
+							    
+							    if (!list.length) {  
 
-						    	if( this.group.length > 1 ){
+							    	if( this.group.length > 1 ){
 
-							        list = $( '<ul id="fancybox-links">' );
-							        for (var i = 0; i < this.group.length; i++) {
-							        	var item = '<li data-index="' + i + '"><label></label></li>';
-							            $( item ).click( function() {
+								        list = $( '<ul id="fancybox-links">' );
+								        for (var i = 0; i < this.group.length; i++) {
+								        	var item = '<li data-index="' + i + '"><label></label></li>';
+								            $( item ).click( function() {
 
-							            	$.fancybox.jumpto( $( this ).data( 'index' ) );
+								            	$.fancybox.jumpto( $( this ).data( 'index' ) );
 
-							            }).appendTo( list );
-							        }
-							        
-							        list.appendTo( 'body' );
+								            }).appendTo( list );
+								        }
+								        
+								        list.appendTo( 'body' );
+								    }
+
 							    }
 
-						    }
-
-						    list.find( 'li' ).removeClass( 'active' ).eq( this.index ).addClass( 'active' );
+							    list.find( 'li' ).removeClass( 'active' ).eq( this.index ).addClass( 'active' );
+							}
 						},
 						beforeShow: function() {
 							//$( '.fancybox-overlay' ).css( 'opacity', 0 );

@@ -1314,6 +1314,7 @@
 						'500px'			=> 'Mobile Min',
 						'700px'			=> 'Mobile',
 						'800px'			=> 'Tablet Portrait',
+						'940px'			=> 'Notebook',
 						'1030px'		=> 'Tablet Landscape',
 						'1120px'		=> 'Desktop',
 					);
@@ -1324,6 +1325,7 @@
 						'smartmin'		=> 'Mobile Min',
 						'smart'			=> 'Mobile',
 						'portrait'		=> 'Tablet Portrait',
+						'notebook'		=> 'Notebook',
 						'tablet'		=> 'Tablet Landscape',
 						'desktop'		=> 'Desktop',
 					);
@@ -1332,11 +1334,12 @@
 
 			elseif( strpos( $list, 'responsive_up' ) !== false ):
 				$choices = array(
-					'smartmin'										=> 'Mobile Min',
-					'smart smartmin'								=> 'Mobile',
-					'smart portrait smartmin'						=> 'Tablet Portrait',
-					'smart portrait landscape smartmin'				=> 'Tablet Landscape',
-					'smart portrait landscape desktop smartmin'		=> 'Desktop',
+					'smartmin'												=> 'Mobile Min',
+					'smartmin smart'										=> 'Mobile',
+					'smartmin smart portrait'								=> 'Tablet Portrait',
+					'smartmin smart portrait notebook'						=> 'Notebook',
+					'smartmin smart portrait landscape'						=> 'Tablet Landscape',
+					'smartmin smart portrait landscape desktop'				=> 'Desktop',
 				);
 
 			elseif( strpos( $list, 'responsive_down' ) !== false ):

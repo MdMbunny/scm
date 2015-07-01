@@ -1067,7 +1067,7 @@
                 // + ARTICOLI
                 $article = scm_acf_group( 'Articolo', 'news-single' );
                 $article['location'][] = scm_acf_group_location( 'news' );
-                $article['fields'] = scm_acf_fields_articolo();
+                $article['fields'] = scm_acf_fields_articolo( '', 0, scm_field( 'opt-news-type', '0', 'option' ) );
 
                 $groups[] = $article;
 
