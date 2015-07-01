@@ -78,7 +78,18 @@ if( !$text ){
     		return;
     	
     }else{
-    	$text = get_the_title();
+        switch ( $layout ) {
+            
+            case 'layout-excerpt':
+                $text = scm_field( 'excerpt', '', $post_id );
+            break;
+
+            default:
+                $text = get_the_title();
+            break;
+
+        }
+    	
     }
 }
 

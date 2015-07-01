@@ -1396,7 +1396,6 @@
 					$element = $el[1];
 					$key = str_replace( 'scm_acf_object_', '', $el[0] );
 
-
 					$layout = scm_acf_layout( $key, 'block', $element );
 
 					if( $fun != 'scm_acf_object' && function_exists( $fun ) )
@@ -1590,9 +1589,9 @@
 		}
 	}
 
-	// ARTICOLI
-	if ( ! function_exists( 'scm_acf_fields_articolo' ) ) {
-		function scm_acf_fields_articolo( $name = '', $default = 0 ) {
+	// NEWS
+	if ( ! function_exists( 'scm_acf_fields_news' ) ) {
+		function scm_acf_fields_news( $name = '', $default = 0 ) {
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1607,6 +1606,29 @@
 			/*$fields[] = scm_acf_field( 'tab-tax-post', 'tab-left', __( 'Categorie', SCM_THEME ) );
 				$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'post', $default, 'post' ) );
 				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'post', $default, 'post' ) );*/
+				//$fields[] = scm_acf_field_category( $name . 'post-cat', $default, 'post' );
+
+			return $fields;
+
+		}
+	}
+
+	// ARTICOLI
+	if ( ! function_exists( 'scm_acf_fields_articolo' ) ) {
+		function scm_acf_fields_articolo( $name = '', $default = 0 ) {
+
+			$name = ( $name ? $name . '-' : '');
+
+			$fields = array();
+
+			$fields[] = scm_acf_field( 'tab-set-articolo', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				$fields[] = scm_acf_field_image( 'image', $default );
+				$fields[] = scm_acf_field_textarea( 'excerpt', $default, 5, 100, 0, __( 'Anteprima', SCM_THEME ) );
+				$fields[] = scm_acf_field_editor_basic( 'editor', $default );
+
+			$fields[] = scm_acf_field( 'tab-tax-articolo', 'tab-left', __( 'Categorie', SCM_THEME ) );
+				$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'articolo', $default, 'articoli' ) );
+				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'articolo', $default, 'articoli' ) );
 				//$fields[] = scm_acf_field_category( $name . 'post-cat', $default, 'post' );
 
 			return $fields;

@@ -343,7 +343,7 @@
                 'menu' => $menu,
             ));
 
-            if( $sticky != 'no' ){
+            if( $sticky && $sticky != 'no' ){
 
                 $sticky_id = $id . '-sticky';
 

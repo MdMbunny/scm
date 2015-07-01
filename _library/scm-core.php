@@ -159,16 +159,18 @@
 
             // Font Awesome
             
-            //wp_register_style('fontawesome', SCM_URI_FONT . 'font-awesome/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-            //wp_enqueue_style( 'fontawesome' );
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.3.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style( 'font-awesome' );
 
-            global $wp_styles, $is_IE;
+
+
+            /*global $wp_styles, $is_IE;
             wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array(), '4.3.0' );
             if ( $is_IE ) {
                 wp_enqueue_style( 'font-awesome-ie', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome-ie7.min.css', array('font-awesome'), '4.3.0' );
                 // Add IE conditional tags for IE 7 and older
                 $wp_styles->add_data( 'font-awesome-ie', 'conditional', 'lte IE 7' );
-            }
+            }*/
 
             // SCM
 
@@ -262,9 +264,12 @@
             wp_enqueue_script( 'modernizr-touch' );
             
             // Bootstrap
-            
-            wp_register_script( 'bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+
+            wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.5/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'bootstrap' );
+            
+            //wp_register_script( 'bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            //wp_enqueue_script( 'bootstrap' );
 
             // Images Loaded
             

@@ -587,6 +587,7 @@
                     case 'layout-titolo':
                     case 'layout-sottotitolo':
                     case 'layout-titolo-empty':
+                    case 'layout-excerpt':
 
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
                             'cont' => $args
@@ -610,7 +611,7 @@
 
                     case 'layout-testo':
 
-                        $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : '' ) );
+                        $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : scm_field( 'editor', '', get_the_ID() ) ) );
                         if(!$text) continue;
                         
                         indent( $SCM_indent, $text, 1 ); // +++ todo: se non è un <p> aggiungilo, e comunque aggiungi class id style e attr
@@ -898,6 +899,7 @@
 
                 break;
 
+                case 'articoli':
                 case 'news':
                     $link = ' data-popup="' . htmlentities( json_encode( array( get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) ) ) ) . '"';
                     $link .= ' data-popup-content="' . ( $id ? '#post-' . $id : '' ) . '"';

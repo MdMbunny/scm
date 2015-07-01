@@ -293,14 +293,19 @@
 
 			$fields = array();
 
-			if( $simple === 1 )
-				$fields[] = scm_acf_field_editor_media( 'editor', $default, $width, $logic );
-			else if( $simple === 2 )
-				$fields[] = scm_acf_field_editor_basic( 'editor', $default, $width, $logic );
-			else
-				$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );
+			if ( !$obj ){
+
+				if( $simple === 1 )
+					$fields[] = scm_acf_field_editor_media( 'editor', $default, $width, $logic );
+				else if( $simple === 2 )
+					$fields[] = scm_acf_field_editor_basic( 'editor', $default, $width, $logic );
+				else
+					$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );
+
+			}
 
 			return $fields;
+
 		}
 	}
 
@@ -672,12 +677,12 @@
 	if ( ! function_exists( 'scm_acf_layout_soggetti' ) ) {
 		function scm_acf_layout_soggetti( $layouts = array(), $default = 0 ) {
 				
-				$layout_logo = scm_acf_layout( 'logo', 'block', 'Logo' );
+				$layout_logo = scm_acf_layout( 'logo', 'block', __( 'Logo', SCM_THEME ) );
 					$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'width', $default, 'auto', '%', __( 'Larghezza', SCM_THEME ) ) );
 					$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'height', $default, 'auto', '%', __( 'Altezza', SCM_THEME ) ) );
 					$layout_logo['sub_fields'][] = scm_acf_field_select1( 'negative', $default, 'positive_negative', 100, 0, '', __( 'Scegli una versione', SCM_THEME ) );
 
-				$layout_icon = scm_acf_layout( 'logo-icona', 'block', 'Icona' );
+				$layout_icon = scm_acf_layout( 'logo-icona', 'block', __( 'Icona', SCM_THEME ) );
 					$layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_preset_size( 'size', $default, '150', 'px', __( 'Dimensione', SCM_THEME ) ) );
 					$layout_icon['sub_fields'][] = scm_acf_field_select1( 'negative', $default, 'positive_negative', 100, 0, '', __( 'Scegli una versione', SCM_THEME ) );
 
@@ -685,17 +690,17 @@
 					$layout_c['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '(c)', ( $default ? 'default' : '(c) = ©, (tm) = ™, (r) = ®' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
 					$layout_c['sub_fields'] = array_merge( $layout_c['sub_fields'], scm_acf_object_titolo( $default, 1, 1, 75 ) );
 
-				$layout_int = scm_acf_layout( 'intestazione', 'block', 'Intestazione' );
+				$layout_int = scm_acf_layout( 'intestazione', 'block', __( 'Intestazione', SCM_THEME ) );
 					$layout_int['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
 					$layout_int['sub_fields'] = array_merge( $layout_int['sub_fields'], scm_acf_object_titolo( $default, 1, 1, 50 ) );
 					$layout_int['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
 
-				$layout_piva = scm_acf_layout( 'piva', 'block', 'P.IVA' );
+				$layout_piva = scm_acf_layout( 'piva', 'block', __( 'P.IVA', SCM_THEME ) );
 					$layout_piva['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', __( 'P.IVA', SCM_THEME ) . ' ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
 					$layout_piva['sub_fields'] = array_merge( $layout_piva['sub_fields'], scm_acf_object_titolo( $default, 1, 1, 50 ) );
 					$layout_piva['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
 
-				$layout_cf = scm_acf_layout( 'cf', 'block', 'Codice Fiscale' );
+				$layout_cf = scm_acf_layout( 'cf', 'block', __( 'Codice Fiscale', SCM_THEME ) );
 					$layout_cf['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', __( 'C.F.', SCM_THEME ) . ' ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
 					$layout_cf['sub_fields'] = array_merge( $layout_cf['sub_fields'], scm_acf_object_titolo( $default, 1, 1, 50 ) );
 					$layout_cf['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
@@ -751,6 +756,36 @@
 					$layout_form['sub_fields'] = scm_acf_object_form( $default );*/
 
 			$layouts = array_merge( $layouts, array( $layout_map, $layout_address, $layout_data ) );
+
+			return $layouts;
+		}
+	}
+
+// ARTICOLI
+
+	// general fields
+	if ( ! function_exists( 'scm_acf_element_articoli' ) ) {
+		function scm_acf_element_articoli( $fields = array(), $default = 0 ) {
+
+			return $fields;
+
+		}
+	}
+	// layout fields
+	if ( ! function_exists( 'scm_acf_layout_articoli' ) ) {
+		function scm_acf_layout_articoli( $layouts = array(), $default = 0 ) {
+
+				$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
+
+				$layout_exc = scm_acf_layout( 'excerpt', 'block', __( 'Anteprima', SCM_THEME ) );
+					$layout_exc['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
+					$layout_exc['sub_fields'] = array_merge( $layout_exc['sub_fields'], scm_acf_object_titolo( $default, 1, 1, 50 ) );
+					$layout_exc['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
+
+				$layout_art = scm_acf_layout( 'testo', 'block', __( 'Testo', SCM_THEME ) );
+					$layout_art['sub_fields'] = array_merge( $layout_art['sub_fields'], scm_acf_object_testo( $default, 1 ) );
+
+			$layouts = array_merge( $layouts, array( $layout_img, $layout_exc, $layout_art ) );
 
 			return $layouts;
 		}
