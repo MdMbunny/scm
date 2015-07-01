@@ -44,7 +44,7 @@
             $png = scm_field('opt-branding-png', '', 'option');
             $ico = scm_field('opt-branding-ico', '', 'option');
 
-            indent( 0, lbreak() . '<!------ Favicon and Touch Icons ------>', 2 );
+            indent( 0, lbreak() . '<!-- Favicon and Touch Icons -->', 2 );
 
             if ( $ico144 )
                 indent( 0, '<link rel="apple-touch-icon-precomposed" sizes="144x144" href="' . esc_url( $ico144 ) . '" /> <!-- for retina iPad -->', 1 );
@@ -343,7 +343,7 @@
                 'menu' => $menu,
             ));
 
-            if( $sticky && $sticky != 'no' ){
+            if( $sticky != 'no' ){
 
                 $sticky_id = $id . '-sticky';
 
@@ -429,7 +429,7 @@
                 $link = '<a href="' . $url . '">' . $content . '</a>';
 
                 if( $has_children !== false ){
-                    $data = 'data-toggle="true" ';
+                    $data = ' data-toggle="true" ';
                     $class .= ' has-children toggle no-toggled';
                     $link = '<div class="toggle-button">' . $link . '</div>';
                 }

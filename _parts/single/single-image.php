@@ -23,6 +23,8 @@ $args = array(
     'attributes' => '',
     'style' => '',
     'negative' => 'off',
+    'thumb' => '',
+    'link' => ''
 );
 
 if( isset( $this ) )
@@ -30,10 +32,13 @@ if( isset( $this ) )
 
 /***************/
 
+
+
 $layout = $args['acf_fc_layout'];
-$image = $args[ 'image' ];
-$url = scm_field( 'image', '', $post_id );
+$image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
+//$url = scm_field( 'image', '', $post_id );
 $negative = $args['negative'] === 'on';
+$thumb = -2;
 
 if( !$image ){
     if( $post->post_type === 'soggetti' ){
@@ -57,12 +62,36 @@ if( !$image ){
         if( !$image )
     		return;
 
-    }elseif( $url ){
-        $image = $url;
+    }elseif( $post->post_type === 'video' ){
+
+        $url = scm_field( 'video-url', '', $post_id );
+        $id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
+        if( !$id )
+            return;
+
+        $image = 'http://img.youtube.com/vi/' . $id . '/1.jpg';
+
     }else{
     	return;
     }
+}elseif ( $layout == 'layout-thumbs' ) {
+    
+    $thumb = ( $image ? intval( $image ) : 0 );
+    $images = scm_field( 'galleria-images', array(), $post_id );
+
+    if( $thumb >= 0 ){
+
+        $image = $images[$thumb];
+
+    }else{
+
+        $image = $images;
+
+    }
+
 }
+
+$image = toArray( $image );
 
 /***************/
 
@@ -97,14 +126,33 @@ switch ( $args[ 'format' ] ) {
     break;
 }
 
+for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
+    $att = $attributes;
 
-indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );
+    $value = $image[$i];
 
-    indent( $SCM_indent + 2, '<img src="' . $image . '" style="max-width:100%;max-height:100%;" alt="">', 1 );
+    $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
 
-indent( $SCM_indent + 1, '</div><!-- image -->', 2 );
+    $id = ( $id && sizeof( $image ) > 1 ? $id . '-' . $key : $id );
 
+    if( $thumb > -2 ){
+
+        if( $thumb == -1 ){
+            $args['thumb'] = $i;
+        }
+        
+        $att .= scm_post_link( $args );
+
+    }
+ 
+    indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $att ), 1 );
+
+        indent( $SCM_indent + 2, '<img src="' . $value . '" style="max-width:100%;max-height:100%;" alt="">', 1 );
+
+    indent( $SCM_indent + 1, '</div><!-- image -->', 2 );
+
+}
 
 
 ?>

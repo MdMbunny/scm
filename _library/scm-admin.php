@@ -68,7 +68,7 @@
             global $wpdb;
 
             if ( !( isset( $_GET['post']) || isset( $_POST['post']) || ( isset($_REQUEST['action']) && 'scm_admin_duplicate_post' == $_REQUEST['action'] ) ) ) {
-                wp_die('No post to duplicate has been supplied!');
+                wp_die( __( 'No post to duplicate has been supplied!', SCM_THEME ) );
             }
 
             $post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );

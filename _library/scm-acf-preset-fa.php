@@ -8,7 +8,7 @@
 
 	$SCM_fa['typography'] = array(
 		'quote' => array(
-			'name' => 'Virgolette',
+			'name' => __( 'Virgolette', SCM_THEME ),
 			'color' => '#333333',
 			'choices' => array(
 				'fa-quote-left',
@@ -225,7 +225,7 @@
 		),*/
 
     	'phone' => array(
-    		'name' => 'Telefono',
+    		'name' => __( 'Telefono', SCM_THEME ),
     		'color' => '#333333',
     		'choices' => array(
 				'fa-phone',
@@ -235,7 +235,7 @@
 		),   	
 
 		'fax' => array(
-    		'name' => 'Fax',
+    		'name' => __( 'Fax', SCM_THEME ),
     		'color' => '#333333',
     		'choices' => array(
 				'fa-fax',
@@ -443,7 +443,7 @@
 	// UNKNOWN
 
 		'other' => array(
-			'name' => 'Altri',
+			'name' => __( 'Altri', SCM_THEME ),
 			'color' => '#333333',
 			'choices' => array(
 				'fa-adn',

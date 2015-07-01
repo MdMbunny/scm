@@ -12,8 +12,8 @@
 
 			//$fields[] = scm_acf_field_select( $name . 'layout', $default, 'layout_main', 100, 0, '', 'Layout' );
 
-			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', 'Altezza', 0, 100, 100 ) );
-			$fields[] = scm_acf_field_select( $name . 'theme', $default, 'themes_nivo', 100, 0, '', 'Tema' );
+			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, 'auto', 'px', __( 'Altezza', SCM_THEME ), 0, 100, 100 ) );
+			$fields[] = scm_acf_field_select( $name . 'theme', $default, 'themes_nivo', 100, 0, '', __( 'Tema', SCM_THEME ) );
 			$fields[] = scm_acf_field_select_valign( $name . 'alignment', $default );
 			
 			// conditional options
@@ -27,21 +27,21 @@
 			$options = 0;
 			$advanced = 0;
 
-				$fields[] = scm_acf_field_select( $name . 'effect', $default, 'effect_nivo', 100, $options, '', 'Effetto Slider' );
-				$fields[] = scm_acf_field_number( $name . 'slices', $default, 100, $options, '30', 'Slices', 1, 30 );
-				$fields[] = scm_acf_field_number( $name . 'cols', $default, 100, $options, '8', 'Colonne', 1, 8 );
-				$fields[] = scm_acf_field_number( $name . 'rows', $default, 100, $options, '8', 'Righe', 1, 100 );
-				$fields[] = scm_acf_field_number( $name . 'speed', $default, 100, $options, '1', 'Velocità' );
-				$fields[] = scm_acf_field_number( $name . 'pause', $default, 100, $options, '5', 'Pausa' );
+				$fields[] = scm_acf_field_select( $name . 'effect', $default, 'effect_nivo', 100, $options, '', __( 'Effetto Slider', SCM_THEME ) );
+				$fields[] = scm_acf_field_number( $name . 'slices', $default, 100, $options, '30', __( 'Slices', SCM_THEME ), 1, 30 );
+				$fields[] = scm_acf_field_number( $name . 'cols', $default, 100, $options, '8', __( 'Colonne', SCM_THEME ), 1, 8 );
+				$fields[] = scm_acf_field_number( $name . 'rows', $default, 100, $options, '8', __( 'Righe', SCM_THEME ), 1, 100 );
+				$fields[] = scm_acf_field_number( $name . 'speed', $default, 100, $options, '1', __( 'Velocità', SCM_THEME ) );
+				$fields[] = scm_acf_field_number( $name . 'pause', $default, 100, $options, '5', __( 'Pausa', SCM_THEME ) );
 
-				$fields[] = scm_acf_field_option( $name . 'start', $default, 100, $advanced, '0', 'Start Slide' );
-				$fields[] = scm_acf_field_select_disable( $name . 'hover', $default, 'Pause on Hover', 100, $advanced );
-				$fields[] = scm_acf_field_select_disable( $name . 'manual', $default, 'Avanzamento Manuale', 100, $advanced );
-				$fields[] = scm_acf_field_select_disable( $name . 'direction', $default, 'Direction Nav', 100, $advanced );
-				$fields[] = scm_acf_field_select_disable( $name . 'control', $default, 'Control Nav', 100, $advanced );
-				$fields[] = scm_acf_field_select_disable( $name . 'thumbs', $default, 'Thumbs Nav', 100, $advanced );
-				$fields[] = scm_acf_field_icon( $name . 'prev', $default, 'angle-left', '', 100, $advanced, 'Prev Icon' );
-				$fields[] = scm_acf_field_icon( $name . 'next', $default, 'angle-right', '', 100, $advanced, 'Next Icon' );
+				$fields[] = scm_acf_field_option( $name . 'start', $default, 100, $advanced, '0', __( 'Start Slide', SCM_THEME ) );
+				$fields[] = scm_acf_field_select_disable( $name . 'hover', $default, __( 'Pause on Hover', SCM_THEME ), 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'manual', $default, __( 'Avanzamento Manuale', SCM_THEME ), 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'direction', $default, __( 'Direction Nav', SCM_THEME ), 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'control', $default, __( 'Control Nav', SCM_THEME ), 100, $advanced );
+				$fields[] = scm_acf_field_select_disable( $name . 'thumbs', $default, __( 'Thumbs Nav', SCM_THEME ), 100, $advanced );
+				$fields[] = scm_acf_field_icon( $name . 'prev', $default, 'angle-left', '', 100, $advanced, __( 'Prev Icon', SCM_THEME ) );
+				$fields[] = scm_acf_field_icon( $name . 'next', $default, 'angle-right', '', 100, $advanced, __( 'Next Icon', SCM_THEME ) );
 
 			return $fields;
 			

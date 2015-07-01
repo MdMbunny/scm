@@ -33,7 +33,7 @@
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_scripts' );
     add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
 
-	add_action( 'widgets_init', 'scm_widgets_default' );
+    add_action( 'widgets_init', 'scm_widgets_default' );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
     //add_action( 'after_setup_theme', 'scm_default_headers' );

@@ -309,12 +309,12 @@
 	        	global $post;
 
 	        	if( !$post && !$target )
-	        		return 'post e target non trovati';     	
+	        		return __( 'post e target non trovati', SCM_THEME );
 
 	        	$id = ( $target ?: $post->ID );
 
 	        	if( !$id )
-	        		return 'id non trovato';
+	        		return __( 'id non trovato', SCM_THEME );
 
 	        	if( function_exists( 'get_field' ) )
 	        		$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
@@ -523,7 +523,7 @@
 	if ( ! function_exists( 'scm_acf_column_selectors' ) ) {
 		function scm_acf_column_selectors( $name = '', $list = array(), $w1 = 30, $w2 = 30, $w3 = 40 ) {
 			
-			array_unshift( $list, scm_acf_field( $name . 'attributes', 'attributes', 'Attributi', $w3 ) );
+			array_unshift( $list, scm_acf_field( $name . 'attributes', 'attributes', __( 'Attributi', SCM_THEME ), $w3 ) );
 			array_unshift( $list, scm_acf_field_class( $name . 'class', 0, $w2 ) );
 			array_unshift( $list, scm_acf_field_id( $name . 'id', 0, $w1 ) );
 
@@ -551,7 +551,7 @@
 	if ( ! function_exists( 'scm_acf_column_width' ) ) {
 		function scm_acf_column_width( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_column_width( $name . 'column-width', 0, $width, 0, array( '1/1' => 'Larghezza piena', 'auto' => 'Auto' ), 'Larghezza', 'Larghezza' ) );
+			array_unshift( $list, scm_acf_field_select_column_width( $name . 'column-width', 0, $width, 0, array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ), __( 'Larghezza', SCM_THEME ), __( 'Larghezza', SCM_THEME ) ) );
 
 			return $list;
 
@@ -577,7 +577,7 @@
 	if ( ! function_exists( 'scm_acf_column_link' ) ) {
 		function scm_acf_column_link( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => 'Nessun Link' ) ), 'Link', $width ) );
+			array_unshift( $list, scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), __( 'Link', SCM_THEME ), $width ) );
 
 			return $list;
 
@@ -603,7 +603,7 @@
 	if ( ! function_exists( 'scm_acf_column_align' ) ) {
 		function scm_acf_column_align( $name = '', $list = array(), $width = 100 ) {
 						
-			array_unshift( $list, scm_acf_field( $name . 'alignment', array( 'select-alignment', array( 'default' => 'Allineamento di default' ) ), 'Allineamento', $width ) );
+			array_unshift( $list, scm_acf_field( $name . 'alignment', array( 'select-alignment', array( 'default' => __( 'Allineamento di default', SCM_THEME ) ) ), __( 'Allineamento', SCM_THEME ), $width ) );
 			
 			return $list;
 
@@ -629,7 +629,7 @@
 	if ( ! function_exists( 'scm_acf_column_float' ) ) {
 		function scm_acf_column_float( $name = '', $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_float( $name . 'float', 0, $width, 0, ' - (se auto)' ) );
+			array_unshift( $list, scm_acf_field_select_float( $name . 'float', 0, $width, 0, __( ' - (se auto)', SCM_THEME ) ) );
 			
 			return $list;
 

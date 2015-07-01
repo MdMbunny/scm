@@ -123,7 +123,7 @@
                     // quando printi le gallery, per ogni Thumb assegni un data-init diverso
 
         // SCM ACTION - with $content - scm_action_echo_content/{type}
-                    do_action( 'scm_action_echo_content', $content, $SCM_indent );                    
+                    do_action( 'scm_action_echo_content', $content, $SCM_indent );
                     if( $type )
                         do_action( 'scm_action_echo_content_' . $type, $content, $SCM_indent );
 
@@ -149,6 +149,15 @@
             if( is( $container == 'post' ) ){
                 $builder = $build;
                 $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
+/*                if( isset( $builder['thumb'] ) ){
+                    $thumb = ( $builder['thumb'] ? intval( $builder['thumb'] ) : 0 );
+                    $images = scm_field( 'galleria-images', array(), $post_id );
+                    if( $thumb >= 0 ){
+                        $image = $images[thumb];
+                    }else{
+                        $image = $images;
+                    }
+                }*/
             }
 
             if( !is( $build ) )
@@ -352,6 +361,7 @@
                     }else{
                         switch ( $link ) {
                             case 'self':
+                                // if thumbs $content['link'] = $href e $href = '' else...
                                 $href = scm_post_link( $content );
                             break;
 
@@ -561,6 +571,7 @@
                     case 'layout-logo-icona':
                     case 'layout-logo':
                     case 'layout-immagine':
+                    case 'layout-thumbs':
 
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-image.php', array(
                             'cont' => $args
@@ -599,7 +610,7 @@
 
                     case 'layout-testo':
 
-                        $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : scm_field( 'editor', '', $post->ID ) ) );
+                        $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : '' ) );
                         if(!$text) continue;
                         
                         indent( $SCM_indent, $text, 1 ); // +++ todo: se non è un <p> aggiungilo, e comunque aggiungi class id style e attr
@@ -781,7 +792,30 @@
 
             $template['posts'] = $loop->posts;
             $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-            scm_containers( $template, 'post' );
+            /*$thumb = ( isset( $template['thumb'] ) ? intval( $template['thumb'] ) : -2 );
+
+            consoleLog($template);
+            
+            if( $thumb == -1 ){
+                                
+                foreach ( $template['posts'] as $key => $value ) {
+                    
+                    $images = scm_field( 'galleria-images', array(), $value->ID );
+
+                    consoleLog( $images );
+
+                    for ( $i = 0; $i < sizeof( $images ); $i++ ) { 
+
+                        $image = copyArray( $template );
+                        $image['thumb'] = $i;
+                        scm_containers( $image, 'post' );
+                    }
+
+                }
+
+            }else{*/
+                scm_containers( $template, 'post' );
+            //}
 
             if( $pagination ){
 
@@ -837,6 +871,10 @@
                 break;
 
                 case 'gallerie':
+                    $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
+                    $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? $thumb['thumb'] : 0 ) );
+                    if( $init == -1 )
+                        return '';
                     $stored = scm_field( 'galleria-images', array(), $id );
                     $images = array();
                     $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/uploads' ) + 8 ) : '' );
@@ -844,7 +882,6 @@
                         $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'] );
                     }
                     
-                    $init = ( !empty( $content ) && isset( $content['btn-img'] ) ? $content['btn-img'] : 0 );
                     $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
                     $link .= ' data-popup-path="' . $path . '"';
                     $link .= ' data-popup-init="' . $init . '"';

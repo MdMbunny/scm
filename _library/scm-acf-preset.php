@@ -883,75 +883,75 @@
 			elseif( strpos( $list, 'side_position' ) !== false ):
 				if( strpos( $list, 'side_position_no' ) !== false ):
 					$str = str_replace( '_', '', str_replace( 'side_position_no', '', substr( $list, strpos( $list, 'side_position_no'))));
-					$str = ( $str ?: 'Elemento' );
+					$str = ( $str ?: __( 'Elemento', SCM_THEME ) );
 					$choices = array(
-						'no' => 'Nascondi ' . $str,
-						'top' => $str . ' Sopra',
-						'right' => $str . ' Destra',
-						'bottom' => $str . ' Sotto',
-						'left' => $str . ' Sinistra',
+						'no' => __( 'Nascondi', SCM_THEME ) . ' ' . $str,
+						'top' => $str . ' ' . __( 'Sopra', SCM_THEME ),
+						'right' => $str . ' ' . __( 'Destra', SCM_THEME ),
+						'bottom' => $str . ' ' . __( 'Sotto', SCM_THEME ),
+						'left' => $str . ' ' . __( 'Sinistra', SCM_THEME ),
 					);
 				else:
 					$str = str_replace( '_', '', str_replace( 'side_position', '', substr( $list, strpos( $list, 'side_position'))));
-					$str = ( $str ?: 'Elemento' );
+					$str = ( $str ?: __( 'Elemento', SCM_THEME ) );
 					$choices = array(
-						'top' => $str . ' Sopra',
-						'right' => $str . ' Destra',
-						'bottom' => $str . ' Sotto',
-						'left' => $str . ' Sinistra',
+						'top' => $str . ' ' . __( 'Sopra', SCM_THEME ),
+						'right' => $str . ' ' . __( 'Destra', SCM_THEME ),
+						'bottom' => $str . ' ' . __( 'Sotto', SCM_THEME ),
+						'left' => $str . ' ' . __( 'Sinistra', SCM_THEME ),
 					);
 				endif;
 					
 			elseif( strpos( $list, 'position_menu' ) !== false ):
 				$choices = array(
-					'top' => 'Menu sopra al logo',
-					'inline' => 'Menu affianco al logo',
-					'bottom' => 'Menu sotto al logo',
+					'top' => __( 'Menu sopra al logo', SCM_THEME ),
+					'inline' => __( 'Menu affianco al logo', SCM_THEME ),
+					'bottom' => __( 'Menu sotto al logo', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'sticky_active' ) !== false ):
 				$choices = array(
-					'self' => 'Sticky Self',
-					'plus' => 'Sticky Plus',
+					'self' => __( 'Sticky Self', SCM_THEME ),
+					'plus' => __( 'Sticky Plus', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'sticky_attach' ) !== false ):
 				$choices = array(
-					'nav-top' => 'Attach to main navigation TOP',
-					'nav-bottom' => 'Attach to main navigation BOTTOM',
+					'nav-top' => __( 'Attach to main navigation TOP', SCM_THEME ),
+					'nav-bottom' => __( 'Attach to main navigation BOTTOM', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'home_active' ) !== false ):
 				$choices = array(
-					'both' => 'Menu + Sticky',
-					'sticky' => 'Solo Sticky',
-					'menu' => 'Solo Menu',
-					'no' => 'Solo Toggle',
+					'both' => __( 'Menu + Sticky', SCM_THEME ),
+					'sticky' => __( 'Solo Sticky', SCM_THEME ),
+					'menu' => __( 'Solo Menu', SCM_THEME ),
+					'no' => __( 'Solo Toggle', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'branding_header' ) !== false ):
 				$choices = array(
-					'text' => 'Usa il nome del sito',
-					'img' => 'Usa un\'immagine',
+					'text' => __( 'Usa il nome del sito', SCM_THEME ),
+					'img' => __( 'Usa un\'immagine', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'head_position' ) !== false ):
 				$choices = array(
-					'menu_down'			=> 'Menu sotto a Logo',
-					'menu_right'		=> 'Menu alla destra del Logo',
+					'menu_down'			=> __( 'Menu sotto a Logo', SCM_THEME ),
+					'menu_right'		=> __( 'Menu alla destra del Logo', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'head_social_position' ) !== false ):
 				$choices = array(
-					'top' => 'Sopra al menu (se menu inline)',
-					'bottom' => 'Sotto al menu (se menu inline)',
+					'top' => __( 'Sopra al menu (se menu inline)', SCM_THEME ),
+					'bottom' => __( 'Sotto al menu (se menu inline)', SCM_THEME ),
 				);
 					
 			elseif( strpos( $list, 'image_format' ) !== false ):
 				$choices = array(
-					'norm' => 'Normale',
-					'quad' => 'Quadrata',
-					'full' => 'Full Width',
+					'norm' => __( 'Normale', SCM_THEME ),
+					'quad' => __( 'Quadrata', SCM_THEME ),
+					'full' => __( 'Full Width', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'size_icon' ) !== false ):
@@ -965,29 +965,29 @@
 
 			elseif( strpos( $list, 'archive_mode' ) !== false ):
 				$choices = array(
-					'single' => 'Singoli',
-					'archive' => 'Archivio',
+					'single' => __( 'Singoli', SCM_THEME ),
+					'archive' => __( 'Archivio', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'archive_complete' ) !== false ):
 				$choices = array(
-					'partial' => 'Archivio parziale',
-					'complete' => 'Archivio completo',
+					'partial' => __( 'Archivio parziale', SCM_THEME ),
+					'complete' => __( 'Archivio completo', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'archive_pagination' ) !== false ):
 				$choices = array(
-					'yes' => 'Paginazione',
-					'all' => 'Pulsante ALL',
-					'more' => 'Pulsante MORE',
-					'no' => 'No paginazione',
+					'yes' => __( 'Paginazione', SCM_THEME ),
+					'all' => __( 'Pulsante ALL', SCM_THEME ),
+					'more' => __( 'Pulsante MORE', SCM_THEME ),
+					'no' => __( 'No paginazione', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'gallerie_button' ) !== false ):
 				$choices = array(
-					'img' => 'Thumb',
-					'txt' => 'Testo',
-					'section' => 'Sezione',
+					'img' => __( 'Thumb', SCM_THEME ),
+					'txt' => __( 'Testo', SCM_THEME ),
+					'section' => __( 'Sezione', SCM_THEME ),
 				);
 
 			// +++ todo: non più 2, con _complete, ma spostati in alto, dove c'è template_ e lo fai simile
@@ -996,56 +996,56 @@
 				if( strpos( $list, '_complete' ) !== false ):
 
 					$choices = array(
-						'template' => 'Link Template (tutto)',
-						'template-single' => 'Link Template (singoli elementi)',
-						'link' => 'Inserisci Link (tutto)',
-						'link-single' => 'Inserisci Link (singoli elementi)',
+						'template' => __( 'Link Template (tutto)', SCM_THEME ),
+						'template-single' => __( 'Link Template (singoli elementi)', SCM_THEME ),
+						'link' => __( 'Inserisci Link (tutto)', SCM_THEME ),
+						'link-single' => __( 'Inserisci Link (singoli elementi)', SCM_THEME ),
 					);
 				else:
 					$choices = array(
-						'self' => 'Link Oggetto',
-						'template' => 'Link Template',
-						'link' => 'Link Inserito',
+						'self' => __( 'Link Oggetto', SCM_THEME ),
+						'template' => __( 'Link Template', SCM_THEME ),
+						'link' => __( 'Link Inserito', SCM_THEME ),
 					);
 				endif;
 			
 			elseif( strpos( $list, 'luogo_data' ) !== false ):
 				$choices = array(
-					'name' => 'Nome',
-					'address' => 'Indirizzo',
-					'num' => 'Numeri',
-					'email' => 'Email',
-					'link' => 'Link',
+					'name' => __( 'Nome', SCM_THEME ),
+					'address' => __( 'Indirizzo', SCM_THEME ),
+					'num' => __( 'Numeri', SCM_THEME ),
+					'email' => __( 'Email', SCM_THEME ),
+					'link' => __( 'Link', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'contact_link' ) !== false ):
 				$choices = array(
-					'web:' => 'web:',
-					'support:' => 'support:',
+					'web:' => __( 'web:', SCM_THEME ),
+					'support:' => __( 'support:', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'contact_email' ) !== false ):
 				$choices = array(
-					'e-mail:' => 'e-mail:',
+					'e-mail:' => __( 'e-mail:', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'contact_num' ) !== false ):
 				$choices = array(
-					'Tel.' => 'Tel.',
-					'Mobile' => 'Mobile',
-					'Fax' => 'Fax',
+					'Tel.' => __( 'Tel.', SCM_THEME ),
+					'Mobile' => __( 'Mobile', SCM_THEME ),
+					'Fax' => __( 'Fax', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'rassegne_type' ) !== false ):
 				$choices = array(
-					'file' => 'File',
-					'link' => 'Link',
+					'file' => __( 'File', SCM_THEME ),
+					'link' => __( 'Link', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'links_type' ) !== false ):
 				$choices = array(
-					'page' 	=> 'Pagina',
-					'link' 	=> 'Link',
+					'page' 	=> __( 'Pagina', SCM_THEME ),
+					'link' 	=> __( 'Link', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'waitfor' ) !== false ):
@@ -1058,85 +1058,85 @@
 
 			elseif( strpos( $list, 'positive_negative' ) !== false ):
 	        	$choices = array(
-					'off' => 'Versione positiva',
-					'on' => 'Versione negativa',
+					'off' => __( 'Versione positiva', SCM_THEME ),
+					'on' => __( 'Versione negativa', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'show' ) !== false ):
 	        	if( strpos( $list, 'options_show' ) !== false ):
 					$choices = array(
-						'hide' 		=> 'Nascondi Opzioni',
-						'options' 	=> 'Opzioni',
-						'advanced' 	=> 'Opzioni avanzate',
+						'hide' 		=> __( 'Nascondi Opzioni', SCM_THEME ),
+						'options' 	=> __( 'Opzioni', SCM_THEME ),
+						'advanced' 	=> __( 'Opzioni avanzate', SCM_THEME ),
 					);
 				else:
 		        	$choices = array(
-						'on' => 'Mostra',
-						'off' => 'Nascondi',
+						'on' => __( 'Mostra', SCM_THEME ),
+						'off' => __( 'Nascondi', SCM_THEME ),
 					);
 		        endif;
 
 	        elseif( strpos( $list, 'hide' ) !== false ):
 	        	$choices = array(
-	        		'off' => 'Nascondi',
-					'on' => 'Mostra',
+	        		'off' => __( 'Nascondi', SCM_THEME ),
+					'on' => __( 'Mostra', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'enable' ) !== false ):
 	        	$choices = array(
-					'on' => 'Abilita',
-					'off' => 'Disabilita',
+					'on' => __( 'Abilita', SCM_THEME ),
+					'off' => __( 'Disabilita', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'disable' ) !== false ):
 	        	$choices = array(
-	        		'off' => 'Disabilita',
-					'on' => 'Abilita',
+	        		'off' => __( 'Disabilita', SCM_THEME ),
+					'on' => __( 'Abilita', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'ordertype' ) !== false ):
 	        	$choices = array(
-	        		'DESC' => 'Discendente',
-	        		'ASC' => 'Ascendente',
+	        		'DESC' => __( 'Discendente', SCM_THEME ),
+	        		'ASC' => __( 'Ascendente', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'orderby' ) !== false ):
 	        	$choices = array(
-	        		'date' => 'Data',
-					'title' => 'Titolo',
-					'modified' => 'Data modifica',
-					'name' => 'Slug',
-					'type' => 'Tipo',
-					'rand' => 'Random',
+	        		'date' => __( 'Data', SCM_THEME ),
+					'title' => __( 'Titolo', SCM_THEME ),
+					'modified' => __( 'Data modifica', SCM_THEME ),
+					'name' => __( 'Slug', SCM_THEME ),
+					'type' => __( 'Tipo', SCM_THEME ),
+					'rand' => __( 'Random', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'line_style' ) !== false ):
 	        	$choices = array(
-	        		'no' => 'Vuoto',
-	        		'line' => 'Linea',
-	        		'dashed' => 'Tratteggiato',
-	        		//'dotted' => 'Punteggiato'
+	        		'no' => __( 'Vuoto', SCM_THEME ),
+	        		'line' => __( 'Linea', SCM_THEME ),
+	        		'dashed' => __( 'Tratteggiato', SCM_THEME ),
+	        		//'dotted' => __( 'Punteggiato'
 				);
 
 	        elseif( strpos( $list, 'line_cap' ) !== false ):
 	        	$choices = array(
-	        		'round' => 'Tondeggiato',
-	        		'square' => 'Squadrato',
-	        		'butt' => 'Squadrato a filo',
+	        		'round' => __( 'Tondeggiato', SCM_THEME ),
+	        		'square' => __( 'Squadrato', SCM_THEME ),
+	        		'butt' => __( 'Squadrato a filo', SCM_THEME ),
 				);
 			
 			elseif( strpos( $list, 'list_type' ) !== false ):
 	        	$choices = array(
-	        		'none' => 'Non puntato',
-	        		'disc' => 'Cerchio',
-	        		'circle' => 'Cerchio vuoto',
-	        		'square' => 'Quadrato',
-	        		'decimal' => 'Decimali',
-	        		'decimal-leading-zero' => 'Decimali con zero',
-	        		'lower-latin' => 'Lettere minuscole',
-	        		'upper-latin' => 'Lettere maiuscole',
-					'lower-roman' => 'Roman minuscolo',
-					'upper-roman' => 'Roman maiuscolo',
+	        		'none' => __( 'Non puntato', SCM_THEME ),
+	        		'disc' => __( 'Cerchio', SCM_THEME ),
+	        		'circle' => __( 'Cerchio vuoto', SCM_THEME ),
+	        		'square' => __( 'Quadrato', SCM_THEME ),
+	        		'decimal' => __( 'Decimali', SCM_THEME ),
+	        		'decimal-leading-zero' => __( 'Decimali con zero', SCM_THEME ),
+	        		'lower-latin' => __( 'Lettere minuscole', SCM_THEME ),
+	        		'upper-latin' => __( 'Lettere maiuscole', SCM_THEME ),
+					'lower-roman' => __( 'Roman minuscolo', SCM_THEME ),
+					'upper-roman' => __( 'Roman maiuscolo', SCM_THEME ),
 				);
 	        
 	        elseif( strpos( $list, 'alignment' ) !== false ):
@@ -1144,43 +1144,43 @@
 	        	if( strpos( $list, 'vertical_alignment' ) !== false ){
 		        	
 		        	$choices = array(
-						'top' => 'Alto',
-						'middle' => 'Centro',
-						'bottom' => 'Basso',
+						'top' => __( 'Alto', SCM_THEME ),
+						'middle' => __( 'Centro', SCM_THEME ),
+						'bottom' => __( 'Basso', SCM_THEME ),
 					);
 
 				}else if( strpos( $list, 'txt_alignment' ) !== false ){
 		        	
 		        	$choices = array(
-						'left' => 'Sinistra',
-						'right' => 'Destra',
-						'center' => 'Centrato',
-						'justify' => 'Giustificato',
+						'left' => __( 'Sinistra', SCM_THEME ),
+						'right' => __( 'Destra', SCM_THEME ),
+						'center' => __( 'Centrato', SCM_THEME ),
+						'justify' => __( 'Giustificato', SCM_THEME ),
 					);
 
 				}else{
 
 		        	$choices = array(
-						'left' => 'Sinistra',
-						'right' => 'Destra',
-						'center' => 'Centrato',
+						'left' => __( 'Sinistra', SCM_THEME ),
+						'right' => __( 'Destra', SCM_THEME ),
+						'center' => __( 'Centrato', SCM_THEME ),
 					);
 
 		        };
 
 			elseif( strpos( $list, 'float' ) !== false ):
 	        	$choices = array(
-	        		'float-none' => 'No Float',
-					'float-left' => 'Float Sinistra',
-					'float-right' => 'Float Destra',
-					'float-center' => 'Float Centrato',
+	        		'float-none' => __( 'No Float', SCM_THEME ),
+					'float-left' => __( 'Float Sinistra', SCM_THEME ),
+					'float-right' => __( 'Float Destra', SCM_THEME ),
+					'float-center' => __( 'Float Centrato', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'overlay' ) !== false ):
 	        	$choices = array(
-					'no-overlay' => 'No Overlay',
-					'overlay' => 'Overlay',
-					'underlay' => 'Underlay',
+					'no-overlay' => __( 'No Overlay', SCM_THEME ),
+					'overlay' => __( 'Overlay', SCM_THEME ),
+					'underlay' => __( 'Underlay', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'units' ) !== false ):
@@ -1193,9 +1193,9 @@
 	        elseif( strpos( $list, 'headings' ) !== false ):
 
 	        	$max = array(
-					'h2' => 'Primario',
-					'h3' => 'Secondario',
-					'h4' => 'Terziario',
+					'h2' => __( 'Primario', SCM_THEME ),
+					'h3' => __( 'Secondario', SCM_THEME ),
+					'h4' => __( 'Terziario', SCM_THEME ),
 				);
 
 	        	$min = array(
@@ -1458,17 +1458,17 @@
 
 			elseif( strpos( $list, 'line_height' ) !== false ):
 				$choices = array(
-					'0.0' => 'Nessuno spazio',
-					'0.25' => '1 quarto di linea',
-					'0.5' => 'Mezza linea',
-					'1' => 'Una linea',
-					'1.25' => 'Una linea e 1 quarto',
-					'1.5' => 'Una linea e mezza',
-					'1.75' => 'Una linea e 3 quarti',
-					'2' => 'Doppia linea',
-					'2.5' => 'Doppia linea e mezza',
-					'3' => 'Tripla linea',
-					'4' => 'Quadrupla linea',
+					'0.0' => __( 'Nessuno spazio', SCM_THEME ),
+					'0.25' => __( '1 quarto di linea', SCM_THEME ),
+					'0.5' => __( 'Mezza linea', SCM_THEME ),
+					'1' => __( 'Una linea', SCM_THEME ),
+					'1.25' => __( 'Una linea e 1 quarto', SCM_THEME ),
+					'1.5' => __( 'Una linea e mezza', SCM_THEME ),
+					'1.75' => __( 'Una linea e 3 quarti', SCM_THEME ),
+					'2' => __( 'Doppia linea', SCM_THEME ),
+					'2.5' => __( 'Doppia linea e mezza', SCM_THEME ),
+					'3' => __( 'Tripla linea', SCM_THEME ),
+					'4' => __( 'Quadrupla linea', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'slider_model' ) !== false ):
@@ -1479,22 +1479,22 @@
 			elseif( strpos( $list, 'effect' ) !== false ):
 				if( strpos( $list, '_nivo' ) !== false ):
 					$choices = array(
-						'sliceDown' => 'Slice Down',
-						'sliceDownLeft' => 'Slice Down Left',
-						'sliceUp' => 'Slice Up',
-						'sliceUpLeft' => 'Slice Up Left',
-						'sliceUpDown' => 'Slice Up Down',
-						'sliceUpDownLeft' => 'Slice Up Down Left',
-						'fold' => 'Fold',
-						'fade' => 'Fade',
-						'random' => 'Random',
-						'slideInRight' => 'Slide In Right',
-						'slideInLeft' => 'Slide In Left',
-						'boxRandom' => 'Box Random',
-						'boxRain' => 'Box Rain',
-						'boxRainReverse' => 'Box Rain Reverse',
-						'boxRainGrow' => 'Box Rain Grow',
-						'boxRainGrowReverse' => 'Box Rain Grow Reverse'
+						'sliceDown' => __( 'Slice Down', SCM_THEME ),
+						'sliceDownLeft' => __( 'Slice Down Left', SCM_THEME ),
+						'sliceUp' => __( 'Slice Up', SCM_THEME ),
+						'sliceUpLeft' => __( 'Slice Up Left', SCM_THEME ),
+						'sliceUpDown' => __( 'Slice Up Down', SCM_THEME ),
+						'sliceUpDownLeft' => __( 'Slice Up Down Left', SCM_THEME ),
+						'fold' => __( 'Fold', SCM_THEME ),
+						'fade' => __( 'Fade', SCM_THEME ),
+						'random' => __( 'Random', SCM_THEME ),
+						'slideInRight' => __( 'Slide In Right', SCM_THEME ),
+						'slideInLeft' => __( 'Slide In Left', SCM_THEME ),
+						'boxRandom' => __( 'Box Random', SCM_THEME ),
+						'boxRain' => __( 'Box Rain', SCM_THEME ),
+						'boxRainReverse' => __( 'Box Rain Reverse', SCM_THEME ),
+						'boxRainGrow' => __( 'Box Rain Grow', SCM_THEME ),
+						'boxRainGrowReverse' => __( 'Box Rain Grow Reverse', SCM_THEME ),
 					);
 				endif;
 
@@ -1505,46 +1505,48 @@
 
 			elseif( strpos( $list, 'box_shape' ) !== false ):
 				$choices = array(
-					'square' 		=> 'Quadrato',
-					'circle' 		=> 'Cerchio',
-					'rounded' 		=> 'Arrotondato',
+					'square' 		=> __( 'Quadrato', SCM_THEME ),
+					'circle' 		=> __( 'Cerchio', SCM_THEME ),
+					'rounded' 		=> __( 'Arrotondato', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'simple_size' ) !== false ):
 				$choices = array(
-					'normal' 	=> 'Normale',
-					'min' 		=> 'Minimo',
-					'small' 	=> 'Piccolo',
-					'medium' 	=> 'Medio',
-					'big' 		=> 'Grande',
-					'max' 		=> 'Massimo',
+					'normal' 	=> __( 'Normale', SCM_THEME ),
+					'min' 		=> __( 'Minimo', SCM_THEME ),
+					'small' 	=> __( 'Piccolo', SCM_THEME ),
+					'medium' 	=> __( 'Medio', SCM_THEME ),
+					'big' 		=> __( 'Grande', SCM_THEME ),
+					'max' 		=> __( 'Massimo', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'date_format' ) !== false ):
 				$choices = array(
-					'dmy' 		=> '09 06 15',
-					'dmY' 		=> '09 06 2015',
-					'd F Y' 	=> '09 Giugno 2015',
-					'd M y' 	=> '09 Giu 15',
+					'dmy' 		=> '31 12 15',
+					'dmY' 		=> '31 12 2015',
+					'd F Y' 	=> __( '31 Dicembre 2015', SCM_THEME ),
+					'd M y' 	=> __( '31 Dic 15', SCM_THEME ),
+					'ymd' 		=> '15 12 31',
+					'Ymd' 		=> '2015 12 31',
 				);
 			
 			elseif( strpos( $list, 'box_angle_type' ) !== false ):
 				$choices = array(
-					'all' 					=> 'Tutti',
-					'round-top' 			=> 'Sopra',
-					'round-left' 			=> 'Sinistra',
-					'round-right' 			=> 'Destra',
-					'round-bottom' 			=> 'Sotto',
-					'round-leaf-left' 		=> 'Foglia A',
-					'round-leaf-right' 		=> 'Foglia B',
-					'round-petal-left' 		=> 'Petalo A',
-					'round-petal-right' 	=> 'Petalo B',
-					'round-drop-left' 		=> 'Petalo C',
-					'round-drop-right' 		=> 'Petalo D',
-					'round-head-left' 		=> 'Singolo A',
-					'round-head-right' 		=> 'Singolo B',
-					'round-foot-left' 		=> 'Singolo C',
-					'round-foot-right' 		=> 'Singolo D',
+					'all' 					=> __( 'Tutti', SCM_THEME ),
+					'round-top' 			=> __( 'Sopra', SCM_THEME ),
+					'round-left' 			=> __( 'Sinistra', SCM_THEME ),
+					'round-right' 			=> __( 'Destra', SCM_THEME ),
+					'round-bottom' 			=> __( 'Sotto', SCM_THEME ),
+					'round-leaf-left' 		=> __( 'Foglia A', SCM_THEME ),
+					'round-leaf-right' 		=> __( 'Foglia B', SCM_THEME ),
+					'round-petal-left' 		=> __( 'Petalo A', SCM_THEME ),
+					'round-petal-right' 	=> __( 'Petalo B', SCM_THEME ),
+					'round-drop-left' 		=> __( 'Petalo C', SCM_THEME ),
+					'round-drop-right' 		=> __( 'Petalo D', SCM_THEME ),
+					'round-head-left' 		=> __( 'Singolo A', SCM_THEME ),
+					'round-head-right' 		=> __( 'Singolo B', SCM_THEME ),
+					'round-foot-left' 		=> __( 'Singolo C', SCM_THEME ),
+					'round-foot-right' 		=> __( 'Singolo D', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'ease' ) !== false ):

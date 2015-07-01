@@ -49,7 +49,8 @@
 			wide 		: 1401,
 			landscape	: 1121,
 			notebook 	: 1031,
-			portrait 	: 801 };
+			portrait 	: 801,
+			smart 		: 701 };
 
 		if( w > 700 ){
 
@@ -226,9 +227,13 @@
 
 		    if( !link )
 		    	return;
+			
+			
 
 		    event.preventDefault();
-			event.stopPropagation();		    
+		    event.stopPropagation();
+
+
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -252,8 +257,15 @@
 	        // +++ todo: temo che questo passaggio pesi abbastanza
 	        // verifica come paragonare l'host senza dover creare un elemento a
 
-	        var elem = document.createElement( 'a' );
-    		elem.href = $this.data( 'href' );
+	        //var elem = document.createElement( 'a' );
+	        var $elem = $( '<a id="temp" href="' + $this.data( 'href' ) + '"></a>' );
+
+    		//elem.href = $this.data( 'href' );
+    		/*$elem = $( elem );
+    		$elem.css( 'display', 'none' );
+    		*/
+    		$('body').append( $elem );
+    		var elem = $( '#temp' )[0];
 
 	        var lochost		= location.hostname,
 				host 		= elem.hostname,
@@ -268,13 +280,21 @@
 					$this.loadContent( event, elem.href );
 					return $this;
 				}else{
-					if ( locpath === path ){ // toccato
+
+					if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
+						result = $this.trigger( 'linkPage' ).data( 'done' );
+						state = 'page';
+					}else{
+						result = $this.trigger( 'linkSite' ).data( 'done' );
+						state = 'site';	
+					}
+					/*if ( locpath === path ){ // toccato
 						result = $this.trigger( 'linkPage' ).data( 'done' );
 						state = 'page';
 					}else if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
 						result = $this.trigger( 'linkSite' ).data( 'done' );
 						state = 'site';						
-					}
+					}*/
 
 				}
 			}else{
@@ -305,6 +325,8 @@
 					$this.trigger( 'link', [ state ] );
 				}
 			}
+
+			$( '#temp' ).remove();
 
 		});
 		
@@ -542,7 +564,7 @@
 
 			var pageScroll = function(){
 
-				$body.animate( {
+				$('body, html').animate( {
 
 						scrollTop: destination
 
@@ -1790,7 +1812,7 @@
     	};
 
     	if( duration > 0 ){
-        	$body.animate( {
+        	$('body, html').animate( {
         		opacity: 1
         	}, duration * 1000, checkScroll );
         }else{
@@ -1817,10 +1839,13 @@
 			$elem.data( 'done', true );
 
 
-
 		if( state != 'external' && duration > 0 ){
 
-			$body.animate( {
+			$( '.navigation' ).animate( {
+        		opacity: opacity
+        	}, duration * 600 );
+
+			$('body').animate( {
         		opacity: opacity
         	}, duration * 1000, function() {
 				$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
@@ -2042,14 +2067,13 @@
 		} );
 
 		$body.trigger( 'documentReady' );
+		$body.addClass('ready');
 
 		// Trigger WINDOW LOADED event
-		$(window).load(function(e){
-				
-			
+		$window.on('load', function(){		
 
 			//$body.responsiveClasses( e );
-			$body.trigger( 'windowLoaded' );
+			$body.trigger( 'windowLoaded' ); 		// todo: SOMETIMES IT DOESN'T WORK - !important!
 
 		});
 

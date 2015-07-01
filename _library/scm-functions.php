@@ -21,6 +21,7 @@
 // ifnotequal
 // isNumber
 // toArray
+// copyArray
 // openTag
 // openDiv
 // stringOperator       evalues 2 strings by a string operator
@@ -198,6 +199,18 @@ function toArray( $var ){
 }
 
 
+function copyArray( $arr ){
+    if( !isset( $arr ) || gettype( $arr ) != 'array' )
+        return array();
+
+    $new = array();
+
+    foreach ( $arr as $k => $v ) {
+        $new[$k] = clone $v;
+    }
+
+    return $new;
+}
 
 
 
@@ -306,7 +319,7 @@ function startsWith( $str, $needle = '' ) {
 * @return boolean
 * @author SCM
 */
-function endsWith($str, $needle) {
+function endsWith($str, $needle) { // CHE CAZZO HAI FATTO?
 
     if( !is_string( $str ) )
         return false;
