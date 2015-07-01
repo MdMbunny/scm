@@ -35,8 +35,8 @@
     add_action( 'admin_menu', 'scm_admin_menu');
 
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
-    add_action( 'admin_head', 'scm_admin_remove_metalinks' );
-    //add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
+    add_action( 'admin_head', 'scm_admin_remove_meta' );
+    add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
     //add_action( 'current_screen', 'scm_current_screen' );
@@ -236,8 +236,8 @@
     }
 
 // Remove Screen Meta Links to Users
-    if ( ! function_exists( 'scm_admin_remove_metalinks' ) ) {
-        function scm_admin_remove_metalinks(){
+    if ( ! function_exists( 'scm_admin_remove_meta' ) ) {
+        function scm_admin_remove_meta(){
 
             if( current_user_can( 'manage_options' ) )
                 return;
@@ -247,10 +247,10 @@
     }
 
 // Hide Administrator From User List
-    /*if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
+    if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
         function scm_admin_hide_from_users($user_search) {
             $user = wp_get_current_user();
-            if (!is_admin()) { // Is Not Administrator - Remove Administrator
+            if (!is_super_admin()) { // Is Not Administrator - Remove Administrator
                 global $wpdb;
 
                 $user_search->query_where = 
@@ -263,7 +263,7 @@
                 );
             }
         }
-    }*/
+    }
 
 // Hide Tools from Toolbar (Top Bar)
     if ( ! function_exists( 'scm_admin_hide_tools' ) ) {
@@ -273,9 +273,11 @@
             $wp_admin_bar->remove_node( 'new-post' );
             $wp_admin_bar->remove_node( 'new-media' );
             $wp_admin_bar->remove_node( 'new-page' );
+            $wp_admin_bar->remove_node( 'view' );
             //$wp_admin_bar->remove_node( 'new-sections' );
         }
     }
+
 
 // *********************************************
 // UPLOAD

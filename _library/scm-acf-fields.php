@@ -155,7 +155,7 @@
 	// LIMITER
 	if ( ! function_exists( 'scm_acf_field_limiter' ) ) {
 		function scm_acf_field_limiter( $name = '', $default = 0, $max = 350, $char = 1, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
+			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
 			return scm_acf_field( $name, array( 'limiter', $max, $char ), $label, $width, $logic, $instr, $required );
 		}
 	}
@@ -165,7 +165,8 @@
 	// TEXTAREA
 	if ( ! function_exists( 'scm_acf_field_textarea' ) ) {
 		function scm_acf_field_textarea( $name = '', $default = 0, $rows = 8, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
+			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
+			$placeholder = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
 			return scm_acf_field( $name, array( 'textarea', '', $placeholder, $rows ), $label, $width, $logic, $instr, $required );
 		}
 	}
@@ -175,7 +176,8 @@
 	// EDITOR BASIC MEDIA
 	if ( ! function_exists( 'scm_acf_field_editor' ) ) {
 		function scm_acf_field_editor( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
+			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
+			$placeholder = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
 			return scm_acf_field( $name, array( 'editor-media-basic', $placeholder ), $label, $width, $logic, $instr, $required );
 		}
 	}
@@ -183,7 +185,8 @@
 	// EDITOR VISUAL MEDIA
 	if ( ! function_exists( 'scm_acf_field_editor_media' ) ) {
 		function scm_acf_field_editor_media( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
+			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
+			$placeholder = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
 			return scm_acf_field( $name, array( 'editor-basic-visual-media', $placeholder ), $label, $width, $logic, $instr, $required );
 		}
 	}
@@ -191,7 +194,8 @@
 	// EDITOR VISUAL
 	if ( ! function_exists( 'scm_acf_field_editor_basic' ) ) {
 		function scm_acf_field_editor_basic( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
+			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
+			$placeholder = ( $label ?: __( 'Inserisci testo', SCM_THEME ) );
 			return scm_acf_field( $name, array( 'editor-basic-visual', $placeholder ), $label, $width, $logic, $instr, $required );
 		}
 	}
@@ -1623,7 +1627,7 @@
 
 			$fields[] = scm_acf_field( 'tab-set-articolo', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
 				$fields[] = scm_acf_field_image( 'image', $default );
-				$fields[] = scm_acf_field_textarea( 'excerpt', $default, 5, 100, 0, __( 'Anteprima', SCM_THEME ) );
+				$fields[] = scm_acf_field_textarea( 'excerpt', $default, 5, 100, 0, '', __( 'Anteprima', SCM_THEME ) );
 				$fields[] = scm_acf_field_editor_basic( 'editor', $default );
 
 			$fields[] = scm_acf_field( 'tab-tax-articolo', 'tab-left', __( 'Categorie', SCM_THEME ) );

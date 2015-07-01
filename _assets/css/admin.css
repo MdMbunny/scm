@@ -30,6 +30,17 @@ body.loading *{
 	z-index: 9999;
 }
 
+#wp-admin-bar-my-account > .ab-item{
+	overflow: hidden;
+  	width: 32px;
+}
+
+#the-list .view,
+#view-post-btn,
+#preview-action{
+	display: none !important;
+}
+
 /* Admin Menu */
 
 #adminmenu a.menu-top {

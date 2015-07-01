@@ -47,8 +47,8 @@
 
     add_action( 'acf/include_fields', 'scm_acf_install' );                                                      // 6.0      Creo, registro e assegno Custom Fields a tutto il resto
     
-    add_filter( 'acf/settings/dir', 'scm_acf_settings_dir' );                                                   // 4.0      Imposto ACF Plugin Directory
-    add_filter( 'acf/settings/path', 'scm_acf_settings_path' );                                                 // 4.0      Imposto ACF Plugin Path
+    //add_filter( 'acf/settings/dir', 'scm_acf_settings_dir' );                                                   // 4.0      Imposto ACF Plugin Directory
+    //add_filter( 'acf/settings/path', 'scm_acf_settings_path' );                                                 // 4.0      Imposto ACF Plugin Path
     //add_filter('acf/settings/show_admin', '__return_false');                                                  // 4.0      Hide ACF from Admin
     add_filter( 'bfa_force_fallback', 'scm_force_fallback' );                                                   // 4.0      FA Add On Fix
     
@@ -96,6 +96,9 @@
 
     if ( ! function_exists( 'scm_roles_install' ) ) {
         function scm_roles_install() {
+
+            //remove_role('staff');
+            
             if( !get_role( 'staff' ) ){
                 add_role(
                     'staff',
@@ -111,9 +114,12 @@
                         'manage_categories' => true,
                     )
                 );
+
+                //$role = get_role( $the_role );
                 
             }
-            //remove_role('staff');
+            
+            //remove_role('utente');
 
             if( !get_role( 'utente' ) ){
                 add_role(
@@ -127,7 +133,7 @@
                 );
                 
             }
-            //remove_role('utente');
+            
 
             
         }
@@ -179,23 +185,55 @@
                         $admin = $obj->admin;
                         $add = $obj->add_cap;
 
-                        if( $the_role != 'administrator' && ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
+                        /*consoleLog( '' );
+                        consoleLog( $singular );*/
+
+                        if( $the_role != 'administrator' && $admin ){ // ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
+                            
+                            $role->remove_cap( 'read_private_' . $plural );
+                            $role->remove_cap( 'edit_' . $plural );
+                            $role->remove_cap( 'edit_private_' . $plural );
+                            $role->remove_cap( 'edit_others_' . $plural );
+                            $role->remove_cap( 'edit_published_' . $plural );
+
+                            /*consoleLog( '1' );
+                            consoleLog( $role );*/
+
                             continue;
+
+                        }
 
                         $role->add_cap( 'read_private_' . $plural );
                         $role->add_cap( 'edit_' . $plural );
                         $role->add_cap( 'edit_private_' . $plural );
                         $role->add_cap( 'edit_others_' . $plural );
-                        $role->add_cap( 'edit_published_' . $plural );                        
+                        $role->add_cap( 'edit_published_' . $plural );
 
-                        if( $the_role != 'administrator' && !$add )
+
+
+                        if( $the_role != 'administrator' && !$add ){
+
+                            $role->remove_cap( 'publish_' . $plural );
+                            $role->remove_cap( 'delete_' . $plural );
+                            $role->remove_cap( 'delete_others_' . $plural );
+                            $role->remove_cap( 'delete_private_' . $plural );
+                            $role->remove_cap( 'delete_published_' . $plural );
+
+                            /*consoleLog( '2' );
+                            consoleLog( $role );*/
+
                             continue;
+
+                        }
 
                         $role->add_cap( 'publish_' . $plural );
                         $role->add_cap( 'delete_' . $plural );
                         $role->add_cap( 'delete_others_' . $plural );
                         $role->add_cap( 'delete_private_' . $plural );
                         $role->add_cap( 'delete_published_' . $plural );
+
+                        /*consoleLog( '3' );
+                        consoleLog( $role );*/
 
                     }
                 }
@@ -243,19 +281,19 @@
             $default_types = apply_filters( 'scm_filter_default_types', $default_types );
 
             $default_taxonomies = array(
-                'sections-cat'          => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Sezioni', SCM_THEME),          'singular' => __('Categoria Sezioni', SCM_THEME),      'slug' => 'sections-cat',              'types' => array( 'sections' ),         ),
-                'sliders'               => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 1,          'plural' => __('Sliders', SCM_THEME),                    'singular' => __('Slider', SCM_THEME),                 'slug' => 'sliders',                   'types' => array( 'slides' )            ),
-                'soggetti-tip'          => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 1,          'plural' => __('Tipologie Soggetti', SCM_THEME),         'singular' => __('Tipologia Soggetti', SCM_THEME),     'slug' => 'soggetti-tip',              'types' => array( 'soggetti' )          ),
-                'luoghi-tip'            => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 1,          'plural' => __('Tipologie Luoghi', SCM_THEME),           'singular' => __('Tipologia Luoghi', SCM_THEME),       'slug' => 'luoghi-tip',                'types' => array( 'luoghi' ),           ),
-                'luoghi-cat'            => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Luoghi', SCM_THEME),           'singular' => __('Categoria Luoghi', SCM_THEME),       'slug' => 'luoghi-cat',                'types' => array( 'luoghi' ),           ),
-                'articoli-cat'          => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Articoli', SCM_THEME),         'singular' => __('Categoria Articoli', SCM_THEME),     'slug' => 'articoli-cat',              'types' => array( 'articoli' ),         ),
-                //'news-cat'              => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
-                'documenti-cat'         => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Documenti', SCM_THEME),        'singular' => __('Categoria Documenti', SCM_THEME),    'slug' => 'documenti-cat',             'types' => array( 'documenti' ),        ),
-                'video-cat'             => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Video', SCM_THEME),            'singular' => __('Categoria Video', SCM_THEME),        'slug' => 'video-cat',                 'types' => array( 'video' ),            ),
-                'gallerie-cat'          => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Gallerie', SCM_THEME),         'singular' => __('Categoria Gallerie', SCM_THEME),     'slug' => 'gallerie-cat',              'types' => array( 'gallerie' ),         ),
-                'rassegne-cat'          => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Categorie Rassegne', SCM_THEME),         'singular' => __('Categoria Rassegne', SCM_THEME),     'slug' => 'rassegne-cat',              'types' => array( 'rassegne-stampa' ),  ),
-                'rassegne-autori'       => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Autori Rassegne', SCM_THEME),            'singular' => __('Autore Rassegne', SCM_THEME),        'slug' => 'autori',                    'types' => array( 'rassegne-stampa' ),  ),
-                'rassegne-testate'      => array( 'template' => 0,       'manage' => 1,     'hierarchical' => 0,          'plural' => __('Testate Rassegne', SCM_THEME),           'singular' => __('Testata Rassegne', SCM_THEME),       'slug' => 'testate',                   'types' => array( 'rassegne-stampa' ),  ),
+                'sections-cat'          => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Sezioni', SCM_THEME),          'singular' => __('Categoria Sezioni', SCM_THEME),      'slug' => 'sections-cat',              'types' => array( 'sections' ),         ),
+                'sliders'               => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 1,          'plural' => __('Sliders', SCM_THEME),                    'singular' => __('Slider', SCM_THEME),                 'slug' => 'sliders',                   'types' => array( 'slides' )            ),
+                'soggetti-tip'          => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 1,          'plural' => __('Tipologie Soggetti', SCM_THEME),         'singular' => __('Tipologia Soggetti', SCM_THEME),     'slug' => 'soggetti-tip',              'types' => array( 'soggetti' )          ),
+                'luoghi-tip'            => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 1,          'plural' => __('Tipologie Luoghi', SCM_THEME),           'singular' => __('Tipologia Luoghi', SCM_THEME),       'slug' => 'luoghi-tip',                'types' => array( 'luoghi' ),           ),
+                'luoghi-cat'            => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Luoghi', SCM_THEME),           'singular' => __('Categoria Luoghi', SCM_THEME),       'slug' => 'luoghi-cat',                'types' => array( 'luoghi' ),           ),
+                'articoli-cat'          => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Articoli', SCM_THEME),         'singular' => __('Categoria Articoli', SCM_THEME),     'slug' => 'articoli-cat',              'types' => array( 'articoli' ),         ),
+                //'news-cat'              => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
+                'documenti-cat'         => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Documenti', SCM_THEME),        'singular' => __('Categoria Documenti', SCM_THEME),    'slug' => 'documenti-cat',             'types' => array( 'documenti' ),        ),
+                'video-cat'             => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Video', SCM_THEME),            'singular' => __('Categoria Video', SCM_THEME),        'slug' => 'video-cat',                 'types' => array( 'video' ),            ),
+                'gallerie-cat'          => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Gallerie', SCM_THEME),         'singular' => __('Categoria Gallerie', SCM_THEME),     'slug' => 'gallerie-cat',              'types' => array( 'gallerie' ),         ),
+                'rassegne-cat'          => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Categorie Rassegne', SCM_THEME),         'singular' => __('Categoria Rassegne', SCM_THEME),     'slug' => 'rassegne-cat',              'types' => array( 'rassegne-stampa' ),  ),
+                'rassegne-autori'       => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Autori Rassegne', SCM_THEME),            'singular' => __('Autore Rassegne', SCM_THEME),        'slug' => 'autori',                    'types' => array( 'rassegne-stampa' ),  ),
+                'rassegne-testate'      => array( 'template' => 0,       'manage' => 0,     'hierarchical' => 0,          'plural' => __('Testate Rassegne', SCM_THEME),           'singular' => __('Testata Rassegne', SCM_THEME),       'slug' => 'testate',                   'types' => array( 'rassegne-stampa' ),  ),
             );
 
             $default_taxonomies = apply_filters( 'scm_filter_default_taxonomies', $default_taxonomies );
@@ -301,13 +339,13 @@
 
                 $plural = $type['plural'];
 
-                $type['admin'] = ( isset( $type['admin'] ) && $type['admin'] ? ( $type['admin'] !== 'off' ? 1 : 0 ) : 0 );
+                $type['admin'] = (int)( isset( $type['admin'] ) && $type['admin'] );
 
-                $type['active'] = ( isset( $type['active'] ) && $type['active'] ? ( $type['active'] !== 'off' ? 1 : 0 ) : 0 );
+                $type['active'] = (int)( isset( $type['active'] ) && $type['active'] );
 
-                $type['public'] = ( isset( $type['public'] ) && $type['public'] ? ( $type['public'] !== 'off' ? 1 : 0 ) : 0 );
+                $type['public'] = (int)( isset( $type['public'] ) && $type['public'] );
 
-                $type['hidden'] = ( isset( $type['hidden'] ) ? $type['hidden'] : 0 );
+                $type['hidden'] = (int)( isset( $type['hidden'] ) && $type['hidden'] );
 
                 $type['orderby'] = ( isset( $type['orderby'] ) ? $type['orderby'] : 'title' );
 
@@ -316,7 +354,6 @@
                 $type['slug'] = ( isset( $type['slug'] ) && $type['slug'] ? sanitize_title( $type['slug'] ) : sanitize_title( $plural ) );
 
                 $type['icon'] = ( isset( $type['icon'] ) && $type['icon'] ? '\\' . $type['icon'] : '' ) ;
-
 
                 if( $type['active'] === 1 ){
 
@@ -366,14 +403,14 @@
                 $plural = $tax['plural'];
 
                 $tax['slug'] = ( isset( $tax['slug'] ) && $tax['slug'] ? sanitize_title( $tax['slug'] ) : sanitize_title( $plural ) );
-                $tax['manage'] = isset( $tax['manage'] ) && $tax['manage'] === 'on';
+                $tax['manage'] = (int)( isset( $tax['manage'] ) && $tax['manage'] );
 
                 if( $tax['hierarchical'] )
                     $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['categories'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
                 else
                     $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['tags'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
 
-                $tax['template'] = ( isset( $tax['template'] ) && $tax['template'] ? ( $tax['template'] !== 'off' ? 1 : 0 ) : 0 );
+                $tax['template'] = (int)( isset( $tax['template'] ) && $tax['template'] );
 
                 if( $tax['template'] ){
 
@@ -563,7 +600,7 @@
     }
 
 
-    include( SCM_DIR_ACF_PLUGIN . 'acf.php' );
+    //include( SCM_DIR_ACF_PLUGIN . 'acf.php' );
 
 
 // *****************************************************
