@@ -162,6 +162,7 @@
 	};
 
 	$.fn.eventTools = function( event ){
+		this.find( '[data-bg-color]' ).bgColor();
 		this.find( '[data-popup]' ).setFancybox();
 		this.find( '[data-slider]' ).initSlider();
 		this.find( '[data-current-link]' ).currentLink();
@@ -228,12 +229,13 @@
 		    if( !link )
 		    	return;
 			
-			
-
 		    event.preventDefault();
 		    event.stopPropagation();
 
-
+		    if( link == 'back' ){
+		    	window.history.back();
+		    	return false;
+		    }
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -1610,6 +1612,23 @@
 			    return false;
 			});
 		});
+	}
+
+	// *****************************************************
+	// *      BG COLOR
+	// *****************************************************
+
+	$.fn.bgColor = function() {
+		
+		return this.each(function() {
+
+			var $this 		= $( this );
+				col 		= $this.attr( 'data-bg-color' );
+
+			$this.css( 'background-color', col );
+
+		});
+
 	}
 
 	// *****************************************************

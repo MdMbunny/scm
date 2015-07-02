@@ -144,6 +144,7 @@ $cont_class = 'site-content ' . $cont_layout . $site_align ;
 ?>
 
 <body <?php body_class(); ?> 
+    onunload="" 
     data-fade-in="<?php echo $fade_in; ?>" 
     data-fade-out="<?php echo $fade_out; ?>" 
     data-fade-wait="<?php echo $fade_wait; ?>"
