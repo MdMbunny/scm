@@ -73,6 +73,8 @@
 						$fields[] = scm_acf_field_positive( 'archive-perpage', $default, 33, $partial_cond, '5', __( 'Post per pagina', SCM_THEME ), 1 );
 						$fields[] = scm_acf_field_text( 'archive-offset', $default, 33, $partial_cond, '0', __( 'Offset', SCM_THEME ) );
 						$fields[] = scm_acf_field_select1( 'archive-pagination', $default, 'archive_pagination', 34, $partial_cond, '', __( 'Paginazione', SCM_THEME ) );
+
+					$fields[] = scm_acf_field_editor_basic( 'archive-fallback', $default, 100, $archive );
 					
 					
 			return $fields;
