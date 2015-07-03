@@ -15,12 +15,13 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 
 if( function_exists('get_browser_name') ){
 
+    $version = (int)get_browser_version();
 
-    if( (is_ie() && get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
-        (is_safari() && get_browser_version() <= (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
-        (is_firefox() && get_browser_version() <= (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
-        (is_chrome() && get_browser_version() <= (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
-        (is_opera() && get_browser_version() <= (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
+    if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+        (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+        (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+        (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+        (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
 
         $SCM_old = true;
 
