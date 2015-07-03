@@ -13,13 +13,18 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 //$redirect = scm_field( 'opt-ie-redirect', '', 'option' );
 //$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ?: SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
 
-if( function_exists('get_browser_name') && is_ie() ){
+if( function_exists('get_browser_name') ){
 
-    if( get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' ) ) {
 
-    $SCM_old = true;
+    if( (is_ie() && get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+        (is_safari() && get_browser_version() <= (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+        (is_firefox() && get_browser_version() <= (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+        (is_chrome() && get_browser_version() <= (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+        (is_opera() && get_browser_version() <= (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
 
-    }elseif( get_browser_version() <= 9 ){
+        $SCM_old = true;
+
+    }elseif( is_ie() && get_browser_version() <= 9 ){
 
         $SCM_ie9 = true;
     }

@@ -8,7 +8,6 @@
 
     $logo_image = esc_url( scm_field( 'brand-logo', SCM_URI_IMG . '/logo.png', 'option' ) );
     $html = scm_options_get( 'bg_color', 'styles-loading', 1 );
-    consoleLog($html);
 
 ?>
 
@@ -34,7 +33,7 @@ body{
 .landing p{
     font-size: 2em;
     line-height: 1em;
-    margin: 0px;
+    margin: 60px 0;
 }
 
 .landing br{
@@ -56,7 +55,6 @@ body{
     width: 100%;
     line-height: 0px;
     list-style: none !important;
-    margin-top: 15px;
 }
 
 .landing #browsers .browser{
@@ -76,16 +74,11 @@ body{
 <img src="<?php echo $logo_image ?>" />
 
 <?php
-echo '<p>' . __( 'Per visualizzare correttamente il sito aggiorna Internet Explorer', SCM_THEME ) . '</p>';
-?>
-
-<a href="http://windows.microsoft.com/it-it/internet-explorer/download-ie" target="_blank"><img src="<?php echo SCM_URI_IMG ?>/landing_ie_icon_ie.png" /></a>
-
-<?php
-echo '<p>' . __( 'o scarica uno dei seguenti browser', SCM_THEME ) . '</p>';
+echo '<p>' . __( 'Update your browser or download one of the following to correctly see this website.', SCM_THEME ) . '</p>';
 ?>
 
 <div id="browsers">
+<!--<a href="http://windows.microsoft.com/it-it/internet-explorer/download-ie" target="_blank"><img src="<?php echo SCM_URI_IMG ?>/landing_ie_icon_ie.png" /></a>-->
 <a class="browser" href="http://www.mozilla.org/it/firefox/new/" target="_blank"><img src="<?php echo SCM_URI_IMG ?>/landing_ie_icon_firefox.png" /></a>
 <a class="browser" href="https://www.google.com/intl/en/chrome/browser/" target="_blank"><img src="<?php echo SCM_URI_IMG ?>/landing_ie_icon_chrome.png" /></a>
 <!--<a class="browser" href="http://support.apple.com/downloads/#safari" target="_blank"><img src="<?php echo SCM_URI_IMG ?>/landing_ie_icon_safari.png" /></a>-->
