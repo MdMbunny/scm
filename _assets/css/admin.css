@@ -875,19 +875,19 @@ input.acf-is-prepended {
 
 /*** 3.0 LABEL AND MESSAGES ***/
 
-.acf-field.field_type-message {
+.acf-field.acf-field-message {
 	background-color: #f4f4f4;
 }
 
-.acf-field.field_type-message:first-child {
+.acf-field.acf-field-message:first-child {
 	border-top: 0px !important;
 }
 
-.acf-field.field_type-message .acf-label{
+.acf-field.acf-field-message .acf-label{
 	margin: 0px !important;
 }
 
-.acf-field.field_type-message .acf-label label{
+.acf-field.acf-field-message .acf-label label{
 	margin: 0px;
 	padding: 5px 0px;
 }

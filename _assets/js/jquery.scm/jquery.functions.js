@@ -1,8 +1,14 @@
-
-
 (function($) {
 
 	// STRING
+
+	$.log = function( message, touch ) {
+		if ( !touch && window.console ) {
+			console.log( new Date().getTime() - performance.timing.navigationStart + 'ms' );
+			console.log( message );
+			console.log('---');
+		}
+	} 
 
 	// Escape regex chars with \
 	$.escapeBS = function( text ) {
@@ -51,6 +57,55 @@
 	    }
 
 	} 
+
+	/*$.getScript = function( url, options ) {
+
+		options = $.extend( options || {}, {
+			dataType: "script",
+			cache: true,
+			url: url
+		});
+
+		return $.ajax( options );
+	};*/
+
+	/*$.getScripts = function(arr, path) {
+		if( typeof( arr ) == 'string' ){
+			arr = [ arr ];
+		}
+	    var _arr = $.map(arr, function(scr) {
+	        return $.getScript( (path||"") + scr );
+	    });
+
+	    _arr.push($.Deferred(function( deferred ){
+	        $( deferred.resolve );
+	    }));
+
+	    return $.when.apply($, _arr);
+	}*/
+
+	$.getScripts = function( arr, callback ) {
+
+		if( typeof( arr ) == 'string' ){
+			arr = [ arr ];
+		}
+
+		var progress = 0;
+
+	    var internalCallback = function () {
+
+	        if ( ++progress == arr.length ) {
+	        	callback();
+	        }
+	    };
+
+	    arr.forEach( function( script ) {
+
+	    	$.getScript( script, internalCallback );
+
+	    });
+	}
+ 
 
 	// WORDPRESS
 /*

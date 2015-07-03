@@ -17,7 +17,6 @@
 //*****************************************************
 
 
-
 ( function($){
 
 	/*var READY = false;
@@ -950,132 +949,129 @@
 
 	$.fn.googleMap = function() {
 
-		var $body = $( 'body' );
-		var countMaps = 0;
-		var totMaps = this.length;
+			var $body = $( 'body' );
+			var countMaps = 0;
+			var totMaps = this.length;
 
-		//$body.data( 'maps', totMaps );
+			return this.each(function() {
 
+				var $this 		= $( this ),
+					markers 	= $this.children( '.marker' ),
+					zoom 		= parseFloat( $this.data( 'zoom' ) ),
+					style 		= [],
+					args 		= [],
+					map 		= [];
 
+				style = [
+					{
+						featureType: 'all',
+						elementType: 'all',
+						stylers: [
+							{ saturation: -30 },
+							{ visibility: 'simplified' }
+						]
+					},
+					{
+						featureType: 'all',
+						elementType: 'labels.icon',
+						stylers: [
+						  { visibility: 'off' }
+						]
+					},
+					{
+						featureType: 'administrative.province',
+						elementType: 'all',
+						stylers: [
+							{ visibility: 'off' }
+						]
+					},
+					{
+						featureType: 'administrative.country',
+						elementType: 'labels',
+						stylers: [
+						  { visibility: 'off' },
+						]
+					},
+					{
+						featureType: 'administrative.neighborhood',
+						elementType: 'labels',
+						stylers: [
+						  { visibility: 'off' },
+						]
+					},
+					{
+						featureType: 'administrative.locality',
+						elementType: 'labels',
+						stylers: [
+						  { visibility: 'on' },
+							{ weight: 1 },
+							{ saturation: -100 },
+							{ lightness: 30 },
+						]
+					},
+					{
+						featureType: 'administrative.land_parcel',
+						elementType: 'labels',
+						stylers: [
+						  { visibility: 'off' },
+						]
+					},
+					{
+						featureType: 'road',
+						elementType: 'geometry',
+						stylers: [
+							{ weight: 1 },
+							{ saturation: -100 },
+							{ lightness: 50 },
+						]
+					},
+		        ];
 
-		return this.each(function() {
+		        args = {
+		        	center: new google.maps.LatLng(0, 0),
+					zoom: zoom,
+					disableDefaultUI: true,
+					draggableCursor : 'crosshair',
+				    draggingCursor  : 'crosshair',
+				    styles                : style,
+				    panControl            : false,
+				    zoomControl           : true,
+				    mapTypeControl        : false,
+				    scaleControl          : false,
+				    streetViewControl     : true,
+				    overviewMapControl    : true,
+				    rotateControl         : true,
+				    scrollwheel           : false,
+				    zoomControlOptions    : {
+				        style    : google.maps.ZoomControlStyle.SMALL,
+				        position : google.maps.ControlPosition.RIGHT_CENTER
+				      },							
+		        };
+				
+				map = new google.maps.Map( this, args);
 
-			var $this 		= $( this ),
-				markers 	= $this.children( '.marker' ),
-				zoom 		= parseFloat( $this.data( 'zoom' ) ),
-				style 		= [],
-				args 		= [],
-				map 		= [];
+				infowindow = new google.maps.InfoWindow({
+					content		: '',
+					maxWidth	: 500
+				});
 
-			style = [
-				{
-					featureType: 'all',
-					elementType: 'all',
-					stylers: [
-						{ saturation: -30 },
-						{ visibility: 'simplified' }
-					]
-				},
-				{
-					featureType: 'all',
-					elementType: 'labels.icon',
-					stylers: [
-					  { visibility: 'off' }
-					]
-				},
-				{
-					featureType: 'administrative.province',
-					elementType: 'all',
-					stylers: [
-						{ visibility: 'off' }
-					]
-				},
-				{
-					featureType: 'administrative.country',
-					elementType: 'labels',
-					stylers: [
-					  { visibility: 'off' },
-					]
-				},
-				{
-					featureType: 'administrative.neighborhood',
-					elementType: 'labels',
-					stylers: [
-					  { visibility: 'off' },
-					]
-				},
-				{
-					featureType: 'administrative.locality',
-					elementType: 'labels',
-					stylers: [
-					  { visibility: 'on' },
-						{ weight: 1 },
-						{ saturation: -100 },
-						{ lightness: 30 },
-					]
-				},
-				{
-					featureType: 'administrative.land_parcel',
-					elementType: 'labels',
-					stylers: [
-					  { visibility: 'off' },
-					]
-				},
-				{
-					featureType: 'road',
-					elementType: 'geometry',
-					stylers: [
-						{ weight: 1 },
-						{ saturation: -100 },
-						{ lightness: 50 },
-					]
-				},
-	        ];
+				map.markers = [];
+				
+				$( markers ).markerMap( map, infowindow );
 
-	        args = {
-	        	center: new google.maps.LatLng(0, 0),
-				zoom: zoom,
-				disableDefaultUI: true,
-				draggableCursor : 'crosshair',
-			    draggingCursor  : 'crosshair',
-			    styles                : style,
-			    panControl            : false,
-			    zoomControl           : true,
-			    mapTypeControl        : false,
-			    scaleControl          : false,
-			    streetViewControl     : true,
-			    overviewMapControl    : true,
-			    rotateControl         : true,
-			    scrollwheel           : false,
-			    zoomControlOptions    : {
-			        style    : google.maps.ZoomControlStyle.SMALL,
-			        position : google.maps.ControlPosition.RIGHT_CENTER
-			      },							
-	        };
-			
-			map = new google.maps.Map( this, args);
+				$this.centerMap( map, zoom );
+				
+				google.maps.event.addListener( map, 'tilesloaded', function() {
 
-			infowindow = new google.maps.InfoWindow({
-				content		: '',
-				maxWidth	: 500
-			});
+					$body.trigger( 'mapLoaded' );
+					countMaps++;
+					if( countMaps >= totMaps )
+						$body.trigger( 'mapsLoaded', [ totMaps ] );
 
-			map.markers = [];
-			
-			$( markers ).markerMap( map, infowindow );
-
-			$this.centerMap( map, zoom );
-			
-			google.maps.event.addListener( map, 'tilesloaded', function() {
-
-				$body.trigger( 'mapLoaded' );
-				countMaps++;
-				if( countMaps >= totMaps )
-					$body.trigger( 'mapsLoaded', [ totMaps ] );
+				});
 
 			});
-
-		});
+		
 	}
 
 	$.fn.markerMap = function( map, infowindow ) {
@@ -1848,6 +1844,7 @@
 
 		var $body 		= $( 'body' ),
 			$elem 		= this,
+			$navigation = $( '.navigation' ),
 			link 		= $elem.data( 'href' ),
 			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
 			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
@@ -1860,11 +1857,11 @@
 
 		if( state != 'external' && duration > 0 ){
 
-			$( '.navigation' ).animate( {
+			$navigation.animate( {
         		opacity: opacity
         	}, duration * 600 );
 
-			$('body').animate( {
+			$body.animate( {
         		opacity: opacity
         	}, duration * 1000, function() {
 				$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
@@ -1879,270 +1876,7 @@
 
 	}
 
+	//$.log('document.head');
 
-
-
-// ******************************************************			
-// ******************************************************
-	// jQuery READY
-// ******************************************************
-// ******************************************************
-
-
-
-	jQuery(function($){
-
-		//$.ajaxSetup({cache:false});
-
-		var $window 	= $( window ),
-			$html 		= $( 'html' ),
-			$body 		= $( 'body' ),
-			$location 	= $( location );
-
-		$html.removeClass( 'no-js' );
-
-// TOUCH CLASS
-
-        if ( ( typeof Modernizr !== 'undefined' && ( Modernizr.touchEvents || Modernizr.touch ) ) && ( $body.hasClass('is-iphone') || $body.hasClass('is-tablet') || $body.hasClass('is-mobile') ) ) {
-            $body.addClass( 'touch' );
-            $body.removeClass( 'mouse' );
-        }else{
-            $body.removeClass( 'touch' );
-            $body.addClass( 'mouse' );
-        }
-
-        // For DEBUG - Touch active on Desktop
-        //*$body.addClass( 'touch' );
-        //$body.removeClass( 'mouse' );
-
-// EVENTS
-
-		var loc = $location.attr( 'href' );
-
-		if( loc.indexOf( '#' ) > -1 ){
-			$body.data( 'anchor', loc.split('#')[1] );
-			
-			window.location.replace("#");
-			
-			if ( typeof window.history.replaceState == 'function' ) {
-				window.history.replaceState({}, '', location.href.slice(0, -1));
-			}
-		}
-		
-		$body.on( 'resizing resized imagesLoaded', function(e){
-		
-			$body.responsiveClasses( e );
-			$( '[data-equal]' ).equalChildrenSize();
-		
-		} );
-
-		
-		$body.on( 'responsive', function( e, state ) {
-
-			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle' );
-			$( '[data-switch]' ).switchByData( state, 'switch' );
-			$( '[data-sticky]' ).stickyMenu();
-			$( '[data-affix]' ).affixIt();
-
-		} );
-
-		$body.css( 'opacity', ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-wait' ) ) : .6 ) );
-
-		switch( $body.data( 'fade-wait' ) ){
-			case 'window':
-				$body.on( 'windowLoaded', function(e){ $.bodyIn(e); } );
-			break;
-			case 'images':
-				$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
-			break;
-			case 'sliders':
-				if( $( '.nivoSlider' ).length )
-					$body.on( 'nivoLoaded', function(e){ $.bodyIn(e); } );
-				else
-					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
-			break;
-			case 'maps':
-				if( $( '.map' ).length )
-					$body.on( 'mapsLoaded', function(e, tot){ $.bodyIn(e, tot); } );
-				else
-					$body.on( 'imagesLoaded', function(e){ $.bodyIn(e); } );
-			break;
-			default:
-				$body.on( 'documentReady', function(e){ $.bodyIn(e); } );
-				$body.css( 'opacity', .6 );
-			break;
-		}
-		
-		$window.on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
-		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
-		$( '.site-page' ).on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
-		$( '.site-page' ).on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
-		
-		$body.eventLinks();
-
-			
-		if( $body.hasClass( 'touch' ) ){
-
-			$( '.navigation[data-toggle="true"]' ).swipe( {
-
-		        swipeDown: function( e, direction, distance, duration, fingerCount ) {
-
-		        	var $this = $( this );
-		        	
-		        	var toggle = ( $( e.target ).hasClass( '.toggle' ) ? 1 : $( e.target ).parents( '.toggle' ).length );
-		        	if( toggle ){
-	        			$this.toggledOn( e );
-	        			e.stopPropagation();
-	        		}
-	        		
-		        },
-
-		        swipeUp: function( e, direction, distance, duration, fingerCount ) {
-
-		        	var $this = $( this );
-
-		        	var toggle = ( $( e.target ).hasClass( '.toggle' ) ? 1 : $( e.target ).parents( '.toggle' ).length );
-		        	
-		        	if( toggle ){
-	        			$this.toggledOff( e );
-	        			e.stopPropagation();
-	        		}
-
-		        },
-
-		        threshold: 10,
-		        excludedElements: '',
-		        //allowPageScroll: 'auto'
-				
-			});
-		}
-
-// TOOLS
-
-		$body.eventTools();
-		//$( '[data-popup]' ).setFancybox();
-		//$( '[data-slider]' ).initSlider();
-		//$( '[data-current-link]' ).currentLink();
-		//$( 'iframe[src*="youtube.com"]' ).youtubeFix();
-		$body.currentSection();
-
-
-// *** DEBUG		
-
-		$body.on( 'documentReady', function(e){ console.log('document.ready'); } );
-		$body.on( 'windowLoaded', function(e){ console.log('window.load'); } );
-		$body.on( 'imagesLoaded', function(e){ console.log('imagesLoaded'); } );
-		$body.on( 'nivoLoaded', function(e){ console.log('nivoLoaded'); } );
-		$body.on( 'mapLoaded', function(e){ console.log('mapLoaded'); } );
-		$body.on( 'mapsLoaded', function(e){ console.log('mapsLoaded'); } );
-		//$body.on( 'pageLoaded', function(e){ console.log('pageLoaded'); } );
-
-		/*$body.imagesLoaded()
-				.always( function( instance ) {
-		    console.log('all images loaded');
-		  })
-		  	.done( function( instance ) {
-		    console.log('all images successfully loaded');
-		  })
-		  	.fail( function() {
-		    console.log('all images loaded, at least one is broken');
-		  })
-		  	.progress( function( instance, image ) {
-		    var result = image.isLoaded ? 'loaded' : 'broken';
-		    console.log( 'image is ' + result + ' for ' + image.img.src );
-		  });*/
-
-
-// TRIGGERS
-
-		// Trigger WINDOW UNLOAD event
-		$window.on( 'beforeunload', function(e){
-
-			//e.preventDefault();
-
-			//$body.trigger( 'windowUnload' );
-			//location.href.replace( location.protocol + '//' + location.host + location.pathname );
-			//return false;
-
-		} );
-
-		// Trigger WINDOW RESIZED event
-		var interval, resizing;
-		$window.resize( function(e){
-
-			$body.trigger( 'resizing' );
-							
-			resizing = true;
-
-			clearTimeout( interval );
-			interval = setTimeout( function(){
-				if ( resizing ){
-					resizing = false;
-					$body.trigger( 'resized' );
-					clearInterval( interval );
-				}
-			}, 250 );
-
-		} );
-
-		$body.trigger( 'documentReady' );
-		$body.addClass('ready');
-
-		// Trigger WINDOW LOADED event
-		$window.on('load', function(){		
-
-			//$body.responsiveClasses( e );
-			$body.trigger( 'windowLoaded' ); 		// todo: SOMETIMES IT DOESN'T WORK - !important!
-
-		});
-
-		// Call NivoSlider and wait for NIVO LOADED event
-		$body.imagesLoaded( function( instance ) {
-
-		    $body.trigger( 'imagesLoaded' );
-		    
-		    $( '[data-slider="nivo"]' ).setNivoSlider();
-		    
-		    $( '[data-equal]' ).equalChildrenSize();
-
-		    $( '.scm-map' ).googleMap();
-
-		    /*if( $nivo.length ){
-		    	// +++ todo: anche le Slider come le Mappe vengono contate e restituiscono sliderLoaded e slidersLoaded
-				$nivo.setNivoSlider();
-				$body.on( 'nivoLoaded', function(){
-					if( $maps.length ){
-
-						$maps.googleMap();
-						$body.on( 'mapsLoaded', function(e){
-							$body.trigger( 'pageLoaded' );
-						});
-					}else{
-						$body.trigger( 'pageLoaded' );
-					}
-				});
-
-			}else if( $maps.length ){
-
-				$maps.googleMap();
-				$body.on( 'mapsLoaded', function(e){
-					$body.trigger( 'pageLoaded' );
-				});
-
-			}else{
-
-				$body.trigger( 'pageLoaded' );
-
-			}*/
-
-		});
-
-
-
-		$body.responsiveClasses();
-		// Trigger DOCUMENT READY event
-		
-
-	});
 
 } )( jQuery );

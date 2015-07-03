@@ -2045,12 +2045,15 @@
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-interval', array( 'second', '', '500', __( 'Interval', SCM_THEME ) ), __( 'Interval', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-offset', array( 'pixel', '', '0', __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-threshold', array( 'pixel', '', '150', __( 'Threshold', SCM_THEME ) ), __( 'Threshold', SCM_THEME ) );
+				$fields[] = scm_acf_field( 'msg-parallax', 'message', 'Parallax' );
+					$fields[] = scm_acf_field_select_disable( $name . 'opt-tools-parallax', $default, 'Parallax' );
 				$fields[] = scm_acf_field( 'msg-fancybox', 'message', 'Fancybox' );
 					$fields[] = scm_acf_field_select_disable( $name . 'opt-tools-fancybox', $default, 'Fancybox' );
 				$fields[] = scm_acf_field( 'msg-slider', 'message', __( 'Slider', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_options_slider( 'main', $default ) );
 				$fields[] = scm_acf_field( 'msg-gmaps', 'message', __( 'Google Maps', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'opt-tools-mappa', $default ) );
+
 				/*$fields[] = scm_acf_field( 'msg-accordion', 'message', 'Accordion' );
 					$fields[] = scm_acf_field( $name . 'opt-tools-accordion-duration', array( 'second-max', '', '500', 'Durata' ), 'Durata' );*/
 

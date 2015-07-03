@@ -1050,7 +1050,7 @@
 
 			elseif( strpos( $list, 'waitfor' ) !== false ):
 				$choices = array(
-					'window' => 'Window',
+					//'window' => 'Window',
 					'images' => 'Images',
 					'sliders' => 'Sliders',
 					'maps' => 'Maps',
