@@ -68,6 +68,9 @@ if ( ! isset( $content_width ) ) {
 	$SCM_typekit;
 
 	$SCM_indent 		= 1;
+
+	$SCM_old	 		= false;
+	$SCM_ie9	 		= false;
 	
 /*
 *****************************************************

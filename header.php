@@ -6,6 +6,33 @@
  * @package SCM
  */
 //header("Access-Control-Allow-Origin: *");
+
+global $SCM_old, $SCM_ie9, $is_IE;
+
+$protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
+//$redirect = scm_field( 'opt-ie-redirect', '', 'option' );
+//$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ?: SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
+
+if( function_exists('get_browser_name') && is_ie() ){
+
+    if( get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' ) ) {
+
+    $SCM_old = true;
+
+    }elseif( get_browser_version() <= 9 ){
+
+        $SCM_ie9 = true;
+    }
+}
+
+if( $SCM_old ) :
+
+    get_template_part( SCM_DIR_PARTS, 'old' );
+    die();
+
+endif;
+
+
 ?><!DOCTYPE html>
 
 <html class="scm no-js" <?php language_attributes(); ?>>
@@ -21,53 +48,17 @@
 
 <?php
 
-// [ 1 ] = REDIRECT TO _assets/html/old_ie.html IF IE < scm-settings-general['browser-version']
-// [ 2 ] = HTML5 SUPPORT IF IE < 9
+?>
 
-$protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
-$redirect = scm_field( 'opt-ie-redirect', '', 'option' );
-$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ?: SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
+<!--<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />-->
 
-if( function_exists('get_browser_name') ) :
-    if( is_ie() ) :
-        if( get_browser_version() <= (int)scm_field( 'opt-ie-version', '10', 'option' ) && $redirect ) :
-//[ 1 ]
-?>
-<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
-<?php
-        elseif( get_browser_version() <= 9 ) :
-//[ 2 ]
-?>
-<script src="<?php echo $protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
-<script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-<?php
-        endif;
-    endif;
-else :
-    global $is_IE;
+<?php if( $SCM_ie9 ) : ?>
 
-    if( $is_IE ) :
-        if( $redirect ) :
-//[ 1 ]
-?>
-<!--[if lte IE <?php echo (int)scm_field( 'opt-ie-version', '10', 'option' ); ?>]>
-<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />
-<![endif]-->
-<?php
-        else :
-//[ 2 ]
-?>
-<!--[if lt IE 9]>
-<script src="<?php echo $protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
-<script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-<![endif]-->
-<?php
-        endif;
-    endif;
-endif;
-?>
+    <script src="<?php echo $protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
+    <script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+
+<?php endif; ?>
 
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
