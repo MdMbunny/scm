@@ -326,8 +326,8 @@
 
             // Google API
 
-            wp_register_script( 'googleapi', 'https://www.google.com/jsapi', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'googleapi' );
+            //wp_register_script( 'googleapi', 'https://www.google.com/jsapi', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            //wp_enqueue_script( 'googleapi' );
 
             //if( scm_field( 'opt-tools-gm', 0, 'option' ) ){
                 /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, '', true );

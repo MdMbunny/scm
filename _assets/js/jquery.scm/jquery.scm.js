@@ -173,14 +173,6 @@
 			
 		}
 
-		// *****************************************************
-		// *      TOOLS
-		// *****************************************************
-
-		$body.eventLinks();
-		$body.eventTools();
-		$body.currentSection();
-
 
 		// *****************************************************
 		// *      DEBUG
@@ -220,6 +212,11 @@
 		$body.trigger( 'documentDone' );
 		$body.addClass('ready');
 
+		// Set tools
+		$body.eventLinks();
+		$body.eventTools();
+		$body.currentSection();
+
 		// Load NivoSlider and trigger
 		// Call EqualChildrenSize function
 		// Load GoogleMaps and trigger
@@ -235,11 +232,22 @@
 
 		    if( $maps.length > 0 ){
 
-		    	google.load( "maps", "3", { other_params:'sensor=false', callback: function() {
-					$.getScripts( 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js', function(){
-						$maps.googleMap();
-					} );
-				}});
+		    	var scripts = [
+		    	'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false',
+		    	'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js'
+		    	];
+
+				var doc_write = document.write; // Remember original method;
+				document.write = function(s) {$(s).appendTo('body')};
+			    $.getScripts( scripts ).done(function() {
+			        document.write = doc_write; // Restore method
+
+			        $maps.googleMap();
+			    
+			    }).fail(function(jqxhr, settings, exception) {
+			        alert(exception);
+			        document.write = doc_write;
+			    });
 			
 			}
 

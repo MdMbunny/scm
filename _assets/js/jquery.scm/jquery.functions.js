@@ -69,7 +69,8 @@
 		return $.ajax( options );
 	};*/
 
-	/*$.getScripts = function(arr, path) {
+	$.getScripts = function(arr, path) {
+
 		if( typeof( arr ) == 'string' ){
 			arr = [ arr ];
 		}
@@ -82,9 +83,9 @@
 	    }));
 
 	    return $.when.apply($, _arr);
-	}*/
+	}
 
-	$.getScripts = function( arr, callback ) {
+	/*$.getScripts = function( arr, callback ) {
 
 		if( typeof( arr ) == 'string' ){
 			arr = [ arr ];
@@ -104,7 +105,7 @@
 	    	$.getScript( script, internalCallback );
 
 	    });
-	}
+	}*/
  
 
 	// WORDPRESS
