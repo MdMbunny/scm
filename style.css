@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.4.2
+Version:			v2.4.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1677,32 +1677,51 @@ body:not(.ready) .navigation {
 /*--------------------------------------------------------------
 4.1 Plugins Google Map
 --------------------------------------------------------------*/
-.map{
+.scm-map{
 	height: 400px;
 }
 
-.map + * {
+.scm-map + * {
 	margin-top: 20px;
 }
 
-.map img{
+.scm-map img{
 	max-width: initial;
 }
 /*
-.map .gmnoprint{
+.scm-map .gmnoprint{
 	display: none;
 }*/
 
-.map .gm-style-iw > div{
+.scm-map .gm-style-iw > div{
 	width: auto !important;
 }
 
-.map .gm-style-iw {
+.scm-map .gm-style-iw {
 	line-height: 1.5em;
 }
 
-.map .labels{
+.scm-map .labels{
 	font-size: 45px;
+}
+
+.scm-map .gm-style > .gmnoprint,
+.scm-map .gm-style > div:first-child + div {
+  display: none;
+}
+
+.scm-map .gm-style > .gmnoprint:not(.gm-style-cc) + .gmnoprint {
+  display: block;
+}
+
+.scm-map .gm-style > .gmnoprint.gm-style-cc + .gm-style-cc {
+  display: none;
+}
+
+.scm-map .gm-style + .gm-style > .gmnoprint.gm-style-cc + .gmnoprint,
+.scm-map .gm-style + .gm-style > .gmnoprint.gm-style-cc + .gmnoprint + div,
+.scm-map .gm-style + .gm-style > .gmnoprint.gm-style-cc + .gmnoprint + div + .gmnoprint{
+	display: inherit;
 }
 
 .object .legend,

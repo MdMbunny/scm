@@ -2070,9 +2070,13 @@
 				$fields[] = scm_acf_field( $name . 'opt-ids-footer', array( 'id', 'site-footer' ), __( 'Footer ID', SCM_THEME ) );
 				$fields[] = scm_acf_field( $name . 'opt-ids-topofpage', array( 'id', 'site-topofpage' ), 'Top Of Page ID' );
 
-			$fields[] = scm_acf_field( 'tab-ie-settings', 'tab-left', 'IE' );
-				$fields[] = scm_acf_field( $name . 'opt-ie-version', array( 'positive', '', '9', __( 'Internet Explorer', SCM_THEME ), '', 7, 12 ), __( 'Versione Minima', SCM_THEME ) );
-				$fields[] = scm_acf_field_object_link( $name . 'opt-ie-redirect', $default, 'page', 100, 0, __( 'Pagina', SCM_THEME ) );
+			$fields[] = scm_acf_field( 'tab-fallback-settings', 'tab-left', 'Old Browsers' );
+				$fields[] = scm_acf_field( $name . 'opt-ie-version', array( 'positive', 10, '10', __( 'Internet Explorer', SCM_THEME ), '', 10 ), __( 'Versione Minima', SCM_THEME ) );
+				$fields[] = scm_acf_field( $name . 'opt-firefox-version', array( 'positive', 38, '38', __( 'Firefox', SCM_THEME ), '', 23 ), __( 'Versione Minima', SCM_THEME ) );
+				$fields[] = scm_acf_field( $name . 'opt-chrome-version', array( 'positive', 43, '43', __( 'Chrome', SCM_THEME ), '', 28 ), __( 'Versione Minima', SCM_THEME ) );
+				$fields[] = scm_acf_field( $name . 'opt-opera-version', array( 'positive', 23, '23', __( 'Opera', SCM_THEME ), '', 18 ), __( 'Versione Minima', SCM_THEME ) );
+				$fields[] = scm_acf_field( $name . 'opt-safari-version', array( 'positive', 7, '7', __( 'Safari', SCM_THEME ), '', 5 ), __( 'Versione Minima', SCM_THEME ) );
+				$fields[] = scm_acf_field_image( $name . 'opt-fallback-logo', $default, 100, 0, __( 'Logo', SCM_THEME ) );
 
 			return $fields;
 

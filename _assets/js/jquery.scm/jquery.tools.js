@@ -216,6 +216,7 @@
 		return this.each(function() {
 
 		    var $this 		= $( this ),
+		    	$body 		= $( 'body' ),
 		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
 		    	loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
 				current 	= document.URL,
@@ -223,7 +224,7 @@
 		        a_parent 	= $( parent ).siblings().find( 'a' ),
 		        url_parent 	= $( a_parent ).attr( 'href' ),
 		        result 		= true,
-		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : $this.data( 'target' ) );
+		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.data( 'target' ) ? $this.data( 'target' ) : '_self' ) );
 
 		    if( !link )
 		    	return;
@@ -235,6 +236,31 @@
 		    	window.history.back();
 		    	return false;
 		    }
+
+			
+			
+
+/*
+
+USA QUESTO PER CAPIRE SE UN LINK È PAGE, SITE o EXTERNAL
+FAI UN CHECK AD INIZIO SESSIONE COSÌ NON DEVI FARE TUTTI QUESTI CONTROLLI OGNI VOLTA CHE UNO CLICCA
+QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
+
+		    
+
+			$('a').each(function(){
+			   if(comp.test($(this).attr('href'))){
+			       // a link that contains the current host           
+			       $(this).addClass('local');
+			   }
+			   else{
+			       // a link that does not contain the current host
+			       $(this).addClass('external');
+			   }
+			});
+*/
+
+
 
 	        var curpath		= current.replace( /\//g,'' ),
 				linkpath 	= link.replace( /\//g,'' );
@@ -250,55 +276,68 @@
 	        else
 	        	return; // +++ toccato*/
 
-	        
+	        var comp = new RegExp(location.host);
+			var same = comp.test( $this.data( 'href' ) );
 
-	        if( $this.data( 'href' ).indexOf( '#' ) === 0 )
+	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
 	        	target = '_self';
+	        	same = true;
+	        }
+
+	        if( same && $this.data( 'href' ).indexOf( '/uploads/' ) >= 0 ){
+	        	target = '_blank';
+	        }
 
 	        // +++ todo: temo che questo passaggio pesi abbastanza
 	        // verifica come paragonare l'host senza dover creare un elemento a
 
 	        //var elem = document.createElement( 'a' );
-	        var $elem = $( '<a id="temp" href="' + $this.data( 'href' ) + '"></a>' );
+	        //var $elem = $( '<a id="temp" href="' + $this.data( 'href' ) + '"></a>' );
 
     		//elem.href = $this.data( 'href' );
     		/*$elem = $( elem );
     		$elem.css( 'display', 'none' );
     		*/
-    		$('body').append( $elem );
+    		/*$('body').append( $elem );
     		var elem = $( '#temp' )[0];
 
 	        var lochost		= location.hostname,
 				host 		= elem.hostname,
 				locpath		= location.pathname.replace( /^\//,'' ),
-				path 		= elem.pathname.replace( /^\//,'' );
+				path 		= elem.pathname.replace( /^\//,'' );*/
 
-			if( ( target !== '_blank' && lochost === host ) || target === '_self' ){
+			//if( ( target !== '_blank' && lochost === host ) || target === '_self' ){
 
-				$( 'body' ).disableIt();
+			
 
-				if( loadcontent ){
-					$this.loadContent( event, elem.href );
-					return $this;
+			if( loadcontent ){
+
+				//console.log(elem.href);
+				//$this.loadContent( event, elem.href );
+
+				$body.disableIt();
+
+				$this.loadContent( event, $this.data( 'href' ) );
+				return $this;
+			
+			}else if( same && target === '_self' ){
+
+				$body.disableIt();
+
+				$this.data( 'target', '_self' );
+
+				if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
+					result = $this.trigger( 'linkPage' ).data( 'done' );
+					state = 'page';
+
 				}else{
-
-					if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
-						result = $this.trigger( 'linkPage' ).data( 'done' );
-						state = 'page';
-					}else{
-						result = $this.trigger( 'linkSite' ).data( 'done' );
-						state = 'site';	
-					}
-					/*if ( locpath === path ){ // toccato
-						result = $this.trigger( 'linkPage' ).data( 'done' );
-						state = 'page';
-					}else if ( locpath !== path || ( curpath !== linkpath && linkpath.indexOf( '#' ) !== 0 ) ){ // toccato
-						result = $this.trigger( 'linkSite' ).data( 'done' );
-						state = 'site';						
-					}*/
-
+					result = $this.trigger( 'linkSite' ).data( 'done' );
+					state = 'site';	
 				}
+
 			}else{
+
+				$this.data( 'target', '_blank' );
 				result = $this.trigger( 'linkExternal' ).data( 'done' );
 				state = 'external';
 			}
@@ -327,7 +366,7 @@
 				}
 			}
 
-			$( '#temp' ).remove();
+			//$( '#temp' ).remove();
 
 		});
 		
@@ -518,6 +557,8 @@
 
 	$.fn.smoothScroll = function( off, onEnd ) {
 
+
+
 		var type = $.type( off );
 
 		if( type === 'function' ){
@@ -526,6 +567,7 @@
 		}
 
 		return this.each(function(){
+
 
 			var $this 			= $( this ),
 				link 			= ( $this.data( 'href' ) ? $this.data( 'href' ) : ( $this.attr( 'href' ) ? $this.attr( 'href' ) : '#' ) ),
@@ -555,7 +597,6 @@
 			}
 
 			var pageEnable = function(){
-
 				if( onEnd )
 					onEnd();
 				else
@@ -565,12 +606,18 @@
 
 			var pageScroll = function(){
 
-				$('body, html').animate( {
+				$('html').animate( {
+
+						scrollTop: destination
+
+					}, parseFloat( duration ), ease
+				);
+
+				$('body').animate( {
 
 						scrollTop: destination
 
 					}, parseFloat( duration ), ease, function() {
-
 						pageEnable();
 					}
 				);
@@ -1502,7 +1549,7 @@
 					PREVIOUS_FANCYBOX = $current.html();
 					$current.remove();
 				}else{
-					//console.log('reset');
+					
 					PREVIOUS_FANCYBOX = '';
 				}
 
@@ -1572,7 +1619,7 @@
 						    $( '.fancybox-inner' ).eventTools();
 							$( '.fancybox-inner' ).eventLinks();
 
-							//console.log(PREVIOUS_FANCYBOX);
+							
 							
 							/*$( '.fancybox-overlay' ).on( 'click', function(e){
 								
@@ -1580,7 +1627,6 @@
 									//e.preventDefault();
 									//e.stopPropagation();
 								if( PREVIOUS_FANCYBOX ){
-									console.log('pippo');
 									//$(this).remove();
 									//$.fancybox.close();
 									//PREVIOUS_FANCYBOX.trigger( 'link' );
@@ -1671,8 +1717,8 @@
 
 			elem.href = id;
 
-    		//$parent.css( 'overflow', 'hidden' );
-    		$parent.css( 'overflow', 'visible' );
+    		$parent.css( 'overflow', 'hidden' );
+    		//$parent.css( 'overflow', 'visible' );
 			$parent.css('height', p_height);
 
 
@@ -1710,6 +1756,7 @@
 						
 						$container.html( '' );
 						// come secondo parametro puoi passare un oggetto con variabili POST
+						
 						$container.load( link + ' ' + id + ' > *', function( response, status, xhr ) {
 							if ( status == 'error' ) {
 								var msg = 'Spiacenti, è stato riscontrato un errore: ';
@@ -1774,13 +1821,14 @@
 	$.bodyIn = function( event ){
 
 		var $body 			= $( 'body' ),
+			$html 			= $( 'html' ),
 			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : .3 ),
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
 			anchor 			= $body.data( 'anchor' ),
 			button 			= $( 'a[href="#' + anchor + '"]' ),
-			$doc 			= $( document ),
-			$all 			= $( 'html, body' );
+			$doc 			= $( document );
+			
 
 		var pageScroll = function(){
 
@@ -1800,11 +1848,15 @@
 
 			}else{
 
-				$all.animate({
+				$body.animate({
 					scrollTop: $anchor.offset().top
 				}, 1000, function() {
 					$body.enableIt();
 				});
+
+				$html.animate({
+					scrollTop: $anchor.offset().top
+				}, 1000 );
 			}
 
 		};
@@ -1827,7 +1879,11 @@
     	};
 
     	if( duration > 0 ){
-        	$('body, html').animate( {
+        	$('html').animate( {
+        		opacity: 1
+        	}, duration * 1000 );
+
+        	$('body').animate( {
         		opacity: 1
         	}, duration * 1000, checkScroll );
         }else{

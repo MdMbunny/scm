@@ -10,8 +10,6 @@
 global $SCM_old, $SCM_ie9, $is_IE;
 
 $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
-//$redirect = scm_field( 'opt-ie-redirect', '', 'option' );
-//$redirect = ( get_permalink() === $redirect ? '' : ( $redirect ?: SCM_URI_ASSETS_CHILD . 'html/old_ie.html' ) );
 
 if( function_exists('get_browser_name') ){
 

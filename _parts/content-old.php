@@ -6,7 +6,7 @@
 
 <?php
 
-    $logo_image = esc_url( scm_field( 'brand-logo', SCM_URI_IMG . '/logo.png', 'option' ) );
+    $logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'brand-logo', SCM_URI_IMG . '/logo.png', 'option' ), 'option' ) );
     $html = scm_options_get( 'bg_color', 'styles-loading', 1 );
 
 ?>
@@ -18,6 +18,10 @@
 
 body{
     <?php echo $html; ?>
+}
+
+img{
+    max-width: 100%;
 }
 
 .landing{

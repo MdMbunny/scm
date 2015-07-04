@@ -198,7 +198,7 @@ if( is( $list ) ){
 
         if( $button_layout === 'layout-paypal' ){
 
-            indent( $SCM_indent, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input name="cmd" type="hidden" value="_s-xclick" />', 1 );
+            indent( $SCM_indent, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"><input name="cmd" type="hidden" value="_s-xclick" />', 1 );
                 indent( $SCM_indent, '<input name="hosted_button_id" type="hidden" value="' . $button['link'] . '" />', 1 );
                 indent( $SCM_indent, '<input class="' . ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_class : '' ) . '" style="' . ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_style : '' ) . '" alt="PayPal - Il metodo rapido, affidabile e innovativo per pagare e farsi pagare." name="submit" type="submit" value="' . $name . '" />', 1 );
                 indent( $SCM_indent, '<img src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" alt="" width="1" height="1" border="0" />', 1 );
