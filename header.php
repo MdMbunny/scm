@@ -45,7 +45,7 @@ endif;
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
-<meta name="author" content="Studio Creativo M - www.studiocreativo-m.it'" />
+<!--<meta name="author" content="Studio Creativo M - www.studiocreativo-m.it'" />-->
 <meta name="DC.creator" content="Studio Creativo M - www.studiocreativo-m.it" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

@@ -151,7 +151,7 @@ if( is( $list ) ){
         $li_style = is( $txt_col, '', ' color:', ';' ) . is( $bg_col, '', ' background-color:', ';' );
 
         $li_class = 'scm-button button ' . $display . ' ' . $direction . ' ' . $button_layout . ' ' . str_replace( 'layout-', '', $button_layout );
-        $li_class .= ( $name ? '' : ' icon' ) . ' ' . $shape . ( $shape ? ' shape' : '' ) . ' ' . $shape_size . ' ' . $shape_angle;
+        $li_class .= ( $name ? '' : ' icon' ) . ' ' . ( $shape == 'no-shape' ? ' ' . $shape : ' shape' . $shape ) . ' ' . $shape_size . ' ' . $shape_angle;
         $li_class .= ' ' . $align . ' ' . $odd;
 
         if( isset( $button['link'] ) && is( $button['link'] ) ){
@@ -204,7 +204,6 @@ if( is( $list ) ){
         }else{
 
             indent( $SCM_indent, openTag( 'li', '', ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_class : '' ), ( $pos == 'inside' || $slug == 'elenco-puntato' ? $li_style : '' ), $li_attributes ), 1 );
-
             if( $icon && $icon !== 'no' )
                 indent( $SCM_indent + 1, '<i class="bullet fa ' . $icon . ' ' . $align . ( $pos == 'inside' || $slug == 'elenco-puntato' ? ( $name ? ' float-' . $align : '' ) : '' ) . '"></i> ', 1 );
             if( $name && $slug != 'elenco-puntato' )

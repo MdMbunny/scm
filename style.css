@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.4.4
+Version:			v2.4.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1412,7 +1412,7 @@ input[type="submit"]:active {
 	float: none;
 }
 
-.toggle-home > .menu {
+.toggle-home + .menu {
 	padding: 0 0 0 3em;
 }
 

@@ -202,7 +202,7 @@ function is_asso( $arr ){
     return false;
 }
 
-function toArray( $var, $asso ){
+function toArray( $var, $asso = false ){
 
     if( !$asso )
         return ( is_array( $var ) ? $var : array( $var ) );

@@ -292,6 +292,15 @@
             $id = $post->ID;
             $type = $post->post_type;
 
+            if( is_single() ){
+
+                // If a Page named '_single-{post_type}' exists
+                $page = get_page_by_path( '_single-' . $type );
+                if( $page )
+                    $id = $page->ID;
+
+            }
+
             $menu = scm_field( 'page-menu', 'no', $id );
 
             if( !$menu || $menu == 'no' )
@@ -301,15 +310,6 @@
 
             if( !$menu || $menu == 'no' )
                 return;
-
-            if( is_single() ){
-
-                // If a Page named '_single-{post_type}' exists
-                $page = get_page_by_path( '_single-' . $type );
-                if( $page )
-                    $id = $page->ID;
-
-            }
 
             $sticky = scm_field( 'menu-sticky', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
