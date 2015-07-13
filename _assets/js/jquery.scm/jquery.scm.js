@@ -8,7 +8,7 @@
 
 	//jQuery(function($){
 
-		//$.ajaxSetup({cache:false});
+		var GOOGLE_API_KEY = 'AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY';
 
 		var $window 	= $( window ),
 			$html 		= $( 'html' ),
@@ -94,7 +94,7 @@
 		
 		$body.on( 'responsive', function( e, state ) {
 
-			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle' );
+			$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle', '.toggle-image, .toggle-home' );
 			$( '[data-switch]' ).switchByData( state, 'switch' );
 			$( '[data-sticky]' ).stickyMenu();
 			$( '[data-affix]' ).affixIt();
@@ -122,6 +122,7 @@
 
 		} );
 
+		$body.on( 'resizing', function(e){ $( '.toggled' ).toggledOff(e); } );
 		$window.on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
 		$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
 		$page.on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
@@ -173,10 +174,9 @@
 			
 		}
 
-
 		// *****************************************************
 		// *      DEBUG
-		// *****************************************************	
+		// *****************************************************
 
 		$body.on( 'documentDone', function(e){ $.log('document.done', touch); } );
 		$body.on( 'imagesLoaded', function(e){ $.log('imagesLoaded', touch); } );
@@ -216,6 +216,7 @@
 		$body.eventLinks();
 		$body.eventTools();
 		$body.currentSection();
+		$body.checkCss();
 
 		// Load NivoSlider and trigger
 		// Call EqualChildrenSize function
@@ -233,7 +234,7 @@
 		    if( $maps.length > 0 ){
 
 		    	var scripts = [
-		    	'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false',
+		    	'https://maps.googleapis.com/maps/api/js?v=3.exp?key=' + GOOGLE_API_KEY + '&sensor=false',
 		    	'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js'
 		    	];
 

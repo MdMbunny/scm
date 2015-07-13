@@ -870,6 +870,8 @@
 						$choices[$location] = $description;
 				};
 
+				$choices['no'] = __( 'Nessun Menu', SCM_THEME );
+
 			elseif( strpos( $list, 'templates_' ) !== false ):
 				$pos = strpos( $list, 'templates_' ) + strlen( 'templates_' );
 				$type = substr( $list, $pos ) . SCM_TEMPLATE_APP;
@@ -1335,20 +1337,23 @@
 			elseif( strpos( $list, 'responsive_up' ) !== false ):
 				$choices = array(
 					'smartmin'												=> 'Mobile Min',
-					'smartmin smart'										=> 'Mobile',
-					'smartmin smart portrait'								=> 'Tablet Portrait',
-					'smartmin smart portrait notebook'						=> 'Notebook',
-					'smartmin smart portrait landscape'						=> 'Tablet Landscape',
-					'smartmin smart portrait landscape desktop'				=> 'Desktop',
+					'smartmin smartmid smart'										=> 'Mobile',
+					'smartmin smartmid smart portrait'								=> 'Tablet Portrait',
+					'smartmin smartmid smart portrait notebook'						=> 'Notebook',
+					'smartmin smartmid smart portrait notebook landscape'						=> 'Tablet Landscape',
+					'smartmin smartmid smart portrait notebook landscape desktop'				=> 'Desktop',
+					'smartmin smartmid smart portrait notebook landscape desktop wide'				=> 'Wide',
 				);
 
 			elseif( strpos( $list, 'responsive_down' ) !== false ):
 				$choices = array(
-					'desktop landscape portrait smart smartmin'		=> 'Mobile Min',
-					'desktop landscape portrait smart'		=> 'Mobile',
-					'desktop landscape portrait'			=> 'Tablet Portrait',
-					'desktop landscape'						=> 'Tablet Landscape',
-					'desktop'								=> 'Desktop',
+					'wide desktop landscape notebook portrait smart smartmid smartmin'		=> 'Mobile Min',
+					'wide desktop landscape notebook portrait smart'		=> 'Mobile',
+					'wide desktop landscape notebook portrait'			=> 'Tablet Portrait',
+					'wide desktop landscape notebook'			=> 'Notebook',
+					'wide desktop landscape'						=> 'Tablet Landscape',
+					'wide desktop'								=> 'Desktop',
+					'wide'									=> 'Wide',
 				);
 
 			elseif( strpos( $list, 'responsive_layouts' ) !== false ):

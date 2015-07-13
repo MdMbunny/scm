@@ -32,49 +32,14 @@ if( isset( $this ) )
 
 /***************/
 
-
-
 $layout = $args['acf_fc_layout'];
 $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
 //$url = scm_field( 'image', '', $post_id );
 $negative = $args['negative'] === 'on';
 $thumb = -2;
 
-if( !$image ){
-    if( $post->post_type === 'soggetti' ){
-    	switch ( $layout ) {
-    		case 'layout-logo':
-				if( $negative )
-			        $image = scm_field( 'soggetto-logo-neg', '', $post_id );
-			    else
-			    	$image = scm_field( 'soggetto-logo', '', $post_id );
-    		break;
-    		
-    		case 'layout-logo-icona':
-    			if( $negative )
-			        $image = scm_field( 'soggetto-icona-neg', '', $post_id );
-			    else
-			    	$image = scm_field( 'soggetto-icona', '', $post_id );
-    		break;
-    	}
-    	
-        
-        if( !$image )
-    		return;
 
-    }elseif( $post->post_type === 'video' ){
-
-        $url = scm_field( 'video-url', '', $post_id );
-        $id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
-        if( !$id )
-            return;
-
-        $image = 'http://img.youtube.com/vi/' . $id . '/1.jpg';
-
-    }else{
-    	return;
-    }
-}elseif ( $layout == 'layout-thumbs' ) {
+if ( $layout == 'layout-thumbs' ) {
     
     $thumb = ( $image ? intval( $image ) : 0 );
     $images = scm_field( 'galleria-images', array(), $post_id );
@@ -89,9 +54,43 @@ if( !$image ){
 
     }
 
+}elseif( !$image ){
+    if( $post->post_type === 'soggetti' ){
+        switch ( $layout ) {
+            case 'layout-logo':
+                if( $negative )
+                    $image = scm_field( 'soggetto-logo-neg', '', $post_id );
+                else
+                    $image = scm_field( 'soggetto-logo', '', $post_id );
+            break;
+            
+            case 'layout-logo-icona':
+                if( $negative )
+                    $image = scm_field( 'soggetto-icona-neg', '', $post_id );
+                else
+                    $image = scm_field( 'soggetto-icona', '', $post_id );
+            break;
+        }
+        
+        
+        if( !$image )
+            return;
+
+    }elseif( $post->post_type === 'video' ){
+
+        $url = scm_field( 'video-url', '', $post_id );
+        $id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
+        if( !$id )
+            return;
+
+        $image = 'http://img.youtube.com/vi/' . $id . '/1.jpg';
+
+    }else{
+        return;
+    }
 }
 
-$image = toArray( $image );
+$image = toArray( $image, true );
 
 /***************/
 
@@ -126,13 +125,15 @@ switch ( $args[ 'format' ] ) {
     break;
 }
 
+//consoleLog($image);
+
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
     $att = $attributes;
 
     $value = $image[$i];
 
-    $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
+    
 
     $id = ( $id && sizeof( $image ) > 1 ? $id . '-' . $key : $id );
 
@@ -143,6 +144,13 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
         }
         
         $att .= scm_post_link( $args );
+
+        $value = ( gettype( $value ) == 'array' ? $value['sizes']['thumbnail'] : $value );
+        $class .= ' thumb';
+
+    }else{
+    
+        $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
 
     }
  

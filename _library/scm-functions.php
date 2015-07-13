@@ -190,11 +190,24 @@ function ifnotequal( $var = '', $equal = array(), $fall = '', $pre = '', $app = 
 
 
 
+function is_asso( $arr ){
 
+    if( !is_array( $var ) )
+        return null;
 
-function toArray( $var ){
+    foreach( array_keys( $arr ) as $key){    
+        if ( !is_int( $key ) ) return true;
+    }
+    
+    return false;
+}
 
-    return ( is_array( $var ) ? $var : array( $var ) );
+function toArray( $var, $asso ){
+
+    if( !$asso )
+        return ( is_array( $var ) ? $var : array( $var ) );
+    else
+        return ( is_asso( $var ) ? $var : array( $var ) );
 
 }
 
@@ -762,8 +775,11 @@ function getGoogleMapsLatLng($address = '', $country = ''){
     $google_address = str_replace('  ', '+', $address);
     $google_address = str_replace(' ', '+', $google_address);
 
-    $json = wp_remote_fopen("http://maps.google.com/maps/api/geocode/json?address=$google_address&sensor=false&region=$country");
+
+
+    $json = wp_remote_fopen("http://maps.google.com/maps/api/geocode/json?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY?address=$google_address&sensor=false&region=$country");
     $json = json_decode($json);
+    consoleLog($json);
 
     $ret = array(
         'lat'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'},

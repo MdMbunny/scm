@@ -364,6 +364,16 @@
 		}
 	}
 
+	// SOCIAL SHARE
+	if ( ! function_exists( 'scm_acf_object_social_share' ) ) {
+		function scm_acf_object_social_share( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
+
+			$fields = array();
+
+			return $fields;
+		}
+	}
+
 	// SOCIAL FOLLOW
 	if ( ! function_exists( 'scm_acf_object_social_follow' ) ) {
 		function scm_acf_object_social_follow( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
@@ -607,9 +617,13 @@
             $layout_icon = scm_acf_layout( 'icona', 'block', __( 'Icona', SCM_THEME ) );
                 $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona( $default ) );
 
+            $layout_share = scm_acf_layout( 'share', 'block', __( 'Social share', SCM_THEME ) );
+                $layout_share['sub_fields'] = array_merge( $layout_share['sub_fields'], scm_acf_object_social_share( $default ) );
+
             $layout_empty[] = $layout_tit;
             $layout_empty[] = $layout_list;
             $layout_empty[] = $layout_icon;
+            $layout_empty[] = $layout_share;
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link will be applied )
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );

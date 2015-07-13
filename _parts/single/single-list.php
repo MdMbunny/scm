@@ -97,9 +97,8 @@ $display = $args['display'];
 $direction = ( $args['display'] === 'block' ? 'vertical' : 'horizontal' );
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 $size = ifnotequal( $args['size'], 'default', 'normal' );
-
 $color = scm_content_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
-$shape = ( $args['shape'] ? ifnotequal( $args['shape'], 'no', '' ) : '' );
+$shape = ( $args['shape'] ? ifnotequal( $args['shape'], 'no', 'no-shape' ) : 'no-shape' );
 $shape_size = ( $shape ? ifnotequal( $shape, 'square', '', '', '-' . $args['shape-size'] ) : '' );
 $shape_angle = ifnotequal( $args['shape-angle'], array( 'all', 'square' ) );
 $bg = scm_content_preset_rgba( $args['box-color'], $args['box-alpha'] );
@@ -154,12 +153,11 @@ if( is( $list ) ){
         $li_class = 'scm-button button ' . $display . ' ' . $direction . ' ' . $button_layout . ' ' . str_replace( 'layout-', '', $button_layout );
         $li_class .= ( $name ? '' : ' icon' ) . ' ' . $shape . ( $shape ? ' shape' : '' ) . ' ' . $shape_size . ' ' . $shape_angle;
         $li_class .= ' ' . $align . ' ' . $odd;
-        
+
         if( isset( $button['link'] ) && is( $button['link'] ) ){
             switch ( $button_layout ) {
                 case 'layout-media':
                     $li_attributes .= scm_post_link( array(), $button['link'] );
-                    //consoleLog($button['link']);
                 break;
 
                 case 'layout-paypal':
@@ -190,7 +188,6 @@ if( is( $list ) ){
                 break;
                 
                 default:
-                    //consoleLog(getURL( (string)$button['link'] ));
                     $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '"';//' data-target="_blank"';
                 break;
             }
@@ -210,10 +207,8 @@ if( is( $list ) ){
 
             if( $icon && $icon !== 'no' )
                 indent( $SCM_indent + 1, '<i class="bullet fa ' . $icon . ' ' . $align . ( $pos == 'inside' || $slug == 'elenco-puntato' ? ( $name ? ' float-' . $align : '' ) : '' ) . '"></i> ', 1 );
-
             if( $name && $slug != 'elenco-puntato' )
                 indent( $SCM_indent + 1, openTag( 'span', '', ( $pos == 'outside' && $slug != 'elenco-puntato' ? $li_class : '' ) . ' ' . $align, ( $pos == 'outside' && !$slug == 'elenco-puntato' ? $li_style : '' ), '' ) . $name . '</span>', 1 );
-
             else if( $name )
                 indent( $SCM_indent + 1, $name, 1 );
 

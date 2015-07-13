@@ -201,6 +201,8 @@
             $logo_title = get_bloginfo( 'name' );
             $logo_slogan = get_bloginfo( 'description' );
             $show_slogan = scm_field( 'brand-slogan', 0, 'option' );
+
+            $logo_link = scm_field( 'brand-link', '', 'option' );
             
             $logo_type = scm_field( 'brand-head', 'text', 'option' );
 
@@ -217,14 +219,16 @@
 
                 indent( $in+1 , '<' . $logo_tag . ' class="site-title logo ' . $logo_type . '-only">' );
                     
-                    indent( $in+2 , '<a href="' . home_url() . '" title="' . $logo_title . '" style="display:block;">' );
+                    if( $logo_link )
+                        indent( $in+2 , '<a href="' . home_url() . '" title="' . $logo_title . '" style="display:block;">' );
                     
                     if( 'img' == $logo_type )
                         indent( $in+3 , '<img src="' . $logo_image . '" alt="' . $logo_title . '" title="' . $logo_title . '" style="max-height:' . $logo_height . ';" />' );
                     
                         indent( $in+3 , '<span class="' . (  'img' == $logo_type ? 'invisible' : 'text-logo' ) . '">' . $logo_title . '</span>' );
                     
-                    indent( $in+2 , '</a>' );
+                    if( $logo_link )
+                        indent( $in+2 , '</a>' );
                 
                 indent( $in+1 , '</' . $logo_tag . '>', 2 );
                 
@@ -288,6 +292,16 @@
             $id = $post->ID;
             $type = $post->post_type;
 
+            $menu = scm_field( 'page-menu', 'no', $id );
+
+            if( !$menu || $menu == 'no' )
+                return;
+            
+            $menu = ( $menu != 'default' ? $menu : scm_field( 'menu-wp', 'primary', 'option' ) );            
+
+            if( !$menu || $menu == 'no' )
+                return;
+
             if( is_single() ){
 
                 // If a Page named '_single-{post_type}' exists
@@ -301,8 +315,7 @@
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
-            $menu = scm_field( 'page-menu', '', $id );
-            $menu = ( $menu ?: scm_field( 'menu-wp', 'primary', 'option' ) );
+            
             
             $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );
             
@@ -510,8 +523,8 @@
                 
                     if( $image_active && $image_active != 'no' ){
 
-                        $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak(2);
-                        $wrap .= indent( $in + 2 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '"><img src="' . $image_icon . '" alt="" /></a>' . lbreak(2);
+                        $wrap .= indent( $in + 2 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '" data-switch-with=".toggle-home"><img src="' . $image_icon . '" alt="" /></a>' . lbreak(2);
+                        $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '"><i class="' . $home_icon . '"></i></a>' . lbreak(2);
                     
                     }else{
                     

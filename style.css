@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.4.3
+Version:			v2.4.4
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -449,7 +449,7 @@ h6 { font-size: 1.2em; }
 /*--------------------------------------------------------------
 2.2 Attributes Display
 --------------------------------------------------------------*/
-.invisible, .none, .displaynone, .display-none { display: none; }
+.hidden, .invisible, .none, .displaynone, .display-none { display: none !important; }
 
 .block, .displayblock, .display-block { display: block; }
 
@@ -585,7 +585,11 @@ h6 { font-size: 1.2em; }
 --------------------------------------------------------------*/
 .responsive{
 	/*display: block;*/
-	margin: 0 1%;
+	/*margin: 0 1%;*/
+}
+
+.fullheight, .full-height{
+	height: 100%;
 }
 
 .tofull .responsive,
@@ -636,6 +640,7 @@ blockquote .append{
   width: auto;
 }
 
+.row,
 .scm-object{
 	position: relative;
 }
@@ -725,21 +730,21 @@ blockquote .append{
 /* SCM Images */
 
 /* Vertical Align - IMPORTANT: TO TEMPLATE and OPTIONS */
-.scm-image{
+.scm-image:not(.thumb){
 	width: auto;
 	height: 10em;
 	white-space: nowrap;
 	text-align: center;
 }
 
-.scm-image:before{
+.scm-image:not(.thumb):before{
 	content: '';
 	display: inline-block;
 	height: 100%;
 	vertical-align: middle;
 }
 
-.scm-image > img{
+.scm-image:not(.thumb) > img{
 	vertical-align: middle;
 }
 
@@ -1096,7 +1101,7 @@ blockquote,
 }
 
 .scm-list.elenco-puntato > .button.shape,
-.scm-button:not(.elenco_puntato),
+.scm-button:not(.elenco_puntato):not(.no-shape),
 button,
 input[type="button"],
 input[type="reset"],
@@ -1371,13 +1376,22 @@ input[type="submit"]:active {
 
 /* Level 0 */
 
+.toggle-home > i{
+	font-size: 1em;
+}
 
-.toggle-home{
+.toggle-image > img{
+	height: 1em;
+}
+
+.toggle-home,
+.toggle-image{
 	position: absolute;
 }
 
-.toggle-home .fa{
-	
+.toggle .toggle-home,
+.toggle .toggle-image{
+
 }
 
 .navigation li.en,
@@ -1396,6 +1410,9 @@ input[type="submit"]:active {
 	display: inline-block;
 	clear: both;
 	float: none;
+}
+
+.toggle-home > .menu {
 	padding: 0 0 0 3em;
 }
 
@@ -1669,7 +1686,9 @@ body:not(.ready) .navigation {
 3.6 Elements Parallax
 --------------------------------------------------------------*/
 
-
+.parallax-mirror {
+	pointer-events: none;
+}
 
 /*--------------------------------------------------------------
 4.0 Plugins
@@ -1695,6 +1714,7 @@ body:not(.ready) .navigation {
 
 .scm-map .gm-style-iw > div{
 	width: auto !important;
+	color: #555;
 }
 
 .scm-map .gm-style-iw {

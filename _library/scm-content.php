@@ -537,6 +537,10 @@
                     break;
 
                     case 'layout-form':
+
+                        if( !shortcode_exists('contact-form-7') )
+                            continue;
+
                         $prev = $post->ID;
                         $single = $args['form'];
                         if(!$single) continue;
@@ -549,6 +553,15 @@
                     break;
 
 // *** Static Objects
+
+                    case 'layout-share':
+
+                        if( !shortcode_exists('ssba') )
+                            continue;
+
+                        indent( $SCM_indent + 1, do_shortcode('[ssba]'), 2 );
+
+                    break;
 
                     case 'layout-separatore':
 

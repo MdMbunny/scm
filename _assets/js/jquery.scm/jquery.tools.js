@@ -161,7 +161,7 @@
 	};
 
 	$.fn.eventTools = function( event ){
-		this.find( '[data-bg-color]' ).bgColor();
+		//this.find( '[data-parallax]' ).setParallax();
 		this.find( '[data-popup]' ).setFancybox();
 		this.find( '[data-slider]' ).initSlider();
 		this.find( '[data-current-link]' ).currentLink();
@@ -206,6 +206,15 @@
 		} );
 
 	};
+
+	$.fn.checkCss = function( event ){
+		this.find( '[data-bg-color]' ).setCss( 'bg-color', 'background-color' );
+		this.find( '[data-zindex]' ).setCss( 'zindex', 'z-index' );
+		this.find( '[data-left]' ).setCss( 'left' );
+		this.find( '[data-top]' ).setCss( 'top' );
+		this.find( '[data-right]' ).setCss( 'right' );
+		this.find( '[data-bottom]' ).setCss( 'bottom' );
+	}
 
 	// *****************************************************
 	// *      LINK
@@ -457,7 +466,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 // +++ todo: plugin
 
 
-	$.fn.switchByData = function( data, name, classes ) {
+	$.fn.switchByData = function( data, name, classes, hide ) {
 
 		if( !name )
 			name = ( classes ? name : 'switch' );
@@ -465,7 +474,12 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 		return this.each(function() {
 
 			var $this 	= $( this ),
-				act 	= $this.data( name );
+				act 	= $this.data( name ),
+				wit 	= $this.data( name + '-with' );
+				switchWith = ( wit ? wit : '[data-' + name + '=""]' );
+
+			if( $this.hasClass( 'hidden' ) )
+				return;
 
 			if( act && act != '' ){
 
@@ -473,17 +487,21 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				//if( act == data ){
 					if( !classes ){
 						$this.show();
-						$this.siblings( '[data-' + name + '=""]' ).hide();
+						$this.siblings( switchWith ).hide();
 					}else{
 						$this.addClass( classes );
+						if( hide )
+							$this.find( hide ).addClass( 'hidden' );
 					}
 					$this.trigger( 'switchOn' );
 				}else{
 					if( !classes ){
 						$this.hide();
-						$this.siblings( '[data-' + name + '=""]' ).show();
+						$this.siblings( switchWith ).show();
 					}else{
 						$this.removeClass( classes );
+						if( hide )
+							$this.find( hide ).removeClass( 'hidden' );
 					}
 					$this.trigger( 'switchOff' );
 				}
@@ -1104,16 +1122,18 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 				map.markers = [];
 				
-				$( markers ).markerMap( map, infowindow );
+				$( markers ).markerMap( map, infowindow, zoom );
 
-				$this.centerMap( map, zoom );
+				//$this.centerMap( map, zoom );
 				
-				google.maps.event.addListener( map, 'tilesloaded', function() {
+				var tilesloaded = google.maps.event.addListener( map, 'tilesloaded', function() {
 
 					$body.trigger( 'mapLoaded' );
 					countMaps++;
-					if( countMaps >= totMaps )
+					if( countMaps >= totMaps ){
 						$body.trigger( 'mapsLoaded', [ totMaps ] );
+						google.maps.event.removeListener( tilesloaded );
+					}
 
 				});
 
@@ -1121,67 +1141,98 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 		
 	}
 
-	$.fn.markerMap = function( map, infowindow ) {
+	$.fn.markerMap = function( map, infowindow, zoom ) {
 
 		return this.each(function() {
 
 			var $this 			= $( this ),
-				latlng 			= new google.maps.LatLng( $this.data( 'lat' ), $this.data( 'lng' ) ),
+				latlng 			= null,
+				lat 			= $this.data( 'lat' ),
+				lng 			= $this.data( 'lng' ),
+				address 		= $this.data( 'address' ),
 				marker_img 		= $this.data( 'img' ),
 				marker_color	= $this.data( 'icon-color' ),
 				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : '' ),
-				marker 			= [];				
-			
-			//var image = new google.maps.MarkerImage(
+				marker 			= [];
+
+			if( address ){
+				var geocoder = new google.maps.Geocoder();
+
+				geocoder.geocode( { 'address': address}, function(results, status) {
+			    	
+			    	if (status == google.maps.GeocoderStatus.OK) {
+			        	latlng = results[0].geometry.location;
+			        	setMarker();
+			    	}else{
+			    		latlng = new google.maps.LatLng( 0, 0 );
+			    		setMarker();
+			    	}
+
+			    });
+			}else if( lat ){
+				latlng = new google.maps.LatLng( lat, lng );
+				setMarker();
+			}else{
+				latlng = new google.maps.LatLng( 0, 0 );
+				setMarker();
+			}
+
+			var setMarker = function(){
+
+				//var image = new google.maps.MarkerImage(
 					//marker_img
 					//<?php echo json_encode(SCM_URI_CHILD); ?> + 'assets/img/marker.png',
 					/*new google.maps.Size( 24, 42 ),
 					new google.maps.Point( 0, 0 ),
 					new google.maps.Point( 12, 42 )*/
 				//);
-			/*
-			var shadow = new google.maps.MarkerImage(
-					themeImgs + 'map/marker-shadow.png',
-					new google.maps.Size( 58, 44 ),
-					new google.maps.Point( 0, 0 ),
-					new google.maps.Point( 16, 44 )
-				);
+				/*
+				var shadow = new google.maps.MarkerImage(
+						themeImgs + 'map/marker-shadow.png',
+						new google.maps.Size( 58, 44 ),
+						new google.maps.Point( 0, 0 ),
+						new google.maps.Point( 16, 44 )
+					);
 
-			var shape = {
-					coord : [20,0,23,1,24,2,25,3,27,4,27,5,28,6,29,7,29,8,30,9,30,10,31,11,31,12,31,13,31,14,31,15,31,16,31,17,31,18,31,19,31,20,31,21,30,22,30,23,29,24,29,25,28,26,28,27,27,28,27,29,26,30,25,31,25,32,24,33,23,34,22,35,22,36,21,37,20,38,20,39,19,40,18,41,17,42,16,43,15,43,14,42,13,41,12,40,11,39,11,38,10,37,9,36,9,35,8,34,7,33,6,32,6,31,5,30,4,29,4,28,3,27,3,26,2,25,2,24,1,23,1,22,0,21,0,20,0,19,0,18,0,17,0,16,0,15,0,14,0,13,0,12,0,11,1,10,1,9,2,8,2,7,3,6,4,5,4,4,6,3,7,2,8,1,11,0,20,0],
-					type  : 'poly'
-				};
-			*/
+				var shape = {
+						coord : [20,0,23,1,24,2,25,3,27,4,27,5,28,6,29,7,29,8,30,9,30,10,31,11,31,12,31,13,31,14,31,15,31,16,31,17,31,18,31,19,31,20,31,21,30,22,30,23,29,24,29,25,28,26,28,27,27,28,27,29,26,30,25,31,25,32,24,33,23,34,22,35,22,36,21,37,20,38,20,39,19,40,18,41,17,42,16,43,15,43,14,42,13,41,12,40,11,39,11,38,10,37,9,36,9,35,8,34,7,33,6,32,6,31,5,30,4,29,4,28,3,27,3,26,2,25,2,24,1,23,1,22,0,21,0,20,0,19,0,18,0,17,0,16,0,15,0,14,0,13,0,12,0,11,1,10,1,9,2,8,2,7,3,6,4,5,4,4,6,3,7,2,8,1,11,0,20,0],
+						type  : 'poly'
+					};
+				*/
 
-			marker = new MarkerWithLabel({
-				raiseOnDrag : false,
-				clickable   : true,
-				draggable 	: false,
-				icon 		: ( marker_icon ? ' ' : '' ),
-				//icon        : image,
-				//shadow      : shadow,
-				//shape       : shape,
-				cursor      : 'pointer',
-				animation   : google.maps.Animation.BOUNCE,
-				position	: latlng,
-				map			: map,
-				labelContent: marker_icon,
-			    labelAnchor: new google.maps.Point(13, 40),
-			    labelClass: 'labels' // the CSS class for the label
-			});
-			
-			if ( marker_img )
-				marker.setIcon( marker_img );
-
-			map.markers.push( marker );
-
-			if( $this.html() ){
-				google.maps.event.addListener( marker, 'click', function() {
-					infowindow.close();
-					infowindow.setContent($this.html());
-					infowindow.open( map, marker );
+				marker = new MarkerWithLabel({
+					raiseOnDrag : false,
+					clickable   : true,
+					draggable 	: false,
+					icon 		: ( marker_icon ? ' ' : '' ),
+					//icon        : image,
+					//shadow      : shadow,
+					//shape       : shape,
+					cursor      : 'pointer',
+					animation   : google.maps.Animation.BOUNCE,
+					position	: latlng,
+					map			: map,
+					labelContent: marker_icon,
+				    labelAnchor: new google.maps.Point(13, 40),
+				    labelClass: 'labels' // the CSS class for the label
 				});
-			}
+				
+				if ( marker_img )
+					marker.setIcon( marker_img );
+
+				map.markers.push( marker );
+
+				if( $this.html() ){
+					google.maps.event.addListener( marker, 'click', function() {
+						infowindow.close();
+						infowindow.setContent($this.html());
+						infowindow.open( map, marker );
+					});
+				}
+
+				$this.centerMap( map, zoom );
+
+			};
 		});
 	}
 
@@ -1469,6 +1520,32 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	}
 
 	// *****************************************************
+	// *      PARALLAX
+	// *****************************************************
+
+	$.fn.setParallax = function() {
+
+		return this.each( function() {
+
+			var $this 			= $( this ),
+				parallax		= ( $this.data( 'parallax' ) ? parseInt( $this.data( 'parallax' ) ) : 0 ),
+				top 			= ( $this.data( 'parallax-top' ) ? parseInt( $this.data( 'parallax-top' ) ) : 0 );
+				startTop		= ( $this.data( 'parallax-start-top' ) ? parseFloat( $this.data( 'parallax-start-top' ) ) : $this.css( 'top' ) ),
+				fadeIn 			= $this.css( 'opacity' ) == 0 || $this.css( 'display' ) == 'none';
+
+			$this.css( 'z-index', parallax );
+			$this.css( 'top', startTop + '%' );
+			if( fadeIn ){
+				$this.hide().fadeIn('slow');
+			}
+
+			$( window ).on( 'scroll', function(e){
+			});
+	
+		});
+	}
+
+	// *****************************************************
 	// *      FANCYBOX
 	// *****************************************************
 
@@ -1654,23 +1731,6 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			    return false;
 			});
 		});
-	}
-
-	// *****************************************************
-	// *      BG COLOR
-	// *****************************************************
-
-	$.fn.bgColor = function() {
-		
-		return this.each(function() {
-
-			var $this 		= $( this );
-				col 		= $this.attr( 'data-bg-color' );
-
-			$this.css( 'background-color', col );
-
-		});
-
 	}
 
 	// *****************************************************
@@ -1932,7 +1992,25 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 	}
 
-	//$.log('document.head');
+	// *****************************************************
+	// *      CSS
+	// *****************************************************
+
+	$.fn.setCss = function( data, attr ) {
+
+		if( !attr )
+			attr = data;
+			
+		return this.each(function() {
+
+			var $this 		= $( this );
+				val 		= $this.attr( 'data-' + data );
+
+			$this.css( attr, val );
+
+		});
+
+	}
 
 
 } )( jQuery );

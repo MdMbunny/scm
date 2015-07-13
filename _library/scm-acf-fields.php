@@ -937,7 +937,7 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_select1( $name . 'icon', $default, 'luogo-mappa', $w1, $logic, array( 'icon' => __( 'Icona', SCM_THEME ), 'img' => __( 'Immagine', SCM_THEME ) ), __( 'Icona Mappa', SCM_THEME ) );
+			$fields[] = scm_acf_field_select1( $name . 'icon', $default, 'luogo-mappa', $w1, $logic, array( 'no' => __( 'Default', SCM_THEME ), 'icon' => __( 'Icona', SCM_THEME ), 'img' => __( 'Immagine', SCM_THEME ) ), __( 'Icona Mappa', SCM_THEME ) );
 
 			$icon = array( 'field' => $name . 'icon', 'operator' => '==', 'value' => 'icon' );
 			$icon = ( $logic ? scm_acf_group_condition( $icon, $logic ) : $icon );
@@ -1368,6 +1368,7 @@
             $SCM_acf_objects[] = array( 'scm_acf_object_elenco_puntato', __( 'Elenco puntato', SCM_THEME ) );
             $SCM_acf_objects[] = array( 'scm_acf_object_contatti', __( 'Contatti', SCM_THEME ) );
             $SCM_acf_objects[] = array( 'scm_acf_object_social_follow', __( 'Social follow', SCM_THEME ) );
+            $SCM_acf_objects[] = array( 'scm_acf_object_social_share', __( 'Social share', SCM_THEME ) );
             $SCM_acf_objects[] = array( 'scm_acf_object_pulsanti', __( 'Pulsanti', SCM_THEME ) );
 
 			$fields = array();
@@ -1771,8 +1772,6 @@
 					$fields[] = scm_acf_field_text( $name . 'luogo-paese', $default, 70, 0, 'Italy', __( 'Paese', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'luogo-mappa', 1, 30, 0, 'Icona Luogo' ) );
 
-					$fields[] = scm_acf_field( $name . 'luogo-lat', array( 'number-read', '', '0', 'Lat.' ), __( 'Latitudine', SCM_THEME ), 50 );
-					$fields[] = scm_acf_field( $name . 'luogo-lng', array( 'number-read', '', '0', 'Long.' ), __( 'Longitudine', SCM_THEME ), 50 );
 
 			$fields[] = scm_acf_field( 'tab-contatti-luogo', 'tab-left', __( 'Contatti', SCM_THEME ) );
 
@@ -2225,6 +2224,8 @@
 			
 				$fields[] = scm_acf_field_image( $name . 'logo', $default, 100, $tipo, __( 'Logo', SCM_THEME ) );
 				$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', $default, '40', 'px', __( 'Altezza Massima', SCM_THEME ), $tipo ) );
+
+			$fields[] = scm_acf_field_select_disable( $name . 'link', $default, __( 'Link', SCM_THEME ) );
 
 			$fields[] = scm_acf_field_select_hide( $name . 'slogan', $default, __( 'Slogan', SCM_THEME ) );
 

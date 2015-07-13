@@ -60,7 +60,6 @@
    
     //add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates_new', 100) ;
     add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 10) ;                                       // 5.2
-    add_action( 'acf/save_post', 'scm_acf_savepost_hook_luoghi_latlng', 10 );
     //add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 10 );
 
     add_filter('acf/fields/post_object/query', 'scm_acf_queryfield_hook_objects', 10, 3);                       // 5.3
@@ -872,41 +871,6 @@
             }
         }
     }
-
-
-    // LUOGHI - Lat and Lng
-    // +++ todo: con jQuery aggiorni i campi dinamicamente, ogni volta che uno degli altri campi cambia
-    if ( ! function_exists( 'scm_acf_savepost_hook_luoghi_latlng' ) ) {
-        function scm_acf_savepost_hook_luoghi_latlng( $post_id ) {
-           
-            if( empty($_POST['acf']) )
-                return;
-
-            if( isset( $_POST['post_type'] ) && $_POST['post_type'] == 'luoghi' && !isset( $_POST['taxonomy'] ) ){
-
-                $fields = $_POST['acf'];
-               
-                $country = $fields[ scm_field_key( $post_id, $fields, 'luogo-paese' ) ];
-                $region = $fields[ scm_field_key( $post_id, $fields, 'luogo-regione' ) ];
-                $province = $fields[ scm_field_key( $post_id, $fields, 'luogo-provincia' ) ];
-                $code = $fields[ scm_field_key( $post_id, $fields, 'luogo-cap' ) ];
-                $city = $fields[ scm_field_key( $post_id, $fields, 'luogo-citta' ) ];
-                $town = $fields[ scm_field_key( $post_id, $fields, 'luogo-frazione' ) ];
-                $address = $fields[ scm_field_key( $post_id, $fields, 'luogo-indirizzo' ) ];
-
-                $google_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $province . ' ' . $region;
-
-                $ll = getGoogleMapsLatLng( $google_address, $country );
-                $lat = $ll['lat'];
-                $lng = $ll['lng'];
-
-                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lat' ) ] = $lat;
-                $_POST['acf'][ scm_field_key( $post_id, $fields, 'luogo-lng' ) ] = $lng;
-
-            }
-        }
-    }
-
 
 
     // ALL - TAXONOMIES LIST

@@ -28,6 +28,7 @@
         function scm_content_preset_marker( $luogo, $fields = array(), $mark = 0 ) {
 
 			$marker = is( $fields['luogo-mappa-icon'], 'default' );
+			
 			$icon = array( 'icon' => 'fa-map-marker', 'data' => '#000000' );
 
 			switch ( $marker ) {
