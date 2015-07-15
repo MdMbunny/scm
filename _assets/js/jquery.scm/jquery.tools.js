@@ -271,7 +271,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 
 
-	        var curpath		= current.replace( /\//g,'' ),
+	        var curpath		= current.replace( /\//g, '' );
 				linkpath 	= link.replace( /\//g,'' );
 
 			if( curpath === linkpath )
@@ -287,6 +287,21 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 	        var comp = new RegExp(location.host);
 			var same = comp.test( $this.data( 'href' ) );
+
+			if( linkpath.indexOf( '#' ) >= 0 ){
+				var lp = linkpath.substr( 0, linkpath.indexOf( '#' ) );
+				var lc = curpath;
+				if( curpath.indexOf( '#' ) >= 0 )
+					lc = curpath.substr( 0, curpath.indexOf( '#' ) );
+				if( lp === lc ){
+					link = linkpath.substr( linkpath.indexOf( '#' ) );
+					$this.data( 'href', link );
+				}
+			}
+
+			console.log(curpath);
+			console.log(linkpath);
+			console.log($this.data( 'href' ));
 
 	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
 	        	target = '_self';

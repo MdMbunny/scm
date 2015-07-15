@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.4.6
+Version:			v2.4.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -730,7 +730,7 @@ blockquote .append{
 /* SCM Images */
 
 /* Vertical Align - IMPORTANT: TO TEMPLATE and OPTIONS */
-.scm-image:not(.thumb){
+/*.scm-image:not(.thumb){
 	width: auto;
 	height: 10em;
 	white-space: nowrap;
@@ -746,7 +746,7 @@ blockquote .append{
 
 .scm-image:not(.thumb) > img{
 	vertical-align: middle;
-}
+}*/
 
 .half-width, *[data-column-width="12"] { width: 50%; }
 

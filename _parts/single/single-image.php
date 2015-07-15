@@ -38,10 +38,10 @@ $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $po
 $negative = $args['negative'] === 'on';
 $thumb = -2;
 
-
 if ( $layout == 'layout-thumbs' ) {
     
     $thumb = ( $image ? intval( $image ) : 0 );
+
     $images = scm_field( 'galleria-images', array(), $post_id );
 
     if( $thumb >= 0 ){
@@ -88,9 +88,12 @@ if ( $layout == 'layout-thumbs' ) {
     }else{
         return;
     }
+
 }
 
-$image = toArray( $image, true );
+if( gettype( $image ) == 'string' )
+    $image = toArray( $image, true );
+
 
 /***************/
 
