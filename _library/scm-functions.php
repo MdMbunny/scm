@@ -192,7 +192,7 @@ function ifnotequal( $var = '', $equal = array(), $fall = '', $pre = '', $app = 
 
 function is_asso( $arr ){
 
-    if( !is_array( $var ) )
+    if( !is_array( $arr ) )
         return null;
 
     foreach( array_keys( $arr ) as $key){    
@@ -207,7 +207,7 @@ function toArray( $var, $asso = false ){
     if( !$asso )
         return ( is_array( $var ) ? $var : array( $var ) );
     else
-        return ( is_asso( $var ) ? $var : array( $var ) );
+        return ( is_asso( $var ) === false ? $var : array( $var ) );
 
 }
 

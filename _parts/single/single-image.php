@@ -91,7 +91,9 @@ if ( $layout == 'layout-thumbs' ) {
 
 }
 
-if( gettype( $image ) == 'string' )
+//consoleLog( $image );
+
+//if( gettype( $image ) == 'string' )
     $image = toArray( $image, true );
 
 
