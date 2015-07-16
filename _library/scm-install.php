@@ -1225,8 +1225,8 @@
 
                 array(
                     'name'               => 'ACF', // The plugin name.
-                    'slug'               => 'acf', // The plugin slug (typically the folder name).
-                    'source'             => 'acf.zip', // The plugin source.
+                    'slug'               => 'advanced-custom-fields-pro', // The plugin slug (typically the folder name).
+                    'source'             => 'advanced-custom-fields-pro.zip', // The plugin source.
                     'required'           => true, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
