@@ -36,7 +36,7 @@
 
 
 		// Trigger DOCUMENT INIT event
-		$body.on( 'documentJquery', function(e){ $.log('document.jquery',touch) } );
+		//$body.on( 'documentJquery', function(e){ $.log('document.jquery',touch) } );
 
 		$body.trigger( 'documentJquery' );
 
@@ -178,11 +178,11 @@
 		// *      DEBUG
 		// *****************************************************
 
-		$body.on( 'documentDone', function(e){ $.log('document.done', touch); } );
+		/*$body.on( 'documentDone', function(e){ $.log('document.done', touch); } );
 		$body.on( 'imagesLoaded', function(e){ $.log('imagesLoaded', touch); } );
 		$body.on( 'nivoLoaded', function(e){ $.log('nivoLoaded', touch); } );
 		$body.on( 'mapLoaded', function(e){ $.log('mapLoaded', touch); } );
-		$body.on( 'mapsLoaded', function(e){ $.log('mapsLoaded', touch); } );
+		$body.on( 'mapsLoaded', function(e){ $.log('mapsLoaded', touch); } );*/
 
 
 		// *****************************************************
@@ -229,36 +229,35 @@
 		    
 		    $( '[data-equal]' ).equalChildrenSize();
 
-		    $maps = $( '.scm-map' );
+		    var $maps = $( '.scm-map' );
 
 		    if( $maps.length > 0 ){
+		    	    			    	
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_API_KEY + '&callback=initialize';
+				
+				window.initialize = function() {
+				    script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js';
+					// dovesse dar problemi, getScript markerwithlabel, on done ...
+					document.body.appendChild( script );
+					$maps.googleMap();
+				}
 
-		    	var scripts = [
-		    	'https://maps.googleapis.com/maps/api/js?v=3.exp?key=' + GOOGLE_API_KEY + '&sensor=false',
-		    	'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js'
-		    	];
-
-				var doc_write = document.write; // Remember original method;
-				document.write = function(s) {$(s).appendTo('body')};
-			    $.getScripts( scripts ).done(function() {
-			        document.write = doc_write; // Restore method
-
-			        $maps.googleMap();
-			    
-			    }).fail(function(jqxhr, settings, exception) {
-			        alert(exception);
-			        document.write = doc_write;
-			    });
-			
+				document.body.appendChild( script );
+							
 			}
 
 		});
 
 		$body.responsiveClasses();
 		
-		
 	jQuery(function($){
-		$.log('document.ready', touch);
+
+		//$.log('document.ready', touch);
 	});
 
 } )( jQuery );
+

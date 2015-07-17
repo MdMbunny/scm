@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.5.0
+Version:			v2.5.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1902,6 +1902,7 @@ a.fancybox-next *{
 	margin-bottom: 1em;
 	position: relative;
 	margin-top: -2em;
+	background-color: transparent;
 }
 
 .wpcf7 p > img {
@@ -1910,6 +1911,7 @@ a.fancybox-next *{
 	position: absolute;
 }
 
+.wpcf7-response-output,
 .wpcf7 .wpcf7-validation-errors{
 	margin: 0;
 	padding: 1em;

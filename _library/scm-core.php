@@ -336,6 +336,9 @@
                 wp_enqueue_script( 'gmapmarker' );*/
             //}
 
+            //wp_register_script( 'cookies', SCM_URI_JS . 'cookiechoices/cookiechoices.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            //wp_enqueue_script( 'cookies' );
+
             // SCM
 
             wp_register_script( 'jquery-scm', SCM_URI_JS . 'jquery.scm/jquery.scm.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
