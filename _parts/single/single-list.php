@@ -164,27 +164,27 @@ if( is( $list ) ){
                 break;
 
                 case 'layout-phone':
-                    $li_attributes .= ' data-href="tel:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '"';
+                    $li_attributes .= ' data-href="tel:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '" data-target="_blank"';
                 break;
 
                 case 'layout-fax':
-                    $li_attributes .= ' data-href="fax:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '"';
+                    $li_attributes .= ' data-href="fax:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '" data-target="_blank"';
                 break;
 
                 case 'layout-email':
-                    $li_attributes .= ' data-href="mailto:' . (string)$button['link'] . '"';
+                    $li_attributes .= ' data-href="mailto:' . (string)$button['link'] . '" data-target="_blank"';
                 break;
 
                 case 'layout-skype':
-                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?chat"';
+                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?chat" data-target="_blank"';
                 break;
 
                 case 'layout-skype-call':
-                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?call"';
+                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?call" data-target="_blank"';
                 break;
 
                 case 'layout-skype-phone':
-                    $li_attributes .= ' data-href="callto://+' . (string)$button['link'] . '"';
+                    $li_attributes .= ' data-href="callto://+' . (string)$button['link'] . '" data-target="_blank"';
                 break;
                 
                 default:

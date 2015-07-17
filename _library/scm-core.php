@@ -31,8 +31,7 @@
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles_inline' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_scripts' );
-    add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
-
+    
     add_action( 'widgets_init', 'scm_widgets_default' );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
@@ -192,7 +191,7 @@
             // SCM Print
 
             // +++ todo: if html header is PRINT
-            //wp_register_style( 'print', SCM_URI_CSS . 'print.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            //wp_register_style( 'print', SCM_URI_CSS . 'scm-print.css', false, SCM_SCRIPTS_VERSION, 'print' );
             //wp_enqueue_style( 'print' );
 
             
@@ -350,20 +349,6 @@
         }
     }
 
-     if ( ! function_exists( 'scm_admin_assets' ) ) {
-        function scm_admin_assets() {
-
-            /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
-            wp_enqueue_script( 'gmapapi' );*/
-
-            wp_register_style( 'admin', SCM_URI_CSS . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-            wp_enqueue_style('admin');
-
-            wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'jquery-scm-admin' );
-            
-        }
-    } 
 
 // *****************************************************
 // *      4.0 HEADER STYLES

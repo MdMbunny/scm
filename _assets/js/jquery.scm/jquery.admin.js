@@ -131,7 +131,7 @@
 					$wrap.removeClass( 'opened' );
 
 				// OPEN FIELDs COLUMN
-				if( $this.hasClass( 'order' ) || $this.hasClass( 'fc-layout-order' ) ){
+				/*if( $this.hasClass( 'order' ) || $this.hasClass( 'fc-layout-order' ) ){
 		    		e.stopPropagation();
 					e.preventDefault();
 					var $parent = jQuery( $this.parent( '.column' ) );
@@ -147,12 +147,12 @@
 							$parent.addClass( 'column-11' );
 							$parent.addClass( 'full' );
 						}
-					}
-				}
+					}*/
+				//}
 			}
 	    });
 
-		$('*').on('change', function(e) {
+		/*$('*').on('change', function(e) {
 			var $elem = jQuery( e.target );
 			if( $elem.hasClass('select2-offscreen') ){
 
@@ -167,9 +167,9 @@
 					$layout.setColumnWidth();
 				}
 			}
-		});
+		});*/
 
-		$('*').on('change', function(e) {
+		/*$('*').on('change', function(e) {
 			var $elem = jQuery( e.target );
 			if( $elem.hasClass('select2-offscreen') ){
 
@@ -186,7 +186,7 @@
 
 
 			}
-		});
+		});*/
 
 
 		// SHOW FIELD KEY
@@ -200,9 +200,9 @@
 
 		// COLUMNS WIDTH
 
-		$rows.setColumnWidth();
+		/*$rows.setColumnWidth();
 		$layout.setColumnWidth();
-		$layout.setLayoutWidth();
+		$layout.setLayoutWidth();*/
 
 		// CONTROL MENU
 

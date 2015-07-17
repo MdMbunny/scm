@@ -25,7 +25,8 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
-    
+    add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
+    add_action( 'login_enqueue_scripts', 'scm_login_assets' );    
 
     add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
     add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
@@ -56,6 +57,41 @@
 // *****************************************************
 // *      1.0 FUNCTIONS
 // *****************************************************
+
+
+// *********************************************
+//  Enqueue CSS and Scripts
+// *********************************************
+
+    if ( ! function_exists( 'scm_admin_assets' ) ) {
+        function scm_admin_assets() {
+
+            /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
+            wp_enqueue_script( 'gmapapi' );*/
+
+            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-admin');
+
+            wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-admin' );
+            
+        }
+    } 
+
+    if ( ! function_exists( 'scm_login_assets' ) ) {
+        function scm_login_assets() {
+
+            /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
+            wp_enqueue_script( 'gmapapi' );*/
+
+            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-login');
+
+            wp_register_script( 'jquery-scm-login', SCM_URI_JS . 'jquery.scm/jquery.login.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-login' );
+            
+        }
+    }
 
 // *********************************************
 //  Duplicate Post

@@ -213,6 +213,10 @@ body.loading *{
 	color: #e14d43 !important;
 }
 
+.acf-tab-wrap.side .acf-tab-group{
+	background-color: #F9F9F9;
+}
+
 /*** Side Metabox ***/
 
 
@@ -1485,4 +1489,9 @@ input.acf-is-prepended {
 }
 
 
+
+
+body.login div#login h1{
+	display: none !important;
+}
 
