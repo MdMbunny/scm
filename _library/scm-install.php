@@ -42,7 +42,7 @@
 
     add_action( 'acf/include_fields', 'scm_acf_taxonomies_install' );                                           // 6.0      Creo, registro e assegno Custom Fields a Custom Taxonomies
     add_action( 'acf/include_fields', 'scm_custom_taxonomies_install' );                                        // 2.0      Installo Custom Taxonomies
-	
+    
     add_action( 'acf/include_fields', 'scm_option_subpages_install' );                                          // 3.0      Creo Sub Options Pages
 
     add_action( 'acf/include_fields', 'scm_acf_install' );                                                      // 6.0      Creo, registro e assegno Custom Fields a tutto il resto
@@ -79,8 +79,8 @@
 // *****************************************************
 
 
-	if ( ! function_exists( 'scm_typekit_install' ) ) {
-		function scm_typekit_install() {
+    if ( ! function_exists( 'scm_typekit_install' ) ) {
+        function scm_typekit_install() {
 
 // *** Install TypeKit
 
@@ -95,8 +95,6 @@
 
     if ( ! function_exists( 'scm_roles_install' ) ) {
         function scm_roles_install() {
-
-            //remove_role('staff');
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -106,6 +104,8 @@
                         'read' => true,
                         'read_private_pages' => true,
                         'read_private_posts' => true,
+                        //'edit_posts' => true,
+                        //'edit_others_posts' => true,
                         'list_users' => true,
                         'remove_users' => true,
                         'add_users' => true,
@@ -151,13 +151,13 @@
             if( $SCM_version != $version )
                 update_option( 'scm-version', $SCM_version );
 
-			if ( ! $themeStatus ) {
-				update_option( 'scm-settings-installed', 1 );
-				header( 'Location: themes.php?page=scm-options-opzioni' );		// Redirect alla pagina SCM Options
-				die;
-			}
-		}
-	}
+            if ( ! $themeStatus ) {
+                update_option( 'scm-settings-installed', 1 );
+                header( 'Location: themes.php?page=scm-options-opzioni' );      // Redirect alla pagina SCM Options
+                die;
+            }
+        }
+    }
 
 // *****************************************************
 // *      2.0 CUSTOM TYPES INSTALLATION
@@ -262,20 +262,20 @@
                 ),
             );
 
-			$default_types = array(
-				'sections'				=> array( 'admin' => 1,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME), 				'plural' => __('Sections', SCM_THEME), 				'slug' => 'sections', 			'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 6,         'menu' => 0,                                                                                                           ),
-				'modules'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 7,         'menu' => 0,                                                                                                           ),
+            $default_types = array(
+                'sections'              => array( 'admin' => 1,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 6,         'menu' => 0,                                                                                                           ),
+                'modules'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 7,         'menu' => 0,                                                                                                           ),
                 'banners'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 8,         'menu' => 0,                                                                                                           ),
                 'slides'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
                 'gallerie'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-				'video'					=> array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME), 				    'plural' => __('Video', SCM_THEME), 				'slug' => 'video', 				'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'video'                 => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
                 'articoli'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Articolo', SCM_THEME),               'plural' => __('Articoli', SCM_THEME),              'slug' => 'articoli',           'icon' => 'admin-post',         'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
                 'news'                  => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
                 'documenti'             => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Documento', SCM_THEME),              'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-				'rassegne-stampa'		=> array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),		'plural' => __('Rassegne Stampa', SCM_THEME), 		'slug' => 'rassegne-stampa', 	'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME), 	   ),
+                'rassegne-stampa'       => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),        'plural' => __('Rassegne Stampa', SCM_THEME),       'slug' => 'rassegne-stampa',    'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME),      ),
                 'soggetti'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Soggetto', SCM_THEME),               'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
                 'luoghi'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Luogo', SCM_THEME),                  'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-			);
+            );
 
             $default_types = apply_filters( 'scm_filter_default_types', $default_types );
 
@@ -1004,6 +1004,8 @@
         function scm_acf_install() {
             if( function_exists('register_field_group') ) {
 
+                global $SCM_types;
+
 // SCM Filter: Passing empty Array - Receiving Array of Groups
                 $groups = apply_filters( 'scm_filter_register_before', array() );
 
@@ -1070,82 +1072,13 @@
 
 // EDIT SINGLE
 
-                // + SLIDES
-                $slide = scm_acf_group( __( 'Slide', SCM_THEME ), 'slides-single' );
-                $slide['location'][] = scm_acf_group_location( 'slides' );
-                $slide['fields'] = scm_acf_fields_slide();
-
-                $groups[] = $slide;
-                
-                // + NEWS
-                $article = scm_acf_group( __( 'Articolo', SCM_THEME ), 'articoli-single' );
-                $article['location'][] = scm_acf_group_location( 'articoli' );
-                $article['fields'] = scm_acf_fields_articolo();
-
-                $groups[] = $article;
-
-                // + NEWS
-                $news = scm_acf_group( __( 'News', SCM_THEME ), 'news-single' );
-                $news['location'][] = scm_acf_group_location( 'news' );
-                $news['fields'] = scm_acf_fields_news();
-
-                $groups[] = $news;
-
-                // + VIDEO
-                $video = scm_acf_group( __( 'Video', SCM_THEME ), 'videos-single' );
-                $video['location'][] = scm_acf_group_location( 'video' );
-                $video['fields'] = scm_acf_fields_video();
-
-                $groups[] = $video;
-
-                // + DOCUMENTO
-                $documento = scm_acf_group( __( 'Documento', SCM_THEME ), 'documenti-single' );
-                $documento['location'][] = scm_acf_group_location( 'documenti' );
-                $documento['fields'] = scm_acf_fields_documento();
-
-                $groups[] = $documento;
-
-                // + GALLERY
-                $gallery = scm_acf_group( __( 'Gallery', SCM_THEME ), 'gallery-single' );
-                $gallery['location'][] = scm_acf_group_location( 'gallerie' );
-                $gallery['fields'] = scm_acf_fields_galleria();
-
-                $groups[] = $gallery;
-
-                // + RASSEGNA STAMPA
-                $rassegna = scm_acf_group( __( 'Rassegna Stampa', SCM_THEME ), 'rassegne-single' );
-                $rassegna['location'][] = scm_acf_group_location( 'rassegne-stampa' );
-                $rassegna['fields'] = scm_acf_fields_rassegna();
-
-                $groups[] = $rassegna;
-
-                // + LUOGO
-                $luogo = scm_acf_group( __( 'Luogo', SCM_THEME ), 'luoghi-single' );
-                $luogo['location'][] = scm_acf_group_location( 'luoghi' );
-                $luogo['fields'] = scm_acf_fields_luogo();
-
-                $groups[] = $luogo;
-
-                // + SOGGETTO
-                $soggetto = scm_acf_group( __( 'Soggetto', SCM_THEME ), 'soggetti-single' );
-                $soggetto['location'][] = scm_acf_group_location( 'soggetti' );
-                $soggetto['fields'] = scm_acf_fields_soggetto();
-
-                $groups[] = $soggetto;
-
-                // + PAGE SLIDER
-                $slider = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
-                $slider['location'][] = scm_acf_group_location( 'page' );
-                $slider['fields'] = scm_acf_options_slider( 'main', 1 );
-
-                $groups[] = $slider;
-
                 // + PAGE
                 $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
                 $page['location'][] = scm_acf_group_location( 'page' );
                 $page['fields'] = scm_acf_fields_page();
 
                 $groups[] = $page;
+
 
                 // + PAGE FOOTER
                 $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
@@ -1160,20 +1093,134 @@
                 $section['fields'] = scm_acf_fields_section();
 
                 $groups[] = $section;
+                
 
-                // + MODULE
-                $module = scm_acf_group( __( 'Componi Modulo', SCM_THEME ), 'modules-single' );
-                $module['location'][] = scm_acf_group_location( 'modules' );
-                $module['fields'] = scm_acf_fields_module();
+                if( $SCM_types['complete'][ 'slides' ] ){
 
-                $groups[] = $module;
+                    // + SLIDES
+                    $slide = scm_acf_group( __( 'Slide', SCM_THEME ), 'slides-single' );
+                    $slide['location'][] = scm_acf_group_location( 'slides' );
+                    $slide['fields'] = scm_acf_fields_slide();
 
-                // + BANNER
-                $module = scm_acf_group( __( 'Componi Banner', SCM_THEME ), 'banners-single' );
-                $module['location'][] = scm_acf_group_location( 'banners' );
-                $module['fields'] = scm_acf_fields_banner();
+                    $groups[] = $slide;
+                }
+                
+                // + ARTICOLI
+                /*$article = scm_acf_group( __( 'Articolo', SCM_THEME ), 'articoli-single' );
+                $article['location'][] = scm_acf_group_location( 'articoli' );
+                $article['fields'] = scm_acf_fields_articolo();
 
-                $groups[] = $module;
+                $groups[] = $article;*/
+
+                if( $SCM_types['complete'][ 'news' ] ){
+
+                    // + NEWS
+                    $news = scm_acf_group( __( 'News', SCM_THEME ), 'news-single' );
+                    $news['location'][] = scm_acf_group_location( 'news' );
+                    $news['fields'] = scm_acf_fields_news();
+
+                    $groups[] = $news;
+
+                }
+
+                if( $SCM_types['complete'][ 'video' ] ){
+
+                    // + VIDEO
+                    $video = scm_acf_group( __( 'Video', SCM_THEME ), 'videos-single' );
+                    $video['location'][] = scm_acf_group_location( 'video' );
+                    $video['fields'] = scm_acf_fields_video();
+
+                    $groups[] = $video;
+
+                }
+
+                if( $SCM_types['complete'][ 'documenti' ] ){
+
+                    // + DOCUMENTO
+                    $documento = scm_acf_group( __( 'Documento', SCM_THEME ), 'documenti-single' );
+                    $documento['location'][] = scm_acf_group_location( 'documenti' );
+                    $documento['fields'] = scm_acf_fields_documento();
+
+                    $groups[] = $documento;
+
+                }
+
+                if( $SCM_types['complete'][ 'gallerie' ] ){
+
+                    // + GALLERY
+                    $gallery = scm_acf_group( __( 'Gallery', SCM_THEME ), 'gallery-single' );
+                    $gallery['location'][] = scm_acf_group_location( 'gallerie' );
+                    $gallery['fields'] = scm_acf_fields_galleria();
+
+                    $groups[] = $gallery;
+
+                }
+
+                if( $SCM_types['complete'][ 'stampa' ] ){
+
+                    // + RASSEGNA STAMPA
+                    $rassegna = scm_acf_group( __( 'Rassegna Stampa', SCM_THEME ), 'rassegne-single' );
+                    $rassegna['location'][] = scm_acf_group_location( 'rassegne-stampa' );
+                    $rassegna['fields'] = scm_acf_fields_rassegna();
+
+                    $groups[] = $rassegna;
+
+                }
+
+                if( $SCM_types['complete'][ 'luoghi' ] ){
+
+                    // + LUOGO
+                    $luogo = scm_acf_group( __( 'Luogo', SCM_THEME ), 'luoghi-single' );
+                    $luogo['location'][] = scm_acf_group_location( 'luoghi' );
+                    $luogo['fields'] = scm_acf_fields_luogo();
+
+                    $groups[] = $luogo;
+
+                }
+
+                if( $SCM_types['complete'][ 'soggetti' ] ){
+
+                    // + SOGGETTO
+                    $soggetto = scm_acf_group( __( 'Soggetto', SCM_THEME ), 'soggetti-single' );
+                    $soggetto['location'][] = scm_acf_group_location( 'soggetti' );
+                    $soggetto['fields'] = scm_acf_fields_soggetto();
+
+                    $groups[] = $soggetto;
+
+                }
+
+                if( $SCM_types['complete'][ 'slides' ] ){
+
+                    // + PAGE SLIDER
+                    $slider = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
+                    $slider['location'][] = scm_acf_group_location( 'page' );
+                    $slider['fields'] = scm_acf_options_slider( 'main', 1 );
+
+                    $groups[] = $slider;
+
+                }
+
+                if( $SCM_types['complete'][ 'modules' ] ){
+
+                    // + MODULE
+                    $module = scm_acf_group( __( 'Componi Modulo', SCM_THEME ), 'modules-single' );
+                    $module['location'][] = scm_acf_group_location( 'modules' );
+                    $module['fields'] = scm_acf_fields_module();
+
+                    $groups[] = $module;
+
+                }
+
+                if( $SCM_types['complete'][ 'banners' ] ){
+
+                    // + BANNER
+                    $module = scm_acf_group( __( 'Componi Banner', SCM_THEME ), 'banners-single' );
+                    $module['location'][] = scm_acf_group_location( 'banners' );
+                    $module['fields'] = scm_acf_fields_banner();
+
+                    $groups[] = $module;
+
+                }
 
 // MODELLI
 

@@ -375,14 +375,14 @@
 					$lib = ( isset( $arg[1] ) && $arg[1] && $arg[1] !== 'all' ? 'uploadedTo' : 'all' );
 					$min = ( isset( $arg[2] ) ? $arg[2] : '' );
 					$max = ( isset( $arg[3] ) ? $arg[3] : '' );
-					$mime = ( isset( $arg[4] ) ? $arg[4] : 'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar' );
+					//$mime = ( isset( $arg[4] ) ? $arg[4] : 'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar' );
 					$ret = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) );
 	        		$field = array(
 						'type' => 'file',
 						'library' => $lib,
 						'min_size' => $min,
 						'max_size' => $max,
-						'mime_types' => $mime,
+						//'mime_types' => $mime,
 						'return_format' => $ret,
 					);
 

@@ -61,7 +61,7 @@
 				'style' => 'default',
 				'label_placement' => 'top',
 				'instruction_placement' => 'label',
-				'hide_on_screen' => array(
+				/*'hide_on_screen' => array(
 					0 => 'the_content',
 					1 => 'excerpt',
 					2 => 'custom_fields',
@@ -76,7 +76,7 @@
 					11 => 'categories',
 					12 => 'tags',
 					13 => 'send-trackbacks',
-				),
+				),*/
 			);
 
 			if( is_array( $position ) )
