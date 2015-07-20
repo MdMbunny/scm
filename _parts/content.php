@@ -25,7 +25,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 	
 	//$page_style = scm_options_get_style( $id, 1 );
 	
-	$page_slider = scm_field( 'main-slider-active', 'default', $id, 1 );
+	$page_slider = scm_field( 'main-slider-active', '', $id, 1 );
 	$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
 
 	if( $page_slider === 'default' ){
@@ -60,7 +60,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 
 			$page = get_page_by_path( '_single-' . $type );
 			if( $page ){
-				
+				consoleLog(get_permalink());
 				$id = $page->ID;				
 				scm_content( get_fields( $id ) );
 
