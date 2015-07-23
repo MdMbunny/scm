@@ -13,7 +13,7 @@ $protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
 
 if( function_exists('get_browser_name') ){
 
-    $version = (int)get_browser_version();
+    $version = ( (int)get_browser_version() ?: 1000 );
 
     if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
         (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
