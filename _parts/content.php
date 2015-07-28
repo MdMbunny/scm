@@ -15,6 +15,17 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 	get_header();
 
 	$id = get_the_ID();
+
+	$page = '';
+
+	if( $single ){
+
+		// If a Page named '_single-{post_type}' exists
+		$page = get_page_by_path( '_single-' . $type );
+		if( $page ){
+			$id = $page->ID;				
+		}
+	}
 	
 	$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
@@ -25,7 +36,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 	
 	//$page_style = scm_options_get_style( $id, 1 );
 	
-	$page_slider = scm_field( 'main-slider-active', '', $id, 1 );
+	$page_slider = scm_field( 'main-slider-active', 'default', $id, 1 );
 	$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
 
 	if( $page_slider === 'default' ){
@@ -57,11 +68,8 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 		if( $single ){
 
 			// If a Page named '_single-{post_type}' exists
-
-			$page = get_page_by_path( '_single-' . $type );
 			if( $page ){
-				consoleLog(get_permalink());
-				$id = $page->ID;				
+
 				scm_content( get_fields( $id ) );
 
 			// Else If a template file '_parts/single/single-{post_type}.php' exists

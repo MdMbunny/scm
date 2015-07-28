@@ -299,9 +299,9 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				}
 			}
 
-			console.log(curpath);
+			/*console.log(curpath);
 			console.log(linkpath);
-			console.log($this.data( 'href' ));
+			console.log($this.data( 'href' ));*/
 
 	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
 	        	target = '_self';
