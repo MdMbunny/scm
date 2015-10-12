@@ -95,6 +95,9 @@
 
     if ( ! function_exists( 'scm_roles_install' ) ) {
         function scm_roles_install() {
+
+
+           // remove_role('staff');
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -108,14 +111,14 @@
                         //'edit_others_posts' => true,
                         'list_users' => true,
                         'remove_users' => true,
+                        'create_users' => true,
                         'add_users' => true,
+                        'edit_users' => true,
+                        'edit_others_users' => true,
                         'upload_files' => true,
                         'manage_categories' => true,
                     )
-                );
-
-                //$role = get_role( $the_role );
-                
+                );                
             }
             
             //remove_role('utente');
@@ -132,8 +135,6 @@
                 );
                 
             }
-            
-
             
         }
     }
@@ -312,6 +313,9 @@
             global $SCM_types;
 
             $saved_types = scm_field( 'types-list', array(), 'option' );
+
+            $saved_types = apply_filters( 'scm_filter_custom_types', $saved_types );
+            
             scm_types_install( $saved_types );
             scm_types_capabilities( $SCM_types['objects'] );
         }
@@ -321,6 +325,9 @@
         function scm_custom_taxonomies_install(){
 
             $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'option' );
+
+            $saved_taxonomies = apply_filters( 'scm_filter_custom_taxonomies', $saved_taxonomies );
+
             scm_taxonomies_install( $saved_taxonomies );
 
         }
@@ -1156,7 +1163,7 @@
 
                 }
 
-                if( $SCM_types['complete'][ 'stampa' ] ){
+                if( $SCM_types['complete'][ 'rassegne-stampa' ] ){
 
                     // + RASSEGNA STAMPA
                     $rassegna = scm_acf_group( __( 'Rassegna Stampa', SCM_THEME ), 'rassegne-single' );

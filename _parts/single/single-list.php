@@ -7,25 +7,25 @@ global $post, $SCM_indent, $SCM_fa;
 $post_id = $post->ID;
 
 $args = array(
-	'acf_fc_layout' => 'layout-list',
-	'list' => array(),
-	'intro' => '',
-	'display' => 'block',
-	'alignment' => 'left',
-	'size' => '',
-	'rgba-color' => '',
-	'rgba-alpha' => '',
-	'shape' => 'no',
-	'shape-size' => 'normal',
-	'shape-angle' => 'all',
-	'box-color' => '',
-	'box-alpha' => '',
-	'icon-even' => 'no',
-	'icon-odd' => 'no',
-	'position' => 'inside',
-	'type' => '',
+    'acf_fc_layout' => 'layout-list',
+    'list' => array(),
+    'intro' => '',
+    'display' => 'block',
+    'alignment' => 'left',
+    'size' => '',
+    'rgba-color' => '',
+    'rgba-alpha' => '',
+    'shape' => 'no',
+    'shape-size' => 'normal',
+    'shape-angle' => 'all',
+    'box-color' => '',
+    'box-alpha' => '',
+    'icon-even' => 'no',
+    'icon-odd' => 'no',
+    'position' => 'inside',
+    'type' => '',
     'element' => 0,
-	'color-filter' => '',
+    'color-filter' => '',
     'id' => '',
     'class' => '',
     'attributes' => '',
@@ -33,7 +33,7 @@ $args = array(
 );
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
+    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 //***************
 
@@ -44,13 +44,13 @@ $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
 
-
 //***************
 
 $element = $args[ 'element' ];
 $layout = $args['acf_fc_layout'];
 $slug = str_replace( '_', '-', str_replace( 'layout-', '', $layout ) );
 $pos = is( $args['position'], 'inside' );
+
 
 switch ( $layout ) {
     case 'layout-social_follow':
@@ -61,12 +61,13 @@ switch ( $layout ) {
                 return;
         }
         $layout = 'layout-link';
-        $args['list'] = get_field( 'soggetto-buttons', ( is_numeric( $element ) ? $element  : $element->ID ) );
+        $args['list'] = get_field( 'soggetto-buttons', ( is_numeric( $element ) ? $element : $element->ID ) );
         $args['color-filter'] = 'social';
         //$args['display'] = 'inlineblock';
     break;
 
     case 'layout-contatti':
+
         if( !$element ){
             if( $post->post_type === 'luoghi' )
                 $element = $post_id;
@@ -74,7 +75,7 @@ switch ( $layout ) {
                 return;
         }
         $layout = 'layout-link';
-        $args['list'] = get_field( 'luogo-contatti', ( is_numeric( $element ) ? $element  : $element->ID ) );
+        $args['list'] = get_field( 'luogo-contatti', ( is_numeric( $element ) ? $element : $element->ID ) );
         //$args['color-filter'] = 'social';
         //$args['display'] = 'inlineblock';
     break;
@@ -85,12 +86,12 @@ switch ( $layout ) {
             $style .= ' list-style:' . $type . ';' ;
             $style .= ' list-style-position:' . $pos . ';';
             $class .= ( $type == 'none' ? ' nobullet' : '' );
-            $args['display'] = 'block';
+            //$args['display'] = 'block'; // TOCCATO 2.5.6
         }
     break;
 }
 
-$list = $args['list'];
+$list = ( $args['list'] ?: scm_field( 'list', array(), $post_id ) );
 $intro = $args['intro'];
 $intro = str_replace( '<p>', '<p class="intro">', $intro);
 $display = $args['display'];
@@ -120,7 +121,7 @@ if( is( $list ) ){
     foreach ($list as $button) {
         
         $odd = ( $odd ? '' : 'odd' );
-        $name = (string)$button['name'];
+        $name = ( (string)$button['name'] ?: (string)$button['link'] );
         $pos = ( !$name ? 'inside' : $pos );
         
         if( isset( $button['icon'] ) )
@@ -136,10 +137,10 @@ if( is( $list ) ){
                 foreach ($SCM_fa[ $args['color-filter'] ] as $value) {
                     $index = getByValue( $value['choices'], $button['icon'] );
                     if( $index !== false ){
-                    	if( !$color )
-                        	$txt_col = ( $value['color'] ?: '' );
+                        if( !$color )
+                            $txt_col = ( $value['color'] ?: '' );
                         else
-                        	$bg_col = ( $value['color'] ?: '' );
+                            $bg_col = ( $value['color'] ?: '' );
                         continue;
                     }
                 }
@@ -155,7 +156,10 @@ if( is( $list ) ){
         $li_class .= ' ' . $align . ' ' . $odd;
 
         if( isset( $button['link'] ) && is( $button['link'] ) ){
-            switch ( $button_layout ) {
+
+            $li_attributes .= getHREF( str_replace( 'layout-', '', $button_layout ), (string)$button['link'], 1 );
+
+/*            switch ( $button_layout ) {
                 case 'layout-media':
                     $li_attributes .= scm_post_link( array(), $button['link'] );
                 break;
@@ -190,7 +194,7 @@ if( is( $list ) ){
                 default:
                     $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '"';//' data-target="_blank"';
                 break;
-            }
+            }*/
         }
 
         if( $button_layout === 'layout-paypal' ){

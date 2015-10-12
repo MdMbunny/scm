@@ -24,6 +24,7 @@
 // copyArray
 // openTag
 // openDiv
+// getHREF
 // stringOperator       evalues 2 strings by a string operator
 // startsWith           return true if string starts with $needle
 // endsWith             return true if string ends with $needle
@@ -41,6 +42,7 @@
 // addHTTP:             add http:// to a link
 // fontSizeLimiter:     add font-size based on #characters
 // fileSizeConvert:     convert bytes to B, KB, MB, GB, TB
+// fileExtensionConvert convert extensions (jpg, pdf, etc.) to file type ( 'Image', 'Text Document', 'Presentation', ... )
 // numberToStyle:       convert a positive number to a string like "450px"
 //                      convert a negative number to a string like "20%" ( -1 = "100%" | -2, -3, -11, ... = "20%", "30%", "110%", ...)
 // hex2rgba:            converts a hexadecimal color to an array containing rgba values
@@ -269,6 +271,55 @@ function doublesp( $str = '' ){
         return '';
     return preg_replace( '/\s+/', ' ', $str );
 
+}
+
+
+function getHREF( $type = 'web', $link, $data = 0 ){
+    if( !$link )
+        return '';
+
+    $data = ( $data ? 'data-' : '' );
+
+    switch ( $type ) {
+        case 'media':
+            return scm_post_link( $link );
+        break;
+
+        case 'paypal':
+        break;
+
+        case 'phone':
+            return ' ' . $data . 'href="tel:' . ( startsWith( $link, '+' ) ? $link : '+' . $link ) . '" ' . $data . 'target="_blank"';
+        break;
+
+        case 'fax':
+            return ' ' . $data . 'href="fax:' . ( startsWith( $link, '+' ) ? $link : '+' . $link ) . '" ' . $data . 'target="_blank"';
+        break;
+
+        case 'email':
+            return ' ' . $data . 'href="mailto:' . $link . '" ' . $data . 'target="_blank"';
+        break;
+
+        case 'skype':
+            return ' ' . $data . 'href="skype:' . $link . '?chat" ' . $data . 'target="_blank"';
+        break;
+
+        case 'skype-call':
+            return ' ' . $data . 'href="skype:' . $link . '?call" ' . $data . 'target="_blank"';
+        break;
+
+        case 'skype-phone':
+            return ' ' . $data . 'href="callto://+' . $link . '" ' . $data . 'target="_blank"';
+        break;
+
+        case 'web':
+            return ' ' . $data . 'href="' . getURL( $link ) . '" ' . $data . 'target="_blank"';
+        break;
+        
+        default:
+            return ' ' . $data . 'href="' . getURL( $link ) . '"';
+        break;
+    }
 }
 
 
@@ -554,6 +605,44 @@ function fontSizeLimiter($txt, $char, $size){
 }
 
 
+function fileExtend( $file, $name = ''){
+
+    if( !$file || empty( $file ) )
+        return array();
+
+    $link = $file['url'];
+    $filename = $file['filename'];
+    $name = ( $name ?: $filename );
+    $created = $file['date'];
+    $modified = $file['modified'];
+    
+    $ch = curl_init( $link );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, TRUE);
+    curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+    $data = curl_exec($ch);
+
+    $bytes = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+    $size = fileSizeConvert( $bytes );
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    $type = fileExtensionConvert( $ext );
+    
+    curl_close($ch);
+
+    $size = $size . ' (' . $bytes . ' bytes)';
+    $type = $type . ' (' . $ext . ')';
+    $icon = fileExtensionToIcon( $ext );
+
+    $file['link'] = $link;
+    $file['name'] = $name;
+    $file['size'] = $size;
+    $file['type'] = $type;
+    $file['icon'] = $icon;
+
+    return $file;
+}
+
+
 /** 
 * Converts bytes into human readable file size. 
 * 
@@ -561,8 +650,7 @@ function fontSizeLimiter($txt, $char, $size){
 * @return string human readable file size (2,87 МB)
 * @author Mogilev Arseny 
 */ 
-function fileSizeConvert($bytes, $dec = 0)
-{
+function fileSizeConvert($bytes, $dec = 0){
     $bytes = floatval($bytes);
         $arBytes = array(
             0 => array(
@@ -598,6 +686,173 @@ function fileSizeConvert($bytes, $dec = 0)
         }
     }
     return $result;
+}
+
+function fileExtensionConvert( $ext ){
+    
+    $name = '';
+    $ext = str_replace( '.', '', strtolower( $ext ) );
+
+    switch( $ext ) {
+        case 'jpg':
+        case 'jpeg':
+        case 'gif':
+        case 'png':
+            
+            $name = __( 'Immagine', SCM_THEME );
+        
+        break;
+
+        case 'ppt':
+        case 'pptx':
+        case 'keynote':
+            
+            $name = __( 'Presentation', SCM_THEME );
+        
+        break;
+
+        case 'doc':
+        case 'docx':
+        case 'pages':
+        case 'txt':
+        case 'rtf':
+            
+            $name = __( 'Text Document', SCM_THEME );
+        
+        break;
+
+        case 'xls':
+        case 'xlsx':
+        case 'numbers':
+            
+            $name = __( 'Text Document', SCM_THEME );
+        
+        break;
+
+        case 'pdf':
+            
+            $name = __( 'PDF', SCM_THEME );
+        
+        break;
+
+        case 'zip':
+        case 'rar':
+            
+            $name = __( 'Archivio', SCM_THEME );
+        
+        break;
+
+        case 'mov':
+        case 'avi':
+        case 'wmv':
+            
+            $name = __( 'Video', SCM_THEME );
+        
+        break;
+
+        case 'mp3':
+        case 'm4a':
+        case 'aif':
+        case 'aiff':
+        case 'wav':
+        case 'wma':
+            
+            $name = __( 'Audio', SCM_THEME );
+        
+        break;
+        
+        default:
+            $name = __( 'File', SCM_THEME );
+        break;
+    }
+
+    return $name;
+}
+
+function fileExtensionToIcon( $ext ){
+    
+    $name = '';
+    $ext = str_replace( '.', '', strtolower( $ext ) );
+
+    switch( $ext ) {
+        case 'jpg':
+        case 'jpeg':
+        case 'gif':
+        case 'png':
+            
+            $name = 'file-image-o';
+        
+        break;
+
+        case 'ppt':
+        case 'pptx':
+        case 'keynote':
+            
+            $name = 'file-powerpoint-o';
+        
+        break;
+
+        case 'doc':
+        case 'docx':
+        case 'pages':
+
+            $name = 'file-word-o';
+        
+        break;
+        
+        case 'txt':
+        case 'rtf':
+            
+            $name = 'file-text-o';
+        
+        break;
+
+        case 'xls':
+        case 'xlsx':
+        case 'numbers':
+            
+            $name = 'file-excel-o';
+        
+        break;
+
+        case 'pdf':
+            
+            $name = 'file-pdf-o';
+        
+        break;
+
+        case 'zip':
+        case 'rar':
+            
+            $name = 'file-archive-o';
+        
+        break;
+
+        case 'mov':
+        case 'avi':
+        case 'wmv':
+            
+            $name = 'file-video-o';
+        
+        break;
+
+        case 'mp3':
+        case 'm4a':
+        case 'aif':
+        case 'aiff':
+        case 'wav':
+        case 'wma':
+            
+            $name = 'file-audio-o';
+        
+        break;
+        
+        default:
+            $name = 'file-o';
+        break;
+    }
+
+    return $name;
 }
 
 /**
@@ -713,6 +968,12 @@ function getURL( $url ){
             return $add;
         
         return $page . $add;
+    }
+
+    if( startsWith( $url, array( 'logout:', 'http://logout:' ) ) ) {
+        $url = str_replace( array( 'logout:', 'http://logout:'), '', $url );
+        $url = ( $url ?: site_url() );
+        return wp_logout_url( $url );
     }
 
     if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )

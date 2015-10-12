@@ -878,6 +878,35 @@ input.acf-is-prepended {
 
 
 /*** 3.0 LABEL AND MESSAGES ***/
+/*
+.acf-field .acf-label label{
+	display: inline-block;
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 1.4em;
+	margin: 0;
+	padding: 0px 0 8px;
+}
+
+.acf-field .acf-label label:after {
+	content: " ";
+    display: inline;
+    border-bottom: 2px dotted #ddd;
+    margin: 10px;
+    width: 50px;
+    float: right;
+    text-align: right;
+}
+
+.acf-field .acf-label label:before {
+	content: " ";
+	display: inline;
+	border-bottom: 2px dotted #ddd;
+	margin: 10px;
+	width: 10px;
+	float: left;
+	text-align: left;
+}*/
 
 .acf-field.acf-field-message {
 	background-color: #f4f4f4;
@@ -1273,12 +1302,16 @@ input.acf-is-prepended {
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div{
 	padding: 0 !important;
-	margin: 0 2%;
+	margin: 0 1%;
 }
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div + div{
 	padding: 0 !important;
-	padding-right: 70px !important;
+	margin-right: 1% !important;
+}
+
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div + div + div{
+	padding: 0 !important;
 }
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content){

@@ -44,36 +44,49 @@
 
 	// POST
 	if ( ! function_exists( 'scm_acf_object' ) ) {
-		function scm_acf_object( $type = '', $default = 0 ) {
+		function scm_acf_object( $type = '', $default = 0, $obj = 0 ) {
 
 			$fields = array();
 
 			if( !$type )
 				return $fields;
-
+			
+			if( !$obj )
 				$fields[] = scm_acf_field_select1( 'type', $default, 'archive_mode', 100, 0, '', __( 'Elementi', SCM_THEME ) );
 			
 				$fields[] = scm_acf_field_object( 'template', $default, $type . SCM_TEMPLATE_APP, 50, 0, __( 'Modello', SCM_THEME ) );
 				$fields[] = scm_acf_field_select1( 'width', $default, 'columns_width', 50, 0, array( 'auto' => __( 'Larghezza', SCM_THEME ) ), __( 'Larghezza Elementi', SCM_THEME ) );
-								
+			
+			if( !$obj ){	
 				$single = array( 'field' => 'type', 'operator' => '==', 'value' => 'single' );
 				$archive = array( 'field' => 'type', 'operator' => '==', 'value' => 'archive' );
+			}else{
+				$single = 1;
+				$archive = 0;
+			}
 					
+				if( !$obj ){
 					$fields[] = scm_acf_field_objects( 'single', $default, $type, 100, $single, $type );
 					$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', $default, $type, $archive ) );
+
 				
 					// conditional
 					$fields[] = scm_acf_field_select1( 'archive-complete', $default, 'archive_complete', 34, $archive, '', __( 'Opzione', SCM_THEME ) );
 					$fields[] = scm_acf_field_select( 'archive-orderby', $default, 'orderby', 33, $archive, '', __( 'Ordine per', SCM_THEME ) );
 					$fields[] = scm_acf_field_select( 'archive-ordertype', $default, 'ordertype', 33, $archive, '', __( 'Ordine', SCM_THEME ) );
 
+					$custom = array( 'field' => 'archive-orderby', 'operator' => '==', 'value' => 'meta_value' );
+						$fields[] = scm_acf_field_text( 'archive-order', $default, 100, $custom, __( 'field-name', SCM_THEME ), __( 'Field Name', SCM_THEME ) );
+
 					//$complete = [[[ 'field' => 'archive-complete', 'operator' => '==', 'value' => 'complete' )]];
 					$partial_cond = scm_acf_group_condition( array( 'field' => 'archive-complete', 'operator' => '==', 'value' => 'partial' ), $archive );
 
-						$fields[] = scm_acf_field_positive( 'archive-perpage', $default, 33, $partial_cond, '5', __( 'Post per pagina', SCM_THEME ), 1 );
-						$fields[] = scm_acf_field_text( 'archive-offset', $default, 33, $partial_cond, '0', __( 'Offset', SCM_THEME ) );
-						$fields[] = scm_acf_field_select1( 'archive-pagination', $default, 'archive_pagination', 34, $partial_cond, '', __( 'Paginazione', SCM_THEME ) );
-
+						$fields[] = scm_acf_field_positive( 'archive-perpage', $default, 25, $partial_cond, '5', __( 'Post per pagina', SCM_THEME ), 1 );
+						$fields[] = scm_acf_field_text( 'archive-offset', $default, 25, $partial_cond, '0', __( 'Offset', SCM_THEME ) );
+						$fields[] = scm_acf_field_select1( 'archive-pagination', $default, 'archive_pagination', 25, $partial_cond, '', __( 'Paginazione', SCM_THEME ) );
+						$fields[] = scm_acf_field_text( 'archive-pag-text', $default, 25, $partial_cond, '', __( 'Button Name', SCM_THEME ) );
+				}
+				
 					$fields[] = scm_acf_field_editor_basic( 'archive-fallback', $default, 100, $archive );
 					
 					
@@ -114,6 +127,47 @@
 		}
 	}
 
+	// MODULE
+	if ( ! function_exists( 'scm_acf_object_module' ) ) {
+		function scm_acf_object_module( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
+
+			$fields = array();
+			$fields[] = scm_acf_field_object( 'row', $default, 'modules', $width, $logic, __( 'Modulo', SCM_THEME ) );
+
+			return $fields;
+		}
+	}
+
+	// LOGIN
+	if ( ! function_exists( 'scm_acf_object_login' ) ) {
+		function scm_acf_object_login( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
+
+			$fields = array();
+			
+			//if( !$obj )
+
+			$fields[] = scm_acf_field_select1( 'login-type', $default, 'links_type', 50, 0, array( 'admin' => __( 'Admin', SCM_THEME ) ), __( 'Redirect', SCM_THEME ) );
+
+			$link = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'link' );
+			$page = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'page' );
+
+			$fields[] = scm_acf_field_link( 'login-redirect', $default, 50, $link, ( $pl3 ?: __( 'Link', SCM_THEME ) ) );
+			$fields[] = scm_acf_field_object_link( 'login-redirect', $default, 'page', 50, $page, __( 'Pagina', SCM_THEME ) );
+
+			$fields[] = scm_acf_field_text( 'login-user', $default, 50, 0, __( 'Email Address', SCM_THEME ), __( 'Label', SCM_THEME ) );
+			$fields[] = scm_acf_field_text( 'login-uservalue', $default, 50, 0, __( 'email@address.com', SCM_THEME ), __( 'Placeholder', SCM_THEME ) );
+
+			$fields[] = scm_acf_field_text( 'login-password', $default, 50, 0, __( 'Password', SCM_THEME ), __( 'Label', SCM_THEME ) );
+			$fields[] = scm_acf_field_text( 'login-send', $default, 50, 0, __( 'Log In', SCM_THEME ), __( 'Label', SCM_THEME ) );
+
+			$fields[] = scm_acf_field_truefalse( 'login-rememberme', $default, 10 );
+			$remember = array( 'field' => 'login-rememberme', 'operator' => '==', 'value' => 1 );
+			$fields[] = scm_acf_field_text( 'login-remember', $default, 25, $remember, __( 'Remember me', SCM_THEME ), __( 'Label', SCM_THEME ) );
+
+			return $fields;
+		}
+	}
+
 	// FORM
 	if ( ! function_exists( 'scm_acf_object_form' ) ) {
 		function scm_acf_object_form( $default = 0, $obj = 0, $simple = 0, $width = 100, $logic = 0 ) {
@@ -149,12 +203,14 @@
 
 			$fields = array();
 
-			if( !$obj )
+			if( !$obj ){
 				$fields[] = scm_acf_field_objects( 'element', $default, 'luoghi', $width, $logic, __( 'Luoghi', SCM_THEME ) );
+				$fields = array_merge( $fields, scm_acf_preset_taxonomies( '', $default, 'luoghi' ) );
+			}
 
 			$fields[] = scm_acf_field_positive( 'zoom', $default, $width, $logic, '10', __( 'Zoom', SCM_THEME ) );
 			// +++ todo
-			$fields[] = scm_acf_field_select1( 'address', 0, 'map_address', $width, $logic, array( 'no' => __( 'Nascondi indirizzo', SCM_THEME ), 'sotto' => __( 'Indirizzo Sotto', SCM_THEME ), 'up' => __( 'Indirizzo sopra', SCM_THEME ) ), __( 'Mostra Indirizzo', SCM_THEME ) );
+			//$fields[] = scm_acf_field_select1( 'address', 0, 'map_address', $width, $logic, array( 'no' => __( 'Nascondi indirizzo', SCM_THEME ), 'sotto' => __( 'Indirizzo Sotto', SCM_THEME ), 'up' => __( 'Indirizzo sopra', SCM_THEME ) ), __( 'Mostra Indirizzo', SCM_THEME ) );
 
 			return $fields;
 		}
@@ -230,6 +286,7 @@
 			$fields = array();
 
 			$fields[] = scm_acf_field_icon( 'icon', $default );
+
 			if( !$simple )
 				$fields = array_merge( $fields, scm_acf_preset_size( 'size', $default, '1', 'em', __( 'Dimensione', SCM_THEME ), $logic, $width ) );
 			//$fields[] = scm_acf_field_select_float( 'float', $default );
@@ -542,7 +599,7 @@
 			$fields[] = scm_acf_field_link( 'url', $default, 33, 0 );
 
 // SCM Filter: Passing Fields - Receiving Fields
-		$fields = apply_filters( 'scm_filter_element_before_' . $slug, $fields );
+		$fields = apply_filters( 'scm_filter_element_before_' . $type, $fields );
 		$fields = apply_filters( 'scm_filter_element_before', $fields, $slug );
 
 
@@ -552,7 +609,7 @@
 			$fields = call_user_func( 'scm_acf_element_' . $type, $fields );
 
 // SCM Filter: Passing Fields - Receiving Fields
-		$fields = apply_filters( 'scm_filter_element_' . $slug, $fields );
+		$fields = apply_filters( 'scm_filter_element_' . $type, $fields );
 		$fields = apply_filters( 'scm_filter_element', $fields, $slug );
 
 
@@ -565,7 +622,7 @@
 				$layout_name['sub_fields'] = scm_acf_object_titolo( $default, 1 );
 
 // SCM Filter: Passing Title Fields and Type - Receiving Title Fields
-			$layout_name = apply_filters( 'scm_filter_layout_title_' . $slug, $layout_name );
+			$layout_name = apply_filters( 'scm_filter_layout_title_' . $type, $layout_name );
 			$layout_name = apply_filters( 'scm_filter_layout_title_', $layout_name, $slug );
 
 			// DATE
@@ -573,7 +630,7 @@
 			$layout_date = scm_acf_layout( 'data', 'block', __( 'Data', SCM_THEME ), '', 1 );
 
 // SCM Filter: Passing Date Fields and Type - Receiving Date Fields
-				$layout_date = apply_filters( 'scm_filter_layout_date_' . $slug, $layout_date );
+				$layout_date = apply_filters( 'scm_filter_layout_date_' . $type, $layout_date );
 				$layout_date = apply_filters( 'scm_filter_layout_date', $layout_date, $slug );
 
 				// +++ todo: va bene tag, ma devi almeno aggiungere le fields: flexible date ( day/month/year/week/hour => format )
@@ -598,7 +655,7 @@
 							$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
 
 	// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
-							$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $slug, $layout_tax, $value->name );
+							$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $type, $layout_tax, $value->name );
 							$layout_taxes[] = apply_filters( 'scm_filter_layout_tax', $layout_tax, $value->name, $slug );
 					}
 				}
@@ -626,7 +683,7 @@
             $layout_empty[] = $layout_share;
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link will be applied )
-				$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $slug, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
+				$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $type, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout', $flexible['layouts'], $layout_taxes, $slug );
 
 			// layout fields
@@ -637,7 +694,7 @@
 			$flexible['layouts'] = scm_acf_layouts_preset( '', $flexible['layouts'], 1 );
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( Column Width and Column Link won't be applied )
-				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after_' . $slug, $flexible['layouts'] );
+				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after_' . $type, $flexible['layouts'] );
 				$flexible['layouts'] = apply_filters( 'scm_filter_layout_after', $flexible['layouts'], $slug );
 
 
@@ -758,7 +815,7 @@
 					$layout_map['sub_fields'] = scm_acf_object_map( $default, 1 );
 
 				$layout_data = scm_acf_layout( 'contatti', 'block', __( 'Contatti', SCM_THEME ) );
-					$layout_data['sub_fields'] = scm_acf_object_contatti( $default, 1 );			
+					$layout_data['sub_fields'] = scm_acf_object_contatti( $default, 1 );		
 					
 				/*$layout_name = scm_acf_layout( 'nome', 'block', 'Nome' );
 					$layout_name['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), 'Inizio' ), 'Inizio', 25 );

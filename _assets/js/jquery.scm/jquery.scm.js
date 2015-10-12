@@ -58,7 +58,7 @@
 		// *****************************************************
 		// *      START EVENTS
 		// *****************************************************
-		
+
 		$html.removeClass( 'no-js' );
 		//$body.css( 'opacity', ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-wait' ) ) : .6 ) );
 
@@ -207,7 +207,7 @@
 			}, 250 );
 
 		} );
-
+		
 		// Trigger DOCUMENT READY event
 		$body.trigger( 'documentDone' );
 		$body.addClass('ready');
@@ -256,7 +256,7 @@
 		
 	jQuery(function($){
 
-		//$.log('document.ready', touch);
+		//$.log('document.ready');
 	});
 
 } )( jQuery );

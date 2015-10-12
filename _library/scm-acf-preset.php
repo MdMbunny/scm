@@ -92,6 +92,8 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
+*		'true_false'			$default = 0 || 1
+*
 *		'select'				$default = '' || array(]	* 						$placeholder = ''									$ajax = 0							$allow_null = 0						$ui = 0						$multiple = 0 				$read-only = 0				$disable = 0
 * ———		'select2'					$ui = 1
 *		'checkbox'				$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1
@@ -206,6 +208,16 @@
 						'placement' => $place,
 					);
 	        	break;
+
+	        	case 'true_false':
+
+	        		$default = ( isset( $arg[1] ) ? $arg[1] : 0 );
+
+	        		$field = array(
+						'type' => 'true_false',
+						'default_value' => $default
+					);
+				break;
 
 	        	case 'select':
 	        	case 'select2':
@@ -483,9 +495,10 @@
 
 	        	case 'date':
 
-	        		$ret = ( isset( $arg[1] ) ? $arg[1] : 'd-m-Y' );
-	        		$dis = ( isset( $arg[2] ) ? $arg[2] : 'd F Y' );
-	        		$first = ( isset( $arg[3] ) ? $arg[3] : 1 );
+	        		$ret = ( $arg[1] ?: 'd-m-Y' );
+	        		$dis = ( $arg[2] ?: 'd F Y' );
+	        		$first = ( $arg[3] ?: 1 );
+
 	        		
 	        		$field = array(
 						'type' => 'date_picker',
@@ -1110,6 +1123,7 @@
 					'name' => __( 'Slug', SCM_THEME ),
 					'type' => __( 'Tipo', SCM_THEME ),
 					'rand' => __( 'Random', SCM_THEME ),
+					'meta_value' => __( 'Custom Field', SCM_THEME ),
 				);
 
 	        elseif( strpos( $list, 'line_style' ) !== false ):
@@ -1463,17 +1477,17 @@
 
 			elseif( strpos( $list, 'line_height' ) !== false ):
 				$choices = array(
-					'0.0' => __( 'Nessuno spazio', SCM_THEME ),
-					'0.25' => __( '1 quarto di linea', SCM_THEME ),
-					'0.5' => __( 'Mezza linea', SCM_THEME ),
-					'1' => __( 'Una linea', SCM_THEME ),
-					'1.25' => __( 'Una linea e 1 quarto', SCM_THEME ),
-					'1.5' => __( 'Una linea e mezza', SCM_THEME ),
-					'1.75' => __( 'Una linea e 3 quarti', SCM_THEME ),
-					'2' => __( 'Doppia linea', SCM_THEME ),
-					'2.5' => __( 'Doppia linea e mezza', SCM_THEME ),
-					'3' => __( 'Tripla linea', SCM_THEME ),
-					'4' => __( 'Quadrupla linea', SCM_THEME ),
+					'0-0' => __( 'Nessuno spazio', SCM_THEME ),
+					'0-25' => __( '1 quarto di linea', SCM_THEME ),
+					'0-5' => __( 'Mezza linea', SCM_THEME ),
+					'1-0' => __( 'Una linea', SCM_THEME ),
+					'1-25' => __( 'Una linea e 1 quarto', SCM_THEME ),
+					'1-5' => __( 'Una linea e mezza', SCM_THEME ),
+					'1-75' => __( 'Una linea e 3 quarti', SCM_THEME ),
+					'2-0' => __( 'Doppia linea', SCM_THEME ),
+					'2-5' => __( 'Doppia linea e mezza', SCM_THEME ),
+					'3-0' => __( 'Tripla linea', SCM_THEME ),
+					'4-0' => __( 'Quadrupla linea', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'slider_model' ) !== false ):

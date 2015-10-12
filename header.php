@@ -157,7 +157,12 @@ $cont_class = 'site-content ' . $cont_layout . $site_align ;
 <?php
 
 // Page Wrapper
-indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 2 );
+indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '"
+            data-current-link="' . $single_class . '"
+            data-current-link-interval="' . $single_interval . '"
+            data-current-link-offset="' . $single_offset . '"
+            data-current-link-threshold="' . $single_threshold . '" 
+        >', 2 );
     
     $SCM_indent += 1;
     
@@ -166,17 +171,15 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 
 
     // Head
     indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
-            data-current-link="' . $single_class . '"
-            data-current-link-interval="' . $single_interval . '"
-            data-current-link-offset="' . $single_offset . '"
-            data-current-link-threshold="' . $single_threshold . '"
         >', 2 );
 
+
+    $just = 0;
     
 
         // Menu above head
     if ( $menu_position == 'top' )
-        scm_main_menu( $menu_align, $menu_position );
+        $just = scm_main_menu( $menu_align, $menu_position );
 
     $SCM_indent += 1;
 
@@ -188,14 +191,14 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 
 
             // Menu Inline above Social Menu
         if ( $menu_position == 'inline' && $follow_position == 'bottom' )
-            scm_main_menu( $menu_align, $menu_position );
+            $just = scm_main_menu( $menu_align, $menu_position );
 
             // Social Menu
             scm_social_follow();
 
             // Menu Inline under Social Menu
         if ( $menu_position == 'inline' && $follow_position == 'top' )
-            scm_main_menu( $menu_align, $menu_position );
+            $just = scm_main_menu( $menu_align, $menu_position );
 
         indent( $SCM_indent, '</div><!-- .row -->', 2 );
 
@@ -203,9 +206,13 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '">', 
 
         // Menu under head
     if ( $menu_position == 'bottom' )
-        scm_main_menu( $menu_align, $menu_position );
+        $just = scm_main_menu( $menu_align, $menu_position );
 
     indent( $SCM_indent, '</header><!-- #site-header -->', 2 );
+
+    if( $just ){
+        scm_main_menu( $menu_align, $menu_position, 1 );
+    }
     
     // Content
     indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );

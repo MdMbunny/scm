@@ -11,6 +11,7 @@
 //  Google Maps
 //  Nivo Slider
 //	Fancybox
+//  Tooltip
 //
 //	Change Page
 //*
@@ -110,7 +111,7 @@
 
 			if(old != this.attr( 'class' )){
 				if ( this.hasClass( 'smartmin' ) )		state = 'smartmin';
-				else if ( this.hasClass( 'smart' ) )	state = 'smart';
+				else if( this.hasClass( 'smart' ) )		state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
 				else if( this.hasClass( 'notebook' ) )	state = 'notebook';
 				else if( this.hasClass( 'landscape' ) )	state = 'landscape';
@@ -162,6 +163,7 @@
 
 	$.fn.eventTools = function( event ){
 		//this.find( '[data-parallax]' ).setParallax();
+		this.find( '[data-tooltip]' ).setTooltip();
 		this.find( '[data-popup]' ).setFancybox();
 		this.find( '[data-slider]' ).initSlider();
 		this.find( '[data-current-link]' ).currentLink();
@@ -177,14 +179,18 @@
 		this.find( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
 		this.find( 'a, [data-href]' ).on( 'click', function(e){
 
-			var toggle = $( this ).parents( '.no-toggled' );
+			var $this = $( this );
+
+			$this.trigger( 'clicked' );
+
+			var toggle = $this.parents( '.no-toggled' );
 
 			var cont = 0;
 			if( toggle.length )
 				cont = $( toggle ).parents( '.toggle-content' ).length;
 
 			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
-				$( this ).linkIt(e);
+				$this.linkIt(e);
 			}else{
 				$( '.toggled' ).toggledOff(e);
 				e.preventDefault();
@@ -229,25 +235,24 @@
 		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
 		    	loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
 				current 	= document.URL,
+				curpath		= current.replace( /\//g, '' ),
+				linkpath 	= link.replace( /\//g,'' ),
 		        parent 		= $this.parents( '.sub-menu' ),
 		        a_parent 	= $( parent ).siblings().find( 'a' ),
 		        url_parent 	= $( a_parent ).attr( 'href' ),
 		        result 		= true,
-		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.data( 'target' ) ? $this.data( 'target' ) : '_self' ) );
+		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.data( 'target' ) ? $this.data( 'target' ) : '' ) );
 
 		    if( !link )
 		    	return;
-			
-		    event.preventDefault();
+
+			event.preventDefault();
 		    event.stopPropagation();
 
-		    if( link == 'back' ){
+		    if( link == 'back' || link == 'http://back' ){
 		    	window.history.back();
 		    	return false;
 		    }
-
-			
-			
 
 /*
 
@@ -268,15 +273,11 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			   }
 			});
 */
-
-
-
-	        var curpath		= current.replace( /\//g, '' );
-				linkpath 	= link.replace( /\//g,'' );
+	        
 
 			if( curpath === linkpath )
 	            $this.data( 'href', '#top' );
-	        else if( link.indexOf( '#' ) === 0 && url_parent && ( current.indexOf( url_parent ) < 0 && url_parent != '#top' ) )
+	        else if( link.indexOf( '#' ) === 0 && url_parent && ( current != url_parent && url_parent != '#top' ) )
 	            $this.data( 'href', url_parent + link );
 	        else
 	        	$this.data( 'href', link );
@@ -287,6 +288,12 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 	        var comp = new RegExp(location.host);
 			var same = comp.test( $this.data( 'href' ) );
+
+
+			if( linkpath.indexOf( '#' ) !== 0 && !same && target === '_self' )
+				return;
+
+			
 
 			if( linkpath.indexOf( '#' ) >= 0 ){
 				var lp = linkpath.substr( 0, linkpath.indexOf( '#' ) );
@@ -344,7 +351,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				$this.loadContent( event, $this.data( 'href' ) );
 				return $this;
 			
-			}else if( same && target === '_self' ){
+			}else if( (same && target !== '_blank') ){
 
 				$body.disableIt();
 
@@ -365,6 +372,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				result = $this.trigger( 'linkExternal' ).data( 'done' );
 				state = 'external';
 			}
+
 
 			// +++ todo:
 			// A: o delay è passato dalle opzioni in data-... + integri in jQuery l'animazione dei Toggle Menu e in CSS potrebbe esserci solo un display/visibility come fallback per i .no-js
@@ -1042,6 +1050,8 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 					args 		= [],
 					map 		= [];
 
+				$this.attr('id', 'map-' + countMaps);
+
 				style = [
 					{
 						featureType: 'all',
@@ -1124,11 +1134,11 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				    scrollwheel           : false,
 				    zoomControlOptions    : {
 				        style    : google.maps.ZoomControlStyle.SMALL,
-				        position : google.maps.ControlPosition.RIGHT_CENTER
+				        position : google.maps.ControlPosition.LEFT_CENTER
 				      },							
 		        };
 				
-				map = new google.maps.Map( this, args);
+				map = new google.maps.Map( this, args );
 
 				infowindow = new google.maps.InfoWindow({
 					content		: '',
@@ -1137,7 +1147,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 				map.markers = [];
 				
-				$( markers ).markerMap( map, infowindow, zoom );
+				$( markers ).markerMap( map, infowindow, zoom, countMaps );
 
 				//$this.centerMap( map, zoom );
 				
@@ -1156,7 +1166,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 		
 	}
 
-	$.fn.markerMap = function( map, infowindow, zoom ) {
+	$.fn.markerMap = function( map, infowindow, zoom, count ) {
 
 		return this.each(function() {
 
@@ -1168,7 +1178,9 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				marker_img 		= $this.data( 'img' ),
 				marker_color	= $this.data( 'icon-color' ),
 				marker_icon		= ( $this.data( 'icon' ) && !marker_img ? '<i class="fa ' + $this.data( 'icon' ) + '" style="color:' + marker_color + ';"></i>' : '' ),
-				marker 			= [];
+				marker 			= [],
+				classes 		= $this.attr('class') + ' ',
+				id 				= classes.substr( classes.indexOf( 'scm-marker marker marker-' ) + 25, classes.substr( 25 ).indexOf( ' ' ) );
 
 			if( address ){
 				var geocoder = new google.maps.Geocoder();
@@ -1219,12 +1231,13 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 					raiseOnDrag : false,
 					clickable   : true,
 					draggable 	: false,
-					icon 		: ( marker_icon ? ' ' : '' ),
+					icon 		: ' ',
+					//icon 		: ( marker_icon ? ' ' : '' ),
 					//icon        : image,
 					//shadow      : shadow,
 					//shape       : shape,
 					cursor      : 'pointer',
-					animation   : google.maps.Animation.BOUNCE,
+					//animation   : google.maps.Animation.BOUNCE,
 					position	: latlng,
 					map			: map,
 					labelContent: marker_icon,
@@ -1237,12 +1250,73 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 				map.markers.push( marker );
 
+				$location = $activator = $('[data-id="' + id + '"]');
+				$action = ( $location.data('open-marker') ? $location.data('open-marker') : false );
+
+				if( $action == false ){
+					$activator = $location.children( '[data-open-marker]' );
+					if( $activator.length ){
+						$action = $activator.data('open-marker');
+					}else{
+						$action = [];
+					}
+				}
+
 				if( $this.html() ){
-					google.maps.event.addListener( marker, 'click', function() {
-						infowindow.close();
-						infowindow.setContent($this.html());
-						infowindow.open( map, marker );
-					});
+
+					with( { mark: marker, location: $location } ){
+
+						google.maps.event.addListener( mark, 'click', function() {
+							openInfoWindow(mark, location);
+						});
+
+					}
+
+					if( $action ){
+
+						$activator.css( 'cursor', 'pointer' );
+						$location.addClass( 'onmap' );
+
+						switch( $action ){
+							case 'over':
+
+								$activator.mouseenter(function () {
+									focusMarker();								    
+								});
+
+							break;
+
+							default:
+
+								$activator.click(function () {
+									focusMarker();
+								});
+
+							break;
+						}
+					}
+				}
+
+				var focusMarker = function(){
+
+					var elem = document.createElement( 'a' );
+					var $elem = $( '<a id="temp" href="#map-' + count + '"></a>' );
+					$elem.smoothScroll();
+					$elem.remove();
+
+					//map.panTo(latlng);
+					//google.maps.event.addListenerOnce( map, 'idle', function(){
+					    google.maps.event.trigger( marker, 'click' );
+					//});
+				}
+
+				var openInfoWindow = function( mark, location ){
+					infowindow.close();
+					infowindow.setContent( $this.html() );
+					infowindow.open( map, marker );
+					$( '.onmap' ).removeClass( 'infowindow' );
+					if( location.hasClass( 'onmap' ) )
+						location.addClass( 'infowindow' );
 				}
 
 				$this.centerMap( map, zoom );
@@ -1747,6 +1821,41 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			});
 		});
 	}
+
+	// *****************************************************
+	// *      TOOLTIP
+	// *****************************************************
+
+	$.fn.setTooltip = function( event ){
+
+		return this.each(function() {
+
+		    var $this = $( this );
+
+
+			data = $this.data('tooltip');
+			$element = $this.find( data );
+			
+			content = $element.html();
+			$element.addClass('invisible');
+			//classes = $element.attr('class') + ' tooltip';
+			classes = 'tooltip' + ( $this.data('tooltip-class') ? ' ' + $this.data('tooltip-class') : '' );
+			direction = ( $this.data('tooltip-direction') ? $this.data('tooltip-direction') : 'n' );
+			
+			$this.data('powertipjq', $([
+			    '<div class="' + classes + '">' + content + '</div>',
+			    ].join('\n'))
+			);
+			
+			$this.powerTip({
+				placement: direction,
+				smartPlacement: true,
+				popupId: 'tooltip',
+				//followMouse: true
+			});
+
+		});
+	};
 
 	// *****************************************************
 	// *      YOUTUBE EMBED FIX

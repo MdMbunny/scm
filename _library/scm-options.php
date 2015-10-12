@@ -267,11 +267,13 @@
 
     if ( ! function_exists( 'scm_options_get_line_height' ) ) {
         function scm_options_get_line_height( $type = '', $target = 'option', $add = false, $units = '%' ) {
-			
+
 			if( $units == '%' )
-				$line_height = ( get_field( is( $type, 'style-txt-' ) .  'set-line-height', $target ) != 'default' ? (string)(100 * (float)get_field( is( $type, 'style-txt-' ) .  'set-line-height', $target )) : '' );
+				$line_height = ( get_field( is( $type, 'style-txt-' ) .  'set-line-height', $target ) != 'default' ? (string)(100 * (float)str_replace( array('-',','), '.', get_field( is( $type, 'style-txt-' ) .  'set-line-height', $target ))) : '' );
 			else
 				$line_height = scm_field( is( $type, 'style-txt-' ) .  'set-line-height', '', $target, 1 );
+
+
         	
         	if( !$line_height && ( $type || $target != 'option' ) )
         		return '';

@@ -23,7 +23,7 @@ if( isset( $this ) )
 /***************/
 
 
-$element = $args['element'];
+$element = ( $args['element'] ?: scm_field( 'luoghi', 0, $post_id ) );
 if( !$element ){
 
 	if( $post->post_type === 'luoghi' )
@@ -80,7 +80,7 @@ if( is( $element ) ){
 		$region = ( ( $region && $country ) ? $region . ', ' : $region );
 		$country = ( $country ? $country : '' );
 		
-		$inline_address = '<strong class="name">' . $name . '</strong>';
+		$inline_address = ( $name ? '<strong class="name">' . $name . '</strong>' : '' );
 		
 		if( $address ){
 			$inline_address .= '<br><span class="street">' . $address . '</span>';

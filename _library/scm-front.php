@@ -122,6 +122,8 @@
 
             }
 
+            $classes[] = $post->post_status;
+
             // LANGUAGE classes - NEEDS PolyLang Plugin - (includerlo nel tema?)
             if( function_exists('pll_current_language') )
                 $classes[] = 'lang-' . ( pll_current_language() ?: language_attributes() );
@@ -286,7 +288,7 @@
 
     //Prints menu
     if ( ! function_exists( 'scm_main_menu' ) ) {
-        function scm_main_menu( $align = 'right', $position = 'inline' ) {
+        function scm_main_menu( $align = 'right', $position = 'inline', $just = 0 ) {
 
             global $post;
             $id = $post->ID;
@@ -311,88 +313,108 @@
             if( !$menu || $menu == 'no' )
                 return;
 
+            $out = scm_field( 'menu-sticky-out', 'no', 'option' );
             $sticky = scm_field( 'menu-sticky', 'no', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
-            
-            
+
             $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );
-            
+                
             $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
             $toggle_active = scm_field( 'menu-toggle', 'smart', 'option' );
             $home_active = scm_field( 'menu-home', 'no', 'option' );
             $image_active = scm_field( 'menu-home-logo', 'no', 'option' );
 
-            $menu_id = $id;
-            $menu_class = 'navigation ';
-            $menu_class .= ( scm_field( 'menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
+            if( !$just ){
+                
+                
 
-            $menu_layout = scm_field( 'layout-page', 'full', 'option' );
-            $row_layout = scm_field( 'layout-menu', 'full', 'option' );
-            $row_class = '';
-            
-            if( $position == 'inline' && $align != 'center' ){
-                $menu_class .= 'half-width float-' . $align;
-                $row_class = 'full';
-            }else{
-                $menu_class .= $menu_layout . ' ' . $site_align;
-                $row_class = $row_layout . ' ' . $align;
-            }
+                $menu_id = $id;
+                $menu_class = 'navigation ';
+                $menu_class .= ( scm_field( 'menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
 
-            $menu_data_toggle = $toggle_active;
-            $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
-            $menu_data_image = ( $menu_data_home ? $image_active : 'no' );
-
-            // Print Main Menu
-            scm_get_menu( array(
-                'id' => $menu_id,
-                'class' => $menu_class,
-                'row_class' => $row_class,
-                'toggle_active' => $menu_data_toggle,
-                'home_active' => $menu_data_home,
-                'image_active' => $menu_data_image,
-                'menu' => $menu,
-            ));
-
-            if( $sticky && $sticky != 'no' ){
-
-                $sticky_id = $id . '-sticky';
-
-                $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
-                $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' );// . $sticky_layout . ' ' . $site_align;
-
-                $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
-                $sticky_row_class = '';// $sticky_row_layout . ' ' . $align;
-
+                $menu_layout = scm_field( 'layout-page', 'full', 'option' );
+                $row_layout = scm_field( 'layout-menu', 'full', 'option' );
+                $row_class = '';
+                
                 if( $position == 'inline' && $align != 'center' ){
-                    $sticky_row_class .= ' half-width float-' . $align . ' ' . $align;
-                    //$sticky_row_class = ' full ';
+                    $menu_class .= 'half-width float-' . $align;
+                    $row_class = 'full';
                 }else{
-                    $sticky_class .= $sticky_layout . ' ' . $site_align;
-                    $sticky_row_class = $sticky_row_layout . ' ' . $align;
+                    $menu_class .= $menu_layout . ' ' . $site_align;
+                    $row_class = $row_layout . ' ' . $align;
                 }
 
-                $sticky_data_toggle = $toggle_active;
-                $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
-                $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
+                $menu_data_toggle = $toggle_active;
+                $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
+                $menu_data_image = ( $menu_data_home ? $image_active : 'no' );
 
-                // Print Sticky Menu
+                // Print Main Menu
                 scm_get_menu( array(
-                    'id' => $sticky_id,
-                    'class' => $sticky_class,
-                    'row_class' => $sticky_row_class,
-                    'toggle_active' => $sticky_data_toggle,
-                    'home_active' => $sticky_data_home,
-                    'image_active' => $sticky_data_image,
+                    'id' => $menu_id,
+                    'class' => $menu_class,
+                    'row_class' => $row_class,
+                    'toggle_active' => $menu_data_toggle,
+                    'home_active' => $menu_data_home,
+                    'image_active' => $menu_data_image,
                     'menu' => $menu,
-                    'sticky' => $id,
-                    'type' => $sticky,
-                    'offset' => $offset,
-                    'attach' => $attach,
                 ));
+
+                if( !$sticky || $sticky == 'no' ){
+                    return 0;
+                }else{
+                    if( $out && $out != 'no' ){
+                        return 1;
+                    }
+                }
+
             }
+
+            //if( $sticky && $sticky != 'no' ){
+                //if( $just && $out && $out != 'no' ){
+                    //( !$just && ( !$out || $out == 'no' ) ) ) ){
+
+                        $sticky_id = $id . '-sticky';
+
+                        $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
+                        $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' );// . $sticky_layout . ' ' . $site_align;
+
+                        $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
+                        $sticky_row_class = '';// $sticky_row_layout . ' ' . $align;
+
+                        if( $position == 'inline' && $align != 'center' ){
+                            $sticky_row_class .= ' half-width float-' . $align . ' ' . $align;
+                            //$sticky_row_class = ' full ';
+                        }else{
+                            $sticky_class .= $sticky_layout . ' ' . $site_align;
+                            $sticky_row_class = $sticky_row_layout . ' ' . $align;
+                        }
+
+                        $sticky_data_toggle = $toggle_active;
+                        $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
+                        $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
+
+                        // Print Sticky Menu
+                        scm_get_menu( array(
+                            'id' => $sticky_id,
+                            'class' => $sticky_class,
+                            'row_class' => $sticky_row_class,
+                            'toggle_active' => $sticky_data_toggle,
+                            'home_active' => $sticky_data_home,
+                            'image_active' => $sticky_data_image,
+                            'menu' => $menu,
+                            'sticky' => $id,
+                            'type' => $sticky,
+                            'offset' => $offset,
+                            'attach' => $attach,
+                        ));
+
+                        return 0;
+                    //}
+                //}
+            //}
         }
     }
 

@@ -60,7 +60,6 @@ $slides = get_posts( array(
 $type = $args['type'];
 
 $class .= ' ' . $type . ' ' . scm_field( 'alignment', 'top', $slider );
-
 $height = scm_field( 'height-number', '', $slider );
 $height = ( $height ? $height . scm_field( 'height-units', '', $slider ) : 'auto' );
 $style .= ' height:' . $height . ';';
@@ -164,7 +163,9 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         	$caption = indent( $indent + 2 ) . openTag( 'div', $caption_id, $caption_class ) . lbreak();
             $caption .= indent( $indent + 3 ) . openTag( 'div', $slide_id, $slide_class, $slide_style, '' ) . lbreak();
 
-                //if( $slide[ 'select_disable_caption' ] == 'on' ){
+                if( $slide[ 'slide-caption' ] != 'on' ){
+                    $slide['slide-caption-title'] = $slide['slide-caption-cont'] = '';
+                }
                 
                     $caption .= ( $slide['slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
                     $caption .= indent( $indent + 4 ) . $slide['slide-caption-cont'];

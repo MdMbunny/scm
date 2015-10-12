@@ -2,3 +2,9 @@
 body.login div#login h1{
 	display: none !important;
 }
+
+body.login #wp-submit {
+    background: #444 !important;
+    border-color: #666 !important;
+    box-shadow: none !important;
+}

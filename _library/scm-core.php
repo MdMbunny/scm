@@ -158,7 +158,7 @@
 
             // Font Awesome
             
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.3.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.4.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style( 'font-awesome' );
 
 
@@ -303,6 +303,12 @@
                 wp_enqueue_script( 'fancybox-buttons' );
                 wp_enqueue_script( 'fancybox-media' );
             }
+
+            // Tooltip
+
+            wp_register_script( 'tooltip',  SCM_URI_JS . 'jquery.powertip-1.2.0/jquery.powertip.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'tooltip' );
+
 
             // Parallax Scrolling
 

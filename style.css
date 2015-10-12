@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.5.6
+Version:			v2.6.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -38,6 +38,7 @@ GitHub Branch:		master
 	3.4 Elements Contacts
 	3.5 Elements Slider
 	3.6 Elements Parallax
+	3.7 Elements Tooltip
 4.0 Plugins
 	4.1 Plugins Google Maps
 	4.2 Plugins Fancybox
@@ -1074,6 +1075,9 @@ a:hover{
 .scm-list.elenco-puntato:not(.nobullet) > .button.horizontal{
 	float: left;
 	clear: none;
+}
+
+.scm-list.elenco-puntato:not(.nobullet) > .button.horizontal.shape{
 	margin-left: 2.5em;
 	margin-right: 2.5em;
 }
@@ -1167,11 +1171,14 @@ span + .bullet.float-right{
 
 .scm-list .button.horizontal{
 	margin-bottom: .5em;
+}
+
+.scm-list .button.horizontal.shape{
 	margin-right: .5em;
 	margin-left: .5em;
 }
 
-.scm-list .button.right.horizontal{
+.scm-list .button.right.horizontal.shape{
 	margin-right: 0;
 	margin-left: .5em;
 }
@@ -1692,6 +1699,224 @@ body:not(.ready) .navigation {
 }
 
 /*--------------------------------------------------------------
+3.7 Elements Tooltip
+--------------------------------------------------------------*/
+
+[data-tooltip]{
+	cursor: pointer;
+}
+
+#tooltip {
+	position: absolute;
+	max-width: 450px;
+	font-size: .8em;
+	line-height: 1.6em;
+	padding: 1em;
+	background-color: #FFF;
+	color: #000;
+	box-shadow: 0px .3em 0 0 rgba(0,0,0,.2);
+	pointer-events: none;
+	display: none;
+}
+
+.portrait #tooltip{
+  font-size: .7em;
+}
+
+.smart #tooltip{
+  font-size: .6em;
+  /*left: 10% !important;
+  right: auto !important;*/
+  /*margin: 0 !important;*/
+  /*max-width: 80% !important;*/
+  /*position: fixed;
+  max-width: 80%;
+  max-height: 80%;
+  height: auto;
+  top: -100% !important;
+  left: -100% !important;
+  right: -100% !important;
+  bottom: -100% !important;
+  margin: auto !important;*/
+}
+
+.smartmin #tooltip{
+  /*left: 0 !important;
+  max-width: 100% !important;*/
+}
+
+.smart #tooltip > div{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/*.smart #tooltip:after{
+  display: none;
+}*/
+
+.smart #tooltip,
+#tooltip.s, #tooltip.n{
+  text-align: center !important;
+  /*margin-left: 0 !important;
+  margin-right: 0 !important;*/
+}
+
+#tooltip.nw, #tooltip.sw{
+  margin-right: -3em;
+  text-align: right;
+}
+
+#tooltip.ne, #tooltip.se{
+  margin-left: -3em;  
+  text-align: left;
+}
+
+.smart #tooltip.nw, .smart #tooltip.ne{
+  margin-bottom: 0 !important;
+}
+
+#tooltip.nw, #tooltip.ne{
+  margin-bottom: -2em;
+}
+
+.smart #tooltip.sw, .smart #tooltip.se
+#tooltip.s{
+  margin-top: -1em !important;
+}
+
+#tooltip.sw, #tooltip.se{
+  margin-top: -2em;
+}
+
+#tooltip.w{
+  margin-right: -1em;
+}
+
+#tooltip.e{
+  margin-left: -1em;
+}
+
+#tooltip:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 0 solid transparent;
+  border-right: 0 solid transparent;
+  border-left: 0 solid transparent;
+  border-bottom: 0 solid transparent;
+  border-color: #FFF;
+}
+
+#tooltip.n:after, #tooltip.nw:after, #tooltip.ne:after{
+  margin-top: 1em;
+}
+
+#tooltip.s:after, #tooltip.sw:after, #tooltip.se:after{
+  top: -1.7em;
+}
+
+#tooltip.w:after, #tooltip.e:after{
+  margin-top: -1em;
+  top: 50%;
+}
+
+.smart #tooltip.se:after,
+.smart #tooltip.ne:after,
+.smart #tooltip.sw:after,
+.smart #tooltip.nw:after,
+#tooltip.n:after,
+#tooltip.s:after{
+  margin-left: 50% !important;
+  left: -1em !important;
+}
+
+#tooltip.sw:after,
+#tooltip.nw:after {
+  margin-left: 100%;
+  right: 0;
+}
+
+#tooltip.w:after {
+  margin-right: -1.7em;
+  right: 0;
+  border-width: 1em 0 1em 1.8em;
+/*  border-left-color: #FFF;*/
+	border-right-color: transparent !important;
+	border-top-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+#tooltip.se:after,
+#tooltip.ne:after {
+  margin-left: 0%;
+  left: 0;
+}
+
+#tooltip.e:after {
+  margin-left: -1.7em;
+  left: 0;
+  border-width: 1em 1.8em 1em 0;
+/*  border-right-color: #FFF;*/
+	border-top-color: transparent !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+.smart #tooltip.ne:after,
+.smart #tooltip.nw:after,
+#tooltip.n:after {
+  border-width: 1.8em 1em 0 !important;
+/*  border-color: #FFF transparent transparent !important;*/
+	border-right-color: transparent !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+.smart #tooltip.se:after,
+.smart #tooltip.sw:after,
+#tooltip.s:after {
+  border-width: 0 1em 1.8em !important;
+/*  border-color: transparent transparent #FFF !important;*/
+	border-right-color: transparent !important;
+	border-top-color: transparent !important;
+	border-left-color: transparent !important;
+}
+
+#tooltip.nw:after{
+  border-width: 0 1.8em 1.8em 1.8em;
+/*  border-right-color: #FFF;*/
+	border-top-color: transparent !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+#tooltip.sw:after{
+  border-width: 1.8em 1.8em 0 1.8em;
+/*  border-right-color: #FFF;*/
+	border-top-color: transparent !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+#tooltip.ne:after {
+  border-width: 0 1.8em 1.8em 1.8em;
+/*  border-left-color: #FFF;*/
+	border-right-color: transparent !important;
+	border-top-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+#tooltip.se:after {
+  border-width: 1.8em 1.8em 0 1.8em;
+/*  border-left-color: #FFF;*/
+	border-right-color: transparent !important;
+	border-top-color: transparent !important;
+	border-bottom-color: transparent !important;
+}
+
+/*--------------------------------------------------------------
 4.0 Plugins
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
@@ -1726,7 +1951,7 @@ body:not(.ready) .navigation {
 	font-size: 45px;
 }
 
-.scm-map .gm-style > .gmnoprint,
+/*.scm-map .gm-style > .gmnoprint,*/
 .scm-map .gm-style > div:first-child + div {
   display: none;
 }

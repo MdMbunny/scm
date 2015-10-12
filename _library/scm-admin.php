@@ -25,6 +25,14 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
+    add_action('admin_init', 'scm_no_dashboard');
+
+
+    add_filter( 'wp_mail_from', 'scm_mail_from' );
+    add_filter( 'wp_mail_from_name', 'scm_mail_from_name' );
+
+    
+
     add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
     add_action( 'login_enqueue_scripts', 'scm_login_assets' );    
 
@@ -57,6 +65,34 @@
 // *****************************************************
 // *      1.0 FUNCTIONS
 // *****************************************************
+
+    if ( ! function_exists( 'scm_no_dashboard' ) ) {
+        function scm_no_dashboard() {
+            if (!current_user_can('manage_categories') && $_SERVER['DOING_AJAX'] != '/wp-admin/admin-ajax.php') {
+                
+                wp_redirect( home_url() );
+                exit;
+
+            }
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_assets' ) ) {
+        function scm_mail_from_name() {
+            //$name = 'yourname';
+            $name = get_option('blogname');
+            $name = esc_attr($name);
+            return $name;
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_assets' ) ) {
+        function scm_mail_from() {
+            $email = scm_field( 'opt-staff-email', '', 'option' );
+            $email = is_email($email);
+            return $email;
+        }
+    }
 
 
 // *********************************************
@@ -241,7 +277,7 @@
             remove_menu_page( 'edit.php' );                   //Posts
 
             remove_menu_page( 'edit-comments.php' );          //Comments
-            //remove_menu_page( 'link-manager.php' );           //Links
+            remove_menu_page( 'link-manager.php' );           //Links
             remove_menu_page( 'edit-tags.php?taxonomy=link_category' );           //Links
 
             //remove_submenu_page ('upload.php', 'upload.php');

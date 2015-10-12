@@ -8,19 +8,19 @@ global $post, $SCM_indent;
 $post_id = $post->ID;
 
 $args = array(
-	'acf_fc_layout' => 'layout-titolo',
-	'title' => '',
-	'tag' => 'h1',
-	'prepend' => 'no',
-	'append' => 'no',
-	'id' => '',
+    'acf_fc_layout' => 'layout-titolo',
+    'title' => '',
+    'tag' => 'h1',
+    'prepend' => 'no',
+    'append' => 'no',
+    'id' => '',
     'class' => '',
     'attributes' => '',
     'style' => '',
 );
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
+    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 /***************/
 
@@ -50,33 +50,33 @@ if( strpos( $tag, '.' ) === 0 ){
 
 if( !$text ){
     if( $post->post_type === 'soggetti' ){
-    	switch ( $layout ) {
-    		
-    		case 'layout-copy':
-    			$text = 'YEAR';
-    		break;
-	        
-	        case 'layout-cf':
-	        	$text = scm_field( 'soggetto-cf', '', $post_id );
-	        break;
-	        
-	        case 'layout-piva':
-	        	$text = scm_field( 'soggetto-piva', '', $post_id );
-	        break;
-	        
-	        case 'layout-intestazione':
-	        	$text = scm_field( 'soggetto-intestazione', '', $post_id );
-	        break;
+        switch ( $layout ) {
+            
+            case 'layout-copy':
+                $text = 'YEAR';
+            break;
+            
+            case 'layout-cf':
+                $text = scm_field( 'soggetto-cf', '', $post_id );
+            break;
+            
+            case 'layout-piva':
+                $text = scm_field( 'soggetto-piva', '', $post_id );
+            break;
+            
+            case 'layout-intestazione':
+                $text = scm_field( 'soggetto-intestazione', '', $post_id );
+            break;
 
-	        default:
-				$text = get_the_title();
-    		break;
+            default:
+                $text = get_the_title();
+            break;
 
-    	}
+        }
         
         if( !$text )
-    		return;
-    	
+            return;
+        
     }else{
         switch ( $layout ) {
             
@@ -89,7 +89,7 @@ if( !$text ){
             break;
 
         }
-    	
+        
     }
 }
 

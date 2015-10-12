@@ -221,6 +221,26 @@
                         $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
                         setup_postdata( $post );
                         $content = $builder;
+
+                        $taxes = get_object_taxonomies( $post );
+                        
+                        foreach ( $taxes as $key => $tax ) {
+                            
+                            $content['class'] .= ' ' . $tax;
+                            
+                            $terms = get_the_terms( $post->ID, 'docs-tags' );
+                            
+                            foreach ( $terms as $key => $term ) {
+                            
+                                $content['class'] .= ' term-' . $term->slug;
+                            
+                            }
+                        
+                        }
+
+                        
+
+                        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . $content['attributes'];
                     }
 
                     $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
@@ -244,7 +264,7 @@
                         if( $content['type'] == 'archive' ){
 
                             if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
-                                $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
+                                //$content['id'] = $content['id'];
                                 $content['archive-paginated'] = $content['id'];
                                 $content['class'] .= ' paginated';
                             }
@@ -330,7 +350,6 @@
                             $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
                             $content['id'] = is( $mod_id, $content['id'] );
                             $content['class'] = $mod_class . ' ' . $content['class'];
-                            $content['attributes'] = $mod_attr . ' ' . $content['attributes'];
                         }
 
                     }
@@ -554,6 +573,14 @@
 
 // *** Static Objects
 
+                    case 'layout-login':
+
+                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-login.php', array(
+                            'cont' => $args,
+                        ));
+
+                    break;
+
                     case 'layout-share':
 
                         if( !shortcode_exists('ssba') )
@@ -602,6 +629,7 @@
                     case 'layout-logo-icona':
                     case 'layout-logo':
                     case 'layout-immagine':
+                    case 'layout-image':
                     case 'layout-thumbs':
 
                         Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-image.php', array(
@@ -745,7 +773,7 @@
             $template_post = get_post( $template_id );
             $template_name = $template_post->post_name;
             $template['column-width'] = $width;
-            $template['fallback'] = ( isset( $cont['archive-fallback'] ) ? $cont['archive-fallback'] : '<p>Nessun elemento</p>' );
+            $template['fallback'] = ( isset( $cont['archive-fallback'] ) ? $cont['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
 
             if ( empty( $template ) )
                 return;
@@ -783,16 +811,19 @@
                 $complete = ( isset( $cont['archive-complete'] ) ? $cont['archive-complete'] === 'complete' : true );
                 $perpage = ( $complete ? -1 : ( isset( $cont['archive-perpage'] ) ? $cont['archive-perpage'] : get_option( 'posts_per_page' ) ) );
                 $offset = ( isset( $cont['archive-offset'] ) ? $cont['archive-offset'] : '0' );
-                $pagination = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'yes' : '' );
-                $more = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'more' : '' ); // non in uso
-                $all = ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'all' : '' ); // non in uso
+                $pagination = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'yes' : false ) );
+                $more = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'more' : false ) ); // non in uso
+                $all = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'all' : false ) ); // non in uso
+                $button = ( $cont['archive-pag-text'] ?: '' );
                 $paginated = ( isset( $cont['archive-paginated'] ) ? $cont['archive-paginated'] : '' );
                 $page = 'page-' . $type;
                 $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
                 $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
                 $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'DESC' );
-                $field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : '' );
-                $value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
+                $field = ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' );
+                $meta = ( isset( $cont['meta_query'] ) ? $cont['meta_query'] : '' );
+                //$field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : '' );
+                //$value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
                 
                 $query = array(
                     'post_type' => $type,
@@ -802,7 +833,8 @@
                     'orderby' => $orderby,
                     'paged' => $paged,
                     'meta_key' => $field,
-                    'meta_value' => $value,
+                    'meta_query' => $meta,
+                    //'meta_value' => $value,
                 );
 
             }else{
@@ -826,39 +858,39 @@
 
             $template['posts'] = $loop->posts;
             $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-            /*$thumb = ( isset( $template['thumb'] ) ? intval( $template['thumb'] ) : -2 );
 
-            consoleLog($template);
-            
-            if( $thumb == -1 ){
-                                
-                foreach ( $template['posts'] as $key => $value ) {
+            $before = apply_filters( 'scm_filter_archive_before_' . str_replace('-', '_', $type), '', $cont, $template['posts'] );
+            if ( $before ) {
+                indent( $SCM_indent, $before, 1 );
+            }
+
+            scm_containers( $template, 'post' );
+
+            if( sizeof( $template['posts'] ) > 0 ){
+                if( $pagination ){
+
+                    if( $button )
+                        indent( $SCM_indent, '<h5>' . $button . '</h5>', 1 );
+
+                    indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '" data-load-offset="' . $offset . '">', 1 );
+                        
+                        indent( $SCM_indent + 1, scm_pagination( $loop, $page, '#' . $paginated ), 1 );
                     
-                    $images = scm_field( 'galleria-images', array(), $value->ID );
+                    indent( $SCM_indent, '</div> <!-- pagination -->', 1 );
 
-                    consoleLog( $images );
+                }else if( $all ){
 
-                    for ( $i = 0; $i < sizeof( $images ); $i++ ) { 
+                    $button = ( $button ?: __( 'Archive', SCM_THEME ) );
+                    
+                    indent( $SCM_indent, '<div class="button button-archive" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 );
 
-                        $image = copyArray( $template );
-                        $image['thumb'] = $i;
-                        scm_containers( $image, 'post' );
-                    }
+                }else if( $more ){
+
+                    $button = ( $button ?: __( 'More', SCM_THEME ) );
+
+                    indent( $SCM_indent, '<div class="button button-more" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 ); // DA FARE
 
                 }
-
-            }else{*/
-                scm_containers( $template, 'post' );
-            //}
-
-
-            if( $pagination && sizeof( $template['posts'] ) > 0 ){
-
-                indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '" data-load-offset="' . $offset . '">', 1 );
-                    
-                    indent( $SCM_indent + 1, scm_pagination( $loop, $page, '#' . $paginated ), 1 );
-                
-                indent( $SCM_indent, '</div> <!-- pagination -->', 1 );
             }
 
             $post = get_post( $id );
@@ -891,9 +923,10 @@
                 break;
                 
                 case 'luoghi':
-                    $lat = scm_field( 'luogo-lat', 0, $id );
+                    /*$lat = scm_field( 'luogo-lat', 0, $id );
                     $lng = scm_field( 'luogo-lng', 0, $id );
-                    $link = ' data-href="http://maps.google.com/maps?q=' . $lat . ',' . $lng . '"';
+                    $link = ' data-href="http://maps.google.com/maps?q=' . $lat . ',' . $lng . '"';*/
+                    $link = ' data-open-marker="click"';
                 break;
 
                 case 'documenti':
