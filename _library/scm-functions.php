@@ -282,7 +282,7 @@ function getHREF( $type = 'web', $link, $data = 0 ){
 
     switch ( $type ) {
         case 'media':
-            return scm_post_link( $link );
+            return scm_post_link( array(), $link );
         break;
 
         case 'paypal':
