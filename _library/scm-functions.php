@@ -518,6 +518,10 @@ function getTagContent( $string = '', $tagname = 'p' ){
 */
 
 function getByValueKey( $arr, $value, $key = 'name' ){
+
+    if ( !is_array($arr))
+        return false;
+    
     foreach ($arr as $index => $elem) {
         if( isset( $elem[$key] ) && $elem[$key] == $value ) return $index;
     }
@@ -532,9 +536,13 @@ function getByValueKey( $arr, $value, $key = 'name' ){
 */
 
 function getByValue($arr, $value){
+    if ( !is_array($arr))
+        return false;
+    
     foreach ($arr as $key => $elem) {
         if( $elem == $value ) return $key;
     }
+
     return false;
 }
 

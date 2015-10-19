@@ -285,6 +285,8 @@
                         
                         if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
 
+                            
+
                             $content['type'] = 'archive';
 
                             $temp = explode( ':', $content['archive'] );
@@ -820,10 +822,9 @@
                 $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
                 $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
                 $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'DESC' );
-                $field = ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' );
+                $field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' ) );
                 $meta = ( isset( $cont['meta_query'] ) ? $cont['meta_query'] : '' );
-                //$field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : '' );
-                //$value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
+                $value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
                 
                 $query = array(
                     'post_type' => $type,
@@ -834,7 +835,7 @@
                     'paged' => $paged,
                     'meta_key' => $field,
                     'meta_query' => $meta,
-                    //'meta_value' => $value,
+                    'meta_value' => $value,
                 );
 
             }else{
