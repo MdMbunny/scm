@@ -151,7 +151,7 @@
 			$link = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'link' );
 			$page = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'page' );
 
-			$fields[] = scm_acf_field_link( 'login-redirect', $default, 50, $link, ( $pl3 ?: __( 'Link', SCM_THEME ) ) );
+			$fields[] = scm_acf_field_link( 'login-redirect', $default, 50, $link, __( 'Link', SCM_THEME ) );
 			$fields[] = scm_acf_field_object_link( 'login-redirect', $default, 'page', 50, $page, __( 'Pagina', SCM_THEME ) );
 
 			$fields[] = scm_acf_field_text( 'login-user', $default, 50, 0, __( 'Email Address', SCM_THEME ), __( 'Label', SCM_THEME ) );

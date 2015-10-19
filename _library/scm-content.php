@@ -223,24 +223,29 @@
                         $content = $builder;
 
                         $taxes = get_object_taxonomies( $post );
-                        
-                        foreach ( $taxes as $key => $tax ) {
+
+                        if( !is_wp_error( $taxes ) ){
                             
-                            $content['class'] .= ' ' . $tax;
-                            
-                            $terms = get_the_terms( $post->ID, 'docs-tags' );
-                            
-                            foreach ( $terms as $key => $term ) {
-                            
-                                $content['class'] .= ' term-' . $term->slug;
+                            foreach ( $taxes as $key => $tax ) {
+                                
+                                $content['class'] .= ' ' . $tax;
+                                
+                                $terms = get_the_terms( $post->ID, 'docs-tags' );
+
+                                if( !is_wp_error( $terms ) ){
+                                
+                                    foreach ( $terms as $key => $term ) {
+
+                                        $content['class'] .= ' term-' . $term->slug;
+                                    
+                                    }
+                                }
                             
                             }
-                        
                         }
-
                         
-
-                        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . $content['attributes'];
+                        $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
+                        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: $args['attributes'] );
                     }
 
                     $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
@@ -264,7 +269,8 @@
                         if( $content['type'] == 'archive' ){
 
                             if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
-                                //$content['id'] = $content['id'];
+                                //$content['id'] = ( $content['id'] ?: uniqid('a') );
+                                $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
                                 $content['archive-paginated'] = $content['id'];
                                 $content['class'] .= ' paginated';
                             }
@@ -352,6 +358,7 @@
                             $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
                             $content['id'] = is( $mod_id, $content['id'] );
                             $content['class'] = $mod_class . ' ' . $content['class'];
+
                         }
 
                     }
@@ -879,13 +886,13 @@
                     
                     indent( $SCM_indent, '</div> <!-- pagination -->', 1 );
 
-                }else if( $all ){
+                }else if( isset( $all ) && $all ){
 
                     $button = ( $button ?: __( 'Archive', SCM_THEME ) );
                     
                     indent( $SCM_indent, '<div class="button button-archive" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 );
 
-                }else if( $more ){
+                }else if( isset( $more ) && $more ){
 
                     $button = ( $button ?: __( 'More', SCM_THEME ) );
 
@@ -941,7 +948,7 @@
 
                 case 'gallerie':
                     $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
-                    $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? $thumb['thumb'] : 0 ) );
+                    $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
                     if( $init == -1 )
                         return '';
                     $stored = scm_field( 'galleria-images', array(), $id );

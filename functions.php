@@ -95,6 +95,8 @@ if ( ! isset( $content_width ) ) {
 	define( 'SCM_VERSION',   			$SCM_version );
 	define( 'SCM_SCRIPTS_VERSION',      trim( SCM_VERSION ) );
 
+	//define('WP_USE_THEMES', false);
+
 //Directories
 
 	// UPLOADS FOLDER
@@ -154,35 +156,35 @@ if ( ! isset( $content_width ) ) {
 */
 
 
+//require_once( str_replace( 'wp-content/themes/scm/', '', SCM_DIR ) . 'wp-load.php');
 
-require SCM_DIR_CLASSES . 'typekit-client.php';
-require SCM_DIR_CLASSES . 'Get_Template_Part.php';
-require SCM_DIR_CLASSES . 'Custom_Type.php';
-require SCM_DIR_CLASSES . 'Custom_Taxonomy.php';
-require SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php';
-require SCM_DIR_CLASSES . 'Backup_Restore_Options.php';
+require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
+require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
+require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
+require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
+require_once( SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php' );
+require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
-require SCM_DIR_LIBRARY . 'scm-svg.php';
+require_once( SCM_DIR_LIBRARY . 'scm-svg.php' );
 
-require SCM_DIR_LIBRARY . 'scm-functions.php';
+require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
 
-require SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php';
-require SCM_DIR_LIBRARY . 'scm-acf-preset.php';
-require SCM_DIR_LIBRARY . 'scm-acf-layouts.php';
-require SCM_DIR_LIBRARY . 'scm-acf-templates.php';
-require SCM_DIR_LIBRARY . 'scm-acf-fields.php';
-require SCM_DIR_LIBRARY . 'scm-acf.php';
+require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-preset.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-templates.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
-require SCM_DIR_LIBRARY . 'scm-install.php';
-require SCM_DIR_LIBRARY . 'scm-options.php';
-require SCM_DIR_LIBRARY . 'scm-core.php';
+require_once( SCM_DIR_LIBRARY . 'scm-install.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-options.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-core.php' );
 
-require SCM_DIR_LIBRARY . 'scm-content-preset.php';
-require SCM_DIR_LIBRARY . 'scm-content.php';
-require SCM_DIR_LIBRARY . 'scm-front.php';
+require_once( SCM_DIR_LIBRARY . 'scm-content-preset.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-content.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-front.php' );
 
-require SCM_DIR_LIBRARY . 'scm-admin.php';
-
+require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 
 
 // *****************************************************

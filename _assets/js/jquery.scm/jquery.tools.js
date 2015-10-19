@@ -272,6 +272,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			       $(this).addClass('external');
 			   }
 			});
+
 */
 	        
 
@@ -1940,7 +1941,6 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 						
 						$container.html( '' );
 						// come secondo parametro puoi passare un oggetto con variabili POST
-						
 						$container.load( link + ' ' + id + ' > *', function( response, status, xhr ) {
 							if ( status == 'error' ) {
 								var msg = 'Spiacenti, è stato riscontrato un errore: ';

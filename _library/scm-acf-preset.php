@@ -495,9 +495,9 @@
 
 	        	case 'date':
 
-	        		$ret = ( $arg[1] ?: 'd-m-Y' );
-	        		$dis = ( $arg[2] ?: 'd F Y' );
-	        		$first = ( $arg[3] ?: 1 );
+	        		$ret = ( isset($arg[1]) ? $arg[1] : 'd-m-Y' );
+	        		$dis = ( isset($arg[2]) ? $arg[2] : 'd F Y' );
+	        		$first = ( isset($arg[3]) ? $arg[3] : 1 );
 
 	        		
 	        		$field = array(

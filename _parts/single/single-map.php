@@ -22,7 +22,7 @@ if( isset( $this ) )
 
 
 $element = $args[ 'element' ];
-$cat = $args[ 'luoghi-cat-terms' ];
+$cat = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
 
 if( !$element ){
 
