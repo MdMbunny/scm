@@ -1723,6 +1723,13 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			    $.fancybox.open(
 			    	images,
 			    	{
+
+			    		modal: false,
+		                /*minWidth: 960,
+		                height: '90%',*/
+		                scrolling: 'auto',
+		                autoSize: false,
+
 			    		padding: 0,
 			    		helpers: {
 			    			overlay: {
@@ -1730,6 +1737,9 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 					                'background-color' : 'rgba(0, 0, 0, .85)',
 					            },
 					            //closeClick: ( !PREVIOUS_FANCYBOX ? true : false )
+					            closeClick:false,
+		                        speedOut:0,
+		                        showEarly:true
 			    			},
 				   		},
 				   		type: type,
@@ -1783,12 +1793,20 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 							//$( '.fancybox-overlay' ).css( 'opacity', 0 );
 							//$( '.fancybox-overlay' ).animate( { 'opacity' : 1 }, 500 );
 
-						    $( '.fancybox-inner' ).eventTools();
-							$( '.fancybox-inner' ).eventLinks();
+							window.ontouchmove  = function(e) {
+								e = e || window.event;
+								if (e.preventDefault)
+									e.preventDefault();
+								e.returnValue = false;  
+							}
 
+							$( 'body' ).addClass( 'no-scroll' );
+
+							$( '.fancybox-inner' ).eventTools();
+							$( '.fancybox-inner' ).eventLinks();
+													
 							
-							
-							/*$( '.fancybox-overlay' ).on( 'click', function(e){
+							/*$( '.fancybox-overlay' ).on( 'mousedown', function(e){
 								
 								
 									//e.preventDefault();
@@ -1807,9 +1825,12 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 							} );*/
 						
-
 						},
 						beforeClose: function() {
+
+							$( 'body' ).removeClass( 'no-scroll' );
+
+							window.ontouchmove = null;
 
 						    $( '#fancybox-links' ).remove();
 						    //PREVIOUS_FANCYBOX = '';

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.6.4
+Version:			v2.6.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -108,6 +108,10 @@ body {
 	min-height: 100%;
 	opacity: 0;
 	pointer-events: none;
+}
+
+body.no-scroll{
+	overflow: hidden;
 }
 
 .box{
@@ -1017,6 +1021,10 @@ input[type="submit"]:hover,
 a:hover{
 	text-decoration: none;
 	/*opacity: .5;*/
+}
+
+[data-popup], [data-popup] *{
+	cursor: zoom-in !important;
 }
 
 .current > .toggle-button > a, .active > .toggle-button > a,
@@ -1993,7 +2001,11 @@ body:not(.ready) .navigation {
 --------------------------------------------------------------*/
 
 .fancybox-overlay{
-	cursor: zoom-out !important;
+	/*overflow: hidden !important;*/
+	/*overflow-y: hidden !important;*/
+	/*height: 100% !important;
+	width: 100% !important;
+	-webkit-overflow-scrolling: touch;*/
 }
 
 .fancybox-inner{
@@ -2039,6 +2051,7 @@ body:not(.ready) .navigation {
 }
 
 .fancybox-close {
+	cursor: zoom-out !important;
 	position: fixed;
 	right: 15px;
 	top: 15px;
@@ -2068,13 +2081,17 @@ a.fancybox-next *{
 	cursor: e-resize;
 }
 
+body.touch .fancybox-nav span{
+	visibility: visible;
+}
+
 .fancybox-next span {
 	right: 0px;
 	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-	/*background-image: url('fancybox_sprite.png');*/
+	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
 #fancybox-loading {
@@ -2092,7 +2109,7 @@ a.fancybox-next *{
 #fancybox-loading div {
 	width: 44px;
 	height: 44px;
-	background: url('fancybox_loading.gif') center center no-repeat;
+	background: url('_assets/img/loading.gif') center center no-repeat;
 }
 
 /*--------------------------------------------------------------
