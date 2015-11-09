@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: scm_1_0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2014-12-02 21:15+0100\n"
-"POT-Revision-Date: Thu Jul 02 2015 01:27:52 GMT+0200 (CEST)\n"
+"POT-Revision-Date: Mon Nov 09 2015 17:29:17 GMT+0100 (CET)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: admin <info@mdmbunny.com>\n"
 "Language-Team: \n"
@@ -34,2350 +34,31 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-8: _assets/svg\n"
 "X-Loco-Target-Locale: en_GB"
 
-#: ../header.php:98
-msgid "Vai al contenuto"
-msgstr ""
-
 #: ../search.php:11
 #, php-format
 msgid "Search Results for: %s"
 msgstr ""
 
-#: ../_assets/classes/Custom_Taxonomy.php:72 ../_assets/classes/Custom_Type.php:146
-msgid "Elenco"
+#: ../header.php:93
+msgid "Vai al contenuto"
 msgstr ""
 
-#: ../_assets/classes/Custom_Taxonomy.php:73
-msgid "Genitore"
+#: ../_library/scm-content.php:785
+msgid "Nessun elemento"
 msgstr ""
 
-#: ../_assets/classes/Custom_Taxonomy.php:74 ../_assets/classes/Custom_Type.php:145
-msgid "Genitore:"
+#: ../_library/scm-content.php:891
+msgid "Archive"
 msgstr ""
 
-#: ../_assets/classes/Custom_Taxonomy.php:75 ../_assets/classes/Custom_Taxonomy.
-#: php:76 ../_assets/classes/Custom_Type.php:148 ../_assets/classes/Custom_Type.
-#: php:149 ../_library/scm-acf-fields.php:578 ../_library/scm-acf-fields.php:587 .
-#: ./_library/scm-acf-fields.php:596
-msgid "Aggiungi"
+#: ../_library/scm-content.php:897
+msgid "More"
 msgstr ""
 
-#: ../_assets/classes/Custom_Taxonomy.php:77 ../_assets/classes/Custom_Type.php:150
-msgid "Modifica"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:78 ../_assets/classes/Custom_Type.php:151
-msgid "Aggiorna"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:79
-msgid "Separa gli elementi con una virgola"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:80 ../_assets/classes/Custom_Type.php:152
-msgid "Cerca"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:81
-msgid "Aggiungi o Rimuovi"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:82
-msgid "I pi&ugrave; usati"
-msgstr ""
-
-#: ../_assets/classes/Custom_Taxonomy.php:83
-msgid "Non trovato"
-msgstr ""
-
-#: ../_assets/classes/Custom_Type.php:147
-msgid "Visualizza"
-msgstr ""
-
-#: ../_assets/classes/Custom_Type.php:153
-msgid "non trovato"
-msgstr ""
-
-#: ../_assets/classes/Custom_Type.php:154
-msgid "non trovato nel Cestino"
-msgstr ""
-
-#: ../_assets/classes/Custom_Type.php:181 ../_library/scm-acf-fields.php:95 ..
-#: /_library/scm-acf-fields.php:621 ../_library/scm-acf-fields.php:1441 ..
-#: /_library/scm-acf-fields.php:1441 ../_library/scm-acf-fields.php:2122 ..
-#: /_library/scm-acf-fields.php:2122
-msgid "ID"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:161 ../_library/scm-install.
-#: php:1469
-msgid "Install Required Plugins"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:162 ../_library/scm-install.
-#: php:1470
-msgid "Install Plugins"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:163 ../_library/scm-install.
-#: php:1471
-#, php-format
-msgid "Installing Plugin: %s"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:164
-msgid "Something went wrong."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:165 ../_library/scm-install.
-#: php:1473
-#, php-format
-msgid "This theme requires the following plugin: %1$s."
-msgid_plural "This theme requires the following plugins: %1$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:166 ../_library/scm-install.
-#: php:1474
-#, php-format
-msgid "This theme recommends the following plugin: %1$s."
-msgid_plural "This theme recommends the following plugins: %1$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:167 ../_library/scm-install.
-#: php:1475
-#, php-format
-msgid ""
-"Sorry, but you do not have the correct permissions to install the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"installed."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to install the %s plugins."
-" Contact the administrator of this site for help on getting the plugins "
-"installed."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:168 ../_library/scm-install.
-#: php:1476
-#, php-format
-msgid "The following required plugin is currently inactive: %1$s."
-msgid_plural "The following required plugins are currently inactive: %1$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:169 ../_library/scm-install.
-#: php:1477
-#, php-format
-msgid "The following recommended plugin is currently inactive: %1$s."
-msgid_plural "The following recommended plugins are currently inactive: %1$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:170 ../_library/scm-install.
-#: php:1478
-#, php-format
-msgid ""
-"Sorry, but you do not have the correct permissions to activate the %s plugin."
-" Contact the administrator of this site for help on getting the plugin "
-"activated."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to activate the %s "
-"plugins. Contact the administrator of this site for help on getting the "
-"plugins activated."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:171 ../_library/scm-install.
-#: php:1479
-#, php-format
-msgid ""
-"The following plugin needs to be updated to its latest version to ensure "
-"maximum compatibility with this theme: %1$s."
-msgid_plural ""
-"The following plugins need to be updated to their latest version to ensure "
-"maximum compatibility with this theme: %1$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:172 ../_library/scm-install.
-#: php:1480
-#, php-format
-msgid ""
-"Sorry, but you do not have the correct permissions to update the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"updated."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to update the %s plugins. "
-"Contact the administrator of this site for help on getting the plugins "
-"updated."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:173 ../_library/scm-install.
-#: php:1481
-msgid "Begin installing plugin"
-msgid_plural "Begin installing plugins"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:174 ../_library/scm-install.
-#: php:1482
-msgid "Begin activating plugin"
-msgid_plural "Begin activating plugins"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:175 ../_library/scm-install.
-#: php:1483
-msgid "Return to Required Plugins Installer"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:176
-msgid "Return to the dashboard"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:177 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:1939 ../_library/scm-install.
-#: php:1484
-msgid "Plugin activated successfully."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:178 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:1630
-msgid "The following plugin was activated successfully:"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:179
-#, php-format
-msgid "All plugins installed and activated successfully. %1$s"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:180
-msgid "Dismiss this notice"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:531 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:531 ../_assets/classes/class-
-#: tgm-plugin-activation.php:2156 ../_assets/classes/class-tgm-plugin-activation.
-#: php:2156
-msgid "Return to the Dashboard"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1166
-msgid "Private Repository"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1169
-msgid "Pre-Packaged"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1174
-msgid "WordPress Repository"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1177
-msgid "Required"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1177
-msgid "Recommended"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1180
-msgid "Not Installed"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1182
-msgid "Installed But Not Activated"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1287 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:1287 ../_assets/classes/class-
-#: tgm-plugin-activation.php:1395
-msgid "Install"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1309 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:1309 ../_assets/classes/class-
-#: tgm-plugin-activation.php:1396
-msgid "Activate"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1358
-#, php-format
-msgid ""
-"No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
-"Dashboard\">Return to the Dashboard</a>"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1374
-msgid "Plugin"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1375
-msgid "Source"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1376 ../_library/scm-acf-
-#: fields.php:1886
-msgid "Type"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1377
-msgid "Status"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1922
-msgid "Install package not available."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1923
-#, php-format
-msgid "Downloading install package from <span class=\"code\">%s</span>&#8230;"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1924
-msgid "Unpacking the package&#8230;"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1925
-msgid "Installing the plugin&#8230;"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1926
-msgid "Plugin install failed."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1927
-msgid "Plugin installed successfully."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:1938
-msgid "Plugin activation failed."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2052
-msgid ""
-"The installation and activation process is starting. This process may take a "
-"while on some hosts, so please be patient."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2053
-#, php-format
-msgid "%1$s installed and activated successfully."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2053 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:2062
-msgid "Show Details"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2053 ..
-#: /_assets/classes/class-tgm-plugin-activation.php:2062
-msgid "Hide Details"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2054
-msgid "All installations and activations have been completed."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2055
-#, php-format
-msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2059
-msgid ""
-"The installation process is starting. This process may take a while on some "
-"hosts, so please be patient."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2060
-#, php-format
-msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2061
-#, php-format
-msgid "The installation of %1$s failed."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2062
-#, php-format
-msgid "%1$s installed successfully."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2063
-msgid "All installations have been completed."
-msgstr ""
-
-#: ../_assets/classes/class-tgm-plugin-activation.php:2064
-#, php-format
-msgid "Installing Plugin %1$s (%2$d/%3$d)"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:42 ../_library/scm-acf-fields.php:50 ..
-#: /_library/scm-acf-fields.php:58
-msgid "Misura"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:66 ../_library/scm-acf-fields.php:699 ..
-#: /_library/scm-acf-fields.php:726 ../_library/scm-acf-fields.php:755 ..
-#: /_library/scm-acf-fields.php:920
-msgid "Trasparenza"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:76 ../_library/scm-acf-fields.php:85
-msgid "testo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:77 ../_library/scm-acf-fields.php:86 ..
-#: /_library/scm-acf-fields.php:158 ../_library/scm-acf-fields.php:168 ..
-#: /_library/scm-acf-fields.php:179 ../_library/scm-acf-fields.php:188 ..
-#: /_library/scm-acf-fields.php:197 ../_library/scm-acf-fields.php:1367 ..
-#: /_library/scm-acf-fields.php:1504 ../_library/scm-acf-layouts.php:785 ..
-#: /_library/scm-acf-preset.php:989
-msgid "Testo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:94 ../_library/scm-acf-fields.php:619
-msgid "id"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:103 ../_library/scm-acf-fields.php:620
-msgid "class"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:104 ../_library/scm-acf-fields.php:622
-msgid "Class"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:112 ../_library/scm-acf-fields.php:121
-msgid "nome"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:113 ../_library/scm-acf-fields.php:122 ..
-#: /_library/scm-acf-fields.php:1189 ../_library/scm-acf-fields.php:1440 ..
-#: /_library/scm-acf-fields.php:2123 ../_library/scm-acf-preset.php:1014
-msgid "Nome"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:131 ../_library/scm-acf-layouts.php:399 ..
-#: /_library/scm-acf-preset.php:1018 ../_library/scm-acf-preset.php:1042 ..
-#: /_library/scm-acf-preset.php:1048 ../_library/scm-acf.php:580
-msgid "Link"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:140 ../_library/scm-acf-fields.php:1785 ..
-#: /_library/scm-acf-fields.php:1786 ../_library/scm-acf-preset.php:1017
-msgid "Email"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:148
-msgid "Numero"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:169 ../_library/scm-acf-fields.php:180 ..
-#: /_library/scm-acf-fields.php:189 ../_library/scm-acf-fields.php:198
-msgid "Inserisci testo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:208 ../_library/scm-acf-fields.php:1366 ..
-#: /_library/scm-acf-fields.php:1671 ../_library/scm-acf-layouts.php:561 ..
-#: /_library/scm-acf-preset.php:1105
-msgid "Data"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:218 ../_library/scm-acf-fields.php:700
-msgid "Colore"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:228 ../_library/scm-acf-fields.php:236 ..
-#: /_library/scm-acf-fields.php:947 ../_library/scm-acf-fields.php:1195
-msgid "Seleziona un'icona"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:246
-msgid "Seleziona un'immagine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:256
-msgid "Seleziona un file"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:266 ../_library/scm-acf-fields.php:274 ..
-#: /_library/scm-acf-fields.php:579 ../_library/scm-acf-fields.php:588 ..
-#: /_library/scm-acf-fields.php:597 ../_library/scm-acf-layouts.php:54
-msgid "Elementi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:267 ../_library/scm-acf-fields.php:275 ..
-#: /_library/scm-acf-fields.php:383 ../_library/scm-acf-fields.php:391 ..
-#: /_library/scm-acf-fields.php:400 ../_library/scm-acf-fields.php:409 ..
-#: /_library/scm-acf-fields.php:418 ../_library/scm-acf-fields.php:427 ..
-#: /_library/scm-acf-fields.php:436 ../_library/scm-acf-fields.php:445 ..
-#: /_library/scm-acf-fields.php:455 ../_library/scm-acf-fields.php:466 ..
-#: /_library/scm-acf-fields.php:475 ../_library/scm-acf-fields.php:484 ..
-#: /_library/scm-acf-fields.php:493 ../_library/scm-acf-fields.php:502 ..
-#: /_library/scm-acf-fields.php:511 ../_library/scm-acf-fields.php:520 ..
-#: /_library/scm-acf-fields.php:529 ../_library/scm-acf-fields.php:538 ..
-#: /_library/scm-acf-fields.php:547 ../_library/scm-acf-fields.php:960 ..
-#: /_library/scm-acf-fields.php:979 ../_library/scm-acf-fields.php:998 ..
-#: /_library/scm-acf-fields.php:1022 ../_library/scm-acf-fields.php:1047 ..
-#: /_library/scm-acf-fields.php:1071 ../_library/scm-acf-fields.php:1095 ..
-#: /_library/scm-acf-fields.php:1119 ../_library/scm-acf-fields.php:1143
-msgid "Seleziona"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:282 ../_library/scm-acf-fields.php:398
-msgid "Formato"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:291 ../_library/scm-acf-fields.php:1176 ..
-#: /_library/scm-acf-layouts.php:57 ../_library/scm-acf-layouts.php:207 ..
-#: /_library/scm-acf-layouts.php:656 ../_library/scm-acf-layouts.php:681 ..
-#: /_library/scm-acf.php:554 ../_library/scm-acf.php:554
-msgid "Larghezza"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:300 ../_library/scm-acf-preset.php:1069 ..
-#: /_library/scm-install.php:499 ../_library/scm-install.php:1080
-msgid "Opzioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:309 ../_library/scm-acf-fields.php:318 ..
-#: /_library/scm-acf-fields.php:327 ../_library/scm-acf-fields.php:336 ..
-#: /_library/scm-acf-preset.php:1074 ../_library/scm-acf-preset.php:1082
-msgid "Mostra"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:345 ../_library/scm-acf-fields.php:354 ..
-#: /_library/scm-acf-fields.php:363 ../_library/scm-acf-fields.php:372 ..
-#: /_library/scm-acf-preset.php:1087 ../_library/scm-acf-preset.php:1094
-msgid "Abilita"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:381 ../_library/scm-acf-layouts.php:168
-msgid "Stile"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:390 ../_library/scm-acf-fields.php:1312 ..
-#: /_library/scm-acf-fields.php:1321 ../_library/scm-acf-fields.php:1328 ..
-#: /_library/scm-acf-fields.php:1335 ../_library/scm-acf-fields.php:1457 ..
-#: /_library/scm-acf-fields.php:1525 ../_library/scm-install.php:507 ..
-#: /_library/scm-install.php:1087
-msgid "Layout"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:407 ../_library/scm-acf-fields.php:425 ..
-#: /_library/scm-acf-fields.php:434 ../_library/scm-acf-fields.php:443 ..
-#: /_library/scm-acf-fields.php:830 ../_library/scm-acf.php:606
-msgid "Allineamento"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:416 ../_library/scm-acf-fields.php:2239 ..
-#: /_library/scm-acf-preset.php:1182
-msgid "Overlay"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:453 ../_library/scm-acf-fields.php:642 ..
-#: /_library/scm-acf-fields.php:671
-msgid "Unità"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:464 ../_library/scm-acf-fields.php:473 ..
-#: /_library/scm-acf-fields.php:482 ../_library/scm-acf-fields.php:491 ..
-#: /_library/scm-acf-fields.php:500 ../_library/scm-acf-fields.php:509 ..
-#: /_library/scm-acf-fields.php:536
-msgid "Contenuto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:518 ../_library/scm-acf-fields.php:527 ..
-#: /_library/scm-acf-fields.php:545
-msgid "Contenuti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:556
-msgid "Taxonomy"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:567 ../_library/scm-acf-fields.php:1956 ..
-#: /_library/scm-install.php:547
-msgid "Taxonomies"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:607 ../_library/scm-acf-fields.php:1380 ..
-#: /_library/scm-acf-fields.php:1502
-msgid "Componi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:627
-msgid "Aggiungi Selettori"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:641 ../_library/scm-acf-fields.php:794 ..
-#: /_library/scm-acf-fields.php:832 ../_library/scm-acf-fields.php:852 ..
-#: /_library/scm-acf-fields.php:900 ../_library/scm-acf-fields.php:1283 ..
-#: /_library/scm-acf-fields.php:2298 ../_library/scm-acf-layouts.php:210 ..
-#: /_library/scm-acf-layouts.php:232 ../_library/scm-acf-layouts.php:332 ..
-#: /_library/scm-acf-layouts.php:355 ../_library/scm-acf-layouts.php:377 ..
-#: /_library/scm-acf-layouts.php:423 ../_library/scm-acf-layouts.php:686
-msgid "Dimensione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:656 ../_library/scm-acf-fields.php:685 ..
-#: /_library/scm-acf-fields.php:712 ../_library/scm-acf-fields.php:741 ..
-#: /_library/scm-acf-fields.php:768
-msgid "Imposta"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:670 ../_library/scm-acf-fields.php:793 ..
-#: /_library/scm-acf-fields.php:2240 ../_library/scm-acf-fields.php:2286 ..
-#: /_library/scm-acf-layouts.php:179
-msgid "Posizione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:727
-msgid "Colore Testi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:756
-msgid "Colore Sfondo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:786
-msgid "Impostazioni Sfondo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:791 ../_library/scm-acf-fields.php:940 ..
-#: /_library/scm-acf-fields.php:1362 ../_library/scm-acf-fields.php:1544 ..
-#: /_library/scm-acf-layouts.php:778 ../_library/scm-acf-layouts.php:808
-msgid "Immagine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:792
-msgid "Ripetizione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:807 ../_library/scm-acf-fields.php:826 ..
-#: /_library/scm-acf-fields.php:846 ../_library/scm-acf-fields.php:866
-msgid "Impostazioni Testi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:813
-msgid "Famiglia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:831 ../_library/scm-acf-layouts.php:180
-msgid "Spessore"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:833
-msgid "Interlinea"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:875
-msgid "Ombra"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:894 ../_library/scm-acf-fields.php:1277 ..
-#: /_library/scm-acf-fields.php:2294
-msgid "Forma"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:894 ../_library/scm-acf-fields.php:1277 ..
-#: /_library/scm-acf-fields.php:2294
-msgid "Forma Box"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:899 ../_library/scm-acf-fields.php:1282 ..
-#: /_library/scm-acf-fields.php:2299
-msgid "Angoli"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:899 ../_library/scm-acf-fields.php:1282 ..
-#: /_library/scm-acf-fields.php:2299
-msgid "Angoli Box"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:900 ../_library/scm-acf-fields.php:1283 ..
-#: /_library/scm-acf-fields.php:2298
-msgid "Dimensione angoli Box"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:914
-msgid "Impostazioni Box"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:918
-msgid "Margin"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:919
-msgid "Padding"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:931 ../_library/scm-acf-fields.php:940 ..
-#: /_library/scm-acf-fields.php:1363 ../_library/scm-acf-fields.php:1827 ..
-#: /_library/scm-acf-fields.php:1835 ../_library/scm-acf-fields.php:1888 ..
-#: /_library/scm-acf-fields.php:1888 ../_library/scm-acf-layouts.php:605 ..
-#: /_library/scm-acf-layouts.php:685
-msgid "Icona"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:940
-msgid "Icona Mappa"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:949
-msgid "Carica un'immagine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:959
-msgid "Termine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:978
-msgid "Termini"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:997
-msgid "Seleziona Relazione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1021
-msgid "Seleziona Relazioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1046 ../_library/scm-acf-fields.php:1070 ..
-#: /_library/scm-acf-fields.php:1960
-msgid "Seleziona Tipologia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1094
-msgid "Seleziona Tipologie"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1118
-msgid "Seleziona Categoria"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1142
-msgid "Seleziona Categorie"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1170
-msgid "Istruzioni Colonne"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1174
-msgid "Aggiungi Colonna"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1174 ../_library/scm-acf-templates.php:32
-msgid "Colonne"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1200 ../_library/scm-acf-fields.php:1257
-msgid "Inserisci un Link"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1208 ../_library/scm-acf-fields.php:2072 ..
-#: /_library/scm-acf-layouts.php:402 ../_library/scm-acf-preset.php:1047
-msgid "Pagina"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1212 ../_library/scm-acf-layouts.php:405
-msgid "Media"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1216
-msgid "Inserisci Codice PayPal"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1216
-msgid "Code"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1220 ../_library/scm-acf-preset.php:886 ..
-#: /_library/scm-acf-preset.php:896
-msgid "Elemento"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1225
-msgid "Tooltip"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1244
-msgid "Istruzioni Pulsanti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1248
-msgid "Aggiungi Pulsante"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1299
-msgid "Istruzioni Righe"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1303
-msgid "Aggiungi Sezione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1303
-msgid "Sezioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1306 ../_library/scm-acf-fields.php:1314 ..
-#: /_library/scm-acf-fields.php:1323 ../_library/scm-acf-fields.php:1330 ..
-#: /_library/scm-acf-fields.php:1337 ../_library/scm-acf-fields.php:1527 ..
-#: /_library/scm-acf.php:526
-msgid "Attributi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1308
-msgid "Moduli"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1310 ../_library/scm-acf-fields.php:1317 ..
-#: /_library/scm-acf-fields.php:1958
-msgid "Template"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1315 ../_library/scm-acf-preset.php:969 ..
-#: /_library/scm-queries.php:146
-msgid "Archivio"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1316
-msgid "ID or Option Name"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1316
-msgid "Post"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1356 ../_library/scm-acf-fields.php:1997 ..
-#: /_library/scm-acf-fields.php:2050 ../_library/scm-acf-layouts.php:91 ..
-#: /_library/scm-install.php:285
-msgid "Slider"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1357 ../_library/scm-install.php:267
-msgid "Section"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1358
-msgid "Form"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1359 ../_library/scm-acf-fields.php:1762 ..
-#: /_library/scm-acf-layouts.php:711 ../_library/scm-acf-layouts.php:752 ..
-#: /_library/scm-acf-preset.php:1015
-msgid "Indirizzo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1360
-msgid "Map"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1361 ../_library/scm-acf-layouts.php:137 ..
-#: /_library/scm-acf-layouts.php:280 ../_library/scm-acf-layouts.php:280 ..
-#: /_library/scm-acf-layouts.php:585 ../_library/scm-acf-layouts.php:585
-msgid "Separatore"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1364 ../_library/scm-acf-fields.php:1478 ..
-#: /_library/scm-acf-fields.php:1503 ../_library/scm-acf-fields.php:1585 ..
-#: /_library/scm-acf-fields.php:2033 ../_library/scm-acf-layouts.php:551 ..
-#: /_library/scm-acf-preset.php:1106
-msgid "Titolo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1365 ../_library/scm-acf-fields.php:1479 ..
-#: /_library/scm-acf-fields.php:1506
-msgid "Quote"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1368
-msgid "Elenco puntato"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1369 ../_library/scm-acf-fields.php:1777 ..
-#: /_library/scm-acf-layouts.php:744
-msgid "Contatti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1370
-msgid "Social follow"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1371 ../_library/scm-acf-fields.php:1480 ..
-#: /_library/scm-acf-fields.php:1507 ../_library/scm-acf-layouts.php:602
-msgid "Pulsanti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1376
-msgid "Istruzioni Elementi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1430
-msgid ""
-"Costruisci dei modelli da poter poi scegliere durante la creazione di nuovi "
-"contenuti. Per ogni modello è obbligatorio inserire almeno il Nome."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1438
-msgid "Aggiungi Modello"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1438
-msgid "Modelli"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1440
-msgid "Nome Modello"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1461 ../_library/scm-core.php:47
-msgid "Menu Principale"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1477
-msgid "Aggiungi Contesto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1477
-msgid "Contesto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1481 ../_library/scm-acf-fields.php:1505
-msgid "Elenco Puntato"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1482 ../_library/scm-install.php:269
-msgid "Banner"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1548 ../_library/scm-acf-fields.php:1628 ..
-#: /_library/scm-acf-fields.php:1651 ../_library/scm-acf-fields.php:1690 ..
-#: /_library/scm-acf-fields.php:1711 ../_library/scm-acf-fields.php:1732
-msgid "Impostazioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1553
-msgid "Collegamento"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1570 ../_library/scm-acf-fields.php:1572
-msgid "Didascalia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1580
-msgid "Dal lato alto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1581
-msgid "Dal lato destro"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1582
-msgid "Dal lato basso"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1583
-msgid "Dal lato sinistro"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1585 ../_library/scm-acf-fields.php:1585
-msgid "Titolo didascalia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1586
-msgid "Contenuto didascalia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1588
-msgid "Avanzate"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1630 ../_library/scm-acf-layouts.php:780
-msgid "Anteprima"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1633 ../_library/scm-acf-fields.php:1673 ..
-#: /_library/scm-acf-fields.php:1693 ../_library/scm-acf-fields.php:1714 ..
-#: /_library/scm-acf-fields.php:1735 ../_library/scm-acf-fields.php:1803 ..
-#: /_library/scm-acf-fields.php:1854
-msgid "Categorie"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1653 ../_library/scm-install.php:273 ..
-#: /_library/scm-install.php:1117
-msgid "Articolo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1712
-msgid "Immagini"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1733
-msgid "Link a YouTube"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1753
-msgid "Dati"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1757
-msgid ""
-"Il campo Nome è utile per differenziare più luoghi che fanno riferimento ad "
-"un unico Soggetto ( es. Sede Operativa, Distaccamento, ...)."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1758
-msgid "Specifica un Nome"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1760
-msgid "es. Sede Operativa, Distaccamento, …"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1763
-msgid "Provincia"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1765
-msgid "Città/Località"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1766
-msgid "CAP"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1768
-msgid "Frazione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1769
-msgid "Regione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1771
-msgid "Paese"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1774
-msgid "Latitudine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1775
-msgid "Longitudine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1779
-msgid "Aggiungi Contatti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1781 ../_library/scm-acf-fields.php:1782
-msgid "Web"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1789
-msgid "Skype"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1790
-msgid "Skype Name"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1790
-msgid "User Name"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1793 ../_library/scm-acf-preset-fa.php:228
-msgid "Telefono"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1794 ../_library/scm-acf-preset.php:1034
-msgid "Tel."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1797 ../_library/scm-acf-fields.php:1798 ..
-#: /_library/scm-acf-preset-fa.php:238 ../_library/scm-acf-preset.php:1036
-msgid "Fax"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1820
-msgid "Brand"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1823
-msgid "Carica uno logo e/o un'icona da utilizzare su fondi chiari."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1826 ../_library/scm-acf-fields.php:1834 ..
-#: /_library/scm-acf-fields.php:2219 ../_library/scm-acf-layouts.php:680
-msgid "Logo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1831
-msgid "Carica uno logo e/o un'icona da utilizzare su fondi scuri."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1832
-msgid "Versione in Negativo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1839 ../_library/scm-acf-layouts.php:693
-msgid "Intestazione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1840 ../_library/scm-acf-layouts.php:698 ..
-#: /_library/scm-acf-layouts.php:699
-msgid "P.IVA"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1841 ../_library/scm-acf-layouts.php:703
-msgid "Codice Fiscale"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1843 ../_library/scm-acf-fields.php:1847 ..
-#: /_library/scm-acf-layouts.php:135 ../_library/scm-acf-layouts.php:151 ..
-#: /_library/scm-install.php:278
-msgid "Luoghi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1846
-msgid ""
-"Assegna dei Luoghi a questo Soggetto. Clicca sul pulsante Luoghi nella barra "
-"laterale per crearne uno. Il primo Luogo dell'elenco sarà considerato Luogo "
-"Principale per questo Soggetto."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1849
-msgid "Seleziona Luoghi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1851 ../_library/scm-acf-fields.php:1852 ..
-#: /_library/scm-acf-fields.php:2195 ../_library/scm-acf-fields.php:2282
-msgid "Social"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1875 ../_library/scm-install.php:539
-msgid "Types"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1876
-msgid "Produzioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1876 ../_library/scm-acf-fields.php:1961
-msgid "Plurale"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1878
-msgid "Labels"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1880
-msgid "Produzione"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1880 ../_library/scm-acf-fields.php:1962
-msgid "Singolare"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1881
-msgid "produzioni"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1881 ../_library/scm-acf-fields.php:1963 ..
-#: /_library/scm-acf-preset.php:1108
-msgid "Slug"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1882
-msgid "Prod."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1882
-msgid "Singolare Corto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1883
-msgid "Prods."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1883
-msgid "Plurale Corto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1885
-msgid "Admin"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1887 ../_library/scm-acf-fields.php:1891
-msgid "Archivi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1888
-msgid ""
-"Visita <a href=\"https://developer.wordpress.org/resource/dashicons/\" "
-"target=\"_blank\">https://developer.wordpress.org/resource/dashicons/</a> per "
-"un elenco delle icone disponibili e dei corrispettivi nomi, da inserire nel "
-"seguente campo."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1889
-msgid "Zona Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1892
-msgid "Ordina per"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1893
-msgid "Ordinamento"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1956
-msgid "Aggiungi Taxonomy"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1959
-msgid "Manage"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1960
-msgid "Tag"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1960
-msgid "Categoria"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1961
-msgid "Nome Categorie"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1962
-msgid "Nome Categoria"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1964
-msgid "Seleziona Locations"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1989
-msgid "Attiva Slider"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:1995
-msgid "Disattiva"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2012
-msgid "Favicon"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2013
-msgid "ICO 16"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2014
-msgid "ICO 54"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2015
-msgid "Icon 114"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2016
-msgid "PNG 16"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2017
-msgid "Icon 72"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2018
-msgid "Icon 144"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2021
-msgid "Qualità immagini"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2021
-msgid "Qualità"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2022
-msgid "Largezza massima immagini"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2022
-msgid "Larghezza Massima"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2023
-msgid "Altezza massima immagini"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2023 ../_library/scm-acf-fields.php:2220
-msgid "Altezza Massima"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2025
-msgid "Strumenti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2026
-msgid "Pages Fader"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2027 ../_library/scm-acf-fields.php:2027
-msgid "Fade In"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2027 ../_library/scm-acf-fields.php:2028
-msgid "sec"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2028 ../_library/scm-acf-fields.php:2028
-msgid "Fade Out"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2029
-msgid "Wait for"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2030
-msgid "Top Of Page"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2031 ../_library/scm-acf-fields.php:2031 ..
-#: /_library/scm-acf-fields.php:2041 ../_library/scm-acf-fields.php:2041 ..
-#: /_library/scm-acf-fields.php:2046 ../_library/scm-acf-fields.php:2046 ..
-#: /_library/scm-acf-fields.php:2265 ../_library/scm-acf-fields.php:2265 ..
-#: /_library/scm-acf-layouts.php:74
-msgid "Offset"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2033 ../_library/scm-acf-fields.php:2033
-msgid "Inizio pagina"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2036
-msgid "Smooth Scroll"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2037 ../_library/scm-acf-fields.php:2037
-msgid "Durata"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2038 ../_library/scm-acf-fields.php:2038
-msgid "Delay"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2039
-msgid "Smooth Scroll (su nuove pagine)"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2040 ../_library/scm-acf-fields.php:2040
-msgid "Delay su nuova pagina"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2042
-msgid "Ease"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2043
-msgid "Single Page Nav"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2044 ../_library/scm-acf-fields.php:2044
-msgid "Active Class"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2045 ../_library/scm-acf-fields.php:2045
-msgid "Interval"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2047 ../_library/scm-acf-fields.php:2047
-msgid "Threshold"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2052
-msgid "Google Maps"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2057
-msgid "Area Privata"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2058
-msgid "Footer Login"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2061
-msgid "Pagina ID"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2062
-msgid "Header ID"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2063
-msgid "Branding ID"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2066
-msgid "Content ID"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2067
-msgid "Footer ID"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2071
-msgid "Internet Explorer"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2071
-msgid "Versione Minima"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2087
-msgid "Testi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2089
-msgid "Sfondo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2093
-msgid "Box"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2109
-msgid "Loading Page"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2113
-msgid "Aggiungi Google Web Font"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2113
-msgid "Includi Google Web Fonts"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2113
-msgid ""
-"Visita <a href=\"https://www.google.com/fonts\">https://www.google."
-"com/fonts</a>, scegli la famiglia e gli stili da includere."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2115 ../_library/scm-acf-fields.php:2115
-msgid "Family"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2116
-msgid "Styles"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2120
-msgid "Aggiungi Adobe TypeKit"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2120
-msgid "Includi Adobe TypeKit"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2123
-msgid "Nome Kit"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2123
-msgid "Kit"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2131
-msgid "Aggiungi o togli px dalla dimensione generale."
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2132
-msgid "Dimensione testi"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2156
-msgid "Larghezza Pagine"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2164
-msgid "Larghezza Header"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2165
-msgid "Larghezza Contenuti"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2166
-msgid "Larghezza Footer"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2167
-msgid "Larghezza Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2168
-msgid "Larghezza Sticky Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2170
-msgid "Responsive to Full"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2171
-msgid "Responsive Columns"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2172
-msgid "Max Responsive Width"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2189
-msgid "Branding"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2192 ../_library/scm-acf-fields.php:2237
-msgid "Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2212 ../_library/scm-acf-preset.php:1109
-msgid "Tipo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2222
-msgid "Slogan"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2236
-msgid "Opzioni Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2245
-msgid "Toggle Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2246
-msgid "Attiva Toggle Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2247
-msgid "Icona Apri Toggle Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2248
-msgid "Icona Chiudi Toggle Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2250
-msgid "Home Button"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2251
-msgid "Attiva Home Button"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2252
-msgid "Icona Home Button"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2253
-msgid "Attiva Logo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2254
-msgid "Logo Home"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2256
-msgid "Sticky Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2258
-msgid "Seleziona Tipo"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2264
-msgid "Attach to Menu"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2285 ../_library/scm-acf-layouts.php:374 ..
-#: /_library/scm-install.php:277 ../_library/scm-install.php:1166
-msgid "Soggetto"
-msgstr ""
-
-#: ../_library/scm-acf-fields.php:2289
-msgid "Dimensione Icone"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:56 ../_library/scm-acf-layouts.php:529 ..
-#: /_library/scm-install.php:369 ../_library/scm-install.php:370 ../_library/scm-
-#: install.php:371 ../_library/scm-install.php:372 ../_library/scm-install.php:1226
-msgid "Modello"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:57
-msgid "Larghezza Elementi"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:66
-msgid "Opzione"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:67
-msgid "Ordine per"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:68
-msgid "Ordine"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:73
-msgid "Post per pagina"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:75 ../_library/scm-acf-preset.php:980
-msgid "Paginazione"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:105 ../_library/scm-acf-layouts.php:107 ..
-#: /_library/scm-acf-preset.php:990
-msgid "Sezione"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:122
-msgid "Modulo Contatti"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:138
-msgid "Nascondi icona"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:138
-msgid "Icona interna"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:138
-msgid "Icona esterna"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:138
-msgid "Icona Luogo"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:153
-msgid "Zoom"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:155
-msgid "Nascondi indirizzo"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:155
-msgid "Indirizzo Sotto"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:155
-msgid "Indirizzo sopra"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:155
-msgid "Mostra Indirizzo"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:178 ../_library/scm-acf-layouts.php:208 ..
-#: /_library/scm-acf-layouts.php:209 ../_library/scm-acf-layouts.php:657 ..
-#: /_library/scm-acf-layouts.php:682 ../_library/scm-acf-templates.php:15
+#: ../_library/scm-acf-templates.php:15 ../_library/scm-acf-layouts.php:236 ..
+#: /_library/scm-acf-layouts.php:266 ../_library/scm-acf-layouts.php:267 ..
+#: /_library/scm-acf-layouts.php:730 ../_library/scm-acf-layouts.php:755
 msgid "Altezza"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:181
-msgid "Spazio"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:183
-msgid "Tratto"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:184
-msgid "Cap"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:260
-msgid "Apertura"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:261
-msgid "Chiusura"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:319 ../_library/scm-acf-layouts.php:349 ..
-#: /_library/scm-acf-layouts.php:371 ../_library/scm-acf-layouts.php:393
-msgid "Introduzione:"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:325
-msgid "Punto"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:329
-msgid "Punti righe"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:330
-msgid "Esterni"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:330
-msgid "Interni"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:330
-msgid "Posizione punti"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:333 ../_library/scm-acf-layouts.php:356 ..
-#: /_library/scm-acf-layouts.php:378 ../_library/scm-acf-layouts.php:424
-msgid "In fila"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:333 ../_library/scm-acf-layouts.php:356 ..
-#: /_library/scm-acf-layouts.php:378 ../_library/scm-acf-layouts.php:424
-msgid "In colonna"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:333 ../_library/scm-acf-layouts.php:356 ..
-#: /_library/scm-acf-layouts.php:378 ../_library/scm-acf-layouts.php:424
-msgid "Disposizione"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:352 ../_library/scm-install.php:278 ..
-#: /_library/scm-install.php:1159
-msgid "Luogo"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:397
-msgid "Aggiungi Pulsanti "
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:408 ../_library/scm-acf-preset.php:1041
-msgid "File"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:411
-msgid "PayPal"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:420
-msgid "Icone pari"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:421
-msgid "Icone dispari"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:522
-msgid "Seleziona tipo Link"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:547
-msgid "Componi "
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:568 ../_library/scm-acf-layouts.php:568 ..
-#: /_library/scm-acf-layouts.php:583 ../_library/scm-acf-layouts.php:583 ..
-#: /_library/scm-acf-layouts.php:690 ../_library/scm-acf-layouts.php:690 ..
-#: /_library/scm-acf-layouts.php:694 ../_library/scm-acf-layouts.php:694 ..
-#: /_library/scm-acf-layouts.php:699 ../_library/scm-acf-layouts.php:699 ..
-#: /_library/scm-acf-layouts.php:704 ../_library/scm-acf-layouts.php:704 ..
-#: /_library/scm-acf-layouts.php:781 ../_library/scm-acf-layouts.php:781
-msgid "Inizio"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:569 ../_library/scm-acf-layouts.php:569 ..
-#: /_library/scm-acf-layouts.php:586 ../_library/scm-acf-layouts.php:586 ..
-#: /_library/scm-acf-layouts.php:696 ../_library/scm-acf-layouts.php:696 ..
-#: /_library/scm-acf-layouts.php:701 ../_library/scm-acf-layouts.php:701 ..
-#: /_library/scm-acf-layouts.php:706 ../_library/scm-acf-layouts.php:706 ..
-#: /_library/scm-acf-layouts.php:783 ../_library/scm-acf-layouts.php:783
-msgid "Fine"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:599
-msgid "Titolo Vuoto"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:653
-msgid "Thumbs"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:655 ../_library/scm-acf-layouts.php:866 ..
-#: /_library/scm-acf-preset.php:988
-msgid "Thumb"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:683 ../_library/scm-acf-layouts.php:687
-msgid "Scegli una versione"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:689
-msgid "Copyright"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:704
-msgid "C.F."
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:708 ../_library/scm-acf-layouts.php:741
-msgid "Mappa"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:718
-msgid "Social Link"
-msgstr ""
-
-#: ../_library/scm-acf-layouts.php:810 ../_library/scm-install.php:274 ..
-#: /_library/scm-install.php:274 ../_library/scm-install.php:1124
-msgid "News"
-msgstr ""
-
-#: ../_library/scm-acf-preset-fa.php:11
-msgid "Virgolette"
-msgstr ""
-
-#: ../_library/scm-acf-preset-fa.php:446
-msgid "Altri"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:888 ../_library/scm-acf-preset.php:1075 ..
-#: /_library/scm-acf-preset.php:1081
-msgid "Nascondi"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:889 ../_library/scm-acf-preset.php:898 ..
-#: /_library/scm-acf-preset.php:1536
-msgid "Sopra"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:890 ../_library/scm-acf-preset.php:899 ..
-#: /_library/scm-acf-preset.php:1156 ../_library/scm-acf-preset.php:1165 ..
-#: /_library/scm-acf-preset.php:1538
-msgid "Destra"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:891 ../_library/scm-acf-preset.php:900 ..
-#: /_library/scm-acf-preset.php:1539
-msgid "Sotto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:892 ../_library/scm-acf-preset.php:901 ..
-#: /_library/scm-acf-preset.php:1155 ../_library/scm-acf-preset.php:1164 ..
-#: /_library/scm-acf-preset.php:1537
-msgid "Sinistra"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:907
-msgid "Menu sopra al logo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:908
-msgid "Menu affianco al logo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:909
-msgid "Menu sotto al logo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:914
-msgid "Sticky Self"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:915
-msgid "Sticky Plus"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:920
-msgid "Attach to main navigation TOP"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:921
-msgid "Attach to main navigation BOTTOM"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:926
-msgid "Menu + Sticky"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:927
-msgid "Solo Sticky"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:928
-msgid "Solo Menu"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:929
-msgid "Solo Toggle"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:934
-msgid "Usa il nome del sito"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:935
-msgid "Usa un'immagine"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:940
-msgid "Menu sotto a Logo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:941
-msgid "Menu alla destra del Logo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:946
-msgid "Sopra al menu (se menu inline)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:947
-msgid "Sotto al menu (se menu inline)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:952 ../_library/scm-acf-preset.php:1515
-msgid "Normale"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:953 ../_library/scm-admin.php:378
-msgid "Quadrata"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:954
-msgid "Full Width"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:968
-msgid "Singoli"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:974
-msgid "Archivio parziale"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:975
-msgid "Archivio completo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:981
-msgid "Pulsante ALL"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:982
-msgid "Pulsante MORE"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:983
-msgid "No paginazione"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:999
-msgid "Link Template (tutto)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1000
-msgid "Link Template (singoli elementi)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1001
-msgid "Inserisci Link (tutto)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1002
-msgid "Inserisci Link (singoli elementi)"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1006
-msgid "Link Oggetto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1007
-msgid "Link Template"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1008
-msgid "Link Inserito"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1016
-msgid "Numeri"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1023
-msgid "web:"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1024
-msgid "support:"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1029
-msgid "e-mail:"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1035
-msgid "Mobile"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1061
-msgid "Versione positiva"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1062
-msgid "Versione negativa"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1068
-msgid "Nascondi Opzioni"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1070
-msgid "Opzioni avanzate"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1088 ../_library/scm-acf-preset.php:1093
-msgid "Disabilita"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1099
-msgid "Discendente"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1100
-msgid "Ascendente"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1107
-msgid "Data modifica"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1110 ../_library/scm-acf-preset.php:1490
-msgid "Random"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1115
-msgid "Vuoto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1116
-msgid "Linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1117
-msgid "Tratteggiato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1123
-msgid "Tondeggiato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1124
-msgid "Squadrato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1125
-msgid "Squadrato a filo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1130
-msgid "Non puntato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1131 ../_library/scm-acf-preset.php:1509
-msgid "Cerchio"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1132
-msgid "Cerchio vuoto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1133 ../_library/scm-acf-preset.php:1508
-msgid "Quadrato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1134
-msgid "Decimali"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1135
-msgid "Decimali con zero"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1136
-msgid "Lettere minuscole"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1137
-msgid "Lettere maiuscole"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1138
-msgid "Roman minuscolo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1139
-msgid "Roman maiuscolo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1147
-msgid "Alto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1148
-msgid "Centro"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1149
-msgid "Basso"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1157 ../_library/scm-acf-preset.php:1166
-msgid "Centrato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1158
-msgid "Giustificato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1173
-msgid "No Float"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1174
-msgid "Float Sinistra"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1175
-msgid "Float Destra"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1176
-msgid "Float Centrato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1181
-msgid "No Overlay"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1183
-msgid "Underlay"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1196
-msgid "Primario"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1197
-msgid "Secondario"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1198
-msgid "Terziario"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1461
-msgid "Nessuno spazio"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1462
-msgid "1 quarto di linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1463
-msgid "Mezza linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1464
-msgid "Una linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1465
-msgid "Una linea e 1 quarto"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1466
-msgid "Una linea e mezza"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1467
-msgid "Una linea e 3 quarti"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1468
-msgid "Doppia linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1469
-msgid "Doppia linea e mezza"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1470
-msgid "Tripla linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1471
-msgid "Quadrupla linea"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1482
-msgid "Slice Down"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1483
-msgid "Slice Down Left"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1484
-msgid "Slice Up"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1485
-msgid "Slice Up Left"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1486
-msgid "Slice Up Down"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1487
-msgid "Slice Up Down Left"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1488
-msgid "Fold"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1489
-msgid "Fade"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1491
-msgid "Slide In Right"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1492
-msgid "Slide In Left"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1493
-msgid "Box Random"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1494
-msgid "Box Rain"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1495
-msgid "Box Rain Reverse"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1496
-msgid "Box Rain Grow"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1497
-msgid "Box Rain Grow Reverse"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1510
-msgid "Arrotondato"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1516
-msgid "Minimo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1517
-msgid "Piccolo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1518
-msgid "Medio"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1519
-msgid "Grande"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1520
-msgid "Massimo"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1527
-msgid "31 Dicembre 2015"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1528
-msgid "31 Dic 15"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1535
-msgid "Tutti"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1540
-msgid "Foglia A"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1541
-msgid "Foglia B"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1542
-msgid "Petalo A"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1543
-msgid "Petalo B"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1544
-msgid "Petalo C"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1545
-msgid "Petalo D"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1546
-msgid "Singolo A"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1547
-msgid "Singolo B"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1548
-msgid "Singolo C"
-msgstr ""
-
-#: ../_library/scm-acf-preset.php:1549
-msgid "Singolo D"
 msgstr ""
 
 #: ../_library/scm-acf-templates.php:16
@@ -2390,6 +71,10 @@ msgstr ""
 
 #: ../_library/scm-acf-templates.php:31
 msgid "Slices"
+msgstr ""
+
+#: ../_library/scm-acf-templates.php:32 ../_library/scm-acf-fields.php:1199
+msgid "Colonne"
 msgstr ""
 
 #: ../_library/scm-acf-templates.php:33
@@ -2436,6 +121,2124 @@ msgstr ""
 msgid "Next Icon"
 msgstr ""
 
+#: ../_library/scm-acf-layouts.php:55 ../_library/scm-acf-fields.php:290 ..
+#: /_library/scm-acf-fields.php:298 ../_library/scm-acf-fields.php:603 ..
+#: /_library/scm-acf-fields.php:612 ../_library/scm-acf-fields.php:621
+msgid "Elementi"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:57 ../_library/scm-acf-layouts.php:598 ..
+#: /_library/scm-install.php:375 ../_library/scm-install.php:376 ../_library/scm-
+#: install.php:377 ../_library/scm-install.php:378 ../_library/scm-install.php:1244
+msgid "Modello"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:58 ../_library/scm-acf-layouts.php:265 ..
+#: /_library/scm-acf-layouts.php:729 ../_library/scm-acf-layouts.php:754 ..
+#: /_library/scm-acf-fields.php:315 ../_library/scm-acf-fields.php:1201 ..
+#: /_library/scm-acf.php:554 ../_library/scm-acf.php:554
+msgid "Larghezza"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:58
+msgid "Larghezza Elementi"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:74
+msgid "Opzione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:75
+msgid "Ordine per"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:76
+msgid "Ordine"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:79
+msgid "field-name"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:79
+msgid "Field Name"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:84
+msgid "Post per pagina"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:85 ../_library/scm-acf-fields.php:2126 ..
+#: /_library/scm-acf-fields.php:2126 ../_library/scm-acf-fields.php:2136 ..
+#: /_library/scm-acf-fields.php:2136 ../_library/scm-acf-fields.php:2141 ..
+#: /_library/scm-acf-fields.php:2141 ../_library/scm-acf-fields.php:2370 ..
+#: /_library/scm-acf-fields.php:2370
+msgid "Offset"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:86 ../_library/scm-acf-preset.php:995
+msgid "Paginazione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:87
+msgid "Button Name"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:106 ../_library/scm-acf-fields.php:1397 ..
+#: /_library/scm-acf-fields.php:2092 ../_library/scm-acf-fields.php:2147 ..
+#: /_library/scm-install.php:285
+msgid "Slider"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:120 ../_library/scm-acf-layouts.php:122 ..
+#: /_library/scm-acf-preset.php:1005
+msgid "Sezione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:135
+msgid "Modulo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:149 ../_library/scm-acf-fields.php:1980
+msgid "Admin"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:149
+msgid "Redirect"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:154 ../_library/scm-acf-layouts.php:468 ..
+#: /_library/scm-acf-preset.php:1033 ../_library/scm-acf-preset.php:1057 ..
+#: /_library/scm-acf-preset.php:1063 ../_library/scm-acf-fields.php:131 ..
+#: /_library/scm-acf-fields.php:2324 ../_library/scm-acf.php:580
+msgid "Link"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:155 ../_library/scm-acf-layouts.php:471 ..
+#: /_library/scm-acf-preset.php:1062 ../_library/scm-acf-fields.php:1247
+msgid "Pagina"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:157 ../_library/scm-acf-fields.php:1875
+msgid "Email Address"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:157 ../_library/scm-acf-layouts.php:160 ..
+#: /_library/scm-acf-layouts.php:161 ../_library/scm-acf-layouts.php:165
+msgid "Label"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:158
+msgid "email@address.com"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:158
+msgid "Placeholder"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:160 ../_parts/single/single-login.php:27
+msgid "Password"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:161 ../_parts/single/single-login.php:29
+msgid "Log In"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:165
+msgid "Remember me"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:178
+msgid "Modulo Contatti"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:191 ../_library/scm-acf-layouts.php:207 ..
+#: /_library/scm-acf-fields.php:1936 ../_library/scm-acf-fields.php:1940 ..
+#: /_library/scm-install.php:278
+msgid "Luoghi"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:193 ../_library/scm-acf-layouts.php:339 ..
+#: /_library/scm-acf-layouts.php:339 ../_library/scm-acf-layouts.php:654 ..
+#: /_library/scm-acf-layouts.php:654 ../_library/scm-acf-fields.php:1403
+msgid "Separatore"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:194
+msgid "Nascondi icona"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:194
+msgid "Icona interna"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:194
+msgid "Icona esterna"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:194
+msgid "Icona Luogo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:211
+msgid "Zoom"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:226 ../_library/scm-acf-fields.php:405
+msgid "Stile"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:237 ../_library/scm-acf-fields.php:694 ..
+#: /_library/scm-acf-fields.php:817 ../_library/scm-acf-fields.php:2344 ..
+#: /_library/scm-acf-fields.php:2391
+msgid "Posizione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:238 ../_library/scm-acf-fields.php:855
+msgid "Spessore"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:239
+msgid "Spazio"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:241
+msgid "Tratto"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:242
+msgid "Cap"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:268 ../_library/scm-acf-layouts.php:291 ..
+#: /_library/scm-acf-layouts.php:391 ../_library/scm-acf-layouts.php:414 ..
+#: /_library/scm-acf-layouts.php:446 ../_library/scm-acf-layouts.php:492 ..
+#: /_library/scm-acf-layouts.php:759 ../_library/scm-acf-fields.php:665 ..
+#: /_library/scm-acf-fields.php:818 ../_library/scm-acf-fields.php:856 ..
+#: /_library/scm-acf-fields.php:876 ../_library/scm-acf-fields.php:924 ..
+#: /_library/scm-acf-fields.php:1324 ../_library/scm-acf-fields.php:2403
+msgid "Dimensione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:319
+msgid "Apertura"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:320
+msgid "Chiusura"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:378 ../_library/scm-acf-layouts.php:408 ..
+#: /_library/scm-acf-layouts.php:440 ../_library/scm-acf-layouts.php:462
+msgid "Introduzione:"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:384
+msgid "Punto"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:388
+msgid "Punti righe"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:389
+msgid "Esterni"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:389
+msgid "Interni"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:389
+msgid "Posizione punti"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:392 ../_library/scm-acf-layouts.php:415 ..
+#: /_library/scm-acf-layouts.php:447 ../_library/scm-acf-layouts.php:493
+msgid "In fila"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:392 ../_library/scm-acf-layouts.php:415 ..
+#: /_library/scm-acf-layouts.php:447 ../_library/scm-acf-layouts.php:493
+msgid "In colonna"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:392 ../_library/scm-acf-layouts.php:415 ..
+#: /_library/scm-acf-layouts.php:447 ../_library/scm-acf-layouts.php:493
+msgid "Disposizione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:411 ../_library/scm-install.php:278 ..
+#: /_library/scm-install.php:1180
+msgid "Luogo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:443 ../_library/scm-acf-fields.php:2390 ..
+#: /_library/scm-install.php:277 ../_library/scm-install.php:1191
+msgid "Soggetto"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:466
+msgid "Aggiungi Pulsanti "
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:474 ../_library/scm-acf-fields.php:1251
+msgid "Media"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:477 ../_library/scm-acf-preset.php:1056 ..
+#: /_library/scm-functions.php:773
+msgid "File"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:480
+msgid "PayPal"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:489
+msgid "Icone pari"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:490
+msgid "Icone dispari"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:591
+msgid "Seleziona tipo Link"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:616
+msgid "Componi "
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:620 ../_library/scm-acf-preset.php:1121 ..
+#: /_library/scm-acf-fields.php:1406 ../_library/scm-acf-fields.php:1528 ..
+#: /_library/scm-acf-fields.php:1557 ../_library/scm-acf-fields.php:1648 ..
+#: /_library/scm-acf-fields.php:2128
+msgid "Titolo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:630 ../_library/scm-acf-preset.php:1120 ..
+#: /_library/scm-acf-fields.php:208 ../_library/scm-acf-fields.php:1408 ..
+#: /_library/scm-acf-fields.php:1746
+msgid "Data"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:637 ../_library/scm-acf-layouts.php:637 ..
+#: /_library/scm-acf-layouts.php:652 ../_library/scm-acf-layouts.php:652 ..
+#: /_library/scm-acf-layouts.php:763 ../_library/scm-acf-layouts.php:763 ..
+#: /_library/scm-acf-layouts.php:767 ../_library/scm-acf-layouts.php:767 ..
+#: /_library/scm-acf-layouts.php:772 ../_library/scm-acf-layouts.php:772 ..
+#: /_library/scm-acf-layouts.php:777 ../_library/scm-acf-layouts.php:777 ..
+#: /_library/scm-acf-layouts.php:854 ../_library/scm-acf-layouts.php:854
+msgid "Inizio"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:638 ../_library/scm-acf-layouts.php:638 ..
+#: /_library/scm-acf-layouts.php:655 ../_library/scm-acf-layouts.php:655 ..
+#: /_library/scm-acf-layouts.php:769 ../_library/scm-acf-layouts.php:769 ..
+#: /_library/scm-acf-layouts.php:774 ../_library/scm-acf-layouts.php:774 ..
+#: /_library/scm-acf-layouts.php:779 ../_library/scm-acf-layouts.php:779 ..
+#: /_library/scm-acf-layouts.php:856 ../_library/scm-acf-layouts.php:856
+msgid "Fine"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:668
+msgid "Titolo Vuoto"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:671 ../_library/scm-acf-fields.php:1414 ..
+#: /_library/scm-acf-fields.php:1530 ../_library/scm-acf-fields.php:1561
+msgid "Pulsanti"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:674 ../_library/scm-acf-layouts.php:758 ..
+#: /_library/scm-acf-fields.php:955 ../_library/scm-acf-fields.php:964 ..
+#: /_library/scm-acf-fields.php:1405 ../_library/scm-acf-fields.php:1920 ..
+#: /_library/scm-acf-fields.php:1928 ../_library/scm-acf-fields.php:1983 ..
+#: /_library/scm-acf-fields.php:1983
+msgid "Icona"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:677 ../_library/scm-acf-fields.php:1413
+msgid "Social share"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:726
+msgid "Thumbs"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:728 ../_library/scm-acf-layouts.php:939 ..
+#: /_library/scm-acf-preset.php:1003
+msgid "Thumb"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:753 ../_library/scm-acf-fields.php:1919 ..
+#: /_library/scm-acf-fields.php:1927 ../_library/scm-acf-fields.php:2171 ..
+#: /_library/scm-acf-fields.php:2321
+msgid "Logo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:756 ../_library/scm-acf-layouts.php:760
+msgid "Scegli una versione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:762
+msgid "Copyright"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:766 ../_library/scm-acf-fields.php:1932
+msgid "Intestazione"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:771 ../_library/scm-acf-layouts.php:772 ..
+#: /_library/scm-acf-fields.php:1933
+msgid "P.IVA"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:776 ../_library/scm-acf-fields.php:1934
+msgid "Codice Fiscale"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:777
+msgid "C.F."
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:781 ../_library/scm-acf-layouts.php:814
+msgid "Mappa"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:784 ../_library/scm-acf-layouts.php:825 ..
+#: /_library/scm-acf-preset.php:1030 ../_library/scm-acf-fields.php:1401 ..
+#: /_library/scm-acf-fields.php:1853
+msgid "Indirizzo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:791
+msgid "Social Link"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:817 ../_library/scm-acf-fields.php:1411 ..
+#: /_library/scm-acf-fields.php:1866
+msgid "Contatti"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:851 ../_library/scm-acf-layouts.php:881 ..
+#: /_library/scm-functions.php:710 ../_library/scm-acf-fields.php:815 ..
+#: /_library/scm-acf-fields.php:964 ../_library/scm-acf-fields.php:1404 ..
+#: /_library/scm-acf-fields.php:1607
+msgid "Immagine"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:853 ../_library/scm-acf-fields.php:1701
+msgid "Anteprima"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:858 ../_library/scm-acf-preset.php:1004 ..
+#: /_library/scm-acf-fields.php:77 ../_library/scm-acf-fields.php:86 ..
+#: /_library/scm-acf-fields.php:158 ../_library/scm-acf-fields.php:168 ..
+#: /_library/scm-acf-fields.php:179 ../_library/scm-acf-fields.php:188 ..
+#: /_library/scm-acf-fields.php:197 ../_library/scm-acf-fields.php:1409 ..
+#: /_library/scm-acf-fields.php:1558
+msgid "Testo"
+msgstr ""
+
+#: ../_library/scm-acf-layouts.php:883 ../_library/scm-install.php:274 ..
+#: /_library/scm-install.php:274 ../_library/scm-install.php:1125
+msgid "News"
+msgstr ""
+
+#: ../_library/scm-acf-preset-fa.php:11
+msgid "Virgolette"
+msgstr ""
+
+#: ../_library/scm-acf-preset-fa.php:228 ../_library/scm-acf-fields.php:1882
+msgid "Telefono"
+msgstr ""
+
+#: ../_library/scm-acf-preset-fa.php:238 ../_library/scm-acf-preset.php:1051 ..
+#: /_library/scm-acf-fields.php:1886 ../_library/scm-acf-fields.php:1887
+msgid "Fax"
+msgstr ""
+
+#: ../_library/scm-acf-preset-fa.php:446
+msgid "Altri"
+msgstr ""
+
+#: ../_library/scm-core.php:46 ../_library/scm-acf-fields.php:1507
+msgid "Menu Principale"
+msgstr ""
+
+#: ../_library/scm-core.php:47
+msgid "Menu Secondario"
+msgstr ""
+
+#: ../_library/scm-core.php:48
+msgid "Menu Temporaneo"
+msgstr ""
+
+#: ../_library/scm-core.php:69
+msgid "Barra Laterale"
+msgstr ""
+
+#: ../_library/scm-core.php:96
+msgid "The Default Header"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:886
+msgid "Nessun Menu"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:901 ../_library/scm-acf-preset.php:911 ..
+#: /_library/scm-acf-fields.php:1259
+msgid "Elemento"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:903 ../_library/scm-acf-preset.php:1090 ..
+#: /_library/scm-acf-preset.php:1096
+msgid "Nascondi"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:904 ../_library/scm-acf-preset.php:913 ..
+#: /_library/scm-acf-preset.php:1555
+msgid "Sopra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:905 ../_library/scm-acf-preset.php:914 ..
+#: /_library/scm-acf-preset.php:1172 ../_library/scm-acf-preset.php:1181 ..
+#: /_library/scm-acf-preset.php:1557
+msgid "Destra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:906 ../_library/scm-acf-preset.php:915 ..
+#: /_library/scm-acf-preset.php:1558
+msgid "Sotto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:907 ../_library/scm-acf-preset.php:916 ..
+#: /_library/scm-acf-preset.php:1171 ../_library/scm-acf-preset.php:1180 ..
+#: /_library/scm-acf-preset.php:1556
+msgid "Sinistra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:922
+msgid "Menu sopra al logo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:923
+msgid "Menu affianco al logo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:924
+msgid "Menu sotto al logo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:929
+msgid "Sticky Self"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:930
+msgid "Sticky Plus"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:935
+msgid "Attach to main navigation TOP"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:936
+msgid "Attach to main navigation BOTTOM"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:941
+msgid "Menu + Sticky"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:942
+msgid "Solo Sticky"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:943
+msgid "Solo Menu"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:944
+msgid "Solo Toggle"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:949
+msgid "Usa il nome del sito"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:950
+msgid "Usa un'immagine"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:955
+msgid "Menu sotto a Logo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:956
+msgid "Menu alla destra del Logo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:961
+msgid "Sopra al menu (se menu inline)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:962
+msgid "Sotto al menu (se menu inline)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:967 ../_library/scm-acf-preset.php:1534
+msgid "Normale"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:968 ../_library/scm-admin.php:450
+msgid "Quadrata"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:969
+msgid "Full Width"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:983
+msgid "Singoli"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:984 ../_library/scm-acf-fields.php:1356
+msgid "Archivio"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:989
+msgid "Archivio parziale"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:990
+msgid "Archivio completo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:996
+msgid "Pulsante ALL"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:997
+msgid "Pulsante MORE"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:998
+msgid "No paginazione"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1014
+msgid "Link Template (tutto)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1015
+msgid "Link Template (singoli elementi)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1016
+msgid "Inserisci Link (tutto)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1017
+msgid "Inserisci Link (singoli elementi)"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1021
+msgid "Link Oggetto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1022
+msgid "Link Template"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1023
+msgid "Link Inserito"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1029 ../_library/scm-acf-fields.php:113 ..
+#: /_library/scm-acf-fields.php:122 ../_library/scm-acf-fields.php:1215 ..
+#: /_library/scm-acf-fields.php:1484 ../_library/scm-acf-fields.php:2225
+msgid "Nome"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1031
+msgid "Numeri"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1032 ../_library/scm-acf-fields.php:140 ..
+#: /_library/scm-acf-fields.php:1874 ../_library/scm-acf-fields.php:1875
+msgid "Email"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1038
+msgid "web:"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1039
+msgid "support:"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1044
+msgid "e-mail:"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1049 ../_library/scm-acf-fields.php:1883
+msgid "Tel."
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1050
+msgid "Mobile"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1076
+msgid "Versione positiva"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1077
+msgid "Versione negativa"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1083
+msgid "Nascondi Opzioni"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1084 ../_library/scm-acf-fields.php:324 ..
+#: /_library/scm-install.php:505 ../_library/scm-install.php:1053
+msgid "Opzioni"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1085
+msgid "Opzioni avanzate"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1089 ../_library/scm-acf-preset.php:1097 ..
+#: /_library/scm-acf-fields.php:333 ../_library/scm-acf-fields.php:342 ..
+#: /_library/scm-acf-fields.php:351 ../_library/scm-acf-fields.php:360
+msgid "Mostra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1102 ../_library/scm-acf-preset.php:1109 ..
+#: /_library/scm-acf-fields.php:369 ../_library/scm-acf-fields.php:378 ..
+#: /_library/scm-acf-fields.php:387 ../_library/scm-acf-fields.php:396
+msgid "Abilita"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1103 ../_library/scm-acf-preset.php:1108
+msgid "Disabilita"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1114
+msgid "Discendente"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1115
+msgid "Ascendente"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1122
+msgid "Data modifica"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1123 ../_library/scm-acf-fields.php:1976 ..
+#: /_library/scm-acf-fields.php:2058
+msgid "Slug"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1124 ../_library/scm-acf-fields.php:2314
+msgid "Tipo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1125 ../_library/scm-acf-preset.php:1509
+msgid "Random"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1126
+msgid "Custom Field"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1131
+msgid "Vuoto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1132
+msgid "Linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1133
+msgid "Tratteggiato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1139
+msgid "Tondeggiato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1140
+msgid "Squadrato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1141
+msgid "Squadrato a filo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1146
+msgid "Non puntato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1147 ../_library/scm-acf-preset.php:1528
+msgid "Cerchio"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1148
+msgid "Cerchio vuoto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1149 ../_library/scm-acf-preset.php:1527
+msgid "Quadrato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1150
+msgid "Decimali"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1151
+msgid "Decimali con zero"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1152
+msgid "Lettere minuscole"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1153
+msgid "Lettere maiuscole"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1154
+msgid "Roman minuscolo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1155
+msgid "Roman maiuscolo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1163
+msgid "Alto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1164
+msgid "Centro"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1165
+msgid "Basso"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1173 ../_library/scm-acf-preset.php:1182
+msgid "Centrato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1174
+msgid "Giustificato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1189
+msgid "No Float"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1190
+msgid "Float Sinistra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1191
+msgid "Float Destra"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1192
+msgid "Float Centrato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1197
+msgid "No Overlay"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1198 ../_library/scm-acf-fields.php:440 ..
+#: /_library/scm-acf-fields.php:2343
+msgid "Overlay"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1199
+msgid "Underlay"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1212
+msgid "Primario"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1213
+msgid "Secondario"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1214
+msgid "Terziario"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1480
+msgid "Nessuno spazio"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1481
+msgid "1 quarto di linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1482
+msgid "Mezza linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1483
+msgid "Una linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1484
+msgid "Una linea e 1 quarto"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1485
+msgid "Una linea e mezza"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1486
+msgid "Una linea e 3 quarti"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1487
+msgid "Doppia linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1488
+msgid "Doppia linea e mezza"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1489
+msgid "Tripla linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1490
+msgid "Quadrupla linea"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1501
+msgid "Slice Down"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1502
+msgid "Slice Down Left"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1503
+msgid "Slice Up"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1504
+msgid "Slice Up Left"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1505
+msgid "Slice Up Down"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1506
+msgid "Slice Up Down Left"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1507
+msgid "Fold"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1508
+msgid "Fade"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1510
+msgid "Slide In Right"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1511
+msgid "Slide In Left"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1512
+msgid "Box Random"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1513
+msgid "Box Rain"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1514
+msgid "Box Rain Reverse"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1515
+msgid "Box Rain Grow"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1516
+msgid "Box Rain Grow Reverse"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1529
+msgid "Arrotondato"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1535
+msgid "Minimo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1536
+msgid "Piccolo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1537
+msgid "Medio"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1538
+msgid "Grande"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1539
+msgid "Massimo"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1546
+msgid "31 Dicembre 2015"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1547
+msgid "31 Dic 15"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1554
+msgid "Tutti"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1559
+msgid "Foglia A"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1560
+msgid "Foglia B"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1561
+msgid "Petalo A"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1562
+msgid "Petalo B"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1563
+msgid "Petalo C"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1564
+msgid "Petalo D"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1565
+msgid "Singolo A"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1566
+msgid "Singolo B"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1567
+msgid "Singolo C"
+msgstr ""
+
+#: ../_library/scm-acf-preset.php:1568
+msgid "Singolo D"
+msgstr ""
+
+#: ../_library/scm-functions.php:718
+msgid "Presentazione"
+msgstr ""
+
+#: ../_library/scm-functions.php:728
+msgid "Documento di testo"
+msgstr ""
+
+#: ../_library/scm-functions.php:736
+msgid "Foglio di calcolo"
+msgstr ""
+
+#: ../_library/scm-functions.php:742
+msgid "Documento PDF"
+msgstr ""
+
+#: ../_library/scm-functions.php:749
+msgid "Archivio compresso"
+msgstr ""
+
+#: ../_library/scm-functions.php:757
+msgid "File video"
+msgstr ""
+
+#: ../_library/scm-functions.php:768
+msgid "File audio"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:42 ../_library/scm-acf-fields.php:50 ..
+#: /_library/scm-acf-fields.php:58
+msgid "Misura"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:66 ../_library/scm-acf-fields.php:723 ..
+#: /_library/scm-acf-fields.php:750 ../_library/scm-acf-fields.php:779 ..
+#: /_library/scm-acf-fields.php:944
+msgid "Trasparenza"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:76 ../_library/scm-acf-fields.php:85
+msgid "testo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:94 ../_library/scm-acf-fields.php:643
+msgid "id"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:95 ../_library/scm-acf-fields.php:645 ..
+#: /_library/scm-acf-fields.php:1485 ../_library/scm-acf-fields.php:1485 ..
+#: /_library/scm-acf-fields.php:2224 ../_library/scm-acf-fields.php:2224 ..
+#: /_assets/classes/Custom_Type.php:181
+msgid "ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:103 ../_library/scm-acf-fields.php:644
+msgid "class"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:104 ../_library/scm-acf-fields.php:646
+msgid "Class"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:112 ../_library/scm-acf-fields.php:121
+msgid "nome"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:148
+msgid "Numero"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:169 ../_library/scm-acf-fields.php:180 ..
+#: /_library/scm-acf-fields.php:189 ../_library/scm-acf-fields.php:198
+msgid "Inserisci testo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:218 ../_library/scm-acf-fields.php:724
+msgid "Colore"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:228 ../_library/scm-acf-fields.php:236 ..
+#: /_library/scm-acf-fields.php:971 ../_library/scm-acf-fields.php:1228
+msgid "Seleziona un'icona"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:246
+msgid "Seleziona un'immagine"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:256 ../_library/scm-acf-fields.php:264
+msgid "Seleziona un file"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:291 ../_library/scm-acf-fields.php:299 ..
+#: /_library/scm-acf-fields.php:407 ../_library/scm-acf-fields.php:415 ..
+#: /_library/scm-acf-fields.php:424 ../_library/scm-acf-fields.php:433 ..
+#: /_library/scm-acf-fields.php:442 ../_library/scm-acf-fields.php:451 ..
+#: /_library/scm-acf-fields.php:460 ../_library/scm-acf-fields.php:469 ..
+#: /_library/scm-acf-fields.php:479 ../_library/scm-acf-fields.php:490 ..
+#: /_library/scm-acf-fields.php:499 ../_library/scm-acf-fields.php:508 ..
+#: /_library/scm-acf-fields.php:517 ../_library/scm-acf-fields.php:526 ..
+#: /_library/scm-acf-fields.php:535 ../_library/scm-acf-fields.php:544 ..
+#: /_library/scm-acf-fields.php:553 ../_library/scm-acf-fields.php:562 ..
+#: /_library/scm-acf-fields.php:571 ../_library/scm-acf-fields.php:984 ..
+#: /_library/scm-acf-fields.php:1003 ../_library/scm-acf-fields.php:1022 ..
+#: /_library/scm-acf-fields.php:1046 ../_library/scm-acf-fields.php:1072 ..
+#: /_library/scm-acf-fields.php:1096 ../_library/scm-acf-fields.php:1120 ..
+#: /_library/scm-acf-fields.php:1144 ../_library/scm-acf-fields.php:1168
+msgid "Seleziona"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:306 ../_library/scm-acf-fields.php:422
+msgid "Formato"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:414 ../_library/scm-acf-fields.php:1353 ..
+#: /_library/scm-acf-fields.php:1362 ../_library/scm-acf-fields.php:1369 ..
+#: /_library/scm-acf-fields.php:1376 ../_library/scm-acf-fields.php:1503 ..
+#: /_library/scm-acf-fields.php:1584 ../_library/scm-install.php:513 ..
+#: /_library/scm-install.php:1060
+msgid "Layout"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:431 ../_library/scm-acf-fields.php:449 ..
+#: /_library/scm-acf-fields.php:458 ../_library/scm-acf-fields.php:467 ..
+#: /_library/scm-acf-fields.php:854 ../_library/scm-acf.php:606
+msgid "Allineamento"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:477 ../_library/scm-acf-fields.php:666 ..
+#: /_library/scm-acf-fields.php:695
+msgid "Unità"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:488 ../_library/scm-acf-fields.php:497 ..
+#: /_library/scm-acf-fields.php:506 ../_library/scm-acf-fields.php:515 ..
+#: /_library/scm-acf-fields.php:524 ../_library/scm-acf-fields.php:533 ..
+#: /_library/scm-acf-fields.php:560
+msgid "Contenuto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:542 ../_library/scm-acf-fields.php:551 ..
+#: /_library/scm-acf-fields.php:569
+msgid "Contenuti"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:580
+msgid "Taxonomy"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:591 ../_library/scm-acf-fields.php:2051 ..
+#: /_library/scm-install.php:553
+msgid "Taxonomies"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:602 ../_library/scm-acf-fields.php:611 ..
+#: /_library/scm-acf-fields.php:620 ../_assets/classes/Custom_Taxonomy.php:75 ..
+#: /_assets/classes/Custom_Taxonomy.php:76 ../_assets/classes/Custom_Type.php:148 
+#: ../_assets/classes/Custom_Type.php:149
+msgid "Aggiungi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:631 ../_library/scm-acf-fields.php:1424 ..
+#: /_library/scm-acf-fields.php:1556
+msgid "Componi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:651
+msgid "Aggiungi Selettori"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:680 ../_library/scm-acf-fields.php:709 ..
+#: /_library/scm-acf-fields.php:736 ../_library/scm-acf-fields.php:765 ..
+#: /_library/scm-acf-fields.php:792
+msgid "Imposta"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:751
+msgid "Colore Testi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:780
+msgid "Colore Sfondo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:810
+msgid "Impostazioni Sfondo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:816
+msgid "Ripetizione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:831 ../_library/scm-acf-fields.php:850 ..
+#: /_library/scm-acf-fields.php:870 ../_library/scm-acf-fields.php:890
+msgid "Impostazioni Testi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:837
+msgid "Famiglia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:857
+msgid "Interlinea"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:899
+msgid "Ombra"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:918 ../_library/scm-acf-fields.php:1318 ..
+#: /_library/scm-acf-fields.php:2399
+msgid "Forma"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:918 ../_library/scm-acf-fields.php:1318 ..
+#: /_library/scm-acf-fields.php:2399
+msgid "Forma Box"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:923 ../_library/scm-acf-fields.php:1323 ..
+#: /_library/scm-acf-fields.php:2404
+msgid "Angoli"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:923 ../_library/scm-acf-fields.php:1323 ..
+#: /_library/scm-acf-fields.php:2404
+msgid "Angoli Box"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:924 ../_library/scm-acf-fields.php:1324 ..
+#: /_library/scm-acf-fields.php:2403
+msgid "Dimensione angoli Box"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:938
+msgid "Impostazioni Box"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:942
+msgid "Margin"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:943
+msgid "Padding"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:964
+msgid "No icon"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:964
+msgid "Icona Mappa"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:973
+msgid "Carica un'immagine"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:983
+msgid "Termine"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1002
+msgid "Termini"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1021
+msgid "Seleziona Relazione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1045
+msgid "Seleziona Relazioni"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1071 ../_library/scm-acf-fields.php:1095 ..
+#: /_library/scm-acf-fields.php:2055
+msgid "Seleziona Tipologia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1119
+msgid "Seleziona Tipologie"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1143
+msgid "Seleziona Categoria"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1167
+msgid "Seleziona Categorie"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1195
+msgid "Istruzioni Colonne"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1199
+msgid "Aggiungi Colonna"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1203 ../_library/scm-acf-fields.php:1347 ..
+#: /_library/scm-acf-fields.php:1355 ../_library/scm-acf-fields.php:1364 ..
+#: /_library/scm-acf-fields.php:1371 ../_library/scm-acf-fields.php:1378 ..
+#: /_library/scm-acf-fields.php:1586 ../_library/scm-acf.php:526
+msgid "Attributi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1239 ../_library/scm-acf-fields.php:1298
+msgid "Inserisci un Link"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1255
+msgid "Inserisci Codice PayPal"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1255
+msgid "Code"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1264
+msgid "Tooltip"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1266
+msgid "On Map"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1285
+msgid "Istruzioni Pulsanti"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1289
+msgid "Aggiungi Pulsante"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1340
+msgid "Istruzioni Righe"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1344
+msgid "Aggiungi Sezione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1344
+msgid "Sezioni"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1349
+msgid "Moduli"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1351 ../_library/scm-acf-fields.php:1358 ..
+#: /_library/scm-acf-fields.php:2053
+msgid "Template"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1357
+msgid "ID or Option Name"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1357
+msgid "Post"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1398 ../_library/scm-install.php:267
+msgid "Section"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1399 ../_library/scm-install.php:268
+msgid "Module"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1400
+msgid "Form"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1402
+msgid "Map"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1407 ../_library/scm-acf-fields.php:1529 ..
+#: /_library/scm-acf-fields.php:1560
+msgid "Quote"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1410
+msgid "Elenco puntato"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1412
+msgid "Social follow"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1415
+msgid "Login Form"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1420
+msgid "Istruzioni Elementi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1474
+msgid ""
+"Costruisci dei modelli da poter poi scegliere durante la creazione di nuovi "
+"contenuti. Per ogni modello è obbligatorio inserire almeno il Nome."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1482
+msgid "Aggiungi Modello"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1482
+msgid "Modelli"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1484
+msgid "Nome Modello"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1527
+msgid "Aggiungi Contesto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1527
+msgid "Contesto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1531 ../_library/scm-acf-fields.php:1559
+msgid "Elenco Puntato"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1532 ../_library/scm-install.php:269
+msgid "Banner"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1611 ../_library/scm-acf-fields.php:1699 ..
+#: /_library/scm-acf-fields.php:1726 ../_library/scm-acf-fields.php:1769 ..
+#: /_library/scm-acf-fields.php:1794 ../_library/scm-acf-fields.php:1819
+msgid "Impostazioni"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1616
+msgid "Collegamento"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1633 ../_library/scm-acf-fields.php:1635
+msgid "Didascalia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1643
+msgid "Dal lato alto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1644
+msgid "Dal lato destro"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1645
+msgid "Dal lato basso"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1646
+msgid "Dal lato sinistro"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1648 ../_library/scm-acf-fields.php:1648
+msgid "Titolo didascalia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1649
+msgid "Contenuto didascalia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1651
+msgid "Avanzate"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1704 ../_library/scm-acf-fields.php:1748 ..
+#: /_library/scm-acf-fields.php:1772 ../_library/scm-acf-fields.php:1797 ..
+#: /_library/scm-acf-fields.php:1822 ../_library/scm-acf-fields.php:1892 ..
+#: /_library/scm-acf-fields.php:1947
+msgid "Categorie"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1728 ../_library/scm-install.php:273
+msgid "Articolo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1795
+msgid "Immagini"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1820
+msgid "Link a YouTube"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1844
+msgid "Dati"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1851
+msgid "es. Sede Operativa, Distaccamento, …"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1854
+msgid "Provincia"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1856
+msgid "Città/Località"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1857
+msgid "CAP"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1859
+msgid "Frazione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1860
+msgid "Regione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1862
+msgid "Paese"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1868
+msgid "Aggiungi Contatti"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1870 ../_library/scm-acf-fields.php:1871
+msgid "Web"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1871
+msgid "URL"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1878
+msgid "Skype"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1879
+msgid "Skype Name"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1879
+msgid "Skype User Name"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1883
+msgid "Phone Number"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1887
+msgid "Fax Number"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1913
+msgid "Brand"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1916
+msgid "Carica uno logo e/o un'icona da utilizzare su fondi chiari."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1924
+msgid "Carica uno logo e/o un'icona da utilizzare su fondi scuri."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1925
+msgid "Versione in Negativo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1939
+msgid ""
+"Assegna dei Luoghi a questo Soggetto. Clicca sul pulsante Luoghi nella barra "
+"laterale per crearne uno. Il primo Luogo dell'elenco sarà considerato Luogo "
+"Principale per questo Soggetto."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1942
+msgid "Seleziona Luoghi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1944 ../_library/scm-acf-fields.php:1945 ..
+#: /_library/scm-acf-fields.php:2297 ../_library/scm-acf-fields.php:2387
+msgid "Social"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1970 ../_library/scm-install.php:545
+msgid "Types"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1971
+msgid "Produzioni"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1971 ../_library/scm-acf-fields.php:2056
+msgid "Plurale"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1973
+msgid "Labels"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1975
+msgid "Produzione"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1975 ../_library/scm-acf-fields.php:2057
+msgid "Singolare"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1976
+msgid "produzioni"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1977
+msgid "Prod."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1977
+msgid "Singolare Corto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1978
+msgid "Prods."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1978
+msgid "Plurale Corto"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1981 ../_assets/classes/class-tgm-plugin-
+#: activation.php:1376
+msgid "Type"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1982 ../_library/scm-acf-fields.php:1986
+msgid "Archivi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1983
+msgid ""
+"Visita <a href=\"https://developer.wordpress.org/resource/dashicons/\" "
+"target=\"_blank\">https://developer.wordpress.org/resource/dashicons/</a> per "
+"un elenco delle icone disponibili e dei corrispettivi nomi, da inserire nel "
+"seguente campo."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1984
+msgid "Zona Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1987
+msgid "Ordina per"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:1988
+msgid "Ordinamento"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2051
+msgid "Aggiungi Taxonomy"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2054
+msgid "Manage"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2055
+msgid "Tag"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2055
+msgid "Categoria"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2056
+msgid "Nome Categorie"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2057
+msgid "Nome Categoria"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2059
+msgid "Seleziona Locations"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2084
+msgid "Attiva Slider"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2090
+msgid "Disattiva"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2107
+msgid "Favicon"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2108
+msgid "ICO 16"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2109
+msgid "ICO 54"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2110
+msgid "Icon 114"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2111
+msgid "PNG 16"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2112
+msgid "Icon 72"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2113
+msgid "Icon 144"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2116
+msgid "Qualità immagini"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2116
+msgid "Qualità"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2117
+msgid "Largezza massima immagini"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2117
+msgid "Larghezza Massima"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2118
+msgid "Altezza massima immagini"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2118 ../_library/scm-acf-fields.php:2322
+msgid "Altezza Massima"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2120
+msgid "Strumenti"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2121
+msgid "Pages Fader"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2122 ../_library/scm-acf-fields.php:2122
+msgid "Fade In"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2122 ../_library/scm-acf-fields.php:2123
+msgid "sec"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2123 ../_library/scm-acf-fields.php:2123
+msgid "Fade Out"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2124
+msgid "Wait for"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2125
+msgid "Top Of Page"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2128 ../_library/scm-acf-fields.php:2128
+msgid "Inizio pagina"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2131
+msgid "Smooth Scroll"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2132 ../_library/scm-acf-fields.php:2132
+msgid "Durata"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2133 ../_library/scm-acf-fields.php:2133
+msgid "Delay"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2134
+msgid "Smooth Scroll (su nuove pagine)"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2135 ../_library/scm-acf-fields.php:2135
+msgid "Delay su nuova pagina"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2137
+msgid "Ease"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2138
+msgid "Single Page Nav"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2139 ../_library/scm-acf-fields.php:2139
+msgid "Active Class"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2140 ../_library/scm-acf-fields.php:2140
+msgid "Interval"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2142 ../_library/scm-acf-fields.php:2142
+msgid "Threshold"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2149
+msgid "Google Maps"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2156
+msgid "Pagina ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2157
+msgid "Header ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2158
+msgid "Branding ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2161
+msgid "Content ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2162
+msgid "Footer ID"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2166
+msgid "Internet Explorer"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2166 ../_library/scm-acf-fields.php:2167 ..
+#: /_library/scm-acf-fields.php:2168 ../_library/scm-acf-fields.php:2169 ..
+#: /_library/scm-acf-fields.php:2170
+msgid "Versione Minima"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2167
+msgid "Firefox"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2168
+msgid "Chrome"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2169
+msgid "Opera"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2170
+msgid "Safari"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2173
+msgid "Staff"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2189
+msgid "Testi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2191
+msgid "Sfondo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2195
+msgid "Box"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2211
+msgid "Loading Page"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2215
+msgid "Aggiungi Google Web Font"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2215
+msgid "Includi Google Web Fonts"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2215
+msgid ""
+"Visita <a href=\"https://www.google.com/fonts\">https://www.google."
+"com/fonts</a>, scegli la famiglia e gli stili da includere."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2217 ../_library/scm-acf-fields.php:2217
+msgid "Family"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2218
+msgid "Styles"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2222
+msgid "Aggiungi Adobe TypeKit"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2222
+msgid "Includi Adobe TypeKit"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2225
+msgid "Nome Kit"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2225
+msgid "Kit"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2233
+msgid "Aggiungi o togli px dalla dimensione generale."
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2234
+msgid "Dimensione testi"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2258
+msgid "Larghezza Pagine"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2266
+msgid "Larghezza Header"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2267
+msgid "Larghezza Contenuti"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2268
+msgid "Larghezza Footer"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2269
+msgid "Larghezza Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2270
+msgid "Larghezza Sticky Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2272
+msgid "Responsive to Full"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2273
+msgid "Responsive Columns"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2274
+msgid "Max Responsive Width"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2291
+msgid "Branding"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2294 ../_library/scm-acf-fields.php:2341
+msgid "Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2326
+msgid "Slogan"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2340
+msgid "Opzioni Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2349
+msgid "Toggle Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2350
+msgid "Attiva Toggle Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2351
+msgid "Icona Apri Toggle Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2352
+msgid "Icona Chiudi Toggle Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2354
+msgid "Home Button"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2355
+msgid "Attiva Home Button"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2356
+msgid "Icona Home Button"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2357
+msgid "Attiva Logo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2358
+msgid "Logo Home"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2360
+msgid "Sticky Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2361
+msgid "Fuori da Header"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2363
+msgid "Seleziona Tipo"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2369
+msgid "Attach to Menu"
+msgstr ""
+
+#: ../_library/scm-acf-fields.php:2394
+msgid "Dimensione Icone"
+msgstr ""
+
+#: ../_library/scm-admin.php:143
+msgid "No post to duplicate has been supplied!"
+msgstr ""
+
+#: ../_library/scm-admin.php:212
+msgid "Duplica questo oggetto"
+msgstr ""
+
+#: ../_library/scm-admin.php:212
+msgid "Duplica"
+msgstr ""
+
+#: ../_library/scm-admin.php:451
+msgid "Quadrata Media"
+msgstr ""
+
+#: ../_library/scm-admin.php:452
+msgid "Quadrata Piccola"
+msgstr ""
+
+#: ../_library/scm-admin.php:453
+msgid "Quadrata Thumb"
+msgstr ""
+
+#: ../_library/scm-front.php:670
+msgid "Inizio Pagina"
+msgstr ""
+
 #: ../_library/scm-acf.php:312
 msgid "post e target non trovati"
 msgstr ""
@@ -2464,56 +2267,8 @@ msgstr ""
 msgid " - (se auto)"
 msgstr ""
 
-#: ../_library/scm-admin.php:71
-msgid "No post to duplicate has been supplied!"
-msgstr ""
-
-#: ../_library/scm-admin.php:140
-msgid "Duplica questo oggetto"
-msgstr ""
-
-#: ../_library/scm-admin.php:140
-msgid "Duplica"
-msgstr ""
-
-#: ../_library/scm-admin.php:379
-msgid "Quadrata Media"
-msgstr ""
-
-#: ../_library/scm-admin.php:380
-msgid "Quadrata Piccola"
-msgstr ""
-
-#: ../_library/scm-admin.php:381
-msgid "Quadrata Thumb"
-msgstr ""
-
-#: ../_library/scm-core.php:48
-msgid "Menu Secondario"
-msgstr ""
-
-#: ../_library/scm-core.php:49
-msgid "Menu Temporaneo"
-msgstr ""
-
-#: ../_library/scm-core.php:70
-msgid "Barra Laterale"
-msgstr ""
-
-#: ../_library/scm-core.php:97
-msgid "The Default Header"
-msgstr ""
-
-#: ../_library/scm-front.php:635
-msgid "Inizio Pagina"
-msgstr ""
-
 #: ../_library/scm-install.php:267
 msgid "Sections"
-msgstr ""
-
-#: ../_library/scm-install.php:268
-msgid "Module"
 msgstr ""
 
 #: ../_library/scm-install.php:268
@@ -2524,7 +2279,7 @@ msgstr ""
 msgid "Banners"
 msgstr ""
 
-#: ../_library/scm-install.php:270 ../_library/scm-install.php:1110
+#: ../_library/scm-install.php:270 ../_library/scm-install.php:1108
 msgid "Slide"
 msgstr ""
 
@@ -2541,7 +2296,7 @@ msgid "Gallerie"
 msgstr ""
 
 #: ../_library/scm-install.php:272 ../_library/scm-install.php:272 ..
-#: /_library/scm-install.php:1131
+#: /_library/scm-install.php:1136
 msgid "Video"
 msgstr ""
 
@@ -2549,7 +2304,7 @@ msgstr ""
 msgid "Articoli"
 msgstr ""
 
-#: ../_library/scm-install.php:275 ../_library/scm-install.php:1138
+#: ../_library/scm-install.php:275 ../_library/scm-install.php:1147
 msgid "Documento"
 msgstr ""
 
@@ -2557,7 +2312,7 @@ msgstr ""
 msgid "Documenti"
 msgstr ""
 
-#: ../_library/scm-install.php:276 ../_library/scm-install.php:1152
+#: ../_library/scm-install.php:276 ../_library/scm-install.php:1169
 msgid "Rassegna Stampa"
 msgstr ""
 
@@ -2669,23 +2424,23 @@ msgstr ""
 msgid "Testata Rassegne"
 msgstr ""
 
-#: ../_library/scm-install.php:515 ../_library/scm-install.php:1073
+#: ../_library/scm-install.php:521 ../_library/scm-install.php:1046
 msgid "Stili"
 msgstr ""
 
-#: ../_library/scm-install.php:523 ../_library/scm-install.php:1094
+#: ../_library/scm-install.php:529 ../_library/scm-install.php:1067
 msgid "Header"
 msgstr ""
 
-#: ../_library/scm-install.php:531
+#: ../_library/scm-install.php:537
 msgid "Footer"
 msgstr ""
 
-#: ../_library/scm-install.php:1048
+#: ../_library/scm-install.php:1021
 msgid "Icona Mappe"
 msgstr ""
 
-#: ../_library/scm-install.php:1050
+#: ../_library/scm-install.php:1023
 msgid ""
 "Verrà utilizzata sulle mappe per indicare i <strong>Luoghi</strong> "
 "assegnati a questa <strong>Categoria</strong>. Comparirà anche nella legenda,"
@@ -2696,75 +2451,440 @@ msgid ""
 "specifica."
 msgstr ""
 
-#: ../_library/scm-install.php:1052
+#: ../_library/scm-install.php:1025
 msgid "Icona Mappa specifica per questa Categoria"
 msgstr ""
 
-#: ../_library/scm-install.php:1057 ../_library/scm-install.php:1173
+#: ../_library/scm-install.php:1030 ../_library/scm-install.php:1202
 msgid "Opzioni Slider"
 msgstr ""
 
-#: ../_library/scm-install.php:1066
+#: ../_library/scm-install.php:1039
 msgid "Opzioni Stili"
 msgstr ""
 
-#: ../_library/scm-install.php:1101
+#: ../_library/scm-install.php:1074
 msgid "Componi Footer"
 msgstr ""
 
-#: ../_library/scm-install.php:1145
-msgid "Gallery"
-msgstr ""
-
-#: ../_library/scm-install.php:1180
+#: ../_library/scm-install.php:1083
 msgid "Componi Pagina"
 msgstr ""
 
-#: ../_library/scm-install.php:1187
+#: ../_library/scm-install.php:1091
 msgid "Opzioni Footer"
 msgstr ""
 
-#: ../_library/scm-install.php:1194
+#: ../_library/scm-install.php:1098
 msgid "Componi Sezione"
 msgstr ""
 
-#: ../_library/scm-install.php:1201
+#: ../_library/scm-install.php:1158
+msgid "Gallery"
+msgstr ""
+
+#: ../_library/scm-install.php:1213
 msgid "Componi Modulo"
 msgstr ""
 
-#: ../_library/scm-install.php:1208
+#: ../_library/scm-install.php:1224
 msgid "Componi Banner"
 msgstr ""
 
-#: ../_library/scm-install.php:1220
+#: ../_library/scm-install.php:1238
 msgid "Elenco Modelli"
 msgstr ""
 
-#: ../_library/scm-install.php:1472
+#: ../_library/scm-install.php:1496 ../_assets/classes/class-tgm-plugin-
+#: activation.php:161
+msgid "Install Required Plugins"
+msgstr ""
+
+#: ../_library/scm-install.php:1497 ../_assets/classes/class-tgm-plugin-
+#: activation.php:162
+msgid "Install Plugins"
+msgstr ""
+
+#: ../_library/scm-install.php:1498 ../_assets/classes/class-tgm-plugin-
+#: activation.php:163
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: ../_library/scm-install.php:1499
 msgid "Something went wrong with the plugin API."
 msgstr ""
 
-#: ../_library/scm-install.php:1485
+#: ../_library/scm-install.php:1500 ../_assets/classes/class-tgm-plugin-
+#: activation.php:165
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1501 ../_assets/classes/class-tgm-plugin-
+#: activation.php:166
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1502 ../_assets/classes/class-tgm-plugin-
+#: activation.php:167
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"installed."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %s plugins."
+" Contact the administrator of this site for help on getting the plugins "
+"installed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1503 ../_assets/classes/class-tgm-plugin-
+#: activation.php:168
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1504 ../_assets/classes/class-tgm-plugin-
+#: activation.php:169
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1505 ../_assets/classes/class-tgm-plugin-
+#: activation.php:170
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s plugin."
+" Contact the administrator of this site for help on getting the plugin "
+"activated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins activated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1506 ../_assets/classes/class-tgm-plugin-
+#: activation.php:171
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1507 ../_assets/classes/class-tgm-plugin-
+#: activation.php:172
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"updated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins "
+"updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1508 ../_assets/classes/class-tgm-plugin-
+#: activation.php:173
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1509 ../_assets/classes/class-tgm-plugin-
+#: activation.php:174
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../_library/scm-install.php:1510 ../_assets/classes/class-tgm-plugin-
+#: activation.php:175
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: ../_library/scm-install.php:1511 ../_assets/classes/class-tgm-plugin-
+#: activation.php:177 ../_assets/classes/class-tgm-plugin-activation.php:1939
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: ../_library/scm-install.php:1512
 #, php-format
 msgid "All plugins installed and activated successfully. %s"
 msgstr ""
 
-#: ../_library/scm-queries.php:136
-msgid "Sezione in aggiornamento"
+#: ../_parts/content-old.php:81
+msgid ""
+"Update your browser or download one of the following to correctly see this "
+"website."
 msgstr ""
 
-#: ../_library/scm-queries.php:371
-msgid "Indietro"
+#: ../_parts/single/single-login.php:26
+msgid "Username"
 msgstr ""
 
-#: ../_library/scm-queries.php:433
-msgid "Allegati"
+#: ../_parts/single/single-login.php:28
+msgid "Remember Me"
 msgstr ""
 
-#: ../_library/scm-queries.php:441
-msgid "Link esterni"
+#: ../_assets/classes/Custom_Taxonomy.php:72 ../_assets/classes/Custom_Type.php:146
+msgid "Elenco"
 msgstr ""
 
-#: ../_library/scm-queries.php:449
-msgid "Link interni"
+#: ../_assets/classes/Custom_Taxonomy.php:73
+msgid "Genitore"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:74 ../_assets/classes/Custom_Type.php:145
+msgid "Genitore:"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:77 ../_assets/classes/Custom_Type.php:150
+msgid "Modifica"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:78 ../_assets/classes/Custom_Type.php:151
+msgid "Aggiorna"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:79
+msgid "Separa gli elementi con una virgola"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:80 ../_assets/classes/Custom_Type.php:152
+msgid "Cerca"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:81
+msgid "Aggiungi o Rimuovi"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:82
+msgid "I pi&ugrave; usati"
+msgstr ""
+
+#: ../_assets/classes/Custom_Taxonomy.php:83
+msgid "Non trovato"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:164
+msgid "Something went wrong."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:176
+msgid "Return to the dashboard"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:178 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:1630
+msgid "The following plugin was activated successfully:"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:179
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:180
+msgid "Dismiss this notice"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:531 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:531 ../_assets/classes/class-
+#: tgm-plugin-activation.php:2156 ../_assets/classes/class-tgm-plugin-activation.
+#: php:2156
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1166
+msgid "Private Repository"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1169
+msgid "Pre-Packaged"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1174
+msgid "WordPress Repository"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1177
+msgid "Required"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1177
+msgid "Recommended"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1180
+msgid "Not Installed"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1182
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1287 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:1287 ../_assets/classes/class-
+#: tgm-plugin-activation.php:1395
+msgid "Install"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1309 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:1309 ../_assets/classes/class-
+#: tgm-plugin-activation.php:1396
+msgid "Activate"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1358
+#, php-format
+msgid ""
+"No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
+"Dashboard\">Return to the Dashboard</a>"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1374
+msgid "Plugin"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1375
+msgid "Source"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1377
+msgid "Status"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1922
+msgid "Install package not available."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1923
+#, php-format
+msgid "Downloading install package from <span class=\"code\">%s</span>&#8230;"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1924
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1925
+msgid "Installing the plugin&#8230;"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1926
+msgid "Plugin install failed."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1927
+msgid "Plugin installed successfully."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:1938
+msgid "Plugin activation failed."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2052
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2053
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2053 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:2062
+msgid "Show Details"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2053 ..
+#: /_assets/classes/class-tgm-plugin-activation.php:2062
+msgid "Hide Details"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2054
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2055
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2059
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2060
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2061
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2062
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2063
+msgid "All installations have been completed."
+msgstr ""
+
+#: ../_assets/classes/class-tgm-plugin-activation.php:2064
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../_assets/classes/Custom_Type.php:147
+msgid "Visualizza"
+msgstr ""
+
+#: ../_assets/classes/Custom_Type.php:153
+msgid "non trovato"
+msgstr ""
+
+#: ../_assets/classes/Custom_Type.php:154
+msgid "non trovato nel Cestino"
+msgstr ""
+
+#. Name of the theme
+msgid "SCM"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "http://studiocreativo-m.it/"
+msgstr ""
+
+#. Description of the theme
+msgid "SCM Main Theme"
+msgstr ""
+
+#. Author of the theme
+msgid "Studio Creativo M"
 msgstr ""
