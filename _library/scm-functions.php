@@ -715,7 +715,7 @@ function fileExtensionConvert( $ext ){
         case 'pptx':
         case 'keynote':
             
-            $name = __( 'Presentation', SCM_THEME );
+            $name = __( 'Presentazione', SCM_THEME );
         
         break;
 
@@ -725,7 +725,7 @@ function fileExtensionConvert( $ext ){
         case 'txt':
         case 'rtf':
             
-            $name = __( 'Text Document', SCM_THEME );
+            $name = __( 'Documento di testo', SCM_THEME );
         
         break;
 
@@ -733,20 +733,20 @@ function fileExtensionConvert( $ext ){
         case 'xlsx':
         case 'numbers':
             
-            $name = __( 'Text Document', SCM_THEME );
+            $name = __( 'Foglio di calcolo', SCM_THEME );
         
         break;
 
         case 'pdf':
             
-            $name = __( 'PDF', SCM_THEME );
+            $name = __( 'Documento PDF', SCM_THEME );
         
         break;
 
         case 'zip':
         case 'rar':
             
-            $name = __( 'Archivio', SCM_THEME );
+            $name = __( 'Archivio compresso', SCM_THEME );
         
         break;
 
@@ -754,7 +754,7 @@ function fileExtensionConvert( $ext ){
         case 'avi':
         case 'wmv':
             
-            $name = __( 'Video', SCM_THEME );
+            $name = __( 'File video', SCM_THEME );
         
         break;
 
@@ -765,7 +765,7 @@ function fileExtensionConvert( $ext ){
         case 'wav':
         case 'wma':
             
-            $name = __( 'Audio', SCM_THEME );
+            $name = __( 'File audio', SCM_THEME );
         
         break;
         
