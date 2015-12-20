@@ -71,7 +71,7 @@
         function scm_login_redirect( $url, $request, $user ){
             if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
                 if( $user->has_cap( 'administrator' ) ) {
-                    $url = admin_url('admin.php?page=scm-options-intro');
+                    $url = admin_url('admin.php?page=scm-options-opzioni');
                 } elseif( $user->has_cap( 'upload_files' ) && startsWith( $request, SCM_SITE . '/wp-admin' ) ) {
                     $url = admin_url('users.php');
                 }
