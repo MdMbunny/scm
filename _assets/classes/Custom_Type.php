@@ -275,7 +275,7 @@ class Custom_Type {
         $current = $current_screen->id;
 
         if( $current == 'edit-' . $this->slug || $current == $this->slug )
-            echo '<style>#titlewrap, #edit-slug-box, .add-new-h2{display: none !important;}</style>';  
+            echo '<style>.page-title-action, #titlewrap, #edit-slug-box, .add-new-h2{display: none !important;}</style>';  
         
     }
 

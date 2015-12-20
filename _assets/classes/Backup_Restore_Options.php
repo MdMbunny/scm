@@ -2,7 +2,7 @@
 
 /*
 	Backup/Restore Theme Options
-	@ http://digwp.com/2013/01/backup-restore-theme-options/
+	@ https://digwp.com/2014/04/backup-restore-theme-options/
 	Go to "Appearance > Backup Options" to export/import theme settings
 	(based on "Gantry Export and Import Options" by Hassan Derakhshandeh)
 
@@ -10,9 +10,9 @@
 	1. Add entire backup/restore snippet to functions.php
 	2. Edit 'shapeSpace_options' to match your theme options
 */
-class Backup_Restore_Options {
+class backup_restore_theme_options {
 
-	function Backup_Restore_Options() {
+	function backup_restore_theme_options() {
 		add_action('admin_menu', array(&$this, 'admin_menu'));
 	}
 	function admin_menu() {
@@ -80,9 +80,9 @@ class Backup_Restore_Options {
 	}
 	function _get_options() {
 		global $wpdb;
-		return $wpdb->get_results("SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name = 'options_opt-tools-fade-waitfor'"); // 
+		return $wpdb->get_results("SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name = 'opt-tools-fade-in'"); // edit 'shapeSpace_options' to match theme options
 	}
 }
-new Backup_Restore_Options();
+new backup_restore_theme_options();
 
 ?>

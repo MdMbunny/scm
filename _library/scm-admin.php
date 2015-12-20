@@ -25,7 +25,8 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
-    add_action('admin_init', 'scm_no_dashboard');
+    add_filter('login_redirect', 'scm_login_redirect', 10, 3 );
+    add_action('admin_init', 'scm_admin_redirect');
 
 
     add_filter( 'wp_mail_from', 'scm_mail_from' );
@@ -66,9 +67,22 @@
 // *      1.0 FUNCTIONS
 // *****************************************************
 
-    if ( ! function_exists( 'scm_no_dashboard' ) ) {
-        function scm_no_dashboard() {
-            if (!current_user_can('manage_categories') && $_SERVER['DOING_AJAX'] != '/wp-admin/admin-ajax.php') {
+        if ( ! function_exists( 'scm_login_redirect' ) ) {
+        function scm_login_redirect( $url, $request, $user ){
+            if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
+                if( $user->has_cap( 'administrator' ) ) {
+                    $url = admin_url('admin.php?page=scm-options-intro');
+                } elseif( $user->has_cap( 'upload_files' ) && startsWith( $request, SCM_SITE . '/wp-admin' ) ) {
+                    $url = admin_url('users.php');
+                }
+            }
+            return $url;
+        }
+    }    
+
+    if ( ! function_exists( 'scm_admin_redirect' ) ) {
+        function scm_admin_redirect() {
+            if (!current_user_can('upload_files') && $_SERVER['DOING_AJAX'] != '/wp-admin/admin-ajax.php') {
                 
                 wp_redirect( home_url() );
                 exit;
@@ -77,7 +91,7 @@
         }
     }
 
-    if ( ! function_exists( 'scm_admin_assets' ) ) {
+    if ( ! function_exists( 'scm_mail_from_name' ) ) {
         function scm_mail_from_name() {
             //$name = 'yourname';
             $name = get_option('blogname');
@@ -86,7 +100,7 @@
         }
     }
 
-    if ( ! function_exists( 'scm_admin_assets' ) ) {
+    if ( ! function_exists( 'scm_mail_from' ) ) {
         function scm_mail_from() {
             $email = scm_field( 'opt-staff-email', '', 'option' );
             $email = is_email($email);
@@ -322,17 +336,10 @@
     if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
         function scm_admin_hide_from_users($user_search) {
             $user = wp_get_current_user();
-            if (!is_super_admin()) { // Is Not Administrator - Remove Administrator
+            if ($user->ID!=1) { // Is not administrator, remove administrator
                 global $wpdb;
-
-                $user_search->query_where = 
-                str_replace('WHERE 1=1', 
-                    "WHERE 1=1 AND {$wpdb->users}.ID IN (
-                         SELECT {$wpdb->usermeta}.user_id FROM $wpdb->usermeta 
-                            WHERE {$wpdb->usermeta}.meta_key = '{$wpdb->prefix}capabilities'
-                            AND {$wpdb->usermeta}.meta_value NOT LIKE '%administrator%')", 
-                    $user_search->query_where
-                );
+                $user_search->query_where = str_replace('WHERE 1=1',
+                    "WHERE 1=1 AND {$wpdb->users}.ID<>1",$user_search->query_where);
             }
         }
     }

@@ -25,6 +25,8 @@ if ( ! isset( $content_width ) ) {
 	$content_width = 1120;
 }
 
+show_admin_bar(false);
+
 /*
 *****************************************************
 *      1.0 GLOBAL

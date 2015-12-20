@@ -11,6 +11,21 @@
 /*** WP ***********************/
 /******************************/
 
+.user-edit-php .show-admin-bar,
+.user-edit-php .user-comment-shortcuts-wrap,
+.user-edit-php .user-aim-wrap,
+.user-edit-php .user-yim-wrap,
+.user-edit-php .user-jabber-wrap,
+.user-edit-php .user-rich-editing-wrap,
+.profile-php .show-admin-bar,
+.profile-php .user-comment-shortcuts-wrap,
+.profile-php .user-aim-wrap,
+.profile-php .user-yim-wrap,
+.profile-php .user-jabber-wrap,
+.profile-php .user-rich-editing-wrap{
+    display: none !important;
+}
+
 body.loading{
 	opacity: .8;
 	cursor: wait !important;

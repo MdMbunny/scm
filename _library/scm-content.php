@@ -224,20 +224,23 @@
 
                         $taxes = get_object_taxonomies( $post );
 
-                        if( !is_wp_error( $taxes ) ){
-                            
+                        if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
+
                             foreach ( $taxes as $key => $tax ) {
                                 
                                 $content['class'] .= ' ' . $tax;
                                 
-                                $terms = get_the_terms( $post->ID, 'docs-tags' );
+                                if( $tax === 'docs-tags' ){
 
-                                if( !is_wp_error( $terms ) ){
-                                
-                                    foreach ( $terms as $key => $term ) {
+                                    $terms = get_the_terms( $post->ID, 'docs-tags' );
 
-                                        $content['class'] .= ' term-' . $term->slug;
+                                    if( !is_wp_error( $terms ) && is_array( $terms ) ){
                                     
+                                        foreach ( $terms as $key => $term ) {
+
+                                            $content['class'] .= ' term-' . $term->slug;
+                                        
+                                        }
                                     }
                                 }
                             

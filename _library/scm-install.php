@@ -232,6 +232,13 @@
                         $role->add_cap( 'delete_private_' . $plural );
                         $role->add_cap( 'delete_published_' . $plural );
 
+                        $role->add_cap('create_users');
+                        $role->add_cap('edit_users');
+                        $role->add_cap('delete_users');
+                        $role->add_cap('list_users');
+                        $role->add_cap('remove_users');
+                        $role->add_cap('promote_users');
+
                         /*consoleLog( '3' );
                         consoleLog( $role );*/
 
