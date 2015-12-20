@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.6.8.1
+Version:			v2.7.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2010,6 +2010,7 @@ body:not(.ready) .navigation {
 
 .fancybox-inner{
 	cursor: default !important;
+	height: auto !important;
 }
 
 .fancybox-inner > *{

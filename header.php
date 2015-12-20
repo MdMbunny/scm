@@ -7,9 +7,7 @@
  */
 //header("Access-Control-Allow-Origin: *");
 
-global $SCM_old, $SCM_ie9, $is_IE;
-
-$protocol   = ( is_ssl() ) ? ( 'https' ) : ( 'http' );
+global $SCM_protocol, $SCM_old, $SCM_ie9, $is_IE;
 
 if( function_exists('get_browser_name') ){
 
@@ -41,26 +39,18 @@ endif;
 
 <html class="scm no-js" <?php language_attributes(); ?>>
 
-<!-- <meta http-equiv="Cache-control" content="public"> -->
-
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
-<meta name="author" content="Studio Creativo M - www.studiocreativo-m.it'" />
-<!--<meta name="DC.creator" content="FIRST2RUN" />-->
+<meta name="DC.creator" content="Studio Creativo M - www.studiocreativo-m.it" />
+<meta name="author" content="<?php bloginfo(); ?>'" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<?php
-
-?>
-
-<!--<meta http-equiv="refresh" content="0;url=<?php echo $redirect; ?>" />-->
-
 <?php if( $SCM_ie9 ) : ?>
 
-    <script src="<?php echo $protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="<?php echo $SCM_protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
-    <script src="<?php echo $protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <script src="<?php echo $SCM_protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 
 <?php endif; ?>
 
@@ -68,6 +58,7 @@ endif;
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
 <?php wp_head(); ?><!-- WP Header Hook -->
+
 
 </head>
 
@@ -95,7 +86,7 @@ $skip = __( "Vai al contenuto", SCM_THEME );
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $txt_align = scm_options_get( 'align', 'option', 0 );
 
-$page_id = scm_field( 'opt-ids-pagina', 'site-page', 'option' );
+$page_id = 'site-page';
 $page_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
 $page_layout = ( $page_layout === 'full' ? 'full ' : 'responsive float-' );
 $page_class = 'site-page hfeed site ' . $page_layout . $site_align;
@@ -119,7 +110,7 @@ $single_threshold = scm_field( 'opt-tools-singlepagenav-threshold', 0, 'option' 
 $tofull = scm_field( 'layout-tofull', '', 'option' );
 $tocolumn = scm_field( 'layout-tocolumn', '', 'option' );
             
-$head_id = scm_field( 'opt-ids-header', 'site-header', 'option' );
+$head_id = 'site-header';
 
 $head_layout = scm_field( 'layout-head', 'full', 'option' );
 $head_layout = ( $page_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
@@ -132,7 +123,7 @@ $menu_align = scm_field( 'menu-alignment', 'right', 'option' );
 
 $follow_position = scm_field( 'follow-position', 'top', 'option' );
 
-$cont_id = scm_field( 'opt-ids-content', 'site-content', 'option' );
+$cont_id = 'site-content';
 $cont_layout = scm_field( 'layout-content', 'full', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
 $cont_class = 'site-content ' . $cont_layout . $site_align ;

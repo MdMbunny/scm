@@ -34,13 +34,18 @@ show_admin_bar(false);
 */
 
 //Getting website data
+
+	$SCM_debug 			 = 0;
 	
 	$SCM_capability 	 = is_admin();
 	
+	$SCM_protocol		 = ( is_ssl() ) ? ( 'https://' ) : ( 'http://' );
 	$SCM_site			 = site_url();
 	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
-	$SCM_url			 = 'http://' . $SCM_domain . '/';
+	$SCM_url			 = $SCM_protocol . $SCM_domain . '/';
+	$SCM_sitename		 = get_bloginfo();//explode( '.', str_replace( 'www.', '', $SCM_domain ), 2 )[0];
+	$SCM_siteslug		 = sanitize_title( $SCM_sitename );
 
 //Getting theme data
 	$SCM_shortname 		 = sanitize_title(get_template());
@@ -73,6 +78,8 @@ show_admin_bar(false);
 
 	$SCM_old	 		= false;
 	$SCM_ie9	 		= false;
+
+
 	
 /*
 *****************************************************
@@ -144,6 +151,7 @@ show_admin_bar(false);
 
 		// LIBRARY 
 		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . '_library/' );
+		define( 'SCM_URI_LIBRARY',      		SCM_URI . '_library/' );
 
 		// PARTS
 		define( 'SCM_DIR_PARTS',			    	'_parts/content' );

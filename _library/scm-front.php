@@ -190,7 +190,7 @@
 
             global $SCM_indent;
             
-            $logo_id = scm_field( 'opt-ids-branding', 'site-branding', 'option' );
+            $logo_id = 'site-branding';
 
             //$follow = scm_field( 'follow-enabled', 0, 'option' );
 
@@ -256,7 +256,7 @@
             
             $follow_align = scm_field( 'follow-alignment', 'right', 'option' );
 
-            $follow_id = scm_field( 'opt-ids-social-follow', 'site-social-follow', 'option' );
+            $follow_id = 'site-social-follow';
             $follow_class = 'header-column site-social-follow ';
             $follow_class .= ( $follow_align != 'center' ? 'half-width float-' . $follow_align . ' ' : 'full ' );
             $follow_class .= $follow_align . ' inlineblock';
@@ -319,7 +319,7 @@
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
 
-            $id = scm_field( 'opt-ids-menu', 'site-navigation', 'option' );
+            $id = 'site-navigation';
                 
             $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
@@ -665,7 +665,7 @@
 
             global $SCM_indent;
             
-            $id = scm_field( 'opt-ids-topofpage', 'site-topofpage', 'option' );
+            $id = 'site-topofpage';
             $icon = scm_field( 'opt-tools-topofpage-icon', 'fa-angle-up', 'option' );
             $text = scm_field( 'opt-tools-topofpage-title', __( 'Inizio Pagina', SCM_THEME ), 'option' );
             $offset = scm_field( 'opt-tools-topofpage-offset', 0, 'option' );

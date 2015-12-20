@@ -17,7 +17,7 @@ if( !$SCM_old ){
     $site_align = scm_field( 'layout-alignment', 'center', 'option' );
     $foot_layout = ( scm_field( 'layout-page', 'full', 'option' ) === 'responsive' ? 'full ' : ( $foot_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
-    $foot_id = scm_field( 'opt-ids-footer', 'site-footer', 'option' );
+    $foot_id = 'site-footer';
     $foot_class = 'footer site-footer ' . $foot_layout . $site_align;
 
     $id = $post->ID;

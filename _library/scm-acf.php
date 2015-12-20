@@ -250,7 +250,7 @@
 	if ( ! function_exists( 'scm_acf_group_register' ) ) {
 		function scm_acf_group_register( $group ) {
 
-			$group['fields'][] = scm_acf_field_hidden( 'g_' . $group['key'] );
+			$group['fields'][] = scm_acf_field_hidden( 'g_' . $group['key'] ); // todo: is it used anywhere?
 			$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
 			$group['key'] = 'group_' . hash('ripemd160', $group['key'] );
 
@@ -265,22 +265,24 @@
 
 	// Set Field
 	if ( ! function_exists( 'scm_acf_field' ) ) {
-		function scm_acf_field( $name, $type, $label = '', $width = '', $logic = 0, $instructions = '', $required = 0, $class = '' ) {
+		function scm_acf_field( $name, $type = '', $label = '', $width = '', $logic = 0, $instructions = '', $required = 0, $class = '' ) {
 
 			if( !isset( $name ) || !$type )
 				return;
 
+			$typename = ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) );
+
 			$field = array (
 				'key' => ( $name ? $name . '_' : '' ),
 				'label' => ( $label ?: 'Field' ),
-				'name' => ( $name ?: $type ),
+				'name' => ( $name ?: $typename ),
 				'prefix' => '',
 				'instructions' => ( $instructions ?: '' ),
 				'required' => ( $required ?: 0 ),
 				'conditional_logic' => ( is( $logic ) && !is_string( $logic ) ? array( scm_acf_group_condition( $logic ) ) : '' ),
 				'wrapper' => array (
 					'width' => ( is_numeric( $width ) ? $width : '' ),
-					'class' => ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) . ( $class ? ' ' . $class : '' ) ),
+					'class' => ( $class ? $class . ' ' : '' ) . $typename,
 					'id' => '',
 				)
 			);
@@ -496,7 +498,7 @@
 		}
 	}
 
-	// LAYOUT OVERLAY
+	// LAYOUT PRESET
 	if ( ! function_exists( 'scm_acf_layouts_preset' ) ) {
 		function scm_acf_layouts_preset( $name = '', $list = array(), $link = 0 ) {
 
@@ -523,7 +525,7 @@
 	if ( ! function_exists( 'scm_acf_column_selectors' ) ) {
 		function scm_acf_column_selectors( $name = '', $list = array(), $w1 = 30, $w2 = 30, $w3 = 40 ) {
 			
-			array_unshift( $list, scm_acf_field( $name . 'attributes', 'attributes', __( 'Attributi', SCM_THEME ), $w3 ) );
+			array_unshift( $list, scm_acf_field( $name . 'attributes', 'attributes', __( 'Attributi', SCM_THEME ), $w3, 0, '', 0, 'scm-advanced-field' ) );
 			array_unshift( $list, scm_acf_field_class( $name . 'class', 0, $w2 ) );
 			array_unshift( $list, scm_acf_field_id( $name . 'id', 0, $w1 ) );
 

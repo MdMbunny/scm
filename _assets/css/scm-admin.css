@@ -952,11 +952,63 @@ input.acf-is-prepended {
 
 .no-value-message,
 .acf-flexible-content > .acf-label > label,
-.acf-flexible-content .acf-field > .acf-label,
+.acf-flexible-content .acf-field:not(.acf-field-true-false) > .acf-label,
 .acf-field-repeater:not(.repeater-labels) > .acf-label > label,
-.acf-field-repeater:not(.repeater-labels) .acf-field > .acf-label {
+.acf-field-repeater:not(.repeater-labels) .acf-field:not(.acf-field-true-false) > .acf-label {
 	display: none !important;
 }
+
+.acf-field-true-false > .acf-label{
+	float: left;
+	margin-right: 1em;
+	margin-bottom: 0;
+}
+
+.acf-field-true-false > .acf-label label{
+	line-height: 2em;
+	margin: 0 0 0 .5em;
+	padding: 0;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li {
+    padding: 0;
+    line-height: 1.5em;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li label{
+	display: inline;
+    margin: 0;
+    line-height: 0;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    background: transparent;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li input{
+	margin: -1px 0 0 0 !important;
+    padding: 2px !important;
+    background: transparent;
+    height: 2em;
+    text-align: right;
+    box-shadow: none;
+    border-color: #eee;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li input:hover{
+	border-color: #aaa;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li input:checked{
+	border-color: #e14d43;
+}
+
+.acf-field-true-false ul.acf-checkbox-list li input:checked:before{
+	float: right;
+	margin: 0px .5em 0 0px;
+}
+
 
 .ui-sortable-helper{
 	padding-top: 10px !important;
@@ -1024,6 +1076,54 @@ input.acf-is-prepended {
 .acf-repeater.disabled > table > tbody > .acf-row > .remove{
 	display: none !important;
 }
+
+.acf-field-repeater tr .acf-row-handle,
+.acf-field-repeater tr .acf-fields.-sidebar:before,
+.acf-field-repeater tr .acf-fields,
+.acf-field-repeater tr .acf-fields > .acf-field{
+	background-color: #f8f8f8 !important;
+}
+
+.acf-field-repeater tr:nth-child(odd) .acf-row-handle,
+.acf-field-repeater tr:nth-child(odd) .acf-fields.-sidebar:before,
+.acf-field-repeater tr:nth-child(odd) .acf-fields,
+.acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-field,
+.acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-tab-wrap.-top .acf-tab-group li a,
+.acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-tab-wrap.-top{
+	background-color: #fff !important;
+}
+
+.acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top{
+	border-top: 1px solid #eee;
+	background-color: #f8f8f8;
+}
+
+.acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top .acf-tab-group{
+	padding: 0;
+	border: 0;
+	margin: 0;
+	display: inline-block;
+}
+
+.acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top .acf-tab-group li{
+	margin: 0;
+}
+
+
+.acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top .acf-tab-group li a,
+.acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top .acf-tab-group li.active a{
+	border-width: 0;
+	border-right: 1px solid #eee;
+	padding-bottom: 6px;
+	margin: 0;
+	border-radius: 0;
+	background-color: #f8f8f8;
+}
+
+.acf-field-tab + .acf-field{
+	border-top-width: 1px;
+}
+
 
 /* 4.3 Flexible Content */
 

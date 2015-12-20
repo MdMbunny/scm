@@ -33,9 +33,8 @@
     add_filter( 'wp_mail_from_name', 'scm_mail_from_name' );
 
     
-
     add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
-    add_action( 'login_enqueue_scripts', 'scm_login_assets' );    
+    add_action( 'login_enqueue_scripts', 'scm_login_assets', 10 );    
 
     add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
     add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
@@ -67,11 +66,11 @@
 // *      1.0 FUNCTIONS
 // *****************************************************
 
-        if ( ! function_exists( 'scm_login_redirect' ) ) {
+    if ( ! function_exists( 'scm_login_redirect' ) ) {
         function scm_login_redirect( $url, $request, $user ){
             if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
                 if( $user->has_cap( 'administrator' ) ) {
-                    $url = admin_url('admin.php?page=scm-options-opzioni');
+                    $url = admin_url('admin.php?page=scm-options-intro');
                 } elseif( $user->has_cap( 'upload_files' ) && startsWith( $request, SCM_SITE . '/wp-admin' ) ) {
                     $url = admin_url('users.php');
                 }
@@ -121,9 +120,14 @@
 
             wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-admin');
+            wp_register_style( 'scm-admin-child', SCM_URI_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-admin-child');
 
             wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'jquery-scm-admin' );
+
+            wp_register_script( 'jquery-scm-admin-child', SCM_URI_JS_CHILD . 'jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-admin-child' );
             
         }
     } 
@@ -136,9 +140,17 @@
 
             wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-login');
+            
+            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-login-child');
 
             wp_register_script( 'jquery-scm-login', SCM_URI_JS . 'jquery.scm/jquery.login.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'jquery-scm-login' );
+
+            wp_register_script( 'jquery-scm-login-child', SCM_URI_JS_CHILD . 'jquery.login.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'jquery-scm-login-child' );
+
+            
             
         }
     }
@@ -321,18 +333,18 @@
         }
     }
 
-// Remove Screen Meta Links to Users
+// Removes Screen Meta Links to Users
     if ( ! function_exists( 'scm_admin_remove_meta' ) ) {
         function scm_admin_remove_meta(){
 
             if( current_user_can( 'manage_options' ) )
                 return;
 
-            echo '<style>#screen-meta-links{display: none !important;}</style>';  
+            echo '<style>#screen-meta-links{display: none !important;}</style>';
         }
     }
 
-// Hide Administrator From User List
+// Hides Administrator From User List
     if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
         function scm_admin_hide_from_users($user_search) {
             $user = wp_get_current_user();
@@ -344,7 +356,7 @@
         }
     }
 
-// Hide Tools from Toolbar (Top Bar)
+// Hides Tools from Toolbar (Top Bar)
     if ( ! function_exists( 'scm_admin_hide_tools' ) ) {
         function scm_admin_hide_tools( $wp_admin_bar ) {
             $wp_admin_bar->remove_node( 'wp-logo' );

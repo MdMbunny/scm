@@ -31,12 +31,10 @@
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_styles_inline' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_scripts' );
-    
+
     add_action( 'widgets_init', 'scm_widgets_default' );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
-    //add_action( 'after_setup_theme', 'scm_default_headers' );
-    //add_action( 'comment_form_before', 'scm_enqueue_comments_reply' );
 
 
 // *****************************************************
@@ -83,33 +81,6 @@
         function scm_load_textdomain() {
             load_theme_textdomain( SCM_THEME, SCM_DIR_LANG );
             load_child_theme_textdomain( SCM_CHILD, SCM_DIR_LANG_CHILD );
-        }
-    }
-
-    // *       HEADERS
-
-    if ( ! function_exists( 'scm_default_headers' ) ) {
-        function scm_default_headers() {
-
-            $headers = array(
-                'default-header' => array(
-                    'description'   => __( 'The Default Header', SCM_THEME ),
-                    'url'           => '',
-                    'thumbnail_url' => '',
-                ),
-            );
-            register_default_headers( $headers );
-
-        }
-    }
-
-    // *       COMMENTS
-
-    if ( ! function_exists( 'scm_enqueue_comments_reply' ) ) {
-        function scm_enqueue_comments_reply() {
-            if( get_option( 'thread_comments' ) )  {
-                wp_enqueue_script( 'comment-reply' );
-            }
         }
     }
     
@@ -187,6 +158,13 @@
                 wp_register_style( 'parallax', SCM_URI_CSS . 'parallax.css', false, SCM_SCRIPTS_VERSION, 'screen' );
                 wp_enqueue_style( 'parallax' );
             }
+
+            // Login Page
+
+            /*wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-login');
+            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style('scm-login-child');*/
             
             // SCM Print
 
@@ -194,10 +172,11 @@
             //wp_register_style( 'print', SCM_URI_CSS . 'scm-print.css', false, SCM_SCRIPTS_VERSION, 'print' );
             //wp_enqueue_style( 'print' );
 
-            
-
         }
     }
+
+    
+    
 
 // *****************************************************
 // *      3.0 REGISTER AND ENQUEUE SCRIPTS
@@ -241,10 +220,6 @@
 
             wp_enqueue_script('jquery-effects-core');
 
-            // Select2 Events
-
-            /*wp_register_script( 'select2', SCM_URI_JS . 'select2.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'select2' );*/
 
             // Skip Link Focus Fix
 
@@ -282,9 +257,6 @@
 
             wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.5/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'bootstrap' );
-            
-            //wp_register_script( 'bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            //wp_enqueue_script( 'bootstrap' );
 
             // Images Loaded
             
@@ -321,6 +293,11 @@
 
             //wp_register_script( 'sequence',  SCM_URI_JS . 'Sequence/jquery.sequence-min.js', false, '', true );
             //wp_enqueue_script( 'sequence' );
+
+            // Waypoints
+
+            wp_register_script( 'waypoints',  SCM_URI_JS . 'waypoints-4.0.0/lib/jquery.waypoints.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'waypoints' );
 
             // Nivo Slider
 
@@ -459,20 +436,35 @@
 
             $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
-            $r_desktop = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-desktop', -1, 'option' );
+            $base = (int)str_replace( 'px', '', scm_options_get( 'size', 'option' ) );
+
+            $r_desktop = $base + (int)scm_field( 'styles-size-desktop', -1, 'option' );
             $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
 
-            $r_wide = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-wide', 0, 'option' );
+            $r_wide = $base + (int)scm_field( 'styles-size-wide', 0, 'option' );
             $css .= 'body.wide { font-size: ' . $r_wide . 'px; }' . lbreak();
 
-            $r_landscape = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-landscape', 1, 'option' );
+            $r_landscape = $base + (int)scm_field( 'styles-size-landscape', 1, 'option' );
             $css .= 'body.landscape { font-size: ' . $r_landscape . 'px; }' . lbreak();
 
-            $r_portrait = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-portrait', 2, 'option' );
+            $r_portrait = $base + (int)scm_field( 'styles-size-portrait', 2, 'option' );
             $css .= 'body.portrait { font-size: ' . $r_portrait . 'px; }' . lbreak();
 
-            $r_smart = (int)scm_options_get( 'size', 'option' ) + (int)scm_field( 'styles-size-smart', 3, 'option' );
+            $r_smart = $base + (int)scm_field( 'styles-size-smart', 3, 'option' );
             $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
+
+
+            /* Login Page */
+
+            /*if( isLoginPage() ){
+                $login_logo = scm_field('opt-staff-logo', '', 'option');
+                //consoleLog(esc_url( $login_logo ));
+
+                if( $login_logo )
+                    $css. = 'body.login div#login h1 { logo-image: url("' . esc_url( $login_logo ) . '"); }' . lbreak();
+                else
+                    $css. = 'body.login div#login h1 { display: none !important; }' . lbreak();
+            }*/
 
             
             if( !empty( $css ) )

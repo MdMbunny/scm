@@ -225,22 +225,19 @@
                         $taxes = get_object_taxonomies( $post );
 
                         if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
-
+                            
                             foreach ( $taxes as $key => $tax ) {
                                 
                                 $content['class'] .= ' ' . $tax;
                                 
-                                if( $tax === 'docs-tags' ){
+                                $terms = get_the_terms( $post->ID, 'docs-tags' );
 
-                                    $terms = get_the_terms( $post->ID, 'docs-tags' );
+                                if( !is_wp_error( $terms ) && is_array( $terms ) ){
+                                
+                                    foreach ( $terms as $key => $term ) {
 
-                                    if( !is_wp_error( $terms ) && is_array( $terms ) ){
+                                        $content['class'] .= ' term-' . $term->slug;
                                     
-                                        foreach ( $terms as $key => $term ) {
-
-                                            $content['class'] .= ' term-' . $term->slug;
-                                        
-                                        }
                                     }
                                 }
                             

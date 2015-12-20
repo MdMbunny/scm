@@ -172,7 +172,6 @@ class Custom_Type {
             'capability_type'     => array( $this->cap_singular, $this->cap_plural ),
             'map_meta_cap'        => true,
         );
-
     }
     
 

@@ -215,7 +215,7 @@
 
 	        		$field = array(
 						'type' => 'true_false',
-						'default_value' => $default
+						'default_value' => $default,
 					);
 				break;
 
@@ -656,7 +656,7 @@
 	        		$format = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) );
 	        		$read = ( isset( $arg[6] ) ? $arg[6] : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) );
 	        		$dis = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) );
-					
+
 					$field = array(
 						'type' => 'textarea',
 						'default_value' => $default,

@@ -6,9 +6,6 @@
 	Go to "Appearance > Backup Options" to export/import theme settings
 	(based on "Gantry Export and Import Options" by Hassan Derakhshandeh)
 
-	Usage:
-	1. Add entire backup/restore snippet to functions.php
-	2. Edit 'shapeSpace_options' to match your theme options
 */
 class backup_restore_theme_options {
 
@@ -17,34 +14,36 @@ class backup_restore_theme_options {
 	}
 	function admin_menu() {
 		// add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function);
-		// $page = add_submenu_page('themes.php', 'Backup Options', 'Backup Options', 'manage_options', 'backup-options', array(&$this, 'options_page'));
+		$page = add_submenu_page('tools.php', __('Backup Options', SCM_THEME), __('Backup Options', SCM_THEME), 'manage_options', 'backup-options', array(&$this, 'options_page'));
 
 		// add_theme_page($page_title, $menu_title, $capability, $menu_slug, $function);
-		$page = add_theme_page('Backup Options', 'Backup Options', 'manage_options', 'backup-options', array(&$this, 'options_page'));
+		//$page = add_theme_page('Backup Options', 'Backup Options', 'manage_options', 'backup-options', array(&$this, 'options_page'));
 
 		add_action("load-{$page}", array(&$this, 'import_export'));
 	}
 	function import_export() {
+		global $SCM_siteslug;
+
 		if (isset($_GET['action']) && ($_GET['action'] == 'download')) {
 			header("Cache-Control: public, must-revalidate");
 			header("Pragma: hack");
 			header("Content-Type: text/plain");
-			header('Content-Disposition: attachment; filename="theme-options-'.date("dMy").'.dat"');
+			header('Content-Disposition: attachment; filename="' . $SCM_siteslug . '-scm-options-'.date("ymd").'.dat"');
 			echo serialize($this->_get_options());
 			die();
 		}
-		if (isset($_POST['upload']) && check_admin_referer('shapeSpace_restoreOptions', 'shapeSpace_restoreOptions')) {
+		if (isset($_POST['upload']) && check_admin_referer('scm_restoreOptions', 'scm_restoreOptions')) {
 			if ($_FILES["file"]["error"] > 0) {
 				// error
 			} else {
 				$options = unserialize(file_get_contents($_FILES["file"]["tmp_name"]));
 				if ($options) {
 					foreach ($options as $option) {
-						update_option($option->option_name, unserialize($option->option_value));
+						update_option($option->option_name, $option->option_value);
 					}
 				}
 			}
-			wp_redirect(admin_url('themes.php?page=backup-options'));
+			wp_redirect(admin_url('tools.php?page=backup-options')); // todo: usalo ovunque fai redirect, tipo all'installazione del tema
 			exit;
 		}
 	}
@@ -67,7 +66,7 @@ class backup_restore_theme_options {
 							<h3>Restore/Import</h3>
 							<p><label class="description" for="upload">Restore a previous backup</label></p>
 							<p><input type="file" name="file" /> <input type="submit" name="upload" id="upload" class="button-primary" value="Upload file" /></p>
-							<?php if (function_exists('wp_nonce_field')) wp_nonce_field('shapeSpace_restoreOptions', 'shapeSpace_restoreOptions'); ?>
+							<?php if (function_exists('wp_nonce_field')) wp_nonce_field('scm_restoreOptions', 'scm_restoreOptions'); ?>
 						</td>
 					</tr>
 				</table>
@@ -80,7 +79,13 @@ class backup_restore_theme_options {
 	}
 	function _get_options() {
 		global $wpdb;
-		return $wpdb->get_results("SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name = 'opt-tools-fade-in'"); // edit 'shapeSpace_options' to match theme options
+		$options = $wpdb->get_results("SELECT option_name, option_value FROM {$wpdb->options}");
+		$new = array();
+		foreach ($options as $elem) {
+	        if( isset( $elem->option_name ) && strpos( $elem->option_name, 'options_' ) === 0 ) $new[] = $elem;
+	    }
+
+	    return $new;
 	}
 }
 new backup_restore_theme_options();

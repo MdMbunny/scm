@@ -116,6 +116,12 @@ function consoleLog( $obj ){
     <?php
 }
 
+function consoleDebug( $obj ){
+    global $SCM_debug;
+    if( $SCM_debug )
+        consoleLog( $obj );
+}
+
 
 
 
@@ -208,8 +214,8 @@ function toArray( $var, $asso = false ){
 
     if( !$asso )
         return ( is_array( $var ) ? $var : array( $var ) );
-    else
-        return ( is_asso( $var ) === false ? $var : array( $var ) );
+    
+    return ( is_asso( $var ) === false ? $var : array( $var ) );
 
 }
 
@@ -225,6 +231,33 @@ function copyArray( $arr ){
     }
 
     return $new;
+}
+
+function arrayToHTML( $arr, $container = 'ul', $element = 'li', $first = 'strong', $second = 'span' ){
+
+    if( !$arr )
+        return '';
+
+    $html = '<' . $container . '>' . lbreak();
+
+    foreach ($arr as $key => $value) {
+
+        $html .= indent() . '<' . $element . '>' . lbreak();
+            $html .= indent(2) . '<' . $first . ' style="width: 20%; display: inline-block;">';
+                $html .= (string)$key;
+            $html .= ': </' . $first . '>' . lbreak();
+            $html .= indent(2) . '<' . $second . ' style="font-weight: normal;">';
+                $html .= (string)$value;
+            $html .= '</' . $second . '>' . lbreak();
+            
+        $html .= indent() . '</' . $element . '>' . lbreak();
+        
+    }
+
+    $html .= '</' . $container . '>' . lbreak(2);
+    
+    return $html;
+
 }
 
 
@@ -481,19 +514,21 @@ function getByPrefix( $arr, $prefix, $key = false, $exist = true ){
 * Get Elements by Prefix
 * @param array $arr the array where to search for
 * @param string $prefix the prefix to be checked
-* @param boolean $key returns $key if true. Default is false and returns $value.
+* @param boolean $key returns $key if true. Default is false and returns $value. Returns $key and $value if 1. Returns $key without $prefix and $value if 2.
 * @author SCM
 */
 
 function getAllByPrefix( $arr, $prefix, $key = false ){
-    $arr = array();
+    $ar = array();
     foreach ($arr as $k => $v) {
         if( strpos($k, $prefix) === 0 ){
-            if( $key ) $arr[] = $k;
-            else $arr[] = $v;
+            if( $key === 1 ) $ar[$k] = $v;
+            elseif( $key === 2 ) $ar[str_replace($prefix, '', $k)] = $v;
+            elseif( $key === true ) $ar[] = $k;
+            else $ar[] = $v;
         }
     }
-    return $arr;
+    return $ar;
 }
 
 /**
@@ -526,6 +561,49 @@ function getByValueKey( $arr, $value, $key = 'name' ){
         if( isset( $elem[$key] ) && $elem[$key] == $value ) return $index;
     }
     return false;
+}
+
+/**
+* Get All Elements by Value and Key
+* @param array $arr the array where to search for
+* @param string $value the value to be checked
+* @param string $key the key to be searched for (default = 'name')
+* @author SCM
+*/
+
+function getAllByValueKey( $arr, $value, $key = 'name' ){
+
+    if ( !is_array($arr))
+        return false;
+
+    $new = array();
+    
+    foreach ($arr as $index => $elem) {
+        if( isset( $elem[$key] ) && $elem[$key] == $value ) $new[] = $elem;
+    }
+    return $new;
+}
+
+/**
+* Get All Elements by Value Prefix and Key
+* @param array $arr the array where to search for
+* @param string $value the value to be checked
+* @param string $key the key to be searched for (default = 'name')
+* @author SCM
+*/
+
+function getAllByValuePrefixKey( $arr, $prefix, $key = 'name' ){
+
+    if ( !is_array($arr))
+        return $new;
+
+    $new = array();
+    
+    foreach ($arr as $index => $elem) {
+
+        if( isset( $elem[$key] ) && strpos( $elem[$key], $prefix ) === 0 ) $new[] = $elem;
+    }
+    return $new;
 }
 
 /**
@@ -947,6 +1025,12 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 /***********************/
 
 
+function isLoginPage() {
+
+    return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+    
+}
+
 function getURL( $url ){
 
     if( !$url )
@@ -957,9 +1041,9 @@ function getURL( $url ){
     if( $url == 'localhost' )
         return 'http://localhost:8888/_scm'; //$GLOBALS['localhost'];
 
-    if( startsWith( $url, array( 'page:' ) ) !== false || startsWith( $url, array( 'page/' ) ) !== false || startsWith( $url, array( 'http://page/' ) ) !== false ){
+    if( startsWith( $url, array( 'page:' ) ) !== false || startsWith( $url, array( 'page/' ) ) !== false || startsWith( $url, array( 'http://page/', 'https://page/' ) ) !== false ){
 
-        $url = str_replace( array( 'page:', 'page/', 'http://' ), '', $url );
+        $url = str_replace( array( 'page:', 'page/', 'http://', 'https://' ), '', $url );
         
         if( strpos( $url, '#' ) === 0 ){
             $add = $url;
@@ -978,8 +1062,8 @@ function getURL( $url ){
         return $page . $add;
     }
 
-    if( startsWith( $url, array( 'logout:', 'http://logout:' ) ) ) {
-        $url = str_replace( array( 'logout:', 'http://logout:'), '', $url );
+    if( startsWith( $url, array( 'logout:', 'http://logout:', 'https://logout:' ) ) ) {
+        $url = str_replace( array( 'logout:', 'http://logout:', 'https://logout:'), '', $url );
         $url = ( $url ?: site_url() );
         return wp_logout_url( $url );
     }

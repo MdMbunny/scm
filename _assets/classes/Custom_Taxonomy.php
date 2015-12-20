@@ -9,15 +9,16 @@ class Custom_Taxonomy {
 
         $default = array(
         	'template'              => 0,
+            'active'                => 1,
             'hierarchical' 			=> 1,
             'singular'              => '',
             'plural'                => '',
             'slug'                  => '',
             'types' 				=> array(),
-            'manage'                => 0,
-            'edit'                  => 0,
+            'add_cap'                => 0,
+            /*'edit'                  => 0,
             'delete'                => 0,
-            'assign'                => 1,
+            'assign'                => 1,*/
         );
 
         if( is_array( $build ) )
@@ -35,13 +36,14 @@ class Custom_Taxonomy {
         $this->types = $default['types'];
         $this->tag = $default['hierarchical'];
         $this->template = $default['template'];
-        $this->manage = ( $default['manage'] ? 'list_users' : 'manage_options' );
-        $this->edit = ( $default['manage'] ? 'list_users' : 'manage_options' );
-        $this->delete = ( $default['manage'] ? 'list_users' : 'manage_options' );
-        $this->assign = ( $default['assign'] ? 'list_users' : 'manage_options' );
+        $this->active = $default['active'];
+        $this->add_cap = ( !$default['add_cap'] ? 'manage_options' : ( $default['add_cap'] == 'member' ? 'upload_files' : 'list_users' ) );
+        /*$this->edit = ( $default['add_cap'] ? 'list_users' : 'manage_options' );
+        $this->delete = ( $default['add_cap'] ? 'list_users' : 'manage_options' );
+        $this->assign = ( $default['assign'] ? 'list_users' : 'manage_options' );*/
 
         /*consoleLog($this->plural);
-        consoleLog($this->manage);*/
+        consoleLog($this->add_cap);*/
 
         $this->CT_taxonomy();
         if( !empty( $this->types ) ){
@@ -89,10 +91,10 @@ class Custom_Taxonomy {
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false,
             'capabilities' => array(
-                'manage_terms' => $this->manage,
-                'edit_terms' => $this->edit,
+                'manage_terms' => $this->add_cap,
+                /*'edit_terms' => $this->edit,
                 'delete_terms' => $this->delete,
-                'assign_terms' => $this->assign
+                'assign_terms' => $this->assign*/
             ),
 		);
 

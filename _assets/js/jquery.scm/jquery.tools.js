@@ -249,7 +249,7 @@
 			event.preventDefault();
 		    event.stopPropagation();
 
-		    if( link == 'back' || link == 'http://back' ){
+		    if( link == 'back' || link == 'http://back' || link == 'https://back' ){
 		    	window.history.back();
 		    	return false;
 		    }
