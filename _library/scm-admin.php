@@ -234,9 +234,9 @@
 // Add the duplicate link to action list
     if ( ! function_exists( 'scm_admin_duplicate_post_link' ) ) {
         function scm_admin_duplicate_post_link( $actions, $post ) {
-            //if (current_user_can('edit_posts')) {
+            if( current_user_can( 'publish_' . $post->post_type ) ) {
                 $actions['duplicate'] = '<a href="admin.php?action=scm_admin_duplicate_post&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', SCM_THEME ) . '" rel="permalink">' . __( 'Duplica', SCM_THEME ) . '</a>';
-            //}
+            }
             return $actions;
         }
     }
