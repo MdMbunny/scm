@@ -2095,7 +2095,7 @@
 			$taxes['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab', __( 'Admin', SCM_THEME ), 0, $active );
 				$taxes['sub_fields'][] = scm_acf_field_false_true( 'template', $default, 33, $active, __( 'Template', SCM_THEME ) );
 				$taxes['sub_fields'][] = scm_acf_field_false_true( 'add_cap', $default, 33, $active, __( 'Capabilities', SCM_THEME ) );
-				$taxes['sub_fields'][] = scm_acf_field_false_true( 'hierarchical', $default, 34, $active, __( 'Tag', SCM_THEME ) );
+				$taxes['sub_fields'][] = scm_acf_field_false_true( 'hierarchical', $default, 34, $active, __( 'Hierarchical', SCM_THEME ) );
 				//$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', array( 'select' . ( $default ? '-default' : '' ), array( __( 'Tag', SCM_THEME ), __( 'Categoria', SCM_THEME ) ) ), __( 'Seleziona Tipologia', SCM_THEME ), 34, $active );
 
 			$taxes['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, $active );
