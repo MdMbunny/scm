@@ -195,7 +195,7 @@
             //$follow = scm_field( 'follow-enabled', 0, 'option' );
 
             $logo_image = esc_url( scm_field( 'brand-logo', '', 'option' ) );
-            $logo_height = scm_field( 'brand-height-number', 'auto', 'option' );
+            $logo_height = scm_field( 'brand-height-number', '100%', 'option' );
             $logo_height = ( is_numeric( $logo_height ) ? $logo_height . scm_field( 'brand-height-units', 'px', 'option' ) : $logo_height );
             //$logo_height= numberToStyle( scm_field( 'branding_header_logo_height', 40, 'option' ) );
             $logo_align = scm_field( 'brand-alignment', 'left', 'option' );
@@ -290,6 +290,12 @@
     if ( ! function_exists( 'scm_main_menu' ) ) {
         function scm_main_menu( $align = 'right', $position = 'inline', $just = 0 ) {
 
+            if( scm_field( 'menu-auto', 'options' ) ){
+
+                // FOR EACH PAGE WITH A MENU ITEM LINKED, BUILD AUTO SUB MENU ITEMS FROM Sections ID
+
+            }
+
             global $post;
             $id = $post->ID;
             $type = $post->post_type;
@@ -372,6 +378,7 @@
 
             }
 
+            if( $sticky && $sticky != 'head' ){
             //if( $sticky && $sticky != 'no' ){
                 //if( $just && $out && $out != 'no' ){
                     //( !$just && ( !$out || $out == 'no' ) ) ) ){
@@ -414,7 +421,7 @@
                         return 0;
                     //}
                 //}
-            //}
+            }
         }
     }
 
@@ -457,12 +464,11 @@
                     $type = 'external';
                 }
 
-                $classes = $object->classes;
-
-                $has_children = ( isset( $classes ) ? getByValue( $object->classes, 'menu-item-has-children' ) : false );
-                
                 $link = '<a href="' . $url . '">' . $content . '</a>';
 
+                $classes = $object->classes;
+                $has_children = ( isset( $classes ) ? getByValue( $object->classes, 'menu-item-has-children' ) : false );
+                
                 if( $has_children !== false ){
                     $data = ' data-toggle="true" ';
                     $class .= ' has-children toggle no-toggled';
@@ -521,7 +527,6 @@
                 data-sticky-type="' . $type . '" 
                 data-sticky-offset="' . $offset . '" 
                 data-sticky-attach="' . $attach . '" ' : '' );
-
 
 
             $in = $SCM_indent + 1;

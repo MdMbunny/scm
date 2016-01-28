@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.7.5
+Version:			v2.7.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -44,6 +44,7 @@ GitHub Branch:		master
 	4.2 Plugins Fancybox
 	4.3 Plugins Font Awesome
 	4.4 Plugins Contact Form 7
+	4.5 Plugins BX Slider
 
 0.0 Accesibility
 	
@@ -558,6 +559,10 @@ h6 { font-size: 1.2em; }
 .site-content.center .responsive{
 	display: flex;
 }*/
+
+.clear-none {
+	clear: none !important;
+}
 
 /*--------------------------------------------------------------
 2.6 Attributes Clearings
@@ -2160,6 +2165,24 @@ body.touch .fancybox-nav span{
 	padding: 1em;
 	font-size: .9em;
 	line-height: 1.4em;
+}
+
+/*--------------------------------------------------------------
+4.5 Plugins BX Slider
+--------------------------------------------------------------*/
+
+.bx-wrapper .bx-viewport {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 0;
+    left: inherit;
+    background: transparent;
+}
+
+.bx-wrapper .bx-viewport > *:first-child{
+    max-width: initial !important;
+    max-height: initial !important;
 }
 
 /*--------------------------------------------------------------

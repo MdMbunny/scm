@@ -318,10 +318,12 @@
 	        	if( !$id )
 	        		return __( 'id non trovato', SCM_THEME );
 
-	        	if( function_exists( 'get_field' ) )
-	        		$field = ( !is_null( get_field( $name, $id ) ) ? get_field( $name, $id ) : '' );
-	        	else
-	        		$field = $fallback;
+	        	//if( function_exists( 'get_field' ) )
+	        		$field = ( ( !is_null( get_field( $name, $id ) ) ) ? get_field( $name, $id ) : '' );
+	        		if( !$field && $no_option == -1 )
+	        			return $fallback;
+	        	//else
+	        		//$field = $fallback;
 
 	        	if( $field === 'no' )
 	        		return '';

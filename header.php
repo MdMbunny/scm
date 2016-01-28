@@ -96,7 +96,8 @@ $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
 $fade_wait = scm_field( 'opt-tools-fade-waitfor', 'no', 'option' );
 
 $smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 0, 'option' );
-$smooth_offset = scm_field( 'opt-tools-smoothscroll-offset', 0, 'option' );
+$smooth_offset = scm_field( 'opt-tools-smoothscroll-offset-number', 0, 'option' );
+$smooth_units = scm_field( 'opt-tools-smoothscroll-offset-units', 0, 'option' );
 $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
 $smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
 $smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
@@ -104,7 +105,8 @@ $smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
 $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );
-$single_offset = scm_field( 'opt-tools-singlepagenav-offset', 0, 'option' );
+$single_offset = scm_field( 'opt-tools-singlepagenav-offset-number', 0, 'option' );
+$single_units = scm_field( 'opt-tools-singlepagenav-offset-units', 'em', 'option' );
 $single_threshold = scm_field( 'opt-tools-singlepagenav-threshold', 0, 'option' );
 
 $tofull = scm_field( 'layout-tofull', '', 'option' );
@@ -130,12 +132,12 @@ $cont_class = 'site-content ' . $cont_layout . $site_align ;
 ?>
 
 <body <?php body_class(); ?> 
-    onunload="" 
     data-fade-in="<?php echo $fade_in; ?>" 
     data-fade-out="<?php echo $fade_out; ?>" 
     data-fade-wait="<?php echo $fade_wait; ?>"
     data-smooth-duration="<?php echo $smooth_duration; ?>"
     data-smooth-offset="<?php echo $smooth_offset; ?>"
+    data-smooth-offset-units="<?php echo $smooth_units; ?>"
     data-smooth-ease="<?php echo $smooth_ease; ?>"
     data-smooth-delay="<?php echo $smooth_delay; ?>"
     data-smooth-new="<?php echo $smooth_new; ?>"
@@ -152,6 +154,7 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '"
             data-current-link="' . $single_class . '"
             data-current-link-interval="' . $single_interval . '"
             data-current-link-offset="' . $single_offset . '"
+            data-current-link-offset-units="' . $single_units . '"
             data-current-link-threshold="' . $single_threshold . '" 
         >', 2 );
     

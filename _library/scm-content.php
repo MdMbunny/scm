@@ -107,8 +107,12 @@
         // SCM FILTER - $content before it is elaborated - scm_filter_echo_content/{content}
                     //$content = apply_filters( 'scm_filter_echo_content', $content );
                     $content = apply_filters( 'scm_filter_echo_content', $content );
-                    if( $content['acf_fc_layout'] )
+                    if( !$content ) continue;
+
+                    if( $content['acf_fc_layout'] ){
                         $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );
+                        if( !$content ) continue;
+                    }
 
                     // TRY default contents - scm_contents
                     scm_contents( $content );
@@ -171,7 +175,7 @@
             $current = 0;
             $counter = 0;
             $odd = '';
-            $total = sizeof( $build );
+            $total = ( !$build ? 0 : sizeof( $build ) );
 
             $SCM_indent++;
             $count = 0;
@@ -188,7 +192,7 @@
 
                 }
                 
-            }else{
+            }elseif( $total > 0 ){
 
                 foreach ( $build as $content ) {
 
@@ -253,7 +257,9 @@
                     }
 
                     $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
-
+if($content['acf_fc_layout']=='layout-thumbs'){
+consoleLog($content['column-width']);
+}
                     // -- Layout
 
                     if($container == 'sub-section'){
@@ -271,15 +277,16 @@
                     if( isset( $content['type'] ) ){
 
                         if( $content['type'] == 'archive' ){
-
-                            if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
-                                //$content['id'] = ( $content['id'] ?: uniqid('a') );
-                                $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
-                                $content['archive-paginated'] = $content['id'];
-                                $content['class'] .= ' paginated';
+                            if( $content['archive-complete'] != 'complete' ){
+                                if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
+                                    //$content['id'] = ( $content['id'] ?: uniqid('a') );
+                                    $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
+                                    $content['archive-paginated'] = $content['id'];
+                                    $content['class'] .= ' paginated';
+                                }
                             }
 
-                            $content['class'] = 'scm-archive archive ' . $content['class'];
+                            $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
 
                         }else if( $content['type'] == 'single' ){
 
@@ -336,6 +343,10 @@
 
                             $content['acf_fc_layout'] = 'layout-' . $post->post_type;
                             $content['single'] = array( $post->ID );
+                            
+                            $content['layout'] = ( isset( $content['layout'] ) && $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
+                            $content['alignment'] = ( isset( $content['alignment'] ) && $content['alignment'] != 'default' ? $content['alignment'] : '' );
+
                         }
 
                         
@@ -777,7 +788,8 @@
             $query = array();
             $loop = array( $post->ID );
 
-            $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
+            $template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : 0 );
+            //$template_id = ( isset( $cont['template'] ) && $cont['template'] ? $cont['template'] : get_query_var( 'template', 0 ) );
             // +++ todo: se non c'è template, tira fuori tutti i campi, uno via l'altro, o solo titolo con link oggetto se c'è
             if( !$template_id )
                 return;
@@ -928,6 +940,8 @@
             $type = $post->post_type;
             $id = $post->ID;
             $link = '';
+
+            //printPre($content);
 
             switch ( $type ) {
                 case 'soggetti':

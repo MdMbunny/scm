@@ -20,6 +20,7 @@
 			);
 
 			$attr = array_merge( $default, $attr );
+			$type = str_replace( 'line', 'solid', $type );
 
 			$attr['height'] = ( $attr['height'] ?: $attr['stroke'] );
 			$attr['y1'] = ( $attr['y1'] ?: (int)$attr['stroke'] * .5 );

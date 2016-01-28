@@ -10,22 +10,26 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 		get_template_part( SCM_DIR_PARTS, 'none' );
 // build page + content, or page + single
 }else{
-
-	// WP Header
-	get_header();
-
+	
 	$id = get_the_ID();
-
 	$page = '';
+	$template = get_query_var( 'template', 0 );
 
 	if( $single ){
-
 		// If a Page named '_single-{post_type}' exists
 		$page = get_page_by_path( '_single-' . $type );
 		if( $page ){
-			$id = $page->ID;				
+			$id = $page->ID;
+			$template = 'page';
+		}else if( locate_template( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php' ) ){
+			$template = 'part';
+		}elseif( !$template ){
+			get_template_part( SCM_DIR_PARTS, 'none' ); // Quando avrai capito come tirar fuori automaticamente un Post, questo slitta
 		}
 	}
+
+	// WP Header
+	get_header();
 	
 	$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
@@ -68,17 +72,17 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 		if( $single ){
 
 			// If a Page named '_single-{post_type}' exists
-			if( $page ){
+			if( $template == 'page' ){
 
 				scm_content( get_fields( $id ) );
 
 			// Else If a template file '_parts/single/single-{post_type}.php' exists
 				
-			}else if( locate_template( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php' ) ){
+			}elseif( $template == 'part' ){
 
 				get_template_part( SCM_DIR_PARTS_SINGLE, $type );
 
-			// Else build an empty container, then will check if /?template=XXX exists
+			// Else if query arg ?template=XXX exists
 
 			}else{
 
@@ -86,7 +90,7 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 					indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
 
 						$SCM_indent += 3;
-						scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'type' => 'single', 'single' => array( $id ) ) );
+						scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'template' => $template, 'type' => 'single', 'single' => array( $id ) ) );
 						$SCM_indent -= 3;
 
 					indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
@@ -96,7 +100,6 @@ if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false )
 			}
 			
 		}else{
-
 
 			// Page Content
 			scm_content( get_fields( $id ) );

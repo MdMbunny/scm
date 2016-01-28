@@ -48,9 +48,12 @@
 			sizes 		= {
 			wide 		: 1401,
 			landscape	: 1121,
+			tablet		: 1121,
 			notebook 	: 1031,
 			portrait 	: 801,
-			smart 		: 701 };
+			smart 		: 701,
+			smartmid	: 601,
+			smartmin	: 501, };
 
 		if( w > 700 ){
 
@@ -110,6 +113,7 @@
 			else this.removeClass( 'tocolumn' );
 
 			if(old != this.attr( 'class' )){
+
 				if ( this.hasClass( 'smartmin' ) )		state = 'smartmin';
 				else if( this.hasClass( 'smart' ) )		state = 'smart';
 				else if( this.hasClass( 'portrait' ) )	state = 'portrait';
@@ -249,6 +253,7 @@
 			event.preventDefault();
 		    event.stopPropagation();
 
+
 		    if( link == 'back' || link == 'http://back' || link == 'https://back' ){
 		    	window.history.back();
 		    	return false;
@@ -290,11 +295,8 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	        var comp = new RegExp(location.host);
 			var same = comp.test( $this.data( 'href' ) );
 
-
 			if( linkpath.indexOf( '#' ) !== 0 && !same && target === '_self' )
 				return;
-
-			
 
 			if( linkpath.indexOf( '#' ) >= 0 ){
 				var lp = linkpath.substr( 0, linkpath.indexOf( '#' ) );
@@ -340,7 +342,6 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 			//if( ( target !== '_blank' && lochost === host ) || target === '_self' ){
 
-			
 
 			if( loadcontent ){
 
@@ -535,6 +536,54 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 	}
 
+	// *****************************************************
+	// *      STICKY IT
+	// *****************************************************
+	
+	$.fn.stickyIt = function(){
+
+		return this.each(function() {
+
+			var $this 			= $( this ),
+				sticky 			= $this.data('sticky-type'),
+				offset 			= ( $this.data('sticky-offset') ? $this.data('sticky-offset') : 0 ),
+				attach 			= ( $this.data('sticky-attach') ? $this.data('sticky-attach') : 'top' ),
+				to 				= ( $this.data('sticky') ? $this.data('sticky') : '' ),
+				$to 			= $( to );
+
+			if( $to.length ){
+				if( attach == 'top'){
+					offset += $to.offset().top;
+				}else if( attach == 'bottom'){
+					offset += $to.offset().top + $to.outerHeight();
+				}
+				$to.addClass( sticky );
+			}
+
+			if( sticky == 'plus' ){
+				var sh = $this.getBoxShadow();
+				$this.css( 'top', -( $this.outerHeight() + parseFloat(sh.y) + parseFloat(sh.blur) + parseFloat(sh.exp) ) );
+			}
+			
+			$this
+				.attr( 'data-affix', attach )
+				.attr( 'data-affix-offset', offset );
+			
+			$this
+				.off( 'affixedOn' )
+				.on( 'affixedOn', function () {
+				    if( $to.length ) $to.addClass( 'affix-' + sticky );
+				});
+
+			$this
+				.off( 'affixedOff' )
+				.on( 'affixedOff', function () {
+				    if( $to.length ) $to.removeClass( 'affix-' + sticky);
+				});
+
+		});
+
+	}
 
 	// *****************************************************
 	// *      STICKY MENU
@@ -617,6 +666,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
 				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset' ) : '0' ) ),
+				units 			= ( off ? off : ( $body.data( 'smooth-offset-units' ) ? $body.data( 'smooth-offset-units' ) : 'px' ) ),
 				ease 			= ( $body.data( 'smooth-ease' ) ? $body.data( 'smooth-ease' ) : 'swing' ),
 				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0 ),
 
@@ -636,6 +686,10 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				hash = offset;
 				target = $( hash );
 				offset = $( 'body' ).data( 'smooth-offset' );
+			}
+
+			if( units == 'em' ){
+				offset = $.EmToPx( Number(offset) )
 			}
 
 			var pageEnable = function(){
@@ -723,6 +777,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				$body 			= $( 'body' ),
 				currentClass 	= $elem.data( 'current-link' ),
 	            offset 			= ( $elem.data( 'current-link-offset' ) ? $elem.data( 'current-link-offset' ) : 0 ),
+	            units 			= ( $elem.data( 'current-link-offset-units' ) ? $elem.data( 'current-link-offset-units' ) : 'px' ),
 	            threshold 		= ( $elem.data( 'current-link-threshold' ) ? $elem.data( 'current-link-threshold' ) : 0 ),
 	            interval 		= ( $elem.data( 'current-link-interval' ) ? $elem.data( 'current-link-interval' ) : 250 ),
 	            filter 			= ( $elem.data( 'current-link-filter' ) ? $elem.data( 'current-link-filter' ) : '' ),
@@ -731,6 +786,10 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	            $anchors 		= [],
 	            didScroll 		= true,
 	            timer 			= null;
+
+	        if ( units == 'em' ){
+	        	offset = $.EmToPx( Number(offset) )
+	        }
 
             if ( filter )
                 $links = $links.filter( filter );
@@ -998,13 +1057,13 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	// *      AFFIX IT
 	// *****************************************************
 
-	$.fn.affixIt = function(){
+	$.fn.affixIt = function(off,aff){
 
 		return this.each(function() {
 
 			var $this 	= $( this ),
-				ref 	= $this.attr( 'data-affix' ),
-				offset 	= $this.attr( 'data-affix-offset' );
+				ref 	= ( aff ? aff : ( $this.attr( 'data-affix' ) ? $this.attr( 'data-affix' ) : 'top' ) ),
+				offset 	= ( off ? off : ( $this.attr( 'data-affix-offset' ) ? $this.attr( 'data-affix-offset' ) : 0 ) );
 
 			$this.off('.affix');
 			$this

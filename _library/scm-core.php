@@ -41,10 +41,15 @@
 // *       1.0 THEME SUPPORT
 // *****************************************************
 
-    register_nav_menus( array( 'primary' => __( 'Menu Principale', SCM_THEME ) ) );
-    register_nav_menus( array( 'secondary' => __( 'Menu Secondario', SCM_THEME ) ) );
-    register_nav_menus( array( 'temporary' => __( 'Menu Temporaneo', SCM_THEME ) ) );
-    
+
+    register_nav_menus( array(
+        'primary' => __( 'Menu Principale', SCM_THEME ),
+        'secondary' => __( 'Menu Secondario', SCM_THEME ),
+        'temporary' => __( 'Menu Temporaneo', SCM_THEME ),
+        'auto' => __( 'Menu Auto', SCM_THEME )
+        )
+    );
+        
     add_theme_support( 'title-tag' );
     add_theme_support( 'automatic-feed-links' );
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
@@ -119,7 +124,7 @@
 
             // Nivo Slider
 
-            if( get_field( 'opt-tools-slider', 'option' ) == 'nivo' ){
+            if( get_field( 'main-slider-active', 'option' ) == 'nivo' ){
                 wp_register_style( 'nivo', SCM_URI_CSS . 'nivoSlider-3.2/nivo-slider.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 //wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/scm/scm.css', false, SCM_SCRIPTS_VERSION, 'all' );
@@ -127,6 +132,11 @@
                 wp_enqueue_style( 'nivo-theme' );
             }
 
+            // BX Slider
+
+            wp_register_style( 'bx', SCM_URI_CSS . 'jquery.bxslider/jquery.bxslider.css', false, SCM_SCRIPTS_VERSION, 'all' );
+            wp_enqueue_style( 'bx' );
+            
             // Font Awesome
             
             wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.4.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
@@ -286,7 +296,7 @@
 
             if( scm_field( 'opt-tools-parallax', 0, 'option' ) ){
 
-                wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, '', true );
+                wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, SCM_SCRIPTS_VERSION, true );
                 wp_enqueue_script( 'parallax' );
 
             }
@@ -298,13 +308,22 @@
 
             wp_register_script( 'waypoints',  SCM_URI_JS . 'waypoints-4.0.0/lib/jquery.waypoints.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'waypoints' );
+            //wp_register_script( 'waypoints-debug',  SCM_URI_JS . 'waypoints-4.0.0/lib/waypoints.debug.js', false, SCM_SCRIPTS_VERSION, true );
+            //wp_enqueue_script( 'waypoints-debug' );
+
+            // import waypoints shortcuts if needed (sticky, infinite, ...)
 
             // Nivo Slider
 
-            if( get_field( 'opt-tools-slider', 'option' ) == 'nivo' ){
+            if( get_field( 'main-slider-active', 'option' ) == 'nivo' ){
                 wp_register_script( 'nivo', SCM_URI_JS . 'nivoSlider-3.2/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
                 wp_enqueue_script( 'nivo' );
             }
+
+            // BX Slider
+
+            wp_register_script( 'bx', SCM_URI_JS . 'jquery.bxslider/jquery.bxslider.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_enqueue_script( 'bx' );
 
             // Google API
 

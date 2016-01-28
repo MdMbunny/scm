@@ -22,12 +22,31 @@
 // 1.0 FIELDS
 // *****************************************************
 
-/* Checkbox */
+	
+	if ( ! function_exists( 'scm_acf_preset' ) ) {
+		function scm_acf_preset( $is = array(), $def = array() ) {
+
+			$default = array_merge( array(
+				'default' 				=> 0,
+				'width' 				=> '',
+				'logic' 				=> 0,
+				'placeholder' 			=> '',
+				'label' 				=> '',
+				'instructions' 			=> '',
+				'required' 				=> 0,
+            ), $def );
+
+            $default = wp_parse_args( $is, $default );
+
+			return $default;
+		}
+	}
+
+/* Hidden */
 
 	// HAS GROUP
 	if ( ! function_exists( 'scm_acf_field_hidden' ) ) {
 		function scm_acf_field_hidden( $name = '' ) {
-
 			return scm_acf_field( $name, array( 'number-read', 1, 1 ), $name );
 		}
 	}
@@ -36,33 +55,33 @@
 
 	// NUMBER
 	if ( ! function_exists( 'scm_acf_field_number' ) ) {
-		function scm_acf_field_number( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $min = '', $max = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_number( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $min = '', $max = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Misura', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'number', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'number', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// OPTION
 	if ( ! function_exists( 'scm_acf_field_option' ) ) {
-		function scm_acf_field_option( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_option( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Misura', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'option', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'option', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// POSITIVE
 	if ( ! function_exists( 'scm_acf_field_positive' ) ) {
-		function scm_acf_field_positive( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_positive( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'auto', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Misura', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'positive', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'positive', $default, $placeholder, $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// ALPHA
 	if ( ! function_exists( 'scm_acf_field_alpha' ) ) {
-		function scm_acf_field_alpha( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '1', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_alpha( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '1', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Trasparenza', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'alpha', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'alpha', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
@@ -70,81 +89,81 @@
 
 	// TEXT
 	if ( ! function_exists( 'scm_acf_field_text' ) ) {
-		function scm_acf_field_text( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $append = '', $max = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_text( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $append = '', $max = '', $instructions = '', $required = 0 ) {
 			$placeholder = ( $placeholder ?: __( 'testo', SCM_THEME ) );
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), ( $append ?: $label ), '', $max ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), ( $append ?: $label ), '', $max ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// TEXT REQUIRED
 	if ( ! function_exists( 'scm_acf_field_text_req' ) ) {
-		function scm_acf_field_text_req( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $append = '', $max = '', $instr = '', $required = 1 ) {
+		function scm_acf_field_text_req( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $append = '', $max = '', $instructions = '', $required = 1 ) {
 			$placeholder = ( $placeholder ?: __( 'testo', SCM_THEME ) );
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), ( $append ?: $label ), '', $max ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), ( $append ?: $label ), '', $max ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// ID
 	if ( ! function_exists( 'scm_acf_field_id' ) ) {
-		function scm_acf_field_id( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $max = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_id( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $max = '', $instructions = '', $required = 0 ) {
 			$placeholder = ( $placeholder ?: __( 'id', SCM_THEME ) );
 			$label = ( $label ?: __( 'ID', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'id', '', ( $default ? 'default' : $placeholder ) ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'id', '', ( $default ? 'default' : $placeholder ) ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// CLASS
 	if ( ! function_exists( 'scm_acf_field_class' ) ) {
-		function scm_acf_field_class( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $max = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_class( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $max = '', $instructions = '', $required = 0 ) {
 			$placeholder = ( $placeholder ?: __( 'class', SCM_THEME ) );
 			$label = ( $label ?: __( 'Class', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'class', '', ( $default ? 'default' : $placeholder ) ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'class', '', ( $default ? 'default' : $placeholder ) ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// NAME
 	if ( ! function_exists( 'scm_acf_field_name_req' ) ) {
-		function scm_acf_field_name_req( $name = '', $default = 0, $max = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 1 ) {
+		function scm_acf_field_name_req( $name = '', $default = 0, $max = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 1 ) {
 			$placeholder = ( $placeholder ?: __( 'nome', SCM_THEME ) );
 			$label = ( $label ?: __( 'Nome', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'name', '', ( $default ? 'default' : $placeholder ), $label, '', $max ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'name', '', ( $default ? 'default' : $placeholder ), $label, '', $max ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// NAME
 	if ( ! function_exists( 'scm_acf_field_name' ) ) {
-		function scm_acf_field_name( $name = '', $default = 0, $max = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_name( $name = '', $default = 0, $max = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$placeholder = ( $placeholder ?: __( 'nome', SCM_THEME ) );
 			$label = ( $label ?: __( 'Nome', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'name', '', ( $default ? 'default' : $placeholder ), $label, '', $max ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'name', '', ( $default ? 'default' : $placeholder ), $label, '', $max ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// LINK
 	if ( ! function_exists( 'scm_acf_field_link' ) ) {
-		function scm_acf_field_link( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'http://www.esempio.com', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_link( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'http://www.esempio.com', $label = '', $instructions = '', $required = 0 ) {
 
 			$label = ( $label ?: __( 'Link', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'link', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'link', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// EMAIL
 	if ( ! function_exists( 'scm_acf_field_email' ) ) {
-		function scm_acf_field_email( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'info@esempio.com', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_email( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'info@esempio.com', $label = '', $instructions = '', $required = 0 ) {
 
 			$label = ( $label ?: __( 'Email', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// PHONE
 	if ( ! function_exists( 'scm_acf_field_phone' ) ) {
-		function scm_acf_field_phone( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '+39 1234 567890', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_phone( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '+39 1234 567890', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Numero', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'text', '', ( $default ? 'default' : $placeholder ), $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -152,9 +171,9 @@
 	
 	// LIMITER
 	if ( ! function_exists( 'scm_acf_field_limiter' ) ) {
-		function scm_acf_field_limiter( $name = '', $default = 0, $max = 350, $char = 1, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_limiter( $name = '', $default = 0, $max = 350, $char = 1, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'limiter', $max, $char ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'limiter', $max, $char ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -162,19 +181,17 @@
 	
 	// TEXTAREA
 	if ( ! function_exists( 'scm_acf_field_textarea' ) ) {
-		function scm_acf_field_textarea( $name = '', $default = 0, $rows = 8, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_textarea( $name = '', $default = 0, $rows = 8, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			$placeholder = ( $placeholder ?: __( 'Inserisci testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'textarea', '', $placeholder, $rows ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'textarea', ( $default ? $placeholder : '' ), $placeholder, $rows ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// TEXTAREA CODE
 	if ( ! function_exists( 'scm_acf_field_codearea' ) ) {
-		function scm_acf_field_codearea( $name = '', $default = 0, $rows = 8, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_codearea( $name = '', $default = 0, $rows = 8, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			$placeholder = ( $placeholder ?: __( 'Inserisci testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'textarea-no', '', $placeholder, $rows ), $label, $width, $logic, $instr, $required, 'widefat code' );
+			return scm_acf_field( $name, array( 'textarea-no', ( $default ? $placeholder : '' ), $placeholder, $rows ), $label, $width, $logic, $instructions, $required, 'widefat code' );
 		}
 	}
 
@@ -182,28 +199,25 @@
 	
 	// EDITOR BASIC MEDIA
 	if ( ! function_exists( 'scm_acf_field_editor' ) ) {
-		function scm_acf_field_editor( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_editor( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			$placeholder = ( $placeholder ?: __( 'Inserisci testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'editor-media-basic', $placeholder ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'editor-media-basic', $placeholder ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// EDITOR VISUAL MEDIA
 	if ( ! function_exists( 'scm_acf_field_editor_media' ) ) {
-		function scm_acf_field_editor_media( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_editor_media( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			$placeholder = ( $placeholder ?: __( 'Inserisci testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'editor-basic-visual-media', $placeholder ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'editor-basic-visual-media', $placeholder ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// EDITOR VISUAL
 	if ( ! function_exists( 'scm_acf_field_editor_basic' ) ) {
-		function scm_acf_field_editor_basic( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_editor_basic( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Testo', SCM_THEME ) );
-			$placeholder = ( $placeholder ?: __( 'Inserisci testo', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'editor-basic-visual', $placeholder ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'editor-basic-visual', $placeholder ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -211,9 +225,9 @@
 	
 	// DATE
 	if ( ! function_exists( 'scm_acf_field_date' ) ) {
-		function scm_acf_field_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Data', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'date', ( $placeholder ?: '' ) ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'date', ( $placeholder ?: '' ) ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -221,9 +235,9 @@
 	
 	// COLOR
 	if ( ! function_exists( 'scm_acf_field_color' ) ) {
-		function scm_acf_field_color( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_color( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Colore', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'color', ( $placeholder ?: '' ) ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'color', ( $placeholder ?: '' ) ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -231,17 +245,17 @@
 
 	// ICON
 	if ( ! function_exists( 'scm_acf_field_icon' ) ) {
-		function scm_acf_field_icon( $name = '', $default = 0, $placeholder = 'star', $filter = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_icon( $name = '', $default = 0, $placeholder = 'star', $filter = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Seleziona un\'icona', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'icon', $placeholder, $filter ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'icon', $placeholder, $filter ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// ICON
 	if ( ! function_exists( 'scm_acf_field_icon_no' ) ) {
-		function scm_acf_field_icon_no( $name = '', $default = 0, $placeholder = 'no', $filter = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_icon_no( $name = '', $default = 0, $placeholder = 'no', $filter = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Seleziona un\'icona', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'icon-no', $placeholder, $filter ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'icon-no', $placeholder, $filter ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -249,9 +263,9 @@
 
 	// IMAGE
 	if ( ! function_exists( 'scm_acf_field_image' ) ) {
-		function scm_acf_field_image( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_image( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Seleziona un\'immagine', SCM_THEME ) );
-			return scm_acf_field( $name, 'image-url', $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, 'image-url', $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -259,33 +273,42 @@
 
 	// FILE
 	if ( ! function_exists( 'scm_acf_field_file' ) ) {
-		function scm_acf_field_file( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_file( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Seleziona un file', SCM_THEME ) );
-			return scm_acf_field( $name, 'file-url', $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, 'file-url', $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// FILE OBJECT
 	if ( ! function_exists( 'scm_acf_field_fileobj' ) ) {
-		function scm_acf_field_fileobj( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_fileobj( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Seleziona un file', SCM_THEME ) );
-			return scm_acf_field( $name, 'file', $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, 'file', $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 /* True False */
 
+// FALSE/TRUE
+	if ( ! function_exists( 'scm_acf_field_false_true' ) ) {
+		function scm_acf_field_false_true( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
+			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
+
+			return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 0 ), $label, $width, $logic, $instructions, $required );
+		}
+	}
+
 	// FALSE
 	if ( ! function_exists( 'scm_acf_field_falsetrue' ) ) {
-		function scm_acf_field_falsetrue( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
-			return scm_acf_field( $name, array( 'true_false', 0 ), $label, $width, $logic, $instr, $required );
+		function scm_acf_field_falsetrue( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
+			return scm_acf_field( $name, array( 'true_false', 0 ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// FALSE
 	if ( ! function_exists( 'scm_acf_field_truefalse' ) ) {
-		function scm_acf_field_truefalse( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
-			return scm_acf_field( $name, array( 'true_false', 1 ), $label, $width, $logic, $instr, $required );
+		function scm_acf_field_truefalse( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
+			return scm_acf_field( $name, array( 'true_false', 1 ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -293,215 +316,206 @@
 
 	// SELECT 1
 	if ( ! function_exists( 'scm_acf_field_select1' ) ) {
-		function scm_acf_field_select1( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select1( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'select' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// SELECT 2
 	if ( ! function_exists( 'scm_acf_field_select' ) ) {
-		function scm_acf_field_select( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'select2' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// DATE FORMAT
 	if ( ! function_exists( 'scm_acf_field_select_date' ) ) {
-		function scm_acf_field_select_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Formato', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-date_format' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-date_format' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// COLUMN WIDTH
 	if ( ! function_exists( 'scm_acf_field_select_column_width' ) ) {
-		function scm_acf_field_select_column_width( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_column_width( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Larghezza', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-columns_width' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-columns_width' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// OPTIONS
 	if ( ! function_exists( 'scm_acf_field_select_options' ) ) {
-		function scm_acf_field_select_options( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_options( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Opzioni', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-options_show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-options_show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// HIDE
 	if ( ! function_exists( 'scm_acf_field_select_hide' ) ) {
-		function scm_acf_field_select_hide( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_hide( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// HIDE2
 	if ( ! function_exists( 'scm_acf_field_select_hide2' ) ) {
-		function scm_acf_field_select_hide2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_hide2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// SHOW
 	if ( ! function_exists( 'scm_acf_field_select_show' ) ) {
-		function scm_acf_field_select_show( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_show( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// SHOW2
 	if ( ! function_exists( 'scm_acf_field_select_show2' ) ) {
-		function scm_acf_field_select_show2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_show2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
-		}
-	}
-
-	// FALSE/TRUE
-	if ( ! function_exists( 'scm_acf_field_false_true' ) ) {
-		function scm_acf_field_false_true( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 0 ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// DISABLE
 	if ( ! function_exists( 'scm_acf_field_select_disable' ) ) {
-		function scm_acf_field_select_disable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_disable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// DISABLE2
 	if ( ! function_exists( 'scm_acf_field_select_disable2' ) ) {
-		function scm_acf_field_select_disable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_disable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// TRUE/FALSE
 	if ( ! function_exists( 'scm_acf_field_true_false' ) ) {
-		function scm_acf_field_true_false( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_true_false( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Disabilita', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 1 ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 1 ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// ENABLE
 	if ( ! function_exists( 'scm_acf_field_select_enable' ) ) {
-		function scm_acf_field_select_enable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_enable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 
 	// ENABLE2
 	if ( ! function_exists( 'scm_acf_field_select_enable2' ) ) {
-		function scm_acf_field_select_enable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_enable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// HEADINGS
 	if ( ! function_exists( 'scm_acf_field_select_headings' ) ) {
-		function scm_acf_field_select_headings( $name = '', $default = 0, $opt = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_headings( $name = '', $default = 0, $opt = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Stile', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-headings' . ( $opt === 1 ? '_low' : ( $opt === -1 ? '_min' : ( $opt === 2 ? '_max' : '' ) ) ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-headings' . ( $opt === 1 ? '_low' : ( $opt === -1 ? '_min' : ( $opt === 2 ? '_max' : '' ) ) ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// LAYOUT
 	if ( ! function_exists( 'scm_acf_field_select_layout' ) ) {
-		function scm_acf_field_select_layout( $name = '', $default = 0, $label = '', $width = '', $logic = 0, $placeholder = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_layout( $name = '', $default = 0, $label = '', $width = '', $logic = 0, $placeholder = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Layout', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'select-layout_main' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-layout_main' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// IMAGE FORMAT
 	if ( ! function_exists( 'scm_acf_field_select_image_format' ) ) {
-		function scm_acf_field_select_image_format( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_image_format( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Formato', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-image_format' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-image_format' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// FLOAT
 	if ( ! function_exists( 'scm_acf_field_select_float' ) ) {
-		function scm_acf_field_select_float( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_float( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Allineamento', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-float' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-float' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// OVERLAY
 	if ( ! function_exists( 'scm_acf_field_select_overlay' ) ) {
-		function scm_acf_field_select_overlay( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_overlay( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Overlay', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-overlay' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-overlay' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 	
 	// ALIGN
 	if ( ! function_exists( 'scm_acf_field_select_align' ) ) {
-		function scm_acf_field_select_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Allineamento', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// VERTICAL ALIGN
 	if ( ! function_exists( 'scm_acf_field_select_valign' ) ) {
-		function scm_acf_field_select_valign( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_valign( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Allineamento', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-vertical_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-vertical_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// TXT ALIGN
 	if ( ! function_exists( 'scm_acf_field_select_txt_align' ) ) {
-		function scm_acf_field_select_txt_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_txt_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Allineamento', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select2-txt_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select2-txt_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 
 	// UNITS
 	if ( ! function_exists( 'scm_acf_field_select_units' ) ) {
-		function scm_acf_field_select_units( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'px', $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_select_units( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'px', $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Unità', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'select-units' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'select-units' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -509,91 +523,91 @@
 
 	// INTERNAL OBJECT ID BY TAXONOMY
 	if ( ! function_exists( 'scm_acf_field_object_tax' ) ) {
-		function scm_acf_field_object_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 			
-			return scm_acf_field( $name, array( 'object-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'object-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS ID BY TAXONOMY
 	if ( ! function_exists( 'scm_acf_field_objects_tax' ) ) {
-		function scm_acf_field_objects_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_objects_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'objects-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'objects-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECT ID
 	if ( ! function_exists( 'scm_acf_field_object_obj' ) ) {
-		function scm_acf_field_object_obj( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object_obj( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'object', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'object', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECT ID
 	if ( ! function_exists( 'scm_acf_field_object' ) ) {
-		function scm_acf_field_object( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'object-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'object-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECT ID REL
 	if ( ! function_exists( 'scm_acf_field_object_rel' ) ) {
-		function scm_acf_field_object_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'object-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'object-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS
 	if ( ! function_exists( 'scm_acf_field_object_objs' ) ) {
-		function scm_acf_field_object_objs( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object_objs( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'objects', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'objects', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS ID
 	if ( ! function_exists( 'scm_acf_field_objects' ) ) {
-		function scm_acf_field_objects( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_objects( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'objects-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'objects-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS ID REL
 	if ( ! function_exists( 'scm_acf_field_objects_rel' ) ) {
-		function scm_acf_field_objects_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_objects_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'objects-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'objects-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL LINKS
 	if ( ! function_exists( 'scm_acf_field_object_link' ) ) {
-		function scm_acf_field_object_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_object_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'object-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'object-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// INTERNAL LINKS
 	if ( ! function_exists( 'scm_acf_field_objects_link' ) ) {
-		function scm_acf_field_objects_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instr = '', $required = 0 ) {
+		function scm_acf_field_objects_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
 
-			return scm_acf_field( $name, array( 'objects-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'objects-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -601,21 +615,21 @@
 
 	// TAXONOMY
 	if ( ! function_exists( 'scm_acf_field_taxonomy' ) ) {
-		function scm_acf_field_taxonomy( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instr = '', $required = 0 ) {
+		function scm_acf_field_taxonomy( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Taxonomy', SCM_THEME ) );
 
 			//printPre( $name . ' - ' . $tax . ' - ' . $label . ' - ' . $save );
 
-			return scm_acf_field( $name, array( 'taxonomy-id', $tax, $add, $save ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'taxonomy-id', $tax, $add, $save ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
 	// TAXONOMIES
 	if ( ! function_exists( 'scm_acf_field_taxonomies' ) ) {
-		function scm_acf_field_taxonomies( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instr = '', $required = 0 ) {
+		function scm_acf_field_taxonomies( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instructions = '', $required = 0 ) {
 			$label = ( $label ?: __( 'Taxonomies', SCM_THEME ) );
 			//printPre( $name . ' - ' . $tax . ' - ' . $label . ' - ' . $save );
-			return scm_acf_field( $name, array( 'taxonomies-id', $tax, $add, $save ), $label, $width, $logic, $instr, $required );
+			return scm_acf_field( $name, array( 'taxonomies-id', $tax, $add, $save ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 
@@ -623,28 +637,38 @@
 
 	// REPEATER BLOCK
 	if ( ! function_exists( 'scm_acf_field_repeater' ) ) {
-		function scm_acf_field_repeater( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_field_repeater( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
 			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
 			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-block', $button, $min, $max ), $label, 100, $logic, $instr, $required, $class );
+			return scm_acf_field( $name, array( 'repeater-block', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
+		}
+	}
+
+	// REPEATER BLOCK LABELS
+	if ( ! function_exists( 'scm_acf_field_repeater_labels' ) ) {
+		function scm_acf_field_repeater_labels( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
+			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
+			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
+			$class .= ' repeater-labels' ;
+			return scm_acf_field( $name, array( 'repeater-block', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
 		}
 	}
 
 	// REPEATER ROW
 	if ( ! function_exists( 'scm_acf_field_repeater_row' ) ) {
-		function scm_acf_field_repeater_row( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_field_repeater_row( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
 			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
 			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-row', $button, $min, $max ), $label, 100, $logic, $instr, $required, $class );
+			return scm_acf_field( $name, array( 'repeater-row', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
 		}
 	}
 
 	// REPEATER TABLE
 	if ( ! function_exists( 'scm_acf_field_repeater_table' ) ) {
-		function scm_acf_field_repeater_table( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_field_repeater_table( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
 			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
 			$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-table', $button, $min, $max ), $label, 100, $logic, $instr, $required, $class );
+			return scm_acf_field( $name, array( 'repeater-table', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
 		}
 	}
 
@@ -652,9 +676,9 @@
 
 	// FLEXIBLE CONTENT
 	if ( ! function_exists( 'scm_acf_field_flexible' ) ) {
-		function scm_acf_field_flexible( $name = '', $default = 0, $label = '', $button = '+', $width = '', $logic = 0, $min = '', $max = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_field_flexible( $name = '', $default = 0, $label = '', $button = '+', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
 			$label = ( $label ?: __( 'Componi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'flexible', $button, $min, $max ), $label, 100, $logic, $instr, $required, $class );
+			return scm_acf_field( $name, array( 'flexible', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
 		}
 	}
 
@@ -664,7 +688,7 @@
 
 	// SELECTORS
 	if ( ! function_exists( 'scm_acf_preset_selectors' ) ) {
-		function scm_acf_preset_selectors( $name = 'selectors', $default = 0, $w1 = 100, $w2 = 100, $logic = 0, $pl1 = '', $pl2 = '', $lb1 = '', $lb2 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_selectors( $name = 'selectors', $default = 0, $w1 = 100, $w2 = 100, $logic = 0, $pl1 = '', $pl2 = '', $lb1 = '', $lb2 = '', $instructions = '', $req = 0 ) {
 			$pl1 = ( $pl1 ?: __( 'id', SCM_THEME ) );
 			$pl2 = ( $pl2 ?: __( 'class', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'ID', SCM_THEME ) );
@@ -672,13 +696,13 @@
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Aggiungi Selettori', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Aggiungi Selettori', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_id( $name . 'id', $default, $w1, $logic, $pl1 , $lb1, $instr, $req );
-			$fields[] = scm_acf_field_class( $name . 'class', $default, $w2, $logic, $pl2, $lb2, $instr, $req );
+			$fields[] = scm_acf_field_id( $name . 'id', $default, $w1, $logic, $pl1 , $lb1, $instructions, $req );
+			$fields[] = scm_acf_field_class( $name . 'class', $default, $w2, $logic, $pl2, $lb2, $instructions, $req );
 
 			return $fields;
 		}
@@ -686,7 +710,7 @@
 
 	// SIZE
 	if ( ! function_exists( 'scm_acf_preset_size' ) ) {
-		function scm_acf_preset_size( $name = 'size', $default = 0, $pl1 = 'auto', $pl2 = 'px', $lb1 = '', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_size( $name = 'size', $default = 0, $pl1 = 'auto', $pl2 = 'px', $lb1 = '', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $instructions = '', $req = 0 ) {
 			$lb1 = ( $lb1 ?: __( 'Dimensione', SCM_THEME ) );
 			$lb2 = ( $lb2 ?: __( 'Unità', SCM_THEME ) );
 
@@ -701,8 +725,8 @@
 				$w1 = .5 * $w1;
 			}
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Imposta', SCM_THEME ) . ' ' . $lb1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Imposta', SCM_THEME ) . ' ' . $lb1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -715,7 +739,7 @@
 
 	// POSITION
 	if ( ! function_exists( 'scm_acf_preset_position' ) ) {
-		function scm_acf_preset_position( $name = 'position', $default = 0, $pl1 = 'auto', $pl2 = 'px', $lb1 = '', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_position( $name = 'position', $default = 0, $pl1 = 'auto', $pl2 = 'px', $lb1 = '', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $instructions = '', $req = 0 ) {
 			$lb1 = ( $lb1 ?: __( 'Posizione', SCM_THEME ) );
 			$lb2 = ( $lb2 ?: __( 'Unità', SCM_THEME ) );
 
@@ -730,8 +754,8 @@
 				$w1 = .5 * $w1;
 			}
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Imposta', SCM_THEME ) . ' ' . $lb1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Imposta', SCM_THEME ) . ' ' . $lb1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -744,7 +768,7 @@
 	
 	// COLOR
 	if ( ! function_exists( 'scm_acf_preset_rgba' ) ) {
-		function scm_acf_preset_rgba( $name = 'rgba', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_rgba( $name = 'rgba', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instructions = '', $req = 0 ) {
 			$lb2 = ( $lb2 ?: __( 'Trasparenza', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Colore', SCM_THEME ) );
 
@@ -757,8 +781,8 @@
 				$w1 = .5 * $w1;
 			}
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -771,7 +795,7 @@
 
 	// TXT COLOR
 	if ( ! function_exists( 'scm_acf_preset_rgba_txt' ) ) {
-		function scm_acf_preset_rgba_txt( $name = 'rgba-txt', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_rgba_txt( $name = 'rgba-txt', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instructions = '', $req = 0 ) {
 			$lb2 = ( $lb2 ?: __( 'Trasparenza', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Colore Testi', SCM_THEME ) );
 
@@ -786,8 +810,8 @@
 				$w1 = .5 * $w1;
 			}
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -800,7 +824,7 @@
 
 	// BG COLOR
 	if ( ! function_exists( 'scm_acf_preset_rgba_bg' ) ) {
-		function scm_acf_preset_rgba_bg( $name = 'rgba-bg', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_rgba_bg( $name = 'rgba-bg', $default = 0, $pl1 = '', $pl2 = '1', $logic = 0, $w1 = '', $w2 = '', $lb2 = '', $lb1 = '', $instructions = '', $req = 0 ) {
 			$lb2 = ( $lb2 ?: __( 'Trasparenza', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Colore Sfondo', SCM_THEME ) );
 
@@ -813,8 +837,8 @@
 				$w1 = .5 * $w1;
 			}
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Imposta', SCM_THEME ) .' ' . $lb1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -827,12 +851,12 @@
 
 	// BACKGROUND STYLE
 	if ( ! function_exists( 'scm_acf_preset_background_style' ) ) {
-		function scm_acf_preset_background_style( $name = 'bg-style', $default = 0, $width = 100, $logic = 0, $pl1 = '', $pl2 = 'center center', $pl3 = 'auto auto', $instr = '', $req = 0 ) {
+		function scm_acf_preset_background_style( $name = 'bg-style', $default = 0, $width = 100, $logic = 0, $pl1 = '', $pl2 = 'center center', $pl3 = 'auto auto', $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Sfondo', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Sfondo', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -848,12 +872,12 @@
 
 	// TEXT FONT
 	if ( ! function_exists( 'scm_acf_preset_text_font' ) ) {
-		function scm_acf_preset_text_font( $name = 'txt-font', $default = 0, $logic = 0, $w1 = 100, $w2 = 100, $w3 = 100, $instr = '', $req = 0 ) {
+		function scm_acf_preset_text_font( $name = 'txt-font', $default = 0, $logic = 0, $w1 = 100, $w2 = 100, $w3 = 100, $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Testi', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Testi', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -867,12 +891,12 @@
 	
 	// TEXT SET
 	if ( ! function_exists( 'scm_acf_preset_text_set' ) ) {
-		function scm_acf_preset_text_set( $name = 'txt-settings', $default = 0, $logic = 0, $w1 = 100, $w2 = 100, $w3 = 100, $w4 = 100, $instr = '', $req = 0 ) {
+		function scm_acf_preset_text_set( $name = 'txt-settings', $default = 0, $logic = 0, $w1 = 100, $w2 = 100, $w3 = 100, $w4 = 100, $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Testi', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Testi', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -887,12 +911,12 @@
 
 	// TEXT SHADOW
 	if ( ! function_exists( 'scm_acf_preset_text_shadow' ) ) {
-		function scm_acf_preset_text_shadow( $name = 'txt-shadow', $default = 0, $logic = 0, $instr = '', $req = 0 ) {
+		function scm_acf_preset_text_shadow( $name = 'txt-shadow', $default = 0, $logic = 0, $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Testi', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Testi', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -907,12 +931,12 @@
 
 	// TEXT STYLE
 	if ( ! function_exists( 'scm_acf_preset_text_style' ) ) {
-		function scm_acf_preset_text_style( $name = 'txt-style', $default = 0, $instr = '', $req = 0 ) {
+		function scm_acf_preset_text_style( $name = 'txt-style', $default = 0, $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Testi', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Testi', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -936,7 +960,7 @@
 
 	// BOX SHAPE
 	if ( ! function_exists( 'scm_acf_preset_box_shape' ) ) {
-		function scm_acf_preset_box_shape( $name = 'box-shape', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_box_shape( $name = 'box-shape', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
@@ -955,12 +979,12 @@
 
 	// BOX STYLE
 	if ( ! function_exists( 'scm_acf_preset_box_style' ) ) {
-		function scm_acf_preset_box_style( $name = 'box-style', $default = 0, $instr = '', $req = 0 ) {
+		function scm_acf_preset_box_style( $name = 'box-style', $default = 0, $instructions = '', $req = 0 ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), __( 'Impostazioni Box', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), __( 'Impostazioni Box', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -976,13 +1000,13 @@
 	
 	// MAP ICON
 	if ( ! function_exists( 'scm_acf_preset_map_icon' ) ) {
-		function scm_acf_preset_map_icon( $name = 'map-icon', $default = 0, $w1 = 100, $logic = 0, $label = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_map_icon( $name = 'map-icon', $default = 0, $w1 = 100, $logic = 0, $label = '', $instructions = '', $req = 0 ) {
 			$label = ( $label ?: __( 'Icona', SCM_THEME ) );
 			
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $label, $w1 );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $label, $w1 );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1004,18 +1028,18 @@
 
 	// TERM
 	if ( ! function_exists( 'scm_acf_preset_term' ) ) {
-		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Termine', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 			
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_taxonomy( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instr, $required );
+			$fields[] = scm_acf_field_taxonomy( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instructions, $required );
 
 			return $fields;
 		}
@@ -1023,18 +1047,18 @@
 
 	// TERMS
 	if ( ! function_exists( 'scm_acf_preset_terms' ) ) {
-		function scm_acf_preset_terms( $name = 'terms', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instr = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_terms( $name = 'terms', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Termini', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 			
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_taxonomies( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instr, $required );
+			$fields[] = scm_acf_field_taxonomies( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instructions, $required );
 
 			return $fields;
 		}
@@ -1042,14 +1066,14 @@
 
 	// TAXONOMY
 	if ( ! function_exists( 'scm_acf_preset_taxonomy' ) ) {
-		function scm_acf_preset_taxonomy( $name = 'taxonomy', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomy( $name = 'taxonomy', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Relazione', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1066,14 +1090,14 @@
 
 	// TAXONOMIES
 	if ( ! function_exists( 'scm_acf_preset_taxonomies' ) ) {
-		function scm_acf_preset_taxonomies( $name = 'taxonomies', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomies( $name = 'taxonomies', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Relazioni', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$taxes = get_object_taxonomies( $type, 'objects' );
 
@@ -1092,14 +1116,14 @@
 
 	// CATEGORY REQUIRED
 	if ( ! function_exists( 'scm_acf_preset_category_req' ) ) {
-		function scm_acf_preset_category_req( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instr = '', $placeholder = '', $required = 1, $class = '' ) {		
+		function scm_acf_preset_category_req( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 1, $class = '' ) {		
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologia', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1116,14 +1140,14 @@
 
 	// CATEGORY
 	if ( ! function_exists( 'scm_acf_preset_category' ) ) {
-		function scm_acf_preset_category( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {		
+		function scm_acf_preset_category( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {		
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologia', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1140,14 +1164,14 @@
 
 	// CATEGORIES
 	if ( ! function_exists( 'scm_acf_preset_categories' ) ) {
-		function scm_acf_preset_categories( $name = 'categories', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_categories( $name = 'categories', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologie', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1164,14 +1188,14 @@
 
 	// TAG
 	if ( ! function_exists( 'scm_acf_preset_tag' ) ) {
-		function scm_acf_preset_tag( $name = 'tag', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tag( $name = 'tag', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Categoria', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1188,14 +1212,14 @@
 
 	// TAGS
 	if ( ! function_exists( 'scm_acf_preset_tags' ) ) {
-		function scm_acf_preset_tags( $name = 'tags', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instr = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tags( $name = 'tags', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Categorie', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instr ), $placeholder );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-' . $name, array( 'message', $instructions ), $placeholder );
 			
 			$name = ( $name ? $name . '-' : '');
 
@@ -1212,12 +1236,12 @@
 
 	// COLUMNS
 	if ( ! function_exists( 'scm_acf_preset_repeater_columns' ) ) {
-		function scm_acf_preset_repeater_columns( $name = '', $default = 0, $elements = '', $logic = 0, $instr = '', $required = 0, $class = 'special-repeater' ) {
+		function scm_acf_preset_repeater_columns( $name = '', $default = 0, $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'special-repeater' ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-columns' . ( $name ? '-' . $name : '' ), array( 'message', $instr ), __( 'Istruzioni Colonne', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-columns' . ( $name ? '-' . $name : '' ), array( 'message', $instructions ), __( 'Istruzioni Colonne', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1236,7 +1260,7 @@
 
 	// BUTTON
 	if ( ! function_exists( 'scm_acf_preset_button' ) ) {
-		function scm_acf_preset_button( $name = '', $default = 0, $type = 'link', $placeholder = '', $filter = '', $options = 0, $pl2 = '', $pl3 = '', $logic = 0, $instr = '', $required = 0 ) {
+		function scm_acf_preset_button( $name = '', $default = 0, $type = 'link', $placeholder = '', $filter = '', $options = 0, $pl2 = '', $pl3 = '', $logic = 0, $instructions = '', $required = 0 ) {
 			$pl2 = ( $pl2 ?: __( 'Nome', SCM_THEME ) );
 			
 			$fields = array();
@@ -1297,7 +1321,7 @@
 
 	// ICONS
 	if ( ! function_exists( 'scm_acf_preset_flexible_buttons' ) ) {
-		function scm_acf_preset_flexible_buttons( $name = '', $default = 0, $group = '', $label = '', $logic = 0, $instr = '', $required = 0, $class = 'buttons-flexible' ) {
+		function scm_acf_preset_flexible_buttons( $name = '', $default = 0, $group = '', $label = '', $logic = 0, $instructions = '', $required = 0, $class = 'buttons-flexible' ) {
 
 			$fields = array();
 
@@ -1306,8 +1330,8 @@
 			if( !isset( $SCM_fa[ $group ] ) )
 				return $fields;
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-buttons' . ( $name ? '-' . $name : '' ), array( 'message', $instr ), __( 'Istruzioni Pulsanti', SCM_THEME ) . ' ' . $label );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-buttons' . ( $name ? '-' . $name : '' ), array( 'message', $instructions ), __( 'Istruzioni Pulsanti', SCM_THEME ) . ' ' . $label );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1334,7 +1358,7 @@
 
 	// BUTTON SHAPE
 	if ( ! function_exists( 'scm_acf_preset_button_shape' ) ) {
-		function scm_acf_preset_button_shape( $name = 'but-style', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instr = '', $req = 0 ) {
+		function scm_acf_preset_button_shape( $name = 'but-style', $default = 0, $width = 100, $logic = 0, $placeholder = '', $instructions = '', $req = 0 ) {
 
 			$fields = array();
 			
@@ -1357,12 +1381,12 @@
 
 	// SECTIONS
 	if ( ! function_exists( 'scm_acf_preset_flexible_sections' ) ) {
-		function scm_acf_preset_flexible_sections( $name = '', $default = 0, $elements = '', $logic = 0, $instr = '', $required = 0, $class = 'rows-flexible' ) {
+		function scm_acf_preset_flexible_sections( $name = '', $default = 0, $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'rows-flexible' ) {
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-sections' . ( $name ? '-' . $name : '' ), array( 'message', $instr ), __( 'Istruzioni Righe', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-sections' . ( $name ? '-' . $name : '' ), array( 'message', $instructions ), __( 'Istruzioni Righe', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1415,7 +1439,7 @@
 
 	// LAYOUTS ( vedi scm-acf-layouts.php )
 	if ( ! function_exists( 'scm_acf_preset_flexible_elements' ) ) {
-		function scm_acf_preset_flexible_elements( $name = '', $default = 0, $elements = '', $logic = 0, $instr = '', $required = 0, $class = 'elements-flexible' ) {
+		function scm_acf_preset_flexible_elements( $name = '', $default = 0, $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'elements-flexible' ) {
 
 			global $SCM_acf_objects, $SCM_types;
 
@@ -1441,8 +1465,8 @@
 
 			$fields = array();
 
-			if( $instr )
-				$fields[] = scm_acf_field( 'msg-open-modules' . ( $name ? '-' . $name : '' ), array( 'message', $instr ), __( 'Istruzioni Elementi', SCM_THEME ) );
+			if( $instructions )
+				$fields[] = scm_acf_field( 'msg-open-modules' . ( $name ? '-' . $name : '' ), array( 'message', $instructions ), __( 'Istruzioni Elementi', SCM_THEME ) );
 
 			$name = ( $name ? $name . '-' : '');
 
@@ -1494,9 +1518,9 @@
 
 	// TEMPLATES
 	if ( ! function_exists( 'scm_acf_fields_template' ) ) {
-		function scm_acf_fields_template( $name = '', $default = 0, $logic = 0, $instr = '', $required = 0, $class = 'posts-repeater' ) {
+		function scm_acf_fields_template( $name = '', $default = 0, $logic = 0, $instructions = '', $required = 0, $class = 'posts-repeater' ) {
 
-			$instr = ( $instr ?: __( 'Costruisci dei modelli da poter poi scegliere durante la creazione di nuovi contenuti. Per ogni modello è obbligatorio inserire almeno il Nome.', SCM_THEME ) );
+			$instructions = ( $instructions ?: __( 'Costruisci dei modelli da poter poi scegliere durante la creazione di nuovi contenuti. Per ogni modello è obbligatorio inserire almeno il Nome.', SCM_THEME ) );
 
 			if( !$name )
 				return;
@@ -1504,7 +1528,7 @@
 			$fields = array();
 
 
-			$template = scm_acf_field_repeater( $name . '-templates', $default, __( 'Aggiungi Modello', SCM_THEME ), __( 'Modelli', SCM_THEME ), 100, $logic, '', '', $instr, $required, $class );
+			$template = scm_acf_field_repeater( $name . '-templates', $default, __( 'Aggiungi Modello', SCM_THEME ), __( 'Modelli', SCM_THEME ), 100, $logic, '', '', $instructions, $required, $class );
 
 				$template['sub_fields'][] = scm_acf_field_name_req( 'name',  $default, '', 60, 0, __( 'Nome Modello', SCM_THEME ), __( 'Nome', SCM_THEME ) );
 				$template['sub_fields'][] = scm_acf_field( 'id', array( 'text-read', '', '0', __( 'ID', SCM_THEME ) ), __( 'ID', SCM_THEME ), 40 );
@@ -1993,12 +2017,12 @@
 			$fields = array();
 
 			$types = scm_acf_field_repeater( $name . 'types-list', $default, __('Aggiungi Type', SCM_THEME), __( 'Types', SCM_THEME ), 100, 0, 0 );
-			$types['sub_fields'][] = scm_acf_field_false_true( 'show', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false_true( 'SHOW', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
 			$types['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 25, 0, __( 'Attiva Type', SCM_THEME ) );
 			$types['sub_fields'][] = scm_acf_field_name_req( 'plural', $default, 18, 50, 0, __( 'Produzioni', SCM_THEME ), __( 'Plurale', SCM_THEME ) );
 
 			$active = array(
-				'field' => 'show',
+				'field' => 'SHOW',
 				'operator' => '==',
 				'value' => '1',
 			);
@@ -2016,8 +2040,8 @@
 
 				$types['sub_fields'][] = scm_acf_field( 'tab-menu', 'tab', __( 'Menu', SCM_THEME ), 0, $active );
 					$types['sub_fields'][] = scm_acf_field_text( 'icon', $default, 100, $active, 'admin-site', __( 'Icona', SCM_THEME ), __( 'Icona', SCM_THEME ), '', __( 'Visita <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> per un elenco delle icone disponibili e dei corrispettivi nomi, da inserire nel seguente campo.', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_positive( 'menu', $default, 50, $active, '0', __( 'Zona Menu', SCM_THEME ), 0, 3 );
-					$types['sub_fields'][] = scm_acf_field_positive( 'menupos', $default, 50, $active, '', __( 'Posizione Menu', SCM_THEME ), 0, 91 );
+					$types['sub_fields'][] = scm_acf_field_positive( 'menu', 0, 50, $active, 0, __( 'Zona Menu', SCM_THEME ), 0, 3 );
+					$types['sub_fields'][] = scm_acf_field_positive( 'menupos', 0, 50, $active, 0, __( 'Posizione Menu', SCM_THEME ), 0, 91 );
 
 				$types['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, $active );
 					
@@ -2030,43 +2054,22 @@
 
 			$fields[] = scm_acf_field( 'msg-types-menupos', array(
 						'message',
-						'<strong>Groups: 0 = Pages | 1 = Custom | 2 = Custom | 3 = Media | 4 = Contacts</strong>
+						'<strong>Menu Groups (menu):</strong>
+						0 = to end
+						1 = SCM
+						2 = Pages and Sections
+						3 = Types
+						4 = Media
+						5 = Contacts
+						6 = Settings
+						7 = Plugins
 
-						0.1 [ SCM ]
-						0.2 [ SCM Types ]
-						0.3 [ SCM Templates ]
-
-						4 —
-
-						5 [ PAGES ]
-
-						10 —
-
-						11 <strong>free</strong>
-						12 > 19 <strong>[ 1 ]</strong>
-
-						20 —
-
-						21 <strong>free</strong>
-						22 > 25 <strong>[ 2 ]</strong>
-
-						26 —
-
-						27 [ MEDIA ]
-						28 > 41 <strong>[ 3 ]</strong>
-
-						42 —
-
-						44 > 55 <strong>[ 4 ]</strong>
-						56 [ USERS ]
-						57 [ CF7 ]
-						58 <strong>free</strong>
-
-						59 —
-
+						<strong>Menu Position (menupos):
+						0 = to end
+						1 = first position
+						2 = second position
 						...
-
-						91 > ... default',
+						</strong>',
 					), 'Posizione in Menu' );
 
 			return $fields;
@@ -2082,12 +2085,12 @@
 			$fields = array();
 
 			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', $default, __( 'Aggiungi Taxonomy', SCM_THEME ), __( 'Taxonomies', SCM_THEME ), 100, 0, 0 );
-			$taxes['sub_fields'][] = scm_acf_field_false_true( 'show', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
+			$taxes['sub_fields'][] = scm_acf_field_false_true( 'SHOW', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
 			$taxes['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 25, 0, __( 'Attiva Taxonomy', SCM_THEME ) );
 			$taxes['sub_fields'][] = scm_acf_field_name_req( 'plural', $default, 18, 50, 0, __( 'Nome Categorie', SCM_THEME ), __( 'Plurale', SCM_THEME ) );
 
 			$active = array(
-				'field' => 'show',
+				'field' => 'SHOW',
 				'operator' => '==',
 				'value' => '1',
 			);
@@ -2148,17 +2151,15 @@
 
 			$name = ( $name ? $name . '-' : '' );
 
-
 			$const = get_defined_constants( true );
 			$const = $const[ 'user' ];
 			$const = getAllByPrefix( $const, 'SCM_', 2 );
 			$const = arrayToHTML( $const );
 
-
 			$fields = array();
 
 			$fields[] = scm_acf_field( 'tab-' . $name . 'intro-constants', 'tab-left', __( 'Costanti', SCM_THEME ) );
-				$fields[] = scm_acf_field( 'msg-constants', 'message', $const );
+				$fields[] = scm_acf_field( 'msg-constants', array('message', $const, 0, ''), 'Constants List' );
 
 			return $fields;
 
@@ -2207,12 +2208,14 @@
 					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-delay', array( 'second', '', '0', __( 'Delay', SCM_THEME ) ), __( 'Delay', SCM_THEME ) );
 					$fields[] = scm_acf_field_select_enable( $name . 'opt-tools-smoothscroll-page', $default, __( 'Smooth Scroll (su nuove pagine)', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-delay-new', array( 'second', '', '0,3', __( 'Delay su nuova pagina', SCM_THEME ) ), __( 'Delay su nuova pagina', SCM_THEME ) );
-					$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-offset', array( 'pixel', 50, 50, __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_size( $name . 'opt-tools-smoothscroll-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
+					//$fields[] = scm_acf_field( $name . 'opt-tools-smoothscroll-offset', array( 'pixel', 50, 50, __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field_select( $name . 'opt-tools-smoothscroll-ease', $default, 'ease', 100, 0, '', __( 'Ease', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-singlenav', 'message', __( 'Single Page Nav', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-activeclass', array( 'class', 'active', 'active', __( 'Active Class', SCM_THEME ) ), __( 'Active Class', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-interval', array( 'second', '', '500', __( 'Interval', SCM_THEME ) ), __( 'Interval', SCM_THEME ) );
-					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-offset', array( 'pixel', '', '0', __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_size( $name . 'opt-tools-singlepagenav-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
+					//$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-offset', array( 'pixel', '', '0', __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field( $name . 'opt-tools-singlepagenav-threshold', array( 'pixel', '', '150', __( 'Threshold', SCM_THEME ) ), __( 'Threshold', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-parallax', 'message', 'Parallax' );
 					$fields[] = scm_acf_field_select_disable( $name . 'opt-tools-parallax', $default, 'Parallax' );
@@ -2403,6 +2406,9 @@
 			$fields = array();
 			
 			$fields[] = scm_acf_field( 'msg-menu', 'message', __( 'Opzioni Menu', SCM_THEME ) );
+
+				$fields[] = scm_acf_field_falsetrue( $name . 'auto', 0, 100, 0, 'Automatic Menu' );
+
 				$fields[] = scm_acf_field_select( $name . 'wp', $default, 'wp_menu', 50, 0, '', __( 'Menu', SCM_THEME ) );
 				
 				$fields[] = scm_acf_field_select_disable( $name . 'overlay', $default, __( 'Overlay', SCM_THEME ), 50 );

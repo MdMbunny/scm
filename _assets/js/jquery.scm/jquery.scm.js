@@ -256,6 +256,13 @@
 		
 	jQuery(function($){
 
+		window.onpageshow = function(event) {
+		    if (event.persisted && $body.hasClass('safari')) {
+		        window.location.reload() 
+		    }
+		};
+
+
 		//$.log('document.ready');
 	});
 

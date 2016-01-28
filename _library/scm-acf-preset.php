@@ -34,7 +34,7 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 * 		
-*		'message'				$message = ''								$esc_html = 0
+*		'message'				$message = ''								$esc_html = 0 					$new_lines = '' | 'br' | 'wpautop'
 *		'tab'					$placement = 'top | side' || 0 | 1
 *			'-side'					$placement = 'side'
 *
@@ -193,9 +193,11 @@
 				case 'message':
 					$msg = ( isset( $arg[1] ) ? $arg[1] : '' );
 					$html = ( isset( $arg[2] ) ? $arg[2] : 0 );
+					$lines = ( isset( $arg[3] ) ? $arg[3] : 0 );
 	        		$field = array(
 						'type' => 'message',
 						'message' => $msg,
+						'new_lines' => $lines,
 						'esc_html' => $html,
 
 					);
@@ -440,7 +442,7 @@
 					$maxh = ( isset( $arg[6] ) ? $arg[6] : 0 );
 					$mins = ( isset( $arg[7] ) ? $arg[7] : 0 );
 					$maxs = ( isset( $arg[8] ) ? $arg[8] : 0 );
-					$mime = ( isset( $arg[9] ) ? $arg[9] : 'jpg, png, gif, ico' );
+					$mime = ( isset( $arg[9] ) ? $arg[9] : '' );
 					$ret = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) );
 	        		$field = array(
 						'type' => 'image',
@@ -452,7 +454,7 @@
 						'max_height' => $maxh,
 						'min_size' => $mins,
 						'max_size' => $maxs,
-						//'mime_types' => $mime,
+						'mime_types' => $mime, // toccato
 						'return_format' => $ret,
 					);
 
@@ -928,6 +930,7 @@
 				$choices = array(
 					'self' => __( 'Sticky Self', SCM_THEME ),
 					'plus' => __( 'Sticky Plus', SCM_THEME ),
+					'head' => __( 'Sticky Head', SCM_THEME ),
 				);
 
 			elseif( strpos( $list, 'sticky_attach' ) !== false ):
@@ -1328,6 +1331,7 @@
 
 					$choices = array(
 						'500px'			=> 'Mobile Min',
+						'600px'			=> 'Mobile Mid',
 						'700px'			=> 'Mobile',
 						'800px'			=> 'Tablet Portrait',
 						'940px'			=> 'Notebook',
@@ -1339,6 +1343,7 @@
 
 					$choices = array(
 						'smartmin'		=> 'Mobile Min',
+						'smartmid'		=> 'Mobile Mid',
 						'smart'			=> 'Mobile',
 						'portrait'		=> 'Tablet Portrait',
 						'notebook'		=> 'Notebook',
@@ -1350,24 +1355,26 @@
 
 			elseif( strpos( $list, 'responsive_up' ) !== false ):
 				$choices = array(
-					'smartmin'												=> 'Mobile Min',
-					'smartmin smartmid smart'										=> 'Mobile',
-					'smartmin smartmid smart portrait'								=> 'Tablet Portrait',
-					'smartmin smartmid smart portrait notebook'						=> 'Notebook',
-					'smartmin smartmid smart portrait notebook landscape'						=> 'Tablet Landscape',
-					'smartmin smartmid smart portrait notebook landscape desktop'				=> 'Desktop',
-					'smartmin smartmid smart portrait notebook landscape desktop wide'				=> 'Wide',
+					'smartmin'																=> 'Mobile Min',
+					'smartmin smartmid'														=> 'Mobile Mid',
+					'smartmin smartmid smart'												=> 'Mobile',
+					'smartmin smartmid smart portrait'										=> 'Tablet Portrait',
+					'smartmin smartmid smart portrait notebook'								=> 'Notebook',
+					'smartmin smartmid smart portrait notebook landscape'					=> 'Tablet Landscape',
+					'smartmin smartmid smart portrait notebook landscape desktop'			=> 'Desktop',
+					'smartmin smartmid smart portrait notebook landscape desktop wide'		=> 'Wide',
 				);
 
 			elseif( strpos( $list, 'responsive_down' ) !== false ):
 				$choices = array(
 					'wide desktop landscape notebook portrait smart smartmid smartmin'		=> 'Mobile Min',
-					'wide desktop landscape notebook portrait smart'		=> 'Mobile',
-					'wide desktop landscape notebook portrait'			=> 'Tablet Portrait',
-					'wide desktop landscape notebook'			=> 'Notebook',
-					'wide desktop landscape'						=> 'Tablet Landscape',
-					'wide desktop'								=> 'Desktop',
-					'wide'									=> 'Wide',
+					'wide desktop landscape notebook portrait smart smartmid'				=> 'Mobile Mid',
+					'wide desktop landscape notebook portrait smart'						=> 'Mobile',
+					'wide desktop landscape notebook portrait'								=> 'Tablet Portrait',
+					'wide desktop landscape notebook'										=> 'Notebook',
+					'wide desktop landscape'												=> 'Tablet Landscape',
+					'wide desktop'															=> 'Desktop',
+					'wide'																	=> 'Wide',
 				);
 
 			elseif( strpos( $list, 'responsive_layouts' ) !== false ):
@@ -1378,6 +1385,7 @@
 					'940px'				=> '940px',
 					'800px'				=> '800px',
 					'700px'				=> '700px',
+					'600px'				=> '600px',
 				);
 			
 			elseif( strpos( $list, 'bg_repeat' ) !== false ):
@@ -1404,6 +1412,8 @@
 			elseif( strpos( $list, 'webfonts_adobe' ) !== false ):
 				if( strpos( $list, 'webfonts_adobe_styles' ) !== false ):
 					$choices = array(
+						'n1' => 'Thin',
+						'i1' => 'Thin Italic',
 						'n3' => 'Light',
 						'i3' => 'Light Italic',
 						'n4' => 'Normal',
@@ -1414,6 +1424,8 @@
 						'i7' => 'Bold Italic',
 						'n8' => 'Extra Bold',
 						'i8' => 'Extra Bold Italic',
+						'n9' => 'Ultra Bold',
+						'i9' => 'Ultra Bold Italic',
 					);
 				else:
 					global $SCM_typekit;
@@ -1433,6 +1445,8 @@
 			elseif( strpos( $list, 'webfonts_google' ) !== false ):
 				if( strpos( $list, 'webfonts_google_styles' ) !== false ):
 					$choices = array(
+						'100,' => 'Thin',
+						'100italic,' => 'Thin Italic',
 						'300,' => 'Light',
 						'300italic,' => 'Light Italic',
 						'400,' => 'Normal',
@@ -1443,6 +1457,8 @@
 						'700italic,' => 'Bold Italic',
 						'800,' => 'Extra Bold',
 						'800italic,' => 'Extra Bold Italic',
+						'900,' => 'Ultra Bold',
+						'900italic,' => 'Ultra Bold Italic',
 					);
 				else:
 					$choices = array('no' => 'No Google font');

@@ -47,7 +47,7 @@ $id = $args['id'];
 
 /***************/
 
-$slider = get_term( $args['slider'], 'sliders' );
+$slider = get_term( ( $args['slider'] ?: $args['slider-terms'] ), 'sliders' );
 // +++ todo:  diventa wp query? che poi chiama single-slide?
 $slides = get_posts( array(
     'order' => 'ASC',
@@ -140,10 +140,11 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
 
         $slide = array_merge( $slide, get_fields($elem) );
         $i++;
-        $img = $slide[ 'slide-image' ];
+        //$img = $slide[ 'slide-image' ];
+        $img = ( $slide[ 'slide-image' ] ?: SCM_URI_IMG . 'empty.png' );
         
-        if( !$img )
-            continue;
+        /*if( !$img )
+            continue;*/
 
         $link = ( $slide[ 'slide-link' ] == 'page' ? $slide[ 'slide-internal' ] : ( $slide[ 'slide-link' ] == 'link' ? $slide[ 'slide-external' ] : '' ) );
         $caption = '';
@@ -179,7 +180,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         
         $images .= indent( $indent + 3 );
         $images .= ( $link ? '<a href="' . $link . '">' : '' );
-            $images .= '<img class="slide-image" src="' . $img . '" alt="" ' . $title . '>';
+            $images .= ( $img ? '<img class="slide-image" src="' . $img . '" alt="" ' . $title . '>' : '' );
             //$images .= '<img class="slide-image" src="' . $img . '" data-thumb="' . $img . '" alt="" title="' . $title . '">';
         $images .= ( $link ? '</a>' : '' );
         $images .= lbreak();

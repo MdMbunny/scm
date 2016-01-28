@@ -80,10 +80,10 @@ if( is( $element ) ){
 		$region = ( ( $region && $country ) ? $region . ', ' : $region );
 		$country = ( $country ? $country : '' );
 		
-		$inline_address = ( $name ? '<strong class="name">' . $name . '</strong>' : '' );
+		$inline_address = ( $name ? '<strong class="name">' . $name . '</strong><br>' : '' );
 		
 		if( $address ){
-			$inline_address .= '<br><span class="street">' . $address . '</span>';
+			$inline_address .= '<span class="street">' . $address . '</span>';
 		}
 
 		if( $town || $city || $code || $province ){

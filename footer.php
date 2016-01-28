@@ -29,14 +29,10 @@ if( !$SCM_old ){
         $page = get_page_by_path( '_single-' . $type );
         if( $page )
             $id = $page->ID;
-
-        //consoleLog( scm_field( 'page-menu', '', $id );
     }
+    
     $foot_page = scm_field( 'page-footer', array(), $id );
 
-    // If comments are open or we have at least one comment, load up the comment template
-    //if ( comments_open() || get_comments_number() )
-        //comments_template();
 
     $indent = $SCM_indent + 1;
 

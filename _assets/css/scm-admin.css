@@ -157,10 +157,12 @@ body.loading *{
 
 .edit-tags-php .tagcloud,
 .edit-tags-php form > .acf-field:not(.acf-field-message) .acf-label,
+.edit-tags-php .form-wrap h2,
 .edit-tags-php .form-wrap h3,
 .edit-tags-php .term-parent-wrap,
 .edit-tags-php .form-field.term-slug-wrap,
-.edit-tags-php .form-field.term-description-wrap p,
+.edit-tags-php .form-field.term-description-wrap,
+/*.edit-tags-php .form-field.term-description-wrap p,*/
 .edit-tags-php .form-field.term-name-wrap p{
 	display: none;
 }
@@ -634,7 +636,14 @@ body.loading *{
 /* Acf Field */
 
 .acf-taxonomy-field .acf-icon{
-	position: relative;
+	position: static;
+    visibility: visible;
+    display: block;
+    width: 100%;
+    border-radius: 2px;
+    margin-bottom: .5em;
+    border-color: #ddd;
+    opacity: 1;
 }
 
 .acf-field.number-read{
@@ -938,6 +947,11 @@ input.acf-is-prepended {
 .acf-field.acf-field-message .acf-label label{
 	margin: 0px;
 	padding: 5px 0px;
+}
+
+.acf-field.acf-field-message ul{
+	font-size: .8em;
+	line-height: 1.5em;
 }
 
 .acf-field-repeater .acf-label{

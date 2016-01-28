@@ -20,6 +20,42 @@
 *****************************************************
 */
 
+$SCM_MENU_ORDER = array(
+    array(
+        'index.php', // Dashboard
+        'scm-options-intro',
+        'scm-custom-types',
+        'scm-templates-general',
+    ),
+    array( 'separator1' ),
+    array(
+        'edit.php?post_type=page', // Pages
+    ),
+    array( 'separator2' ),
+    array(
+        'edit.php', // Posts
+    ),
+    array( 'separator3' ),
+    array(
+        'upload.php', // Media
+    ),
+    array( 'separator4' ),
+    array(
+        'edit-comments.php', // Comments
+        'link-manager.php', // Links
+        'users.php', // Users
+        'wpcf7', // Forms
+    ),
+    array( 'separator5' ),
+    array(
+        'themes.php', // Appearance
+        'plugins.php', // Plugins
+        'tools.php', // Tools
+        'options-general.php', // Settings
+    ),
+    array( 'separator-last' ),
+);
+
 
 // *****************************************************
 // *      0.0 ACTIONS AND FILTERS
@@ -42,6 +78,8 @@
     
     add_action( 'admin_menu', 'scm_admin_menu_remove' );
     add_action( 'admin_menu', 'scm_admin_menu');
+    add_filter('custom_menu_order', 'scm_admin_menu_order');
+    add_filter('menu_order', 'scm_admin_menu_order');
 
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
     add_action( 'admin_head', 'scm_admin_remove_meta' );
@@ -60,6 +98,58 @@
     //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
     //add_filter( 'upload_dir', 'scm_upload_set_directory' );
 
+
+    //add_action( 'after_setup_theme', 'scm_nav_auto_menu' ); // TESTING
+
+    if ( ! function_exists( 'scm_nav_auto_menu' ) ) {
+        function scm_nav_auto_menu(){
+
+            /*if( !scm_field( 'menu-auto', 'options' ) )
+                return;*/
+
+
+            //$locations = get_nav_menu_locations();
+            $locations = get_theme_mod('nav_menu_locations');
+            $menu = get_term( $locations[ 'auto' ], 'nav_menu' );
+
+            if( $menu && current_user_can( 'manage_options' ) && $pagenow == 'nav-menus.php' ){
+
+                $menu_name = $menu->name;
+                unregister_nav_menu( 'auto' );
+                wp_delete_nav_menu( $menu_name );
+
+                $menu = wp_create_nav_menu($menu_name);
+                
+
+                //$pages = ;
+
+                $title = 'Services';
+                $slug = 'services';
+
+                $item = wp_update_nav_menu_item($menu, 0, array(
+                    'menu-item-title' => $title,
+                    'menu-item-object' => 'page',
+                    'menu-item-object-id' => get_page_by_path( $slug )->ID,
+                    'menu-item-type' => 'post_type',
+                    'menu-item-status' => 'publish'
+                    )
+                );
+
+                    /*$sub_item = wp_update_nav_menu_item($menu, 0, array(
+                        'menu-item-title' => $subtitle,
+                        'menu-item-url' => '#' . $subid,
+                        'menu-item-type' => 'custom',
+                        'menu-item-status' => 'publish',
+                        'menu-item-parent-id' => $item,
+                        )
+                    );*/
+
+                $locations[ 'auto' ] = $menu;
+                set_theme_mod( 'nav_menu_locations', $locations );
+
+            }
+        }
+    }
    
 
 // *****************************************************
@@ -120,7 +210,7 @@
 
             wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-admin');
-            wp_register_style( 'scm-admin-child', SCM_URI_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-admin-child');
 
             wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
@@ -234,7 +324,7 @@
 // Add the duplicate link to action list
     if ( ! function_exists( 'scm_admin_duplicate_post_link' ) ) {
         function scm_admin_duplicate_post_link( $actions, $post ) {
-            if( current_user_can( 'publish_' . $post->post_type ) ) {
+            if( current_user_can( 'manage_options' ) || current_user_can( 'publish_' . $post->post_type ) ) {
                 $actions['duplicate'] = '<a href="admin.php?action=scm_admin_duplicate_post&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', SCM_THEME ) . '" rel="permalink">' . __( 'Duplica', SCM_THEME ) . '</a>';
             }
             return $actions;
@@ -251,6 +341,16 @@
 //  UI
 // *********************************************
 
+// Set Menu Elements Order
+    if ( ! function_exists( 'scm_admin_menu_order' ) ) {
+        function scm_admin_menu_order($menu_ord) {
+            if (!$menu_ord) return true;
+            global $SCM_MENU_ORDER;
+
+            return call_user_func_array('array_merge', $SCM_MENU_ORDER);
+
+        }
+    }
 
 // Set Menu Elements
     if ( ! function_exists( 'scm_admin_menu' ) ) {
@@ -259,7 +359,7 @@
             global $menu;
             ksort( $menu );
 
-            $media = $menu[10];
+            /*$media = $menu[10];
             $pages = $menu[20];
             if( isset( $menu[26] ) && isset( $menu[26][0] ) && $menu[26][0] == 'C F 7' ){
                 $cf7 = $menu[26];
@@ -283,7 +383,13 @@
             
             $menu[56] = $users;
             unset( $menu[70] );
-            $menu[81] = array('','read',"separator7",'','wp-menu-separator');
+            $menu[81] = array('','read',"separator7",'','wp-menu-separator');*/
+
+            $menu[] = array('','read',"separator3",'','wp-menu-separator');
+            $menu[] = array('','read',"separator4",'','wp-menu-separator');
+            $menu[] = array('','read',"separator5",'','wp-menu-separator');
+            $menu[] = array('','read',"separator6",'','wp-menu-separator');
+            $menu[] = array('','read',"separator7",'','wp-menu-separator');
             
 
             ksort( $menu );
@@ -306,11 +412,8 @@
             remove_menu_page( 'link-manager.php' );           //Links
             remove_menu_page( 'edit-tags.php?taxonomy=link_category' );           //Links
 
-            //remove_submenu_page ('upload.php', 'upload.php');
-            //remove_submenu_page ('upload.php', 'media-new.php');
-            //remove_submenu_page ('users.php', 'users.php');
-            //remove_submenu_page ('users.php', 'user-new.php');
-            //remove_submenu_page ('users.php', 'profile.php');
+            remove_menu_page( 'edit-tags.php?taxonomy=category');
+            remove_menu_page( 'edit-tags.php?taxonomy=post_tag');
             
         }
     }

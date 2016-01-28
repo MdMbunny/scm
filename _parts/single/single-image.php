@@ -9,6 +9,7 @@ $post_id = $post->ID;
 $args = array(
 	'acf_fc_layout' => 'layout-immagine',
 	'image' => '',
+    'images' => '',
 	'format' => 'norm',
 	'full-number' => '',
 	'full-units' => '',
@@ -34,6 +35,7 @@ if( isset( $this ) )
 
 $layout = $args['acf_fc_layout'];
 $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
+$images = ( $args[ 'images' ] ?: '' );
 //$url = scm_field( 'image', '', $post_id );
 $negative = $args['negative'] === 'on';
 $thumb = -2;
@@ -42,7 +44,7 @@ if ( $layout == 'layout-thumbs' ) {
     
     $thumb = ( $image ? intval( $image ) : 0 );
 
-    $images = scm_field( 'galleria-images', array(), $post_id );
+    $images = ( $images ?: scm_field( 'galleria-images', array(), $post_id ) );
 
     if( $thumb >= 0 ){
 

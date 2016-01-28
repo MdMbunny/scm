@@ -5,6 +5,8 @@ class Custom_Type {
     protected $menu_pos;
  
     function __construct( $build ) {
+
+        global $SCM_MENU_ORDER;
         
         if( !$build )
             return;
@@ -59,14 +61,14 @@ class Custom_Type {
         $this->supports = array( 'title' );
         $this->orderby = ( $attr['orderby'] ?: 'title' );
         $this->order = $attr['ordertype'];
-
-        $this->menupos = $attr['menupos'];
-        $this->menu = $attr['menu'];
+        
+        $this->menu = ( ( $attr['menu'] ?: sizeof($SCM_MENU_ORDER) + 1 ) - 1 ) * 2;
+        $this->menupos = ( $attr['menupos'] ?: sizeof($SCM_MENU_ORDER[$this->menu]) + 1 ) - 1;
 
         $this->description = $attr['description'];
 
-        if( !$this->menupos ){
-
+        // OLD
+        /*if( !$this->menupos ){
             switch ( $this->menu ) {
                                                         //          0.1 : SCM                 0.2 : SCM Types                 0.3 : SCM Templates                     1 > 3 : (empty)
                                                         // 4 -
@@ -82,9 +84,11 @@ class Custom_Type {
                                                         // 59 —
                                                         // ...
                 default: $this->menupos = 91; break;    //          91 > (empty)
-                
             }
-        }
+        }*/
+
+        if( $SCM_MENU_ORDER[$this->menu] )
+            array_splice( $SCM_MENU_ORDER[$this->menu], $this->menupos, 0, 'edit.php?post_type=' . $this->slug);
 
         $this->cap_singular = sanitize_title( $this->singular );
         $this->cap_plural = sanitize_title( $this->plural );
@@ -159,7 +163,7 @@ class Custom_Type {
             'hierarchical'        => ( !$this->post ? true : false ),
             //'taxonomies'          => $this->taxonomies,
             'public'              => true,
-            'show_ui'             => !$this->hidden,
+            'show_ui'             => true, // eliminato !$this->hidden
             'show_in_menu'        => !$this->hidden,
             'show_in_nav_menus'   => !$this->hidden,
             'show_in_admin_bar'   => !$this->hidden,
@@ -172,6 +176,7 @@ class Custom_Type {
             'capability_type'     => array( $this->cap_singular, $this->cap_plural ),
             'map_meta_cap'        => true,
         );
+
     }
     
 

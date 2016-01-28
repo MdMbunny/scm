@@ -83,7 +83,7 @@
     add_filter( 'acf/format_value/type=wysiwyg', 'scm_acf_formatvalue_hook_editor', 10, 3 );
 
     add_action( 'tgmpa_register', 'scm_plugins_install' );                                                      // 7.0      Installo Plugins
-
+ 
     add_action( 'after_setup_theme', 'scm_theme_install' );                                                     // 1.0      Attivazione SCM Theme
 
 
@@ -113,14 +113,13 @@
 
             // Crea una Option Page dove poter resettare i ruoli (cancellandoli tutti e ricreando quelli di default)
 
-            //remove_role('editor');
-            //remove_role('author');
-            //remove_role('contributor');
-            //remove_role('subscriber');
-
-            //remove_role('staff');
-            //remove_role('member');
-            //remove_role('utente');
+            /*remove_role('editor');
+            remove_role('author');
+            remove_role('contributor');
+            remove_role('subscriber');
+            remove_role('staff');
+            remove_role('member');
+            remove_role('utente');*/
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -187,14 +186,19 @@
 
                 update_option( 'scm-version', $SCM_version );
 
-                //scm_roles_install();    // ROLES
-                //scm_types_capabilities( $SCM_types['objects'] ); // CAPABILITIES
+                remove_role('editor');
+                remove_role('author');
+                remove_role('contributor');
+                remove_role('subscriber');
+                remove_role('staff');
+                remove_role('member');
+                remove_role('utente');
+
             }
 
             if ( ! $themeStatus ) {
                 update_option( 'scm-settings-installed', 1 );
-                wp_redirect(admin_url('admin.php?page=scm-options-intro'));
-                //header( 'Location: admin.php?page=scm-options-opzioni' );      // Redirect alla pagina SCM Options
+                wp_redirect(admin_url('themes.php?page=scm-install-plugins'));
                 die;
             }
         }
@@ -239,18 +243,18 @@
             consoleDebug('install default types and taxes');
 
             $default_types = array(
-                'sections'              => array( 'admin' => 1,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 1,                                                                                                           ),
-                'modules'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 1,                                                                                                           ),
-                'banners'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 1,                                                                                                           ),
-                'slides'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'gallerie'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'video'                 => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
+                'sections'              => array( 'admin' => 1,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
+                'modules'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
+                'banners'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
                 'articoli'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Articolo', SCM_THEME),               'plural' => __('Articoli', SCM_THEME),              'slug' => 'articoli',           'icon' => 'admin-post',         'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
                 'news'                  => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'documenti'             => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Documento', SCM_THEME),              'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'rassegne-stampa'       => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),        'plural' => __('Rassegne Stampa', SCM_THEME),       'slug' => 'rassegne-stampa',    'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME),      ),
-                'soggetti'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Soggetto', SCM_THEME),               'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-                'luoghi'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Luogo', SCM_THEME),                  'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
+                'slides'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
+                'gallerie'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
+                'video'                 => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
+                'documenti'             => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Documento', SCM_THEME),              'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
+                'rassegne-stampa'       => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),        'plural' => __('Rassegne Stampa', SCM_THEME),       'slug' => 'rassegne-stampa',    'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME),      ),
+                'soggetti'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Soggetto', SCM_THEME),               'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 5,                                                                                                           ),
+                'luoghi'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Luogo', SCM_THEME),                  'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 5,                                                                                                           ),
             );
 
             $default_taxonomies = array(
@@ -259,7 +263,7 @@
                 'soggetti-tip'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Soggetti', SCM_THEME),         'singular' => __('Tipologia Soggetti', SCM_THEME),     'slug' => 'soggetti-tip',              'types' => array( 'soggetti' )          ),
                 'luoghi-tip'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Luoghi', SCM_THEME),           'singular' => __('Tipologia Luoghi', SCM_THEME),       'slug' => 'luoghi-tip',                'types' => array( 'luoghi' ),           ),
                 'luoghi-cat'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Luoghi', SCM_THEME),           'singular' => __('Categoria Luoghi', SCM_THEME),       'slug' => 'luoghi-cat',                'types' => array( 'luoghi' ),           ),
-                'articoli-cat'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Articoli', SCM_THEME),         'singular' => __('Categoria Articoli', SCM_THEME),     'slug' => 'articoli-cat',              'types' => array( 'articoli' ),         ),
+                'articoli-cat'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 0,      'hierarchical' => 0,          'plural' => __('Categorie Articoli', SCM_THEME),         'singular' => __('Categoria Articoli', SCM_THEME),     'slug' => 'articoli-cat',              'types' => array( 'articoli' ),         ),
                 'news-cat'              => array( 'template' => 0,       'add_cap' => 0,        'active' => 0,      'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
                 'documenti-cat'         => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Documenti', SCM_THEME),        'singular' => __('Categoria Documenti', SCM_THEME),    'slug' => 'documenti-cat',             'types' => array( 'documenti' ),        ),
                 'video-cat'             => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Video', SCM_THEME),            'singular' => __('Categoria Video', SCM_THEME),        'slug' => 'video-cat',                 'types' => array( 'video' ),            ),
@@ -375,6 +379,7 @@
                         $type['hidden'] = 1;
                         $type['admin'] = 1;
                         $type['slug'] = $type['slug'] . SCM_TEMPLATE_APP;
+                        $type['menupos'] = 0;
                         $type['menu'] = 0;
                         $type['post'] = 0;
 
@@ -437,80 +442,89 @@
 
             //scm_save_posts();
         }
+    }
 
 
-        if ( ! function_exists( 'scm_types_capabilities' ) ) {
+    if ( ! function_exists( 'scm_types_capabilities' ) ) {
         function scm_types_capabilities(){
+            
+            global $pagenow;
+            
+            if( current_user_can( 'manage_options' ) && $pagenow == 'admin.php' && $_GET['page'] == 'scm-custom-types'){
 
-            global $SCM_types;
+                global $SCM_types;
 
-            $objs = $SCM_types['objects'];
+                $objs = $SCM_types['objects'];
 
-            if ( is_admin() ) {
+                if ( is_admin() ) {
 
-                $roles = array( 'member', 'staff', 'administrator');
-                
-                foreach($roles as $the_role) {
+                    $roles = array( 'member', 'staff', 'administrator');
+                    
+                    foreach($roles as $the_role) {
 
-                    $role = get_role( $the_role );
+                        $role = get_role( $the_role );
 
-                    if ( !$role )
-                        continue;
-
-                    foreach ($objs as $key => $obj) {
-
-                        $singular = $obj->cap_singular;
-                        $plural = $obj->cap_plural;
-                        $admin = $obj->admin;
-                        $add = $obj->add_cap;
-
-                        if( $the_role != 'administrator' && $admin ){ // ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
-                            
-                            $role->remove_cap( 'read_private_' . $plural );
-                            $role->remove_cap( 'edit_' . $plural );
-                            $role->remove_cap( 'edit_private_' . $plural );
-                            $role->remove_cap( 'edit_others_' . $plural );
-                            $role->remove_cap( 'edit_published_' . $plural );
-
+                        if ( !$role )
                             continue;
+
+                        foreach ($objs as $key => $obj) {
+
+                            $singular = $obj->cap_singular;
+                            $plural = $obj->cap_plural;
+                            $admin = $obj->admin;
+                            $add = $obj->add_cap;
+
+                            if( $the_role != 'administrator' && $admin ){ // ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
+                                
+                                $role->remove_cap( 'read_private_' . $plural );
+                                $role->remove_cap( 'edit_' . $plural );
+                                $role->remove_cap( 'edit_private_' . $plural );
+                                $role->remove_cap( 'edit_others_' . $plural );
+                                $role->remove_cap( 'edit_published_' . $plural );
+
+                                continue;
+
+                            }
+
+                            /*consoleLog( 'Admin and Member/Staff + admin' );
+                            consoleLog( $role );*/
+
+                            $role->add_cap( 'read_private_' . $plural );
+                            $role->add_cap( 'edit_' . $plural );
+                            $role->add_cap( 'edit_private_' . $plural );
+                            $role->add_cap( 'edit_others_' . $plural );
+                            $role->add_cap( 'edit_published_' . $plural );
+
+                            if( $the_role != 'administrator' && ( !$add || $the_role == 'member' ) ){
+
+                                $role->remove_cap( 'publish_' . $plural );
+                                $role->remove_cap( 'delete_' . $plural );
+                                $role->remove_cap( 'delete_others_' . $plural );
+                                $role->remove_cap( 'delete_private_' . $plural );
+                                $role->remove_cap( 'delete_published_' . $plural );
+
+                                continue;
+
+                            }
+
+                            $role->add_cap( 'publish_' . $plural );
+                            $role->add_cap( 'delete_' . $plural );
+                            $role->add_cap( 'delete_others_' . $plural );
+                            $role->add_cap( 'delete_private_' . $plural );
+                            $role->add_cap( 'delete_published_' . $plural );
+
+                            /*consoleLog( 'Admin and Staff + add_cap' );
+                            consoleLog( $role );*/
 
                         }
 
-                        /*consoleLog( 'Admin and Member/Staff + admin' );
-                        consoleLog( $role );*/
-
-                        $role->add_cap( 'read_private_' . $plural );
-                        $role->add_cap( 'edit_' . $plural );
-                        $role->add_cap( 'edit_private_' . $plural );
-                        $role->add_cap( 'edit_others_' . $plural );
-                        $role->add_cap( 'edit_published_' . $plural );
-
-                        if( $the_role != 'administrator' && ( !$add || $the_role == 'member' ) ){
-
-                            $role->remove_cap( 'publish_' . $plural );
-                            $role->remove_cap( 'delete_' . $plural );
-                            $role->remove_cap( 'delete_others_' . $plural );
-                            $role->remove_cap( 'delete_private_' . $plural );
-                            $role->remove_cap( 'delete_published_' . $plural );
-
-                            continue;
-
-                        }
-
-                        $role->add_cap( 'publish_' . $plural );
-                        $role->add_cap( 'delete_' . $plural );
-                        $role->add_cap( 'delete_others_' . $plural );
-                        $role->add_cap( 'delete_private_' . $plural );
-                        $role->add_cap( 'delete_published_' . $plural );
-
-                        /*consoleLog( 'Admin and Staff + add_cap' );
-                        consoleLog( $role );*/
-
+                        do_action( 'scm_action_role_' . $the_role, $role );
                     }
                 }
+
+                do_action( 'scm_action_roles' );
             }
         }
-    }
     }
 
 // *****************************************************
@@ -1368,203 +1382,212 @@
                 ),
 
                 array(
-                    'name'               => 'ACF Hidden Field', // The plugin name.
-                    'slug'               => 'acf-hidden', // The plugin slug (typically the folder name).
-                    'source'             => 'acf-hidden.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'ACF Hidden Field',
+                    'slug'               => 'acf-hidden',
+                    'source'             => 'acf-hidden.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 /*array(
-                    'name'               => 'ACF PayPal', // The plugin name.
-                    'slug'               => 'acf-paypal-field-master', // The plugin slug (typically the folder name).
-                    //'source'             => 'acf-paypal-field-master.zip', // The plugin source.
+                    'name'               => 'ACF Google Fonts', // The plugin name.
+                    'slug'               => 'acf-google-font-selector-field', // The plugin slug (typically the folder name).
+                    //'source'             => 'acf-google-font-selector-field.zip', // The plugin source.
                     'required'           => false, // If false, the plugin is only 'recommended' instead of required.
                     'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
                     'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
                 ),*/
 
+                /*array(
+                    'name'               => 'ACF PayPal',
+                    'slug'               => 'acf-paypal-field-master',
+                    //'source'             => 'acf-paypal-field-master.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
+                ),*/
+
                 array(
-                    'name'               => 'ACF Font Awesome', // The plugin name.
-                    'slug'               => 'advanced-custom-fields-font-awesome', // The plugin slug (typically the folder name).
-                    //'source'             => 'advanced-custom-fields-font-awesome.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'ACF Font Awesome',
+                    'slug'               => 'advanced-custom-fields-font-awesome',
+                    'source'             => 'advanced-custom-fields-font-awesome.zip', // 2.7.0 (check before update)
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'ACF Limiter', // The plugin name.
-                    'slug'               => 'advanced-custom-fields-limiter-field', // The plugin slug (typically the folder name).
-                    //'source'             => 'advanced-custom-fields-limiter-field.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'ACF Limiter',
+                    'slug'               => 'advanced-custom-fields-limiter-field',
+                    //'source'             => 'advanced-custom-fields-limiter-field.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'ACF Date Time', // The plugin name.
-                    'slug'               => 'acf-field-date-time-picker', // The plugin slug (typically the folder name).
-                    //'source'             => 'acf-field-date-time-picker.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'ACF Date Time',
+                    'slug'               => 'acf-field-date-time-picker',
+                    //'source'             => 'acf-field-date-time-picker.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Contact Form 7', // The plugin name.
-                    'slug'               => 'contact-form-7', // The plugin slug (typically the folder name).
-                    //'source'             => 'contact-form-7.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Contact Form 7',
+                    'slug'               => 'contact-form-7',
+                    //'source'             => 'contact-form-7.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Captcha 7', // The plugin name.
-                    'slug'               => 'really-simple-captcha', // The plugin slug (typically the folder name).
-                    //'source'             => 'really-simple-captcha.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Captcha 7',
+                    'slug'               => 'really-simple-captcha',
+                    //'source'             => 'really-simple-captcha.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Loco Translate', // The plugin name.
-                    'slug'               => 'loco-translate', // The plugin slug (typically the folder name).
-                    //'source'             => 'polylang.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Loco Translate',
+                    'slug'               => 'loco-translate',
+                    //'source'             => 'polylang.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Polylang', // The plugin name.
-                    'slug'               => 'polylang', // The plugin slug (typically the folder name).
-                    //'source'             => 'polylang.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Polylang',
+                    'slug'               => 'polylang',
+                    //'source'             => 'polylang.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Replace Media', // The plugin name.
-                    'slug'               => 'enable-media-replace', // The plugin slug (typically the folder name).
-                    //'source'             => 'enable-media-replace.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Replace Media',
+                    'slug'               => 'enable-media-replace',
+                    //'source'             => 'enable-media-replace.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Browser Detection', // The plugin name.
-                    'slug'               => 'php-browser-detection', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Browser Detection',
+                    'slug'               => 'php-browser-detection',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Optimize Database', // The plugin name.
-                    'slug'               => 'rvg-optimize-database', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Optimize Database',
+                    'slug'               => 'rvg-optimize-database',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'WP Database Backup', // The plugin name.
-                    'slug'               => 'wp-db-backup', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'WP Database Backup',
+                    'slug'               => 'wp-db-backup',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Role Editor', // The plugin name.
-                    'slug'               => 'user-role-editor', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Role Editor',
+                    'slug'               => 'user-role-editor',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'Share Buttons', // The plugin name.
-                    'slug'               => 'simple-share-buttons-adder', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'Share Buttons',
+                    'slug'               => 'simple-share-buttons-adder',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'GitHub Updater', // The plugin name.
-                    'slug'               => 'github-updater', // The plugin slug (typically the folder name).
-                    'source'             => 'github-updater.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'GitHub Updater',
+                    'slug'               => 'github-updater',
+                    'source'             => 'github-updater.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
             // PLUS
 
                 array(
-                    'name'               => 'PLUS - WP Optimizer', // The plugin name.
-                    'slug'               => 'wp-clean-up-optimizer', // The plugin slug (typically the folder name).
-                    //'source'             => 'regenerate-thumbnails.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - WP Optimizer',
+                    'slug'               => 'wp-clean-up-optimizer',
+                    //'source'             => 'regenerate-thumbnails.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'PLUS - Thumbs Regenerator', // The plugin name.
-                    'slug'               => 'regenerate-thumbnails', // The plugin slug (typically the folder name).
-                    //'source'             => 'regenerate-thumbnails.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - Thumbs Regenerator',
+                    'slug'               => 'regenerate-thumbnails',
+                    //'source'             => 'regenerate-thumbnails.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'PLUS - WP Security', // The plugin name.
-                    'slug'               => 'better-wp-security', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - WP Security',
+                    'slug'               => 'better-wp-security',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'PLUS - Menu Editor', // The plugin name.
-                    'slug'               => 'admin-menu-editor', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - Menu Editor',
+                    'slug'               => 'admin-menu-editor',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'PLUS - Theme Check', // The plugin name.
-                    'slug'               => 'theme-check', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - Theme Check',
+                    'slug'               => 'theme-check',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
                 array(
-                    'name'               => 'PLUS - Reset Database', // The plugin name.
-                    'slug'               => 'wordpress-database-reset', // The plugin slug (typically the folder name).
-                    //'source'             => 'php-browser-detection.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+                    'name'               => 'PLUS - Reset Database',
+                    'slug'               => 'wordpress-database-reset',
+                    //'source'             => 'php-browser-detection.zip',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
                 ),
 
             );

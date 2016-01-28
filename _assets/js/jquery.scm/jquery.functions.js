@@ -1,5 +1,15 @@
 (function($) {
 
+	$.EmToPx = function( input ) {
+	    var emSize = parseFloat($("body").css("font-size"));
+	    return (emSize * input);
+	}
+
+	$.PxToEm = function( input ) {
+	    var emSize = parseFloat($("body").css("font-size"));
+	    return (input / emSize);
+	}
+
 	// STRING
 
 	$.log = function( message, touch ) {
