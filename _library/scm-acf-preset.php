@@ -115,6 +115,7 @@
 *		'object-rel'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$elements = '' 					$max = 1							$return_format = 'object | id'	|| 0 | 1	$filters = array( 'search', 'post_type', 'taxonomy' )
 * ———		'-id'						$return_format = 'id'
 * ———		'-search'					$filters[] = 'search'
+* ———		'-null'						$allow_null = 1
 *		'object-link'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$allow_null = 0 				$multiple = 0
 * ———		'objects'					$multiple = 1 | $max = 0			
 *
@@ -303,7 +304,7 @@
 
 	        		$place = ( isset( $arg[3] ) ? $arg[3] : '' );
 
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
+	        		$null = ( isset( $arg[4] ) ? $arg[4] : ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
 	        		$elems = ( isset( $arg[4] ) ? $arg[4] : '' );
 
 	        		$multi = ( $type == 'objects' ? 1 : ( isset( $arg[5] ) ? $arg[5] : 0 ) );

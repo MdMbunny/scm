@@ -9,7 +9,7 @@
 
 wp_reset_postdata();
 
-global $post, $SCM_indent, $SCM_old;
+global $SCM_indent, $SCM_old, $SCM_page_id;
 
 if( !$SCM_old ){
 
@@ -20,23 +20,20 @@ if( !$SCM_old ){
     $foot_id = 'site-footer';
     $foot_class = 'footer site-footer ' . $foot_layout . $site_align;
 
-    $id = $post->ID;
-    $type = $post->post_type;
+    $id = $SCM_page_id;
 
-    if( is_single() ){
-
-        // If a Page named '_single-{post_type}' exists
-        $page = get_page_by_path( '_single-' . $type );
-        if( $page )
-            $id = $page->ID;
-    }
-    
     $foot_page = scm_field( 'page-footer', array(), $id );
-
 
     $indent = $SCM_indent + 1;
 
-    $SCM_indent -= 3;
+                        $SCM_indent -= 1;
+                        echo lbreak(2);
+                    
+                        indent( $SCM_indent, '</article><!-- article -->', 2 );
+                    
+                    $SCM_indent -= 1;
+
+                $SCM_indent -= 3;
 
                 indent( $SCM_indent+3, '</main><!-- main -->' );
             indent( $SCM_indent+2, '</div><!-- primary -->', 2 );

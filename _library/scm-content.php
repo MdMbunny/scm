@@ -75,6 +75,7 @@
                 case 'column':
                 case 'module':
 
+                    $content = apply_filters( 'scm_filter_echo_containers', $content );
                     scm_containers( $content, $container );
 
                     
@@ -302,8 +303,6 @@ consoleLog($content['column-width']);
                         
                         if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
 
-                            
-
                             $content['type'] = 'archive';
 
                             $temp = explode( ':', $content['archive'] );
@@ -315,15 +314,13 @@ consoleLog($content['column-width']);
                                 $field = $filter[0];
                                 if( isset( $filter[1] ) )
                                     $value = $filter[1];
-                                else
-                                    $value = $post->ID;
                             }
 
                             $content['acf_fc_layout'] = 'layout-' . $archive;
                             $content['archive-field'] = $field;
                             $content['archive-value'] = $value;
 
-                        }else if( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+                        }elseif( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
 
                             $content['type'] = 'single';
 
@@ -449,6 +446,8 @@ consoleLog($content['column-width']);
                     $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );   
 
                     // -- Print Container
+
+                    $content = apply_filters( 'scm_filter_echo_container', $content );
 
                     if( !$content['inherit'] ){
 
@@ -845,10 +844,10 @@ consoleLog($content['column-width']);
                 $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
                 $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
                 $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'DESC' );
-                $field = ( isset( $cont['archive-field'] ) ? $cont['archive-field'] : ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' ) );
+                $field = ( $cont['archive-field'] ?: ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' ) );
                 $meta = ( isset( $cont['meta_query'] ) ? $cont['meta_query'] : '' );
-                $value = ( isset( $cont['archive-value'] ) ? $cont['archive-value'] : '' );
-                
+                $value = ( $cont['archive-value'] ?: ( $cont['archive-field'] ? $post->ID : '') );
+
                 $query = array(
                     'post_type' => $type,
                     'tax_query' => $tax,

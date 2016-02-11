@@ -1,119 +1,82 @@
 <?php
 
-global $post, $SCM_indent, $SCM_types;
+global $SCM_indent, $SCM_types, $SCM_page_id;
+
+$id = get_the_ID();
+$SCM_page_id = $id;
 $type = get_post_type();
+$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $single = is_single();
 $archive = is_archive();
+$template = 'page';
+$notpage = 0; $page = 0; $temp = '';
+if( $single ){
+	$notpage = 1;
+	$page = get_page_by_path( '_single-' . $type );
+	$temp = SCM_DIR_PARTS_SINGLE;
+}elseif( $archive ){
+	$notpage = 1;
+	$page = get_page_by_path( '_archive-' . $type );
+	$temp = SCM_DIR_PARTS_ARCHIVE;
+}
 
-// return none (back to home) if type is not public, or has not a template
-if( $archive || ( $single && getByKey( $SCM_types['public'], $type ) === false ) ) {
-		get_template_part( SCM_DIR_PARTS, 'none' );
-// build page + content, or page + single
-}else{
+// Check if is PAGE, SINGLE or ARCHIVE ------------------------------------------------------------------------
+
+if( $notpage ){
+
+
+
+// If Type is not Public
+	if( getByKey( $SCM_types['public'], $type ) === false )
+		get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home) 
 	
-	$id = get_the_ID();
-	$page = '';
-	$template = get_query_var( 'template', 0 );
+// If a Page named '_single-{post_type}' | '_archive-{post_type}' exists
+	if( $page ){
+		$id = $SCM_page_id = $page->ID;
 
-	if( $single ){
-		// If a Page named '_single-{post_type}' exists
-		$page = get_page_by_path( '_single-' . $type );
-		if( $page ){
-			$id = $page->ID;
-			$template = 'page';
-		}else if( locate_template( SCM_DIR_PARTS_SINGLE . '-' . $type . '.php' ) ){
-			$template = 'part';
-		}elseif( !$template ){
-			get_template_part( SCM_DIR_PARTS, 'none' ); // Quando avrai capito come tirar fuori automaticamente un Post, questo slitta
-		}
+// If a template file '_parts/single/single-{post_type}.php' | '_parts/archive/archive-{post_type}.php' exists
+	}elseif( locate_template( $temp . '-' . $type . '.php' ) ){
+		$template = 'part';
+
+// If query arg ?template=XXX exists
+	}else{
+		$template = get_query_var( 'template', 0 );
+		if( !$template )
+			get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home)
 	}
+}
 
-	// WP Header
-	get_header();
-	
-	$site_align = scm_field( 'layout-alignment', 'center', 'option' );
+// Build Contents ---------------------------------------------------------------------------------------------
 
-	$page_class = 'page scm-page object scm-object ' . $post->post_name;
+// Header
+get_header();
 
-	$page_id = scm_field( 'page-selectors-id', '', $id, 1, ' id="', '"' );
-	$page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
-	
-	//$page_style = scm_options_get_style( $id, 1 );
-	
-	$page_slider = scm_field( 'main-slider-active', 'default', $id, 1 );
-	$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
+switch ($template) {
 
-	if( $page_slider === 'default' ){
-		$page_slider = scm_field( 'main-slider-active', '', 'option' );
-		$page_slider_terms = scm_field( 'main-slider-terms', '', 'option' );
-	}
+// Content from Page, _Single Page or _Archive Page
+	case 'page':
+		scm_content( get_fields( $id ) );
+		break;
 
-	$SCM_indent += 1;
-	indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
-		$SCM_indent += 1;
-		
-		// Page Header
-		if( $page_slider ){
+// Content from Single Part or Archive Part
+	case 'part':
+		get_template_part( $temp, $type );
+		break;
 
-			indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
-
-				indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
-
-					scm_contents( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) );
-					//get_template_part( SCM_DIR_PARTS_SINGLE, 'slider' );
-
-				indent( $SCM_indent + 1, '</div><!-- row -->', 2 );
-
-			indent( $SCM_indent, '</header><!-- header -->', 2 );
-		}
-
-		// If is Single
-
-		if( $single ){
-
-			// If a Page named '_single-{post_type}' exists
-			if( $template == 'page' ){
-
-				scm_content( get_fields( $id ) );
-
-			// Else If a template file '_parts/single/single-{post_type}.php' exists
-				
-			}elseif( $template == 'part' ){
-
-				get_template_part( SCM_DIR_PARTS_SINGLE, $type );
-
-			// Else if query arg ?template=XXX exists
-
-			}else{
-
-				indent( $SCM_indent + 1, '<div id="post-' . $id . '" class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
-					indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
-
-						$SCM_indent += 3;
-						scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'template' => $template, 'type' => 'single', 'single' => array( $id ) ) );
-						$SCM_indent -= 3;
-
-					indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
-
-				indent( $SCM_indent + 1, '</div><!-- section -->', 2 );
-
-			}
-			
-		}else{
-
-			// Page Content
-			scm_content( get_fields( $id ) );
-
-		}
-
-	$SCM_indent -= 1;
-	echo lbreak(2);
-	indent( $SCM_indent, '</article><!-- article -->', 2 );
-	$SCM_indent -= 1;
-
-	// WP Footer
-	get_footer();
+// Content from Template
+	default:
+		indent( $SCM_indent + 1, '<div id="post-' . $id . '" class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
+			indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
+				$SCM_indent += 3;
+				scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'template' => $template, 'type' => 'single', 'single' => array( $id ) ) );
+				$SCM_indent -= 3;
+			indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
+		indent( $SCM_indent + 1, '</div><!-- section -->', 2 );
+	break;
 
 }
+
+// Footer
+get_footer();
 
 ?>

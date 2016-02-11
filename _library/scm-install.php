@@ -71,8 +71,10 @@
     
     add_filter( 'acf/load_field/type=font-awesome', 'scm_acf_loadfield_hook_fontawesome_list', 150 );
    
+
+    //add_action( 'acf/save_post', 'scm_acf_savepost_hook_media', 1) ;   
     //add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates_new', 100) ;
-    add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 10) ;                                       // 5.2
+    add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 11) ;                                       // 5.2
     //add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 10 );
 
     add_filter('acf/fields/post_object/query', 'scm_acf_queryfield_hook_objects', 10, 3);                       // 5.3
@@ -219,16 +221,13 @@
             $SCM_types = array(
                 'objects' => array(),
                 'private' => array(),
-                'public' => array(
-                    //'post'                  => 'Articoli',
-                ),
+                'public' => array(),
+                'custom' => array(),
                 'all' => array(
-                    //'post'                  => 'Articoli',
                     'wpcf7_contact_form'    => 'Contact Form',
                 ),
                 'complete' => array(
                     'page'                  => 'Pagine',
-                    //'post'                  => 'Articoli',
                     'wpcf7_contact_form'    => 'Contact Form',
                 ),
             );
@@ -243,18 +242,17 @@
             consoleDebug('install default types and taxes');
 
             $default_types = array(
-                'sections'              => array( 'admin' => 1,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
-                'modules'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
-                'banners'               => array( 'admin' => 0,      'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 2,                                                                                                           ),
-                'articoli'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Articolo', SCM_THEME),               'plural' => __('Articoli', SCM_THEME),              'slug' => 'articoli',           'icon' => 'admin-post',         'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'news'                  => array( 'admin' => 0,      'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 3,                                                                                                           ),
-                'slides'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-                'gallerie'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-                'video'                 => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-                'documenti'             => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Documento', SCM_THEME),              'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 4,                                                                                                           ),
-                'rassegne-stampa'       => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),        'plural' => __('Rassegne Stampa', SCM_THEME),       'slug' => 'rassegne-stampa',    'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 4,      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME),      ),
-                'soggetti'              => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Soggetto', SCM_THEME),               'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 5,                                                                                                           ),
-                'luoghi'                => array( 'admin' => 0,      'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Luogo', SCM_THEME),                  'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 5,                                                                                                           ),
+                'sections'              => array( 'admin' => 1,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
+                'modules'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
+                'banners'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
+                'news'                  => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'types',                                                                                                           ),
+                'slides'                => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
+                'gallerie'              => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
+                'video'                 => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
+                'documenti'             => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Documento', SCM_THEME),              'plural' => __('Documenti', SCM_THEME),             'slug' => 'documenti',          'icon' => 'portfolio',          'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
+                'rassegne-stampa'       => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Rassegna Stampa', SCM_THEME),        'plural' => __('Rassegne Stampa', SCM_THEME),       'slug' => 'rassegne-stampa',    'icon' => 'id',                 'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'media',      'short-singular' => __('Rassegna', SCM_THEME),     'short-plural' => __('Rassegne', SCM_THEME),      ),
+                'soggetti'              => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Soggetto', SCM_THEME),               'plural' => __('Soggetti', SCM_THEME),              'slug' => 'soggetti',           'icon' => 'groups',             'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 'contacts',                                                                                                        ),
+                'luoghi'                => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 0,       'singular' => __('Luogo', SCM_THEME),                  'plural' => __('Luoghi', SCM_THEME),                'slug' => 'luoghi',             'icon' => 'location',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 1,         'menu' => 'contacts',                                                                                                        ),
             );
 
             $default_taxonomies = array(
@@ -263,7 +261,6 @@
                 'soggetti-tip'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Soggetti', SCM_THEME),         'singular' => __('Tipologia Soggetti', SCM_THEME),     'slug' => 'soggetti-tip',              'types' => array( 'soggetti' )          ),
                 'luoghi-tip'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Luoghi', SCM_THEME),           'singular' => __('Tipologia Luoghi', SCM_THEME),       'slug' => 'luoghi-tip',                'types' => array( 'luoghi' ),           ),
                 'luoghi-cat'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Luoghi', SCM_THEME),           'singular' => __('Categoria Luoghi', SCM_THEME),       'slug' => 'luoghi-cat',                'types' => array( 'luoghi' ),           ),
-                'articoli-cat'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 0,      'hierarchical' => 0,          'plural' => __('Categorie Articoli', SCM_THEME),         'singular' => __('Categoria Articoli', SCM_THEME),     'slug' => 'articoli-cat',              'types' => array( 'articoli' ),         ),
                 'news-cat'              => array( 'template' => 0,       'add_cap' => 0,        'active' => 0,      'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
                 'documenti-cat'         => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Documenti', SCM_THEME),        'singular' => __('Categoria Documenti', SCM_THEME),    'slug' => 'documenti-cat',             'types' => array( 'documenti' ),        ),
                 'video-cat'             => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Video', SCM_THEME),            'singular' => __('Categoria Video', SCM_THEME),        'slug' => 'video-cat',                 'types' => array( 'video' ),            ),
@@ -341,31 +338,20 @@
                     continue;
 
                 $plural = $type['plural'];
-
                 $type['admin'] = (int)( isset( $type['admin'] ) && $type['admin'] );
-
                 $type['active'] = (int)( isset( $type['active'] ) && $type['active'] );
-
                 $type['public'] = (int)( isset( $type['public'] ) && $type['public'] );
-
                 $type['hidden'] = (int)( isset( $type['hidden'] ) && $type['hidden'] );
-
                 $type['orderby'] = ( isset( $type['orderby'] ) ? $type['orderby'] : 'title' );
-
                 $type['ordertype'] = ( isset( $type['ordertype'] ) ? $type['ordertype'] : 'ASC' );
-
                 $type['singular'] = ( isset( $type['singular'] ) ? $type['singular'] : $plural );
-
                 $type['slug'] = ( isset( $type['slug'] ) && $type['slug'] ? sanitize_title( $type['slug'] ) : sanitize_title( $plural ) );
-
                 $type['icon'] = ( isset( $type['icon'] ) && $type['icon'] ? '\\' . $type['icon'] : '' ) ;
 
                 if( $type['active'] === 1 ){
 
                     $SCM_types['complete'][ $type['slug'] ] = $plural;
-                    
-                    //printPre($SCM_types['complete'][ $type['slug'] ]);
-
+                    $SCM_types['custom'][ $type['slug'] ] = $plural;
                     $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
                     $obj->CT_register();                    
 
@@ -474,7 +460,7 @@
                             $admin = $obj->admin;
                             $add = $obj->add_cap;
 
-                            if( $the_role != 'administrator' && $admin ){ // ( $admin || !isset( $role->capabilities[ 'manage_categories' ] ) || !$role->capabilities[ 'manage_categories' ] ) )
+                            if( $the_role != 'administrator' && $admin ){
                                 
                                 $role->remove_cap( 'read_private_' . $plural );
                                 $role->remove_cap( 'edit_' . $plural );
@@ -485,9 +471,6 @@
                                 continue;
 
                             }
-
-                            /*consoleLog( 'Admin and Member/Staff + admin' );
-                            consoleLog( $role );*/
 
                             $role->add_cap( 'read_private_' . $plural );
                             $role->add_cap( 'edit_' . $plural );
@@ -512,9 +495,6 @@
                             $role->add_cap( 'delete_others_' . $plural );
                             $role->add_cap( 'delete_private_' . $plural );
                             $role->add_cap( 'delete_published_' . $plural );
-
-                            /*consoleLog( 'Admin and Staff + add_cap' );
-                            consoleLog( $role );*/
 
                         }
 
@@ -816,73 +796,69 @@
 // *      5.2 SAVE POST
 // *****************************************************
 
-    // TEMPLATES
-    /*if ( ! function_exists( 'scm_acf_savepost_hook_templates_new' ) ) {
-        function scm_acf_savepost_hook_templates_new( $post_id ) {
+
+    // Detach Media
+    if ( ! function_exists( 'scm_acf_savepost_hook_media' ) ) {
+        function scm_acf_savepost_hook_media( $post_id ) {
+
+            //consoleLog($post_id);
+            //consoleLog($_POST['acf']);
 
             if( empty($_POST['acf']) )
                 return;
 
-            if( $post_id != 'options' && isset( $_POST['post_type'] ) && $_POST['post_type'] == 'sections'){
+            $fields = $_POST['acf'];
+            global $wpdb;
 
-                $fields = $_POST['acf'];
-                $k_rows = scm_field_key( $post_id, $fields, 'section-elem' );
-                $rows =  ( isset( $fields[ $k_rows ] ) ? $fields[ $k_rows ] : '' );
-                //$rows =  $fields[ 'field_2fb85b5b0a317e54b2097bd6ee143726fada32f7' ];
+            foreach ( $fields as $key => $value ) {
 
-                if( isset( $rows ) && !empty( $rows ) ){
+                $field = get_field_object($key, $post_id, false);
+                
+                $images = array();
 
-                    foreach ( $rows as $layout => $row ) {
-                        
-                        //$k_cont = '';
-                        $k_name = scm_field_key( $post_id, $row, 'name' );
-                        $k_model = scm_field_key( $post_id, $row, 'new', 'build' );
+                if( $field['type'] == 'image' ){
+                    $images[] = $value;
+                }elseif( $field['type'] == 'gallery' ){
+                    $images = $value;
+                }else{
+                    continue;
+                }
 
-                        if( $k_model === false )
-                            continue;
+                $previous = toArray( get_field($field['name'], $post_id) );
+                //consoleLog($previous);
+                //consoleLog($images);
 
-                        if( $k_model ){
-                            $type = str_replace( 'layout-', '', $row['acf_fc_layout'] );
-                            $type .= SCM_TEMPLATE_APP;
+                $removed = array();
+                if (!empty($previous)) {
+                    foreach($previous as $img) {
+                        if( is_array($img) )
+                            $img = (string)$img['id'];
+                        elseif( !isNumber($img) )
+                            $img = (string)$wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $img ))[0];
+                        if ( $img && !in_array($img, $images))
+                            array_push($removed, $img);
+                    }
+                }
 
-                            $name = $row[ $k_name ];
-                            //$cont = $row[ $k_cont ];
+                //consoleLog($removed);
 
-                            //if( is_array( $cont ) && sizeof( $cont ) > 0 ){
-                            if( isset( $name ) && is_string( $name ) && $name ){
+                if (!empty($removed)) {
+                    foreach($removed as $img) {
+                        // unattach removed ones
+                        $wpdb->update($wpdb->posts, array('post_parent'=>0), array('id'=>$img, 'post_type'=>'attachment'));
+                    }
+                }
 
-                                $the_post = array(
-                                    'post_title'    => $name,
-                                    'post_type'     => $type,
-                                    'post_name'     => sanitize_title( $name ),
-                                    'post_status'   => 'publish',
-                                    'post_author'   => 1,
-                                );
-
-                                $id = wp_insert_post( $the_post );
-                                $new_post = get_post( $id );
-                            
-                                // INSERISCI META
-                                // for( $cont ){
-                                //  updatePostMeta( $id, $meta, $value );
-                                // }
-                                
-                                $_POST['acf'][ $k_rows ][$layout][ $k_model ] = $new_post->post_name;
-                                $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
-                                //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
-
-                            }
-
-                        }else{
-                            $_POST['acf'][ $k_rows ][$layout][ $k_model ] = 'build';
-                            $_POST['acf'][ $k_rows ][$layout][ $k_name ] = '';
-                            //$_POST['acf'][ $k_rows ][$layout][ $k_cont ] = array();
-                        }                        
+                if (!empty($images)) {
+                    foreach($images as $img) {
+                        // attach added ones
+                        $wpdb->update($wpdb->posts, array('post_parent'=>$post_id), array('id'=>$img, 'post_type'=>'attachment'));
                     }
                 }
             }
         }
-    }*/
+    }
+
 
     // TEMPLATES
     if ( ! function_exists( 'scm_acf_savepost_hook_templates' ) ) {
@@ -979,30 +955,12 @@
                 $fields = $_POST['acf'];
 
                 $list = scm_field_objects( $post_id, $fields, 'taxonomy', array( 'add_term' => 0, 'load_save_terms' => 1 ) );
-                //$add = scm_field_objects( $post_id, $fields, 'text', [ 'name' => 'add' ] );
 
                 if( isset( $list ) && is_numeric( sizeof( $list ) ) ){
 
                     foreach ($list as $field) {
                         $tax = $field['taxonomy'];
                         $terms = get_terms( $tax, array( 'fields' => 'name' ) );
-                        //printPre($terms);
-
-                        /// *   * * * * * * ***    ** * *
-
-                        /*
-                        if( !$_POST['acf'][ $field['key'] ] ){
-
-                            $_POST['acf'][ $field['key'] ] = 'Altro';*/
-                            
-                            //printPre($terms);
-                            /*if( sizeof( $terms ) ){
-                                if( getByValue( $terms, 'altro' ) )
-                                    $_POST['acf'][ $field['key'] ]['value'] = 'altro';
-                                else                                    
-                                    $_POST['acf'][ $field['key'] ]['value'] = $terms[0];
-                            }*/
-                        //}
                     }
                 }
             }
@@ -1032,12 +990,7 @@
     if ( ! function_exists( 'scm_acf_formatvalue_hook_text' ) ) {
         function scm_acf_formatvalue_hook_text( $value, $post_id, $field ){
 
-            //consoleLog($value);
-            //consoleLog(sanitize_text_field( $value ));
-
             return $value;
-
-            //return sanitize_text_field( $value );
 
         }
     }
@@ -1146,13 +1099,6 @@
 
                 $groups[] = $style;
 
-                // + OPT STILI
-                /*$options_default = scm_acf_group( __( 'Opzioni', SCM_THEME ), 'style-options' );
-                $options_default['location'][] = scm_acf_group_location( 'scm-options-stili', 'options_page' );
-                $options_default['fields'] = array_merge( $options_default['fields'], scm_acf_options_style() );*/
-
-                //$groups[] = $options_default;
-
                 // + OPT LAYOUT
                 $layout = scm_acf_group( __( 'Layout', SCM_THEME ), 'layout-options' );
                 $layout['location'][] = scm_acf_group_location( 'scm-options-layout', 'options_page' );
@@ -1175,14 +1121,15 @@
                 $groups[] = $footer;
 
 // EDIT SINGLE
+                
 
+                /*
                 // + PAGE
                 $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
                 $page['location'][] = scm_acf_group_location( 'page' );
                 $page['fields'] = scm_acf_fields_page();
 
                 $groups[] = $page;
-
 
                 // + PAGE FOOTER
                 $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
@@ -1197,7 +1144,18 @@
                 $section['fields'] = scm_acf_fields_section();
 
                 $groups[] = $section;
-                
+
+
+                if( $SCM_types['complete'][ 'slides' ] ){
+
+                    // + PAGE SLIDER
+                    $slider = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
+                    $slider['location'][] = scm_acf_group_location( 'page' );
+                    $slider['fields'] = scm_acf_options_slider( 'main', 1 );
+
+                    $groups[] = $slider;
+
+                }
 
                 if( $SCM_types['complete'][ 'slides' ] ){
 
@@ -1208,13 +1166,6 @@
 
                     $groups[] = $slide;
                 }
-                
-                // + ARTICOLI
-                /*$article = scm_acf_group( __( 'Articolo', SCM_THEME ), 'articoli-single' );
-                $article['location'][] = scm_acf_group_location( 'articoli' );
-                $article['fields'] = scm_acf_fields_articolo();
-
-                $groups[] = $article;*/
 
                 if( $SCM_types['complete'][ 'news' ] ){
 
@@ -1265,7 +1216,7 @@
                     // + RASSEGNA STAMPA
                     $rassegna = scm_acf_group( __( 'Rassegna Stampa', SCM_THEME ), 'rassegne-single' );
                     $rassegna['location'][] = scm_acf_group_location( 'rassegne-stampa' );
-                    $rassegna['fields'] = scm_acf_fields_rassegna();
+                    $rassegna['fields'] = scm_acf_fields_rassegna_stampa();
 
                     $groups[] = $rassegna;
 
@@ -1293,17 +1244,6 @@
 
                 }
 
-                if( $SCM_types['complete'][ 'slides' ] ){
-
-                    // + PAGE SLIDER
-                    $slider = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
-                    $slider['location'][] = scm_acf_group_location( 'page' );
-                    $slider['fields'] = scm_acf_options_slider( 'main', 1 );
-
-                    $groups[] = $slider;
-
-                }
-
                 if( $SCM_types['complete'][ 'modules' ] ){
 
                     // + MODULE
@@ -1324,9 +1264,45 @@
 
                     $groups[] = $module;
 
+                }*/
+
+                
+                // + PAGE
+                $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
+                $page['location'][] = scm_acf_group_location( 'page' );
+                $page['fields'] = scm_acf_fields_page();
+
+                $groups[] = $page;
+
+                // + PAGE FOOTER
+                $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
+                $page_footer['location'][] = scm_acf_group_location( 'page' );
+                $page_footer['fields'][] = scm_acf_field_objects_rel( 'page-footer', 0, 'sections', 100, 0, 'Seleziona Sections' );
+
+                $groups[] = $page_footer;
+
+
+                foreach ($SCM_types['custom'] as $slug => $title) {
+                    if($slug=='slides'){
+                        $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
+                        $group['location'][] = scm_acf_group_location( 'page' );
+                        $group['fields'] = scm_acf_options_slider( 'main', 1 );
+                        $groups[] = $group;
+                    }
+                    
+                    $fun = 'scm_acf_fields_' . str_replace( '_', '-', $slug );
+                    if( function_exists( $fun ) ){
+                        $obj = $SCM_types['objects'][$slug];
+                        $group = scm_acf_group( __( 'Opzioni '. $obj->singular, SCM_THEME ), $slug . '-single' );
+                        $group['location'][] = scm_acf_group_location( $slug );
+                        $group['fields'] = call_user_func( $fun );
+                        $group = apply_filters( 'scm_filter_register_' . str_replace( '_', '-', $slug ), $group );
+                        $groups[] = $group;
+                    }                    
                 }
 
-// MODELLI
+
+// TEMPLATES
 
                 foreach ($SCM_types['public'] as $slug => $title) {
 
@@ -1362,6 +1338,7 @@
             }
         }
     }
+
 
 // *****************************************************
 // *      7.0 PLUGIN INSTALLATION

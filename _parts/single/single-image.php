@@ -25,6 +25,7 @@ $args = array(
     'style' => '',
     'negative' => 'off',
     'thumb' => '',
+    'thumb-size' => 'thumbnail',
     'link' => ''
 );
 
@@ -152,7 +153,11 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
         
         $att .= scm_post_link( $args );
 
-        $value = ( gettype( $value ) == 'array' ? $value['sizes']['thumbnail'] : $value );
+        if( $args['thumb-size'] )
+            $value = ( gettype( $value ) == 'array' ? $value['sizes']['thumbnail'] : $value );
+        else
+            $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
+        
         $class .= ' thumb';
 
     }else{

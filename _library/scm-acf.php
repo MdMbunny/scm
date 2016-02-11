@@ -356,10 +356,10 @@
 
         	if( !$no_option ){
 
-        		if( function_exists( 'get_field' ) )
+        		//if( function_exists( 'get_field' ) )
 		        	$field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
-		        else
-	        		$field = $fallback;
+		        //else
+	        		//$field = $fallback;
 
 	        	if( $field === 'no' )
 	        		return '';

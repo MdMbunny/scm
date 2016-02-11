@@ -55,6 +55,7 @@ show_admin_bar(false);
 	$SCM_directory		 = get_template_directory();
 	$SCM_uri 			 = get_template_directory_uri();
 	$SCM_page_templates	 = wp_get_theme()->get_page_templates();
+	$SCM_page_id 		 = 0;
 
 	$SCM_shortname = str_replace( '-v' . $SCM_version, '', $SCM_shortname );
 

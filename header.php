@@ -68,28 +68,19 @@ endif;
 //***************** END HEAD *****
 //********************************
 
-global $SCM_indent, $post;
+global $SCM_indent, $SCM_page_id, $post;
 
-$id = $post->ID;
-$type = $post->post_type;
-
-if( is_single() ){
-
-    // If a Page named '_single-{post_type}' exists
-    $page = get_page_by_path( '_single-' . $type );
-    if( $page )
-        $id = $page->ID;
-}
+$id = $SCM_page_id;
 
 $skip = __( "Vai al contenuto", SCM_THEME );
 
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $txt_align = scm_options_get( 'align', 'option', 0 );
 
-$page_id = 'site-page';
-$page_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
-$page_layout = ( $page_layout === 'full' ? 'full ' : 'responsive float-' );
-$page_class = 'site-page hfeed site ' . $page_layout . $site_align;
+$wrap_id = 'site-page';
+$wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
+$wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
+$wrap_class = 'site-page hfeed site ' . $wrap_layout . $site_align;
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -129,6 +120,19 @@ $cont_id = 'site-content';
 $cont_layout = scm_field( 'layout-content', 'full', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
 $cont_class = 'site-content ' . $cont_layout . $site_align ;
+
+$page_class = 'page scm-page object scm-object ' . $post->post_name;
+$page_id = scm_field( 'page-selectors-id', '', $id, 1, ' id="', '"' );
+$page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
+    
+$page_slider = scm_field( 'main-slider-active', '', $id );
+$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
+
+/*if( $page_slider === 'default' ){
+    $page_slider = scm_field( 'main-slider-active', '', 'option' );
+    $page_slider_terms = scm_field( 'main-slider-terms', '', 'option' );
+}*/
+
 ?>
 
 <body <?php body_class(); ?> 
@@ -144,13 +148,12 @@ $cont_class = 'site-content ' . $cont_layout . $site_align ;
     data-smooth-post="<?php echo $smooth_post; ?>" 
     data-tofull="<?php echo $tofull; ?>" 
     data-tocolumn="<?php echo $tocolumn; ?>"
-    <?php /*echo $style_body; echo lbreak();*/ ?>
 >
 
 <?php
 
 // Page Wrapper
-indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '"
+indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
             data-current-link="' . $single_class . '"
             data-current-link-interval="' . $single_interval . '"
             data-current-link-offset="' . $single_offset . '"
@@ -208,7 +211,7 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '"
         scm_main_menu( $menu_align, $menu_position, 1 );
     }
     
-    // Content
+    // Page Containers
     indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );
 
         $SCM_indent += 1;
@@ -218,5 +221,26 @@ indent( $SCM_indent, '<div id="' . $page_id . '" class="' . $page_class . '"
             $SCM_indent += 1;
             
             indent( $SCM_indent, '<main id="main" class="site-main full" role="main">', 2 );
+
+                // Page Content
+                $SCM_indent += 1;
+                indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
+                    $SCM_indent += 1;
+                    
+                    // Page Header
+                    if( $page_slider ){
+
+                        consoleLog('pippo');
+
+                        indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
+
+                            indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
+
+                                scm_contents( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) );
+
+                            indent( $SCM_indent + 1, '</div><!-- row -->', 2 );
+
+                        indent( $SCM_indent, '</header><!-- header -->', 2 );
+                    }
 
 ?>

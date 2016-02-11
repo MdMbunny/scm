@@ -296,27 +296,19 @@
 
             }
 
-            global $post;
-            $id = $post->ID;
-            $type = $post->post_type;
+            global $SCM_page_id;;
+            $id = $SCM_page_id;
 
-            if( is_single() ){
+            $menu = scm_field( 'page-menu', 'default', $id );
 
-                // If a Page named '_single-{post_type}' exists
-                $page = get_page_by_path( '_single-' . $type );
-                if( $page )
-                    $id = $page->ID;
-
-            }
-
-            $menu = scm_field( 'page-menu', 'no', $id );
-
-            if( !$menu || $menu == 'no' )
+            //if( !$menu || $menu == 'no' )
+            if( !$menu )
                 return;
             
             $menu = ( $menu != 'default' ? $menu : scm_field( 'menu-wp', 'primary', 'option' ) );            
 
-            if( !$menu || $menu == 'no' )
+            //if( !$menu || $menu == 'no' )
+            if( !$menu )
                 return;
 
             $out = scm_field( 'menu-sticky-out', 'no', 'option' );

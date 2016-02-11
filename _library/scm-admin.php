@@ -20,40 +20,42 @@
 *****************************************************
 */
 
+
+
 $SCM_MENU_ORDER = array(
-    array(
+    'scm' => array(
         'index.php', // Dashboard
         'scm-options-intro',
         'scm-custom-types',
         'scm-templates-general',
     ),
-    array( 'separator1' ),
-    array(
+    'separator1' => array( 'separator1' ),
+    'pages' => array(
         'edit.php?post_type=page', // Pages
     ),
-    array( 'separator2' ),
-    array(
+    'separator2' => array( 'separator2' ),
+    'types' => array(
         'edit.php', // Posts
     ),
-    array( 'separator3' ),
-    array(
+    'separator3' => array( 'separator3' ),
+    'media' => array(
         'upload.php', // Media
     ),
-    array( 'separator4' ),
-    array(
+    'separator4' => array( 'separator4' ),
+    'contacts' => array(
         'edit-comments.php', // Comments
         'link-manager.php', // Links
         'users.php', // Users
         'wpcf7', // Forms
     ),
-    array( 'separator5' ),
-    array(
+    'separator5' => array( 'separator5' ),
+    'settings' => array(
         'themes.php', // Appearance
         'plugins.php', // Plugins
         'tools.php', // Tools
         'options-general.php', // Settings
     ),
-    array( 'separator-last' ),
+    'separator-last' => array( 'separator-last' ),
 );
 
 
@@ -346,6 +348,8 @@ $SCM_MENU_ORDER = array(
         function scm_admin_menu_order($menu_ord) {
             if (!$menu_ord) return true;
             global $SCM_MENU_ORDER;
+
+            $SCM_MENU_ORDER = apply_filters( 'scm_filter_admin_menu_order', $SCM_MENU_ORDER );
 
             return call_user_func_array('array_merge', $SCM_MENU_ORDER);
 

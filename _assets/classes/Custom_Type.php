@@ -26,7 +26,7 @@ class Custom_Type {
             'orderby'               => 'title',
             'ordertype'             => '',
             'menupos'               => 0,
-            'menu'                  => 0,
+            'menu'                  => '',
             'description'           => '',
         );
 
@@ -62,33 +62,13 @@ class Custom_Type {
         $this->orderby = ( $attr['orderby'] ?: 'title' );
         $this->order = $attr['ordertype'];
         
-        $this->menu = ( ( $attr['menu'] ?: sizeof($SCM_MENU_ORDER) + 1 ) - 1 ) * 2;
+        $this->menu = ( $attr['menu'] ?: '' );
         $this->menupos = ( $attr['menupos'] ?: sizeof($SCM_MENU_ORDER[$this->menu]) + 1 ) - 1;
-
-        $this->description = $attr['description'];
-
-        // OLD
-        /*if( !$this->menupos ){
-            switch ( $this->menu ) {
-                                                        //          0.1 : SCM                 0.2 : SCM Types                 0.3 : SCM Templates                     1 > 3 : (empty)
-                                                        // 4 -
-                //case 0: $this->menupos = 6; break;      //          5 : Pages                   6 > 9 : (private)
-                                                        // 10 -
-                case 1: $this->menupos = 12; break;     //          12 > 19 : (empty)
-                                                        // 20 - 
-                case 2: $this->menupos = 22; break;     //          22 > 25 (empty)
-                                                        // 26 -
-                case 3: $this->menupos = 28; break;     //          27 : Media                   28 > 41 : (multimedia)
-                                                        // 42 —
-                case 4: $this->menupos = 44; break;     //          44 > 55 : (contacts)         56 : Users                  57 : CF7
-                                                        // 59 —
-                                                        // ...
-                default: $this->menupos = 91; break;    //          91 > (empty)
-            }
-        }*/
-
+        
         if( $SCM_MENU_ORDER[$this->menu] )
-            array_splice( $SCM_MENU_ORDER[$this->menu], $this->menupos, 0, 'edit.php?post_type=' . $this->slug);
+            insertArray( $SCM_MENU_ORDER[$this->menu], $this->menupos, 'edit.php?post_type=' . $this->slug );
+        
+        $this->description = $attr['description'];       
 
         $this->cap_singular = sanitize_title( $this->singular );
         $this->cap_plural = sanitize_title( $this->plural );
@@ -106,36 +86,10 @@ class Custom_Type {
         $this->CT_type();
     }
 
-    /*function CT_default_term( $post_id ) {
-        global $wpdb;
-
-        $taxes = get_object_taxonomies( get_post( $post_id ) );
-
-        foreach ( $taxes as $tax_name ) {
-            $tax = get_taxonomy( $tax_name );
-            if( $tax->hierarchical ){
-                $terms = get_object_terms( $post_id );
-                consoleLog($terms);
-            }
-            
-            
-            //$terms = get_terms( $tax_name, [ 'fields' => 'name' ] );
-            //consoleLog($terms);
-        }
-
-        
-
-        //if( !has_term( '', 'default', $post_id ) ){
-            //$cat = array(4);
-            //wp_set_object_terms($post_id, $cat, 'category');
-        //}
-    }*/
 
     function CT_register() {
         register_post_type( $this->slug, $this->attributes);
         flush_rewrite_rules();
-
-        //add_action('publish_stiwti', 'add_stiwti_category_automatically');
     }
 
     function CT_type() {
@@ -223,19 +177,6 @@ class Custom_Type {
                         /* Join the terms, separating them with a comma. */
                         echo join( ', ', $out );
 
-                        /*$tot = sizeof( $terms );
-                        $i = 0;
-
-                        foreach ( $terms as $term ) {
-
-                            $i++;
-                            echo $term->name;
-                            if( $i == $tot )
-                                continue;
-
-                            echo ', ';
-
-                        }*/
                     }
                 }
 

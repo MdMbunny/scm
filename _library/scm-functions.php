@@ -219,6 +219,53 @@ function toArray( $var, $asso = false ){
 
 }
 
+// PHP 5.3.0
+function insertArray(&$array, $offset, $object, $replace=false){
+    
+    if(is_array($array)){
+        if($replace ){
+            if($offset<0) $offset = 0;
+            else if($offset > count($array)-1) $offset = count($array)-1;
+            $array = array_replace($array, array($offset => $object));
+        }else{            
+            if($offset == 0){
+                array_unshift($array, $object);
+            }else if($offset >= count($array)){
+                array_push($array, $object);
+            }else{                
+                $a1 = array_slice($array, 0, $offset);
+                $a2 = array_slice($array, $offset);
+                array_push($a1, $object);
+                $array = array_merge($a1, $a2);
+            }
+        }
+    }    
+}
+// PHP 4.0.0
+/*function array_insert(&$array, $offset, $object, $replace=false){
+    
+    if(is_array($array)){
+        if($replace ){
+            if($offset<0) $offset = 0;
+            else if($offset > count($array)-1) $offset = count($array)-1;
+            $a1 = array_slice($array, 0, $offset);
+            $a2 = array_slice($array, $offset+1);
+            array_push($a1, $object);
+            $array = array_merge($a1, $a2);
+        }else{            
+            if($offset == 0){
+                array_unshift($array, $object);
+            }else if($offset >= count($array)){
+                array_push($array, $object);
+            }else{                
+                $a1 = array_slice($array, 0, $offset);
+                $a2 = array_slice($array, $offset);
+                array_push($a1, $object);
+                $array = array_merge($a1, $a2);
+            }
+        }
+    }    
+}*/
 
 function copyArray( $arr ){
     if( !isset( $arr ) || gettype( $arr ) != 'array' )

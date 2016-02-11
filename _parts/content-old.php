@@ -71,6 +71,9 @@ img{
 
 /***********************************************************************************************/
 </style>
+
+<link rel="stylesheet" id="old-css" href= '<?php echo SCM_URI_CHILD ?>style.css' type="text/css" media="screen">
+
 </head>
 
 <body>
