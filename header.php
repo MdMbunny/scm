@@ -230,8 +230,6 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
                     // Page Header
                     if( $page_slider ){
 
-                        consoleLog('pippo');
-
                         indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
 
                             indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );

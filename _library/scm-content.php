@@ -258,9 +258,7 @@
                     }
 
                     $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
-if($content['acf_fc_layout']=='layout-thumbs'){
-consoleLog($content['column-width']);
-}
+
                     // -- Layout
 
                     if($container == 'sub-section'){

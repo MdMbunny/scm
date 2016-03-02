@@ -250,7 +250,7 @@
 	if ( ! function_exists( 'scm_acf_group_register' ) ) {
 		function scm_acf_group_register( $group ) {
 
-			$group['fields'][] = scm_acf_field_hidden( 'g_' . $group['key'] ); // todo: is it used anywhere?
+			//$group['fields'][] = scm_acf_field_hidden( 'g_' . $group['key'] ); // todo: is it used anywhere?
 			$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
 			$group['key'] = 'group_' . hash('ripemd160', $group['key'] );
 
@@ -267,27 +267,34 @@
 	if ( ! function_exists( 'scm_acf_field' ) ) {
 		function scm_acf_field( $name, $type = '', $label = '', $width = '', $logic = 0, $instructions = '', $required = 0, $class = '' ) {
 
-			if( !isset( $name ) || !$type )
+			if( !isset( $name ) || !isset( $type ) )
 				return;
 
-			$typename = ( is_string( $type ) ? $type : ( is_array( $type ) && isset( $type[0] ) ? $type[0] : 'undefined-field' ) );
+			$def = get_defined_vars();
+			
+			if( is_array( $name ) ){
+                $def = wp_parse_args( $name, $def );
+
+	        }
+
+			$typename = ( is_string( $type ) ? $type : ( is_array( $type ) && ( isset( $type[0] ) || isset( $type['type'] ) ) ? ( $type[0] || $type['type'] ) : 'undefined-field' ) );
 
 			$field = array (
-				'key' => ( $name ? $name . '_' : '' ),
-				'label' => ( $label ?: 'Field' ),
-				'name' => ( $name ?: $typename ),
+				'key' => ( $def['name'] ? $def['name'] . '_' : '' ),
+				'label' => ( $def['label'] ?: '' ),
+				'name' => ( $def['name'] ?: $typename ),
 				'prefix' => '',
-				'instructions' => ( $instructions ?: '' ),
-				'required' => ( $required ?: 0 ),
-				'conditional_logic' => ( is( $logic ) && !is_string( $logic ) ? array( scm_acf_group_condition( $logic ) ) : '' ),
+				'instructions' => ( $def['instructions'] ?: '' ),
+				'required' => ( $def['required'] ?: 0 ),
+				'conditional_logic' => ( is( $def['logic'] ) && !is_string( $def['logic'] ) ? array( scm_acf_group_condition( $def['logic'] ) ) : '' ),
 				'wrapper' => array (
-					'width' => ( is_numeric( $width ) ? $width : '' ),
-					'class' => ( $class ? $class . ' ' : '' ) . $typename,
+					'width' => ( is_numeric( $def['width'] ) ? $def['width'] : '' ),
+					'class' => ( $def['class'] ? $def['class'] . ' ' : '' ) . $typename,
 					'id' => '',
 				)
 			);
 
-	        if( $width === 'required' || $logic === 'required' || $instructions === 'required' )
+	        if( $def['width'] === 'required' || $def['logic'] === 'required' || $def['instructions'] === 'required' )
 	        	$field['required'] = 1;
 
 	        $field = array_merge( $field, scm_acf_field_type( $type ) );

@@ -124,7 +124,7 @@
 
             // Nivo Slider
 
-            if( get_field( 'main-slider-active', 'option' ) == 'nivo' ){
+            if( get_field( 'main-slider-active', 'option' ) == 'nivo' || get_field( 'opt-tools-nivo', 'option' ) ){
                 wp_register_style( 'nivo', SCM_URI_CSS . 'nivoSlider-3.2/nivo-slider.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 //wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/default/default.css', false, SCM_SCRIPTS_VERSION, 'all' );
                 wp_register_style( 'nivo-theme', SCM_URI_CSS . 'nivoSlider-3.2/themes/scm/scm.css', false, SCM_SCRIPTS_VERSION, 'all' );
@@ -134,15 +134,15 @@
 
             // BX Slider
 
-            wp_register_style( 'bx', SCM_URI_CSS . 'jquery.bxslider/jquery.bxslider.css', false, SCM_SCRIPTS_VERSION, 'all' );
-            wp_enqueue_style( 'bx' );
-            
+            if( get_field( 'main-slider-active', 'option' ) == 'bx' || get_field( 'opt-tools-bx', 'option' ) ){
+                wp_register_style( 'bx', SCM_URI_CSS . 'jquery.bxslider/jquery.bxslider.css', false, SCM_SCRIPTS_VERSION, 'all' );
+                wp_enqueue_style( 'bx' );
+            }
+
             // Font Awesome
             
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.4.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.5.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style( 'font-awesome' );
-
-
 
             /*global $wp_styles, $is_IE;
             wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array(), '4.3.0' );
@@ -237,7 +237,6 @@
             wp_enqueue_script( 'skip-link-focus-fix' );
 
             
-
             // jQuery Transform
 
             wp_register_script( 'jquery-transform-2d', SCM_URI_JS . 'jquery.transform/jquery.transform2d.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
@@ -265,7 +264,7 @@
             
             // Bootstrap
 
-            wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.5/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+            wp_register_script( 'bootstrap', SCM_URI_JS . 'bootstrap-3.3.6-dist/js/bootstrap.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'bootstrap' );
 
             // Images Loaded
@@ -286,23 +285,31 @@
                 wp_enqueue_script( 'fancybox-media' );
             }
 
+            // Parallax Scrolling
+
+            if( scm_field( 'opt-tools-parallax', 0, 'option' ) ){
+                wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, SCM_SCRIPTS_VERSION, true );
+                wp_enqueue_script( 'parallax' );
+            }
+
+            // Nivo Slider
+
+            if( get_field( 'main-slider-active', 'option' ) == 'nivo' || get_field( 'opt-tools-nivo', 'option' ) ){
+                wp_register_script( 'nivo', SCM_URI_JS . 'nivoSlider-3.2/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                wp_enqueue_script( 'nivo' );
+            }
+
+            // BX Slider
+
+            if( get_field( 'main-slider-active', 'option' ) == 'bx' || get_field( 'opt-tools-bx', 'option' ) ){
+                wp_register_script( 'bx', SCM_URI_JS . 'jquery.bxslider/jquery.bxslider.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
+                wp_enqueue_script( 'bx' );
+            }
+
             // Tooltip
 
             wp_register_script( 'tooltip',  SCM_URI_JS . 'jquery.powertip-1.2.0/jquery.powertip.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
             wp_enqueue_script( 'tooltip' );
-
-
-            // Parallax Scrolling
-
-            if( scm_field( 'opt-tools-parallax', 0, 'option' ) ){
-
-                wp_register_script( 'parallax',  SCM_URI_JS . 'parallax.js-1.3.1/parallax.min.js', false, SCM_SCRIPTS_VERSION, true );
-                wp_enqueue_script( 'parallax' );
-
-            }
-
-            //wp_register_script( 'sequence',  SCM_URI_JS . 'Sequence/jquery.sequence-min.js', false, '', true );
-            //wp_enqueue_script( 'sequence' );
 
             // Waypoints
 
@@ -310,36 +317,7 @@
             wp_enqueue_script( 'waypoints' );
             //wp_register_script( 'waypoints-debug',  SCM_URI_JS . 'waypoints-4.0.0/lib/waypoints.debug.js', false, SCM_SCRIPTS_VERSION, true );
             //wp_enqueue_script( 'waypoints-debug' );
-
             // import waypoints shortcuts if needed (sticky, infinite, ...)
-
-            // Nivo Slider
-
-            if( get_field( 'main-slider-active', 'option' ) == 'nivo' ){
-                wp_register_script( 'nivo', SCM_URI_JS . 'nivoSlider-3.2/jquery.nivo.slider.pack.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-                wp_enqueue_script( 'nivo' );
-            }
-
-            // BX Slider
-
-            wp_register_script( 'bx', SCM_URI_JS . 'jquery.bxslider/jquery.bxslider.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'bx' );
-
-            // Google API
-
-            //wp_register_script( 'googleapi', 'https://www.google.com/jsapi', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            //wp_enqueue_script( 'googleapi' );
-
-            //if( scm_field( 'opt-tools-gm', 0, 'option' ) ){
-                /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
-                wp_enqueue_script( 'gmapapi' );
-
-                wp_register_script( 'gmapmarker', 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js', false, '', true );
-                wp_enqueue_script( 'gmapmarker' );*/
-            //}
-
-            //wp_register_script( 'cookies', SCM_URI_JS . 'cookiechoices/cookiechoices.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            //wp_enqueue_script( 'cookies' );
 
             // SCM
 

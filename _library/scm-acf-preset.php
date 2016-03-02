@@ -34,21 +34,21 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 * 		
-*		'message'				$message = ''								$esc_html = 0 					$new_lines = '' | 'br' | 'wpautop'
-*		'tab'					$placement = 'top | side' || 0 | 1
-*			'-side'					$placement = 'side'
+*		'message'				$message = ''								$eschtml = 0 					$newlines = '' | 'br' | 'wpautop'
+*		'tab'					$place = 'top | side' || 0 | 1
+*			'-side'					$place = 'side'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'repeater'				$button-label = '+'							$min = '' 						$max = '' 						$layout = 'row | table | block'				$sub-fields = array()
+*		'repeater'				$button = '+'							$min = '' 						$max = '' 						$layout = 'row | table | block'				$sub = array()
 * ———      	'-block':				$layout = 'block'
 * ———      	'-table':				$layout = 'table'
 *
-*		'flexible'				$button-label = '+'							$min = '' 						$max = '' 						$layouts = array()
+*		'flexible'				$button = '+'							$min = '' 						$max = '' 						$layouts = array()
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'number'				$default = ''			$placeholder = ''				$prepend = ''						$append = ''					$min = ''							$max = ''						$step = ''						$read-only = 0					$disable = 0
+*		'number'				$default = ''			$placeholder = ''				$prepend = ''						$append = ''					$min = ''							$max = ''						$step = ''						$read = 0					$disabled = 0
 * ———		'positive':				$min = 0
 * ———      	'negative':				$max = 0
 * ———      	'option':				$min = -1
@@ -66,42 +66,42 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'text'					$default = ''					$placeholder = ''				$prepend = ''					$append = '' 						$max-length = ''					$read-only = 0				$disable = 0
+*		'text'					$default = ''					$placeholder = ''				$prepend = ''					$append = '' 						$maxlength = ''					$readonly = 0				$disabled = 0
 * ———		'id':			 		$place = 'ID' 					$prepend = '#'	
 * ———		'class':			 	$place = 'Class'				$prepend = '.' 
 * ———		'attributes':			$prepend = 'Attributes'			$place = 'data-href="www.example.com" data-target="_blank"'
 * ———		'name':			 		$place = 'senza titolo' 		$prepend = 'Nome' 		$maxl = 30		
 * ———		'link':			 		$prepend = 'Web' 				$place = 'http://www.esempio.com'
 * ———		'video':			 	$prepend = 'YouTube' 			$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
-* ———		'-read'					$read-only = 1
+* ———		'-read'					$readonly = 1
 * ———		'-disabled'				$disabled = 1
 *
-*		'textarea'				$default = ''					$placeholder = ''				$rows = 8 						$max-length = ''					$new-lines = 'wpautop | br | '		$read-only = 0				$disable = 0
-* ———		'-no'					$new-lines = ''
-* ———		'-br'					$new-lines = 'br'
-* ———		'-read'					$read-only = 1
+*		'textarea'				$default = ''					$placeholder = ''				$rows = 8 						$maxlength = ''					$newlines = 'wpautop | br | '		$readonly = 0				$disabled = 0
+* ———		'-no'					$newlines = ''
+* ———		'-br'					$newlines = 'br'
+* ———		'-read'					$readonly = 1
 * ———		'-disabled'				$disabled = 1
 *
-*		'editor'				$default = ''					$tabs = 'all | visual'			$toolbar = 'normal | basic'		$media-upload = 0
+*		'editor'				$default = ''					$tabs = 'all | visual'			$toolbar = 'normal | basic'		$media = 0
 * ———		'-visual'				$tabs = 'visual'
 * ———		'-basic'				$toolbar = 'basic'
 * ———		'-media'				$media = 1
 *
-*		'limiter'				$character-number = 350			$display-characters = 0
-* ———		'-chars'				$display-characters = 1
+*		'limiter'				$max = 350			$display = 0
+* ———		'-chars'				$display = 1
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
 *		'true_false'			$default = 0 || 1
 *
-*		'select'				$default = '' || array(]	* 						$placeholder = ''									$ajax = 0							$allow_null = 0						$ui = 0						$multiple = 0 				$read-only = 0				$disable = 0
+*		'select'				$default = '' || array(]	* 						$placeholder = ''									$ajax = 0							$null = 0						$ui = 0						$multiple = 0 				$read = 0				$disabled = 0
 * ———		'select2'					$ui = 1
 *		'checkbox'				$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1
-*		'radio'					$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1			$more = 0							$load_save_terms = $more || 0
+*		'radio'					$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1			$more = 0							$save = $more || 0
 * ———		'-default'				add 'default' 	=> 	'Default' 	to array('choices']
 * ———		'-no'					add 'no' 		=> 	'-' 		to array('choices']
 * ———		'-multi'				$multiple | $more = 1
-* ———		'-read'					$read-only = 1
+* ———		'-read'					$read = 1
 * ———		'-disabled'				$disabled = 1
 * ———		'-horizontal'			$layout = 1
 *
@@ -111,43 +111,49 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'object'				$post_types = '' || array(]					$taxonomy = '' || array(] 				$placeholder = ''					$allow_null = 0					$multiple = 0						$return_format = 'object | id'	|| 0 | 1	$filters = array( 'search', 'post_type', 'taxonomy' )	$ui = 1
-*		'object-rel'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$elements = '' 					$max = 1							$return_format = 'object | id'	|| 0 | 1	$filters = array( 'search', 'post_type', 'taxonomy' )
-* ———		'-id'						$return_format = 'id'
+*		'object'				$types = '' || array(]					$taxes = '' || array(] 				$placeholder = ''					$null = 0					$multiple = 0				$return = 'object | id'	|| 0 | 1		$filters = array( 'search', 'post_type', 'taxonomy' )		$ui = 1
+*		'object-rel'			$types = '' || array(]					$taxes = '' || array(]				$placeholder = ''					$elements = '' 				$max = 1					$return = 'object | id'	|| 0 | 1		$filters = array( 'search', 'post_type', 'taxonomy' )
+* ———		'-id'						$return = 'id'
 * ———		'-search'					$filters[] = 'search'
-* ———		'-null'						$allow_null = 1
-*		'object-link'			$post_types = '' || array(]					$taxonomy = '' || array(]				$placeholder = ''					$allow_null = 0 				$multiple = 0
+* ———		'-null'						$null = 1
+*		'object-link'			$types = '' || array(]					$taxes = '' || array(]				$placeholder = ''					$null = 0 					$multiple = 0
 * ———		'objects'					$multiple = 1 | $max = 0			
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'category | tag | taxonomy'				$taxonomy = ''						$add = 0				$load_save_terms = $multiple		$allow_null = 0 				$return_format = 'object'
+*		'category | tag | taxonomy'				$taxes = ''						$add = 0				$save = $multiple					$null = 0 					$return = 'object'
 * ———		'categories | tags | taxonomies' 		$multiple = 1
-* ———		'-id'									$return_format = 'id'
+* ———		'-id'									$return = 'id'
 * ———		'-add'									$add = 1
-* ———		'-{tax}'								$taxonomy = '{tax}'
+* ———		'-{tax}'								$taxes = '{tax}'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'gallery'				$library = 'all | uploadedTo' || 0 | 1		$preview_size = 'thumbnail' 		$min = 0 				$max = 0 				$min_width = 0 			$max_width = 0 			$min_height = 0 			$max_height = 0 			$min_size = 0				$max_size = '' 				$mime_types = 'jpg,png'
+*		'gallery'				$library = 'all | uploadedTo' || 0 | 1		$preview = 'thumbnail' 		$min = 0 				$max = 0 				$minwidth = 0 			$maxwidth = 0 			$minheight = 0 			$maxheight = 0 			$minsize = 0				$maxsize = '' 				$mime = 'jpg,png'
 *
-*		'file'					$library = 'all | uploadedTo' || 0 | 1		$min_size = ''						$max_size = '' 			$mime_types = '*'		$return_format = 'array | url | id'
-*		'image'					$library = 'all | uploadedTo' || 0 | 1		$preview_size = 'thumbnail' 		$min_width = 0 			$max_width = 0 			$min_height = 0 		$max_height = 0 		$min_size = 0				$max_size = '' 				$mime_types = 'jpg,png' 	$return_format = 'array | url | id'
-* ———		'-url'						$return_format = 'url'
-* ———		'-id'						$return_format = 'id'
+*		'file'					$library = 'all | uploadedTo' || 0 | 1		$minsize = ''						$maxsize = '' 			$mime = '*'		$return = 'array | url | id'
+*		'image'					$library = 'all | uploadedTo' || 0 | 1		$preview = 'thumbnail' 		$minwidth = 0 			$maxwidth = 0 			$minheight = 0 		$maxheight = 0 		$minsize = 0				$maxsize = '' 				$mime = 'jpg,png' 			$return = 'array | url | id'
+* ———		'-url'						$return = 'url'
+* ———		'-id'						$return = 'id'
 *
-* ——— 		* $mime_types: 		'file' 	>	'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar'
+* ——— 		* $mime: 		'file' 	>	'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'icon'					$default = 'star'	 						$filter = array( 'social', 'job', ... )	$save_format = 'class | unicode | element | object'			$enqueue_fa' = 0		$allow_null = 0					
+*		'icon'					$default = 'star'	 						$filter = array( 'social', 'job', ... )		$save = 'class | unicode | element | object'		$enqueue' = 0			$null = 0					
 *		'color'					$default = '' || '#000000' etc.
-*		'date'					$return_format = 'Y-m-d' 					$display_format = 'd F Y'			$first_day' = 1
-*		'datetime'				$picker = 'slider | select' 				$date_format = 'd F Y'				$time_format' = 'hh:mm' 		$show_week_number = 0 			$save_as_timestamp = 1 			$get_as_timestamp = 0
-*		'time'					$picker = 'slider | select' 				$time_format' = 'hh:mm' 			$save_as_timestamp = 1 			$get_as_timestamp = 0
+*		'date'					$return = 'Y-m-d' 							$display = 'd F Y'					$firstday' = 1
+*		'datetime'				$picker = 'slider | select' 				$date = 'd F Y'						$time' = 'hh:mm' 				$week = 0 					$save = 1 				$get = 0
+*		'time'					$picker = 'slider | select' 				$time' = 'hh:mm'		 			$save = 1 						$get = 0
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 */
+
+	if ( ! function_exists( 'scm_acf_field_to3' ) ) {
+		function scm_acf_field_to3( $a, $n, $t, $d ) {
+			return ( isset( $a[$n] ) ? $a[$n] : ( isset( $a[$t] ) ? $a[$t] : $d ) );
+		}
+	}
 
 
 	if ( ! function_exists( 'scm_acf_field_type' ) ) {
@@ -161,11 +167,13 @@
 
 			if( is_array( $elem ) ){
 
-				if( !isset( $elem[0] ) )
+				$el = scm_acf_field_to3( $elem, 0, 'type', '' );
+
+				if( !$el )
 					return;
 
 				$arg = $elem;
-				$elem = $elem[0];
+				$elem = $el;
 			}
 			
 			$choices = array();
@@ -192,102 +200,87 @@
 			switch ( $type ) {
 
 				case 'message':
-					$msg = ( isset( $arg[1] ) ? $arg[1] : '' );
-					$html = ( isset( $arg[2] ) ? $arg[2] : 0 );
-					$lines = ( isset( $arg[3] ) ? $arg[3] : 0 );
-	        		$field = array(
-						'type' => 'message',
-						'message' => $msg,
-						'new_lines' => $lines,
-						'esc_html' => $html,
 
+	        		$field = array(
+						'type' 					=> 'message',
+						'message' 				=> scm_acf_field_to3( $arg, 1, 'placeholder', '' ),
+						'esc_html' 				=> scm_acf_field_to3( $arg, 2, 'eschtml', 0 ),
+						'new_lines' 			=> scm_acf_field_to3( $arg, 3, 'newlines', '' ),
 					);
+
 	        	break;
 
 				case 'tab':
-					$place = ( isset( $arg[1] ) && $arg[1] && $arg[1] !== 'top' ? 'left' : ( strpos( $extra , '-left' ) !== false ? 'left' : 'top' ) );
+					
 	        		$field = array(
-						'type' => 'tab',
-						'placement' => $place,
+						'type' 					=> 'tab',
+						'placement' 			=> scm_acf_field_to3( $arg, 1, 'placeholder', ( strpos( $extra , '-left' ) !== false ? 'left' : 'top' ) ),
 					);
+
 	        	break;
 
 	        	case 'true_false':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : 0 );
-
 	        		$field = array(
-						'type' => 'true_false',
-						'default_value' => $default,
+						'type' 					=> 'true_false',
+						'default_value' 		=> scm_acf_field_to3( $arg, 1, 'default', 0 ),
 					);
+
 				break;
 
 	        	case 'select':
 	        	case 'select2':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		
-	        		$place = ( isset( $arg[2] ) ? $arg[2] : '' );
-	        		$ajax = ( isset( $arg[3] ) ? $arg[3] : 0 );
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
-	        		$ui = ( $type == 'select2' ? 1 : ( isset( $arg[5] ) ? $arg[5] : 0 ) );
-	        		$multi = ( isset( $arg[6] ) ? $arg[6] : ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
-	        		$read = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) );
-	        		$dis = ( isset( $arg[8] ) ? $arg[8] : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) );
-	        		$extra = str_replace( array( '-multi', '-read', '-disabled' ), '', $elem);
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
 	        		$choices = scm_acf_field_choices( $default, $choices );
 
 	        		$field = array(
-						'type' => 'select',
-						'choices' => $choices['choices'],
-						'default_value' => $choices['default_value'],
-						'ui' => $ui,
-						'multiple' => $multi,
-						'allow_null' => $null,
-						'ajax' => $ajax,
-						'placeholder' => $place,
-						'readonly' => $read,
-						'disabled' => $dis,
-						'preset' => $extra,
+						'type' 					=> 'select',
+						'choices' 				=> $choices['choices'],
+						'default_value' 		=> $choices['default_value'],
+						'placeholder' 			=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
+						'ajax' 					=> scm_acf_field_to3( $arg, 3, 'ajax', 0 ),
+						'allow_null' 			=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
+						'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_field_to3( $arg, 5, 'ui', 0 ) ),
+						'multiple' 				=> scm_acf_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) ),
+						'readonly' 				=> scm_acf_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
+						'disabled' 				=> scm_acf_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
+						'preset' 				=> str_replace( array( '-multi', '-read', '-disabled' ), '', $elem),
 					);
 
 	        	break;
 
 	        	case 'checkbox':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$layout = ( ( isset( $arg[2] ) && $arg[2] && $arg[2] !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' );
-	        		$extra = str_replace( '-horizontal', '', $elem);
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
+	        		$layout = scm_acf_field_to3( $arg, 1, '' );
 	        		$choices = scm_acf_field_choices( $default, $choices );
 	        		
 	        		$field = array(
-						'type' => 'checkbox',
-						'choices' => $choices['choices'],
-						'default_value' => $choices['default_value'],
-						'layout' => $layout,
-						'preset' => $extra,
+						'type' 					=> 'checkbox',
+						'choices' 				=> $choices['choices'],
+						'default_value' 		=> $choices['default_value'],
+						'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
+						'preset' 				=> str_replace( '-horizontal', '', $elem),
 					);
 
 	        	break;
 
 	        	case 'radio':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$layout = ( ( isset( $arg[2] ) && $arg[2] && $arg[2] !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' );
-	        		$more = ( isset( $arg[3] ) ? $arg[3] : ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
-	        		$save = ( isset( $arg[4] ) ? $arg[4] : ( isset( $arg[3] ) ? $more : 0 ) );
-	        		$extra = str_replace( '-multi', '', $elem);
-	        		$extra = str_replace( '-horizontal', '', $elem);
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
+	        		$layout = scm_acf_field_to3( $arg, 1, '' );
 	        		$choices = scm_acf_field_choices( $default, $choices );
+	        		$more = scm_acf_field_to3( $arg, 3, 'more', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
 	        		
 	        		$field = array(
-						'type' => 'radio',
-						'choices' => $choices['choices'],
-						'default_value' => $choices['default_value'],
-						'layout' => $layout,
-						'other_choice' => $more,
-						'save_other_choice' => $save,
-						'preset' => $extra,
+						'type' 					=> 'radio',
+						'choices' 				=> $choices['choices'],
+						'default_value' 		=> $choices['default_value'],
+						'other_choice' 			=> $more,
+						'save_other_choice' 	=> scm_acf_field_to3( $arg, 4, 'save', ( isset( $arg[3] ) ? $more : 0 ) ),
+						'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
+						'preset' 				=> str_replace( array('-multi', '-horizontal'), '', $elem),
 					);
 
 	        	break;
@@ -296,53 +289,33 @@
 	        	case 'objects':
 
 	        		$typ = ( strpos( $extra , '-link' ) !== false ? 'page_link' : ( strpos( $extra , '-rel' ) !== false ? 'relationship' : 'post_object' ) );
-
-	        		$types = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$types = ( !is_array( $types ) && $types ? array( $types ) : $types );
-	        		$tax = ( isset( $arg[2] ) ? $arg[2] : '' );
-	        		$tax = ( !is_array( $tax ) && $tax ? array( $tax ) : $tax );
-
-	        		$place = ( isset( $arg[3] ) ? $arg[3] : '' );
-
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
-	        		$elems = ( isset( $arg[4] ) ? $arg[4] : '' );
-
-	        		$multi = ( $type == 'objects' ? 1 : ( isset( $arg[5] ) ? $arg[5] : 0 ) );
-	        		$max = ( $type == 'objects' ? 0 : ( isset( $arg[5] ) ? $arg[5] : 1 ) );
-
-	        		$ret = ( isset( $arg[6] ) && $arg[6] && $arg[6] !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
-
-	        		$filters = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) );
-	        		$filters = ( !is_array( $filters ) ? array( $filters ) : $filters );
-
-	        		$ui = ( isset( $arg[8] ) ? $arg[8] : 1 );
-
+	  	        		
 					$field = array(
-	        			'type' => $typ,
-						'post_type' => $types,
-						'taxonomy' => $tax,
-						'placeholder' => $place,
+	        			'type' 					=> $typ,
+						'post_type' 			=> toArray( scm_acf_field_to3( $arg, 1, 'types', '' ), 0, 1 ),
+						'taxonomy' 				=> toArray( scm_acf_field_to3( $arg, 2, 'taxes', '' ), 0, 1 ),
+						'placeholder' 			=> scm_acf_field_to3( $arg, 3, 'placeholder', '' ),
 					);
 
 					switch ( $typ ) {
 						case 'post_object':
-							$field['allow_null'] = $null;
-							$field['multiple'] = $multi;
-							$field['return_format'] = $ret;
-							$field['filters'] = $filters;
-							$field['ui'] = $ui;
+							$field['allow_null'] = scm_acf_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
+							$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_field_to3( $arg, 5, 'multi', 0 ) );
+							$field['return_format'] = ( scm_acf_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
+							$field['filters'] = toArray( scm_acf_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
+							$field['ui'] = scm_acf_field_to3( $arg, 8, 'ui', 1 );
 						break;
 						
 						case 'page_link':
-							$field['allow_null'] = $null;
-							$field['multiple'] = $multi;
+							$field['allow_null'] = scm_acf_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
+							$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_field_to3( $arg, 5, 'multi', 0 ) );
 						break;
 
 						case 'relationship':
-							$field['elements'] = $elems;
-							$field['max'] = $max;
-							$field['return_format'] = $ret;
-							$field['filters'] = $filters;
+							$field['elements'] = scm_acf_field_to3( $arg, 4, 'elements', '' );
+							$field['max'] = ( $type == 'objects' ? 0 : scm_acf_field_to3( $arg, 5, 'max', 1 ) );
+							$field['return_format'] = ( scm_acf_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
+							$field['filters'] = toArray( scm_acf_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
 						break;
 					}						
 
@@ -353,124 +326,78 @@
 	        	case 'category':
 	        	case 'categories':
 	        	case 'taxonomy':
-	        	case 'taxonomies':
-
-	        		$null = ( isset( $arg[4] ) ? $arg[4] : 0 );
-	        		$ret = ( isset( $arg[5] ) && $arg[5] && $arg[5] !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
-	        		$extra = str_replace( '-id', '', $extra );
-	        		$extra = str_replace( '-', '', $extra );
-
-	        		$tax = ( isset( $arg[1] ) ? $arg[1] : ( $extra ?: 'category' ) );
+	        	case 'taxonomies':      		
 					
 					$multi = ( strpos( $type, 's' ) !== false ?: 0 );
-					$add = ( isset( $arg[2] ) ? $arg[2] : 0 );
-					$save = ( $add ?: isset( $arg[3] ) ? $arg[3] : 0 );
-
-					$typ = ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'radio' : 'select' ) );
-										
-	        		//$typ = ( isset( $arg[2] ) && is_string( $arg[2] ) ? $arg[2] : ( $multi ? ( $save ? 'checkbox' : 'checkbox' ) : 'select' ) );
-	        		
-//printPre( $name . ' : ' . $tax . ' save: ' . $save. ' arg: ' . $arg[3] . ' multi: ' . $multi );
+					$add = scm_acf_field_to3( $arg, 2, 'add', 0 );
+					$save = ( $add ?: scm_acf_field_to3( $arg, 3, 'save', 0 ) );
 
 	        		$field = array(
-						'type' => 'taxonomy',
-						'taxonomy' => $tax,
-						'multiple' => $multi,
-						'load_save_terms' => $save,
-						'allow_null' => $null,
-						'return_format' => $ret,
-						'field_type' => $typ,
-						'add_term' => $add
+						'type' 						=> 'taxonomy',
+						'taxonomy' 					=> scm_acf_field_to3( $arg, 1, 'taxes', ( str_replace( array( '-id', '-' ), '', $extra ) ?: 'category' ) ),
+						'multiple' 					=> $multi,
+						'load_save_terms' 			=> $save,
+						'allow_null' 				=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
+						'return_format' 			=> ( scm_acf_field_to3( $arg, 5, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) ),
+						'field_type' 				=> ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'radio' : 'select' ) ),
+						'add_term' 					=> $add
 					);
 
 	        	break;
 
 	        	case 'file':
-
-					$lib = ( isset( $arg[1] ) && $arg[1] && $arg[1] !== 'all' ? 'uploadedTo' : 'all' );
-					$min = ( isset( $arg[2] ) ? $arg[2] : '' );
-					$max = ( isset( $arg[3] ) ? $arg[3] : '' );
-					//$mime = ( isset( $arg[4] ) ? $arg[4] : 'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar' );
-					$ret = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) );
+	        		
 	        		$field = array(
-						'type' => 'file',
-						'library' => $lib,
-						'min_size' => $min,
-						'max_size' => $max,
-						//'mime_types' => $mime,
-						'return_format' => $ret,
+						'type' 						=> 'file',
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'min_size' 					=> scm_acf_field_to3( $arg, 2, 'minsize', '' ),
+						'max_size' 					=> scm_acf_field_to3( $arg, 3, 'maxsize', '' ),
+						'return_format' 			=> scm_acf_field_to3( $arg, 5, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
 					);
 
 	        	break;
 
 	        	case 'gallery':
-
-	        		$lib = ( isset( $arg[1] ) && $arg[1] && $arg[1] !== 'all' ? 'uploadedTo' : 'all' );
-					$pre = ( isset( $arg[2] ) ? $arg[2] : 'thumbnail' );
-					$min = ( isset( $arg[3] ) ? $arg[3] : 0 );
-					$max = ( isset( $arg[4] ) ? $arg[4] : 0 );
-					$minw = ( isset( $arg[5] ) ? $arg[5] : 0 );
-					$maxw = ( isset( $arg[6] ) ? $arg[6] : 0 );
-					$minh = ( isset( $arg[7] ) ? $arg[7] : 0 );
-					$maxh = ( isset( $arg[8] ) ? $arg[8] : 0 );
-					$mins = ( isset( $arg[9] ) ? $arg[9] : 0 );
-					$maxs = ( isset( $arg[10] ) ? $arg[10] : 0 );
-					$mime = ( isset( $arg[11] ) ? $arg[11] : 'jpg, png, JPG, PNG, gif, GIF' );
+	        		
 	        		$field = array(
-						'type' => 'gallery',
-						'library' => $lib,
-						'preview_size' => $pre,
-						'min' => $min,
-						'max' => $max,
-						'min_width' => $minw,
-						'max_width' => $maxw,
-						'min_height' => $minh,
-						'max_height' => $maxh,
-						'min_size' => $mins,
-						'max_size' => $maxs,
-						'mime_types' => $mime,
+						'type' 						=> 'gallery',
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
+						'min' 						=> scm_acf_field_to3( $arg, 3, 'min', 0 ),
+						'max' 						=> scm_acf_field_to3( $arg, 4, 'max', 0 ),
+						'min_width' 				=> scm_acf_field_to3( $arg, 5, 'minwidth', 0 ),
+						'max_width' 				=> scm_acf_field_to3( $arg, 6, 'maxwidth', 0 ),
+						'min_height' 				=> scm_acf_field_to3( $arg, 7, 'minheight', 0 ),
+						'max_height' 				=> scm_acf_field_to3( $arg, 8, 'maxheight', 0 ),
+						'min_size' 					=> scm_acf_field_to3( $arg, 9, 'minsize', 0 ),
+						'max_size' 					=> scm_acf_field_to3( $arg, 10, 'maxsize', 0 ),
+						'mime_types' 				=> scm_acf_field_to3( $arg, 11, 'mime', 'jpg, png, JPG, PNG, gif, GIF' ),
 					);
 
 	        	break;
 				
 				case 'image':
-
-					$lib = ( isset( $arg[1] ) && $arg[1] && $arg[1] !== 'all' ? 'uploadedTo' : 'all' );
-					$pre = ( isset( $arg[2] ) ? $arg[2] : 'thumbnail' );
-					$minw = ( isset( $arg[3] ) ? $arg[3] : 0 );
-					$maxw = ( isset( $arg[4] ) ? $arg[4] : 0 );
-					$minh = ( isset( $arg[5] ) ? $arg[5] : 0 );
-					$maxh = ( isset( $arg[6] ) ? $arg[6] : 0 );
-					$mins = ( isset( $arg[7] ) ? $arg[7] : 0 );
-					$maxs = ( isset( $arg[8] ) ? $arg[8] : 0 );
-					$mime = ( isset( $arg[9] ) ? $arg[9] : '' );
-					$ret = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) );
+	        		
 	        		$field = array(
-						'type' => 'image',
-						'library' => $lib,
-						'preview_size' => $pre,
-						'min_width' => $minw,
-						'max_width' => $maxw,
-						'min_height' => $minh,
-						'max_height' => $maxh,
-						'min_size' => $mins,
-						'max_size' => $maxs,
-						'mime_types' => $mime, // toccato
-						'return_format' => $ret,
+						'type' 						=> 'image',
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
+						'min_width' 				=> scm_acf_field_to3( $arg, 3, 'minwidth', 0 ),
+						'max_width' 				=> scm_acf_field_to3( $arg, 4, 'maxwidth', 0 ),
+						'min_height' 				=> scm_acf_field_to3( $arg, 5, 'minheight', 0 ),
+						'max_height' 				=> scm_acf_field_to3( $arg, 6, 'maxheight', 0 ),
+						'min_size' 					=> scm_acf_field_to3( $arg, 7, 'minsize', 0 ),
+						'max_size' 					=> scm_acf_field_to3( $arg, 8, 'maxsize', 0 ),
+						'mime_types' 				=> scm_acf_field_to3( $arg, 9, 'mime', '' ),
+						'return_format' 			=> scm_acf_field_to3( $arg, 10, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
 					);
 
 	        	break;
 
 	        	case 'icon':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : 'fa-star' );
-	        		$filter = ( isset( $arg[2] ) ? $arg[2] : '' );
-	        		$format = ( isset( $arg[3] ) ? $arg[3] : 'class' );
-	        		$enqueue = ( isset( $arg[4] ) ? $arg[4] : 0 );
-	        		$null = ( isset( $arg[5] ) ? $arg[5] : 0 );
-
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', 'fa-star' );
 	        		$no = isset( $choices['no'] );
-
 	        		$filter_group = '';
 	        		$new = '';
 	        		
@@ -482,15 +409,15 @@
 	        		}
 
 	        		$field = array(
-	        			'type' => 'font-awesome',
-	        			'default_value' => ( strpos( $default, 'fa-' ) === 0 ? '' : 'fa-' ) . $default,
-						'save_format' => $format,
-						'enqueue_fa' => $enqueue,
-						'allow_null' => $null,
-						'fa_live_preview' => 1,
-						'filter_group' => $filter_group,
-						'filter' => $filter,
-						'no_option' => $no,
+	        			'type' 						=> 'font-awesome',
+	        			'default_value' 			=> ( strpos( $default, 'fa-' ) === 0 ? '' : 'fa-' ) . $default,
+						'filter' 					=> scm_acf_field_to3( $arg, 2, 'filter', '' ),
+						'save_format' 				=> scm_acf_field_to3( $arg, 3, 'save', 'class' ),
+						'enqueue_fa' 				=> scm_acf_field_to3( $arg, 4, 'enqueue', 0 ),
+						'allow_null' 				=> scm_acf_field_to3( $arg, 5, 'null', 0 ),
+						'fa_live_preview' 			=> 1,
+						'filter_group' 				=> $filter_group,
+						'no_option' 				=> $no,
 					);
 
 	        	break;
@@ -498,38 +425,26 @@
 
 	        	case 'date':
 
-	        		$ret = ( isset($arg[1]) ? $arg[1] : 'd-m-Y' );
-	        		$dis = ( isset($arg[2]) ? $arg[2] : 'd F Y' );
-	        		$first = ( isset($arg[3]) ? $arg[3] : 1 );
-
-	        		
 	        		$field = array(
-						'type' => 'date_picker',
-						'return_format' => $ret,
-						'display_format' => $dis,
-						'first_day' => $first,
+						'type' 						=> 'date_picker',
+						'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'd-m-Y' ),
+						'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'd F Y' ),
+						'first_day' 				=> scm_acf_field_to3( $arg, 3, 'firstday', 1 ),
 					);
 
 	        	break;
 
 				case 'datetime':
 
-	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'select' );
-	        		$date = ( isset( $arg[2] ) ? $arg[2] : 'd F y' );
-	        		$time = ( isset( $arg[3] ) ? $arg[3] : 'H:i' );
-	        		$week = ( isset( $arg[4] ) ? $arg[4] : 0 );
-	        		$save = ( isset( $arg[5] ) ? $arg[5] : 1 );
-	        		$get = ( isset( $arg[5] ) ? $arg[5] : 0 );
-
 	        		$field = array(
-						'type' => 'date_time_picker',
-						'show_date' => 1,
-						'picker' => $picker,
-						'date_format' => $date,
-						'time_format' => $time,
-						'show_week_number' => $week,
-						'save_as_timestamp' => $save,
-						'get_as_timestamp' => $get,
+						'type' 						=> 'date_time_picker',
+						'show_date' 				=> 1,
+						'picker' 					=> scm_acf_field_to3( $arg, 1, 'picker',  'select' ),
+						'date_format' 				=> scm_acf_field_to3( $arg, 2, 'date',  'd F y' ),
+						'time_format' 				=> scm_acf_field_to3( $arg, 3, 'time',  'H:i' ),
+						'show_week_number' 			=> scm_acf_field_to3( $arg, 4, 'week',  0 ),
+						'save_as_timestamp' 		=> scm_acf_field_to3( $arg, 5, 'save',  1 ),
+						'get_as_timestamp' 			=> scm_acf_field_to3( $arg, 5, 'get',  0 ),
 
 					);
 
@@ -537,20 +452,15 @@
 
 	        	case 'time':
 
-	        		$picker = ( isset( $arg[1] ) ? $arg[1] : 'select' );
-	        		$time = ( isset( $arg[2] ) ? $arg[2] : 'hh:mm' );
-	        		$save = ( isset( $arg[3] ) ? $arg[3] : 1 );
-	        		$get = ( isset( $arg[4] ) ? $arg[4] : 0 );
-
 	        		$field = array(
-						'type' => 'date_time_picker',
-						'show_date' => 0,
-						'picker' => $picker,
-						'date_format' => '',
-						'time_format' => $time,
-						'show_week_number' => 0,
-						'save_as_timestamp' => $save,
-						'get_as_timestamp' => $get,
+						'type' 						=> 'date_time_picker',
+						'show_date' 				=> 0,
+						'picker' 					=> scm_acf_field_to3( $arg, 1, 'picker', 'select' ),
+						'time_format' 				=> scm_acf_field_to3( $arg, 2, 'time', 'hh:mm' ),
+						'save_as_timestamp' 		=> scm_acf_field_to3( $arg, 3, 'save', 1 ),
+						'get_as_timestamp' 			=> scm_acf_field_to3( $arg, 4, 'get', 0 ),
+						'date_format' 				=> '',
+						'show_week_number' 			=> 0,
 
 					);
 
@@ -558,10 +468,9 @@
 
 	        	case 'color':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
 	        		$field = array(
 						'type' => 'color_picker',
-						'default_value' => $default,
+						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
 					);
 
 	        	break;
@@ -577,37 +486,27 @@
 	        	case 'msecond':
 
 	        		switch ( $type ) {
-	        			case 'positive': 	$min = 0; 			break;
-	        			case 'negative': 	$max = 0; 			break;
-	        			case 'option': 		$min = -1; 			break;
-	        			case 'pixel': 		$step = 1; 			$append = 'px';		break;
-	        			case 'percent':		$min = 0;			$max = 100;			$append = '%';		break;
-	        			case 'alpha': 		$place = '1';		$min = 0; 			$max = 1;	 		$step = .1; 		break;
-	        			case 'second': 		$place = '1';		$min = 0; 			$step = .1; 		$append = 'sec';	break;
-	        			case 'msecond': 	$place = '1000';	$min = 0;			$step = 100;		$append = 'ms';		break;
+	        			case 'positive': 	$min = 0; 																			break;
+	        			case 'negative': 	$max = 0; 																			break;
+	        			case 'option': 		$min = -1; 																			break;
+	        			case 'pixel': 		$step = 1; 			$append = 'px';													break;
+	        			case 'percent':		$min = 0;			$max = 100;			$append = '%';								break;
+	        			case 'alpha': 		$place = '1';		$min = 0; 			$max = 1;	 		$step = .1; 			break;
+	        			case 'second': 		$place = '1';		$min = 0; 			$step = .1; 		$append = 'sec';		break;
+	        			case 'msecond': 	$place = '1000';	$min = 0;			$step = 100;		$append = 'ms';			break;
 	        		}
-
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$place = ( isset( $arg[2] ) ? $arg[2] : ( isset( $place ) ? $place : '' ) );
-	        		$prepend = ( isset( $arg[3] ) ? $arg[3] : ( isset( $prepend ) ? $prepend : '' ) );
-	        		$append = ( isset( $arg[4] ) ? $arg[4] : ( isset( $append ) ? $append : '' ) );
-	        		$min = ( isset( $arg[5] ) ? $arg[5] : ( isset( $min ) ? $min : ( strpos( $extra , '-pos' ) !== false ? 0 : ( strpos( $extra , '-min' ) !== false ? -9999 : '' ) ) ) );
-	        		$max = ( isset( $arg[6] ) ? $arg[6] : ( isset( $max ) ? $max : ( strpos( $extra , '-neg' ) !== false ? 0 : ( strpos( $extra , '-max' ) !== false ? 9999 : '' ) ) ) );
-	        		$step = ( isset( $arg[7] ) ? $arg[7] : ( isset( $step ) ? $step : 1 ) );
-	        		$read = ( isset( $arg[8] ) ? $arg[8] : ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) );
-	        		$dis = ( isset( $arg[9] ) ? $arg[9] : ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) );
 
 	        		$field = array(
 						'type' => 'number',
-						'default_value' => $default,
-						'placeholder' => $place,
-						'prepend' => $prepend,
-						'append' => $append,
-						'min' => $min,
-						'max' => $max,
-						'step' => $step,
-						'disabled' => $dis,
-						'readonly' => $read,
+						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
+						'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
+						'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
+						'min' 						=> scm_acf_field_to3( $arg, 5, 'min', ( isset( $min ) ? $min : ( strpos( $extra , '-pos' ) !== false ? 0 : ( strpos( $extra , '-min' ) !== false ? -9999 : '' ) ) ) ),
+						'max' 						=> scm_acf_field_to3( $arg, 6, 'max', ( isset( $max ) ? $max : ( strpos( $extra , '-neg' ) !== false ? 0 : ( strpos( $extra , '-max' ) !== false ? 9999 : '' ) ) ) ),
+						'step' 						=> scm_acf_field_to3( $arg, 7, 'step', ( isset( $step ) ? $step : 1 ) ),
+						'readonly' 					=> scm_acf_field_to3( $arg, 8, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
+						'disabled' 					=> scm_acf_field_to3( $arg, 9, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
 					);
 
 	        	break;
@@ -621,117 +520,85 @@
 	        	case 'video':
 
 	        		switch ( $type ) {
-	        			case 'id': 				$place = 'ID'; 				$prepend = '#';			break;
-	        			case 'class': 			$place = 'Class';			$prepend = '.'; 		break;
+	        			case 'id': 				$place = 'ID'; 				$prepend = '#';																			break;
+	        			case 'class': 			$place = 'Class';			$prepend = '.'; 																		break;
 	        			case 'attributes': 		$prepend = 'Attributes';	$place = 'data-href="www.example.com" data-target="_blank"';							break;
-	        			case 'name': 			$place = 'senza titolo'; 	$prepend = 'Nome'; 		$maxl = 30;				break;
-	        			case 'link': 			$prepend = 'Web'; 			$place = 'http://www.esempio.com';				break;
+	        			case 'name': 			$place = 'senza titolo'; 	$prepend = 'Nome'; 		$maxl = 30;														break;
+	        			case 'link': 			$prepend = 'Web'; 			$place = 'http://www.esempio.com';														break;
 	        			case 'video': 			$prepend = 'YouTube'; 		$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16';			break;
 	        		}
-	        		
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$place = ( isset( $arg[2] ) ? $arg[2] : ( isset( $place ) ? $place : '' ) );
-	        		$prepend = ( isset( $arg[3] ) ? $arg[3] : ( isset( $prepend ) ? $prepend : '' ) );
-	        		$append = ( isset( $arg[4] ) ? $arg[4] : ( isset( $append ) ? $append : '' ) );
-	        		$maxl = ( isset( $arg[5] ) ? $arg[5] : ( isset( $maxl ) ? $maxl : '' ) );
-	        		$read = ( isset( $arg[6] ) ? $arg[6] : ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) );
-	        		$dis = ( isset( $arg[7] ) ? $arg[7] : ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) );
 
 					$field = array(
-	        			'type' => 'text',
-						'default_value' => $default,
-						'placeholder' => $place,
-						'prepend' => $prepend,
-						'append' => $append,
-						'maxlength' => $maxl,
-						'readonly' => $read,
-						'disabled' => $dis,
+	        			'type' 						=> 'text',
+						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
+						'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
+						'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
+						'maxlength' 				=> scm_acf_field_to3( $arg, 5, 'maxlength', ( isset( $maxl ) ? $maxl : '' ) ),
+						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'readonly', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
+						'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
 					);
 
 				break;
 
 	        	case 'textarea':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$place = ( isset( $arg[2] ) ? $arg[2] : '' );
-	        		$rows = ( isset( $arg[3] ) ? $arg[3] : 8 );
-	        		$maxl = ( isset( $arg[4] ) ? $arg[4] : '' );
-	        		$format = ( isset( $arg[5] ) ? $arg[5] : ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) );
-	        		$read = ( isset( $arg[6] ) ? $arg[6] : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) );
-	        		$dis = ( isset( $arg[7] ) ? $arg[7] : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) );
-
 					$field = array(
-						'type' => 'textarea',
-						'default_value' => $default,
-						'placeholder' => $place,
-						'rows' => $rows,
-						'maxlength' => $maxl,
-						'new_lines' => $format,
-						'readonly' => $read,
-						'disabled' => $dis,
+						'type' 						=> 'textarea',
+						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
+						'rows' 						=> scm_acf_field_to3( $arg, 3, 'rows', 8 ),
+						'maxlength' 				=> scm_acf_field_to3( $arg, 4, 'maxlength', '' ),
+						'new_lines' 				=> scm_acf_field_to3( $arg, 5, 'newlines', ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ),
+						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'readonly', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
+						'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
 					);
 
 	        	break;
 
 	        	case 'editor':
 
-	        		$default = ( isset( $arg[1] ) ? $arg[1] : '' );
-	        		$tabs = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-visual' ) !== false ? 'visual' : 'all' ) );
-	        		$toolbar = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-basic' ) !== false ? 'basic' : 'normal' ) );
-	        		$media = ( isset( $arg[2] ) ? $arg[2] : ( strpos( $extra, '-media' ) !== false ? 1 : 0 ) );
 	        		$field = array(
-	        			'type' => 'wysiwyg',
-	        			'default_value' => $default,
-						'tabs' => $tabs,
-						'toolbar' => $toolbar,
-						'media_upload' => $media,
+	        			'type' 						=> 'wysiwyg',
+	        			'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+						'tabs' 						=> scm_acf_field_to3( $arg, 2, 'tabs', ( strpos( $extra, '-visual' ) !== false ? 'visual' : 'all' ) ),
+						'toolbar' 					=> scm_acf_field_to3( $arg, 3, 'toolbar', ( strpos( $extra, '-basic' ) !== false ? 'basic' : 'normal' ) ),
+						'media_upload' 				=> scm_acf_field_to3( $arg, 4, 'media', ( strpos( $extra, '-media' ) !== false ? 1 : 0 ) ),
 					);
 
 	        	break;
 
 	        	case 'limiter':
 
-		        	$max = ( isset( $arg[1] ) ? $arg[1] : ( isset( $max ) ? $max : 350 ) );
-		        	$chars = ( isset( $arg[2] ) ? $arg[2] : ( isset( $chars ) ? $chars : ( strpos( $extra, '-chars' ) !== false ? 1 : 0 ) ) );
-
 	        		$field = array(
-	        			'type' => 'limiter',
-						'character_number' =>$max,
-						'display_characters' => $chars,
+	        			'type' 						=> 'limiter',
+						'character_number' 			=> scm_acf_field_to3( $arg, 1, 'max', ( isset( $max ) ? $max : 350 ) ),
+						'display_characters' 		=> scm_acf_field_to3( $arg, 2, 'display', ( isset( $chars ) ? $chars : ( strpos( $extra, '-chars' ) !== false ? 1 : 0 ) ) ),
 					);
 
 	        	break;
 
 	        	case 'repeater':
 
-					$label = ( isset( $arg[1] ) ? $arg[1] : 'Aggiungi' );
-					$minr = ( isset( $arg[2] ) ? $arg[2] : '' );
-					$maxr = ( isset( $arg[3] ) ? $arg[3] : '' );
-					$layout = ( isset( $arg[4] ) ? $arg[4] : ( strpos( $extra , '-block' ) !== false ? 'block' : ( strpos( $extra , '-table' ) !== false ? 'table' : 'row' ) ) );
-					$sub = ( isset( $arg[5] ) && !empty( $arg[5] ) ? $arg[5] : array() );
 	        		$field = array(
 						'type' => 'repeater',
-						'button_label' => $label,
-						'min' => $minr,
-						'max' => $maxr,
-						'layout' => $layout,
-						'sub_fields' => $sub,
+						'button_label' => scm_acf_field_to3( $arg, 1, 'button', 'Aggiungi' ),
+						'min' => scm_acf_field_to3( $arg, 2, 'min', '' ),
+						'max' => scm_acf_field_to3( $arg, 3, 'max', '' ),
+						'layout' => scm_acf_field_to3( $arg, 4, 'layout', ( strpos( $extra , '-block' ) !== false ? 'block' : ( strpos( $extra , '-table' ) !== false ? 'table' : 'row' ) ) ),
+						'sub_fields' => scm_acf_field_to3( $arg, 5, 'sub', array() ),
 					);
 
 	        	break;
 				
 				case 'flexible':
 
-					$label = ( isset( $arg[1] ) ? $arg[1] : '+' );
-					$minr = ( isset( $arg[2] ) ? $arg[2] : '' );
-					$maxr = ( isset( $arg[3] ) ? $arg[3] : '' );
-					$layouts = ( isset( $arg[4] ) && !empty( $arg[4] ) ? $arg[4] : array() );
 	        		$field = array(
 						'type' => 'flexible_content',
-						'button_label' => $label,
-						'min' => $minr,
-						'max' => $maxr,
-						'layouts' => $layouts,
+						'button_label' => scm_acf_field_to3( $arg, 1, 'button', '+' ),
+						'min' => scm_acf_field_to3( $arg, 2, 'min', '' ),
+						'max' => scm_acf_field_to3( $arg, 3, 'max', '' ),
+						'layouts' => scm_acf_field_to3( $arg, 4, 'layouts', array() ),
 					);
 
 	        	break;
@@ -742,10 +609,6 @@
 					);
 	        	break;
 	        }
-
-	        //$field['key'] = ( $name ? $name . '-' : '' ) . $field['type'];
-
-	        //$field = scm_acf_loadfield_hook_choices_get( $field );
 			
 			return $field;
 
@@ -1510,6 +1373,7 @@
 			elseif( strpos( $list, 'slider_model' ) !== false ):
 				$choices = array(
 					'nivo' => 'Nivo Slider',
+					'bx' => 'BX Slider',
 				);
 
 			elseif( strpos( $list, 'effect' ) !== false ):

@@ -55,7 +55,6 @@ show_admin_bar(false);
 	$SCM_directory		 = get_template_directory();
 	$SCM_uri 			 = get_template_directory_uri();
 	$SCM_page_templates	 = wp_get_theme()->get_page_templates();
-	$SCM_page_id 		 = 0;
 
 	$SCM_shortname = str_replace( '-v' . $SCM_version, '', $SCM_shortname );
 
@@ -182,8 +181,11 @@ require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf-preset.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-templates.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-templates.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
@@ -203,15 +205,18 @@ require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 // *****************************************************
 
     if ( ! function_exists( 'scm_save_posts' ) ) {
-        function scm_save_posts(){
-            //alert( 'Updating Posts');
+        function scm_save_posts($type){
             
-            $my_types = get_post_types();
+            consoleLog( 'Updating Posts');
+            
+            $my_types = ( $type ?: get_post_types() );
             $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
+
 
             foreach ( $my_posts as $my_post ){
                 wp_update_post( $my_post );
             }
-            //alert( sizeof($my_posts) . ' Posts Updated' );
+            
+            consoleLog( sizeof($my_posts) . ' Posts Updated' );
         }
     }

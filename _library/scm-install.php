@@ -798,7 +798,7 @@
 
 
     // Detach Media
-    if ( ! function_exists( 'scm_acf_savepost_hook_media' ) ) {
+    /*if ( ! function_exists( 'scm_acf_savepost_hook_media' ) ) {
         function scm_acf_savepost_hook_media( $post_id ) {
 
             //consoleLog($post_id);
@@ -857,7 +857,7 @@
                 }
             }
         }
-    }
+    }*/
 
 
     // TEMPLATES
