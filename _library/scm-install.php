@@ -1290,7 +1290,7 @@
                         $groups[] = $group;
                     }
                     
-                    $fun = 'scm_acf_fields_' . str_replace( '_', '-', $slug );
+                    $fun = 'scm_acf_fields_' . str_replace( '-', '_', $slug );
                     if( function_exists( $fun ) ){
                         $obj = $SCM_types['objects'][$slug];
                         $group = scm_acf_group( __( 'Opzioni '. $obj->singular, SCM_THEME ), $slug . '-single' );
