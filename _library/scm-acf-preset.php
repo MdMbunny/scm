@@ -150,7 +150,7 @@
 */
 
 	if ( ! function_exists( 'scm_acf_field_to3' ) ) {
-		function scm_acf_field_to3( $a, $n, $t, $d ) {
+		function scm_acf_field_to3( $a, $n, $t, $d = '' ) {
 			return ( isset( $a[$n] ) ? $a[$n] : ( isset( $a[$t] ) ? $a[$t] : $d ) );
 		}
 	}

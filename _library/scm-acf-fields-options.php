@@ -245,26 +245,6 @@
 		}
 	}
 
-	// STYLE OPTIONS
-	/*if ( ! function_exists( 'scm_acf_options_style' ) ) {
-		function scm_acf_options_style( $name = '', $default = 0 ) {
-
-			$name = ( $name ? $name . '-' : '');
-
-			$fields = array();
-
-            $fields[] = scm_acf_field( 'tab-style-testi', 'tab-left', __( 'Testi', SCM_THEME ) );
-                $fields = array_merge( $fields, scm_acf_preset_text_style( $name . 'style-txt', $default ) );
-            $fields[] = scm_acf_field( 'tab-style-sfondo', 'tab-left', __( 'Sfondo', SCM_THEME ) );
-                $fields = array_merge( $fields, scm_acf_preset_background_style( $name . 'style-bg', $default ) );
-            $fields[] = scm_acf_field( 'tab-style-box', 'tab-left', __( 'Box', SCM_THEME ) );
-                $fields = array_merge( $fields, scm_acf_preset_box_style( $name . 'style-box', $default ) );
-
-            return $fields;
-
-		}
-	}*/
-
 	// STYLES OPTIONS
 	if ( ! function_exists( 'scm_acf_options_styles' ) ) {
 		function scm_acf_options_styles( $name = '', $default = 0 ) {

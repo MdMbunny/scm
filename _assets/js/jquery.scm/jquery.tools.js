@@ -1226,7 +1226,7 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 		
 	}
 
-	$.fn.markerMap = function( map, infowindow, zoom, count ) {
+	$.fn.markerMap = function( map, infowindow, zoom, count, reg ) {
 
 		return this.each(function() {
 
@@ -1245,14 +1245,30 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 			if( address ){
 				var geocoder = new google.maps.Geocoder();
 
-				geocoder.geocode( { 'address': address}, function(results, status) {
+				var sets = { 'address': address };
+				if( reg )
+					sets.region = reg;
+
+				geocoder.geocode( sets, function(results, status) {
+
+					console.log( 'Searching Location for: ' + address );
 			    	
 			    	if (status == google.maps.GeocoderStatus.OK) {
+			    		var str = ( reg ? reg : 'world' );
+			    		console.log( 'Location found within ' + str.toUpperCase() + ' Region');
 			        	latlng = results[0].geometry.location;
+			        	console.log( 'LatLng are ' + latlng );
 			        	setMarker();
 			    	}else{
-			    		latlng = new google.maps.LatLng( 0, 0 );
-			    		setMarker();
+			    		console.log( 'Google Maps Marker: ' + status);
+			    		if( reg ){
+			    			console.log( 'Pointing to lat 0 and lng 0');
+				    		latlng = new google.maps.LatLng( 0, 0 );
+				    		setMarker();
+				    	}else{
+				    		console.log( 'Searching address within IT Region');
+				    		$this.markerMap( map, infowindow, zoom, countMaps, 'it' );
+				    	}
 			    	}
 
 			    });
