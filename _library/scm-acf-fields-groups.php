@@ -21,7 +21,7 @@
 
 			$template = scm_acf_field_repeater( $name . '-templates', $default, __( 'Aggiungi Modello', SCM_THEME ), __( 'Modelli', SCM_THEME ), 100, $logic, '', '', $instructions, $required, $class );
 
-				$template['sub_fields'][] = scm_acf_field_name_req( 'name',  $default, '', 60, 0, __( 'Nome Modello', SCM_THEME ), __( 'Nome', SCM_THEME ) );
+				$template['sub_fields'][] = scm_acf_field_name( 'name', array( 'placeholder'=>__( 'Nome Modello', SCM_THEME ) ), 60 );
 				$template['sub_fields'][] = scm_acf_field( 'id', array( 'text-read', '', '0', __( 'ID', SCM_THEME ) ), __( 'ID', SCM_THEME ), 40 );
 			
 			$fields[] = $template;
@@ -40,9 +40,9 @@
 
 			$fields = apply_filters( 'scm_filter_fields_page_before', $fields );
 
-			$fields[] = scm_acf_field_select_layout( 'page-layout', 1, __( 'Layout', SCM_THEME ), 34, 0, 'default' );
+			$fields[] = scm_acf_field_select_layout( 'page-layout', 1, '', 34, 0, 'default' );
 
-			$fields = array_merge( $fields, scm_acf_preset_selectors( 'page-selectors', $default, 33, 33 ) );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( 'page', 33, 33 ) );
 
 			$fields[] = scm_acf_field_select1( 'page-menu', $default, 'wp_menu', 100, 0, '', __( 'Menu Principale', SCM_THEME ) );
 			
@@ -95,7 +95,7 @@
 			
 			$flexible = scm_acf_field_flexible( 'modules', 0, __( 'Componi', SCM_THEME ), '+', '', 0, 0, 30 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', '', scm_acf_object_titolo( 0, 0, 2 ) );
-                $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', __( 'Testo', SCM_THEME ), '', '', scm_acf_object_testo( 0, 0, 1) ); // Se vedi che i testi inseriti fanno casino, togli sostituisci 1 con 0
+                $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', __( 'Testo', SCM_THEME ), '', '', scm_acf_object_testo( '', 0, 1) ); // Se vedi che i testi inseriti fanno casino, sostituisci 1 con 0
                 $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', __( 'Elenco Puntato', SCM_THEME ), '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', __( 'Quote', SCM_THEME ), '', '', scm_acf_object_quote( 0, 0, 1) );
                 $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', __( 'Pulsanti', SCM_THEME ), '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
@@ -121,11 +121,11 @@
 
 			$fields = apply_filters( 'scm_filter_fields_section_before', $fields );
 
-			$fields[] = scm_acf_field_select_layout( 'layout', $default, __( 'Layout', SCM_THEME ), 20 );
-			$fields = array_merge( $fields, scm_acf_preset_selectors( '', $default, 20, 20 ) );
-			$fields[] = scm_acf_field( 'attributes', 'attributes', __( 'Attributi', SCM_THEME ), 40 );
+			$fields[] = scm_acf_field_select_layout( 'layout', $default, '', 20 );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( '', 20, 20 ) );
+			$fields[] = scm_acf_field( 'attributes', 'attributes', '', 40 );
 
-			$fields = array_merge( $fields, scm_acf_preset_repeater_columns( '', $default, $elements ) );
+			$fields = array_merge( $fields, scm_acf_preset_repeater_columns( '', $elements ) );
 			$fields = array_merge( $fields, scm_acf_preset_tags( 'section', $default, 'sections' ) );
 
 			$fields = apply_filters( 'scm_filter_fields_section', $fields );
@@ -167,7 +167,7 @@
 				'value' => 'page',
 			);
 
-				$fields[] = scm_acf_field_link( 'slide-external', $default, 50, $link );
+				$fields[] = scm_acf_field_link( 'slide-external', 0, 50, $link );
 				$fields[] = scm_acf_field_object_link( 'slide-internal', $default, 'page', 50, $page );
 
 			$fields[] = scm_acf_field( 'tab-slide-caption', 'tab', __( 'Didascalia', SCM_THEME ) );
@@ -189,7 +189,7 @@
 				$fields[] = scm_acf_field( 'slide-caption-cont', 'editor-basic-media', __( 'Contenuto didascalia', SCM_THEME ), 100, $caption );
 
 			$fields[] = scm_acf_field( 'tab-slide-advanced', 'tab', __( 'Avanzate', SCM_THEME ) );
-			$fields = array_merge( $fields, scm_acf_preset_selectors( 'selectors', $default, 50, 50 ) );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( '', 50, 50 ) );
 
 			$fields = apply_filters( 'scm_filter_fields_slide', $fields );
 
@@ -208,16 +208,8 @@
 
 			$fields = apply_filters( 'scm_filter_fields_news_before', $fields );
 
-			//$fields[] = scm_acf_field( 'tab-set-post', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
-				$fields[] = scm_acf_field_image( 'image', $default );
-				$fields = array_merge( $fields, scm_acf_fields_modules() );
-				//$fields[] = scm_acf_field_limiter( $name . 'post-excerpt', $default, 350, 1, 100, 0, __( 'Anteprima', SCM_THEME ) );
-				//$fields[] = scm_acf_field_editor( $name . 'post-content', $default );
-
-			/*$fields[] = scm_acf_field( 'tab-tax-post', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'post', $default, 'post' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'post', $default, 'post' ) );*/
-				//$fields[] = scm_acf_field_category( $name . 'post-cat', $default, 'post' );
+			$fields[] = scm_acf_field_image( 'image', $default );
+			$fields = array_merge( $fields, scm_acf_fields_modules() );
 
 			$fields = apply_filters( 'scm_filter_fields_news', $fields );
 
@@ -238,8 +230,8 @@
 
 			$fields[] = scm_acf_field( 'tab-set-articolo', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
 				$fields[] = scm_acf_field_image( 'image', $default );
-				$fields[] = scm_acf_field_textarea( 'excerpt', $default, 5, 100, 0, '', __( 'Anteprima', SCM_THEME ) );
-				$fields[] = scm_acf_field_editor_basic( 'editor', $default );
+				$fields[] = scm_acf_field_textarea( 'excerpt', array( 'rows'=>5, 'label'=>__( 'Anteprima', SCM_THEME ) ) );
+				$fields[] = scm_acf_field_editor_basic( 'editor' );
 
 			$fields[] = scm_acf_field( 'tab-tax-articolo', 'tab-left', __( 'Categorie', SCM_THEME ) );
 				$fields = array_merge( $fields, scm_acf_preset_categories( 'articolo', $default, 'articoli' ) );
@@ -280,7 +272,7 @@
 				);
 
 					$fields[] = scm_acf_field_file( 'rassegna-file', $default, 100, $file );
-					$fields[] = scm_acf_field_link( 'rassegna-link', $default, 100, $link );
+					$fields[] = scm_acf_field_link( 'rassegna-link', 0, 100, $link );
 
 				
 				$fields[] = scm_acf_field( 'rassegna-data', 'date', __( 'Data', SCM_THEME ) );
@@ -388,19 +380,19 @@
 					__( 'Il campo Nome è utile per differenziare più luoghi che fanno riferimento ad un unico Soggetto ( es. Sede Operativa, Distaccamento, ...).', SCM_THEME )
 				), __( 'Specifica un Nome', SCM_THEME ) );*/
 
-					$fields[] = scm_acf_field_name( 'luogo-nome', $default, '', 100, 0, __( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) );
+					$fields[] = scm_acf_field_name( 'luogo-nome', array( 'placeholder'=>__( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) ) );
 
-					$fields[] = scm_acf_field_text( 'luogo-indirizzo', $default, 70, 0, 'Corso Giulio Cesare 1', '', __( 'Indirizzo', SCM_THEME ) );
-					$fields[] = scm_acf_field_text( 'luogo-provincia', $default, 30, 0, 'RM', '', __( 'Provincia', SCM_THEME ) );
+					$fields[] = scm_acf_field_text( 'luogo-indirizzo', array( 'placeholder'=>'Corso Giulio Cesare 1', 'prepend'=>__( 'Indirizzo', SCM_THEME ) ), 70 );
+					$fields[] = scm_acf_field_text( 'luogo-provincia', array( 'placeholder'=>'RM', 'prepend'=>__( 'Provincia', SCM_THEME ) ), 30 );
 					
-					$fields[] = scm_acf_field_text( 'luogo-citta', $default, 70, 0, 'Roma', '', __( 'Città/Località', SCM_THEME ) );
-					$fields[] = scm_acf_field_text( 'luogo-cap', $default, 30, 0, '12345', '', __( 'CAP', SCM_THEME ) );
+					$fields[] = scm_acf_field_text( 'luogo-citta', array( 'placeholder'=>'Roma', 'prepend'=>__( 'Città/Località', SCM_THEME ) ), 70 );
+					$fields[] = scm_acf_field_text( 'luogo-cap', array( 'placeholder'=>'12345', 'prepend'=>__( 'CAP', SCM_THEME ) ), 30 );
 					
-					$fields[] = scm_acf_field_text( 'luogo-frazione', $default, 70, 0, 'S. Pietro', '', __( 'Frazione', SCM_THEME ) );
-					$fields[] = scm_acf_field_text( 'luogo-regione', $default, 30, 0, 'Lazio', '', __( 'Regione', SCM_THEME ) );
+					$fields[] = scm_acf_field_text( 'luogo-frazione', array( 'placeholder'=>'S. Pietro', 'prepend'=>__( 'Frazione', SCM_THEME ) ), 70 );
+					$fields[] = scm_acf_field_text( 'luogo-regione', array( 'placeholder'=>'Lazio', 'prepend'=>__( 'Regione', SCM_THEME ) ), 30 );
 					
-					$fields[] = scm_acf_field_text( 'luogo-paese', $default, 70, 0, 'Italy', '', __( 'Paese', SCM_THEME ) );
-					$fields = array_merge( $fields, scm_acf_preset_map_icon( 'luogo-mappa', 1, 30, 0, '' ) );
+					$fields[] = scm_acf_field_text( 'luogo-paese', array( 'placeholder'=>'Italy', 'prepend'=>__( 'Paese', SCM_THEME ) ), 70 );
+					$fields = array_merge( $fields, scm_acf_preset_map_icon( 'luogo', 30 ) );
 
 
 			$fields[] = scm_acf_field( 'tab-contatti-luogo', 'tab-left', __( 'Contatti', SCM_THEME ) );
@@ -408,27 +400,27 @@
 				$contacts = scm_acf_field_flexible( 'luogo-contatti', $default, __( 'Aggiungi Contatti', SCM_THEME ), '+' );
 
 					$web = scm_acf_layout( 'web', 'block', __( 'Web', SCM_THEME ) );
-						$web['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'globe_contact', 'web', 2, __( 'Web', SCM_THEME ), __( 'URL', SCM_THEME ) );
+						$web['sub_fields'] = scm_acf_preset_button( '', 'link', 'globe_contact', 'web', 2, __( 'Web', SCM_THEME ) );
 					$contacts['layouts'][] = $web;
 
 					$email = scm_acf_layout( 'email', 'block', __( 'Email', SCM_THEME ) );
-						$email['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'envelope_contact', 'email', 2, __( 'Email', SCM_THEME ), __( 'Address', SCM_THEME ) );
+						$email['sub_fields'] = scm_acf_preset_button( '', 'email', 'envelope_contact', 'email', 2, __( 'Email', SCM_THEME ) );
 					$contacts['layouts'][] = $email;
 
 					$skype = scm_acf_layout( 'skype', 'block', __( 'Skype', SCM_THEME ) );
-						$skype['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'skype_contact', 'skype', 2, __( 'Skype Name', SCM_THEME ), __( 'User', SCM_THEME ) );
+						$skype['sub_fields'] = scm_acf_preset_button( '', 'user', 'skype_contact', 'skype', 2, __( 'Skype Name', SCM_THEME ) );
 					$contacts['layouts'][] = $skype;
 
 					$phone = scm_acf_layout( 'phone', 'block', __( 'Telefono', SCM_THEME ) );
-						$phone['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'phone_contact', 'phone', 2, __( 'Tel.', SCM_THEME ), __( 'Number', SCM_THEME ) );
+						$phone['sub_fields'] = scm_acf_preset_button( '', 'phone', 'phone_contact', 'phone', 2, __( 'Tel.', SCM_THEME ) );
 					$contacts['layouts'][] = $phone;
 
 					$fax = scm_acf_layout( 'fax', 'block', __( 'Fax', SCM_THEME ) );
-						$fax['sub_fields'] = scm_acf_preset_button( '', $default, 'link', 'file-text_contact', 'fax', 2, __( 'Fax', SCM_THEME ), __( 'Number', SCM_THEME ) );
+						$fax['sub_fields'] = scm_acf_preset_button( '', 'phone', 'file-text_contact', 'fax', 2, __( 'Fax', SCM_THEME ) );
 					$contacts['layouts'][] = $fax;
 
 					$more = scm_acf_layout( 'more', 'block', __( 'More', SCM_THEME ) );
-						$more['sub_fields'] = scm_acf_preset_button( '', $default, 'link', '', '', 2, __( 'More', SCM_THEME ), __( 'Link', SCM_THEME ) );
+						$more['sub_fields'] = scm_acf_preset_button( '', 'link', '', '', 2, __( 'More', SCM_THEME ) );
 					$contacts['layouts'][] = $more;
 
 				$fields[] = $contacts;
@@ -472,10 +464,10 @@
 				$fields[] = scm_acf_field_image( 'soggetto-icona-neg', $default, 50, 0, __( 'Icona', SCM_THEME ) );
 
 			$fields[] = scm_acf_field( 'tab-soggetto-dati', 'tab-left', 'Dati' );
-				$fields[] = scm_acf_field_link( 'soggetto-link', $default, 100 );
-				$fields[] = scm_acf_field_text( 'soggetto-intestazione', $default, 100, 0, 'intestazione', '', __( 'Intestazione', SCM_THEME ) );
-				$fields[] = scm_acf_field_text( 'soggetto-piva', $default, 50, 0, '0123456789101112', '', __( 'P.IVA', SCM_THEME ) );
-				$fields[] = scm_acf_field_text( 'soggetto-cf', $default, 50, 0, 'AAABBB123', '', __( 'C.F.', SCM_THEME ) );
+				$fields[] = scm_acf_field_link( 'soggetto-link' );
+				$fields[] = scm_acf_field_text( 'soggetto-intestazione', array( 'placeholder'=>__('intestazione',SCM_THEME), 'prepend'=>__( 'Intestazione', SCM_THEME ) ), 100 );
+				$fields[] = scm_acf_field_text( 'soggetto-piva', array( 'placeholder'=>'0123456789101112', 'prepend'=>__( 'P.IVA', SCM_THEME ) ), 50 );
+				$fields[] = scm_acf_field_text( 'soggetto-cf', array( 'placeholder'=>'AAABBB123', 'prepend'=>__( 'C.F.', SCM_THEME ) ), 50 );
 
 			$fields[] = scm_acf_field( 'tab-soggetto-luogo', 'tab-left', __( 'Luoghi', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-soggetto-luoghi', array(

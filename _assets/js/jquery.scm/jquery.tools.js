@@ -258,27 +258,6 @@
 		    	window.history.back();
 		    	return false;
 		    }
-
-/*
-
-USA QUESTO PER CAPIRE SE UN LINK È PAGE, SITE o EXTERNAL
-FAI UN CHECK AD INIZIO SESSIONE COSÌ NON DEVI FARE TUTTI QUESTI CONTROLLI OGNI VOLTA CHE UNO CLICCA
-QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
-
-		    
-
-			$('a').each(function(){
-			   if(comp.test($(this).attr('href'))){
-			       // a link that contains the current host           
-			       $(this).addClass('local');
-			   }
-			   else{
-			       // a link that does not contain the current host
-			       $(this).addClass('external');
-			   }
-			});
-
-*/
 	        
 
 			if( curpath === linkpath )
@@ -287,10 +266,6 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	            $this.data( 'href', url_parent + link );
 	        else
 	        	$this.data( 'href', link );
-	        /*else if( link.indexOf( '$' ) !== 0 )
-	        	$this.data( 'href', link );
-	        else
-	        	return; // +++ toccato*/
 
 	        var comp = new RegExp(location.host);
 			var same = comp.test( $this.data( 'href' ) );
@@ -309,10 +284,6 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 				}
 			}
 
-			/*console.log(curpath);
-			console.log(linkpath);
-			console.log($this.data( 'href' ));*/
-
 	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
 	        	target = '_self';
 	        	same = true;
@@ -322,31 +293,8 @@ QUINDI TUTTI GLI HREF o DATA-HREF VENGONO CONTROLLATI E MODIFICATI in INIT
 	        	target = '_blank';
 	        }
 
-	        // +++ todo: temo che questo passaggio pesi abbastanza
-	        // verifica come paragonare l'host senza dover creare un elemento a
-
-	        //var elem = document.createElement( 'a' );
-	        //var $elem = $( '<a id="temp" href="' + $this.data( 'href' ) + '"></a>' );
-
-    		//elem.href = $this.data( 'href' );
-    		/*$elem = $( elem );
-    		$elem.css( 'display', 'none' );
-    		*/
-    		/*$('body').append( $elem );
-    		var elem = $( '#temp' )[0];
-
-	        var lochost		= location.hostname,
-				host 		= elem.hostname,
-				locpath		= location.pathname.replace( /^\//,'' ),
-				path 		= elem.pathname.replace( /^\//,'' );*/
-
-			//if( ( target !== '_blank' && lochost === host ) || target === '_self' ){
-
 
 			if( loadcontent ){
-
-				//console.log(elem.href);
-				//$this.loadContent( event, elem.href );
 
 				$body.disableIt();
 

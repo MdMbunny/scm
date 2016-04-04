@@ -34,7 +34,7 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 * 		
-*		'message'				$message = ''								$eschtml = 0 					$newlines = '' | 'br' | 'wpautop'
+*		'message'				$message = ''								$eschtml = 0 					$lines = '' | 'br' | 'wpautop'
 *		'tab'					$place = 'top | side' || 0 | 1
 *			'-side'					$place = 'side'
 *
@@ -66,20 +66,23 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'text'					$default = ''					$placeholder = ''				$prepend = ''					$append = '' 						$maxlength = ''					$readonly = 0				$disabled = 0
-* ———		'id':			 		$place = 'ID' 					$prepend = '#'	
-* ———		'class':			 	$place = 'Class'				$prepend = '.' 
-* ———		'attributes':			$prepend = 'Attributes'			$place = 'data-href="www.example.com" data-target="_blank"'
-* ———		'name':			 		$place = 'senza titolo' 		$prepend = 'Nome' 		$maxl = 30		
-* ———		'link':			 		$prepend = 'Web' 				$place = 'http://www.esempio.com'
-* ———		'video':			 	$prepend = 'YouTube' 			$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
-* ———		'-read'					$readonly = 1
+*		'text'					$default = ''					$placeholder = ''				$prepend = ''					$append = '' 						$max = ''					$read = 0				$disabled = 0
+* ———		'id':			 		$prepend = '#'				$placeholder = 'id'
+* ———		'class':			 	$prepend = '.'				$placeholder = 'class'
+* ———		'attributes':			$prepend = 'Data'			$placeholder = 'data-href="www.website.com" data-target="_blank"'
+* ———		'name':			 		$prepend = 'Nome' 			$placeholder = 'senza nome'										$maxl = 30		
+* ———		'link':			 		$prepend = 'URL' 			$placeholder = 'http://www.website.com'
+* ———		'email':			 	$prepend = '@' 				$placeholder = 'info@.website.com'
+* ———		'user':			 		$prepend = 'User' 			$placeholder = 'user name'
+* ———		'phone':			 	$prepend = 'N.' 			$placeholder = '+39 123 4567'
+* ———		'video':			 	$prepend = 'YouTube' 		$placeholder = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
+* ———		'-read'					$read = 1
 * ———		'-disabled'				$disabled = 1
 *
-*		'textarea'				$default = ''					$placeholder = ''				$rows = 8 						$maxlength = ''					$newlines = 'wpautop | br | '		$readonly = 0				$disabled = 0
-* ———		'-no'					$newlines = ''
-* ———		'-br'					$newlines = 'br'
-* ———		'-read'					$readonly = 1
+*		'textarea'				$default = ''					$placeholder = ''				$rows = 8 						$max = ''					$lines = 'wpautop | br | '		$read = 0				$disabled = 0
+* ———		'-no'					$lines = ''
+* ———		'-br'					$lines = 'br'
+* ———		'-read'					$read = 1
 * ———		'-disabled'				$disabled = 1
 *
 *		'editor'				$default = ''					$tabs = 'all | visual'			$toolbar = 'normal | basic'		$media = 0
@@ -96,7 +99,7 @@
 *
 *		'select'				$default = '' || array(]	* 						$placeholder = ''									$ajax = 0							$null = 0						$ui = 0						$multiple = 0 				$read = 0				$disabled = 0
 * ———		'select2'					$ui = 1
-*		'checkbox'				$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1
+*		'checkbox'				$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1 			$toggle = 0
 *		'radio'					$default = '' || array(]	*						$layout = 'vertical | horizontal' || 0 | 1			$more = 0							$save = $more || 0
 * ———		'-default'				add 'default' 	=> 	'Default' 	to array('choices']
 * ———		'-no'					add 'no' 		=> 	'-' 		to array('choices']
@@ -140,7 +143,8 @@
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'icon'					$default = 'star'	 						$filter = array( 'social', 'job', ... )		$save = 'class | unicode | element | object'		$enqueue' = 0			$null = 0					
+*		'icon'					$default = 'star'	 						$filter = array( 'social', 'job', ... )		$save = 'class | unicode | element | object'		$enqueue' = 0			$null = 0 		$preview = 1
+* ———		'-no'					add 'no' 		=> 	'No Icon' 		to array('choices')
 *		'color'					$default = '' || '#000000' etc.
 *		'date'					$return = 'Y-m-d' 							$display = 'd F Y'					$firstday' = 1
 *		'datetime'				$picker = 'slider | select' 				$date = 'd F Y'						$time' = 'hh:mm' 				$week = 0 					$save = 1 				$get = 0
@@ -150,7 +154,7 @@
 */
 
 	if ( ! function_exists( 'scm_acf_field_to3' ) ) {
-		function scm_acf_field_to3( $a, $n, $t, $d = '' ) {
+		function scm_acf_field_to3( $a, $n, $t, $d ) {
 			return ( isset( $a[$n] ) ? $a[$n] : ( isset( $a[$t] ) ? $a[$t] : $d ) );
 		}
 	}
@@ -177,6 +181,9 @@
 			}
 			
 			$choices = array();
+			if( $arg['choices'] ){
+				$choices = $arg['choices'];
+			}
 
 			if( strpos( $elem, '-default' ) !== false ){
 				$choices['default'] = 'Default';
@@ -205,7 +212,7 @@
 						'type' 					=> 'message',
 						'message' 				=> scm_acf_field_to3( $arg, 1, 'placeholder', '' ),
 						'esc_html' 				=> scm_acf_field_to3( $arg, 2, 'eschtml', 0 ),
-						'new_lines' 			=> scm_acf_field_to3( $arg, 3, 'newlines', '' ),
+						'new_lines' 			=> scm_acf_field_to3( $arg, 3, 'lines', '' ),
 					);
 
 	        	break;
@@ -252,16 +259,18 @@
 
 	        	case 'checkbox':
 
-	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
-	        		$layout = scm_acf_field_to3( $arg, 1, '' );
-	        		$choices = scm_acf_field_choices( $default, $choices );
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', array() );
+	        		$layout = scm_acf_field_to3( $arg, 2, 'layout', 'vertical' );
+	        		$toggle = scm_acf_field_to3( $arg, 3, 'toggle', 0 );
+	        		//$choices = scm_acf_field_choices( $default, $choices );
 	        		
 	        		$field = array(
 						'type' 					=> 'checkbox',
-						'choices' 				=> $choices['choices'],
-						'default_value' 		=> $choices['default_value'],
+						'choices' 				=> $choices,//$choices['choices'],
+						'default_value' 		=> $default,//$choices['default_value'],
+						'toggle' 				=> $toggle,
 						'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
-						'preset' 				=> str_replace( '-horizontal', '', $elem),
+						//'preset' 				=> str_replace( '-horizontal', '', $elem),
 					);
 
 	        	break;
@@ -415,7 +424,7 @@
 						'save_format' 				=> scm_acf_field_to3( $arg, 3, 'save', 'class' ),
 						'enqueue_fa' 				=> scm_acf_field_to3( $arg, 4, 'enqueue', 0 ),
 						'allow_null' 				=> scm_acf_field_to3( $arg, 5, 'null', 0 ),
-						'fa_live_preview' 			=> 1,
+						'fa_live_preview' 			=> scm_acf_field_to3( $arg, 6, 'preview', 1 ),
 						'filter_group' 				=> $filter_group,
 						'no_option' 				=> $no,
 					);
@@ -485,20 +494,23 @@
 	        	case 'second':
 	        	case 'msecond':
 
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
+
 	        		switch ( $type ) {
-	        			case 'positive': 	$min = 0; 																			break;
-	        			case 'negative': 	$max = 0; 																			break;
-	        			case 'option': 		$min = -1; 																			break;
+	        			case 'number': 		$place = $default;																	break;
+	        			case 'positive': 	$place = '0';		$min = 0; 														break;
+	        			case 'negative': 	$place = '0';		$max = 0; 														break;
+	        			case 'option': 		$place = '0';		$min = -1; 														break;
 	        			case 'pixel': 		$step = 1; 			$append = 'px';													break;
-	        			case 'percent':		$min = 0;			$max = 100;			$append = '%';								break;
+	        			case 'percent':		$min = 0;			$append = '%';		$max = 100;									break;
 	        			case 'alpha': 		$place = '1';		$min = 0; 			$max = 1;	 		$step = .1; 			break;
-	        			case 'second': 		$place = '1';		$min = 0; 			$step = .1; 		$append = 'sec';		break;
-	        			case 'msecond': 	$place = '1000';	$min = 0;			$step = 100;		$append = 'ms';			break;
+	        			case 'second': 		$place = '1';		$append = 'sec';	$min = 0; 			$step = .1; 			break;
+	        			case 'msecond': 	$place = '1000';	$append = 'ms';		$min = 0;			$step = 100;			break;
 	        		}
 
 	        		$field = array(
-						'type' => 'number',
-						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+						'type' 						=> 'number',
+						'default_value' 			=> $default,
 						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
 						'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
 						'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
@@ -517,15 +529,21 @@
 	        	case 'attributes':
 	        	case 'name':
 	        	case 'link':
+	        	case 'email':
+	        	case 'user':
+	        	case 'phone':
 	        	case 'video':
 
 	        		switch ( $type ) {
-	        			case 'id': 				$place = 'ID'; 				$prepend = '#';																			break;
-	        			case 'class': 			$place = 'Class';			$prepend = '.'; 																		break;
-	        			case 'attributes': 		$prepend = 'Attributes';	$place = 'data-href="www.example.com" data-target="_blank"';							break;
-	        			case 'name': 			$place = 'senza titolo'; 	$prepend = 'Nome'; 		$maxl = 30;														break;
-	        			case 'link': 			$prepend = 'Web'; 			$place = 'http://www.esempio.com';														break;
-	        			case 'video': 			$prepend = 'YouTube'; 		$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16';			break;
+	        			case 'id':				$prepend = '#';								$place = __( 'id', SCM_THEME );															break;
+	        			case 'class':			$prepend = '.';								$place = __( 'class', SCM_THEME ); 														break;
+	        			case 'attributes': 		$prepend = __( 'Data', SCM_THEME );			$place = 'data-href="www.website.com" data-target="_blank"';							break;
+	        			case 'name':			$prepend = __( 'Nome', SCM_THEME );			$place = __( 'senza nome', SCM_THEME ); 			$maxl = 30;							break;
+	        			case 'link': 			$prepend = __( 'URL', SCM_THEME ); 			$place = 'http://www.website.com';														break;
+	        			case 'email': 			$prepend = __( 'Email', SCM_THEME ); 		$place = 'info@website.com';															break;
+	        			case 'user': 			$prepend = __( 'Utente', SCM_THEME ); 		$place = __( 'nome utente', SCM_THEME );												break;
+	        			case 'phone': 			$prepend = __( 'N.', SCM_THEME ); 			$place = '+39 123 4567';																break;
+	        			case 'video': 			$prepend = __( 'YouTube', SCM_THEME ); 		$place = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16';			break;
 	        		}
 
 					$field = array(
@@ -534,8 +552,8 @@
 						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
 						'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
 						'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
-						'maxlength' 				=> scm_acf_field_to3( $arg, 5, 'maxlength', ( isset( $maxl ) ? $maxl : '' ) ),
-						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'readonly', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
+						'maxlength' 				=> scm_acf_field_to3( $arg, 5, 'max', ( isset( $maxl ) ? $maxl : '' ) ),
+						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
 						'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
 					);
 
@@ -548,9 +566,9 @@
 						'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
 						'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
 						'rows' 						=> scm_acf_field_to3( $arg, 3, 'rows', 8 ),
-						'maxlength' 				=> scm_acf_field_to3( $arg, 4, 'maxlength', '' ),
-						'new_lines' 				=> scm_acf_field_to3( $arg, 5, 'newlines', ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ),
-						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'readonly', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
+						'maxlength' 				=> scm_acf_field_to3( $arg, 4, 'max', '' ),
+						'new_lines' 				=> scm_acf_field_to3( $arg, 5, 'lines', ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ),
+						'readonly' 					=> scm_acf_field_to3( $arg, 6, 'read', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
 						'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
 					);
 

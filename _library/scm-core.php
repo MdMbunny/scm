@@ -341,9 +341,9 @@
     if ( ! function_exists( 'scm_site_assets_styles_inline' ) ) {
         function scm_site_assets_styles_inline() {
 
-            $html = scm_options_get( 'bg_color', 'styles-loading', 1 );
-            $html .= ( scm_options_get( 'bg_image', 'styles-loading', 1 ) ?: '' );
-            $html .= scm_options_get( 'bg_size', 'styles-loading', 1 );
+            $html = scm_options_get( 'bg_color', 'loading-style-bg', 1 );
+            $html .= ( scm_options_get( 'bg_image', 'loading-style-bg', 1 ) ?: '' );
+            $html .= scm_options_get( 'bg_size', 'loading-style-bg', 1 );
 
             $font = scm_options_get( 'font', 'option', 1 );
             //$font .= scm_options_get( 'size', 'option', 1 );

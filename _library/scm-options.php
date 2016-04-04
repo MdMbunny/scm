@@ -317,11 +317,11 @@
 
             }else{
 
-        		$shadow_x = ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-x-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-x-units', $target) ?: 'px' );
-	        	$shadow_y = ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-y-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-y-units', $target) ?: 'px' );
-	        	$shadow_size = ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-size-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-x-units', $target) ?: 'px' );
-	        	$shadow_alpha = ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-color-alpha', $target) ?: '0' );
-	        	$shadow_color = ( get_field( is( $type, 'style-txt-' ) .  'txt-shadow-color-color', $target) ?: '#000000' );
+        		$shadow_x = ( get_field( is( $type, 'style-txt-' ) .  'shadow-x-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'shadow-x-units', $target) ?: 'px' );
+	        	$shadow_y = ( get_field( is( $type, 'style-txt-' ) .  'shadow-y-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'shadow-y-units', $target) ?: 'px' );
+	        	$shadow_size = ( get_field( is( $type, 'style-txt-' ) .  'shadow-size-number', $target) ?: '0' ) . ( get_field( is( $type, 'style-txt-' ) .  'shadow-x-units', $target) ?: 'px' );
+	        	$shadow_alpha = ( get_field( is( $type, 'style-txt-' ) .  'shadow-rgba-alpha', $target) ?: '0' );
+	        	$shadow_color = ( get_field( is( $type, 'style-txt-' ) .  'shadow-rgba-color', $target) ?: '#000000' );
 	        	$shadow = $shadow_x . ' ' . $shadow_y . ' ' . $shadow_size . ' ' . hex2rgba( $shadow_color, $shadow_alpha );
 
         	}

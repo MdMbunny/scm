@@ -277,8 +277,8 @@
                 'shape' => scm_field( 'follow-shape', 'no', 'option' ),
                 'shape-size' => scm_field( 'follow-shape-size', 'normal', 'option' ),
                 'shape-angle' => scm_field( 'follow-shape-angle', 'all', 'option' ),
-                'box-color' => scm_field( 'follow-box-color', '', 'option' ),
-                'box-alpha' => scm_field( 'follow-box-alpha', 1, 'option' ),
+                'box-color' => scm_field( 'follow-box-rgba-color', '', 'option' ),
+                'box-alpha' => scm_field( 'follow-box-rgba-alpha', 1, 'option' ),
             ) );
 
             indent( $in, '</div><!-- #site-social-follow -->', 2 );

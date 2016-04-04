@@ -167,8 +167,7 @@
                     )
                 );
                 
-            }
-            
+            }            
         }
     }
         
@@ -269,31 +268,49 @@
                 'rassegne-autori'       => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Autori Rassegne', SCM_THEME),            'singular' => __('Autore Rassegne', SCM_THEME),        'slug' => 'autori',                    'types' => array( 'rassegne-stampa' ),  ),
                 'rassegne-testate'      => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Testate Rassegne', SCM_THEME),           'singular' => __('Testata Rassegne', SCM_THEME),       'slug' => 'testate',                   'types' => array( 'rassegne-stampa' ),  ),
             );
+
             
             // FILTER DEFAULT
 
             $default_types = apply_filters( 'scm_filter_default_types', $default_types );
             $default_taxonomies = apply_filters( 'scm_filter_default_taxonomies', $default_taxonomies );
 
-            // MERGE CUSTOM AND DEFAULT
 
-            /*$saved_types = scm_field( 'types-list', array(), 'options' );
-            $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'options' );
-            
-            foreach ($default_types as $type) {
-                $types = getByValueKey( $saved_types, $type['slug'], 'slug' );
-                if( !isset($types) || $types === false ){
-                    add_row( 'default-types-list', $type, 'options' );
-                    $saved_types[] = $type;
+            // DISABLE DEFAULT OPTIONS
+
+            $types = subArray( $default_types, 'plural', 0, array( 'admin' => 0 ) );
+
+            $group_types = scm_acf_group( 'Disable Default Types', 'default-types-options' );
+            $group_types['location'][] = scm_acf_group_location( 'scm-default-types', 'options_page' );
+            $group_types['fields'] = scm_acf_options_default_types( $types, $types );
+
+            scm_acf_group_register( $group_types );
+            $saved_types = scm_field( 'default-types-list', 0, 'options' );
+            if( isset( $saved_types ) && is_array( $saved_types ) ){
+                foreach ($saved_types as $key => $value) {
+                    $default_types[ $value ] = null;
                 }
+            }else{
+                $default_types = subArray( $default_types, '', 0, array( 'admin' => 1 ) );
             }
-            foreach ($default_taxonomies as $tax) {
-                $taxes = getByValueKey( $saved_taxonomies, $tax['slug'], 'slug' );
-                if( !isset($taxes) || $taxes === false ){
-                    add_row( 'default-taxonomies-list', $tax, 'options' );
-                    $saved_taxonomies[] = $tax;
+
+            $taxes = subArray( $default_taxonomies, 'plural' );
+
+            $group_taxonomies = scm_acf_group( 'Disable Default Taxonomies', 'default-taxonomies-options' );
+            $group_taxonomies['location'][] = scm_acf_group_location( 'scm-default-taxonomies', 'options_page' );
+            $group_taxonomies['fields'] = scm_acf_options_default_taxonomies( $taxes, $taxes );
+
+            scm_acf_group_register( $group_taxonomies );
+            $saved_taxonomies = scm_field( 'default-taxonomies-list', 0, 'options' );
+            if( isset( $saved_taxonomies ) && is_array( $saved_taxonomies ) ){
+                foreach ($saved_taxonomies as $key => $value) {
+                    $default_taxonomies[ $value ] = null;
                 }
-            }*/
+            }else{
+                $default_taxonomies = array();
+            }
+            
+
 
             // INSTALL
 
@@ -308,7 +325,7 @@
 
             consoleDebug('install custom types');
 
-            $saved_types = scm_field( 'types-list', array(), 'options' );
+            $saved_types = scm_field( 'custom-types-list', array(), 'options' );
             
             scm_types_install( $saved_types );
         }
@@ -319,7 +336,7 @@
 
             consoleDebug('install custom taxes');
 
-            $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'options' );
+            $saved_taxonomies = scm_field( 'custom-taxonomies-list', array(), 'options' );
 
             scm_taxonomies_install( $saved_taxonomies );
 
@@ -524,7 +541,6 @@
                     'menu_title'    => 'SCM',
                     'menu_slug'     => 'scm-options-general',
                     'icon_url'      => 'dashicons-carrot',
-                    'position'      => '0.1',
                     'capability'    => 'manage_options',
                     'redirect'      => true,
                 ));
@@ -534,7 +550,6 @@
                     'menu_title'    => 'SCM Types',
                     'menu_slug'     => 'scm-types-general',
                     'icon_url'      => 'dashicons-star-filled',
-                    'position'      => '0.2',
                     'capability'    => 'manage_options',
                     'redirect'      => true,
                 ));
@@ -544,7 +559,6 @@
                     'menu_title'    => 'SCM Templates',
                     'menu_slug'     => 'scm-templates-general',
                     'icon_url'      => 'dashicons-art',
-                    'position'      => '0.3',
                     'capability'    => 'manage_options',
                     'redirect'      => false,
                 ));
@@ -602,6 +616,22 @@
                     'menu_title'    => __( 'Footer', SCM_THEME ),
                     'menu_slug'     => 'scm-options-footer',
                     'parent_slug'   => 'scm-options-general',
+                    'capability'    => 'manage_options',
+                ));
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Default Types',
+                    'menu_title'    => __( 'Default Types', SCM_THEME ),
+                    'menu_slug'     => 'scm-default-types',
+                    'parent_slug'   => 'scm-types-general',
+                    'capability'    => 'manage_options',
+                ));
+
+                acf_add_options_sub_page(array(
+                    'page_title'    => 'SCM Default Taxonomies',
+                    'menu_title'    => __( 'Default Taxonomies', SCM_THEME ),
+                    'menu_slug'     => 'scm-default-taxonomies',
+                    'parent_slug'   => 'scm-types-general',
                     'capability'    => 'manage_options',
                 ));
 
@@ -719,25 +749,25 @@
 
         // TEMPLATES
 
-            if( !endsWith( $field['name'], '-templates' ) )
-                return $field;
+            if( !endsWith( $field['name'], '-templates' ) ){
+                
+                $type = str_replace( '-templates', SCM_TEMPLATE_APP, $field['name'] );
+                $posts = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ) );
 
-            $type = str_replace( '-templates', SCM_TEMPLATE_APP, $field['name'] );
-            $posts = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ) );
+                foreach ( $posts as $p ) {
 
-            foreach ( $posts as $p ) {
+                    $id = $p->post_name;
 
-                $id = $p->post_name;
+                    $field['value'][ $id ] = array();
 
-                $field['value'][ $id ] = array();
+                    foreach ($field['sub_fields'] as $v) {
+                        if( $v['name'] == 'id' ){
+                            $field['value'][ $id ][ $v['key'] ] = $p->ID;
+                        }
 
-                foreach ($field['sub_fields'] as $v) {
-                    if( $v['name'] == 'id' ){
-                        $field['value'][ $id ][ $v['key'] ] = $p->ID;
-                    }
-
-                    if( $v['name'] == 'name' ){
-                        $field['value'][ $id ][ $v['key'] ] = $p->post_title;
+                        if( $v['name'] == 'name' ){
+                            $field['value'][ $id ][ $v['key'] ] = $p->post_title;
+                        }
                     }
                 }
             }
@@ -797,69 +827,6 @@
 // *****************************************************
 
 
-    // Detach Media
-    /*if ( ! function_exists( 'scm_acf_savepost_hook_media' ) ) {
-        function scm_acf_savepost_hook_media( $post_id ) {
-
-            //consoleLog($post_id);
-            //consoleLog($_POST['acf']);
-
-            if( empty($_POST['acf']) )
-                return;
-
-            $fields = $_POST['acf'];
-            global $wpdb;
-
-            foreach ( $fields as $key => $value ) {
-
-                $field = get_field_object($key, $post_id, false);
-                
-                $images = array();
-
-                if( $field['type'] == 'image' ){
-                    $images[] = $value;
-                }elseif( $field['type'] == 'gallery' ){
-                    $images = $value;
-                }else{
-                    continue;
-                }
-
-                $previous = toArray( get_field($field['name'], $post_id) );
-                //consoleLog($previous);
-                //consoleLog($images);
-
-                $removed = array();
-                if (!empty($previous)) {
-                    foreach($previous as $img) {
-                        if( is_array($img) )
-                            $img = (string)$img['id'];
-                        elseif( !isNumber($img) )
-                            $img = (string)$wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $img ))[0];
-                        if ( $img && !in_array($img, $images))
-                            array_push($removed, $img);
-                    }
-                }
-
-                //consoleLog($removed);
-
-                if (!empty($removed)) {
-                    foreach($removed as $img) {
-                        // unattach removed ones
-                        $wpdb->update($wpdb->posts, array('post_parent'=>0), array('id'=>$img, 'post_type'=>'attachment'));
-                    }
-                }
-
-                if (!empty($images)) {
-                    foreach($images as $img) {
-                        // attach added ones
-                        $wpdb->update($wpdb->posts, array('post_parent'=>$post_id), array('id'=>$img, 'post_type'=>'attachment'));
-                    }
-                }
-            }
-        }
-    }*/
-
-
     // TEMPLATES
     if ( ! function_exists( 'scm_acf_savepost_hook_templates' ) ) {
         function scm_acf_savepost_hook_templates( $post_id ) {
@@ -870,9 +837,6 @@
             if( $post_id == 'options'){
 
                 $fields = $_POST['acf'];
-
-                //$repeater = scm_field_key( $post_it, $fields, [ 'ends', '-templates' ], [ '==', 'repeater', 'value' ] );
-                //if( $repeater ){
 
                 foreach ( $fields as $key => $value ) {
 
@@ -1019,11 +983,13 @@
 
             if( function_exists('register_field_group') ) {
 
+                // Custom
+
                 consoleDebug('install custom types repeater');
 
-                $types = scm_acf_group( 'Types', 'types-options' );
+                $types = scm_acf_group( 'Types', 'custom-types-options' );
                 $types['location'][] = scm_acf_group_location( 'scm-custom-types', 'options_page' );
-                $types['fields'] = scm_acf_options_types();
+                $types['fields'] = scm_acf_options_types( 'custom' );
 
                 scm_acf_group_register( $types );
 
@@ -1038,9 +1004,9 @@
 
                 consoleDebug('install custom taxes repeater');
                
-                $taxonomies = scm_acf_group( 'Taxonomies', 'taxonomies-options' );
+                $taxonomies = scm_acf_group( 'Taxonomies', 'custom-taxonomies-options' );
                 $taxonomies['location'][] = scm_acf_group_location( 'scm-custom-taxonomies', 'options_page' );
-                $taxonomies['fields'] = scm_acf_options_taxonomies();
+                $taxonomies['fields'] = scm_acf_options_taxonomies( 'custom' );
 
                 scm_acf_group_register( $taxonomies );              
 
@@ -1065,7 +1031,7 @@
                 $tax_luoghi['location'][] = scm_acf_group_location( 'luoghi-tip', 'taxonomy' );
                 $msg = __( 'Verrà utilizzata sulle mappe per indicare i <strong>Luoghi</strong> assegnati a questa <strong>Categoria</strong>. Comparirà anche nella legenda, se sulla mappa sono presenti più <strong>Luoghi</strong>.
                 Selezionando l\'opzione <em>Default</em> dal menu a tendina <strong>Icona Mappa</strong>, verrà utilizzata un\'icona standard. Viene sostituita nei <strong>Luoghi</strong> ai quali è stata assegnata un\'icona specifica.', SCM_THEME );
-                $tax_luoghi['fields'] = scm_acf_preset_map_icon( 'luogo-tip-mappa', 1,  100, 100, 0, __( 'Icona Mappa specifica per questa Categoria', SCM_THEME ), $msg );
+                $tax_luoghi['fields'] = scm_acf_preset_map_icon( 'luogo-tip', 100, 0, 0, $msg );
 
                 $groups[] = $tax_luoghi;
 
@@ -1121,151 +1087,6 @@
                 $groups[] = $footer;
 
 // EDIT SINGLE
-                
-
-                /*
-                // + PAGE
-                $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
-                $page['location'][] = scm_acf_group_location( 'page' );
-                $page['fields'] = scm_acf_fields_page();
-
-                $groups[] = $page;
-
-                // + PAGE FOOTER
-                $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
-                $page_footer['location'][] = scm_acf_group_location( 'page' );
-                $page_footer['fields'][] = scm_acf_field_objects_rel( 'page-footer', 0, 'sections', 100, 0, 'Seleziona Sections' );
-
-                $groups[] = $page_footer;
-
-                // + SECTION
-                $section = scm_acf_group( __( 'Componi Sezione', SCM_THEME ), 'sections-single' );
-                $section['location'][] = scm_acf_group_location( 'sections' );
-                $section['fields'] = scm_acf_fields_section();
-
-                $groups[] = $section;
-
-
-                if( $SCM_types['complete'][ 'slides' ] ){
-
-                    // + PAGE SLIDER
-                    $slider = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
-                    $slider['location'][] = scm_acf_group_location( 'page' );
-                    $slider['fields'] = scm_acf_options_slider( 'main', 1 );
-
-                    $groups[] = $slider;
-
-                }
-
-                if( $SCM_types['complete'][ 'slides' ] ){
-
-                    // + SLIDES
-                    $slide = scm_acf_group( __( 'Slide', SCM_THEME ), 'slides-single' );
-                    $slide['location'][] = scm_acf_group_location( 'slides' );
-                    $slide['fields'] = scm_acf_fields_slide();
-
-                    $groups[] = $slide;
-                }
-
-                if( $SCM_types['complete'][ 'news' ] ){
-
-                    // + NEWS
-                    $news = scm_acf_group( __( 'News', SCM_THEME ), 'news-single' );
-                    $news['location'][] = scm_acf_group_location( 'news' );
-                    $news['fields'] = scm_acf_fields_news();
-
-                    $groups[] = $news;
-
-                }
-
-                if( $SCM_types['complete'][ 'video' ] ){
-
-                    // + VIDEO
-                    $video = scm_acf_group( __( 'Video', SCM_THEME ), 'videos-single' );
-                    $video['location'][] = scm_acf_group_location( 'video' );
-                    $video['fields'] = scm_acf_fields_video();
-
-                    $groups[] = $video;
-
-                }
-
-                if( $SCM_types['complete'][ 'documenti' ] ){
-
-                    // + DOCUMENTO
-                    $documento = scm_acf_group( __( 'Documento', SCM_THEME ), 'documenti-single' );
-                    $documento['location'][] = scm_acf_group_location( 'documenti' );
-                    $documento['fields'] = scm_acf_fields_documento();
-
-                    $groups[] = $documento;
-
-                }
-
-                if( $SCM_types['complete'][ 'gallerie' ] ){
-
-                    // + GALLERY
-                    $gallery = scm_acf_group( __( 'Gallery', SCM_THEME ), 'gallery-single' );
-                    $gallery['location'][] = scm_acf_group_location( 'gallerie' );
-                    $gallery['fields'] = scm_acf_fields_galleria();
-
-                    $groups[] = $gallery;
-
-                }
-
-                if( $SCM_types['complete'][ 'rassegne-stampa' ] ){
-
-                    // + RASSEGNA STAMPA
-                    $rassegna = scm_acf_group( __( 'Rassegna Stampa', SCM_THEME ), 'rassegne-single' );
-                    $rassegna['location'][] = scm_acf_group_location( 'rassegne-stampa' );
-                    $rassegna['fields'] = scm_acf_fields_rassegna_stampa();
-
-                    $groups[] = $rassegna;
-
-                }
-
-                if( $SCM_types['complete'][ 'luoghi' ] ){
-
-                    // + LUOGO
-                    $luogo = scm_acf_group( __( 'Luogo', SCM_THEME ), 'luoghi-single' );
-                    $luogo['location'][] = scm_acf_group_location( 'luoghi' );
-                    $luogo['fields'] = scm_acf_fields_luogo();
-
-                    $groups[] = $luogo;
-
-                }
-
-                if( $SCM_types['complete'][ 'soggetti' ] ){
-
-                    // + SOGGETTO
-                    $soggetto = scm_acf_group( __( 'Soggetto', SCM_THEME ), 'soggetti-single' );
-                    $soggetto['location'][] = scm_acf_group_location( 'soggetti' );
-                    $soggetto['fields'] = scm_acf_fields_soggetto();
-
-                    $groups[] = $soggetto;
-
-                }
-
-                if( $SCM_types['complete'][ 'modules' ] ){
-
-                    // + MODULE
-                    $module = scm_acf_group( __( 'Componi Modulo', SCM_THEME ), 'modules-single' );
-                    $module['location'][] = scm_acf_group_location( 'modules' );
-                    $module['fields'] = scm_acf_fields_module();
-
-                    $groups[] = $module;
-
-                }
-
-                if( $SCM_types['complete'][ 'banners' ] ){
-
-                    // + BANNER
-                    $module = scm_acf_group( __( 'Componi Banner', SCM_THEME ), 'banners-single' );
-                    $module['location'][] = scm_acf_group_location( 'banners' );
-                    $module['fields'] = scm_acf_fields_banner();
-
-                    $groups[] = $module;
-
-                }*/
-
                 
                 // + PAGE
                 $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
@@ -1388,7 +1209,7 @@
                 array(
                     'name'               => 'ACF Font Awesome',
                     'slug'               => 'advanced-custom-fields-font-awesome',
-                    'source'             => 'advanced-custom-fields-font-awesome.zip', // 2.7.0 (check before update)
+                    //'source'             => 'advanced-custom-fields-font-awesome.zip', // 2.7.0 (check before update)
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,

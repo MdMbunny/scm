@@ -51,17 +51,17 @@
 					if( !$term || !sizeof( $term ) )
 
 					$term_field = ( $term && sizeof( $term ) ? get_fields( $term[0] ) : array() );
-					$marker = ( is( $term_field ) ? is( $term_field['luogo-tip-mappa-icon'], 'default' ) : 'default' );
+					$marker = ( is( $term_field ) ? is( $term_field['luogo-tip-map-icon'], 'default' ) : 'default' );
 					switch ( $marker ) {
 						case 'icon':
-							$fa = is( $term_field['luogo-tip-mappa-icon-fa'], 'fa-map-marker' );
-							$color = scm_content_preset_rgba( is( $term_field['luogo-tip-mappa-rgba-color'], '#e3695f' ), is( $term_field['luogo-tip-mappa-rgba-alpha'], 1 ) );
+							$fa = is( $term_field['luogo-tip-map-icon-fa'], 'fa-map-marker' );
+							$color = scm_content_preset_rgba( is( $term_field['luogo-tip-map-rgba-color'], '#e3695f' ), is( $term_field['luogo-tip-map-rgba-alpha'], 1 ) );
 							$icon = array( 'icon' => $fa, 'data' => $color );
 							$marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
 						break;
 
 						case 'img':
-							$img = is( $term_field['luogo-tip-mappa-icon-img'], '' );
+							$img = is( $term_field['luogo-tip-map-icon-img'], '' );
 							$icon = array( 'icon' => $img, 'data' => 'img' );
 							$marker = ( $img ? ' data-img="' . $img . '"' : '' );
 						break;

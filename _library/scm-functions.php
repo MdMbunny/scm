@@ -21,6 +21,7 @@
 // ifnotequal
 // isNumber
 // toArray
+// subArray
 // copyArray
 // openTag
 // openDiv
@@ -219,6 +220,30 @@ function toArray( $var = '', $asso = false, $empty = false ){
         return ( is_array( $var ) ? $var : array( $var ) );
     
     return ( is_asso( $var ) === false ? $var : array( $var ) );
+
+}
+
+function subArray( $arr, $par = '', $sec = 0, $filter = array() ){
+    
+    $choices = array();
+            
+    if( !is_array( $arr ) )
+        return $choices;
+
+    foreach ($arr as $k => $v) {
+        $key = ( $sec ? $v[$sec] : $k );
+        if( !empty($filter) ){
+            foreach ($filter as $filt => $val) {
+                if( isset( $v[$filt] ) && $v[$filt] !== $val )
+                    continue(2);
+            }
+        }
+        if( $par )
+            $choices[$key] = $v[$par];
+        else
+            $choices[$key] = $v;
+    }
+    return $choices;
 
 }
 

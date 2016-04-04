@@ -686,6 +686,20 @@ body.loading *{
 	border-top-width: 1px;
 }
 
+.acf-field .acf-error-message{
+	display: block;
+    position: absolute;
+    z-index: 9;
+    bottom: 80%;
+}
+
+.acf-required {
+    color: #f00;
+    display: inline-block;
+    float: left;
+    margin-right: .5em;
+}
+
 .edit-tags-php .acf-field .acf-input{
 	display: block;
 }
@@ -943,6 +957,15 @@ input.acf-is-prepended {
 	text-align: left;
 }*/
 
+.acf-field .acf-label,
+.acf-field .acf-label > label.empty{
+	margin: 0;
+}
+
+.acf-field .acf-label > label:not(.empty){
+	margin-bottom: .5em;
+}
+
 .acf-field.acf-field-message {
 	background-color: #f4f4f4;
 }
@@ -976,11 +999,11 @@ input.acf-is-prepended {
 	padding: 20px !important;*/
 }
 
-.no-value-message,
-.acf-flexible-content > .acf-label > label,
+.no-value-message
+/*.acf-flexible-content > .acf-label > label,
 .acf-flexible-content .acf-field:not(.acf-field-true-false) > .acf-label,
 .acf-field-repeater:not(.repeater-labels) > .acf-label > label,
-.acf-field-repeater:not(.repeater-labels) .acf-field:not(.acf-field-true-false) > .acf-label {
+.acf-field-repeater:not(.repeater-labels) .acf-field:not(.acf-field-true-false) > .acf-label*/ {
 	display: none !important;
 }
 

@@ -26,7 +26,7 @@ $SCM_MENU_ORDER = array(
     'scm' => array(
         'index.php', // Dashboard
         'scm-options-intro',
-        'scm-custom-types',
+        'scm-default-types',
         'scm-templates-general',
     ),
     'separator1' => array( 'separator1' ),

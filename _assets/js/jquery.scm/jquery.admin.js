@@ -87,6 +87,7 @@
 			$rows = jQuery( '.acf-row' );
 
 
+		$('.acf-field .acf-label label:empty').addClass('empty');
 
 
 		$body.on( 'mouseenter', '.acf-field', function(e){
