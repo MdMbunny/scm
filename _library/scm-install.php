@@ -244,7 +244,8 @@
                 'sections'              => array( 'admin' => 1,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
                 'modules'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
                 'banners'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
-                'news'                  => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 0,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'types',                                                                                                           ),
+                'news'                  => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'types',                                                                                                           ),
+                'articoli'              => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Articolo', SCM_THEME),               'plural' => __('Articoli', SCM_THEME),              'slug' => 'articoli',           'icon' => 'admin-post',         'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'types',                                                                                                           ),
                 'slides'                => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Slide', SCM_THEME),                  'plural' => __('Slides', SCM_THEME),                'slug' => 'slides',             'icon' => 'format-image',       'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
                 'gallerie'              => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Galleria', SCM_THEME),               'plural' => __('Gallerie', SCM_THEME),              'slug' => 'gallerie',           'icon' => 'format-gallery',     'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
                 'video'                 => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('Video', SCM_THEME),                  'plural' => __('Video', SCM_THEME),                 'slug' => 'video',              'icon' => 'video-alt3',         'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'media',                                                                                                           ),
@@ -260,7 +261,7 @@
                 'soggetti-tip'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Soggetti', SCM_THEME),         'singular' => __('Tipologia Soggetti', SCM_THEME),     'slug' => 'soggetti-tip',              'types' => array( 'soggetti' )          ),
                 'luoghi-tip'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 1,          'plural' => __('Tipologie Luoghi', SCM_THEME),           'singular' => __('Tipologia Luoghi', SCM_THEME),       'slug' => 'luoghi-tip',                'types' => array( 'luoghi' ),           ),
                 'luoghi-cat'            => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Luoghi', SCM_THEME),           'singular' => __('Categoria Luoghi', SCM_THEME),       'slug' => 'luoghi-cat',                'types' => array( 'luoghi' ),           ),
-                'news-cat'              => array( 'template' => 0,       'add_cap' => 0,        'active' => 0,      'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
+                'news-cat'              => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie News', SCM_THEME),             'singular' => __('Categoria News', SCM_THEME),         'slug' => 'news-cat',                  'types' => array( 'news' ),             ),
                 'documenti-cat'         => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Documenti', SCM_THEME),        'singular' => __('Categoria Documenti', SCM_THEME),    'slug' => 'documenti-cat',             'types' => array( 'documenti' ),        ),
                 'video-cat'             => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Video', SCM_THEME),            'singular' => __('Categoria Video', SCM_THEME),        'slug' => 'video-cat',                 'types' => array( 'video' ),            ),
                 'gallerie-cat'          => array( 'template' => 0,       'add_cap' => 0,        'active' => 1,      'hierarchical' => 0,          'plural' => __('Categorie Gallerie', SCM_THEME),         'singular' => __('Categoria Gallerie', SCM_THEME),     'slug' => 'gallerie-cat',              'types' => array( 'gallerie' ),         ),
@@ -288,29 +289,30 @@
             $saved_types = scm_field( 'default-types-list', 0, 'options' );
             if( isset( $saved_types ) && is_array( $saved_types ) ){
                 foreach ($saved_types as $key => $value) {
-                    $default_types[ $value ] = null;
+                    unset( $default_types[ $value ] );// = null;
                 }
-            }else{
+            }/*else{
                 $default_types = subArray( $default_types, '', 0, array( 'admin' => 1 ) );
-            }
+            }*/
 
             $taxes = subArray( $default_taxonomies, 'plural' );
 
             $group_taxonomies = scm_acf_group( 'Disable Default Taxonomies', 'default-taxonomies-options' );
             $group_taxonomies['location'][] = scm_acf_group_location( 'scm-default-taxonomies', 'options_page' );
             $group_taxonomies['fields'] = scm_acf_options_default_taxonomies( $taxes, $taxes );
-
             scm_acf_group_register( $group_taxonomies );
+
             $saved_taxonomies = scm_field( 'default-taxonomies-list', 0, 'options' );
             if( isset( $saved_taxonomies ) && is_array( $saved_taxonomies ) ){
                 foreach ($saved_taxonomies as $key => $value) {
-                    $default_taxonomies[ $value ] = null;
+                    unset( $default_taxonomies[ $value ] );// = null;
                 }
-            }else{
+            }/*else{
                 $default_taxonomies = array();
-            }
+            }*/
             
-
+            //consoleLog($default_types);
+            //consoleLog($default_taxonomies);
 
             // INSTALL
 
@@ -325,7 +327,7 @@
 
             consoleDebug('install custom types');
 
-            $saved_types = scm_field( 'custom-types-list', array(), 'options' );
+            $saved_types = scm_field( 'types-list', array(), 'options' );
             
             scm_types_install( $saved_types );
         }
@@ -336,7 +338,7 @@
 
             consoleDebug('install custom taxes');
 
-            $saved_taxonomies = scm_field( 'custom-taxonomies-list', array(), 'options' );
+            $saved_taxonomies = scm_field( 'taxonomies-list', array(), 'options' );
 
             scm_taxonomies_install( $saved_taxonomies );
 
@@ -346,6 +348,9 @@
 
     if ( ! function_exists( 'scm_types_install' ) ) {
         function scm_types_install( $types = array() ){
+
+            if( !isset($types) || !is_array($types) || sizeof($types) === 0 )
+                return;
 
             global $SCM_types;
 
@@ -401,6 +406,9 @@
 
     if ( ! function_exists( 'scm_taxonomies_install' ) ) {
         function scm_taxonomies_install( $taxonomies = array() ){
+
+            if( !isset($taxonomies) || !is_array($taxonomies) || sizeof($taxonomies) === 0 )
+                return;
 
             global $SCM_types;
 
@@ -989,7 +997,7 @@
 
                 $types = scm_acf_group( 'Types', 'custom-types-options' );
                 $types['location'][] = scm_acf_group_location( 'scm-custom-types', 'options_page' );
-                $types['fields'] = scm_acf_options_types( 'custom' );
+                $types['fields'] = scm_acf_options_types();
 
                 scm_acf_group_register( $types );
 
@@ -1006,7 +1014,7 @@
                
                 $taxonomies = scm_acf_group( 'Taxonomies', 'custom-taxonomies-options' );
                 $taxonomies['location'][] = scm_acf_group_location( 'scm-custom-taxonomies', 'options_page' );
-                $taxonomies['fields'] = scm_acf_options_taxonomies( 'custom' );
+                $taxonomies['fields'] = scm_acf_options_taxonomies();
 
                 scm_acf_group_register( $taxonomies );              
 

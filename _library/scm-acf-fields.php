@@ -59,69 +59,69 @@
 /* Number */
 
 	// NUMBER
-	function scm_acf_field_number( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_number( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'number'), $width, $logic, $required );
 	}
 	
 	// OPTION
-	function scm_acf_field_option( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_option( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'option'), $width, $logic, $required );
 	}
 
 	// POSITIVE
-	function scm_acf_field_positive( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_positive( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'positive'), $width, $logic, $required );
 	}
 
 	// NEGATIVE
-	function scm_acf_field_negative( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'negative'), $width, $logic, $required );
 	}
 	
 	// ALPHA
-	function scm_acf_field_alpha( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_alpha( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'alpha'), $width, $logic, $required );
 	}
 	
 /* Text */
 
 	// TEXT
-	function scm_acf_field_text( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_text( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'text'), $width, $logic, $required );
 	}
 	
 	// ID
-	function scm_acf_field_id( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_id( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'id'), $width, $logic, $required );
 	}
 
 	// CLASS
-	function scm_acf_field_class( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'class'), $width, $logic, $required );
 	}
 
 	// NAME
-	function scm_acf_field_name( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_name( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'name'), $width, $logic, $required );
 	}
 
 	// LINK
-	function scm_acf_field_link( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_link( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'link'), $width, $logic, $required );
 	}
 	
 	// EMAIL
-	function scm_acf_field_email( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_email( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'email'), $width, $logic, $required );
 	}
 
 	// USER
-	function scm_acf_field_user( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_user( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'user'), $width, $logic, $required );
 	}
 	
 	// PHONE
-	function scm_acf_field_phone( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_phone( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'phone'), $width, $logic, $required );
 	}
 
@@ -129,50 +129,50 @@
 /* Limiter */
 	
 	// LIMITER
-	function scm_acf_field_limiter( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_limiter( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type'=>'limiter','max'=>350,'display'=>1), $width, $logic, $required );
 	}
 
 /* TextArea */
 	
 	// TEXTAREA
-	function scm_acf_field_textarea( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_textarea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type'=>'textarea', 'rows'=>8), $width, $logic, $required );
 	}
 
 	// TEXTAREA CODE
-	function scm_acf_field_codearea( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_codearea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type'=>'textarea-no', 'rows'=>8, 'class'=>'widefat code'), $width, $logic, $required );
 	}
 
 /* Editor */
 	
 	// EDITOR BASIC MEDIA
-	function scm_acf_field_editor( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-media-basic'), $width, $logic, $required );
 	}
 
 	// EDITOR VISUAL MEDIA
-	function scm_acf_field_editor_media( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-media-visual-basic'), $width, $logic, $required );
 	}
 
 	// EDITOR VISUAL
-	function scm_acf_field_editor_basic( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-visual-basic'), $width, $logic, $required );
 	}
 
 /* Date */
 	
 	// DATE
-	function scm_acf_field_date( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'date'), $width, $logic, $required );
 	}
 
 /* Color */
 	
 	// COLOR
-	function scm_acf_field_color( $name = '', $field = 0, $width, $logic, $required ) {
+	function scm_acf_field_color( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
 		return scm_acf_preset( $name, $field, array('type' => 'color'), $width, $logic, $required );
 	}
 

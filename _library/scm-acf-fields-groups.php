@@ -141,6 +141,7 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'slides' );
 
 			$fields = apply_filters( 'scm_filter_fields_slide_before', $fields );
 
@@ -148,9 +149,11 @@
 
 				$fields[] = scm_acf_field_image( 'slide-image', $default );
 
-			$fields[] = scm_acf_field( 'tab-tax-slide', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'slide', $default, 'slides' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'slide', $default, 'slides' ) );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-slide', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'slide', $default, 'slides' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'slide', $default, 'slides' ) );
+			}
 
 			// conditional link
 			$fields[] = scm_acf_field_select( 'slide-link', $default, 'links_type', 50, 0, '', __( 'Collegamento', SCM_THEME ) );
@@ -225,18 +228,22 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'articoli' );
 
 			$fields = apply_filters( 'scm_filter_fields_articolo_before', $fields );
 
-			$fields[] = scm_acf_field( 'tab-set-articolo', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+			if( $hastaxes )
+				$fields[] = scm_acf_field( 'tab-set-articolo', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				
 				$fields[] = scm_acf_field_image( 'image', $default );
 				$fields[] = scm_acf_field_textarea( 'excerpt', array( 'rows'=>5, 'label'=>__( 'Anteprima', SCM_THEME ) ) );
 				$fields[] = scm_acf_field_editor_basic( 'editor' );
 
-			$fields[] = scm_acf_field( 'tab-tax-articolo', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'articolo', $default, 'articoli' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'articolo', $default, 'articoli' ) );
-				//$fields[] = scm_acf_field_category( $name . 'post-cat', $default, 'post' );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-articolo', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'articolo', $default, 'articoli' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'articolo', $default, 'articoli' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_articolo', $fields );
 
@@ -252,10 +259,13 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'rassegne-stampa' );
 
 			$fields = apply_filters( 'scm_filter_fields_rassegna_before', $fields );
-
-			$fields[] = scm_acf_field( 'tab-set-rassegna', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+			
+			if( $hastaxes )
+				$fields[] = scm_acf_field( 'tab-set-rassegna', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				
 				// conditional link
 				$fields[] = scm_acf_field_select( 'rassegna-type', $default, 'rassegne_type', 100, 0, '', __( 'Articolo', SCM_THEME ) );
 
@@ -277,12 +287,14 @@
 				
 				$fields[] = scm_acf_field( 'rassegna-data', 'date', __( 'Data', SCM_THEME ) );
 
-			$fields[] = scm_acf_field( 'tab-tax-rassegna', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'rassegna', $default, 'rassegne-stampa' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'rassegna', $default, 'rassegne-stampa' ) );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-rassegna', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'rassegna', $default, 'rassegne-stampa' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'rassegna', $default, 'rassegne-stampa' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_rassegna', $fields );
-			
+
 			return $fields;
 
 		}
@@ -295,16 +307,20 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'documenti' );
 
 			$fields = apply_filters( 'scm_filter_fields_documento_before', $fields );
-
-			$fields[] = scm_acf_field( 'tab-set-documento', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+			
+			if( $hastaxes )
+				$fields[] = scm_acf_field( 'tab-set-documento', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				
 				$fields[] = scm_acf_field_file( 'documento-file', $default );
 
-			$fields[] = scm_acf_field( 'tab-tax-documento', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'documento', $default, 'documenti' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'documento', $default, 'documenti' ) );
-			//$fields[] = scm_acf_field_category( 'documento-cat', $default, 'documenti' );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-documento', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'documento', $default, 'documenti' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'documento', $default, 'documenti' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_documento', $fields );
 
@@ -320,16 +336,20 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'gallerie' );
 
 			$fields = apply_filters( 'scm_filter_fields_galleria_before', $fields );
 
-			$fields[] = scm_acf_field( 'tab-set-galleria', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+			if( $hastaxes )
+				$fields[] = scm_acf_field( 'tab-set-galleria', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				
 				$fields[] = scm_acf_field( 'galleria-images', 'gallery', __( 'Immagini', SCM_THEME ) );
-
-			$fields[] = scm_acf_field( 'tab-tax-galleria', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'galleria', $default, 'gallerie' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'galleria', $default, 'gallerie' ) );
-			//$fields[] = scm_acf_field_category( 'galleria-cat', $default, 'gallerie' );
+			
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-galleria', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'galleria', $default, 'gallerie' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'galleria', $default, 'gallerie' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_galleria', $fields );
 
@@ -345,16 +365,20 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'video' );
 
 			$fields = apply_filters( 'scm_filter_fields_video_before', $fields );
 
-			$fields[] = scm_acf_field( 'tab-set-video', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+			if( $hastaxes )
+				$fields[] = scm_acf_field( 'tab-set-video', 'tab-left', __( 'Impostazioni', SCM_THEME ) );
+				
 				$fields[] = scm_acf_field( 'video-url', 'video', __( 'Link a YouTube', SCM_THEME ) );
 
-			$fields[] = scm_acf_field( 'tab-tax-video', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_categories( 'video', $default, 'video' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'video', $default, 'video' ) );
-			//$fields[] = scm_acf_field_category( 'video-cat', $default, 'video' );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-video', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'video', $default, 'video' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'video', $default, 'video' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_video', $fields );
 
@@ -370,6 +394,7 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'luoghi' );
 
 			$fields = apply_filters( 'scm_filter_fields_luogo_before', $fields );
 
@@ -425,9 +450,11 @@
 
 				$fields[] = $contacts;
 
-			$fields[] = scm_acf_field( 'tab-tax-luogo', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_category( 'luogo', $default, 'luoghi' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'luogo', $default, 'luoghi' ) );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-luogo', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_category( 'luogo', $default, 'luoghi' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'luogo', $default, 'luoghi' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_luogo', $fields );
 
@@ -443,6 +470,7 @@
 			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
+			$hastaxes = checkTaxes( 'soggetti' );
 
 			$fields = apply_filters( 'scm_filter_fields_soggetto_before', $fields );
 
@@ -480,9 +508,11 @@
 			$fields[] = scm_acf_field( 'tab-social-soggetto', 'tab-left', __( 'Social', SCM_THEME ) );
 				$fields = array_merge( $fields, scm_acf_preset_flexible_buttons( 'soggetto', $default, 'social', __( 'Social', SCM_THEME ) ) );
 
-			$fields[] = scm_acf_field( 'tab-tax-soggetto', 'tab-left', __( 'Categorie', SCM_THEME ) );
-				$fields = array_merge( $fields, scm_acf_preset_category( 'soggetto', $default, 'soggetti' ) );
-				$fields = array_merge( $fields, scm_acf_preset_tags( 'soggetto', $default, 'soggetti' ) );
+			if( $hastaxes ){
+				$fields[] = scm_acf_field( 'tab-tax-soggetto', 'tab-left', __( 'Categorie', SCM_THEME ) );
+					$fields = array_merge( $fields, scm_acf_preset_category( 'soggetto', $default, 'soggetti' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'soggetto', $default, 'soggetti' ) );
+			}
 
 			$fields = apply_filters( 'scm_filter_fields_soggetto', $fields );
 

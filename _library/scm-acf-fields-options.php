@@ -33,7 +33,7 @@
 	
 	// CUSTOM TYPES OPTIONS
 	if ( ! function_exists( 'scm_acf_options_types' ) ) {
-		function scm_acf_options_types( $name = '', $min = 0, $max ) {
+		function scm_acf_options_types( $name = '', $min = 0, $max = 0 ) {
 
 			$default = 0; // todo: da rimuovere
 
@@ -106,7 +106,7 @@
 
 	// TAXONOMIES OPTIONS
 	if ( ! function_exists( 'scm_acf_options_taxonomies' ) ) {
-		function scm_acf_options_taxonomies( $name = '', $min = 0, $max, $cont ) {
+		function scm_acf_options_taxonomies( $name = '', $min = 0, $max = 0 ) {
 
 			$default = 0; // todo: da rimuovere
 

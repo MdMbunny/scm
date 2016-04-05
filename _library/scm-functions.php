@@ -223,6 +223,24 @@ function toArray( $var = '', $asso = false, $empty = false ){
 
 }
 
+function delArray( $arr, $elems ){
+    
+    if( !is_array( $arr ) )
+        return array();
+
+    $choices = copyArray( $arr );
+    $elems = toArray( $elems );
+
+    foreach ($elems as $k => $v) {
+        if( ( $key = array_search( $v, $choices ) ) !== false ) {
+            unset($choices[$k]);
+        }
+    }
+
+    return $choices;
+
+}
+
 function subArray( $arr, $par = '', $sec = 0, $filter = array() ){
     
     $choices = array();
@@ -302,7 +320,10 @@ function copyArray( $arr ){
     $new = array();
 
     foreach ( $arr as $k => $v ) {
-        $new[$k] = clone $v;
+        if(is_asso($v))
+            $new[$k] = clone $v;
+        else
+            $new[$k] = $v;
     }
 
     return $new;
@@ -1104,7 +1125,7 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
             $str = '';
 
-            toArray( $webfont );
+            $webfont = toArray( $webfont );
             foreach ( $webfont as $font ) {
                 $str .= ( ( $font && $font != 'no' && $font != 'default' ) ? $font . ', ' : '' );
             }
@@ -1135,6 +1156,11 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 /***********************/
 /* Wordpress Functions */
 /***********************/
+
+   
+function checkTaxes( $type = '' ) {
+    return ( delArray( get_object_taxonomies( $type ), array( 'language', 'post_translations' ) ) ?: array() );
+}
 
 
 function isLoginPage() {
