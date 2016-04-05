@@ -147,9 +147,7 @@
 
 		    $this.removeClass( 'disabled' );
 		    $this.addClass( 'enabled' );
-		    
-			//$this.style( 'pointer-events', 'all' );
-			$this.trigger( 'enabled' );
+		    $this.trigger( 'enabled' );
 
 		});
 	};
@@ -167,7 +165,6 @@
 
 		    $this.addClass( 'disabled' );
 			$this.removeClass( 'enabled' );
-			//$this.style( 'pointer-events', 'none !important' );
 			$this.trigger( 'disabled' );
 
 		});
@@ -185,8 +182,8 @@
 
 	$.fn.eventLinks = function( event ){
 
-		var $nav 	= this.find( 'a, .navigation' ),
-			$link 	= this.find( 'a, [data-href]' );
+		var $nav 	= this.find( 'a, .navigation' ).filter(':not(.nolinkit)'),
+			$link 	= this.find( 'a, [data-href]' ).filter(':not(.nolinkit)');
 
 		$link.filter( ':not(data-link-type)' ).linkIt();
 		$nav.off( 'mousedown' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
@@ -216,10 +213,7 @@
 			}else if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
 				
 				$this.trigger( 'link' );
-			}/*else{
-				$( '.toggled' ).toggledOff(e);
-				e.preventDefault();
-			}*/
+			}
 		
 		});
 
@@ -237,7 +231,6 @@
 				$.consoleDebug( DEBUG, 'state: ' + state);
 
 			switch( state ){
-				//case 'back': window.history.back(); return false; break;
 
 				case 'load':
 				case 'page':
@@ -261,48 +254,6 @@
 
 	};
 
-	/*$.fn.eventLinks = function( event ){
-
-		this.find( 'a, .navigation' ).off( 'mousedown' );
-		this.find( 'a, [data-href]' ).off( 'click' );
-		this.find( 'a, [data-href]' ).off( 'link' );
-
-		this.find( 'a, .navigation' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
-		this.find( 'a, [data-href]' ).on( 'click', function(e){
-
-			var $this = $( this );
-
-			$this.trigger( 'clicked' );
-
-			var $toggle = $this.parents( '.no-toggled' );
-
-			var cont = 0;
-			if( $toggle.length )
-				cont = $toggle.parents( '.toggle-content' ).length;
-
-			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
-				$this.linkIt(e);
-			}else{
-				$( '.toggled' ).toggledOff(e);
-				e.preventDefault();
-			}
-		
-		});
-
-		this.find( 'a, [data-href]' ).on( 'link', function( e, state ){
-
-			var $this = $( this );
-
-			if( state != 'page' ){
-				$this.bodyOut( e, state );
-			}else{
-				e.preventDefault();
-				$this.smoothScroll();
-			}
-
-		} );
-
-	};*/
 
 	$.fn.checkCss = function( event ){
 		this.find( '[data-bg-color]' ).setCss( 'bg-color', 'background-color' );
@@ -323,8 +274,6 @@
 
 		    var $this 		= $( this );
 		    	
-		    	//result 		= true;
-
 		    var data 		= $this.data( 'href' ),
 		    	link 		= ( data ? data : $this.attr( 'href' ) ),
 		    	linkpath 	= $.removeSlash( link ),
@@ -400,133 +349,6 @@
 		});
 		
 	}
-
-	/*$.fn.linkIt = function( event, state ){
-
-		return this.each(function() {
-
-		    var $this 		= $( this ),
-		    	$body 		= $( 'body' ),
-		    	$parent 	= $this.parents( '.sub-menu' ),
-		        $a_parent 	= $parent.siblings().find( 'a' ),
-				url_parent 	= $a_parent.attr( 'href' ),
-				current 	= document.URL,
-				curpath		= current.replace( /\//g, '' ),
-		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
-		    	linkpath 	= link.replace( /\//g,'' ),
-				samepath 	= curpath === linkpath;
-				parpath 	= link.indexOf( '#' ) === 0 && url_parent && ( current != url_parent && url_parent != '#top' );
-				host 		= new RegExp(location.host),
-				samehost 	= false,
-		        result 		= true,
-		        loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
-		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.data( 'target' ) ? $this.data( 'target' ) : '' ) );
-
-		    if( !link )
-		    	return;
-
-			event.preventDefault();
-		    event.stopPropagation();
-
-			$.consoleDebug( DEBUG,  'urlparent: ' + url_parent );
-			$.consoleDebug( DEBUG,  'current: ' + current );
-		    $.consoleDebug( DEBUG,  'curpath: ' + curpath );
-		    $.consoleDebug( DEBUG,  'link: ' + link );
-		    $.consoleDebug( DEBUG,  'linkpath: ' + linkpath );
-		    $.consoleDebug( DEBUG,  'samepath: ' + samepath );
-		    $.consoleDebug( DEBUG,  'parpath: ' + parpath );
-
-
-		    if( link == 'back' || link == 'http://back' || link == 'https://back' ){
-		    	window.history.back();
-		    	return false;
-		    }
-	        
-			if( samepath )
-	            $this.data( 'href', '#top' );
-	        else if( parpath )
-	            $this.data( 'href', url_parent + link );
-	        else
-	        	$this.data( 'href', link );
-
-	        samehost = host.test( $this.data( 'href' ) );
-
-	        $.consoleDebug( DEBUG,  'host: ' + host );
-		    $.consoleDebug( DEBUG,  'samehost: ' + samehost );
-		    return;
-
-			if( linkpath.indexOf( '#' ) !== 0 && !samehost && target === '_self' )
-				return;
-
-			if( linkpath.indexOf( '#' ) >= 0 ){
-				var lp = linkpath.substr( 0, linkpath.indexOf( '#' ) );
-				var lc = curpath;
-				if( curpath.indexOf( '#' ) >= 0 )
-					lc = curpath.substr( 0, curpath.indexOf( '#' ) );
-				if( lp === lc ){
-					link = linkpath.substr( linkpath.indexOf( '#' ) );
-					$this.data( 'href', link );
-				}
-			}
-
-	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
-	        	target = '_self';
-	        	samehost = true;
-	        }
-
-	        if( samehost && $this.data( 'href' ).indexOf( '/uploads/' ) >= 0 ){
-	        	target = '_blank';
-	        }
-
-			if( loadcontent ){
-				$body.disableIt();
-
-				$this.loadContent( event, $this.data( 'href' ) );
-				return $this;
-			
-			}else if( (samehost && target !== '_blank') ){
-
-				$body.disableIt();
-
-				$this.data( 'target', '_self' );
-
-				if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
-					result = $this.trigger( 'linkPage' ).data( 'done' );
-					state = 'page';
-
-				}else{
-					result = $this.trigger( 'linkSite' ).data( 'done' );
-					state = 'site';	
-				}
-
-			}else{
-
-				$this.data( 'target', '_blank' );
-				result = $this.trigger( 'linkExternal' ).data( 'done' );
-				state = 'external';
-			}
-
-			var delay = 400;
-
-			if( result === false ){
-				$this.trigger( 'link', [ state ] );
-				return $this;
-			}else{
-
-				$toggled = $( '.toggled' );
-				if( $toggled.length ){
-					$toggled.toggledOff( event );
-					setTimeout( function(){
-						$this.trigger( 'link', [ state ] );
-					}, delay );
-				}else{
-					$this.trigger( 'link', [ state ] );
-				}
-			}
-
-		});
-		
-	}*/
 
 	// *****************************************************
 	// *      CHANGE PAGE

@@ -995,7 +995,7 @@
 
                 consoleDebug('install custom types repeater');
 
-                $types = scm_acf_group( 'Types', 'custom-types-options' );
+                $types = scm_acf_group( 'Types', 'types-options' );
                 $types['location'][] = scm_acf_group_location( 'scm-custom-types', 'options_page' );
                 $types['fields'] = scm_acf_options_types();
 
@@ -1012,7 +1012,7 @@
 
                 consoleDebug('install custom taxes repeater');
                
-                $taxonomies = scm_acf_group( 'Taxonomies', 'custom-taxonomies-options' );
+                $taxonomies = scm_acf_group( 'Taxonomies', 'taxonomies-options' );
                 $taxonomies['location'][] = scm_acf_group_location( 'scm-custom-taxonomies', 'options_page' );
                 $taxonomies['fields'] = scm_acf_options_taxonomies();
 
