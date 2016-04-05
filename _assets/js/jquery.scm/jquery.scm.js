@@ -45,7 +45,7 @@
 		// *****************************************************
 
 		if( href.indexOf( '#' ) > -1 ){
-			$body.data( 'anchor', href.split('#')[1] );
+			$('body').data( 'anchor', href.split('#')[1] );
 			
 			window.location.replace("#");
 			

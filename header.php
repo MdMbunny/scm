@@ -121,6 +121,9 @@ $cont_layout = scm_field( 'layout-content', 'full', 'option' );
 $cont_layout = ( $page_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
 $cont_class = 'site-content ' . $cont_layout . $site_align ;
 
+$cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
+$cont_offset = scm_field( 'opt-tools-fadecontent-offset', '0%', 'option' );
+
 $page_class = 'page scm-page object scm-object ' . $post->post_name;
 $page_id = scm_field( 'page-selectors-id', '', $id, 1, ' id="', '"' );
 $page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
@@ -212,7 +215,10 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
     }
     
     // Page Containers
-    indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '">', 2 );
+    indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '"
+            data-content-fade="' . $cont_fade . '" 
+            data-content-fade-offset="' . $cont_offset . '" 
+        >', 2 );
 
         $SCM_indent += 1;
         

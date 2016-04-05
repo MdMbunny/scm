@@ -23,6 +23,7 @@
 	/*var READY = false;
 	var LOADED = false;*/
 
+	var DEBUG = false;
 	var ARCHIVES = {};
 	var PREVIOUS_FANCYBOX = '';
 
@@ -124,17 +125,9 @@
 
 				this.trigger( 'responsive', [ state ] );
 			}
-			/*if( !READY ){
-				READY = true;
-				this.trigger( 'documentReady' );
-			}else if( !LOADED ){
-				LOADED = true;
-				this.trigger( 'windowLoaded' );
-			}*/
 		}else{
 			return a;
 		}
-
 	}
 
 	// *****************************************************
@@ -143,11 +136,19 @@
 
 	$.fn.enableIt = function( event ){
 
+		$.consoleDebug( DEBUG, '-----------');
+		$.consoleDebug( DEBUG, 'enableIt');
+
 		return this.each(function() {
 
 		    var $this = $( this );
 
-			$this.css( 'pointer-events', 'all' );
+		    $.consoleDebug( DEBUG, $this[0].localName );
+
+		    $this.removeClass( 'disabled' );
+		    $this.addClass( 'enabled' );
+		    
+			//$this.style( 'pointer-events', 'all' );
 			$this.trigger( 'enabled' );
 
 		});
@@ -155,11 +156,18 @@
 
 	$.fn.disableIt = function( event ){
 
+		$.consoleDebug( DEBUG, '-----------');
+		$.consoleDebug( DEBUG, 'disableIt');
+
 		return this.each(function() {
 
 		    var $this = $( this );
 
-			$this.css( 'pointer-events', 'none' );
+		    $.consoleDebug( DEBUG, $this[0].localName );
+
+		    $this.addClass( 'disabled' );
+			$this.removeClass( 'enabled' );
+			//$this.style( 'pointer-events', 'none !important' );
 			$this.trigger( 'disabled' );
 
 		});
@@ -167,6 +175,7 @@
 
 	$.fn.eventTools = function( event ){
 		//this.find( '[data-parallax]' ).setParallax();
+		this.find( '[data-content-fade]' ).fadeContent();
 		this.find( '[data-tooltip]' ).setTooltip();
 		this.find( '[data-popup]' ).setFancybox();
 		this.find( '[data-slider]' ).initSlider();
@@ -175,6 +184,84 @@
 	}
 
 	$.fn.eventLinks = function( event ){
+
+		var $nav 	= this.find( 'a, .navigation' ),
+			$link 	= this.find( 'a, [data-href]' );
+
+		$link.filter( ':not(data-link-type)' ).linkIt();
+		$nav.off( 'mousedown' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
+
+		$link.off( 'click' ).on( 'click', function(e){
+
+			var $this = $( this );
+
+			$this.trigger( 'clicked' );
+
+			var $toggle = $this.parents( '.no-toggled' );
+
+			var cont = 0;
+			if( $toggle.length )
+				cont = $toggle.parents( '.toggle-content' ).length;
+			
+			e.preventDefault();
+			e.stopPropagation();
+
+			$toggled = $( '.toggled' );
+
+			if( $toggled.length ){
+				$toggled.toggledOff( event );
+				setTimeout( function(){
+					$this.trigger( 'link' );
+				}, 400 );
+			}else if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
+				
+				$this.trigger( 'link' );
+			}/*else{
+				$( '.toggled' ).toggledOff(e);
+				e.preventDefault();
+			}*/
+		
+		});
+
+		$link.off( 'link' ).on( 'link', function( e ){
+
+			$.consoleDebug( DEBUG, '-----------');
+			$.consoleDebug( DEBUG, '[on link]');
+
+			var $this 	= $( this ),
+				$body 	= $( 'body' ),
+				href 	= ( $this.attr('href') ? $this.attr('href') : $this.data('href') ),
+				target 	= ( $this.attr('target') ? $this.attr('target') : $this.data('target') ),
+				state 	= $this.data('link-type');
+
+				$.consoleDebug( DEBUG, 'state: ' + state);
+
+			switch( state ){
+				//case 'back': window.history.back(); return false; break;
+
+				case 'load':
+				case 'page':
+					if( state == 'load' ){
+						$.consoleDebug( DEBUG, 'loading content');
+						$this.loadContent( event, href );
+					}else{
+						$.consoleDebug( DEBUG, 'scrolling');
+						$this.smoothScroll();
+					}
+				break;
+
+				default:
+					$.consoleDebug( DEBUG, 'changing page');
+					$.bodyOut( href, target, state );
+				break;
+			}
+
+
+		} );
+
+	};
+
+	/*$.fn.eventLinks = function( event ){
 
 		this.find( 'a, .navigation' ).off( 'mousedown' );
 		this.find( 'a, [data-href]' ).off( 'click' );
@@ -187,13 +274,13 @@
 
 			$this.trigger( 'clicked' );
 
-			var toggle = $this.parents( '.no-toggled' );
+			var $toggle = $this.parents( '.no-toggled' );
 
 			var cont = 0;
-			if( toggle.length )
-				cont = $( toggle ).parents( '.toggle-content' ).length;
+			if( $toggle.length )
+				cont = $toggle.parents( '.toggle-content' ).length;
 
-			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $( toggle ).parents( '.toggle' ).length ){
+			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
 				$this.linkIt(e);
 			}else{
 				$( '.toggled' ).toggledOff(e);
@@ -215,7 +302,7 @@
 
 		} );
 
-	};
+	};*/
 
 	$.fn.checkCss = function( event ){
 		this.find( '[data-bg-color]' ).setCss( 'bg-color', 'background-color' );
@@ -230,21 +317,109 @@
 	// *      LINK
 	// *****************************************************
 
-	$.fn.linkIt = function( event, state ){
+	$.fn.linkIt = function( event ){
+
+		return this.each(function() {
+
+		    var $this 		= $( this );
+		    	
+		    	//result 		= true;
+
+		    var data 		= $this.data( 'href' ),
+		    	link 		= ( data ? data : $this.attr( 'href' ) ),
+		    	linkpath 	= $.removeSlash( link ),
+		    	linkanchor 	= linkpath.indexOf( '#' ),
+		    	lp 			= linkpath.substr( 0, linkanchor );
+
+		    if( !link )
+		    	return;
+		        
+			var current 	= document.URL,
+				curpath		= $.removeSlash( current ),
+				curanchor 	= curpath.indexOf( '#' ),
+				lc 			= ( curanchor >= 0 ? curpath.substr( 0, curanchor ) : curpath );
+
+			var	samepath 	= curpath === linkpath;
+
+			var	parent 		= $this.parents( '.sub-menu' ).siblings().find( 'a' ).attr( 'href' ),
+				parpath 	= linkanchor === 0 && parent && ( curpath != $.removeSlash( parent ) && parent != '#top' );
+
+			var back 		= linkpath == 'back' || linkpath == 'http:back' || linkpath == 'https:back',
+		        load 		= ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
+		        app 		= $.startsWith( linkpath, ['mailto:','callto:','fax:','tel:','skype:'] );
+
+		    var href 		= ( back ? '#' : ( app ? link : ( samepath ? '#top' : ( parpath ? parent + link : ( linkanchor >= 0 && lp === lc ? linkpath.substr( linkanchor ) : link ) ) ) ) ),
+		        hrefanchor 	= href.indexOf( '#' ),
+		        hrefupload 	= href.indexOf( '/uploads/' );
+
+		    var host 		= new RegExp(location.host),
+				samehost 	= host.test( href ),
+				target 		= ( data ? $this.data( 'target' ) : ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.hasClass( 'external' ) ? '_blank' : '' ) ) );
+			
+			if( linkanchor !== 0 && !samehost && target === '_self' )
+				return;
+
+			var state 		= 'site';
+
+
+	        if( back || app || hrefanchor === 0 ){
+	        	state = 'page';
+	        	target = '_self';
+	        	samehost = true;
+	        }
+
+	        if( samehost && hrefupload >= 0 ){
+	        	target = '_blank';
+	        }
+
+			if( load ){
+				target = '_self';
+				href = load;
+				state = 'load';
+			
+			}else if( (samehost && target !== '_blank') ){
+
+				target = '_self' ;
+				if( state != 'page' ){
+					state = 'site';	
+				}
+
+			}else{
+
+				target = '_blank';
+				state = 'external';
+			}
+
+			if(data)
+				$this.data( 'href', href ).data( 'target', target );
+			else
+				$this.attr( 'href', href ).attr( 'target', target );
+
+			$this.data( 'link-type', ( back ? 'back' : ( app ? 'app' : state ) ) );
+
+		});
+		
+	}
+
+	/*$.fn.linkIt = function( event, state ){
 
 		return this.each(function() {
 
 		    var $this 		= $( this ),
 		    	$body 		= $( 'body' ),
-		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
-		    	loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
+		    	$parent 	= $this.parents( '.sub-menu' ),
+		        $a_parent 	= $parent.siblings().find( 'a' ),
+				url_parent 	= $a_parent.attr( 'href' ),
 				current 	= document.URL,
 				curpath		= current.replace( /\//g, '' ),
-				linkpath 	= link.replace( /\//g,'' ),
-		        parent 		= $this.parents( '.sub-menu' ),
-		        a_parent 	= $( parent ).siblings().find( 'a' ),
-		        url_parent 	= $( a_parent ).attr( 'href' ),
+		    	link 		= ( $this.attr( 'href' ) ? $this.attr( 'href' ) : $this.data( 'href' ) ),
+		    	linkpath 	= link.replace( /\//g,'' ),
+				samepath 	= curpath === linkpath;
+				parpath 	= link.indexOf( '#' ) === 0 && url_parent && ( current != url_parent && url_parent != '#top' );
+				host 		= new RegExp(location.host),
+				samehost 	= false,
 		        result 		= true,
+		        loadcontent = ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
 		        target 		= ( $this.attr( 'target' ) ? $this.attr( 'target' ) : ( $this.data( 'target' ) ? $this.data( 'target' ) : '' ) );
 
 		    if( !link )
@@ -253,24 +428,34 @@
 			event.preventDefault();
 		    event.stopPropagation();
 
+			$.consoleDebug( DEBUG,  'urlparent: ' + url_parent );
+			$.consoleDebug( DEBUG,  'current: ' + current );
+		    $.consoleDebug( DEBUG,  'curpath: ' + curpath );
+		    $.consoleDebug( DEBUG,  'link: ' + link );
+		    $.consoleDebug( DEBUG,  'linkpath: ' + linkpath );
+		    $.consoleDebug( DEBUG,  'samepath: ' + samepath );
+		    $.consoleDebug( DEBUG,  'parpath: ' + parpath );
+
 
 		    if( link == 'back' || link == 'http://back' || link == 'https://back' ){
 		    	window.history.back();
 		    	return false;
 		    }
 	        
-
-			if( curpath === linkpath )
+			if( samepath )
 	            $this.data( 'href', '#top' );
-	        else if( link.indexOf( '#' ) === 0 && url_parent && ( current != url_parent && url_parent != '#top' ) )
+	        else if( parpath )
 	            $this.data( 'href', url_parent + link );
 	        else
 	        	$this.data( 'href', link );
 
-	        var comp = new RegExp(location.host);
-			var same = comp.test( $this.data( 'href' ) );
+	        samehost = host.test( $this.data( 'href' ) );
 
-			if( linkpath.indexOf( '#' ) !== 0 && !same && target === '_self' )
+	        $.consoleDebug( DEBUG,  'host: ' + host );
+		    $.consoleDebug( DEBUG,  'samehost: ' + samehost );
+		    return;
+
+			if( linkpath.indexOf( '#' ) !== 0 && !samehost && target === '_self' )
 				return;
 
 			if( linkpath.indexOf( '#' ) >= 0 ){
@@ -286,22 +471,20 @@
 
 	        if( $this.data( 'href' ).indexOf( '#' ) === 0 ){
 	        	target = '_self';
-	        	same = true;
+	        	samehost = true;
 	        }
 
-	        if( same && $this.data( 'href' ).indexOf( '/uploads/' ) >= 0 ){
+	        if( samehost && $this.data( 'href' ).indexOf( '/uploads/' ) >= 0 ){
 	        	target = '_blank';
 	        }
 
-
 			if( loadcontent ){
-
 				$body.disableIt();
 
 				$this.loadContent( event, $this.data( 'href' ) );
 				return $this;
 			
-			}else if( (same && target !== '_blank') ){
+			}else if( (samehost && target !== '_blank') ){
 
 				$body.disableIt();
 
@@ -323,13 +506,6 @@
 				state = 'external';
 			}
 
-
-			// +++ todo:
-			// A: o delay è passato dalle opzioni in data-... + integri in jQuery l'animazione dei Toggle Menu e in CSS potrebbe esserci solo un display/visibility come fallback per i .no-js
-			// B: o delay è = this... transition.duration ???
-
-			// Comunque il setTimeout è da levare, al suo posto il toggledOff deve animare lui stesso il menu e avere un onComplete dove ficcarci il trigger('link').
-
 			var delay = 400;
 
 			if( result === false ){
@@ -348,11 +524,221 @@
 				}
 			}
 
-			//$( '#temp' ).remove();
-
 		});
 		
+	}*/
+
+	// *****************************************************
+	// *      CHANGE PAGE
+	// *****************************************************
+
+	$.bodyIn = function( event ){
+
+		$.consoleDebug( DEBUG, '-----------');
+		$.consoleDebug( DEBUG, 'bodyIn:');
+
+		var $body 			= $( 'body' ),
+			$html 			= $( 'html' ),
+			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : .3 ),
+			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
+			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 0 ),
+			offset 			= ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset') : '0' ),
+			units 			= ( $body.data( 'smooth-offset-units' ) ? $body.data( 'smooth-offset-units' ) : 'px' ),
+			anchor 			= $body.data( 'anchor' ),
+			$anchor 		= $( '#' + anchor ),
+			$button 		= $( 'a[href="#' + anchor + '"], *[data-href="#' + anchor + '"]' ),
+			$doc 			= $( document );
+
+		if( $anchor.length === 0 )
+			$anchor = $body;
+			
+		var pageScroll = function(){
+
+			if( post ){
+				if( $button.length ){
+
+					$.consoleDebug( DEBUG, 'scroll to anchor');
+					$( $button[0] ).trigger( 'link' );
+
+				}else{
+
+					$body.animate({
+						scrollTop: $anchor.offset().top
+					}, 1000, function() {
+						$body.enableIt();
+					});
+
+					$html.animate({
+						scrollTop: $anchor.offset().top
+					}, 1000 );
+				}
+			}else{
+				$body.enableIt();
+			}
+
+		};
+
+		var checkScroll	= function(){
+
+			if( anchor && anchor != 'none' ){
+
+				if( delay ){
+					setTimeout( pageScroll, delay * 1000 );
+				}else{
+					pageScroll();
+				}
+				
+			}else{
+
+				$body.enableIt();
+				//$body.css( 'opacity', 1 );
+			}
+    	};
+
+    	if( !post ){
+			$.consoleDebug( DEBUG, 'jump to anchor');
+
+			if( units == 'em' ){
+				offset = $.EmToPx( Number(offset) )
+			}
+
+			$doc.scrollTop( $anchor.offset().top - parseInt( offset ) + $( '#site-navigation-sticky' ).getHighest() + 1 );
+		}
+
+    	if( duration > 0 ){
+    		
+    		$.consoleDebug( DEBUG, 'with animation');
+
+        	$('html').animate( {
+        		opacity: 1
+        	}, duration * 1000 );
+
+        	$('body').animate( {
+        		opacity: 1
+        	}, duration * 1000, checkScroll );
+        }else{
+        	$.consoleDebug( DEBUG, 'without animation');
+        	$body.css( 'opacity', 1 );
+        	checkScroll();
+        }
 	}
+
+	$.bodyOut = function( link, target, state ){
+
+		$.consoleDebug( DEBUG, '-----------');
+		$.consoleDebug( DEBUG, 'bodyOut:');
+
+		var $body 		= $( 'body' ),
+			$navigation = $( '.navigation' ),
+			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
+			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
+			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
+
+		if( state == 'back' ){
+			window.history.back();
+			return false;			
+		}else if( state != 'app' && target != '_blank' && duration > 0 ){
+
+			$.consoleDebug( DEBUG, 'with animation');
+
+			$body.disableIt();
+
+			$navigation.animate( {
+        		opacity: opacity
+        	}, duration * 600 );
+
+			$body.animate( {
+        		opacity: opacity
+        	}, duration * 1000, function() {
+				$.goToLink( link, target );
+			});
+
+		}else{
+
+			$.consoleDebug( DEBUG, 'without animation');
+
+			$.goToLink( link, target );
+
+		}
+
+	}
+
+	$.goToLink = function( link, target ){
+
+			$.consoleDebug( DEBUG, '-----------');
+			$.consoleDebug( DEBUG, 'goToLink:');
+
+			if( !link ){
+				$.consoleDebug( DEBUG, 'no link provided');
+				$.bodyIn();
+				return this;
+			}
+
+			$.consoleDebug( DEBUG, link);
+			$.consoleDebug( DEBUG, 'target: ' + target);
+
+			if( target != '_blank' ){
+
+				$.consoleDebug( DEBUG, 'loading same page');
+				
+				window.location = link;
+				return false;
+
+			}else{
+
+				$.consoleDebug( DEBUG, 'opening new page');
+
+				window.open( link, 'See You!' );
+				return this;
+
+			}
+
+			$.consoleDebug( DEBUG, 'fallback');
+			
+			$.bodyIn();
+			return this;
+
+		};
+
+	/*$.fn.bodyOut = function( event, state ){
+
+		if( state == 'page' ){
+			return;
+		}
+
+		var $body 		= $( 'body' ),
+			$elem 		= this,
+			$navigation = $( '.navigation' ),
+			link 		= ( $elem.attr( 'href' ) ? $elem.attr( 'href' ) : $elem.data( 'href' ) ),
+			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
+			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
+			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
+
+		$elem.data( 'done', false );
+		if( link )
+			$elem.data( 'done', true );
+
+
+		if( state != 'external' && duration > 0 ){
+
+			$navigation.animate( {
+        		opacity: opacity
+        	}, duration * 600 );
+
+			$body.animate( {
+        		opacity: opacity
+        	}, duration * 1000, function() {
+				$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
+			});
+
+		}else{
+
+			$body.enableIt();
+			$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
+
+		}
+
+	}*/
 
 	// *****************************************************
 	// *      TOGGLE
@@ -596,21 +982,21 @@
 
 	$.fn.smoothScroll = function( off, onEnd ) {
 
-
-
-		var type = $.type( off );
+		var type 	= $.type( off ),
+			$body 	= $( 'body' );
 
 		if( type === 'function' ){
 			onEnd = off;
-			off = $( 'body' ).data( 'smooth-offset' );
+			off = $body.data( 'smooth-offset' );
 		}
+
+		$body.disableIt();
 
 		return this.each(function(){
 
 
 			var $this 			= $( this ),
 				link 			= ( $this.data( 'href' ) ? $this.data( 'href' ) : ( $this.attr( 'href' ) ? $this.attr( 'href' ) : '#' ) ),
-				$body 			= $( 'body' ),
 
 				time 			= ( $body.data( 'smooth-duration' ) ? parseFloat( $body.data( 'smooth-duration' ) ) : 1 ),
 				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset' ) : '0' ) ),
@@ -669,7 +1055,7 @@
 
 			if( target.length ){
 
-				destination = target.offset().top - parseInt( offset ) - $( '.sticky' ).getHighest() + 1;
+				destination = target.offset().top - parseInt( offset ) - $( '#site-navigation-sticky' ).getHighest() + 1;
 
 				if( height - destination < win ){
 					destination = height - win;
@@ -694,7 +1080,7 @@
 			}
 
 			$this.data('done', false);
-			$body.css( 'pointer-events', 'none' );
+			//$body.css( 'pointer-events', 'none' );
 
 			duration = time * ( difference < 6000 ? difference : 6000 );
 
@@ -1039,6 +1425,35 @@
 	}
 
 	// *****************************************************
+	// *      FADE CONTENT (WAYPOINTS)
+	// *****************************************************
+
+	$.fn.fadeContent = function(off,aff){
+
+		return this.each(function() {
+
+			var $this 	= $( this ),
+				$cont = $this.find( $this.attr( 'data-content-fade' ) ),
+				offset = $this.attr( 'data-content-fade-offset' );
+
+			if( !$cont.length )
+				return this;
+
+			$cont.css( { 'opacity': '0', 'top': '50px' } ).waypoint(function(direction) {
+				if (direction === 'down') {
+					$(this.element).animate({ opacity: 1, top: 0 }, 500)
+				}
+				else {
+					$(this.element).animate({ opacity: 0, top: 50 }, 500)
+				}
+			}, {
+				offset: offset
+			});
+
+		});
+	}
+
+	// *****************************************************
 	// *      GOOGLE MAPS
 	// *****************************************************
 
@@ -1199,22 +1614,25 @@
 
 				geocoder.geocode( sets, function(results, status) {
 
-					console.log( 'Searching Location for: ' + address );
+					$.consoleDebug( DEBUG, '-----------');
+					$.consoleDebug( DEBUG, 'markerMap');
+
+					$.consoleDebug( DEBUG,  'Searching Location for: ' + address );
 			    	
 			    	if (status == google.maps.GeocoderStatus.OK) {
 			    		var str = ( reg ? reg : 'world' );
-			    		console.log( 'Location found within ' + str.toUpperCase() + ' Region');
+			    		$.consoleDebug( DEBUG,  'Location found within ' + str.toUpperCase() + ' Region');
 			        	latlng = results[0].geometry.location;
-			        	console.log( 'LatLng are ' + latlng );
+			        	$.consoleDebug( DEBUG,  'LatLng are ' + latlng );
 			        	setMarker();
 			    	}else{
-			    		console.log( 'Google Maps Marker: ' + status);
+			    		$.consoleDebug( DEBUG,  'Google Maps Marker: ' + status);
 			    		if( reg ){
-			    			console.log( 'Pointing to lat 0 and lng 0');
+			    			$.consoleDebug( DEBUG,  'Pointing to lat 0 and lng 0');
 				    		latlng = new google.maps.LatLng( 0, 0 );
 				    		setMarker();
 				    	}else{
-				    		console.log( 'Searching address within IT Region');
+				    		$.consoleDebug( DEBUG,  'Searching address within IT Region');
 				    		$this.markerMap( map, infowindow, zoom, countMaps, 'it' );
 				    	}
 			    	}
@@ -1398,7 +1816,9 @@
 	$.fn.captionMoveIn = function( state, slider, speed ){	
 
 		var $slider = $( slider );
-		$slider.css( 'pointer-events', 'none' );
+		
+		$slider.disableIt();
+		//$slider.css( 'pointer-events', 'none' );
 
 		return this.each( function() {
 
@@ -1423,7 +1843,8 @@
 
 		var $slider = $( slider );
 
-		$slider.css( 'pointer-events', 'none' );
+		//$slider.css( 'pointer-events', 'none' );
+		$slider.disableIt();
 	
 		return this.each( function() {
 
@@ -1688,7 +2109,8 @@
 
 			}
 
-			$this.css( 'pointer-events', 'none' );
+			//$this.css( 'pointer-events', 'none' );
+			$this.disableIt();
 
 			for ( i = 0; i < len; i++ ) {
 
@@ -1706,7 +2128,8 @@
 						j++;
 						if( j == len ){
 							$this.find( '.loading' ).remove();
-							$this.css( 'pointer-events', 'all' );
+							//$this.css( 'pointer-events', 'all' );
+							$this.enableIt();
 							$this.animate( { 'opacity' : 1 }, 'fast' );
 						}
 					});
@@ -1726,8 +2149,10 @@
 
 			};
 
-			if( type != 'load' )
-				$this.css( 'pointer-events', 'all' );
+			if( type != 'load' ){
+				//$this.css( 'pointer-events', 'all' );
+				$this.enableIt();
+			}
 
 			if( type == 'video' || type == 'load' )
 				type = 'html';
@@ -1927,6 +2352,9 @@
 	// *****************************************************
 
 	$.fn.loadContent = function( event, link ){
+		
+		var $body = $('body');
+		$body.disableIt();
 
 		return this.each( function() {
 
@@ -1951,7 +2379,7 @@
 			$parent.css('height', p_height);
 
 
-			$('body').trigger( 'loadContentBefore' );
+			$body.trigger( 'loadContentBefore' );
 
 			
 			if( !ARCHIVES[id] )
@@ -1976,7 +2404,7 @@
 					if( ARCHIVES[id] && ARCHIVES[id][page] ){
 
 						$container.html( ARCHIVES[id][page] );
-						$('body').trigger( 'loadContent' );
+						$body.trigger( 'loadContent' );
 						adjustContent();
 
 					}else{
@@ -1990,7 +2418,7 @@
 								var msg = 'Spiacenti, è stato riscontrato un errore: ';
 								$container.html( '<span class="scm-error error">' + msg + xhr.status + ' ' + xhr.statusText + '</span>' );
 							}else{
-								$('body').trigger( 'loadContent' );
+								$body.trigger( 'loadContent' );
 								$loading.fadeOut('fast', function(){
 									$container = $(id);
 									$loading.remove();
@@ -2013,12 +2441,12 @@
 					
 						$parent.animate({ 'height' : p_height - ( c_height - new_height ) }, 'slow', function(){
 							enableContent();
-							$('body').trigger( 'loadContentAfter' );
+							$body.trigger( 'loadContentAfter' );
 						});
 
 					}else{
 						enableContent();
-						$('body').trigger( 'loadContentAfter' );
+						$body.trigger( 'loadContentAfter' );
 					}
 				});
 			}
@@ -2032,7 +2460,6 @@
 				$parent.css( 'overflow', 'visible' );
 				$container.eventTools();
 				$container.eventLinks();
-				//$( 'body' ).enableIt();
 				$( elem ).smoothScroll( offset );
 			}
 
@@ -2041,124 +2468,6 @@
 		});
 	}
 
-
-	// *****************************************************
-	// *      CHANGE PAGE
-	// *****************************************************
-
-	$.bodyIn = function( event ){
-
-		var $body 			= $( 'body' ),
-			$html 			= $( 'html' ),
-			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : .3 ),
-			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
-			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 'all' ),
-			anchor 			= $body.data( 'anchor' ),
-			button 			= $( 'a[href="#' + anchor + '"]' ),
-			$doc 			= $( document );
-			
-
-		var pageScroll = function(){
-
-			var $anchor = $( '#' + anchor );
-
-			if( button.length ){
-
-				if( !post ){
-
-					$body.enableIt();
-					$doc.scrollTop( $anchor.offset().top );
-
-				}else{
-
-					$( button[0] ).trigger( 'link', [ 'page' ] );
-				}
-
-			}else{
-
-				$body.animate({
-					scrollTop: $anchor.offset().top
-				}, 1000, function() {
-					$body.enableIt();
-				});
-
-				$html.animate({
-					scrollTop: $anchor.offset().top
-				}, 1000 );
-			}
-
-		};
-
-		var checkScroll	= function(){
-
-			if( anchor && anchor != 'none' ){
-
-				if( delay ){
-					setTimeout( pageScroll, delay * 1000 );
-				}else{
-					pageScroll();
-				}
-				
-			}else{
-
-				$body.enableIt();
-				//$body.css( 'opacity', 1 );
-			}
-    	};
-
-    	if( duration > 0 ){
-        	$('html').animate( {
-        		opacity: 1
-        	}, duration * 1000 );
-
-        	$('body').animate( {
-        		opacity: 1
-        	}, duration * 1000, checkScroll );
-        }else{
-        	$body.css( 'opacity', 1 );
-        	checkScroll();
-        }
-	}
-
-	$.fn.bodyOut = function( event, state ){
-
-		if( state == 'page' ){
-			return;
-		}
-
-		var $body 		= $( 'body' ),
-			$elem 		= this,
-			$navigation = $( '.navigation' ),
-			link 		= $elem.data( 'href' ),
-			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
-			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
-			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
-
-		$elem.data( 'done', false );
-		if( link )
-			$elem.data( 'done', true );
-
-
-		if( state != 'external' && duration > 0 ){
-
-			$navigation.animate( {
-        		opacity: opacity
-        	}, duration * 600 );
-
-			$body.animate( {
-        		opacity: opacity
-        	}, duration * 1000, function() {
-				$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
-			});
-
-		}else{
-
-			$body.enableIt();
-			$elem.goToLink( event, state, 'See You!', function(){ $.bodyIn(); } );
-
-		}
-
-	}
 
 	// *****************************************************
 	// *      CSS

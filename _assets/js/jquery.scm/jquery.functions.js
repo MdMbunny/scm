@@ -1,5 +1,10 @@
 (function($) {
 
+	$.consoleDebug = function( db, lg ){
+		if (db)
+			console.log( lg );
+	}
+
 	$.EmToPx = function( input ) {
 	    var emSize = parseFloat($("body").css("font-size"));
 	    return (emSize * input);
@@ -12,6 +17,15 @@
 
 	// STRING
 
+	$.startsWith = function( str, arr ){
+		for (var i = 0; i < arr.length; i++) {
+			if( str.indexOf( arr[i] ) === 0 )
+				return true;
+		};
+
+		return false;
+	}
+
 	$.log = function( message, touch ) {
 		if ( !touch && window.console ) {
 			console.log( new Date().getTime() - performance.timing.navigationStart + 'ms' );
@@ -23,7 +37,11 @@
 	// Escape regex chars with \
 	$.escapeBS = function( text ) {
 		return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-	};
+	}
+
+	$.removeSlash = function( text ) {
+		return text.replace( /\//g, '' );
+	}
 
 	$.trailingSlash = function( str ) {
 

@@ -280,7 +280,7 @@
 		}
 	}
 
-	if ( !$.fn.goToLink ) {
+	/*if ( !$.fn.goToLink ) {
 
 		$.fn.goToLink = function( event, state, title, fallback ){
 
@@ -310,6 +310,6 @@
 			return this;
 
 		};
-	}
+	}*/
 
 })( jQuery );

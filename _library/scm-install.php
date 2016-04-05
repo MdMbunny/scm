@@ -749,7 +749,7 @@
 
         // TEMPLATES
 
-            if( !endsWith( $field['name'], '-templates' ) ){
+            if( endsWith( $field['name'], '-templates' ) ){
                 
                 $type = str_replace( '-templates', SCM_TEMPLATE_APP, $field['name'] );
                 $posts = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ) );

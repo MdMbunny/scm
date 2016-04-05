@@ -26,11 +26,12 @@
 	if ( ! function_exists( 'scm_acf_preset_selectors' ) ) {
 		function scm_acf_preset_selectors( $name = '', $w1 = 100, $w2 = 100, $logic = 0, $req = 0, $instructions = '' ) {
 
-			$name = ( $name ? $name . '-selectors' : 'selectors');
+			//$name = ( $name ? $name . '-selectors' : 'selectors');
+			$name = ( $name ? $name . '-' : '');
 			$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Selettori', SCM_THEME ) );
 			
-			$fields[] = scm_acf_field_id( $name . '-id', 0, $w1, $logic, $req );
-			$fields[] = scm_acf_field_class( $name . '-class', 0, $w2, $logic, $req );
+			$fields[] = scm_acf_field_id( $name . 'id', 0, $w1, $logic, $req );
+			$fields[] = scm_acf_field_class( $name . 'class', 0, $w2, $logic, $req );
 
 			return $fields;
 		}

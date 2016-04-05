@@ -239,14 +239,15 @@
 					$fields[] = scm_acf_field_select_enable( 'opt-tools-smoothscroll-page', $default, __( 'Smooth Scroll (su nuove pagine)', SCM_THEME ) );
 					$fields[] = scm_acf_field( 'opt-tools-smoothscroll-delay-new', array( 'type'=>'second', 'placeholder'=>'0,3', 'prepend'=>__( 'Delay su nuova pagina', SCM_THEME ) ) );
 					$fields = array_merge( $fields, scm_acf_preset_size( 'opt-tools-smoothscroll-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
-					//$fields[] = scm_acf_field( 'opt-tools-smoothscroll-offset', array( 'pixel', 50, 50, __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field_select( 'opt-tools-smoothscroll-ease', $default, 'ease', 100, 0, '', __( 'Ease', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-singlenav', 'message', __( 'Single Page Nav', SCM_THEME ) );
 					$fields[] = scm_acf_field( 'opt-tools-singlepagenav-activeclass', array( 'class', 'active', 'active', __( 'Active Class', SCM_THEME ) ), __( 'Active Class', SCM_THEME ) );
 					$fields[] = scm_acf_field( 'opt-tools-singlepagenav-interval', array( 'second', '', '500', __( 'Interval', SCM_THEME ) ), __( 'Interval', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_preset_size( 'opt-tools-singlepagenav-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
-					//$fields[] = scm_acf_field( 'opt-tools-singlepagenav-offset', array( 'pixel', '', '0', __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field( 'opt-tools-singlepagenav-threshold', array( 'pixel', '', '150', __( 'Threshold', SCM_THEME ) ), __( 'Threshold', SCM_THEME ) );
+				$fields[] = scm_acf_field( 'msg-fadecontent', 'message', __( 'Fade Content on Scroll', SCM_THEME ) );
+					$fields[] = scm_acf_field_text( 'opt-tools-fadecontent', array( 'default'=>'.scm-section:not(.first) > .scm-row', 'placeholder'=>'.scm-section:not(.first) > .scm-row' ) );
+					$fields[] = scm_acf_field_text( 'opt-tools-fadecontent-offset', array( 'default'=>'100%', 'placeholder'=>'100%' ) );
 				$fields[] = scm_acf_field( 'msg-tools', 'message', __( 'Tools', SCM_THEME ) );
 					$fields[] = scm_acf_field_falsetrue( 'opt-tools-parallax', 0, 20, 0, 'Parallax' );
 					$fields[] = scm_acf_field_falsetrue( 'opt-tools-fancybox', 0, 20, 0, 'Fancybox' );
@@ -256,9 +257,6 @@
 					$fields[] = scm_acf_field_truefalse( 'opt-tools-bx', 0, 20, 0, 'BX Slider' );
 				$fields[] = scm_acf_field( 'msg-gmaps', 'message', __( 'Google Maps', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
-
-				/*$fields[] = scm_acf_field( 'msg-accordion', 'message', 'Accordion' );
-					$fields[] = scm_acf_field( 'opt-tools-accordion-duration', array( 'second-max', '', '500', 'Durata' ), 'Durata' );*/
 
 			$fields[] = scm_acf_field( 'tab-fallback-settings', 'tab-left', 'Old Browsers' );
 				$fields[] = scm_acf_field( 'opt-ie-version', array( 'positive', 10, '10', __( 'Internet Explorer', SCM_THEME ), '', 10 ), __( 'Versione Minima', SCM_THEME ) );
