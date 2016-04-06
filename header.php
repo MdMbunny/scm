@@ -7,7 +7,7 @@
  */
 //header("Access-Control-Allow-Origin: *");
 
-global $SCM_protocol, $SCM_old, $SCM_ie9, $is_IE;
+global $SCM_protocol, $SCM_version, $SCM_old, $SCM_ie9, $is_IE;
 
 if( function_exists('get_browser_name') ){
 
@@ -37,7 +37,7 @@ endif;
 
 ?><!DOCTYPE html>
 
-<html class="scm no-js" <?php language_attributes(); ?>>
+<html class="scm-<?php echo $SCM_version; ?> no-js" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 

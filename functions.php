@@ -39,7 +39,7 @@ show_admin_bar(false);
 	
 	$SCM_capability 	 = is_admin();
 	
-	$SCM_protocol		 = ( is_ssl() ) ? ( 'https://' ) : ( 'http://' );
+	$SCM_protocol		 = ( is_ssl() ? 'https://' : 'http://' );
 	$SCM_site			 = site_url();
 	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
