@@ -56,24 +56,20 @@
 
 	// BANNERS
 	if ( ! function_exists( 'scm_acf_fields_banners' ) ) {
-		function scm_acf_fields_banners() {
+		function scm_acf_fields_banners( $name = '' ) {
 
-			$default = 0; // todo: da rimuovere ovunque
+			$name = ( $name ? $name . '-' : '');
 
 			$fields = array();
 
 			$fields = apply_filters( 'scm_filter_fields_banner_before', $fields );
 			
-			$flexible = scm_acf_field_flexible( 'modules', 0, __( 'Aggiungi Contesto', SCM_THEME ), __( 'Contesto', SCM_THEME ), 100, 0, 1 );
+			$flexible = scm_acf_field_flexible( $name . 'modules', 0, __( 'Aggiungi Contesto', SCM_THEME ), __( 'Contesto', SCM_THEME ), 100, 0, 1 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', __( 'Quote', SCM_THEME ), '', '', scm_acf_object_quote( 0, 0, 1) );
                 $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', __( 'Pulsanti', SCM_THEME ), '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', __( 'Elenco Puntato', SCM_THEME ), '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'section', 'block', __( 'Banner', SCM_THEME ), '', '', scm_acf_object_section( 0, 0, 'sections-cat:banners' ) );
-
-                //$flexible['sub_fields'][] = scm_acf_field_object_tax( 'banner-section', 0, 'sections', 'sections-cat:banners', '', $deafal_ban );
-                //$flexible['sub_fields'] = array_merge( $flexible['sub_fields'], scm_acf_object_titolo( 0, 0, 1, '', $deafal_but ) );
-                //$flexible['sub_fields'] = array_merge( $flexible['sub_fields'], scm_acf_object_pulsanti( 0, 0, 1, '', $deafal_but ) );
 
             $fields[] = $flexible;
 
@@ -85,15 +81,15 @@
 	
 	// MODULES
 	if ( ! function_exists( 'scm_acf_fields_modules' ) ) {
-		function scm_acf_fields_modules() {
+		function scm_acf_fields_modules( $name = '' ) {
 
-			$default = 0; // todo: da rimuovere ovunque
+			$name = ( $name ? $name . '-' : '');
 
 			$fields = array();
 
 			$fields = apply_filters( 'scm_filter_fields_module_before', $fields );
 			
-			$flexible = scm_acf_field_flexible( 'modules', 0, __( 'Componi', SCM_THEME ), '+', '', 0, 0, 30 );
+			$flexible = scm_acf_field_flexible( $name . 'modules', 0, __( 'Componi', SCM_THEME ), '+', '', 0, 0, 30 );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', __( 'Testo', SCM_THEME ), '', '', scm_acf_object_testo( '', 0, 1) ); // Se vedi che i testi inseriti fanno casino, sostituisci 1 con 0
                 $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', __( 'Elenco Puntato', SCM_THEME ), '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );

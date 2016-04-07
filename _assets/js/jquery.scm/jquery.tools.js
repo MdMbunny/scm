@@ -295,7 +295,7 @@
 
 			var back 		= linkpath == 'back' || linkpath == 'http:back' || linkpath == 'https:back',
 		        load 		= ( $this.data( 'load-content' ) ? $this.data( 'load-content' ) : $this.parent().data( 'load-content' ) ),
-		        app 		= $.startsWith( linkpath, ['mailto:','callto:','fax:','tel:','skype:'] );
+		        app 		= $.startsWith( linkpath, ['mailto:','callto:','fax:','tel:','skype:', 'callto:'] );
 
 		    var href 		= ( back ? '#' : ( app ? link : ( samepath ? '#top' : ( parpath ? parent + link : ( linkanchor >= 0 && lp === lc ? linkpath.substr( linkanchor ) : link ) ) ) ) ),
 		        hrefanchor 	= href.indexOf( '#' ),
@@ -322,8 +322,8 @@
 	        }
 
 			if( load ){
-				target = '_self';
-				href = load;
+				//target = '_self';
+				//href = load;
 				state = 'load';
 			
 			}else if( (samehost && target !== '_blank') ){

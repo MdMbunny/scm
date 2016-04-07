@@ -27,20 +27,20 @@
 	if ( ! function_exists( 'scm_content_preset_marker' ) ) {
         function scm_content_preset_marker( $luogo, $fields = array(), $mark = 0 ) {
 
-			$marker = is( $fields['luogo-mappa-icon'], 'default' );
+			$marker = is( $fields['luogo-map-icon'], 'default' );
 			
 			$icon = array( 'icon' => 'fa-map-marker', 'data' => '#000000' );
 
 			switch ( $marker ) {
 				case 'icon':
-					$fa = is( $fields['luogo-mappa-icon-fa'], 'fa-map-marker' );
-					$color = scm_content_preset_rgba( is( $fields['luogo-mappa-rgba-color'], '#e3695f' ), is( $fields['luogo-mappa-rgba-alpha'], 1 ) );
+					$fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker' );
+					$color = scm_content_preset_rgba( is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
 					$icon = array( 'icon' => $fa, 'data' => $color );
 					$marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
 				break;
 
 				case 'img':
-					$img = is( $fields['luogo-mappa-icon-img'], '' );
+					$img = is( $fields['luogo-map-icon-img'], '' );
 					$icon = array( 'icon' => $img, 'data' => 'img' );
 					$marker = ( $img ? ' data-img="' . $img . '"' : '' );
 				break;
@@ -67,17 +67,17 @@
 						break;
 						
 						default:
-							$marker = scm_field( 'opt-tools-mappa-icon', 'icon', 'option' );
+							$marker = scm_field( 'opt-tools-map-icon', 'icon', 'option' );
 							switch ( $marker ) {
 								case 'icon':
-									$fa = scm_field( 'opt-tools-mappa-icon-fa', 'fa-map-marker', 'option' );
-									$color = scm_content_preset_rgba( scm_field( 'opt-tools-mappa-rgba-color', '#e3695f', 'option' ), scm_field( 'opt-tools-mappa-rgba-alpha', 1, 'option' ) );
+									$fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker', 'option' );
+									$color = scm_content_preset_rgba( scm_field( 'opt-tools-map-rgba-color', '#e3695f', 'option' ), scm_field( 'opt-tools-map-rgba-alpha', 1, 'option' ) );
 									$icon = array( 'icon' => $fa, 'data' => $color );
 									$marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
 								break;
 
 								case 'img':
-									$img = scm_field( 'opt-tools-mappa-icon-img', '', 'option' );
+									$img = scm_field( 'opt-tools-map-icon-img', '', 'option' );
 									$icon = array( 'icon' => $img, 'data' => 'img' );
 									$marker = ( $img ? ' data-img="' . $img . '"' : '' );
 								break;
