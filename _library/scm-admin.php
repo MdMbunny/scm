@@ -207,8 +207,8 @@ $SCM_MENU_ORDER = array(
     if ( ! function_exists( 'scm_admin_assets' ) ) {
         function scm_admin_assets() {
 
-            /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
-            wp_enqueue_script( 'gmapapi' );*/
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.5.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_enqueue_style( 'font-awesome' );
 
             wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-admin');
@@ -226,9 +226,6 @@ $SCM_MENU_ORDER = array(
 
     if ( ! function_exists( 'scm_login_assets' ) ) {
         function scm_login_assets() {
-
-            /*wp_register_script( 'gmapapi', 'https://maps.googleapis.com/maps/api/js?v=3.exp?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY&sensor=false', false, '', true );
-            wp_enqueue_script( 'gmapapi' );*/
 
             wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style('scm-login');

@@ -420,11 +420,11 @@ function getHREF( $type = 'web', $link, $data = 0 ){
         break;
 
         case 'phone':
-            return ' ' . $data . 'href="tel:' . ( startsWith( $link, '+' ) ? $link : '+' . $link ) . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="tel:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_blank"';
         break;
 
         case 'fax':
-            return ' ' . $data . 'href="fax:' . ( startsWith( $link, '+' ) ? $link : '+' . $link ) . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="fax:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_blank"';
         break;
 
         case 'email':

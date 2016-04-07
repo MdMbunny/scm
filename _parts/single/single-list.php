@@ -159,42 +159,6 @@ if( is( $list ) ){
 
             $li_attributes .= getHREF( str_replace( 'layout-', '', $button_layout ), (string)$button['link'], 1 );
 
-/*            switch ( $button_layout ) {
-                case 'layout-media':
-                    $li_attributes .= scm_post_link( array(), $button['link'] );
-                break;
-
-                case 'layout-paypal':
-                break;
-
-                case 'layout-phone':
-                    $li_attributes .= ' data-href="tel:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '" data-target="_blank"';
-                break;
-
-                case 'layout-fax':
-                    $li_attributes .= ' data-href="fax:' . ( startsWith( (string)$button['link'], '+' ) ? (string)$button['link'] : '+' . (string)$button['link'] ) . '" data-target="_blank"';
-                break;
-
-                case 'layout-email':
-                    $li_attributes .= ' data-href="mailto:' . (string)$button['link'] . '" data-target="_blank"';
-                break;
-
-                case 'layout-skype':
-                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?chat" data-target="_blank"';
-                break;
-
-                case 'layout-skype-call':
-                    $li_attributes .= ' data-href="skype:' . (string)$button['link'] . '?call" data-target="_blank"';
-                break;
-
-                case 'layout-skype-phone':
-                    $li_attributes .= ' data-href="callto://+' . (string)$button['link'] . '" data-target="_blank"';
-                break;
-                
-                default:
-                    $li_attributes .= ' data-href="' . getURL( (string)$button['link'] ) . '"';//' data-target="_blank"';
-                break;
-            }*/
         }
 
         if( $button_layout === 'layout-paypal' ){
