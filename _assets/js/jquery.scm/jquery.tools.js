@@ -182,8 +182,8 @@
 
 	$.fn.eventLinks = function( event ){
 
-		var $nav 	= this.find( 'a, .navigation' ).filter(':not(.nolinkit)'),
-			$link 	= this.find( 'a, [data-href]' ).filter(':not(.nolinkit)');
+		var $nav 	= this.find( 'a, .navigation' ).filter(':not(.nolinkit):not(.iubenda-embed)').filter(function( index ) { return $( this ).parents( '.ssba' ).length === 0; }),
+			$link 	= this.find( 'a, [data-href]' ).filter(':not(.nolinkit):not(.iubenda-embed)').filter(function( index ) { return $( this ).parents( '.ssba' ).length === 0; });
 
 		$link.filter( ':not(data-link-type)' ).linkIt();
 		$nav.off( 'mousedown' ).on( 'mousedown', function(e){ e.stopPropagation(); } );
@@ -273,6 +273,9 @@
 		return this.each(function() {
 
 		    var $this 		= $( this );
+
+		    /*if( $this.parents('.ssba').length > 0 )
+		    	return;*/
 		    	
 		    var data 		= $this.data( 'href' ),
 		    	link 		= ( data ? data : $this.attr( 'href' ) ),
