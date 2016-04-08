@@ -37,10 +37,15 @@ show_admin_bar(false);
 
 	$SCM_debug 			 = 0;
 	
-	$SCM_capability 	 = is_admin();
+	$SCM_capability 	 = ( current_user_can( 'manage_options' ) ? 'admin' : ( current_user_can( 'upload_files' ) ? 'staff' : 'user' ) );
 	
 	$SCM_protocol		 = ( is_ssl() ? 'https://' : 'http://' );
 	$SCM_site			 = site_url();
+	$SCM_uri 			 = $_SERVER['REQUEST_URI'];
+	$SCM_current 	 	 = $SCM_site . $SCM_uri;
+
+	$SCM_isdashboard	 = ( (string)$SCM_current == (string)admin_url() ? true : false );
+
 	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
 	$SCM_url			 = $SCM_protocol . $SCM_domain . '/';
@@ -165,10 +170,8 @@ show_admin_bar(false);
 *****************************************************
 */
 
-
-//require_once( str_replace( 'wp-content/themes/scm/', '', SCM_DIR ) . 'wp-load.php');
-
 require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
+
 require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
@@ -178,6 +181,7 @@ require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-svg.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-functions-wp.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf-preset.php' );

@@ -63,7 +63,7 @@ $SCM_MENU_ORDER = array(
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
-    add_filter('login_redirect', 'scm_login_redirect', 10, 3 );
+    //add_filter('login_redirect', 'scm_login_redirect', 10, 3 );
     add_action('admin_init', 'scm_admin_redirect');
 
 
@@ -158,26 +158,26 @@ $SCM_MENU_ORDER = array(
 // *      1.0 FUNCTIONS
 // *****************************************************
 
+    /* Redirect hi cap Users to Admin when they log in */
     if ( ! function_exists( 'scm_login_redirect' ) ) {
         function scm_login_redirect( $url, $request, $user ){
             if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
                 if( $user->has_cap( 'administrator' ) ) {
-                    $url = admin_url('admin.php?page=scm-options-intro');
+                    return redirectUser('admin');
                 } elseif( $user->has_cap( 'upload_files' ) && startsWith( $request, SCM_SITE . '/wp-admin' ) ) {
-                    $url = admin_url('users.php');
+                    return redirectUser('staff');
                 }
             }
-            return $url;
+            return redirectUser('');
         }
     }    
 
+    /* Redirect low cap Users to Home Page when they log in*/
     if ( ! function_exists( 'scm_admin_redirect' ) ) {
         function scm_admin_redirect() {
             if (!current_user_can('upload_files') && $_SERVER['DOING_AJAX'] != '/wp-admin/admin-ajax.php') {
-                
-                wp_redirect( home_url() );
+                redirectUser('user');
                 exit;
-
             }
         }
     }

@@ -42,38 +42,32 @@
 			$fields = array();
 
 			$types = scm_acf_field_repeater( $name . 'types-list', $default, __('Aggiungi Type', SCM_THEME), '', 100, 0, $min, $max );
-			$types['sub_fields'][] = scm_acf_field_false_true( 'SHOW', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 25, 0, __( 'Attiva Type', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_name( 'plural', array( 'placeholder'=>__( 'Produzioni', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ), 'max' => 18 ), 50, 0, 1 );
+			$types['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 30, 0, __( 'Attiva Type', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_name( 'plural', array( 'placeholder'=>__( 'Produzioni', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ), 'max' => 18 ), 70, 0, 1 );
 
-			$active = array(
-				'field' => 'SHOW',
-				'operator' => '==',
-				'value' => '1',
-			);
 			
-				$types['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab', __( 'Admin', SCM_THEME ), 0, $active );
-					$types['sub_fields'][] = scm_acf_field_false_true( 'admin', $default, 20, $active, __( 'Admin', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_false_true( 'public', $default, 20, $active, __( 'Archivi', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_false_true( 'add_cap', $default, 20, $active, __( 'Capabilities', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_false_true( 'hidden', $default, 20, $active, __( 'Hidden', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_false_true( 'post', $default, 20, $active, __( 'Post', SCM_THEME ) );
+				$types['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab', __( 'Admin', SCM_THEME ), 0, 0 );
+					$types['sub_fields'][] = scm_acf_field_false_true( 'admin', $default, 20, 0, __( 'Admin', SCM_THEME ) );
+					$types['sub_fields'][] = scm_acf_field_false_true( 'public', $default, 20, 0, __( 'Archivi', SCM_THEME ) );
+					$types['sub_fields'][] = scm_acf_field_false_true( 'add_cap', $default, 20, 0, __( 'Capabilities', SCM_THEME ) );
+					$types['sub_fields'][] = scm_acf_field_false_true( 'hidden', $default, 20, 0, __( 'Hidden', SCM_THEME ) );
+					$types['sub_fields'][] = scm_acf_field_false_true( 'post', $default, 20, 0, __( 'Post', SCM_THEME ) );
 
-				$types['sub_fields'][] = scm_acf_field( 'tab-archive', 'tab', __( 'Archivi', SCM_THEME ), 0, $active );
-					$types['sub_fields'][] = scm_acf_field_select( 'orderby', $default, 'orderby', 50, $active, '', __( 'Ordina per', SCM_THEME ) );
-					$types['sub_fields'][] = scm_acf_field_select( 'ordertype', $default, 'ordertype', 50, $active, '', __( 'Ordinamento', SCM_THEME ) );
+				$types['sub_fields'][] = scm_acf_field( 'tab-archive', 'tab', __( 'Archivi', SCM_THEME ), 0, 0 );
+					$types['sub_fields'][] = scm_acf_field_select( 'orderby', $default, 'orderby', 50, 0, '', __( 'Ordina per', SCM_THEME ) );
+					$types['sub_fields'][] = scm_acf_field_select( 'ordertype', $default, 'ordertype', 50, 0, '', __( 'Ordinamento', SCM_THEME ) );
 
-				$types['sub_fields'][] = scm_acf_field( 'tab-menu', 'tab', __( 'Menu', SCM_THEME ), 0, $active );
-					$types['sub_fields'][] = scm_acf_field_text( 'icon', array( 'default'=>'admin-site', 'placeholder'=>'admin-site (see below)', 'prepend'=>__( 'Icona', SCM_THEME ) ), 100, $active );
-					$types['sub_fields'][] = scm_acf_field_text( 'menu', array( 'default'=>'types', 'placeholder'=>'menu-group (see below)', 'prepend'=>__( 'Zona Menu', SCM_THEME ) ), 50, $active );
-					$types['sub_fields'][] = scm_acf_field_positive( 'menupos', array( 'default'=>0, 'prepend'=>__( 'Posizione Menu', SCM_THEME ), 'min'=>0, 'max'=>91 ), 50, $active );
+				$types['sub_fields'][] = scm_acf_field( 'tab-menu', 'tab', __( 'Menu', SCM_THEME ), 0, 0 );
+					$types['sub_fields'][] = scm_acf_field_text( 'icon', array( 'default'=>'admin-site', 'placeholder'=>'admin-site (see below)', 'prepend'=>__( 'Icona', SCM_THEME ) ), 100, 0 );
+					$types['sub_fields'][] = scm_acf_field_text( 'menu', array( 'default'=>'types', 'placeholder'=>'menu-group (see below)', 'prepend'=>__( 'Zona Menu', SCM_THEME ) ), 50, 0 );
+					$types['sub_fields'][] = scm_acf_field_positive( 'menupos', array( 'default'=>0, 'prepend'=>__( 'Posizione Menu', SCM_THEME ), 'min'=>0, 'max'=>91 ), 50, 0 );
 
-				$types['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, $active );
+				$types['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, 0 );
 					
-					$types['sub_fields'][] = scm_acf_field_name( 'singular', array( 'placeholder'=>__( 'Produzione', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ), 'max'=>18 ), 50, $active );
-					$types['sub_fields'][] = scm_acf_field_name( 'slug', array( 'placeholder'=>__( 'produzioni', SCM_THEME ), 'prepend'=>__( 'Slug', SCM_THEME ), 'max'=>18 ), 50, $active );
-					$types['sub_fields'][] = scm_acf_field_name( 'short-singular', array( 'placeholder'=>__( 'Prod.', SCM_THEME ), 'prepend'=>__( 'Singolare Corto', SCM_THEME ), 'max'=>18 ), 50, $active );
-					$types['sub_fields'][] = scm_acf_field_name( 'short-plural', array( 'placeholder'=>__( 'Prods.', SCM_THEME ), 'prepend'=>__( 'Plurale Corto', SCM_THEME ), 'max'=>18 ), 50, $active );
+					$types['sub_fields'][] = scm_acf_field_name( 'singular', array( 'placeholder'=>__( 'Produzione', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ), 'max'=>18 ), 50, 0 );
+					$types['sub_fields'][] = scm_acf_field_name( 'slug', array( 'placeholder'=>__( 'produzioni', SCM_THEME ), 'prepend'=>__( 'Slug', SCM_THEME ), 'max'=>18 ), 50, 0 );
+					$types['sub_fields'][] = scm_acf_field_name( 'short-singular', array( 'placeholder'=>__( 'Prod.', SCM_THEME ), 'prepend'=>__( 'Singolare Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
+					$types['sub_fields'][] = scm_acf_field_name( 'short-plural', array( 'placeholder'=>__( 'Prods.', SCM_THEME ), 'prepend'=>__( 'Plurale Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
 			
 			$fields[] = $types;
 
@@ -115,28 +109,21 @@
 			$fields = array();
 
 			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', $default, __( 'Aggiungi Taxonomy', SCM_THEME ), __( 'Taxonomies', SCM_THEME ), 100, 0, $min, $max );
-			$taxes['sub_fields'][] = scm_acf_field_false_true( 'SHOW', $default, 25, 0, __( 'Mostra Opzioni', SCM_THEME ) );
-			$taxes['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 25, 0, __( 'Attiva Taxonomy', SCM_THEME ) );
-			$taxes['sub_fields'][] = scm_acf_field_name( 'plural', array( 'max'=>18, 'placeholder'=>__( 'Nome Categorie', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ) ), 50, 0, 1 );
+			$taxes['sub_fields'][] = scm_acf_field_false_true( 'active', $default, 30, 0, __( 'Attiva Taxonomy', SCM_THEME ) );
+			$taxes['sub_fields'][] = scm_acf_field_name( 'plural', array( 'max'=>18, 'placeholder'=>__( 'Nome Categorie', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ) ), 70, 0, 1 );
 
-			$active = array(
-				'field' => 'SHOW',
-				'operator' => '==',
-				'value' => '1',
-			);
+			$taxes['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab', __( 'Admin', SCM_THEME ), 0, 0 );
+				$taxes['sub_fields'][] = scm_acf_field_false_true( 'template', $default, 33, 0, __( 'Template', SCM_THEME ) );
+				$taxes['sub_fields'][] = scm_acf_field_false_true( 'add_cap', $default, 33, 0, __( 'Capabilities', SCM_THEME ) );
+				$taxes['sub_fields'][] = scm_acf_field_false_true( 'hierarchical', $default, 34, 0, __( 'Hierarchical', SCM_THEME ) );
+				//$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', array( 'select' . ( $default ? '-default' : '' ), array( __( 'Tag', SCM_THEME ), __( 'Categoria', SCM_THEME ) ) ), __( 'Seleziona Tipologia', SCM_THEME ), 34, 0 );
 
-			$taxes['sub_fields'][] = scm_acf_field( 'tab-admin', 'tab', __( 'Admin', SCM_THEME ), 0, $active );
-				$taxes['sub_fields'][] = scm_acf_field_false_true( 'template', $default, 33, $active, __( 'Template', SCM_THEME ) );
-				$taxes['sub_fields'][] = scm_acf_field_false_true( 'add_cap', $default, 33, $active, __( 'Capabilities', SCM_THEME ) );
-				$taxes['sub_fields'][] = scm_acf_field_false_true( 'hierarchical', $default, 34, $active, __( 'Hierarchical', SCM_THEME ) );
-				//$taxes['sub_fields'][] = scm_acf_field( 'hierarchical', array( 'select' . ( $default ? '-default' : '' ), array( __( 'Tag', SCM_THEME ), __( 'Categoria', SCM_THEME ) ) ), __( 'Seleziona Tipologia', SCM_THEME ), 34, $active );
+			$taxes['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, 0 );
+				$taxes['sub_fields'][] = scm_acf_field_name( 'singular', array( 'max'=>18, 'placeholder'=>__( 'Nome Categoria', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ) ), 50, 0 );
+				$taxes['sub_fields'][] = scm_acf_field_name( 'slug', array( 'max'=>18, 'placeholder'=>__( 'slug-categoria', SCM_THEME), 'prepend'=>__( 'Slug', SCM_THEME ) ), 50, 0 );
 
-			$taxes['sub_fields'][] = scm_acf_field( 'tab-labels', 'tab', __( 'Labels', SCM_THEME ), 0, $active );
-				$taxes['sub_fields'][] = scm_acf_field_name( 'singular', array( 'max'=>18, 'placeholder'=>__( 'Nome Categoria', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ) ), 50, $active );
-				$taxes['sub_fields'][] = scm_acf_field_name( 'slug', array( 'max'=>18, 'placeholder'=>__( 'slug-categoria', SCM_THEME), 'prepend'=>__( 'Slug', SCM_THEME ) ), 50, $active );
-
-			$taxes['sub_fields'][] = scm_acf_field( 'tab-locations', 'tab', __( 'Locations', SCM_THEME ), 0, $active );
-				$taxes['sub_fields'][] = scm_acf_field( 'types', array( 'select2-multi-types_complete-horizontal' . ( $default ? '-default' : '' ) ), __( 'Seleziona Locations', SCM_THEME ), 100, $active );
+			$taxes['sub_fields'][] = scm_acf_field( 'tab-locations', 'tab', __( 'Locations', SCM_THEME ), 0, 0 );
+				$taxes['sub_fields'][] = scm_acf_field( 'types', array( 'select2-multi-types_complete-horizontal' . ( $default ? '-default' : '' ) ), __( 'Seleziona Locations', SCM_THEME ), 100, 0 );
 
 			$fields[] = $taxes;
 

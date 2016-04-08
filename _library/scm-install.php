@@ -67,13 +67,9 @@
     
     add_filter( 'acf/load_field', 'scm_acf_loadfield_hook_choices_get', 100) ;                                  // 5.1
     add_filter( 'acf/load_field/type=repeater', 'scm_acf_loadfield_hook_repeater_list', 100 );
-    //add_filter( 'acf/load_field/type=flexible_content', 'scm_acf_loadfield_hook_flexible_list', 100 );
     
     add_filter( 'acf/load_field/type=font-awesome', 'scm_acf_loadfield_hook_fontawesome_list', 150 );
    
-
-    //add_action( 'acf/save_post', 'scm_acf_savepost_hook_media', 1) ;   
-    //add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates_new', 100) ;
     add_action( 'acf/save_post', 'scm_acf_savepost_hook_templates', 11) ;                                       // 5.2
     //add_action( 'acf/save_post', 'scm_acf_savepost_hook_all_taxonomies', 10 );
 
@@ -86,7 +82,10 @@
 
     add_action( 'tgmpa_register', 'scm_plugins_install' );                                                      // 7.0      Installo Plugins
  
-    add_action( 'after_setup_theme', 'scm_theme_install' );                                                     // 1.0      Attivazione SCM Theme
+    add_action( 'after_setup_theme', 'scm_theme_setup' );                                                     // 1.0      Attivazione SCM Theme
+    add_action( 'after_switch_theme', 'scm_theme_activate' );
+    add_action( 'upgrader_process_complete', 'scm_theme_update' );
+    add_action( 'switch_theme', 'scm_theme_deactivate' );
 
 
 // *****************************************************
@@ -104,6 +103,7 @@
             $SCM_typekit = new Typekit();
 
         }
+        
     }
 
 
@@ -112,16 +112,6 @@
 
     if ( ! function_exists( 'scm_roles_install' ) ) {
         function scm_roles_install() {
-
-            // Crea una Option Page dove poter resettare i ruoli (cancellandoli tutti e ricreando quelli di default)
-
-            /*remove_role('editor');
-            remove_role('author');
-            remove_role('contributor');
-            remove_role('subscriber');
-            remove_role('staff');
-            remove_role('member');
-            remove_role('utente');*/
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -173,12 +163,12 @@
         
 // *** Theme Activation
 
-    if ( ! function_exists( 'scm_theme_install' ) ) {
-        function scm_theme_install() {
+// Temporary change the SCM Version in style.css to reset Roles
 
-            global $SCM_version, $SCM_types;
+    /*if ( ! function_exists( 'scm_theme_setup' ) ) {
+        function scm_theme_setup() {
 
-            //update_option( 'scm-version', '1.0' ); // DEBUG MODE: resets scm-version to set default capabilities
+            global $SCM_version;
 
             $themeStatus = get_option( 'scm-settings-installed' );
             $version = get_option( 'scm-version' );
@@ -195,6 +185,9 @@
                 remove_role('member');
                 remove_role('utente');
 
+                wp_redirect(admin_url('themes.php?page=scm-install-plugins'));
+                die;
+
             }
 
             if ( ! $themeStatus ) {
@@ -202,6 +195,43 @@
                 wp_redirect(admin_url('themes.php?page=scm-install-plugins'));
                 die;
             }
+
+
+        }
+    }*/
+
+    if ( ! function_exists( 'scm_theme_setup' ) ) {
+        function scm_theme_setup() {
+
+            global $SCM_isdashboard;
+
+            if( is_user_logged_in() && $SCM_isdashboard ){
+                wp_redirect( redirectUser('') );
+                die;
+            }
+        }
+    }
+
+    if ( ! function_exists( 'scm_theme_activate' ) ) {
+        function scm_theme_activate() {
+            update_option( 'scm-settings-installed', 1 );
+            resetRoles();
+            wp_redirect( redirectUser('super') );
+        }
+    }
+
+    if ( ! function_exists( 'scm_theme_update' ) ) {
+        function scm_theme_update() {
+            update_option( 'scm-version', $SCM_version );
+            resetRoles();
+            wp_redirect( redirectUser('') );
+        }
+    }
+
+    if ( ! function_exists( 'scm_theme_deactivate' ) ) {
+        function scm_theme_deactivate() {
+            update_option( 'scm-settings-installed', 0 );
+            resetRoles();
         }
     }
 

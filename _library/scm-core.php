@@ -195,6 +195,7 @@
     //adobe fonts
     if ( ! function_exists( 'scm_site_assets_webfonts_adobe' ) ) {
         function scm_site_assets_webfonts_adobe() {
+
             $fonts =  scm_field( 'styles-adobe', array(), 'option' );
 
             foreach ($fonts as $value) { 
@@ -205,8 +206,6 @@
                 wp_enqueue_script( 'webfonts-adobe-' . $slug );
                 
             }
-
-            //echo '<script>try{Typekit.load();}catch(e){}</script>';
         }
     }
     
