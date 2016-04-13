@@ -181,7 +181,7 @@
 			}
 			
 			$choices = array();
-			if( $arg['choices'] ){
+			if( isset($arg['choices']) && $arg['choices'] ){
 				$choices = $arg['choices'];
 			}
 

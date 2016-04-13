@@ -63,10 +63,11 @@ class Custom_Type {
         $this->order = $attr['ordertype'];
         
         $this->menu = ( $attr['menu'] ?: '' );
-        $this->menupos = ( $attr['menupos'] ?: sizeof($SCM_MENU_ORDER[$this->menu]) + 1 ) - 1;
+        $scm_menu = ( isset( $SCM_MENU_ORDER[$this->menu] ) ? $SCM_MENU_ORDER[$this->menu] : 0 );
+        $this->menupos = ( $attr['menupos'] ?: sizeof($scm_menu) + 1 ) - 1;
         
-        if( $SCM_MENU_ORDER[$this->menu] )
-            insertArray( $SCM_MENU_ORDER[$this->menu], $this->menupos, 'edit.php?post_type=' . $this->slug );
+        if( $scm_menu )
+            insertArray( $scm_menu, $this->menupos, 'edit.php?post_type=' . $this->slug );
         
         $this->description = $attr['description'];       
 

@@ -233,8 +233,7 @@
 
 		    if( $maps.length > 0 ){
 
-		    	//window.initialize = function() {
-		    	var initialize = function() {
+		    	window.initialize = function() {
 				    script = document.createElement('script');
 					script.type = 'text/javascript';
 					script.src = 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js';

@@ -83,11 +83,11 @@ if( is( $element ) ){
 
 		$fields = get_fields( $luogo );
 
-		$lat = is( $fields['luogo-lat'], 0 );
-		$lng = is( $fields['luogo-lng'], 0 );
-		$indirizzo = is( $fields['luogo-indirizzo'], '' );
-		$citta = is( $fields['luogo-citta'], '' ) . ( $fields['luogo-paese'] ? ' (' . $fields['luogo-paese'] . ')' : '' );
-		$contatti = is( $fields['luogo-contatti'], array() );
+		$lat = ( isset( $fields['luogo-lat'] ) ? $fields['luogo-lat'] : 0 );
+		$lng = ( isset( $fields['luogo-lng'] ) ? $fields['luogo-lng'] : 0 );
+		$indirizzo = ( isset( $fields['luogo-indirizzo'] ) ? $fields['luogo-indirizzo'] : '' );
+		$citta = ( isset( $fields['luogo-citta'] ) ? $fields['luogo-citta'] : '' ) . ( $fields['luogo-paese'] ? ' (' . $fields['luogo-paese'] . ')' : '' );
+		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
 		$attr = '';
 
 		$marker = scm_content_preset_marker( $luogo, $fields, 1 );
@@ -99,7 +99,7 @@ if( is( $element ) ){
 		}
 
 		indent( $SCM_indent+1, '<div class="scm-marker marker marker-' . $luogo . '"' . $attr . $marker . '>' );
-				indent( $SCM_indent+2, '<strong>' . is( $fields['luogo-nome'], get_the_title( $luogo ) ) . '</strong><br>' );
+				indent( $SCM_indent+2, '<strong>' . ( isset( $fields['luogo-nome'] ) ? $fields['luogo-nome'] : get_the_title( $luogo ) ) . '</strong><br>' );
 				indent( $SCM_indent+2, '<span>' . $indirizzo . '</span><br>' );
 				indent( $SCM_indent+2, '<span>' . $citta . '</span>' );
 				if( !empty( $contatti ) ){

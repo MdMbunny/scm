@@ -27,7 +27,7 @@
 	if ( ! function_exists( 'scm_content_preset_marker' ) ) {
         function scm_content_preset_marker( $luogo, $fields = array(), $mark = 0 ) {
 
-			$marker = is( $fields['luogo-map-icon'], 'default' );
+			$marker = ( isset( $fields['luogo-map-icon'] ) ? $fields['luogo-map-icon'] : 'default' );
 			
 			$icon = array( 'icon' => 'fa-map-marker', 'data' => '#000000' );
 
@@ -51,7 +51,7 @@
 					if( !$term || !sizeof( $term ) )
 
 					$term_field = ( $term && sizeof( $term ) ? get_fields( $term[0] ) : array() );
-					$marker = ( is( $term_field ) ? is( $term_field['luogo-tip-map-icon'], 'default' ) : 'default' );
+					$marker = ( ( isset( $term_field ) && $term_field ) ? ( isset( $term_field['luogo-tip-map-icon'] ) ? $term_field['luogo-tip-map-icon'] : 'default' ) : 'default' );
 					switch ( $marker ) {
 						case 'icon':
 							$fa = is( $term_field['luogo-tip-map-icon-fa'], 'fa-map-marker' );

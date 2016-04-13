@@ -276,7 +276,7 @@
 
 	        }
 
-			$defaultname = ( is_string( $default ) ? $default : ( is_array( $default ) && ( isset( $default[0] ) || isset( $default['type'] ) ) ? ( $default[0] || $default['type'] ) : 'undefined-field' ) );
+			$defaultname = ( is_string( $default ) ? $default : ( is_array( $default ) ? ( isset( $default[0] ) ? $default[0] : ( isset( $default['type'] ) ? $default['type'] : 'undefined-field' ) ) : 'undefined-field' ) );
 
 			$field = array (
 				'key' => ( $def['name'] ? $def['name'] . '_' : '' ),

@@ -51,7 +51,7 @@
 			}
 			$arg = array_merge( ( $arg ?: array() ), ( $field ?: array() ) );
 			$arg['type'] = ( $arg['type'] ?: 'text' );
-			$arg['default'] = ( $default ?: $arg['default'] );
+			$arg['default'] = ( $default ?: ( isset($arg['default']) ? $arg['default'] : '' ) );
 			return $arg;
 		}
 	}

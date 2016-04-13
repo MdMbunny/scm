@@ -836,15 +836,15 @@
                 $pagination = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'yes' : false ) );
                 $more = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'more' : false ) ); // non in uso
                 $all = ( $complete ? false : ( isset( $cont['archive-pagination'] ) ? $cont['archive-pagination'] === 'all' : false ) ); // non in uso
-                $button = ( $cont['archive-pag-text'] ?: '' );
+                $button = ( isset( $cont['archive-pag-text'] ) && $cont['archive-pag-text'] ? $cont['archive-pag-text'] : '' );
                 $paginated = ( isset( $cont['archive-paginated'] ) ? $cont['archive-paginated'] : '' );
                 $page = 'page-' . $type;
                 $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
                 $orderby = ( isset( $cont['archive-orderby'] ) ? $cont['archive-orderby'] : 'date' );
                 $ordertype = ( isset( $cont['archive-ordertype'] ) ? $cont['archive-ordertype'] : 'DESC' );
-                $field = ( $cont['archive-field'] ?: ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' ) );
+                $field = ( isset( $cont['archive-field'] ) && $cont['archive-field'] ? $cont['archive-field'] : ( ( $orderby == 'meta_value' && isset( $cont['archive-order'] ) ) ? $cont['archive-order'] : '' ) );
                 $meta = ( isset( $cont['meta_query'] ) ? $cont['meta_query'] : '' );
-                $value = ( $cont['archive-value'] ?: ( $cont['archive-field'] ? $post->ID : '') );
+                $value = ( isset( $cont['archive-value'] ) && $cont['archive-value'] ? $cont['archive-value'] : ( isset( $cont['archive-field'] ) && $cont['archive-field'] ? $post->ID : '') );
 
                 $query = array(
                     'post_type' => $type,

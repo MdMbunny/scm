@@ -107,7 +107,7 @@ $tocolumn = scm_field( 'layout-tocolumn', '', 'option' );
 $head_id = 'site-header';
 
 $head_layout = scm_field( 'layout-head', 'full', 'option' );
-$head_layout = ( $page_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
+$head_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
 $head_class = 'site-header full ' . $site_align;
 $head_row_class = 'row scm-row object scm-object ' . $head_layout . $site_align;
@@ -119,7 +119,7 @@ $follow_position = scm_field( 'follow-position', 'top', 'option' );
 
 $cont_id = 'site-content';
 $cont_layout = scm_field( 'layout-content', 'full', 'option' );
-$cont_layout = ( $page_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
+$cont_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
 $cont_class = 'site-content ' . $cont_layout . $site_align ;
 
 $cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
