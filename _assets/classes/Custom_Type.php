@@ -62,12 +62,19 @@ class Custom_Type {
         $this->orderby = ( $attr['orderby'] ?: 'title' );
         $this->order = $attr['ordertype'];
         
-        $this->menu = ( $attr['menu'] ?: '' );
-        $scm_menu = ( isset( $SCM_MENU_ORDER[$this->menu] ) ? $SCM_MENU_ORDER[$this->menu] : 0 );
-        $this->menupos = ( $attr['menupos'] ?: sizeof($scm_menu) + 1 ) - 1;
+        /*$this->menu = ( $attr['menu'] ?: '' );
+        $scm_menu = ( $this->menu && isset( $SCM_MENU_ORDER[$this->menu] ) ? sizeof($SCM_MENU_ORDER[$this->menu]) : 0 );
+        $this->menupos = ( $attr['menupos'] ?: $scm_menu + 1 ) - 1;
         
         if( $scm_menu )
-            insertArray( $scm_menu, $this->menupos, 'edit.php?post_type=' . $this->slug );
+            insertArray( $scm_menu, $this->menupos, 'edit.php?post_type=' . $this->slug );*/
+
+        $this->menu = ( $attr['menu'] ?: '' );
+        $scm_menu = ( $this->menu && is_array($SCM_MENU_ORDER[$this->menu]) ? $SCM_MENU_ORDER[$this->menu] : 0 );
+        $this->menupos = ( $attr['menupos'] ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
+        
+        if( $scm_menu )
+            insertArray( $SCM_MENU_ORDER[$this->menu], $this->menupos, 'edit.php?post_type=' . $this->slug );
         
         $this->description = $attr['description'];       
 
