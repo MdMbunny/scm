@@ -224,7 +224,7 @@
         function scm_theme_update() {
             update_option( 'scm-version', $SCM_version );
             resetRoles();
-            wp_redirect( redirectUser('') );
+            //wp_redirect( redirectUser('') );
         }
     }
 
