@@ -199,20 +199,23 @@
 			var cont = 0;
 			if( $toggle.length )
 				cont = $toggle.parents( '.toggle-content' ).length;
-			
-			e.preventDefault();
-			e.stopPropagation();
 
 			$toggled = $( '.toggled' );
 
-			if( $toggled.length ){
-				$toggled.toggledOff( event );
-				setTimeout( function(){
+			if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
+				e.preventDefault();
+				e.stopPropagation();
+				if( $toggled.length ){
+					$toggled.toggledOff( event );
+					setTimeout( function(){
+						$this.trigger( 'link' );
+					}, 400 );
+				}else{
 					$this.trigger( 'link' );
-				}, 400 );
-			}else if( !$( 'body' ).hasClass( 'touch' ) || !cont || $toggle.parents( '.toggle' ).length ){
-				
-				$this.trigger( 'link' );
+				}
+			}else{
+				$toggled.toggledOff(e);
+				e.preventDefault();
 			}
 		
 		});
