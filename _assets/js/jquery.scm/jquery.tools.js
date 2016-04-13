@@ -1462,7 +1462,7 @@
 				    		setMarker();
 				    	}else{
 				    		$.consoleDebug( DEBUG,  'Searching address within IT Region');
-				    		$this.markerMap( map, infowindow, zoom, countMaps, 'it' );
+				    		$this.markerMap( map, infowindow, zoom, count, 'it' );
 				    	}
 			    	}
 
