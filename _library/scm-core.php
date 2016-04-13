@@ -36,6 +36,10 @@
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
 
+    add_filter( 'style_loader_src', 'scm_site_assets_remove_ver', 10, 2 );
+    add_filter( 'script_loader_src', 'scm_site_assets_remove_ver', 10, 2 );
+    add_filter( 'clean_url', 'scm_site_assets_asyncdefer', 11, 1 );
+
 
 // *****************************************************
 // *       1.0 THEME SUPPORT
@@ -141,7 +145,7 @@
 
             // Font Awesome
             
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.5.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
             wp_enqueue_style( 'font-awesome' );
 
             /*global $wp_styles, $is_IE;
@@ -330,6 +334,22 @@
 
         }
     }
+
+    // Remove query string from static files
+    function scm_site_assets_remove_ver( $src ) {
+        if( strpos( $src, '?ver=' ) )
+            $src = remove_query_arg( 'ver', $src );
+        return $src;
+    }
+
+    // add async and defer to javascripts
+    function scm_site_assets_asyncdefer( $url ) {
+        if( is_admin() ) return $url;
+        if ( FALSE === strpos( $url, '.js' ) ) return $url;
+        if ( strpos( $url, 'jquery.js' ) ) return $url;
+        return "$url' async='async' defer='defer";
+    }
+
 
 
 // *****************************************************

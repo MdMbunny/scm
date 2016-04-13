@@ -45,7 +45,8 @@
 			$name = ( $name ? $name . '-' : '');
 			$fields = scm_acf_preset_instructions( $instructions, ( $name ?: 'size' ), __( 'Impostazioni Dimensioni', SCM_THEME ) );
 
-			$fields[] = scm_acf_field_positive( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1 ), $width*.5, $logic, $req );
+			$fields[] = scm_acf_field_number( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1 ), $width*.5, $logic, $req );
+			//$fields[] = scm_acf_field_positive( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1 ), $width*.5, $logic, $req );
 			$fields[] = scm_acf_field_select_units( $name . 'units', '', $width*.5, $logic, $pl2, '', '', $req );
 
 			return $fields;
@@ -79,7 +80,7 @@
 			
 
 			$fields = array_merge( $fields, scm_acf_preset_rgba( $name, '', 1, $logic, $width ) );
-			$fields[] = scm_acf_field_image( $name . '-image', $default, $width, $logic, __( 'Immagine', SCM_THEME ) );
+			$fields[] = scm_acf_field_image_url( $name . '-image', array('label'=>__( 'Immagine', SCM_THEME )), $width, $logic );
 			$fields[] = scm_acf_field_select1( $name . '-repeat', $default, 'bg_repeat', $width, $logic, $pl1, __( 'Ripetizione', SCM_THEME ) );
 			$fields[] = scm_acf_field_text( $name . '-position', array( 'default'=>$pl2, 'prepend'=>__( 'Posizione', SCM_THEME ) ), $width, $logic, $req );
 			$fields[] = scm_acf_field_text( $name . '-size', array( 'default'=>$pl3, 'prepend'=>__( 'Dimensione', SCM_THEME ) ), $width, $logic, $req );
@@ -221,9 +222,9 @@
 			$img = array( 'field' => $name . '-icon', 'operator' => '==', 'value' => 'img' );
 			$img = ( $logic ? scm_acf_group_condition( $img, $logic ) : $img );
 				
-				$fields[] = scm_acf_field_icon( $name . '-icon-fa', $default, 'map-marker', '', '', $icon );
+				$fields[] = scm_acf_field_icon( $name . '-icon-fa', array('default'=>'map-marker'), 100, $icon );
 				$fields = array_merge( $fields, scm_acf_preset_rgba( $name, '#e3695f', 1, 100, $icon ) );
-				$fields[] = scm_acf_field_image( $name . '-icon-img', $default, '', $img, __( 'Carica un\'immagine', SCM_THEME ) );
+				$fields[] = scm_acf_field_image_url( $name . '-icon-img', array('label'=>__( 'Carica un\'immagine', SCM_THEME )), 100, $img );
 
 			return $fields;
 
@@ -478,7 +479,7 @@
 				$fields[] = scm_acf_field_name( 'name', array( 'placeholder'=>( $label ?: __( 'senza nome', SCM_THEME ) ) ), 25 );
 				
 				if( $options >= 0 ){
-					$fields[] = scm_acf_field_icon_no( $name . 'icon', $default, ( $icon ?: 'no' ), $group, 20 );
+					$fields[] = scm_acf_field_icon_no( $name . 'icon', array('default'=>( $icon ?: 'no' ),'filter'=>$group), 20 );
 				}
 
 				if( $options === 2 )
@@ -507,7 +508,7 @@
 				break;
 				
 				case 'file':
-					$fields[] = scm_acf_field_file( $name . 'link', $default, $width, 0, __( 'File', SCM_THEME ) );
+					$fields[] = scm_acf_field_file_url( $name . 'link', array('label'=> __( 'File', SCM_THEME )), $width );
 				break;
 
 				case 'page':
@@ -530,7 +531,7 @@
 			if( $options === 1 )
 				$fields[] = scm_acf_field_text( $name . 'tooltip', array( 'prepend'=>__( 'Tooltip', SCM_THEME ) ), 100, $logic, $req );
 			else if( $options === 2 )
-				$fields[] = scm_acf_field_falsetrue( $name . 'onmap', $default, 20, 0, __( 'Map', SCM_THEME ) );
+				$fields[] = scm_acf_field_false( $name . 'onmap', array('label'=>__( 'On Map', SCM_THEME )), 20 );
 
 			return $fields;
 

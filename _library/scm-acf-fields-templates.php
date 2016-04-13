@@ -42,8 +42,8 @@
 				$fields[] = scm_acf_field_select_disable( $name . 'direction', $default, __( 'Direction Nav', SCM_THEME ), 100, $advanced );
 				$fields[] = scm_acf_field_select_disable( $name . 'control', $default, __( 'Control Nav', SCM_THEME ), 100, $advanced );
 				$fields[] = scm_acf_field_select_disable( $name . 'thumbs', $default, __( 'Thumbs Nav', SCM_THEME ), 100, $advanced );
-				$fields[] = scm_acf_field_icon( $name . 'prev', $default, 'angle-left', '', 100, $advanced, __( 'Prev Icon', SCM_THEME ) );
-				$fields[] = scm_acf_field_icon( $name . 'next', $default, 'angle-right', '', 100, $advanced, __( 'Next Icon', SCM_THEME ) );
+				$fields[] = scm_acf_field_icon( $name . 'prev', array('placeholder'=>'angle-left','label'=>__( 'Prev Icon', SCM_THEME )), 100, $advanced );
+				$fields[] = scm_acf_field_icon( $name . 'next', array('placeholder'=>'angle-right','label'=>__( 'Next Icon', SCM_THEME )), 100, $advanced );
 
 			return $fields;
 			

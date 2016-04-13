@@ -160,7 +160,7 @@
 			$fields[] = scm_acf_field_text( 'login-password', array( 'placeholder'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 50, 0 );
 			$fields[] = scm_acf_field_text( 'login-send', array( 'placeholder'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 50, 0 );
 
-			$fields[] = scm_acf_field_truefalse( 'login-rememberme', $default, 10 );
+			$fields[] = scm_acf_field_true( 'login-rememberme', array('label'=>'Remember Me'), 10 );
 			$remember = array( 'field' => 'login-rememberme', 'operator' => '==', 'value' => 1 );
 			$fields[] = scm_acf_field_text( 'login-remember', array( 'placeholder'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 25, $remember );
 
@@ -270,10 +270,8 @@
 				$fields = array_merge( $fields, $imagew, $imageh, $imagef, $imageq );
 			
 			if( !$obj )
-				$fields[] = scm_acf_field_image( 'image', $default, $width, $logic );
+				$fields[] = scm_acf_field_image_url( 'image', 0, $width, $logic );
 			
-			//$fields[] = scm_acf_field_select_float( 'float', $default );
-
 			return $fields;
 
 		}
@@ -289,7 +287,6 @@
 
 			if( !$simple )
 				$fields = array_merge( $fields, scm_acf_preset_size( 'size', 1, '1', 'em', __( 'Dimensione', SCM_THEME ), $width, $logic ) );
-			//$fields[] = scm_acf_field_select_float( 'float', $default );
 
 			return $fields;
 		}
@@ -316,8 +313,8 @@
 
 			$fields = array();
 
-			$fields[] = scm_acf_field_icon_no( 'prepend', $default, 'no_typography', 'quote', $width*.5, $logic, __( 'Apertura', SCM_THEME ) );
-			$fields[] = scm_acf_field_icon_no( 'append', $default, 'no_typography', 'quote', $width*.5, $logic, __( 'Chiusura', SCM_THEME ) );
+			$fields[] = scm_acf_field_icon_no( 'prepend', array('default'=>'no_typography', 'filter'=>'quote', 'label'=>__( 'Apertura', SCM_THEME ) ), $width*.5, $logic );
+			$fields[] = scm_acf_field_icon_no( 'append', array('default'=>'no_typography', 'filter'=>'quote', 'label'=>__( 'Chiusura', SCM_THEME ) ), $width*.5, $logic );
 
 			if ( !$obj )
 				$fields[] = scm_acf_field_textarea( 'title', 0, $width, $logic );
@@ -483,8 +480,8 @@
 
 			}
 			
-			$fields[] = scm_acf_field_icon_no( 'icon-even', $default, 'no', '', $width*.5, $logic, __( 'Icone pari', SCM_THEME ) );
-			$fields[] = scm_acf_field_icon_no( 'icon-odd', $default, 'no', '', $width*.5, $logic, __( 'Icone dispari', SCM_THEME ) );
+			$fields[] = scm_acf_field_icon_no( 'icon-even', array('default'=>'no', 'label'=>__( 'Icone pari', SCM_THEME )), $width*.5, $logic );
+			$fields[] = scm_acf_field_icon_no( 'icon-odd', array('default'=>'no', 'label'=>__( 'Icone dispari', SCM_THEME )), $width*.5, $logic );
 			//$fields[] = scm_acf_field_select1( 'position', $default, 'list_position', 50, 0, array( 'outside' => 'Esterni', 'inside' => 'Interni' ), 'Posizione punti' );
 			$fields[] = scm_acf_field_select1( 'size', $default, 'simple_size', $width*.5, $logic, '', __( 'Dimensione', SCM_THEME ) );
 			$fields[] = scm_acf_field_select1( 'display', $default, '', $width*.5, $logic, array( 'block' => __( 'In colonna', SCM_THEME ), 'inline-block' => __( 'In fila', SCM_THEME ) ), __( 'Disposizione', SCM_THEME ) );

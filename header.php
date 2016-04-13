@@ -92,7 +92,8 @@ $smooth_units = scm_field( 'opt-tools-smoothscroll-offset-units', 0, 'option' );
 $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
 $smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
 $smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
-$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
+$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 1, 'option' );
+//$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
 $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );

@@ -364,7 +364,7 @@
 
 		var $body 			= $( 'body' ),
 			$html 			= $( 'html' ),
-			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : .3 ),
+			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 0 ),
 			offset 			= ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset') : '0' ),
@@ -387,15 +387,16 @@
 
 				}else{
 
+					$html.animate({
+						scrollTop: $anchor.offset().top
+					}, 1000 );
+
 					$body.animate({
 						scrollTop: $anchor.offset().top
 					}, 1000, function() {
 						$body.enableIt();
 					});
 
-					$html.animate({
-						scrollTop: $anchor.offset().top
-					}, 1000 );
 				}
 			}else{
 				$body.enableIt();
@@ -414,9 +415,8 @@
 				}
 				
 			}else{
-
+				
 				$body.enableIt();
-				//$body.css( 'opacity', 1 );
 			}
     	};
 
@@ -434,13 +434,14 @@
     		
     		$.consoleDebug( DEBUG, 'with animation');
 
-        	$('html').animate( {
+        	$html.animate( {
         		opacity: 1
         	}, duration * 1000 );
 
-        	$('body').animate( {
+        	$body.animate( {
         		opacity: 1
         	}, duration * 1000, checkScroll );
+
         }else{
         	$.consoleDebug( DEBUG, 'without animation');
         	$body.css( 'opacity', 1 );
@@ -455,7 +456,7 @@
 
 		var $body 		= $( 'body' ),
 			$navigation = $( '.navigation' ),
-			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : .3 ),
+			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : 0 ),
 			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
 			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
 

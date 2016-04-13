@@ -232,12 +232,9 @@
 		    var $maps = $( '.scm-map' );
 
 		    if( $maps.length > 0 ){
-		    	    			    	
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_API_KEY + '&callback=initialize';
-				
-				window.initialize = function() {
+
+		    	//window.initialize = function() {
+		    	var initialize = function() {
 				    script = document.createElement('script');
 					script.type = 'text/javascript';
 					script.src = 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js';
@@ -245,6 +242,12 @@
 					document.body.appendChild( script );
 					$maps.googleMap();
 				}
+		    	    			    	
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_API_KEY + '&callback=initialize';
+				script.async = 'async';
+				script.defer = 'defer';		
 
 				document.body.appendChild( script );
 							

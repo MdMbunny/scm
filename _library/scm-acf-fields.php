@@ -56,72 +56,84 @@
 		}
 	}
 
+/* Tab */
+
+	// TAB
+	function scm_acf_field_tab( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'tab'), $width, $logic, $required );
+	}
+
+	// TAB LEFT
+	function scm_acf_field_tab_left( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'tab-left'), $width, $logic, $required );
+	}
+
 /* Number */
 
 	// NUMBER
-	function scm_acf_field_number( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_number( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'number'), $width, $logic, $required );
 	}
 	
 	// OPTION
-	function scm_acf_field_option( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_option( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'option'), $width, $logic, $required );
 	}
 
 	// POSITIVE
-	function scm_acf_field_positive( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_positive( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'positive'), $width, $logic, $required );
 	}
 
 	// NEGATIVE
-	function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'negative'), $width, $logic, $required );
 	}
 	
 	// ALPHA
-	function scm_acf_field_alpha( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_alpha( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'alpha'), $width, $logic, $required );
 	}
 	
 /* Text */
 
 	// TEXT
-	function scm_acf_field_text( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_text( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'text'), $width, $logic, $required );
 	}
 	
 	// ID
-	function scm_acf_field_id( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_id( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'id'), $width, $logic, $required );
 	}
 
 	// CLASS
-	function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'class'), $width, $logic, $required );
 	}
 
 	// NAME
-	function scm_acf_field_name( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_name( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'name'), $width, $logic, $required );
 	}
 
 	// LINK
-	function scm_acf_field_link( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_link( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'link'), $width, $logic, $required );
 	}
 	
 	// EMAIL
-	function scm_acf_field_email( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_email( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'email'), $width, $logic, $required );
 	}
 
 	// USER
-	function scm_acf_field_user( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_user( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'user'), $width, $logic, $required );
 	}
 	
 	// PHONE
-	function scm_acf_field_phone( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_phone( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'phone'), $width, $logic, $required );
 	}
 
@@ -129,107 +141,104 @@
 /* Limiter */
 	
 	// LIMITER
-	function scm_acf_field_limiter( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_limiter( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type'=>'limiter','max'=>350,'display'=>1), $width, $logic, $required );
 	}
 
 /* TextArea */
 	
 	// TEXTAREA
-	function scm_acf_field_textarea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_textarea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type'=>'textarea', 'rows'=>8), $width, $logic, $required );
 	}
 
 	// TEXTAREA CODE
-	function scm_acf_field_codearea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_codearea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type'=>'textarea-no', 'rows'=>8, 'class'=>'widefat code'), $width, $logic, $required );
 	}
 
 /* Editor */
 	
 	// EDITOR BASIC MEDIA
-	function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-media-basic'), $width, $logic, $required );
 	}
 
 	// EDITOR VISUAL MEDIA
-	function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-media-visual-basic'), $width, $logic, $required );
 	}
 
 	// EDITOR VISUAL
-	function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'editor-visual-basic'), $width, $logic, $required );
 	}
 
 /* Date */
 	
 	// DATE
-	function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'date'), $width, $logic, $required );
 	}
 
 /* Color */
 	
 	// COLOR
-	function scm_acf_field_color( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0 ) {
+	function scm_acf_field_color( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'color'), $width, $logic, $required );
 	}
 
-// ************* DA QUI
-
 /* Icon */
 
-// ICON
-	function scm_acf_field_icon( $name = '', $default = 0, $placeholder = 'star', $filter = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		return scm_acf_field( $name, array( 'icon', $placeholder, $filter ), $label, $width, $logic, $instructions, $required );
+	// ICON
+	function scm_acf_field_icon( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'icon','default'=>'star'), $width, $logic, $required );
 	}
 
-	// ICON
-	function scm_acf_field_icon_no( $name = '', $default = 0, $placeholder = 'no', $filter = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		return scm_acf_field( $name, array( 'icon-no', $placeholder, $filter ), $label, $width, $logic, $instructions, $required );
+	// ICON NO
+	function scm_acf_field_icon_no( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'icon-no','default'=>'no'), $width, $logic, $required );
 	}
 
 /* Image */
 
 	// IMAGE
-	function scm_acf_field_image( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		$label = ( $label ?: __( 'Seleziona un\'immagine', SCM_THEME ) );
-		return scm_acf_field( $name, 'image-url', $label, $width, $logic, $instructions, $required );
+	function scm_acf_field_image( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'image','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
+	}
+
+	// IMAGE URL
+	function scm_acf_field_image_url( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'image-url','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
 	}
 
 /* File */
 
 	// FILE
-	function scm_acf_field_file( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		$label = ( $label ?: __( 'Seleziona un file', SCM_THEME ) );
-		return scm_acf_field( $name, 'file-url', $label, $width, $logic, $instructions, $required );
+	function scm_acf_field_file( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'file','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
 	}
 
-	// FILE OBJECT
-	function scm_acf_field_fileobj( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		$label = ( $label ?: __( 'Seleziona un file', SCM_THEME ) );
-		return scm_acf_field( $name, 'file', $label, $width, $logic, $instructions, $required );
+	// FILE URL
+	function scm_acf_field_file_url( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'file-url','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
 	}
 
 /* True False */
-
-	// FALSE/TRUE
-	function scm_acf_field_false_true( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-		return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 0 ), $label, $width, $logic, $instructions, $required );
-	}
-
+	
 	// FALSE
-	function scm_acf_field_falsetrue( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		return scm_acf_field( $name, array( 'true_false', 0 ), $label, $width, $logic, $instructions, $required );
+	function scm_acf_field_false( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('default'=>0, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
 	}
 
-	// FALSE
-	function scm_acf_field_truefalse( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-		return scm_acf_field( $name, array( 'true_false', 1 ), ( $label ?: __('Attiva',SCM_THEME) ), $width, $logic, $instructions, $required );
+	// TRUE
+	function scm_acf_field_true( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('default'=>1, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
 	}
+
+
+// ************* DA QUI
+
 
 /* Select */
 
@@ -326,15 +335,6 @@
 			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
 
 			return scm_acf_field( $name, array( 'select2-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// TRUE/FALSE
-	if ( ! function_exists( 'scm_acf_field_true_false' ) ) {
-		function scm_acf_field_true_false( $name = '', $default = 0, $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Disabilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'true_false' . ( $default ? '-default' : '' ), 1 ), $label, $width, $logic, $instructions, $required );
 		}
 	}
 

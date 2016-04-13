@@ -249,28 +249,30 @@
 						'ajax' 					=> scm_acf_field_to3( $arg, 3, 'ajax', 0 ),
 						'allow_null' 			=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
 						'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_field_to3( $arg, 5, 'ui', 0 ) ),
-						'multiple' 				=> scm_acf_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) ),
-						'readonly' 				=> scm_acf_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
-						'disabled' 				=> scm_acf_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
-						'preset' 				=> str_replace( array( '-multi', '-read', '-disabled' ), '', $elem),
+						'multiple' 				=> scm_acf_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ?: 0 ) ),
+						'readonly' 				=> scm_acf_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ?: 0 ) ),
+						'disabled' 				=> scm_acf_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ?: 0 ) ),
+						'preset' 				=> str_replace( array( '-multi', '-read', '-disabled' ), '', $extra),
 					);
 
 	        	break;
 
+	        	scm_acf_field( 'style', array( 'checkbox-webfonts_google_styles', '', 'horizontal' ), __( 'Styles', SCM_THEME ) );
+
 	        	case 'checkbox':
 
-	        		$default = scm_acf_field_to3( $arg, 1, 'default', array() );
+	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
 	        		$layout = scm_acf_field_to3( $arg, 2, 'layout', 'vertical' );
 	        		$toggle = scm_acf_field_to3( $arg, 3, 'toggle', 0 );
-	        		//$choices = scm_acf_field_choices( $default, $choices );
+	        		$choices = scm_acf_field_choices( $default, $choices );
 	        		
 	        		$field = array(
 						'type' 					=> 'checkbox',
-						'choices' 				=> $choices,//$choices['choices'],
-						'default_value' 		=> $default,//$choices['default_value'],
+						'choices' 				=> $choices['choices'],
+						'default_value' 		=> $choices['default_value'],
 						'toggle' 				=> $toggle,
 						'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
-						//'preset' 				=> str_replace( '-horizontal', '', $elem),
+						'preset' 				=> str_replace( '-horizontal', '', $extra),
 					);
 
 	        	break;
@@ -289,7 +291,7 @@
 						'other_choice' 			=> $more,
 						'save_other_choice' 	=> scm_acf_field_to3( $arg, 4, 'save', ( isset( $arg[3] ) ? $more : 0 ) ),
 						'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
-						'preset' 				=> str_replace( array('-multi', '-horizontal'), '', $elem),
+						'preset' 				=> str_replace( array('-multi', '-horizontal'), '', $extra),
 					);
 
 	        	break;
