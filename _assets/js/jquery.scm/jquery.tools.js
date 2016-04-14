@@ -367,6 +367,7 @@
 
 		var $body 			= $( 'body' ),
 			$html 			= $( 'html' ),
+			opacity 		= ( $body.data( 'fade-opacity' ) ? parseFloat( $body.data( 'fade-opacity' ) / 10 ) : 0 ),
 			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
 			post 			= ( $body.data( 'smooth-post' ) ? $body.data( 'smooth-post' ) : 0 ),
@@ -376,6 +377,10 @@
 			$anchor 		= $( '#' + anchor ),
 			$button 		= $( 'a[href="#' + anchor + '"], *[data-href="#' + anchor + '"]' ),
 			$doc 			= $( document );
+
+		$body.css( 'opacity', opacity );
+
+		console.log(opacity);
 
 		if( $anchor.length === 0 )
 			$anchor = $body;
@@ -459,9 +464,10 @@
 
 		var $body 		= $( 'body' ),
 			$navigation = $( '.navigation' ),
+			opacity 	= ( $body.data( 'fade-opacity' ) ? parseFloat( $body.data( 'fade-opacity' ) / 10 ) : 0 ),
 			duration 	= ( $body.data( 'fade-out' ) ? parseFloat( $body.data( 'fade-out' ) ) : 0 ),
-			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' ),
-			opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
+			wait 		= ( $body.data( 'fade-wait' ) ? $body.data( 'fade-wait' ) : 'no' );
+			//opacity 	= ( $body.data( 'fade-out' ) ? 0 : .6 );
 
 		if( state == 'back' ){
 			window.history.back();

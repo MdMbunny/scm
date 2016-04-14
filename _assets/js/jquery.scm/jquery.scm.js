@@ -72,7 +72,7 @@
 			break;
 			default:
 				start = 'documentDone';
-				$body.css( 'opacity', .6 );
+				//$body.css( 'opacity', .6 );
 			break;
 		}
 

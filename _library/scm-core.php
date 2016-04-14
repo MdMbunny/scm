@@ -149,7 +149,7 @@
 
             // SCM
 
-            wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'global', SCM_URI . 'style-min.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style( 'global' );
 
             // SCM Child
@@ -217,7 +217,7 @@
             wp_register_script( 'jquery-scm-plugins', SCM_URI_JS . 'jquery.scm/jquery.plugins.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, false );
             wp_enqueue_script( 'jquery-scm-plugins' );
 
-            wp_register_script( 'jquery-scm-tools', SCM_URI_JS . 'jquery.scm/jquery.tools.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, false );
+            wp_register_script( 'jquery-scm-tools', SCM_URI_JS . 'jquery.scm/jquery.tools.min.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, false );
             wp_enqueue_script( 'jquery-scm-tools' );
 
             // jQuery Effects Core

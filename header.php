@@ -84,6 +84,7 @@ $wrap_class = 'site-page hfeed site ' . $wrap_layout . $site_align;
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
+$fade_opacity = scm_field( 'opt-tools-fade-opacity', 0, 'option' );
 $fade_wait = scm_field( 'opt-tools-fade-waitfor', 'no', 'option' );
 
 $smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 0, 'option' );
@@ -142,6 +143,7 @@ $page_slider_terms = scm_field( 'main-slider-terms', '', $id );
 <body <?php body_class(); ?> 
     data-fade-in="<?php echo $fade_in; ?>" 
     data-fade-out="<?php echo $fade_out; ?>" 
+    data-fade-opacity="<?php echo $fade_opacity; ?>" 
     data-fade-wait="<?php echo $fade_wait; ?>"
     data-smooth-duration="<?php echo $smooth_duration; ?>"
     data-smooth-offset="<?php echo $smooth_offset; ?>"

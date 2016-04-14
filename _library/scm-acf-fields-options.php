@@ -212,8 +212,9 @@
 			$fields[] = scm_acf_field_tab_left( 'tab-tools-settings', array('label'=> __( 'Strumenti', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'msg-fader', 'message', __( 'Pages Fader', SCM_THEME ) );
 					$fields[] = scm_acf_field_select( 'opt-tools-fade-waitfor', $default, 'waitfor-no', 100, 0, '', __( 'Wait for', SCM_THEME ) );
-					$fields[] = scm_acf_field( 'opt-tools-fade-in', array( 'second', '', '1', __( 'Fade In', SCM_THEME ), __( 'sec', SCM_THEME ), 0, 10 ), '', __( 'Fade In', SCM_THEME ) );
-					$fields[] = scm_acf_field( 'opt-tools-fade-out', array( 'second', '', '1', __( 'Fade Out', SCM_THEME ), __( 'sec', SCM_THEME ), 0, 10 ), '', __( 'Fade Out', SCM_THEME ) );
+					$fields[] = scm_acf_field( 'opt-tools-fade-in', array( 'second', .5, '.5', __( 'Fade In', SCM_THEME ), __( 'sec', SCM_THEME ), 0, 10 ), '', __( 'Fade In', SCM_THEME ) );
+					$fields[] = scm_acf_field( 'opt-tools-fade-out', array( 'second', .3, '.3', __( 'Fade Out', SCM_THEME ), __( 'sec', SCM_THEME ), 0, 10 ), '', __( 'Fade Out', SCM_THEME ) );
+					$fields[] = scm_acf_field( 'opt-tools-fade-opacity', array( 'percent', 0, '0', __( 'Fade Opacity', SCM_THEME ), __( '/10', SCM_THEME ), 0, 10 ), '', __( 'Fade Opacity', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-toppage', 'message', __( 'Top Of Page', SCM_THEME ) );
 					$fields[] = scm_acf_field( 'opt-tools-topofpage-offset', array( 'pixel', 200, 200, __( 'Offset', SCM_THEME ) ), __( 'Offset', SCM_THEME ) );
 					$fields[] = scm_acf_field_icon( 'opt-tools-topofpage-icon', array('default'=>'angle-up') );
