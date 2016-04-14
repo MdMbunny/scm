@@ -380,8 +380,6 @@
 
 		$body.css( 'opacity', opacity );
 
-		console.log(opacity);
-
 		if( $anchor.length === 0 )
 			$anchor = $body;
 			
@@ -497,6 +495,7 @@
 		}
 
 	}
+
 
 	$.goToLink = function( link, target ){
 

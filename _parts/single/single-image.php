@@ -85,8 +85,9 @@ if ( $layout == 'layout-thumbs' ) {
         $id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
         if( !$id )
             return;
-
-        $image = 'http://img.youtube.com/vi/' . $id . '/1.jpg';
+        
+        global $SCM_protocol;
+        $image = $SCM_protocol . 'img.youtube.com/vi/' . $id . '/1.jpg';
 
     }else{
         return;
