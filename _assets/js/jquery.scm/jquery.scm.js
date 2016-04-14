@@ -1,5 +1,3 @@
-var startPage;
-
 ( function($){
 
 // ******************************************************			
@@ -28,6 +26,7 @@ var startPage;
 		// *****************************************************
 
 		var initPage = function(){
+			$.consoleDebug( DEBUG, '- initPage Start');
 			GOOGLE_API_KEY = 'AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY';
 
 			$window 	= $( window );
@@ -45,6 +44,7 @@ var startPage;
 			$html.removeClass( 'no-js' );
 
 			$body.trigger( 'documentJquery' );
+			$.consoleDebug( DEBUG, '- initPage End');
 		}
 
 		// *****************************************************
@@ -52,6 +52,7 @@ var startPage;
 		// *****************************************************
 
 		var touchEvents = function(){
+			$.consoleDebug( DEBUG, '- touchEvents Start');
 
 	        if ( touch ) {
 	            $body.addClass( 'touch' );
@@ -101,6 +102,7 @@ var startPage;
 				}
 				
 			}
+			$.consoleDebug( DEBUG, '- touchEvents End');
 		}
 
 		// *****************************************************
@@ -108,6 +110,7 @@ var startPage;
 		// *****************************************************
 
 		var checkUrlAnchor = function(){
+			$.consoleDebug( DEBUG, '- checkUrlAnchor Start');
 			if( href.indexOf( '#' ) > -1 ){
 				var split = href.split('#')
 				$('body').data( 'anchor', split[1] );
@@ -119,13 +122,15 @@ var startPage;
 					window.location.replace("#");
 				}
 			}
+			$.consoleDebug( DEBUG, '- checkUrlAnchor End');
 		}
 
 		// *****************************************************
 		// *      START EVENTS
 		// *****************************************************
 
-		startEvents = function(){
+		var startEvents = function(){
+			$.consoleDebug( DEBUG, '- startEvents Start');
 			switch( $body.data( 'fade-wait' ) ){
 				case 'images': break;
 				case 'sliders':
@@ -139,7 +144,8 @@ var startPage;
 				break;
 			}
 
-			$body.on( start, function(e){ $.bodyIn(e); } );
+			$body.off( start).on( start, function(e){ $.bodyIn(e); } );
+			$.consoleDebug( DEBUG, '- startEvents End');
 		}
 
 		// *****************************************************
@@ -147,7 +153,8 @@ var startPage;
 		// *****************************************************
 
 		var layoutEvents = function(){
-			$body.on( 'resizing resized imagesLoaded', function(e){
+			$.consoleDebug( DEBUG, '- layoutEvents Start');
+			$body.off('resizing resized imagesLoaded').on( 'resizing resized imagesLoaded', function(e){
 			
 				$body.responsiveClasses( e );
 				$( '[data-equal]' ).equalChildrenSize();
@@ -155,14 +162,15 @@ var startPage;
 			} );
 
 			
-			$body.on( 'responsive', function( e, state ) {
-
+			$body.off('responsive').on( 'responsive', function( e, state ) {
 				$( '[data-switch-toggle]' ).switchByData( state, 'switch-toggle', 'toggle', '.toggle-image, .toggle-home' );
 				$( '[data-switch]' ).switchByData( state, 'switch' );
 				$( '[data-sticky]' ).stickyMenu();
 				$( '[data-affix]' ).affixIt();
 
 			} );
+
+			$.consoleDebug( DEBUG, '- layoutEvents End');
 		}
 
 		// *****************************************************
@@ -170,7 +178,8 @@ var startPage;
 		// *****************************************************
 
 		var navEvents = function(){
-			$navigation.on( 'toggledOn', function(e){
+			$.consoleDebug( DEBUG, '- navEvents Start');
+			$navigation.off( 'toggledOn').on( 'toggledOn', function(e){
 
 				$elems = $( this ).find( '[data-toggle-button="on"]' );
 				$elems.css( 'transform', 'rotate(90deg)' );
@@ -178,7 +187,7 @@ var startPage;
 
 			} );
 
-			$navigation.on( 'toggledOff', function(e){
+			$navigation.off( 'toggledOff').on( 'toggledOff', function(e){
 
 				$elems = $( this ).find( '[data-toggle-button="off"]' );
 				$elems.css('transform', 'rotate(-90deg)');
@@ -187,10 +196,11 @@ var startPage;
 			} );
 
 			$body.on( 'resizing', function(e){ $( '.toggled' ).toggledOff(e); } );
-			$window.on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
-			$body.on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
-			$page.on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
-			$page.on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
+			$window.off( 'scroll').on( 'scroll', function(e){ $( '.toggled' ).toggledOff(e); } );
+			$body.off( 'switchOn').on( 'switchOn', '.toggle', function( e, state ){ $( this ).toggledOff( e, state ) } );
+			$page.off( 'click').on( 'click', '.toggle-button', function(e){ $( this ).toggledIt(e); } );
+			$page.off( 'mousedown').on( 'mousedown', '*', function(e){ if( e.target == this ){ $( '.toggled' ).toggledOff(e); } } );
+			$.consoleDebug( DEBUG, '- navEvents End');
 		}
 
 		// *****************************************************
@@ -198,11 +208,13 @@ var startPage;
 		// *****************************************************
 
 		var debugEvents = function(){
-			/*$body.on( 'documentDone', function(e){ $.log('document.done', touch); } );
-			$body.on( 'imagesLoaded', function(e){ $.log('imagesLoaded', touch); } );
-			$body.on( 'nivoLoaded', function(e){ $.log('nivoLoaded', touch); } );
-			$body.on( 'mapLoaded', function(e){ $.log('mapLoaded', touch); } );
-			$body.on( 'mapsLoaded', function(e){ $.log('mapsLoaded', touch); } );*/
+			$.consoleDebug( DEBUG, '- debugEvents Start');
+			/*$body.off('documentDone').on( 'documentDone', function(e){ $.log('document.done', touch); } );
+			$body.off('imagesLoaded').on( 'imagesLoaded', function(e){ $.log('imagesLoaded', touch); } );
+			$body.off('nivoLoaded').on( 'nivoLoaded', function(e){ $.log('nivoLoaded', touch); } );
+			$body.off('mapLoaded').on( 'mapLoaded', function(e){ $.log('mapLoaded', touch); } );
+			$body.off('mapsLoaded').on( 'mapsLoaded', function(e){ $.log('mapsLoaded', touch); } );*/
+			$.consoleDebug( DEBUG, '- debugEvents End');
 		}
 
 		// *****************************************************
@@ -210,7 +222,7 @@ var startPage;
 		// *****************************************************
 
 		var triggerEvents = function(){
-
+			$.consoleDebug( DEBUG, '- triggerEvents Start');
 			// Trigger WINDOW RESIZED event
 			var interval, resizing;
 			$window.resize( function(e){
@@ -235,8 +247,8 @@ var startPage;
 			$body.addClass('ready');
 
 			// Set tools
-			$body.eventLinks();
 			$body.eventTools();
+			$body.eventLinks();
 			$body.currentSection();
 			$body.checkCss();
 
@@ -276,7 +288,8 @@ var startPage;
 
 			});
 
-			$body.responsiveClasses();
+			$body.responsiveClasses('force');
+			$.consoleDebug( DEBUG, '- triggerEvents End');
 
 		}
 
@@ -284,7 +297,8 @@ var startPage;
 		// *      START
 		// *****************************************************
 
-		startPage = function(){
+		STARTPAGE = function(){
+			$.consoleDebug( DEBUG, '--- startPage Start');
 			initPage();
 			touchEvents();
 			checkUrlAnchor();
@@ -293,9 +307,11 @@ var startPage;
 			navEvents();
 			debugEvents();
 			triggerEvents();
+			$.consoleDebug( DEBUG, '--- startPage Done');
 		}
 
-		startPage();
+		//$.consoleDebug( DEBUG, 'Orig startPage Call');
+		STARTPAGE();
 
 	// *****************************************************
 	// *****************************************************
@@ -307,7 +323,8 @@ var startPage;
 
 		window.onpageshow = function(event) {
 		    if (event.persisted && $body.hasClass('safari')) {
-		        window.location.reload() 
+		    	$.bodyIn(event);
+		        //window.location.reload()
 		    }
 		};
 

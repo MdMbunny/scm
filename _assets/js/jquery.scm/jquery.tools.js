@@ -17,13 +17,15 @@
 //*
 //*****************************************************
 
+var DEBUG = false;
+var STARTPAGE;
 
 ( function($){
 
 	/*var READY = false;
 	var LOADED = false;*/
-
-	var DEBUG = false;
+	
+	
 	var ARCHIVES = {};
 	var PREVIOUS_FANCYBOX = '';
 
@@ -113,7 +115,7 @@
 			if( w < sizes[ tocolumn ] ) this.addClass( 'tocolumn' );
 			else this.removeClass( 'tocolumn' );
 
-			if(old != this.attr( 'class' )){
+			if(event == 'force' || old != this.attr( 'class' )){
 
 				if ( this.hasClass( 'smartmin' ) )		state = 'smartmin';
 				else if( this.hasClass( 'smart' ) )		state = 'smart';
@@ -172,6 +174,7 @@
 
 	$.fn.eventTools = function( event ){
 		//this.find( '[data-parallax]' ).setParallax();
+		Waypoint.destroyAll();
 		this.find( '[data-content-fade]' ).fadeContent();
 		this.find( '[data-tooltip]' ).setTooltip();
 		this.find( '[data-popup]' ).setFancybox();
@@ -367,6 +370,7 @@
 
 		var $body 			= $( 'body' ),
 			$html 			= $( 'html' ),
+			$navigation 	= $( '.navigation' ),
 			opacity 		= ( $body.data( 'fade-opacity' ) ? parseFloat( $body.data( 'fade-opacity' ) / 10 ) : 0 ),
 			duration 		= ( $body.data( 'fade-in' ) ? parseFloat( $body.data( 'fade-in' ) ) : 0 ),
 			delay 			= ( $body.data( 'smooth-new' ) ? parseFloat( $body.data( 'smooth-new' ) ): 0 ),
@@ -379,6 +383,7 @@
 			$doc 			= $( document );
 
 		$body.css( 'opacity', opacity );
+		$navigation.css( 'opacity', 1 );
 
 		if( $anchor.length === 0 )
 			$anchor = $body;
@@ -514,9 +519,22 @@
 			if( target != '_blank' ){
 
 				$.consoleDebug( DEBUG, 'loading same page');
+
+				// DYNAMIC LOADING CONTENT
+				// Check load page anchor issue
+				// Check Fancybox, Nivo, bxSlider, etc
+				// Update your LoadContent function
+				// Add in scm.js the "popstate" Event for History navigation
+
+				/*history.pushState(null, null, link);
+				$('<div>').load(link + ' #site-page', function() {
+				    $('#site-page').replaceWith( $(this).find('#site-page') );
+				    $.consoleDebug( DEBUG, 'Load startPage Call');
+				    STARTPAGE();
+				});*/
 				
 				window.location = link;
-				return false;
+				return this;
 
 			}else{
 
@@ -836,7 +854,7 @@
 				offset 			= ( off ? off : ( $body.data( 'smooth-offset' ) ? $body.data( 'smooth-offset' ) : '0' ) ),
 				units 			= ( off ? off : ( $body.data( 'smooth-offset-units' ) ? $body.data( 'smooth-offset-units' ) : 'px' ) ),
 				ease 			= ( $body.data( 'smooth-ease' ) ? $body.data( 'smooth-ease' ) : 'swing' ),
-				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0 ),
+				delay 			= ( $body.data( 'smooth-delay' ) ? parseFloat( $body.data( 'smooth-delay' ) ): 0.1 ),
 
 				win 			= $( window ).height(),
 				height 			= $body.height(),
@@ -987,7 +1005,7 @@
 			        
 	        var setTimer = function() {
 	            
-	            $( window ).on( 'scroll.currentLink', function() {
+	            $( window ).off('scroll.currentLink').on( 'scroll.currentLink', function() {
 	                didScroll = true;
 	            });
 	            
@@ -1114,7 +1132,7 @@
 			        
 	        var setTimer = function() {
 	            
-	            $( window ).on( 'scroll.currentSection', function() {
+	            $( window ).off('scroll.currentSection').on( 'scroll.currentSection', function() {
 	                didScroll = true;
 	            });
 	            
@@ -1247,9 +1265,11 @@
 			}
 
 			$this
+				.off('affix.bs.affix')
 				.on( 'affix.bs.affix', function () {
 				    $this.trigger( 'affixedOn' );
 				} )
+				.off('affix-top.bs.affix affix-bottom.bs.affix')
 				.on( 'affix-top.bs.affix affix-bottom.bs.affix', function () {
 				    $this.trigger( 'affixedOff' );
 				} );
@@ -1907,7 +1927,7 @@
 				$this.hide().fadeIn('slow');
 			}
 
-			$( window ).on( 'scroll', function(e){
+			$( window ).off('scroll').on( 'scroll', function(e){
 			});
 	
 		});
