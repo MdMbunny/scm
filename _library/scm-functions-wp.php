@@ -14,7 +14,8 @@
 
 
 function consoleDebug( $obj ){
-    if( SCM_DEBUG )
+    global $SCM_debug;
+    if( $SCM_debug )
         consoleLog( $obj );
 }
 

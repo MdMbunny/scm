@@ -184,10 +184,7 @@
 
             consoleDebug( 'theme setup' );
 
-            global $SCM_isdashboard, $SCM_debug;
-
-            $SCM_debug = scm_field( 'opt-debug', 0, 'options' );
-            define( 'SCM_DEBUG', $SCM_debug );
+            global $SCM_isdashboard;
 
             if( is_user_logged_in() && $SCM_isdashboard ){
                 wp_redirect( redirectUser('') );

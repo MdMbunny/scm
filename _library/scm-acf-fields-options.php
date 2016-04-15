@@ -176,9 +176,6 @@
 			$fields[] = scm_acf_field_tab_left( 'tab-intro-constants', array('label'=>__( 'Costanti', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'msg-constants', array('message', $const, 0, ''), 'Constants List' );
 
-			$fields[] = scm_acf_field_tab_left( 'tab-intro-debug', array('label'=>__( 'Debug', SCM_THEME )) );
-				$fields[] = scm_acf_field_false( 'opt-debug', 0, 25, 0, 0, __( 'Debug', SCM_THEME ) );
-
 			return $fields;
 
 		}

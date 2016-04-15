@@ -197,7 +197,6 @@ require_once( SCM_DIR_LIBRARY . 'scm-front.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 
-
 // *****************************************************
 // *      4.0 FUNCTIONS
 // *****************************************************
