@@ -13,14 +13,9 @@
 // ...
 
 
-function resetRoles() {
-    remove_role('editor');
-    remove_role('author');
-    remove_role('contributor');
-    remove_role('subscriber');
-    remove_role('staff');
-    remove_role('member');
-    remove_role('utente');
+function consoleDebug( $obj ){
+    if( SCM_DEBUG )
+        consoleLog( $obj );
 }
 
 function redirectUser( $user = '' ) {

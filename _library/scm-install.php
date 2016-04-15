@@ -101,17 +101,33 @@
             global $SCM_typekit;
 
             $SCM_typekit = new Typekit();
-
         }
-        
     }
 
 
             
 // *** Adminitration Roles
 
+    if ( ! function_exists( 'scm_roles_reset' ) ) {
+        function scm_roles_reset() {
+
+            consoleDebug( 'reset roles' );
+
+            remove_role('editor');
+            remove_role('author');
+            remove_role('contributor');
+            remove_role('subscriber');
+            remove_role('staff');
+            remove_role('member');
+            remove_role('utente');
+        }
+    }
+
+
     if ( ! function_exists( 'scm_roles_install' ) ) {
         function scm_roles_install() {
+
+            consoleDebug( 'install roles' );
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -163,47 +179,15 @@
         
 // *** Theme Activation
 
-// Temporary change the SCM Version in style.css to reset Roles
-
-    /*if ( ! function_exists( 'scm_theme_setup' ) ) {
-        function scm_theme_setup() {
-
-            global $SCM_version;
-
-            $themeStatus = get_option( 'scm-settings-installed' );
-            $version = get_option( 'scm-version' );
-
-            if( $SCM_version != $version ){
-
-                update_option( 'scm-version', $SCM_version );
-
-                remove_role('editor');
-                remove_role('author');
-                remove_role('contributor');
-                remove_role('subscriber');
-                remove_role('staff');
-                remove_role('member');
-                remove_role('utente');
-
-                wp_redirect(admin_url('themes.php?page=scm-install-plugins'));
-                die;
-
-            }
-
-            if ( ! $themeStatus ) {
-                update_option( 'scm-settings-installed', 1 );
-                wp_redirect(admin_url('themes.php?page=scm-install-plugins'));
-                die;
-            }
-
-
-        }
-    }*/
-
     if ( ! function_exists( 'scm_theme_setup' ) ) {
         function scm_theme_setup() {
 
-            global $SCM_isdashboard;
+            consoleDebug( 'theme setup' );
+
+            global $SCM_isdashboard, $SCM_debug;
+
+            $SCM_debug = scm_field( 'opt-debug', 0, 'options' );
+            define( 'SCM_DEBUG', $SCM_debug );
 
             if( is_user_logged_in() && $SCM_isdashboard ){
                 wp_redirect( redirectUser('') );
@@ -215,15 +199,15 @@
     if ( ! function_exists( 'scm_theme_activate' ) ) {
         function scm_theme_activate() {
             update_option( 'scm-settings-installed', 1 );
-            resetRoles();
-            wp_redirect( redirectUser('super') );
+            scm_roles_reset();
+            //wp_redirect( redirectUser('super') );
         }
     }
 
     if ( ! function_exists( 'scm_theme_update' ) ) {
         function scm_theme_update() {
             update_option( 'scm-version', $SCM_version );
-            resetRoles();
+            scm_roles_reset();
             //wp_redirect( redirectUser('') );
         }
     }
@@ -231,7 +215,7 @@
     if ( ! function_exists( 'scm_theme_deactivate' ) ) {
         function scm_theme_deactivate() {
             update_option( 'scm-settings-installed', 0 );
-            resetRoles();
+            scm_roles_reset();
         }
     }
 
@@ -260,11 +244,6 @@
                     'wpcf7_contact_form'    => 'Contact Form',
                 ),
             );
-
-            // DEBUG - RESET DB
-
-            /*update_field( 'types-list', array(), 'options' );
-            update_field( 'taxonomies-list', array(), 'options' );*/
 
             // SET DEFAULT
 
@@ -319,11 +298,9 @@
             $saved_types = scm_field( 'default-types-list', 0, 'options' );
             if( isset( $saved_types ) && is_array( $saved_types ) ){
                 foreach ($saved_types as $key => $value) {
-                    unset( $default_types[ $value ] );// = null;
+                    unset( $default_types[ $value ] );
                 }
-            }/*else{
-                $default_types = subArray( $default_types, '', 0, array( 'admin' => 1 ) );
-            }*/
+            }
 
             $taxes = subArray( $default_taxonomies, 'plural' );
 
@@ -335,14 +312,9 @@
             $saved_taxonomies = scm_field( 'default-taxonomies-list', 0, 'options' );
             if( isset( $saved_taxonomies ) && is_array( $saved_taxonomies ) ){
                 foreach ($saved_taxonomies as $key => $value) {
-                    unset( $default_taxonomies[ $value ] );// = null;
+                    unset( $default_taxonomies[ $value ] );
                 }
-            }/*else{
-                $default_taxonomies = array();
-            }*/
-            
-            //consoleLog($default_types);
-            //consoleLog($default_taxonomies);
+            }
 
             // INSTALL
 
@@ -390,15 +362,15 @@
                     continue;
 
                 $plural = $type['plural'];
-                $type['admin'] = (int)( isset( $type['admin'] ) && $type['admin'] );
-                $type['active'] = (int)( isset( $type['active'] ) && $type['active'] );
-                $type['public'] = (int)( isset( $type['public'] ) && $type['public'] );
-                $type['hidden'] = (int)( isset( $type['hidden'] ) && $type['hidden'] );
-                $type['orderby'] = ( isset( $type['orderby'] ) ? $type['orderby'] : 'title' );
-                $type['ordertype'] = ( isset( $type['ordertype'] ) ? $type['ordertype'] : 'ASC' );
-                $type['singular'] = ( isset( $type['singular'] ) ? $type['singular'] : $plural );
-                $type['slug'] = ( isset( $type['slug'] ) && $type['slug'] ? sanitize_title( $type['slug'] ) : sanitize_title( $plural ) );
-                $type['icon'] = ( isset( $type['icon'] ) && $type['icon'] ? '\\' . $type['icon'] : '' ) ;
+                $type['admin'] = (int)is_attr( $type, 'admin', 0 );
+                $type['active'] = (int)is_attr( $type, 'active', 0 );
+                $type['public'] = (int)is_attr( $type, 'public', 0 );
+                $type['hidden'] = (int)is_attr( $type, 'hidden', 0 );
+                $type['orderby'] = is_attr( $type, 'orderby', 'title' );
+                $type['ordertype'] = is_attr( $type, 'ordertype', 'ASC' );
+                $type['singular'] = is_attr( $type, 'singular', $plural );
+                $type['slug'] = sanitize_title( is_attr( $type, 'slug', $plural ) );
+                $type['icon'] = is_attr( $type, 'icon', '', '\\' );
 
                 if( $type['active'] === 1 ){
 
@@ -449,11 +421,11 @@
 
                 $plural = $tax['plural'];
 
-                $tax['singular'] = ( isset( $tax['singular'] ) ? $tax['singular'] : $plural );
-                $tax['slug'] = ( isset( $tax['slug'] ) && $tax['slug'] ? sanitize_title( $tax['slug'] ) : sanitize_title( $plural ) );
-                $tax['add_cap'] = (int)( isset( $tax['add_cap'] ) && $tax['add_cap'] );
-                $tax['template'] = (int)( isset( $tax['template'] ) && $tax['template'] );
-                $tax['active'] = (int)( isset( $tax['active'] ) && $tax['active'] );
+                $tax['singular'] = is_attr( $tax, 'singular', $plural );
+                $tax['slug'] = sanitize_title( is_attr( $tax, 'slug', $plural ) );
+                $tax['add_cap'] = (int)is_attr( $tax, 'add_cap', 0 );
+                $tax['template'] = (int)is_attr( $tax, 'template', 0 );
+                $tax['active'] = (int)is_attr( $tax, 'active', 0 );
 
                 if( $tax['active'] === 1 ){
 

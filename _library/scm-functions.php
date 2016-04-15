@@ -108,14 +108,35 @@ function consoleLog( $obj ){
     <?php
 }
 
-function consoleDebug( $obj ){
-    global $SCM_debug;
-    if( $SCM_debug )
-        consoleLog( $obj );
+function is_set( $var, $fall = '' ){
+    if(!isset($var))
+        return $fall;
+    return $var;  
 }
 
+function ex_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
+    $ret = '';
+    if(!isset($var) || !is_array($var) || !$attr || !is_string($attr) || !isset($var[$attr]))
+        $ret = $fall;
+    else
+        $ret = $var[$attr];
+    if( $pre || $app )
+        $ret = $pre . (string)$ret . $app;
 
+    return $ret;
+}
 
+function is_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
+    $ret = '';
+    if( !isset($var) || !is_array($var) || !$attr || !is_string($attr) || !isset($var[$attr]) || !$var[$attr] )
+        $ret = $fall;
+    else
+        $ret = $var[$attr];
+    if( $pre || $app )
+        $ret = $pre . (string)$ret . $app;
+
+    return $ret;
+}
 
 function exists( $var = '' ){
 
@@ -771,12 +792,12 @@ function addHTTP($url){
 */
 
 function fontSizeLimiter($txt, $char, $size){
-	$str = '';
-	$lng = strlen($txt);
-	foreach ($size as $key => $value) {
-		if($lng > $char[$key]) $str = 'font-size:' . $value . 'px;';
-	}
-	return $str;
+    $str = '';
+    $lng = strlen($txt);
+    foreach ($size as $key => $value) {
+        if($lng > $char[$key]) $str = 'font-size:' . $value . 'px;';
+    }
+    return $str;
 }
 
 function filemtime_remote($uri)
@@ -822,13 +843,16 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
     if( !is_array( $file ) )
         return array();
 
+    if( !ex_attr($file, 'url', '') )
+        return array();
+
     $file['link'] = $file['url'];
     $file['URL'] = str_replace( ' ', '%20', $file['link'] );
     $file['filename'] = basename( $file['link'] );
     $file['name'] = ( $name ?: $file['filename'] );
 
-    $file['modified'] = ( $file['modified'] ?: date ( $date, filemtime_remote( $file['URL'] ) ) );
-    $file['date'] = ( $file['date'] ?: $file['modified'] );
+    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime_remote( $file['URL'] ) ) );
+    $file['date'] = ex_attr($file, 'date', $file['modified']);
     
     $ch = curl_init( $file['URL'] );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -846,8 +870,6 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
     $file['size'] = $file['SIZE'] . ' (' . $file['bytes'] . ' bytes)';
     $file['type'] = $file['TYPE'] . ' (' . $file['extension'] . ')';
     $file['icon'] = fileExtensionToIcon( $file['extension'] );
-
-    //printPre($file);
 
     return $file;
 }

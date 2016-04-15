@@ -20,7 +20,7 @@
 *****************************************************
 */
 
-
+show_admin_bar(false);
 
 $SCM_MENU_ORDER = array(
     'scm' => array(
@@ -84,8 +84,8 @@ $SCM_MENU_ORDER = array(
     add_filter('menu_order', 'scm_admin_menu_order');
 
     add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
-    add_action( 'admin_head', 'scm_admin_remove_meta' );
-    add_action( 'pre_user_query', 'scm_admin_hide_from_users' );
+    add_action( 'admin_head', 'scm_admin_hide_from_users' );
+    add_action( 'pre_user_query', 'scm_admin_hide_admin_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
     //add_action( 'current_screen', 'scm_current_screen' );
@@ -438,19 +438,21 @@ $SCM_MENU_ORDER = array(
     }
 
 // Removes Screen Meta Links to Users
-    if ( ! function_exists( 'scm_admin_remove_meta' ) ) {
-        function scm_admin_remove_meta(){
+    if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
+        function scm_admin_hide_from_users(){
 
-            if( current_user_can( 'manage_options' ) )
-                return;
+            if( !current_user_can( 'manage_options' ) )
+                echo '<style>#screen-meta-links{display: none !important;}</style>';
 
-            echo '<style>#screen-meta-links{display: none !important;}</style>';
+            if (!current_user_can('update_core')) {
+                remove_action( 'admin_notices', 'update_nag', 3 );
+            }            
         }
     }
 
 // Hides Administrator From User List
-    if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
-        function scm_admin_hide_from_users($user_search) {
+    if ( ! function_exists( 'scm_admin_hide_admin_from_users' ) ) {
+        function scm_admin_hide_admin_from_users($user_search) {
             $user = wp_get_current_user();
             if ($user->ID!=1) { // Is not administrator, remove administrator
                 global $wpdb;
