@@ -64,15 +64,15 @@ $SCM_MENU_ORDER = array(
 // *****************************************************
 
     //add_filter('login_redirect', 'scm_login_redirect', 10, 3 );
-    add_action('admin_init', 'scm_admin_redirect');
+    add_action( 'admin_init', 'scm_admin_redirect' );
+    add_action( 'admin_init', 'scm_admin_plugins' );
 
-
-    add_filter( 'wp_mail_from', 'scm_mail_from' );
-    add_filter( 'wp_mail_from_name', 'scm_mail_from_name' );
+    add_filter( 'wp_mail_from', 'scm_admin_mail_from' );
+    add_filter( 'wp_mail_from_name', 'scm_admin_mail_from_name' );
 
     
-    add_action( 'admin_enqueue_scripts', 'scm_admin_assets', 998 );
-    add_action( 'login_enqueue_scripts', 'scm_login_assets', 10 );    
+    add_action( 'admin_enqueue_scripts', 'scm_admin_register_assets', 998 );
+    add_action( 'login_enqueue_scripts', 'scm_login_register_assets', 10 );    
 
     add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
     add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
@@ -83,23 +83,25 @@ $SCM_MENU_ORDER = array(
     add_filter('custom_menu_order', 'scm_admin_menu_order');
     add_filter('menu_order', 'scm_admin_menu_order');
 
-    add_action( 'wp_dashboard_setup', 'scm_admin_remove_dashboard_widgets' );
+    add_action( 'wp_dashboard_setup', 'scm_admin_hide_dashboard_widgets' );
     add_action( 'admin_head', 'scm_admin_hide_from_users' );
     add_action( 'pre_user_query', 'scm_admin_hide_admin_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
-    //add_action( 'current_screen', 'scm_current_screen' );
-    add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
-    add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
-    add_filter( 'wp_handle_upload', 'scm_upload_set_size', 3 );
-    add_action( 'admin_init', 'scm_admin_plugins' );
+    //add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
+    //add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
+    add_filter( 'wp_handle_upload', 'scm_admin_upload_max_size', 3 );
+    add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
+    add_filter( 'intermediate_image_sizes_advanced', 'scm_admin_upload_def_sizes' );
+    add_action( 'admin_init', 'scm_admin_upload_cust_sizes' );
+    add_filter( 'image_size_names_choose', 'scm_admin_upload_cust_names' );
+    add_filter( 'upload_dir', 'scm_admin_upload_dir', 2 );
+    //add_action( 'before_delete_post', 'scm_admin_upload_delete' );   
+    
+    add_action( 'shutdown', 'scm_admin_debug_hooks');
 
-    add_action( 'admin_init', 'scm_admin_upload_sizes' );
-    add_filter( 'image_size_names_choose', 'scm_admin_custom_sizes' );
-    //add_filter('wp_handle_upload_prefilter', 'scm_upload_set_filename', 1, 1);
-    //add_filter('wp_read_image_metadata', 'scm_upload_set_meta', 1, 3);    
-    //add_filter( 'upload_dir', 'scm_upload_set_directory' );
 
+/***********************/
 
     //add_action( 'after_setup_theme', 'scm_nav_auto_menu' ); // TESTING
 
@@ -182,8 +184,8 @@ $SCM_MENU_ORDER = array(
         }
     }
 
-    if ( ! function_exists( 'scm_mail_from_name' ) ) {
-        function scm_mail_from_name() {
+    if ( ! function_exists( 'scm_admin_mail_from_name' ) ) {
+        function scm_admin_mail_from_name() {
             //$name = 'yourname';
             $name = get_option('blogname');
             $name = esc_attr($name);
@@ -191,8 +193,8 @@ $SCM_MENU_ORDER = array(
         }
     }
 
-    if ( ! function_exists( 'scm_mail_from' ) ) {
-        function scm_mail_from() {
+    if ( ! function_exists( 'scm_admin_mail_from' ) ) {
+        function scm_admin_mail_from() {
             $email = scm_field( 'opt-staff-email', '', 'option' );
             $email = is_email($email);
             return $email;
@@ -204,42 +206,28 @@ $SCM_MENU_ORDER = array(
 //  Enqueue CSS and Scripts
 // *********************************************
 
-    if ( ! function_exists( 'scm_admin_assets' ) ) {
-        function scm_admin_assets() {
+    if ( ! function_exists( 'scm_admin_register_assets' ) ) {
+        function scm_admin_register_assets() {
 
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.5.0/css/font-awesome.min.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, null );
             wp_enqueue_style( 'font-awesome' );
 
-            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style('scm-admin');
-            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style('scm-admin-child');
 
-            wp_register_script( 'jquery-scm-admin', SCM_URI_JS . 'jquery.scm/jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'jquery-scm-admin' );
-
-            wp_register_script( 'jquery-scm-admin-child', SCM_URI_JS_CHILD . 'jquery.admin.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'jquery-scm-admin-child' );
-            
         }
     } 
 
-    if ( ! function_exists( 'scm_login_assets' ) ) {
-        function scm_login_assets() {
+    if ( ! function_exists( 'scm_login_register_assets' ) ) {
+        function scm_login_register_assets() {
 
-            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
+            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style('scm-login');
             
-            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION, 'screen' );
-            wp_enqueue_style('scm-login-child');
-
-            wp_register_script( 'jquery-scm-login', SCM_URI_JS . 'jquery.scm/jquery.login.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'jquery-scm-login' );
-
-            wp_register_script( 'jquery-scm-login-child', SCM_URI_JS_CHILD . 'jquery.login.js', array( 'jquery' ), SCM_SCRIPTS_VERSION, true );
-            wp_enqueue_script( 'jquery-scm-login-child' );
-
-            
+            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION );
+            wp_enqueue_style('scm-login-child');            
             
         }
     }
@@ -360,32 +348,6 @@ $SCM_MENU_ORDER = array(
             global $menu;
             ksort( $menu );
 
-            /*$media = $menu[10];
-            $pages = $menu[20];
-            if( isset( $menu[26] ) && isset( $menu[26][0] ) && $menu[26][0] == 'C F 7' ){
-                $cf7 = $menu[26];
-                $menu[57] = $cf7;
-            }
-
-            if( isset( $menu['80.025'] ) ){
-                $acf = $menu['80.025'];
-                unset( $menu['80.025'] );
-                $menu[83] = $acf;
-            }
-            
-            $users = $menu[70];
-            
-            $menu[5] = $pages;
-            $menu[10] = array('','read',"separator3",'','wp-menu-separator');
-            $menu[20] = array('','read',"separator4",'','wp-menu-separator');
-            $menu[26] = array('','read',"separator5",'','wp-menu-separator');
-            $menu[27] = $media;
-            $menu[42] = array('','read',"separator6",'','wp-menu-separator');
-            
-            $menu[56] = $users;
-            unset( $menu[70] );
-            $menu[81] = array('','read',"separator7",'','wp-menu-separator');*/
-
             $menu[] = array('','read',"separator3",'','wp-menu-separator');
             $menu[] = array('','read',"separator4",'','wp-menu-separator');
             $menu[] = array('','read',"separator5",'','wp-menu-separator');
@@ -406,24 +368,23 @@ $SCM_MENU_ORDER = array(
             //global $submenu;
 
 
-            remove_menu_page( 'index.php' );                  //Dashboard
-            remove_menu_page( 'edit.php' );                   //Posts
+            remove_menu_page( 'index.php' );                                    //Dashboard
+            remove_menu_page( 'edit.php' );                                     //Posts
 
-            remove_menu_page( 'edit-comments.php' );          //Comments
-            remove_menu_page( 'link-manager.php' );           //Links
-            remove_menu_page( 'edit-tags.php?taxonomy=link_category' );           //Links
+            remove_menu_page( 'edit-comments.php' );                            //Comments
+            remove_menu_page( 'link-manager.php' );                             //Links
+            remove_menu_page( 'edit-tags.php?taxonomy=link_category' );         //Links
 
-            remove_menu_page( 'edit-tags.php?taxonomy=category');
-            remove_menu_page( 'edit-tags.php?taxonomy=post_tag');
+            remove_menu_page( 'edit-tags.php?taxonomy=category');               //Categories
+            remove_menu_page( 'edit-tags.php?taxonomy=post_tag');               //Tags
             
         }
     }
 
 
-
 // Remove Dashboard Widgets
-    if ( ! function_exists( 'scm_admin_remove_dashboard_widgets' ) ) {
-        function scm_admin_remove_dashboard_widgets(){
+    if ( ! function_exists( 'scm_admin_hide_dashboard_widgets' ) ) {
+        function scm_admin_hide_dashboard_widgets(){
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
             remove_meta_box('dashboard_activity', 'dashboard', 'normal');   // Activity
             remove_meta_box('dashboard_right_now', 'dashboard', 'normal');   // Right Now
@@ -441,6 +402,30 @@ $SCM_MENU_ORDER = array(
     if ( ! function_exists( 'scm_admin_hide_from_users' ) ) {
         function scm_admin_hide_from_users(){
 
+            global $SCM_screen;
+            if( $SCM_screen == '/wp-admin/options-media.php' ){
+                echo '<style>
+
+                    #wpbody-content .wrap form tr > td{
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    #wpbody-content .wrap form > h2,
+                    #wpbody-content .wrap form > p,
+                    #wpbody-content .wrap form tr > *:not(td),
+                    #wpbody-content .wrap form tr > td > *:not(#oir-remove-image-sizes){
+                        display: none;
+                    }
+
+                    #oir-remove-image-sizes, #oir-remove-image-sizes+p, #oir-remove-image-sizes+p+p{
+                        display: block !important;
+                    }
+
+                </style>';
+
+            }
+           
             if( !current_user_can( 'manage_options' ) )
                 echo '<style>#screen-meta-links{display: none !important;}</style>';
 
@@ -471,7 +456,6 @@ $SCM_MENU_ORDER = array(
             $wp_admin_bar->remove_node( 'new-media' );
             $wp_admin_bar->remove_node( 'new-page' );
             $wp_admin_bar->remove_node( 'view' );
-            //$wp_admin_bar->remove_node( 'new-sections' );
         }
     }
 
@@ -480,48 +464,76 @@ $SCM_MENU_ORDER = array(
 // UPLOAD
 // *********************************************
     
+    /*if ( ! function_exists( 'scm_admin_upload_delete' ) ) {
+        function scm_admin_upload_delete( $postid ){
 
-    /*if ( ! function_exists( 'scm_current_screen' ) ) {
-        function scm_current_screen( $current_screen ){
-            global $SCM_current_screen;
+            global $post_type;   
+            if ( $post_type != 'gallerie' ) return;
 
-            $SCM_current_screen = $current_screen;
+            $gall = scm_field('galleria-images', $postid);
+            foreach ($gall as $key => $value) {
+                wp_delete_attachment( $value->ID, true );
+            }
 
-            //printPre( $current_screen );
         }
     }*/
 
-
 // Change the upload path to the one we want
-    if ( ! function_exists( 'scm_upload_pre' ) ) {
+    /*if ( ! function_exists( 'scm_upload_pre' ) ) {
         function scm_upload_pre( $file ){
 
-            add_filter( 'upload_dir', 'scm_upload_set_directory' );
+            add_filter( 'upload_dir', 'scm_admin_upload_dir' );
 
             return $file;
 
         }
-    }
+    }*/
  
 // Change the upload path back to the one Wordpress uses by default
-    if ( ! function_exists( 'scm_upload_post' ) ) {
+    /*if ( ! function_exists( 'scm_upload_post' ) ) {
         function scm_upload_post( $fileinfo ){
 
-            remove_filter( 'upload_dir', 'scm_upload_set_directory' );
+            remove_filter( 'upload_dir', 'scm_admin_upload_dir' );
 
             return $fileinfo;
         }
+    }*/
+
+    add_filter( 'wp_calculate_image_sizes', 'scm_admin_upload_adjust_sizes', 10 , 2 );
+
+    if ( ! function_exists( 'scm_admin_upload_adjust_sizes' ) ) {
+        function scm_admin_upload_adjust_sizes( $sizes, $size ) {
+
+            $width = $size[0];
+
+            840 <= $width && $sizes = '(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 1362px) 62vw, 840px';
+            840 > $width && 600 <= $width && $sizes = '(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 984px) 61vw, (max-width: 1362px) 45vw, 600px';
+            600 > $width && $sizes = '(max-width: ' . $width . 'px) 85vw, ' . $width . 'px';
+
+            /*if ( 'page' === get_post_type() ) {
+                840 > $width && $sizes = '(max-width: ' . $width . 'px) 85vw, ' . $width . 'px';
+            } else {
+                840 > $width && 600 <= $width && $sizes = '(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 984px) 61vw, (max-width: 1362px) 45vw, 600px';
+                600 > $width && $sizes = '(max-width: ' . $width . 'px) 85vw, ' . $width . 'px';
+            }*/
+
+            return $sizes;
+        }
     }
+
+
                                                                                                 
 //Change the Upload Folder to a Type Folder
-    if ( ! function_exists( 'scm_upload_set_directory' ) ) {
-        function scm_upload_set_directory($args){
+    if ( ! function_exists( 'scm_admin_upload_dir' ) ) {
+        function scm_admin_upload_dir($args){
 
             $arr = thePost();
+            //$to3 = scm_field('opt-to3-gallerie-folder', 0, 'options');
 
             $dir = '';
             
             if($arr){
+                $id = $arr['ID'];
                 $type = $arr['type'];        
                 $slug = $arr['slug'];
                 $tax = $arr['taxonomy'];
@@ -533,6 +545,10 @@ $SCM_MENU_ORDER = array(
                     
                     if( $tax )
                         $dir .= '/' . $tax;
+                    
+                    // Il problema è che quando crei una nuova Galleria e carichi delle foto, il post non esiste ancora e quindi senza slug non puoi creare una cartella apposta
+                    //if( $to3 && $type == 'gallerie' && ( $slug || $id ) )
+                        //$dir .= '/' . ( $slug ?: $id );
 
                 }
 
@@ -543,8 +559,6 @@ $SCM_MENU_ORDER = array(
 
             if( $dir ){
 
-                //$args['path']    = str_replace( $args['subdir'], '', $args['path'] );
-                //$args['url']     = str_replace( $args['subdir'], '', $args['url'] );
                 $args['subdir']  = $dir;
                 $args['path']   .= $dir; 
                 $args['url']    .= $dir;
@@ -556,88 +570,62 @@ $SCM_MENU_ORDER = array(
     }
 
 
-//Add Sizes for Uploaded Images
-    if ( ! function_exists( 'scm_admin_upload_sizes' ) ) {
-        function scm_admin_upload_sizes(){
 
-            add_image_size('square', 700, 700, true);
-            add_image_size('square-medium', 500, 500, true);
-            add_image_size('square-small', 300, 300, true);
-            add_image_size('square-thumb', 150, 150, true);
-            //add_image_size('big', 700, 700, false);
+
+
+//Managing Sizes for Uploaded Images
+
+    if ( ! function_exists( 'scm_admin_upload_def_sizes' ) ) {
+        function scm_admin_upload_def_sizes( $sizes ) {
+            
+            $sizes['thumbnail']['width'] = 300;
+            $sizes['medium']['width'] = 1024;
+            $sizes['large']['width'] = 1200;
+            $sizes['thumbnail']['height'] = $sizes['medium']['height'] = $sizes['thumbnail']['large'] = 0;
+             
+            return $sizes;
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_upload_cust_sizes' ) ) {
+        function scm_admin_upload_cust_sizes(){
+
+            add_image_size('small', 700, 0, false);
+            //add_image_size('square', 700, 700, true);
+            //add_image_size('square-medium', 500, 500, true);
+            //add_image_size('square-small', 300, 300, true);
+            //add_image_size('square-thumb', 150, 150, true);
 
         }
     }
 
-    if ( ! function_exists( 'scm_admin_custom_sizes' ) ) {
-        function scm_admin_custom_sizes( $sizes ) {
+    if ( ! function_exists( 'scm_admin_upload_cust_names' ) ) {
+        function scm_admin_upload_cust_names( $sizes ) {
+
             return array_merge( $sizes, array(
-                'square' => __( 'Quadrata', SCM_THEME ),
-                'square-medium' => __( 'Quadrata Media', SCM_THEME ),
-                'square-small' => __( 'Quadrata Piccola', SCM_THEME ),
-                'square-thumb' => __( 'Quadrata Thumb', SCM_THEME ),
+
+                'small' => __( 'Small', SCM_THEME ),
+                //'square' => __( 'Quadrata', SCM_THEME ),
+                //'square-medium' => __( 'Quadrata Media', SCM_THEME ),
+                //'square-small' => __( 'Quadrata Piccola', SCM_THEME ),
+                //'square-thumb' => __( 'Quadrata Thumb', SCM_THEME ),
+
             ) );
+
         }
     }
-
-    //Change the Name of the Uploaded File
-    /*if ( ! function_exists( 'scm_upload_set_filename' ) ) {
-        function scm_upload_set_filename( $image ) {
-
-            if ( isset( $_REQUEST['post_id'] ) ) {
-
-                $id = absint( $_REQUEST['post_id'] );
-
-                if( $id && is_numeric( $id ) ) {
-
-                    $post_obj = get_post( $id ); 
-                    $slug = $post_obj->post_name;
-
-                    if( $post_slug ) {
-
-                        $image[ 'name' ] = $post_slug . substr( $image[ 'name' ], 0, strpos( $image[ 'name' ], '.', -1 ) - 1 );
-
-                    }
-
-                }
-
-            }
-
-            return $image;
-        }
-    }*/
-/*
-//Change the Meta of the Uploaded File
-function scm_upload_set_meta($meta, $file, $sourceImageType) {
-
-    if( isset($_REQUEST['post_id']) ) {
-        $post_id = $_REQUEST['post_id'];
-    } else {
-        $post_id = false;
-    }
-    if($post_id && is_numeric($post_id)) {
-        $post_title = get_the_title($post_id);
-        if($post_title) {
-            $meta['title'] = $post_title;
-            $meta['caption'] = $post_title;
-        }
-    }
-    return $meta;
-}
-*/
-
 
 //Set the Max Size for Uploaded Images and Delete Original Files
-    if ( ! function_exists( 'scm_upload_set_size' ) ) {
-        function scm_upload_set_size( $params ){
+    if ( ! function_exists( 'scm_admin_upload_max_size' ) ) {
+        function scm_admin_upload_max_size( $params ){
             $filePath = $params['file'];
 
             $image = wp_get_image_editor( $filePath );
             
             if ( ! is_wp_error( $image ) ) {
-                $quality = scm_field('uploads_quality', 90, 'option');
-                $largeWidth = scm_field('uploads_width', 1800, 'option');
-                $largeHeight = scm_field('uploads_height', 1800, 'option');
+                $quality = scm_field('opt-uploads-quality', 100, 'option');
+                $largeWidth = scm_field('opt-uploads-width', 1920, 'option');
+                $largeHeight = scm_field('opt-uploads-height', 1920, 'option');
                 $size = $image->get_size();
                 $oldWidth = $size['width'];
                 $oldHeight = $size['height'];
@@ -667,5 +655,23 @@ function scm_upload_set_meta($meta, $file, $sourceImageType) {
             
         }
     }
+
+
+
+// *********************************************
+// DEBUG
+// *********************************************
+
+    if ( ! function_exists( 'scm_admin_debug_hooks' ) ) {
+        function scm_admin_debug_hooks() {
+            global $SCM_debug;
+            if($SCM_debug){
+                foreach( $GLOBALS['wp_actions'] as $action => $count )
+                    consoleLog($action . ' > ' . $count);
+            }
+
+        }
+    }
+
 
 ?>

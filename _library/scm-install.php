@@ -87,7 +87,6 @@
     add_action( 'upgrader_process_complete', 'scm_theme_update' );
     add_action( 'switch_theme', 'scm_theme_deactivate' );
 
-
 // *****************************************************
 // *      1.0 THEME INSTALLATION
 // *****************************************************
@@ -1187,6 +1186,15 @@
                 ),
 
                 array(
+                    'name'               => 'SCM Assets',
+                    'slug'               => 'scm-assets',
+                    'source'             => 'scm-assets.zip',
+                    'required'           => true,
+                    'force_activation'   => true,
+                    'force_deactivation' => false,
+                ),
+
+                array(
                     'name'               => 'ACF Hidden Field',
                     'slug'               => 'acf-hidden',
                     'source'             => 'acf-hidden.zip',
@@ -1195,28 +1203,9 @@
                     'force_deactivation' => false,
                 ),
 
-                /*array(
-                    'name'               => 'ACF Google Fonts', // The plugin name.
-                    'slug'               => 'acf-google-font-selector-field', // The plugin slug (typically the folder name).
-                    //'source'             => 'acf-google-font-selector-field.zip', // The plugin source.
-                    'required'           => false, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),*/
-
-                /*array(
-                    'name'               => 'ACF PayPal',
-                    'slug'               => 'acf-paypal-field-master',
-                    //'source'             => 'acf-paypal-field-master.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),*/
-
                 array(
                     'name'               => 'ACF Font Awesome',
                     'slug'               => 'advanced-custom-fields-font-awesome',
-                    //'source'             => 'advanced-custom-fields-font-awesome.zip', // 2.7.0 (check before update)
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1225,7 +1214,6 @@
                 array(
                     'name'               => 'ACF Limiter',
                     'slug'               => 'advanced-custom-fields-limiter-field',
-                    //'source'             => 'advanced-custom-fields-limiter-field.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1234,7 +1222,6 @@
                 array(
                     'name'               => 'ACF Date Time',
                     'slug'               => 'acf-field-date-time-picker',
-                    //'source'             => 'acf-field-date-time-picker.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1243,7 +1230,6 @@
                 array(
                     'name'               => 'Contact Form 7',
                     'slug'               => 'contact-form-7',
-                    //'source'             => 'contact-form-7.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1252,7 +1238,6 @@
                 array(
                     'name'               => 'Captcha 7',
                     'slug'               => 'really-simple-captcha',
-                    //'source'             => 'really-simple-captcha.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1261,7 +1246,6 @@
                 array(
                     'name'               => 'Loco Translate',
                     'slug'               => 'loco-translate',
-                    //'source'             => 'polylang.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1270,7 +1254,6 @@
                 array(
                     'name'               => 'Polylang',
                     'slug'               => 'polylang',
-                    //'source'             => 'polylang.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1279,7 +1262,6 @@
                 array(
                     'name'               => 'Replace Media',
                     'slug'               => 'enable-media-replace',
-                    //'source'             => 'enable-media-replace.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1288,7 +1270,6 @@
                 array(
                     'name'               => 'Browser Detection',
                     'slug'               => 'php-browser-detection',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1297,7 +1278,6 @@
                 array(
                     'name'               => 'Optimize Database',
                     'slug'               => 'rvg-optimize-database',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1306,7 +1286,6 @@
                 array(
                     'name'               => 'WP Database Backup',
                     'slug'               => 'wp-db-backup',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1315,7 +1294,6 @@
                 array(
                     'name'               => 'Role Editor',
                     'slug'               => 'user-role-editor',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1324,7 +1302,6 @@
                 array(
                     'name'               => 'Share Buttons',
                     'slug'               => 'simple-share-buttons-adder',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1342,9 +1319,8 @@
             // PLUS
 
                 array(
-                    'name'               => 'PLUS - WP Optimizer',
-                    'slug'               => 'wp-clean-up-optimizer',
-                    //'source'             => 'regenerate-thumbnails.zip',
+                    'name'               => 'PLUS - AJAX Thumbnail Rebuild',
+                    'slug'               => 'ajax-thumbnail-rebuild',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,
@@ -1353,25 +1329,6 @@
                 array(
                     'name'               => 'PLUS - Thumbs Regenerator',
                     'slug'               => 'regenerate-thumbnails',
-                    //'source'             => 'regenerate-thumbnails.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'PLUS - WP Security',
-                    'slug'               => 'better-wp-security',
-                    //'source'             => 'php-browser-detection.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'PLUS - Menu Editor',
-                    'slug'               => 'admin-menu-editor',
-                    //'source'             => 'php-browser-detection.zip',
                     'required'           => false,
                     'force_activation'   => false,
                     'force_deactivation' => false,

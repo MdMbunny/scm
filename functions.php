@@ -35,8 +35,9 @@
 	
 	$SCM_protocol		 = ( is_ssl() ? 'https://' : 'http://' );
 	$SCM_site			 = site_url();
-	$SCM_uri 			 = $_SERVER['REQUEST_URI'];
-	$SCM_current 	 	 = $SCM_site . $SCM_uri;
+	$SCM_screen 		 = $_SERVER['REQUEST_URI'];
+	$SCM_current 	 	 = $SCM_site . $SCM_screen;
+	//$SCM_screen 	 	 = get_current_screen();
 
 	$SCM_isdashboard	 = ( (string)$SCM_current == (string)admin_url() ? true : false );
 

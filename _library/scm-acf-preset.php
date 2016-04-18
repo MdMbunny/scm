@@ -382,7 +382,7 @@
 						'max_height' 				=> scm_acf_field_to3( $arg, 8, 'maxheight', 0 ),
 						'min_size' 					=> scm_acf_field_to3( $arg, 9, 'minsize', 0 ),
 						'max_size' 					=> scm_acf_field_to3( $arg, 10, 'maxsize', 0 ),
-						'mime_types' 				=> scm_acf_field_to3( $arg, 11, 'mime', 'jpg, png, JPG, PNG, gif, GIF' ),
+						'mime_types' 				=> scm_acf_field_to3( $arg, 11, 'mime', 'jpg, png, JPG, PNG, gif, GIF, jpeg, JPEG' ),
 					);
 
 	        	break;
@@ -953,7 +953,8 @@
 			elseif( strpos( $list, 'waitfor' ) !== false ):
 				$choices = array(
 					//'window' => 'Window',
-					'images' => 'Images',
+					'images' => 'Images - ALL',
+					'nobg' => 'Images - NO Background Images',
 					'sliders' => 'Sliders',
 					'maps' => 'Maps',
 				);

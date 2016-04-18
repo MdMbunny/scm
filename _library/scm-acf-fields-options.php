@@ -176,6 +176,9 @@
 			$fields[] = scm_acf_field_tab_left( 'tab-intro-constants', array('label'=>__( 'Costanti', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'msg-constants', array('message', $const, 0, ''), 'Constants List' );
 
+			$fields[] = scm_acf_field_tab_left( 'tab-intro-to3', array('label'=>__( 'To V3', SCM_THEME )) );
+				$fields[] = scm_acf_field_false( 'opt-to3-gallerie-folder', 0, 100, 0, 0, __( 'Uploads Galleries Folder: needs _gallerie_ migrating', SCM_THEME ) );
+
 			return $fields;
 
 		}
@@ -204,8 +207,8 @@
 
 			$fields[] = scm_acf_field_tab_left( 'tab-uploads-settings', array('label'=>__( 'Media Upload', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'opt-uploads-quality', array( 'percent', 100, '100', __( 'Qualità immagini', SCM_THEME ) ), __( 'Qualità', SCM_THEME ) );
-				$fields[] = scm_acf_field( 'opt-uploads-width', array( 'pixel-max', 1800, '1800', __( 'Largezza massima immagini', SCM_THEME ) ), __( 'Larghezza Massima', SCM_THEME ) );
-				$fields[] = scm_acf_field( 'opt-uploads-height', array( 'pixel-max', 1800, '1800', __( 'Altezza massima immagini', SCM_THEME ) ), __( 'Altezza Massima', SCM_THEME ) );
+				$fields[] = scm_acf_field( 'opt-uploads-width', array( 'pixel-max', 1920, '1920', __( 'Largezza massima immagini', SCM_THEME ) ), __( 'Larghezza Massima', SCM_THEME ) );
+				$fields[] = scm_acf_field( 'opt-uploads-height', array( 'pixel-max', 1920, '1920', __( 'Altezza massima immagini', SCM_THEME ) ), __( 'Altezza Massima', SCM_THEME ) );
 
 			$fields[] = scm_acf_field_tab_left( 'tab-tools-settings', array('label'=> __( 'Strumenti', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'msg-fader', 'message', __( 'Pages Fader', SCM_THEME ) );

@@ -936,6 +936,7 @@
 
             $type = $post->post_type;
             $id = $post->ID;
+            $slug = $post->post_name;
             $link = '';
 
             //printPre($content);
@@ -962,21 +963,44 @@
                 break;
 
                 case 'gallerie':
-                    $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
-                    $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
-                    if( $init == -1 )
-                        return '';
-                    $stored = scm_field( 'galleria-images', array(), $id );
-                    $images = array();
-                    $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/uploads' ) + 8 ) : '' );
-                    foreach ( $stored as $image) {
-                        $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'] );
-                    }
+
+                    //$to3 = scm_field('opt-to3-gallerie-folder', 0, 'options');
+
+                    //if( !$to3 ){
+
+                        $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
+                        $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
+                        if( $init == -1 )
+                            return '';
+                        $stored = scm_field( 'galleria-images', array(), $id );
+                        $images = array();
+                        $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
+                        //$path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/uploads' ) + 8 ) : '' );
+                        
+                        foreach ( $stored as $image)
+                            $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'] );
+                        
+                        $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
+                        $link .= ' data-popup-path="' . $path . '"';
+                        $link .= ' data-popup-init="' . $init . '"';
+                        $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
                     
-                    $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
-                    $link .= ' data-popup-path="' . $path . '"';
-                    $link .= ' data-popup-init="' . $init . '"';
-                    $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+                    /*}else{
+
+                        $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
+                        $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
+                        if( $init == -1 )
+                            return '';
+                        $stored = scm_field( 'galleria-images', array(), $id );
+                        $images = array();
+                        $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $slug ) + strlen($slug) ) : '' );
+                        
+                        $link = ' data-popup="' . $path . '"';
+                        $link .= ' data-popup-type="gallery"';
+                        $link .= ' data-popup-init="' . $init . '"';
+                        $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+
+                    }*/
 
                 break;
 
