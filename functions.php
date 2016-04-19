@@ -72,7 +72,7 @@
 	$SCM_fa 			= array();
 	$SCM_plugin_fa 		= 0;
 	
-	//$SCM_typekit;
+	$SCM_typekit;
 
 	$SCM_indent 		= 1;
 
@@ -88,7 +88,7 @@
 */
 
 //TypeKit constants
-	//define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
+	define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
 
 //Append constants
 
@@ -129,7 +129,7 @@
 
 		// ASSETS
 		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
-			//define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
+			define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
 			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_ASSETS . 'sliders/' );
 			define( 'SCM_DIR_IMG',      			SCM_DIR_ASSETS . 'img/' );
 			define( 'SCM_DIR_PLUGINS',			    SCM_DIR_ASSETS . 'plugins/' );
@@ -165,9 +165,9 @@
 *****************************************************
 */
 
-/*require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
+require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
 
-require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
+/*require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
 require_once( SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php' );
