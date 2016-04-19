@@ -129,7 +129,7 @@
 
 		// ASSETS
 		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
-			define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
+			//define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
 			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_ASSETS . 'sliders/' );
 			define( 'SCM_DIR_IMG',      			SCM_DIR_ASSETS . 'img/' );
 			define( 'SCM_DIR_PLUGINS',			    SCM_DIR_ASSETS . 'plugins/' );
@@ -140,7 +140,7 @@
 		define( 'SCM_URI_ASSETS_CHILD',      	SCM_URI_CHILD . '_assets/' );
 			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
 			define( 'SCM_URI_CSS_CHILD',      		SCM_URI_ASSETS_CHILD . 'css/' );
-			define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
+			//define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
 			define( 'SCM_URI_JS_CHILD',      		SCM_URI_ASSETS_CHILD . 'js/' );
 			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
 			define( 'SCM_URI_IMG_CHILD',      		SCM_URI_ASSETS_CHILD . 'img/' );
@@ -165,13 +165,13 @@
 *****************************************************
 */
 
-require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
+/*require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
 
 require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
 require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
 require_once( SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php' );
-require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
+require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );*/
 
 require_once( SCM_DIR_LIBRARY . 'scm-svg.php' );
 

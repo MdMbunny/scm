@@ -37,7 +37,6 @@ if( isset( $this ) )
 $layout = $args['acf_fc_layout'];
 $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
 $images = ( $args[ 'images' ] ?: '' );
-//$url = scm_field( 'image', '', $post_id );
 $negative = $args['negative'] === 'on';
 $thumb = -2;
 
@@ -95,11 +94,7 @@ if ( $layout == 'layout-thumbs' ) {
 
 }
 
-//consoleLog( $image );
-
-//if( gettype( $image ) == 'string' )
-    $image = toArray( $image, true );
-
+$image = toArray( $image, true );
 
 /***************/
 
@@ -134,42 +129,49 @@ switch ( $args[ 'format' ] ) {
     break;
 }
 
-//consoleLog($image);
-
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
     $att = $attributes;
 
     $value = $image[$i];
-
-    
+    $size = '';
 
     $id = ( $id && sizeof( $image ) > 1 ? $id . '-' . $key : $id );
 
-    if( $thumb > -2 ){
+    if( $thumb >= -1 ){
 
         if( $thumb == -1 ){
             $args['thumb'] = $i;
-        }
-        
-        $att .= scm_post_link( $args );
 
-        if( $args['thumb-size'] )
-            $value = ( gettype( $value ) == 'array' ? $value['sizes']['thumbnail'] : $value );
-        else
-            $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
+        }
+
+        if( $args['link'] == 'self' )
+            $att .= scm_post_link( $args );
         
         $class .= ' thumb';
+        //$size = ( $args['thumb-size'] ?: '' );
+    }
+
+    if(is_array($value)){
+
+        // RESPONSIVE
+        $value = wp_get_attachment_image( $value['ID'], 'full' );
+        // NOT RESPONSIVE
+        /*if( $size )
+            $value = ( gettype( $value ) == 'array' ? $value['sizes'][$size] : $value );
+        else
+            $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
+        $value = '<img src="' . $value . '" alt="">';*/
+        //***
 
     }else{
-    
-        $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
-
+        // RESPONSIVE
+        $value = '<img src="' . $value . '" alt="">';
     }
  
     indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $att ), 1 );
 
-        indent( $SCM_indent + 2, '<img src="' . $value . '" style="max-width:100%;max-height:100%;" alt="">', 1 );
+        indent( $SCM_indent + 2, $value, 1 );
 
     indent( $SCM_indent + 1, '</div><!-- image -->', 2 );
 

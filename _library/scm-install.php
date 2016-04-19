@@ -347,7 +347,7 @@
     if ( ! function_exists( 'scm_types_install' ) ) {
         function scm_types_install( $types = array() ){
 
-            if( !isset($types) || !is_array($types) || sizeof($types) === 0 )
+            if( !class_exists('Custom_Type') || !isset($types) || !is_array($types) || sizeof($types) === 0 )
                 return;
 
             global $SCM_types;
@@ -373,7 +373,7 @@
                     $SCM_types['complete'][ $type['slug'] ] = $plural;
                     $SCM_types['custom'][ $type['slug'] ] = $plural;
                     $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
-                    $obj->CT_register();                    
+                    $obj->CT_register();
 
                     if( $type['public'] === 1 ){
 
@@ -405,7 +405,7 @@
     if ( ! function_exists( 'scm_taxonomies_install' ) ) {
         function scm_taxonomies_install( $taxonomies = array() ){
 
-            if( !isset($taxonomies) || !is_array($taxonomies) || sizeof($taxonomies) === 0 )
+            if( !class_exists('Custom_Taxonomy') || !isset($taxonomies) || !is_array($taxonomies) || sizeof($taxonomies) === 0 )
                 return;
 
             global $SCM_types;
@@ -1189,6 +1189,24 @@
                     'name'               => 'SCM Assets',
                     'slug'               => 'scm-assets',
                     'source'             => 'scm-assets.zip',
+                    'required'           => true,
+                    'force_activation'   => true,
+                    'force_deactivation' => false,
+                ),
+
+                array(
+                    'name'               => 'SCM Addons',
+                    'slug'               => 'scm-addons',
+                    'source'             => 'scm-addons.zip',
+                    'required'           => true,
+                    'force_activation'   => true,
+                    'force_deactivation' => false,
+                ),
+
+                array(
+                    'name'               => 'SCM Types',
+                    'slug'               => 'scm-types',
+                    'source'             => 'scm-types.zip',
                     'required'           => true,
                     'force_activation'   => true,
                     'force_deactivation' => false,
