@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.10.5
+Version:			v2.10.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -183,7 +183,9 @@ dd {
 
 img {
 	height: auto; /* Make sure images are scaled correctly. */
-	/*width: 100%;*/
+}
+
+.scm-image img {
 	max-width:100%;
 	max-height:100%;
 }
