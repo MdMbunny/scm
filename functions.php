@@ -72,7 +72,7 @@
 	$SCM_fa 			= array();
 	$SCM_plugin_fa 		= 0;
 	
-	$SCM_typekit;
+	//$SCM_typekit;
 
 	$SCM_indent 		= 1;
 
@@ -88,7 +88,7 @@
 */
 
 //TypeKit constants
-	define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
+	//define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
 
 //Append constants
 
