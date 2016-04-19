@@ -41,7 +41,7 @@
     remove_action( 'wp_head', 'rsd_link' );
     remove_action( 'wp_head', 'wp_generator' );
 
-    add_action( 'acf/include_fields', 'scm_typekit_install' );                                                  // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
+    
     add_action( 'acf/include_fields', 'scm_roles_install' );                                                    // 1.0      Assegno Ruoli
     
     add_action( 'acf/include_fields', 'scm_option_pages_install' );                                             // 3.0      Creo Main Options Pages ( SCM, Types, Taxonomies )
@@ -91,17 +91,17 @@
 // *      1.0 THEME INSTALLATION
 // *****************************************************
 
-
+/*add_action( 'acf/include_fields', 'scm_typekit_install' );                                                  // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
     if ( ! function_exists( 'scm_typekit_install' ) ) {
         function scm_typekit_install() {
 
-// *** Install TypeKit
+// Install TypeKit
 
             global $SCM_typekit;
 
             $SCM_typekit = new Typekit();
         }
-    }
+    }*/
 
 
             
