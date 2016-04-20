@@ -72,6 +72,8 @@ global $SCM_indent, $SCM_page_id, $post;
 
 $id = $SCM_page_id;
 
+$skip = __( "Vai al contenuto", SCM_THEME );
+
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $txt_align = scm_options_get( 'align', 'option', 0 );
 
@@ -167,6 +169,9 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
     
     $SCM_indent += 1;
     
+    // Skip to Content Link
+    indent( $SCM_indent, '<a class="skip-link screen-reader-text" href="#' . $cont_id . '">' . $skip . '</a>', 2 );
+
     // Head
     indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
         >', 2 );
