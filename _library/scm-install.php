@@ -92,7 +92,6 @@
 // *      1.0 THEME INSTALLATION
 // *****************************************************
 
-add_action( 'acf/include_fields', 'scm_typekit_install' );                                                  // 1.0      Creo istanza Typekit class. Se prima installazione reindirizzo a principale pagina opzioni
     if ( ! function_exists( 'scm_typekit_install' ) ) {
         function scm_typekit_install() {
 
