@@ -241,6 +241,8 @@
 				$fields[] = scm_acf_field( 'msg-tools', 'message', __( 'Tools', SCM_THEME ) );
 					$fields[] = scm_acf_field_false( 'opt-tools-parallax', 0, 20, 0, 0, __( 'Parallax', SCM_THEME ) );
 					$fields[] = scm_acf_field_false( 'opt-tools-fancybox', 0, 20, 0, 0, __( 'Fancybox', SCM_THEME ) );
+					$fields[] = scm_acf_field_false( 'opt-tools-tooltip', 0, 20, 0, 0, __( 'Tooltip', SCM_THEME ) );
+					$fields[] = scm_acf_field_false( 'opt-tools-cursor', 0, 20, 0, 0, __( 'Cursor', SCM_THEME ) );
 				$fields[] = scm_acf_field( 'msg-slider', 'message', __( 'Main Slider', SCM_THEME ) );
 					$fields = array_merge( $fields, scm_acf_options_slider( 'main', $default ) );
 					$fields[] = scm_acf_field_false( 'opt-tools-nivo', 0, 20, 0, 0, __( 'Nivo Slider', SCM_THEME ) );

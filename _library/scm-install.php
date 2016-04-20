@@ -1337,6 +1337,15 @@
             // PLUS
 
                 array(
+                    'name'               => 'PLUS - WP Asset Clean Up',
+                    'slug'               => 'wp-asset-clean-up',
+                    'required'           => false,
+                    'force_activation'   => false,
+                    'force_deactivation' => false,
+                ),
+
+
+                array(
                     'name'               => 'PLUS - AJAX Thumbnail Rebuild',
                     'slug'               => 'ajax-thumbnail-rebuild',
                     'required'           => false,
