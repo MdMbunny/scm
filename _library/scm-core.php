@@ -30,7 +30,7 @@
     add_action( 'wp_enqueue_scripts', 'scm_site_register_webfonts_google' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_styles_inline' );
-    add_action( 'wp_enqueue_scripts', 'scm_site_register_scripts' );
+    //add_action( 'wp_enqueue_scripts', 'scm_site_register_scripts' );
 
     //add_action( 'widgets_init', 'scm_widgets_default' );
         
@@ -134,7 +134,7 @@
             // SCM Print
 
             // +++ todo: if html header is PRINT
-            //wp_register_style( 'print', SCMJS_URI_ASSETS . 'css/scm-print.css', false, SCM_SCRIPTS_VERSION, 'print' );
+            //wp_register_style( 'print', SCMJS_URI_ASSETS . 'css/scm-print.css', false, null, 'print' );
             //wp_enqueue_style( 'print' );
 
         }
@@ -165,26 +165,26 @@
     }
     
     //scripts
-    if ( ! function_exists( 'scm_site_register_scripts' ) ) {
+    /*if ( ! function_exists( 'scm_site_register_scripts' ) ) {
         function scm_site_register_scripts() {
 
         }
-    }
+    }*/
 
     // Remove query string from static files
-    function scm_site_register_remove_ver( $src ) {
+    /*function scm_site_register_remove_ver( $src ) {
         if( strpos( $src, '?ver=' ) )
             $src = remove_query_arg( 'ver', $src );
         return $src;
-    }
+    }*/
 
     // add async and defer to javascripts
-    function scm_site_register_asyncdefer( $url ) {
+    /*function scm_site_register_asyncdefer( $url ) {
         if( is_admin() ) return $url;
         if ( FALSE === strpos( $url, '.js' ) ) return $url;
         if ( strpos( $url, 'jquery.js' ) ) return $url;
         return "$url' async='async' defer='defer";
-    }
+    }*/
 
 
 
