@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.11.1
+Version:			v2.11.2
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -111,10 +111,10 @@ body {
 	pointer-events: none;
 }
 
-.no-js body{
+/*.no-js body{
 	opacity: 1;
 	pointer-events: all;
-}
+}*/
 
 body.no-scroll{
 	overflow: hidden;
