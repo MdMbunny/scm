@@ -80,8 +80,6 @@
     add_filter( 'acf/format_value/type=textarea', 'scm_acf_formatvalue_hook_editor', 10, 3 );
     add_filter( 'acf/format_value/type=limiter', 'scm_acf_formatvalue_hook_editor', 10, 3 );
     add_filter( 'acf/format_value/type=wysiwyg', 'scm_acf_formatvalue_hook_editor', 10, 3 );
-
-    add_action( 'tgmpa_register', 'scm_plugins_install' );                                                      // 7.0      Installo Plugins
  
     add_action( 'after_setup_theme', 'scm_theme_setup' );                                                     // 1.0      Attivazione SCM Theme
     add_action( 'after_switch_theme', 'scm_theme_activate' );
@@ -116,9 +114,12 @@
             remove_role('author');
             remove_role('contributor');
             remove_role('subscriber');
+            remove_role('manager');
             remove_role('staff');
             remove_role('member');
             remove_role('utente');
+            remove_role('iscritto');
+
         }
     }
 
@@ -127,6 +128,46 @@
         function scm_roles_install() {
 
             consoleDebug( 'install roles' );
+
+            global $SCM_roles;
+
+            $arr;
+
+            foreach ( $SCM_roles as $role => $value) {
+                if( isset( $value[1] ) && !get_role( $role ) ){
+                    $arr = array();
+                    foreach ($value[2] as $cap)
+                        $arr[$cap] = true;
+                    add_role(
+                        $role,
+                        $value[1],
+                        $arr
+                    );
+                }
+            }
+
+            if( $arr )
+                scm_types_capabilities( 1 );
+
+            /*if( !get_role( 'manager' ) ){
+                add_role(
+                    'manager',
+                    __( 'Manager', SCM_THEME ),
+                    array(
+                        'read' => true,
+                        'read_private_pages' => true,
+                        'read_private_posts' => true,
+                        'list_users' => true,
+                        'remove_users' => true,
+                        'delete_users' => true,
+                        'create_users' => true,
+                        'edit_users' => true,
+                        'upload_files' => true,
+                        'manage_categories' => true,
+                        'manage_options' => true,
+                    )
+                );                
+            }
             
             if( !get_role( 'staff' ) ){
                 add_role(
@@ -172,9 +213,100 @@
                     )
                 );
                 
-            }            
+            }
+
+            if( !get_role( 'iscritto' ) ){
+                add_role(
+                    'iscritto',
+                    __( 'Subscriber', SCM_THEME ),
+                    array(
+                        'read' => true,
+                    )
+                );
+                
+            }*/        
         }
     }
+
+    if ( ! function_exists( 'scm_types_capabilities' ) ) {
+        function scm_types_capabilities( $force = 0 ){
+            
+            global $pagenow;
+
+            $pages = array( 'scm-custom-types', 'scm-custom-taxonomies', 'scm-default-types', 'scm-default-taxonomies' );
+            
+            if( $force || ( SCM_LEVEL === 0 && $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ) ){
+
+                global $SCM_roles, $SCM_types;
+
+                $objs = $SCM_types['objects'];
+                
+                foreach($SCM_roles as $the_role => $value) {
+
+                    $role = get_role( $the_role );
+                    $level = ( is_array( $value ) && isset( $value[0] ) ? $value[0] : 100 );
+
+                    if ( !$role || $level >= SCM_ROLE_ISCRITTO )
+                        continue;
+
+                    foreach ($objs as $key => $obj) {
+
+                        $singular = $obj->cap_singular;
+                        $plural = $obj->cap_plural;
+                        $admin = $obj->admin;
+                        $add = $obj->add_cap;
+
+                        if( $level >= SCM_ROLE_STAFF && $admin ){
+                            
+                            $role->remove_cap( 'read_private_' . $plural );
+                            $role->remove_cap( 'edit_' . $plural );
+                            $role->remove_cap( 'edit_private_' . $plural );
+                            $role->remove_cap( 'edit_others_' . $plural );
+                            $role->remove_cap( 'edit_published_' . $plural );
+                            $role->remove_cap( 'publish_' . $plural );
+                            $role->remove_cap( 'delete_' . $plural );
+                            $role->remove_cap( 'delete_others_' . $plural );
+                            $role->remove_cap( 'delete_private_' . $plural );
+                            $role->remove_cap( 'delete_published_' . $plural );
+
+                            continue;
+
+                        }
+
+                        $role->add_cap( 'read_private_' . $plural );
+                        $role->add_cap( 'edit_' . $plural );
+                        $role->add_cap( 'edit_private_' . $plural );
+                        $role->add_cap( 'edit_others_' . $plural );
+                        $role->add_cap( 'edit_published_' . $plural );
+
+                        if( $level >= SCM_ROLE_MEMBER || ( !$add && $level >= SCM_ROLE_STAFF ) ){
+
+                            $role->remove_cap( 'publish_' . $plural );
+                            $role->remove_cap( 'delete_' . $plural );
+                            $role->remove_cap( 'delete_others_' . $plural );
+                            $role->remove_cap( 'delete_private_' . $plural );
+                            $role->remove_cap( 'delete_published_' . $plural );
+
+                            continue;
+
+                        }
+
+                        $role->add_cap( 'publish_' . $plural );
+                        $role->add_cap( 'delete_' . $plural );
+                        $role->add_cap( 'delete_others_' . $plural );
+                        $role->add_cap( 'delete_private_' . $plural );
+                        $role->add_cap( 'delete_published_' . $plural );
+
+                    }
+
+                    do_action( 'scm_action_role_' . $the_role, $role );
+                }
+
+                do_action( 'scm_action_roles' );
+            }
+        }
+    }
+
         
 // *** Theme Activation
 
@@ -454,82 +586,6 @@
     }
 
 
-    if ( ! function_exists( 'scm_types_capabilities' ) ) {
-        function scm_types_capabilities(){
-            
-            global $pagenow;
-            
-            if( current_user_can( 'manage_options' ) && $pagenow == 'admin.php' && $_GET['page'] == 'scm-custom-types'){
-
-                global $SCM_types;
-
-                $objs = $SCM_types['objects'];
-
-                if ( is_admin() ) {
-
-                    $roles = array( 'member', 'staff', 'administrator');
-                    
-                    foreach($roles as $the_role) {
-
-                        $role = get_role( $the_role );
-
-                        if ( !$role )
-                            continue;
-
-                        foreach ($objs as $key => $obj) {
-
-                            $singular = $obj->cap_singular;
-                            $plural = $obj->cap_plural;
-                            $admin = $obj->admin;
-                            $add = $obj->add_cap;
-
-                            if( $the_role != 'administrator' && $admin ){
-                                
-                                $role->remove_cap( 'read_private_' . $plural );
-                                $role->remove_cap( 'edit_' . $plural );
-                                $role->remove_cap( 'edit_private_' . $plural );
-                                $role->remove_cap( 'edit_others_' . $plural );
-                                $role->remove_cap( 'edit_published_' . $plural );
-
-                                continue;
-
-                            }
-
-                            $role->add_cap( 'read_private_' . $plural );
-                            $role->add_cap( 'edit_' . $plural );
-                            $role->add_cap( 'edit_private_' . $plural );
-                            $role->add_cap( 'edit_others_' . $plural );
-                            $role->add_cap( 'edit_published_' . $plural );
-
-                            if( $the_role != 'administrator' && ( !$add || $the_role == 'member' ) ){
-
-                                $role->remove_cap( 'publish_' . $plural );
-                                $role->remove_cap( 'delete_' . $plural );
-                                $role->remove_cap( 'delete_others_' . $plural );
-                                $role->remove_cap( 'delete_private_' . $plural );
-                                $role->remove_cap( 'delete_published_' . $plural );
-
-                                continue;
-
-                            }
-
-                            $role->add_cap( 'publish_' . $plural );
-                            $role->add_cap( 'delete_' . $plural );
-                            $role->add_cap( 'delete_others_' . $plural );
-                            $role->add_cap( 'delete_private_' . $plural );
-                            $role->add_cap( 'delete_published_' . $plural );
-
-                        }
-
-                        do_action( 'scm_action_role_' . $the_role, $role );
-                    }
-                }
-
-                do_action( 'scm_action_roles' );
-            }
-        }
-    }
-
 // *****************************************************
 // *      3.0 OPTIONS PAGES INSTALLATION
 // *****************************************************
@@ -782,17 +838,15 @@
         }
     }
 
-    // FONT AWESOME - SELECTED ICONS (1.7.0)
+    // FONT AWESOME - SELECTED ICONS
     // filter FA icons using groups/presets
     if ( ! function_exists( 'scm_acf_loadfield_hook_fontawesome_list' ) ) {
         function scm_acf_loadfield_hook_fontawesome_list( $field ){
 
-            global $SCM_plugin_fa;
-
             $choices = array();
             $new = array();
 
-            if ( $SCM_plugin_fa ) {
+            if ( is_plugin_active( 'advanced-custom-fields-font-awesome/acf-font-awesome.php' ) ) {
 
                 if( isset( $field['filter_group'] ) && isset( $field['filter'] ) ){
                     $choices = scm_acf_field_fa_preset( $field['filter_group'], $field['filter'] );
@@ -1167,268 +1221,7 @@
     }
 
 
-// *****************************************************
-// *      7.0 PLUGIN INSTALLATION
-// *****************************************************
 
-    if ( ! function_exists( 'scm_plugins_install' ) ) {
-        function scm_plugins_install() {
-
-            $plugins = array(
-
-                array(
-                    'name'               => 'ACF', // The plugin name.
-                    'slug'               => 'advanced-custom-fields-pro', // The plugin slug (typically the folder name).
-                    'source'             => 'advanced-custom-fields-pro.zip', // The plugin source.
-                    'required'           => true, // If false, the plugin is only 'recommended' instead of required.
-                    'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-                    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-                ),
-
-                array(
-                    'name'               => 'SCM Assets',
-                    'slug'               => 'scm-assets',
-                    'source'             => 'scm-assets.zip',
-                    'required'           => true,
-                    'force_activation'   => true,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'SCM Addons',
-                    'slug'               => 'scm-addons',
-                    'source'             => 'scm-addons.zip',
-                    'required'           => true,
-                    'force_activation'   => true,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'SCM Types',
-                    'slug'               => 'scm-types',
-                    'source'             => 'scm-types.zip',
-                    'required'           => true,
-                    'force_activation'   => true,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'SCM Duplicate Post',
-                    'slug'               => 'scm-duplicate-post',
-                    'source'             => 'scm-duplicate-post.zip',
-                    'required'           => true,
-                    'force_activation'   => true,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'ACF Hidden Field',
-                    'slug'               => 'acf-hidden',
-                    'source'             => 'acf-hidden.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'ACF Font Awesome',
-                    'slug'               => 'advanced-custom-fields-font-awesome',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'ACF Limiter',
-                    'slug'               => 'advanced-custom-fields-limiter-field',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'ACF Date Time',
-                    'slug'               => 'acf-field-date-time-picker',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Contact Form 7',
-                    'slug'               => 'contact-form-7',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Captcha 7',
-                    'slug'               => 'really-simple-captcha',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Loco Translate',
-                    'slug'               => 'loco-translate',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Polylang',
-                    'slug'               => 'polylang',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Replace Media',
-                    'slug'               => 'enable-media-replace',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Browser Detection',
-                    'slug'               => 'php-browser-detection',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Optimize Database',
-                    'slug'               => 'rvg-optimize-database',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'WP Database Backup',
-                    'slug'               => 'wp-db-backup',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Role Editor',
-                    'slug'               => 'user-role-editor',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'Share Buttons',
-                    'slug'               => 'simple-share-buttons-adder',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'GitHub Updater',
-                    'slug'               => 'github-updater',
-                    'source'             => 'github-updater.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-            // PLUS
-
-                array(
-                    'name'               => 'PLUS - WP Asset Clean Up',
-                    'slug'               => 'wp-asset-clean-up',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-
-                array(
-                    'name'               => 'PLUS - AJAX Thumbnail Rebuild',
-                    'slug'               => 'ajax-thumbnail-rebuild',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'PLUS - Thumbs Regenerator',
-                    'slug'               => 'regenerate-thumbnails',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'PLUS - Theme Check',
-                    'slug'               => 'theme-check',
-                    //'source'             => 'php-browser-detection.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-                array(
-                    'name'               => 'PLUS - Reset Database',
-                    'slug'               => 'wordpress-database-reset',
-                    //'source'             => 'php-browser-detection.zip',
-                    'required'           => false,
-                    'force_activation'   => false,
-                    'force_deactivation' => false,
-                ),
-
-            );
-            
-            $msg = false;
-            if ( current_user_can( 'manage_options' ) ) {
-                $msg = true;
-            }
-
-            $config = array(
-                'default_path' => SCM_DIR_PLUGINS,         // Default absolute path to pre-packaged plugins.
-                'menu'         => 'scm-install-plugins',   // Menu slug.
-                'has_notices'  => $msg,                    // Show admin notices or not.
-                'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-                'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
-                'is_automatic' => true,                    // Automatically activate plugins after installation or not.
-                'message'      => '',                      // Message to output right before the plugins table.
-                'strings'      => array(
-                    'page_title'                      => __( 'Install Required Plugins', SCM_THEME ),
-                    'menu_title'                      => __( 'Install Plugins', SCM_THEME ),
-                    'installing'                      => __( 'Installing Plugin: %s', SCM_THEME ), // %s = plugin name.
-                    'oops'                            => __( 'Something went wrong with the plugin API.', SCM_THEME ),
-                    'notice_can_install_required'     => _n_noop( 'This theme requires the following plugin: %1$s.', 'This theme requires the following plugins: %1$s.' ), // %1$s = plugin name(s).
-                    'notice_can_install_recommended'  => _n_noop( 'This theme recommends the following plugin: %1$s.', 'This theme recommends the following plugins: %1$s.' ), // %1$s = plugin name(s).
-                    'notice_cannot_install'           => _n_noop( 'Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.' ), // %1$s = plugin name(s).
-                    'notice_can_activate_required'    => _n_noop( 'The following required plugin is currently inactive: %1$s.', 'The following required plugins are currently inactive: %1$s.' ), // %1$s = plugin name(s).
-                    'notice_can_activate_recommended' => _n_noop( 'The following recommended plugin is currently inactive: %1$s.', 'The following recommended plugins are currently inactive: %1$s.' ), // %1$s = plugin name(s).
-                    'notice_cannot_activate'          => _n_noop( 'Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated.', 'Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated.' ), // %1$s = plugin name(s).
-                    'notice_ask_to_update'            => _n_noop( 'The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s.', 'The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s.' ), // %1$s = plugin name(s).
-                    'notice_cannot_update'            => _n_noop( 'Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this site for help on getting the plugin updated.', 'Sorry, but you do not have the correct permissions to update the %s plugins. Contact the administrator of this site for help on getting the plugins updated.' ), // %1$s = plugin name(s).
-                    'install_link'                    => _n_noop( 'Begin installing plugin', 'Begin installing plugins' ),
-                    'activate_link'                   => _n_noop( 'Begin activating plugin', 'Begin activating plugins' ),
-                    'return'                          => __( 'Return to Required Plugins Installer', SCM_THEME ),
-                    'plugin_activated'                => __( 'Plugin activated successfully.', SCM_THEME ),
-                    'complete'                        => __( 'All plugins installed and activated successfully. %s', SCM_THEME ), // %s = dashboard link.
-                    'nag_type'                        => 'updated' // Determines admin notice type - can only be 'updated', 'update-nag' or 'error'.
-                )
-            );
-
-            tgmpa( $plugins, $config );
-
-        }
-    }
 
 
 ?>

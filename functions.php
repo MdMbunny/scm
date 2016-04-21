@@ -30,24 +30,59 @@
 //Getting website data
 
 	$SCM_debug 			 = 0;
-	
-	$SCM_capability 	 = ( current_user_can( 'manage_options' ) ? 'admin' : ( current_user_can( 'upload_files' ) ? 'staff' : 'user' ) );
+
+	$SCM_capability 	 = '';
+	$SCM_level 			 = 100;
+
+	$SCM_user			 = wp_get_current_user();
+	$SCM_roles 			 = array( 
+		'super' 		=> array( 0, 		0, 								1 ),
+		'administrator' => array( 10,		0, 								'update_core' ),
+		'manager' 		=> array( 20,		__( 'Manager', SCM_THEME ), 	array( 'manage_options', 'edit_users', 'list_users', 'remove_users', 'delete_users', 'create_users', 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
+		'staff' 		=> array( 30,		__( 'Staff', SCM_THEME ), 		array( 'edit_users', 'list_users', 'remove_users', 'delete_users', 'create_users', 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
+		'member' 		=> array( 40,		__( 'Member', SCM_THEME ), 		array( 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
+		'utente' 		=> array( 50,		__( 'User', SCM_THEME ), 		array( 'read_private_pages', 'read_private_posts' ) ),
+		'iscritto' 		=> array( 60,		__( 'Subscriber', SCM_THEME ), 	array( 'read' ) ),
+		'visitatore' 	=> array( 100, 		0, 								0 ),
+	);
+
+	//Roles constants
+
+	foreach ( $SCM_roles as $role => $value ) {
+		if( !is_array( $value ) )
+			continue;
+		$level = ( isset( $value[0] ) ? $value[0] : 100 );
+		$add = ( isset( $value[1] ) ? $value[1] : 0 );
+		$cap = ( isset( $value[2] ) ? $value[2] : 0 );
+
+		define( 'SCM_ROLE_' . strtoupper( $role ), $level );
+
+		if( !$SCM_capability && $cap ){
+			if( is_string( $cap ) && $SCM_user->has_cap( $cap ) ||
+				is_array( $cap ) && $SCM_user->has_cap( $cap[0] ) ||
+				is_numeric( $cap ) && $SCM_user->ID === $cap ){
+					$SCM_capability = $role;
+					$SCM_level = $level;
+					define( 'SCM_CAPABILITY', 	$SCM_capability );
+					define( 'SCM_LEVEL', 		$SCM_level );
+				}
+			}
+		}
+	}
 	
 	$SCM_protocol		 = ( is_ssl() ? 'https://' : 'http://' );
 	$SCM_site			 = site_url();
 	$SCM_screen 		 = $_SERVER['REQUEST_URI'];
 	$SCM_current 	 	 = $SCM_site . $SCM_screen;
-	//$SCM_screen 	 	 = get_current_screen();
 
 	$SCM_isdashboard	 = ( (string)$SCM_current == (string)admin_url() ? true : false );
 
 	$SCM_parse			 = parse_url($SCM_site);
 	$SCM_domain 		 = $SCM_parse["host"];
 	$SCM_url			 = $SCM_protocol . $SCM_domain . '/';
-	$SCM_sitename		 = get_bloginfo();//explode( '.', str_replace( 'www.', '', $SCM_domain ), 2 )[0];
+	$SCM_sitename		 = get_bloginfo();
 	$SCM_siteslug		 = sanitize_title( $SCM_sitename );
 
-//Getting theme data
 	$SCM_shortname 		 = sanitize_title(get_template());
 	$SCM_data    		 = wp_get_theme( $SCM_shortname );
 	$SCM_name    		 = $SCM_data->Name;
@@ -70,7 +105,6 @@
 	$SCM_acf_elements 	= array();
 	$SCM_acf_layouts 	= array();
 	$SCM_fa 			= array();
-	$SCM_plugin_fa 		= 0;
 	
 	$SCM_typekit;
 
@@ -93,7 +127,7 @@
 //Append constants
 
 	define( 'SCM_TEMPLATE_APP',			'_t' );
-
+	
 //Basic constants
 	define( 'SCM_SITE',				    $SCM_site );
 	define( 'SCM_DOMAIN',			    $SCM_domain );
