@@ -131,13 +131,14 @@
 
             global $SCM_roles;
 
-            $arr;
+            scm_roles_reset();
 
             foreach ( $SCM_roles as $role => $value) {
-                if( isset( $value[1] ) && !get_role( $role ) ){
+                if( isset( $value[1] ) && $value[1] && !get_role( $role ) ){
                     $arr = array();
-                    foreach ($value[2] as $cap)
+                    foreach ($value[2] as $cap){
                         $arr[$cap] = true;
+                    }
                     add_role(
                         $role,
                         $value[1],
@@ -145,9 +146,6 @@
                     );
                 }
             }
-
-            if( $arr )
-                scm_types_capabilities( 1 );
 
             /*if( !get_role( 'manager' ) ){
                 add_role(
@@ -229,13 +227,13 @@
     }
 
     if ( ! function_exists( 'scm_types_capabilities' ) ) {
-        function scm_types_capabilities( $force = 0 ){
+        function scm_types_capabilities( $force = 1 ){
             
             global $pagenow;
 
             $pages = array( 'scm-custom-types', 'scm-custom-taxonomies', 'scm-default-types', 'scm-default-taxonomies' );
             
-            if( $force || ( SCM_LEVEL === 0 && $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ) ){
+            if( !$force || ( SCM_LEVEL === 0 && $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ) ){
 
                 global $SCM_roles, $SCM_types;
 
