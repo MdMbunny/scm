@@ -1213,6 +1213,15 @@
                 ),
 
                 array(
+                    'name'               => 'SCM Duplicate Post',
+                    'slug'               => 'scm-duplicate-post',
+                    'source'             => 'scm-duplicate-post.zip',
+                    'required'           => true,
+                    'force_activation'   => true,
+                    'force_deactivation' => false,
+                ),
+
+                array(
                     'name'               => 'ACF Hidden Field',
                     'slug'               => 'acf-hidden',
                     'source'             => 'acf-hidden.zip',

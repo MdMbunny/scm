@@ -26,18 +26,19 @@
 
     add_filter('query_vars', 'scm_query_vars');
 
+    add_action( 'wp_enqueue_scripts', 'scm_all_register_fontawesome' );
+    add_action( 'admin_enqueue_scripts', 'scm_all_register_fontawesome', 997 );
+
     add_action( 'wp_enqueue_scripts', 'scm_site_register_webfonts_adobe' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_webfonts_google' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_styles' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_styles_inline' );
-    //add_action( 'wp_enqueue_scripts', 'scm_site_register_scripts' );
-
-    //add_action( 'widgets_init', 'scm_widgets_default' );
+    
+    add_action( 'admin_enqueue_scripts', 'scm_admin_register_assets', 998 );
+    add_action( 'login_enqueue_scripts', 'scm_login_register_assets', 10 );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
 
-    //add_filter( 'style_loader_src', 'scm_site_register_remove_ver', 10, 2 );
-    //add_filter( 'script_loader_src', 'scm_site_register_remove_ver', 10, 2 );
     //add_filter( 'clean_url', 'scm_site_register_asyncdefer', 11, 1 );
 
 
@@ -59,32 +60,8 @@
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
     add_theme_support( 'post-thumbnails' );
     
-    /*
-    add_editor_style( SCM_URI_CSS . 'editor.css' );
-    add_theme_support( 'custom-header' );
-    add_theme_support( 'custom-background', apply_filters( 'scm_custom_background_args', array(
-        'default-color' => 'ffffff',
-        'default-image' => '',
-    ) ) );
-    */
 
-    // *      WIDGETS
-
-    if ( ! function_exists( 'scm_widgets_default' ) ) {
-        function scm_widgets_default() {
-            register_sidebar( array(
-                'name'          => __( 'Barra Laterale', SCM_THEME ),
-                'id'            => 'sidebar-1',
-                'description'   => '',
-                'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-                'after_widget'  => '</aside>',
-                'before_title'  => '<h1 class="widget-title">',
-                'after_title'   => '</h1>',
-            ) );
-        }
-    }
-
-    // *      LOCALIZATION
+    //LOCALIZATION
 
     if ( ! function_exists( 'scm_load_textdomain' ) ) {
         function scm_load_textdomain() {
@@ -95,7 +72,20 @@
     
 // *****************************************************
 // *      2.0 REGISTER AND ENQUEUE STYLES
-// *****************************************************            
+// *****************************************************   
+
+// Both
+
+    if ( ! function_exists( 'scm_all_register_fontawesome' ) ) {
+        function scm_all_register_fontawesome() {
+
+            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, null );
+            wp_enqueue_style( 'font-awesome' );   
+
+        }
+    }
+
+// Public
 
     //google fonts
     if ( ! function_exists( 'scm_site_register_webfonts_google' ) ) {
@@ -115,28 +105,44 @@
     if ( ! function_exists( 'scm_site_register_styles' ) ) {
         function scm_site_register_styles() {
 
-            // Font Awesome - [ IT MUST BE UPDATED IN scm-admin.php AS WELL ]
-            
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, null );
-            wp_enqueue_style( 'font-awesome' );
-
             // SCM
-
             wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style( 'global' );
 
             // SCM Child
-
             wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_SCRIPTS_VERSION );
             wp_enqueue_style( 'child' );
 
-
             // SCM Print
-
             // +++ todo: if html header is PRINT
             //wp_register_style( 'print', SCMJS_URI_ASSETS . 'css/scm-print.css', false, null, 'print' );
             //wp_enqueue_style( 'print' );
 
+        }
+    }
+
+//  Admin
+
+    if ( ! function_exists( 'scm_admin_register_assets' ) ) {
+        function scm_admin_register_assets() {
+
+            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION );
+            wp_enqueue_style('scm-admin');
+            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION );
+            wp_enqueue_style('scm-admin-child');
+
+        }
+    } 
+
+    if ( ! function_exists( 'scm_login_register_assets' ) ) {
+        function scm_login_register_assets() {
+
+            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION );
+            wp_enqueue_style('scm-login');
+            
+            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION );
+            wp_enqueue_style('scm-login-child');            
+            
         }
     }
 
@@ -164,19 +170,8 @@
         }
     }
     
-    //scripts
-    /*if ( ! function_exists( 'scm_site_register_scripts' ) ) {
-        function scm_site_register_scripts() {
 
-        }
-    }*/
 
-    // Remove query string from static files
-    /*function scm_site_register_remove_ver( $src ) {
-        if( strpos( $src, '?ver=' ) )
-            $src = remove_query_arg( 'ver', $src );
-        return $src;
-    }*/
 
     // add async and defer to javascripts
     /*function scm_site_register_asyncdefer( $url ) {

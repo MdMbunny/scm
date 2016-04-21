@@ -69,15 +69,7 @@ $SCM_MENU_ORDER = array(
 
     add_filter( 'wp_mail_from', 'scm_admin_mail_from' );
     add_filter( 'wp_mail_from_name', 'scm_admin_mail_from_name' );
-
-    
-    add_action( 'admin_enqueue_scripts', 'scm_admin_register_assets', 998 );
-    add_action( 'login_enqueue_scripts', 'scm_login_register_assets', 10 );    
-
-    add_action( 'admin_action_scm_admin_duplicate_post', 'scm_admin_duplicate_post' );
-    add_filter( 'page_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
-    add_filter( 'post_row_actions', 'scm_admin_duplicate_post_link', 10, 2 );
-    
+        
     add_action( 'admin_menu', 'scm_admin_menu_remove' );
     add_action( 'admin_menu', 'scm_admin_menu');
     add_filter('custom_menu_order', 'scm_admin_menu_order');
@@ -88,8 +80,6 @@ $SCM_MENU_ORDER = array(
     add_action( 'pre_user_query', 'scm_admin_hide_admin_from_users' );
     add_action( 'admin_bar_menu', 'scm_admin_hide_tools', 999 );
 
-    //add_filter( 'wp_handle_upload_prefilter', 'scm_upload_pre', 2 );
-    //add_filter( 'wp_handle_upload', 'scm_upload_post', 2 );
     add_filter( 'wp_handle_upload', 'scm_admin_upload_max_size', 3 );
     add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
     add_filter( 'intermediate_image_sizes_advanced', 'scm_admin_upload_def_sizes' );
@@ -186,7 +176,6 @@ $SCM_MENU_ORDER = array(
 
     if ( ! function_exists( 'scm_admin_mail_from_name' ) ) {
         function scm_admin_mail_from_name() {
-            //$name = 'yourname';
             $name = get_option('blogname');
             $name = esc_attr($name);
             return $name;
@@ -200,125 +189,6 @@ $SCM_MENU_ORDER = array(
             return $email;
         }
     }
-
-
-// *********************************************
-//  Enqueue CSS and Scripts
-// *********************************************
-
-    if ( ! function_exists( 'scm_admin_register_assets' ) ) {
-        function scm_admin_register_assets() {
-
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, null );
-            wp_enqueue_style( 'font-awesome' );
-
-            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION );
-            wp_enqueue_style('scm-admin');
-            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION );
-            wp_enqueue_style('scm-admin-child');
-
-        }
-    } 
-
-    if ( ! function_exists( 'scm_login_register_assets' ) ) {
-        function scm_login_register_assets() {
-
-            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION );
-            wp_enqueue_style('scm-login');
-            
-            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION );
-            wp_enqueue_style('scm-login-child');            
-            
-        }
-    }
-
-// *********************************************
-//  Duplicate Post
-// *********************************************
-
-// Function creates post duplicate as a draft and redirects then to the edit post screen
-    if ( ! function_exists( 'scm_admin_duplicate_post' ) ) {
-        function scm_admin_duplicate_post(){
-
-            global $wpdb;
-
-            if ( !( isset( $_GET['post']) || isset( $_POST['post']) || ( isset($_REQUEST['action']) && 'scm_admin_duplicate_post' == $_REQUEST['action'] ) ) ) {
-                wp_die( __( 'No post to duplicate has been supplied!', SCM_THEME ) );
-            }
-
-            $post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
-            $post = get_post( $post_id );
-            $current_user = wp_get_current_user();
-            $new_post_author = $current_user->ID;
-         
-            if (isset( $post ) && $post != null) {
-
-                $args = array(
-                    'comment_status' => $post->comment_status,
-                    'ping_status'    => $post->ping_status,
-                    'post_author'    => $new_post_author,
-                    'post_content'   => $post->post_content,
-                    'post_excerpt'   => $post->post_excerpt,
-                    'post_name'      => $post->post_name,
-                    'post_parent'    => $post->post_parent,
-                    'post_password'  => $post->post_password,
-                    'post_status'    => 'draft',
-                    'post_title'     => $post->post_title,
-                    'post_type'      => $post->post_type,
-                    'to_ping'        => $post->to_ping,
-                    'menu_order'     => $post->menu_order
-                );
-
-                $new_post_id = wp_insert_post( $args );
-
-                $taxonomies = get_object_taxonomies( $post->post_type );
-                foreach ( $taxonomies as $taxonomy ) {
-
-                    $post_terms = wp_get_object_terms( $post_id, $taxonomy, array( 'fields' => 'slugs' ) );
-                    wp_set_object_terms( $new_post_id, $post_terms, $taxonomy, false );
-
-                }
-
-                $post_meta_infos = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$post_id" );
-                
-                if (count($post_meta_infos)!=0) {
-
-                    $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
-
-                    foreach ( $post_meta_infos as $meta_info ) {
-                        $meta_key = $meta_info->meta_key;
-                        $meta_value = addslashes( $meta_info->meta_value );
-                        $sql_query_sel[] = "SELECT $new_post_id, '$meta_key', '$meta_value'";
-                    }
-
-                    $sql_query.= implode( " UNION ALL ", $sql_query_sel );
-                    $wpdb->query( $sql_query );
-
-                }
-
-                wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_post_id ) );
-
-                exit;
-
-            } else {
-
-                wp_die('Post creation failed, could not find original post: ' . $post_id);
-
-            }
-        }
-    }
-
-// Add the duplicate link to action list
-    if ( ! function_exists( 'scm_admin_duplicate_post_link' ) ) {
-        function scm_admin_duplicate_post_link( $actions, $post ) {
-            if( current_user_can( 'manage_options' ) || current_user_can( 'publish_' . $post->post_type ) ) {
-                $actions['duplicate'] = '<a href="admin.php?action=scm_admin_duplicate_post&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', SCM_THEME ) . '" rel="permalink">' . __( 'Duplica', SCM_THEME ) . '</a>';
-            }
-            return $actions;
-        }
-    }
-
- 
 
 // *****************************************************
 // *      2.0 HOOKS
@@ -464,40 +334,6 @@ $SCM_MENU_ORDER = array(
 // UPLOAD
 // *********************************************
     
-    /*if ( ! function_exists( 'scm_admin_upload_delete' ) ) {
-        function scm_admin_upload_delete( $postid ){
-
-            global $post_type;   
-            if ( $post_type != 'gallerie' ) return;
-
-            $gall = scm_field('galleria-images', $postid);
-            foreach ($gall as $key => $value) {
-                wp_delete_attachment( $value->ID, true );
-            }
-
-        }
-    }*/
-
-// Change the upload path to the one we want
-    /*if ( ! function_exists( 'scm_upload_pre' ) ) {
-        function scm_upload_pre( $file ){
-
-            add_filter( 'upload_dir', 'scm_admin_upload_dir' );
-
-            return $file;
-
-        }
-    }*/
- 
-// Change the upload path back to the one Wordpress uses by default
-    /*if ( ! function_exists( 'scm_upload_post' ) ) {
-        function scm_upload_post( $fileinfo ){
-
-            remove_filter( 'upload_dir', 'scm_admin_upload_dir' );
-
-            return $fileinfo;
-        }
-    }*/
 
     add_filter( 'wp_calculate_image_sizes', 'scm_admin_upload_adjust_sizes', 10 , 2 );
 
@@ -568,10 +404,6 @@ $SCM_MENU_ORDER = array(
             return $args;
         }
     }
-
-
-
-
 
 //Managing Sizes for Uploaded Images
 

@@ -13,6 +13,25 @@
 // ...
 
 
+// Get Plugin Data
+function pluginData( $file ) {
+    if ( ! function_exists( 'get_plugins' ) )
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    $plugin_folder = get_plugins( '/' . plugin_basename( dirname( $file ) ) );
+    $plugin_file = basename( ( $file ) );
+    return $plugin_folder[$plugin_file];
+}
+
+// Get Plugin Version
+function pluginVersion( $file ) {
+    return pluginData( $file )['Version'];
+}
+
+// Get Plugin Version
+function pluginName( $file ) {
+    return pluginData( $file )['Name'];
+}
+
 function consoleDebug( $obj ){
     global $SCM_debug;
     if( $SCM_debug )
