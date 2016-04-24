@@ -42,7 +42,7 @@
 	define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
 	define( 'SCM_SCREEN',			    $_SERVER['REQUEST_URI'] );
 	define( 'SCM_CURRENT',			    SCM_SITE . SCM_SCREEN );
-	define( 'SCM_DASHBOARD',			( (string)SCM_CURRENT == (string)admin_url() ? 1 : 0 ) );
+	define( 'SCM_DASHBOARD',			( ( SCM_CURRENT == admin_url() || SCM_CURRENT == admin_url() . 'index.php' ) ? 1 : 0 ) );
 
 //Theme constants
 	define( 'SCM_VERSION',   			wp_get_theme( sanitize_title( get_template() ) )->Version );
@@ -88,6 +88,15 @@
 		define( 'SCM_DIR_LANG_CHILD',      		SCM_DIR_CHILD . 'languages/' );
 		define( 'SCM_URI_LANG_CHILD',      		SCM_URI_CHILD . 'languages/' );		
 
+//Roles constants
+	define( 'SCM_ROLE_ADMIN',     	 	'update_core' );
+	define( 'SCM_ROLE_OPTIONS',     	'manage_options' );
+	define( 'SCM_ROLE_PRIVATE',   	 	'edit_private_pages' );
+	define( 'SCM_ROLE_TAX',     	 	'manage_categories' );
+	define( 'SCM_ROLE_EDIT',     	 	'upload_files' );
+	define( 'SCM_ROLE_USERS',     	 	'list_users' );
+	define( 'SCM_ROLE_ENTER',     	 	'read' );
+	define( 'SCM_ROLE_READ',     	 	'read_private_pages' );
 
 /*
 *****************************************************

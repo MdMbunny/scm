@@ -179,23 +179,27 @@ $SCM_types = array();
     if ( ! function_exists( 'scm_types_capabilities' ) ) {
         function scm_types_capabilities(){
             
-            global $pagenow;
+            //global $pagenow;
 
             $pages = array( 'scm-options-intro', 'scm-custom-types', 'scm-custom-taxonomies', 'scm-default-types', 'scm-default-taxonomies' );
 
-            if( $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ){
+            //if( $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ){
+            if( is_admin() && in_array( $_GET['page'], $pages ) ){
                 
                 global $SCM_roles, $SCM_types;
                 $objs = $SCM_types['objects'];
-                
-                foreach($SCM_roles as $the_role => $value) {
 
-                    foreach ($objs as $key => $obj) {
-                        
-                        scm_role_caps( $role, $obj );
-                    
-                    }
-                }
+
+                
+                //foreach($SCM_roles as $role => $value) {
+                    //if( $value[0] > 0 && $value[0] < 100 ){
+
+                        foreach ($objs as $key => $obj)
+                            do_action( 'scm_action_types_capabilities', $obj->cap_plural, $obj->admin, $obj->add_cap );
+                            //scm_role_post_caps( $role, $obj->cap_plural, $obj->admin, $obj->add_cap );
+
+                    //}
+                //}
             }
         }
     }

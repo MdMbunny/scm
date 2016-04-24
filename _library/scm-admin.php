@@ -52,7 +52,7 @@
             $locations = get_theme_mod('nav_menu_locations');
             $menu = get_term( $locations[ 'auto' ], 'nav_menu' );
 
-            if( $menu && SCM_LEVEL === SCM_ROLE_SUPER && $pagenow == 'nav-menus.php' ){
+            if( $menu && SCM_LEVEL === 0 && $pagenow == 'nav-menus.php' ){
 
                 $menu_name = $menu->name;
                 unregister_nav_menu( 'auto' );
