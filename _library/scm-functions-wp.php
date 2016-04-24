@@ -3,6 +3,8 @@
  * @package SCM
  */
 
+require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
+
 // *****************************************************
 // *    SCM WORDPRESS FUNCTIONS
 // *****************************************************
@@ -13,58 +15,15 @@
 // ...
 
 
-// Get Plugin Data
-function pluginData( $file ) {
-    if ( ! function_exists( 'get_plugins' ) )
-        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-    $plugin_folder = get_plugins( '/' . plugin_basename( dirname( $file ) ) );
-    $plugin_file = basename( ( $file ) );
-    return $plugin_folder[$plugin_file];
-}
-
-// Get Plugin Version
-function pluginVersion( $file ) {
-    return pluginData( $file )['Version'];
-}
-
-// Get Plugin Version
-function pluginName( $file ) {
-    return pluginData( $file )['Name'];
-}
-
 function consoleDebug( $obj ){
-    global $SCM_debug;
-    if( $SCM_debug )
+    if( SCM_DEBUG )
         consoleLog( $obj );
 }
 
-function redirectUser( $user = '' ) {
-    
-    global $SCM_capability;
-
-    $user = ( $user ?: $SCM_capability );
-    
-    if( $user == 'super' )
-        return admin_url('themes.php?page=scm-install-plugins');
-    elseif( $user == 'admin' )
-        return admin_url('admin.php?page=scm-options-intro');
-    elseif( $user == 'staff' )
-        return admin_url('users.php');
-    
-    return home_url();
-
-}
-   
 function checkTaxes( $type = '' ) {
     return ( delArray( get_object_taxonomies( $type ), array( 'language', 'post_translations' ) ) ?: array() );
 }
 
-
-function isLoginPage() {
-
-    return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
-    
-}
 
 function getURL( $url ){
 

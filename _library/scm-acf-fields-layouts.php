@@ -861,15 +861,5 @@
 		}
 	}
 
-	//global $SCM_acf_objects, $SCM_acf_elements, $SCM_acf_layouts;
-	/*$arr = get_defined_functions();
-	foreach ( $arr['user'] as $value ) {
-		if( strpos( $value, 'scm_acf_object_') === 0 )
-			$SCM_acf_objects[] = str_replace( 'scm_acf_object_', '', $value );
-		if( strpos( $value, 'scm_acf_element_') === 0 )
-			$SCM_acf_elements[] = str_replace( 'scm_acf_element_', '', $value );
-		if( strpos( $value, 'scm_acf_layout_') === 0 )
-			$SCM_acf_layouts[] = str_replace( 'scm_acf_layout_', '', $value );
-	}*/
 
 ?>

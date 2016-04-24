@@ -3,6 +3,9 @@
  * @package SCM
  */
 
+$SCM_indent         = 1;
+$SCM_page_id        = 0;
+
 // *****************************************************
 // *    SCM FRONT
 // *****************************************************
@@ -24,12 +27,34 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
+    add_action( 'after_setup_theme', 'scm_old_browser' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_favicon' );
-    add_filter('body_class','scm_body_hook_class');
+    add_filter( 'body_class','scm_body_class' );
 
 // *****************************************************
 // *      1.0 FRONT HOOKS
 // *****************************************************
+
+//************************ OLD BROWSER ***
+
+    if ( ! function_exists( 'scm_old_browser' ) ) {
+        function scm_old_browser() {
+            if( function_exists('get_browser_name') ){
+
+                $version = ( (int)get_browser_version() ?: 1000 );
+
+                if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+                    (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+                    (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+                    (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+                    (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
+
+                    get_template_part( SCM_DIR_PARTS, 'old' );
+                    die();
+                }
+            }
+        }
+    }
 
 //************************ FAVICON ***
 
@@ -66,8 +91,8 @@
 //************************ BODY CLASS HOOKS ***
 
 //Add body class
-    if ( ! function_exists( 'scm_body_hook_class' ) ) {
-        function scm_body_hook_class( $classes ) {
+    if ( ! function_exists( 'scm_body_class' ) ) {
+        function scm_body_class( $classes ) {
 
             global $SCM_styles;
 

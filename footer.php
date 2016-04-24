@@ -9,9 +9,7 @@
 
 wp_reset_postdata();
 
-global $SCM_indent, $SCM_old, $SCM_page_id;
-
-if( !$SCM_old ){
+global $SCM_indent, $SCM_page_id;
 
     $foot_layout = scm_field( 'layout-foot', 'full', 'option' );
     $site_align = scm_field( 'layout-alignment', 'center', 'option' );
@@ -64,5 +62,4 @@ if( !$SCM_old ){
 
     echo '</body>' . lbreak();
 
-}
 echo '</html>';

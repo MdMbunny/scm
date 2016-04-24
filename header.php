@@ -7,37 +7,10 @@
  */
 //header("Access-Control-Allow-Origin: *");
 
-global $SCM_protocol, $SCM_version, $SCM_old, $SCM_ie9, $is_IE;
-
-if( function_exists('get_browser_name') ){
-
-    $version = ( (int)get_browser_version() ?: 1000 );
-
-    if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
-        (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
-        (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
-        (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
-        (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
-
-        $SCM_old = true;
-
-    }elseif( is_ie() && get_browser_version() <= 9 ){
-
-        $SCM_ie9 = true;
-    }
-}
-
-if( $SCM_old ) :
-
-    get_template_part( SCM_DIR_PARTS, 'old' );
-    die();
-
-endif;
-
 
 ?><!DOCTYPE html>
 
-<html class="scm-<?php echo $SCM_version; ?> no-js" <?php language_attributes(); ?>>
+<html class="scm-<?php echo SCM_VERSION; ?> no-js" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
@@ -46,19 +19,10 @@ endif;
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<?php if( $SCM_ie9 ) : ?>
-
-    <script src="<?php echo $SCM_protocol; ?>://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <script>window.html5 || document.write('<script src="<?php echo SCM_URI_JS; ?>html5.js"><\/script>')</script>
-    <script src="<?php echo $SCM_protocol; ?>://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-
-<?php endif; ?>
-
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
 <?php wp_head(); ?><!-- WP Header Hook -->
-
 
 </head>
 
@@ -92,7 +56,6 @@ $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
 $smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
 $smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
 $smooth_post = scm_field( 'opt-tools-smoothscroll-page', 1, 'option' );
-//$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 'on', 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
 $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );
@@ -130,11 +93,6 @@ $page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
     
 $page_slider = scm_field( 'main-slider-active', '', $id );
 $page_slider_terms = scm_field( 'main-slider-terms', '', $id );
-
-/*if( $page_slider === 'default' ){
-    $page_slider = scm_field( 'main-slider-active', '', 'option' );
-    $page_slider_terms = scm_field( 'main-slider-terms', '', 'option' );
-}*/
 
 ?>
 

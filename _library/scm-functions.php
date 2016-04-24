@@ -341,30 +341,51 @@ function copyArray( $arr ){
     return $new;
 }
 
-function arrayToHTML( $arr, $container = 'ul', $element = 'li', $first = 'strong', $second = 'span' ){
+function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array() ){
 
     if( !$arr )
         return '';
 
-    $html = '<' . $container . '>' . lbreak();
+    $att = array_merge( array(
+        'container' => 'ul',
+        'element' => 'li',
+        'key' => 'strong',
+        'value' => 'span',
+    ), $cont );
+
+    $html = '<' . $att['container'] . '>' . lbreak();
 
     foreach ($arr as $key => $value) {
 
-        $html .= indent() . '<' . $element . '>' . lbreak();
-            $html .= indent(2) . '<' . $first . ' style="width: 20%; display: inline-block;">';
+        $html .= indent( $indent ) . '<' . $att['element'] . '>' . lbreak();
+            $html .= indent( $indent + 1 ) . '<' . $att['key'] . ' style="width: 20%; display: inline-block;">';
                 $html .= (string)$key;
-            $html .= ': </' . $first . '>' . lbreak();
-            $html .= indent(2) . '<' . $second . ' style="font-weight: normal;">';
-                $html .= (string)$value;
-            $html .= '</' . $second . '>' . lbreak();
+            $html .= ': </' . $att['key'] . '>' . lbreak();
+
+                if( is_array( $value ) && $block > 0 ){
+                    $sub = array(
+                        'container' => $att['container'] . ' class="sub" style="padding-left:2em;"',
+                        'element' => $att['element'],
+                        'key' => $att['key'],
+                        'value' => $att['value'],
+                    );
+
+                    $html .= lbreak();
+                    $html .= arrayToHTML( $value, $indent + 1, $block - 1, $sub );
+                    
+                }else{
+                    $html .= indent( $indent + 1 ) . '<' . $att['value'] . ' style="font-weight: normal;">';
+                        if( !is_scalar($value) )
+                            $html .= gettype( $value );
+                        else
+                            $html .= (string)$value;
+                    $html .= '</' . $att['value'] . '>' . lbreak();
+                }
             
-        $html .= indent() . '</' . $element . '>' . lbreak();
-        
+        $html .= indent( $indent ) . '</' . $att['element'] . '>' . lbreak();        
     }
 
-    $html .= '</' . $container . '>' . lbreak(2);
-
-    //consoleLog($html);
+    $html .= '</' . $att['container'] . '>' . lbreak(2);
     
     return $html;
 

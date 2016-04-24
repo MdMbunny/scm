@@ -13,242 +13,105 @@
 /*
 *****************************************************
 *
-* 	1.0 Globals
-* 	2.0 Constants
-* 	3.0 Requires
-* 	4.0 Functions
+* 	0.0 Constants
+* 	1.0 Requires
 *
 *****************************************************
 */
 
 /*
 *****************************************************
-*      1.0 GLOBAL
+*      0.0 CONSTANTS
 *****************************************************
 */
 
-//Getting website data
+//Debug constants
 
-	$SCM_debug 			 = 0;
-
-	$SCM_capability 	 = '';
-	$SCM_level 			 = 100;
-
-	$SCM_user			 = wp_get_current_user();
-	$SCM_roles 			 = array( 
-		'super' 		=> array( 0, 		0, 								1 ),
-		'administrator' => array( 10,		0, 								'update_core' ),
-		'manager' 		=> array( 20,		__( 'Manager', SCM_THEME ), 	array( 'manage_options', 'edit_users', 'list_users', 'remove_users', 'delete_users', 'create_users', 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
-		'staff' 		=> array( 30,		__( 'Staff', SCM_THEME ), 		array( 'edit_users', 'list_users', 'remove_users', 'delete_users', 'create_users', 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
-		'member' 		=> array( 40,		__( 'Member', SCM_THEME ), 		array( 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts' ) ),
-		'utente' 		=> array( 50,		__( 'User', SCM_THEME ), 		array( 'read_private_pages', 'read_private_posts' ) ),
-		'iscritto' 		=> array( 60,		__( 'Subscriber', SCM_THEME ), 	array( 'read' ) ),
-		'visitatore' 	=> array( 100, 		0, 								0 ),
-	);
-
-	//Roles constants
-
-	foreach ( $SCM_roles as $role => $value ) {
-		if( !is_array( $value ) )
-			continue;
-		$level = ( isset( $value[0] ) ? $value[0] : 100 );
-		$add = ( isset( $value[1] ) ? $value[1] : 0 );
-		$cap = ( isset( $value[2] ) ? $value[2] : 0 );
-
-		define( 'SCM_ROLE_' . strtoupper( $role ), $level );
-
-		if( !$SCM_capability && $cap ){
-			if( is_string( $cap ) && $SCM_user->has_cap( $cap ) ||
-				is_array( $cap ) && $SCM_user->has_cap( $cap[0] ) ||
-				is_numeric( $cap ) && $SCM_user->ID === $cap ){
-					$SCM_capability = $role;
-					$SCM_level = $level;
-					define( 'SCM_CAPABILITY', 	$SCM_capability );
-					define( 'SCM_LEVEL', 		$SCM_level );
-				}
-			}
-		}
-	}
-	
-	$SCM_protocol		 = ( is_ssl() ? 'https://' : 'http://' );
-	$SCM_site			 = site_url();
-	$SCM_screen 		 = $_SERVER['REQUEST_URI'];
-	$SCM_current 	 	 = $SCM_site . $SCM_screen;
-
-	$SCM_isdashboard	 = ( (string)$SCM_current == (string)admin_url() ? true : false );
-
-	$SCM_parse			 = parse_url($SCM_site);
-	$SCM_domain 		 = $SCM_parse["host"];
-	$SCM_url			 = $SCM_protocol . $SCM_domain . '/';
-	$SCM_sitename		 = get_bloginfo();
-	$SCM_siteslug		 = sanitize_title( $SCM_sitename );
-
-	$SCM_shortname 		 = sanitize_title(get_template());
-	$SCM_data    		 = wp_get_theme( $SCM_shortname );
-	$SCM_name    		 = $SCM_data->Name;
-	$SCM_version 		 = $SCM_data->Version;
-	$SCM_directory		 = get_template_directory();
-	$SCM_uri 			 = get_template_directory_uri();
-	$SCM_page_templates	 = wp_get_theme()->get_page_templates();
-
-	$SCM_shortname = str_replace( '-v' . $SCM_version, '', $SCM_shortname );
-
-	if( ! $SCM_version ) {
-		$SCM_version = '';
-	}
-
-	$SCM_uploads 		= wp_upload_dir();
-	$SCM_current_screen;
-	$SCM_types 			= array();
-	$SCM_galleries 		= array();
-	$SCM_acf_objects 	= array();
-	$SCM_acf_elements 	= array();
-	$SCM_acf_layouts 	= array();
-	$SCM_fa 			= array();
-	
-	$SCM_typekit;
-
-	$SCM_indent 		= 1;
-
-	$SCM_old	 		= false;
-	$SCM_ie9	 		= false;
-
-
-	
-/*
-*****************************************************
-*      2.0 CONSTANTS
-*****************************************************
-*/
-
-//TypeKit constants
-	define( 'SCM_TYPEKIT',				'4c35897b4629b3d1335a774bde83fdc382585564' );
+	define( 'SCM_DEBUG', 0 );
 
 //Append constants
 
 	define( 'SCM_TEMPLATE_APP',			'_t' );
 	
-//Basic constants
-	define( 'SCM_SITE',				    $SCM_site );
-	define( 'SCM_DOMAIN',			    $SCM_domain );
-	define( 'SCM_URL',			      	$SCM_url );
-	define( 'SCM_NAME',     	 		$SCM_name );
-	define( 'SCM_THEME',	 			$SCM_shortname );
+//Website constants
+	define( 'SCM_SITENAME',     	 	get_bloginfo() );
+	define( 'SCM_SHORTNAME',     	 	sanitize_title( SCM_SITENAME ) );
+	define( 'SCM_PROTOCOL',				( is_ssl() ? 'https://' : 'http://' ) );
+	define( 'SCM_SITE',				    site_url() );
+	define( 'SCM_DOMAIN',			    parse_url( SCM_SITE )["host"] );
+	define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
+	define( 'SCM_SCREEN',			    $_SERVER['REQUEST_URI'] );
+	define( 'SCM_CURRENT',			    SCM_SITE . SCM_SCREEN );
+	define( 'SCM_DASHBOARD',			( (string)SCM_CURRENT == (string)admin_url() ? 1 : 0 ) );
+
+//Theme constants
+	define( 'SCM_VERSION',   			wp_get_theme( sanitize_title( get_template() ) )->Version );
+	define( 'SCM_THEME',	 			str_replace( '-v' . SCM_VERSION, '', sanitize_title( get_template() ) ) );
 	define( 'SCM_CHILD', 				SCM_THEME . '-' . 'child' );
-	define( 'SCM_VERSION',   			$SCM_version );
-	define( 'SCM_SCRIPTS_VERSION',      trim( SCM_VERSION ) );
-
-	//define('WP_USE_THEMES', false);
-
-//Directories
+	define( 'SCM_NAME',     	 		wp_get_theme( sanitize_title( get_template() ) )->Name );
+	
+//Directories constants
 
 	// UPLOADS FOLDER
-	define( 'SCM_URI_UPLOADS', 			$SCM_uploads['baseurl'] );
+	define( 'SCM_URI_UPLOADS', 			wp_upload_dir()['baseurl'] );
 	
-	// PARENT THEME
-	define( 'SCM_DIR',			      	$SCM_directory . '/' );
-	define( 'SCM_URI',			      	$SCM_uri . '/' );
-	
-		// LANGUAGES PARENT
-		define( 'SCM_DIR_LANG',      		SCM_DIR . '_languages/' );
-		define( 'SCM_URI_LANG',      		SCM_URI . '_languages/' );
-	
-	// CHILD THEME
-	define( 'SCM_DIR_CHILD', 			get_stylesheet_directory() . '/');
-	define( 'SCM_URI_CHILD', 			get_stylesheet_directory_uri() . '/');
-
-		// LANGUAGES CHILD
-		define( 'SCM_DIR_LANG_CHILD',      	SCM_DIR_CHILD . 'languages/' );
-		define( 'SCM_URI_LANG_CHILD',      	SCM_URI_CHILD . 'languages/' );
+	// MAIN THEME
+	define( 'SCM_DIR',			      	get_template_directory() . '/' );
+	define( 'SCM_URI',			      	get_template_directory_uri() . '/' );
 
 		// ASSETS
 		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
-			define( 'SCM_DIR_CLASSES',      		SCM_DIR_ASSETS . 'classes/' );
-			define( 'SCM_DIR_SLIDERS',      		SCM_DIR_ASSETS . 'sliders/' );
-			define( 'SCM_DIR_IMG',      			SCM_DIR_ASSETS . 'img/' );
-			define( 'SCM_DIR_PLUGINS',			    SCM_DIR_ASSETS . 'plugins/' );
-			define( 'SCM_DIR_ACF',      		SCM_DIR_ASSETS . 'acf/' );
-				define( 'SCM_DIR_ACF_JSON',      		SCM_DIR_ACF . 'acf-json/' );
-				define( 'SCM_DIR_ACF_PLUGIN',      	SCM_DIR_ACF . 'acf-plugin/' );
 		define( 'SCM_URI_ASSETS',      			SCM_URI . '_assets/' );
-		define( 'SCM_URI_ASSETS_CHILD',      	SCM_URI_CHILD . '_assets/' );
-			define( 'SCM_URI_CSS',      			SCM_URI_ASSETS . 'css/' );
-			define( 'SCM_URI_CSS_CHILD',      		SCM_URI_ASSETS_CHILD . 'css/' );
-			//define( 'SCM_URI_JS',      				SCM_URI_ASSETS . 'js/' );
-			define( 'SCM_URI_JS_CHILD',      		SCM_URI_ASSETS_CHILD . 'js/' );
-			define( 'SCM_URI_IMG',      			SCM_URI_ASSETS . 'img/' );
-			define( 'SCM_URI_IMG_CHILD',      		SCM_URI_ASSETS_CHILD . 'img/' );
-			define( 'SCM_URI_FONT',      			SCM_URI_ASSETS . 'font/' );
-			define( 'SCM_URI_ACF',      		SCM_URI_ASSETS . 'acf/' );
-				define( 'SCM_URI_ACF_PLUGIN',      	SCM_URI_ACF . 'acf-plugin/' );
-				define( 'SCM_URI_ACF_JSON',      		SCM_URI_ACF . 'acf-json/' );
+
+		// LANGUAGES
+		define( 'SCM_DIR_LANG',      			SCM_DIR . '_languages/' );
+		define( 'SCM_URI_LANG',      			SCM_URI . '_languages/' );
 
 		// LIBRARY 
 		define( 'SCM_DIR_LIBRARY',      		SCM_DIR . '_library/' );
 		define( 'SCM_URI_LIBRARY',      		SCM_URI . '_library/' );
 
 		// PARTS
-		define( 'SCM_DIR_PARTS',			    	'_parts/content' );
-			define( 'SCM_DIR_PARTS_SINGLE',		    	'_parts/single/single' );
-			define( 'SCM_DIR_PARTS_ARCHIVE',	    	'_parts/archive/archive' );
+		define( 'SCM_DIR_PARTS',			    '_parts/content' );
+		define( 'SCM_DIR_PARTS_SINGLE',		    '_parts/single/single' );
+		define( 'SCM_DIR_PARTS_ARCHIVE',	    '_parts/archive/archive' );
+	
+	
+	// CHILD THEME
+	define( 'SCM_DIR_CHILD', 			get_stylesheet_directory() . '/');
+	define( 'SCM_URI_CHILD', 			get_stylesheet_directory_uri() . '/');
+
+		// ASSETS
+		define( 'SCM_URI_ASSETS_CHILD',      	SCM_URI_CHILD . '_assets/' );
+
+		// LANGUAGES
+		define( 'SCM_DIR_LANG_CHILD',      		SCM_DIR_CHILD . 'languages/' );
+		define( 'SCM_URI_LANG_CHILD',      		SCM_URI_CHILD . 'languages/' );		
 
 
 /*
 *****************************************************
-*      3.0 REQUIRES
+*      1.0 REQUIRES
 *****************************************************
 */
 
-require_once( SCM_DIR_CLASSES . 'typekit-client.php' );
-
-/*require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
-require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
-require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
-require_once( SCM_DIR_CLASSES . 'class-tgm-plugin-activation.php' );
-require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );*/
+require_once( SCM_DIR_ASSETS . 'php/Typekit_Client.php' );
+require_once( SCM_DIR_ASSETS . 'php/Get_Template_Part.php' );
+require_once( SCM_DIR_ASSETS . 'php/Custom_Type.php' );
+require_once( SCM_DIR_ASSETS . 'php/Custom_Taxonomy.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-svg.php' );
-
-require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-functions-wp.php' );
 
-require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf-preset.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-templates.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-install.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-options.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-core.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 
-require_once( SCM_DIR_LIBRARY . 'scm-content-preset.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-content.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-front.php' );
 
-require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 
-// *****************************************************
-// *      4.0 FUNCTIONS
-// *****************************************************
-
-    if ( ! function_exists( 'scm_save_posts' ) ) {
-        function scm_save_posts($type){
-            
-            consoleLog( 'Updating Posts');
-            
-            $my_types = ( $type ?: get_post_types() );
-            $my_posts = get_posts( array( 'post_type' => $my_types, 'posts_per_page' => -1) );
-
-
-            foreach ( $my_posts as $my_post ){
-                wp_update_post( $my_post );
-            }
-            
-            consoleLog( sizeof($my_posts) . ' Posts Updated' );
-        }
-    }

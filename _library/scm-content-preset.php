@@ -1,5 +1,6 @@
 <?php
 
+
 	if ( ! function_exists( 'scm_content_preset_size' ) ) {
         function scm_content_preset_size( $size, $units, $fall = '', $fall2 = 'px' ) {
 

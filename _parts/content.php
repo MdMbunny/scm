@@ -24,8 +24,6 @@ if( $single ){
 
 if( $notpage ){
 
-
-
 // If Type is not Public
 	if( getByKey( $SCM_types['public'], $type ) === false )
 		get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home) 

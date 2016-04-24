@@ -22,7 +22,6 @@
 // *      0.0 ACTIONS AND FILTERS
 // *****************************************************
 
-    add_action( 'admin_init', 'scm_admin_redirect' );
 
     add_filter( 'wp_mail_from', 'scm_admin_mail_from' );
     add_filter( 'wp_mail_from_name', 'scm_admin_mail_from_name' );
@@ -98,16 +97,6 @@
 // *      1.0 USERS
 // *****************************************************
 
-    /* Redirect low cap Users to Home Page when they log in*/
-    if ( ! function_exists( 'scm_admin_redirect' ) ) {
-        function scm_admin_redirect() {
-            if ( SCM_LEVEL >= SCM_ROLE_UTENTE && $_SERVER['DOING_AJAX'] != '/wp-admin/admin-ajax.php' ) {
-                redirectUser('user');
-                exit;
-            }
-        }
-    }
-
     if ( ! function_exists( 'scm_admin_mail_from_name' ) ) {
         function scm_admin_mail_from_name() {
             $name = get_option('blogname');
@@ -143,22 +132,17 @@
             return $sizes;
         }
     }
-
-
                                                                                                 
 //Change the Upload Folder to a Type Folder
     if ( ! function_exists( 'scm_admin_upload_dir' ) ) {
         function scm_admin_upload_dir($args){
 
             $arr = thePost();
-            //$to3 = scm_field('opt-to3-gallerie-folder', 0, 'options');
 
             $dir = '';
             
             if($arr){
-                $id = $arr['ID'];
                 $type = $arr['type'];        
-                $slug = $arr['slug'];
                 $tax = $arr['taxonomy'];
                 if(gettype($tax) == 'array') $tax = implode('-', $tax);
                 
@@ -169,10 +153,6 @@
                     if( $tax )
                         $dir .= '/' . $tax;
                     
-                    // Il problema è che quando crei una nuova Galleria e carichi delle foto, il post non esiste ancora e quindi senza slug non puoi creare una cartella apposta
-                    //if( $to3 && $type == 'gallerie' && ( $slug || $id ) )
-                        //$dir .= '/' . ( $slug ?: $id );
-
                 }
 
             }else{

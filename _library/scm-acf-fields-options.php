@@ -166,18 +166,22 @@
 	if ( ! function_exists( 'scm_acf_options_intro' ) ) {
 		function scm_acf_options_intro() {
 
+			$fields = array();
+
 			$const = get_defined_constants( true );
 			$const = $const[ 'user' ];
 			$const = getAllByPrefix( $const, 'SCM_', 2 );
 			$const = arrayToHTML( $const );
 
-			$fields = array();
-
 			$fields[] = scm_acf_field_tab_left( 'tab-intro-constants', array('label'=>__( 'Costanti', SCM_THEME )) );
 				$fields[] = scm_acf_field( 'msg-constants', array('message', $const, 0, ''), 'Constants List' );
 
-			$fields[] = scm_acf_field_tab_left( 'tab-intro-to3', array('label'=>__( 'To V3', SCM_THEME )) );
-				$fields[] = scm_acf_field_false( 'opt-to3-gallerie-folder', 0, 100, 0, 0, __( 'Uploads Galleries Folder: needs _gallerie_ migrating', SCM_THEME ) );
+			$glob = $GLOBALS;
+			$glob = getAllByPrefix( $glob, 'SCM_', 1 );
+			$glob = arrayToHTML( $glob );
+
+			$fields[] = scm_acf_field_tab_left( 'tab-intro-globals', array('label'=>__( 'Globali', SCM_THEME )) );
+				$fields[] = scm_acf_field( 'msg-globals', array('message', $glob, 0, ''), 'Globals List' );
 
 			return $fields;
 

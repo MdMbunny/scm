@@ -658,27 +658,28 @@
 
 			$default = 0; //todo: da rimuovere
 
-			global $SCM_acf_objects, $SCM_types;
+			global $SCM_types;
 
-			$SCM_acf_objects[] = array( 'scm_acf_object_slider', __( 'Slider', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_section', __( 'Section', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_module', __( 'Module', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_form', __( 'Form', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_indirizzo', __( 'Indirizzo', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_map', __( 'Map', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_separatore', __( 'Separatore', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_immagine', __( 'Immagine', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_icona', __( 'Icona', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_titolo', __( 'Titolo', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_quote', __( 'Quote', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_data', __( 'Data', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_testo', __( 'Testo', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_elenco_puntato', __( 'Elenco puntato', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_contatti', __( 'Contatti', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_social_follow', __( 'Social follow', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_social_share', __( 'Social share', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_pulsanti', __( 'Pulsanti', SCM_THEME ) );
-            $SCM_acf_objects[] = array( 'scm_acf_object_login', __( 'Login Form', SCM_THEME ) );
+			$objects = array();
+			$objects[] = array( 'scm_acf_object_slider', __( 'Slider', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_section', __( 'Section', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_module', __( 'Module', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_form', __( 'Form', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_indirizzo', __( 'Indirizzo', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_map', __( 'Map', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_separatore', __( 'Separatore', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_immagine', __( 'Immagine', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_icona', __( 'Icona', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_titolo', __( 'Titolo', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_quote', __( 'Quote', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_data', __( 'Data', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_testo', __( 'Testo', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_elenco_puntato', __( 'Elenco puntato', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_contatti', __( 'Contatti', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_social_follow', __( 'Social follow', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_social_share', __( 'Social share', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_pulsanti', __( 'Pulsanti', SCM_THEME ) );
+            $objects[] = array( 'scm_acf_object_login', __( 'Login Form', SCM_THEME ) );
 
 			$fields = array();
 
@@ -694,7 +695,7 @@
 					foreach ( $SCM_types['public'] as $slug => $value) {
 						$elements[] = array( $slug, $value );
 					}
-					$elements = array_merge( $elements, $SCM_acf_objects );
+					$elements = array_merge( $elements, $objects );
 				}
 				
 				if( !is_array( $elements ) )

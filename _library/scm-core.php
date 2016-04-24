@@ -26,9 +26,6 @@
 
     add_filter('query_vars', 'scm_query_vars');
 
-    add_action( 'wp_enqueue_scripts', 'scm_all_register_fontawesome' );
-    add_action( 'admin_enqueue_scripts', 'scm_all_register_fontawesome', 997 );
-
     add_action( 'wp_enqueue_scripts', 'scm_site_register_webfonts_adobe' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_webfonts_google' );
     add_action( 'wp_enqueue_scripts', 'scm_site_register_styles' );
@@ -36,6 +33,8 @@
     
     add_action( 'admin_enqueue_scripts', 'scm_admin_register_assets', 998 );
     add_action( 'login_enqueue_scripts', 'scm_login_register_assets', 10 );
+    add_filter( 'login_headerurl', 'scm_login_logo_url' );
+    add_filter( 'login_headertitle', 'scm_login_logo_url_title' );
         
     add_action( 'after_setup_theme', 'scm_load_textdomain' );
 
@@ -74,17 +73,6 @@
 // *      2.0 REGISTER AND ENQUEUE STYLES
 // *****************************************************   
 
-// Both
-
-    if ( ! function_exists( 'scm_all_register_fontawesome' ) ) {
-        function scm_all_register_fontawesome() {
-
-            wp_register_style('font-awesome', SCM_URI_FONT . 'font-awesome-4.6.1/css/font-awesome.min.css', false, null );
-            wp_enqueue_style( 'font-awesome' );   
-
-        }
-    }
-
 // Public
 
     //google fonts
@@ -106,11 +94,11 @@
         function scm_site_register_styles() {
 
             // SCM
-            wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_VERSION );
             wp_enqueue_style( 'global' );
 
             // SCM Child
-            wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_VERSION );
             wp_enqueue_style( 'child' );
 
             // SCM Print
@@ -126,9 +114,9 @@
     if ( ! function_exists( 'scm_admin_register_assets' ) ) {
         function scm_admin_register_assets() {
 
-            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'scm-admin', SCM_URI_ASSETS . 'css/scm-admin.css', false, SCM_VERSION );
             wp_enqueue_style('scm-admin');
-            wp_register_style( 'scm-admin-child', SCM_URI_CSS_CHILD . 'admin.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'scm-admin-child', SCM_URI_ASSETS_CHILD . 'css/admin.css', false, SCM_VERSION );
             wp_enqueue_style('scm-admin-child');
 
         }
@@ -137,17 +125,49 @@
     if ( ! function_exists( 'scm_login_register_assets' ) ) {
         function scm_login_register_assets() {
 
-            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_SCRIPTS_VERSION );
+            /* Login Page */
+
+            wp_register_style( 'scm-login', SCM_URI_ASSETS . 'css/scm-login.css', false, SCM_VERSION );
             wp_enqueue_style('scm-login');
+
+            $login_logo = scm_field('opt-staff-logo', '', 'option');
+
+            if( $login_logo ):
+                ?>
+                <style type="text/css">
+                    body.login h1 a {
+                        background-image: url(<?php echo esc_url( $login_logo ); ?>);
+                    }
+                </style>
+                <?php
+            else:
+                ?>
+                <style type="text/css">
+                    body.login h1 a {
+                        display: none !important;
+                    }
+                </style>
+                <?php
+            endif;
             
-            wp_register_style( 'scm-login-child', SCM_URI_CSS_CHILD . 'login.css', false, SCM_SCRIPTS_VERSION );
+            wp_register_style( 'scm-login-child', SCM_URI_ASSETS_CHILD . 'css/login.css', false, SCM_VERSION );
             wp_enqueue_style('scm-login-child');            
             
         }
     }
 
-    
-    
+    if ( ! function_exists( 'scm_login_logo_url' ) ) {
+        function scm_login_logo_url() {
+            return home_url();
+        }
+    }
+
+    if ( ! function_exists( 'scm_login_logo_url_title' ) ) {
+        function scm_login_logo_url_title() {
+            global $SCM_sitename;
+            return $SCM_sitename;
+        }
+    }    
 
 // *****************************************************
 // *      3.0 REGISTER AND ENQUEUE SCRIPTS
@@ -170,9 +190,6 @@
         }
     }
     
-
-
-
     // add async and defer to javascripts
     /*function scm_site_register_asyncdefer( $url ) {
         if( is_admin() ) return $url;
@@ -196,7 +213,6 @@
             $html .= scm_options_get( 'bg_size', 'loading-style-bg', 1 );
 
             $font = scm_options_get( 'font', 'option', 1 );
-            //$font .= scm_options_get( 'size', 'option', 1 );
 
             $opacity = scm_options_get( 'opacity', 'option', 1 );
             $align = scm_options_get( 'align', 'option', 1 );
@@ -232,8 +248,6 @@
             $css .= '.site-page { ' . $opacity . ' }' . lbreak();
 
             $css .= '.scm-row { ' . $align . ' }' . lbreak();
-
-            //$css .= '.site-content{ ' . $content . ' }' . lbreak();
 
             $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
 
@@ -277,10 +291,6 @@
 
             $r_full = scm_field( 'layout-tofull', '', 'option' );
 
-            //if( $r_full )
-                //$css .= '{ width: 100%; }' . lbreak();
-            //$css .= '.' . $r_full . ' .responsive { width: 100%; }' . lbreak();
-
             $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
             $base = (int)str_replace( 'px', '', scm_options_get( 'size', 'option' ) );
@@ -300,21 +310,8 @@
             $r_smart = $base + (int)scm_field( 'styles-size-smart', 3, 'option' );
             $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
 
-
-            /* Login Page */
-
-            /*if( isLoginPage() ){
-                $login_logo = scm_field('opt-staff-logo', '', 'option');
-                //consoleLog(esc_url( $login_logo ));
-
-                if( $login_logo )
-                    $css. = 'body.login div#login h1 { logo-image: url("' . esc_url( $login_logo ) . '"); }' . lbreak();
-                else
-                    $css. = 'body.login div#login h1 { display: none !important; }' . lbreak();
-            }*/
-
             
-            if( !empty( $css ) )
+            if( $css )
                 wp_add_inline_style( 'global', $css );
 
         }

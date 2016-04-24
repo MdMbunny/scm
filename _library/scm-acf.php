@@ -10,6 +10,7 @@
 /*
 *****************************************************
 *
+*   0.0 Require
 *   1.0 ACF Field Group
 **		Field Group
 **		Location
@@ -26,6 +27,17 @@
 *
 *****************************************************
 */
+
+// *****************************************************
+// *      0.0 REQUIRE
+// *****************************************************
+
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-templates.php' );
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
 
 // *****************************************************
 // *      1.0 ACF FIELD GROUPS

@@ -1,9 +1,136 @@
-body.login div#login h1 {
-	display: none !important;
-}
-
-body.login #wp-submit {
-    background: #444 !important;
-    border-color: #666 !important;
+*, *:hover, *:focus {
+    -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+
+label, input, a{
+	-webkit-transition: all .3s !important;
+    transition: all .3s !important;
+}
+
+input[type=color]:focus, input[type=date]:focus, input[type=datetime]:focus, input[type=datetime-local]:focus, input[type=email]:focus, input[type=month]:focus, input[type=number]:focus, input[type=week]:focus, input[type=url]:focus, input[type=tel]:focus, input[type=search]:focus, input[type=password]:focus, input[type=text]:focus,
+input[type=color]:hover, input[type=date]:hover, input[type=datetime]:hover, input[type=datetime-local]:hover, input[type=email]:hover, input[type=month]:hover, input[type=number]:hover, input[type=week]:hover, input[type=url]:hover, input[type=tel]:hover, input[type=search]:hover, input[type=password]:hover, input[type=text]:hover,
+a:hover, a:focus{
+	padding-top: .5em !important;
+	padding-bottom: .5em !important;
+}
+
+*:focus {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+p > a, label, input[type=radio]:checked:before, input[type=checkbox]:checked:before{
+	color: #444 !important;
+}
+
+p > a, input:hover, input:focus, textarea:hover, textarea:focus {
+    border-color: #444 !important;
+}
+
+*:hover > label, label:focus, p > a:focus, p > a:hover {
+    color: #888 !important;
+}
+
+p.message, p > a:focus, p > a:hover{
+	border-color: #888 !important;
+}
+
+p > a:focus, p > a:hover{
+	padding: 1em .5em !important;
+}
+
+/**********************/
+
+body.login {
+	background-color: #FFF;
+}
+
+body.login div#login h1{
+	margin-bottom: 1em;
+}
+
+body.login div#login h1 a{
+    margin: 0;
+    width: 100%;
+    background-size: contain;
+}
+
+body.login div#login h1 a:focus {
+    color: transparent !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+body.login div#login > p {
+	text-align: center;
+	padding: 0;
+}
+
+body.login div#login > p.message,
+body.login div#login #login_error,
+body.login div#login > p > a {
+	display: block;
+	padding: .5em;
+	border: 1px solid;
+	background-color: #FFF;
+}
+
+body.login div#login #login_error{
+	border-color: red;
+}
+
+body.login div#login #login_error a, body.login div#login #login_error a:hover{
+	color: red;
+}
+
+body.login div#login #login_error a:hover{
+	text-decoration: none;
+}
+
+body.login div#login form#loginform {
+	box-shadow: none;
+	background-color: transparent;
+	padding: 0;
+}
+
+body.login div#login form#loginform p.submit input#wp-submit {
+    background-color: #444;
+    border: 0;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 0;
+}
+
+body.login div#login form#loginform p.submit input#wp-submit:focus,
+body.login div#login form#loginform p.submit input#wp-submit:hover{
+	background-color: #888;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+}
+
+body.login div#login p#backtoblog {
+	display: none;
+}
+
+/**********************/
+
+body.login {}
+body.login div#login {}
+body.login div#login h1 {}
+body.login div#login h1 a {}
+body.login div#login form#loginform {}
+body.login div#login form#loginform p {}
+body.login div#login form#loginform p label {}
+body.login div#login form#loginform input {}
+body.login div#login form#loginform input#user_login {}
+body.login div#login form#loginform input#user_pass {}
+body.login div#login form#loginform p.forgetmenot {}
+body.login div#login form#loginform p.forgetmenot input#rememberme {}
+body.login div#login form#loginform p.submit {}
+body.login div#login form#loginform p.submit input#wp-submit {}
+body.login div#login p#nav {}
+body.login div#login p#nav a {}
+body.login div#login p#backtoblog {}
+body.login div#login p#backtoblog a {}

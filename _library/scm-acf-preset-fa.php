@@ -1,6 +1,7 @@
 <?php
 
-    global $SCM_fa;
+    //global $SCM_fa;
+	$SCM_fa = array();
 
 // **************
 // *** SOCIAL ***

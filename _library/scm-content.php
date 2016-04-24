@@ -10,7 +10,7 @@
 /*
 *****************************************************
 *
-*   0.0 Actions and Filters
+*   0.0 Require
 *   1.0 Print Contents
 **      1.1 Content (filter single module to 1.2 or 1.3)
 **      1.2 Containers (section, row, column, module, post, content)
@@ -23,9 +23,10 @@
 */
 
 // *****************************************************
-// *      0.0 ACTIONS AND FILTERS
+// *      0.0 REQUIRE
 // *****************************************************
 
+    require_once( SCM_DIR_LIBRARY . 'scm-content-preset.php' );
 
 // *****************************************************
 // *      1.0 PRINT CONTENTS

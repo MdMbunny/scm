@@ -988,6 +988,12 @@ input.acf-is-prepended {
 	line-height: 1.5em;
 }
 
+.acf-field.acf-field-message ul ul{
+	font-size: 1em;
+	padding-top: .5em;
+	padding-bottom: 1em;
+}
+
 .acf-field-repeater .acf-label{
 	display: block;
 	margin: 0;
