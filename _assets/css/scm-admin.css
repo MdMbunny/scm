@@ -11,6 +11,40 @@
 /*** WP ***********************/
 /******************************/
 
+.options-media-php #wpbody-content .wrap form > h2,
+.options-media-php #wpbody-content .wrap form > p,
+.options-media-php #wpbody-content .wrap form tr > *:not(td),
+.options-media-php #wpbody-content .wrap form tr > td > *:not(#oir-remove-image-sizes){
+    display: none;
+}
+
+.options-media-php #wpbody-content .wrap form tr > td{
+    padding: 0;
+    margin: 0;
+}
+
+.options-media-php #oir-remove-image-sizes, #oir-remove-image-sizes+p, #oir-remove-image-sizes+p+p{
+    display: block !important;
+}
+                    
+.user-new-php .form-field:not(.form-required),
+
+.user-edit-php #your-profile h2,
+.user-edit-php .user-admin-color-wrap,
+.user-edit-php .user-first-name-wrap,
+.user-edit-php .user-last-name-wrap,
+.user-edit-php .user-nickname-wrap,
+.user-edit-php .user-display-name-wrap,
+.user-edit-php .user-url-wrap,
+.user-edit-php .user-description-wrap,
+.profile-php #your-profile h2,
+.profile-php .user-admin-color-wrap,
+.profile-php .user-first-name-wrap,
+.profile-php .user-last-name-wrap,
+.profile-php .user-nickname-wrap,
+.profile-php .user-display-name-wrap,
+.profile-php .user-url-wrap,
+.profile-php .user-description-wrap,
 
 .user-edit-php .show-admin-bar,
 .user-edit-php .user-comment-shortcuts-wrap,
@@ -25,6 +59,10 @@
 .profile-php .user-jabber-wrap,
 .profile-php .user-rich-editing-wrap{
     display: none !important;
+}
+
+.user-new-php #wpbody-content .wrap form tr .form-field:last-child{
+    display: block !important;
 }
 
 body.loading{

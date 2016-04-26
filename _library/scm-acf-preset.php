@@ -135,12 +135,13 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 *
-*		'gallery'				$library = 'all | uploadedTo' || 0 | 1		$preview = 'thumbnail' 		$min = 0 				$max = 0 				$minwidth = 0 			$maxwidth = 0 			$minheight = 0 			$maxheight = 0 			$minsize = 0				$maxsize = '' 				$mime = 'jpg,png'
+*		'gallery'				$library = 'uploadedTo | all' || 0 | 1		$preview = 'thumbnail' 		$min = 0 				$max = 0 				$minwidth = 0 			$maxwidth = 0 			$minheight = 0 			$maxheight = 0 			$minsize = 0				$maxsize = '' 				$mime = 'jpg,png'
 *
-*		'file'					$library = 'all | uploadedTo' || 0 | 1		$minsize = ''						$maxsize = '' 			$mime = '*'		$return = 'array | url | id'
-*		'image'					$library = 'all | uploadedTo' || 0 | 1		$preview = 'thumbnail' 		$minwidth = 0 			$maxwidth = 0 			$minheight = 0 		$maxheight = 0 		$minsize = 0				$maxsize = '' 				$mime = 'jpg,png' 			$return = 'array | url | id'
+*		'file'					$library = 'uploadedTo | all' || 0 | 1		$minsize = ''						$maxsize = '' 			$mime = '*'		$return = 'array | url | id'
+*		'image'					$library = 'uploadedTo | all' || 0 | 1		$preview = 'thumbnail' 		$minwidth = 0 			$maxwidth = 0 			$minheight = 0 		$maxheight = 0 		$minsize = 0				$maxsize = '' 				$mime = 'jpg,png' 			$return = 'array | url | id'
 * ———		'-url'						$return = 'url'
 * ———		'-id'						$return = 'id'
+* ———		'-all'						$library = 'all'
 *
 * ——— 		* $mime: 		'file' 	>	'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar'
 *
@@ -363,7 +364,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 	        		
 	        		$field = array(
 						'type' 						=> 'file',
-						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 						'min_size' 					=> scm_acf_field_to3( $arg, 2, 'minsize', '' ),
 						'max_size' 					=> scm_acf_field_to3( $arg, 3, 'maxsize', '' ),
 						'return_format' 			=> scm_acf_field_to3( $arg, 5, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
@@ -375,7 +376,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 	        		
 	        		$field = array(
 						'type' 						=> 'gallery',
-						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 						'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
 						'min' 						=> scm_acf_field_to3( $arg, 3, 'min', 0 ),
 						'max' 						=> scm_acf_field_to3( $arg, 4, 'max', 0 ),
@@ -394,7 +395,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 	        		
 	        		$field = array(
 						'type' 						=> 'image',
-						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', 'all' ) !== 'all' ? 'uploadedTo' : 'all' ),
+						'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 						'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
 						'min_width' 				=> scm_acf_field_to3( $arg, 3, 'minwidth', 0 ),
 						'max_width' 				=> scm_acf_field_to3( $arg, 4, 'maxwidth', 0 ),

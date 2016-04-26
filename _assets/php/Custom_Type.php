@@ -121,7 +121,7 @@ class Custom_Type {
 
     function CT_admin_columns( $columns ) {
 
-            $columns['cb'] = '<input type="checkbox" />';
+            //$columns['cb'] = '<input type="checkbox" />';
             $columns['id'] = __( 'ID', SCM_THEME );
 
             $taxonomies = get_object_taxonomies( $this->slug, 'objects' );
@@ -150,7 +150,7 @@ class Custom_Type {
                     
                     if ( !empty( $terms ) ) {
 
-                        $out = array();
+                        $out = array();                        
 
                         foreach ( $terms as $term ) {
                             $out[] = sprintf( '<a href="%s">%s</a>',
