@@ -23,6 +23,9 @@ $redirect = ( $args['login-type'] ?: 'admin' );
 $link = $args['login-redirect'];
 $link = ( $redirect == 'admin' || !$link ? site_url('/wp-admin/users.php') : $link );
 
+if( $redirect == 'page' )
+    $link = getURL( 'page:' . $link );
+
 if ( is_user_logged_in() ) { // todo: non so, son buttati lì, vedi tu, magari con personalizzazione da Options e cose così
 
     echo '<a class="scm-button shape" href="' . $link . '">' . __( 'Enter', SCM_THEME ) . '</a>';
