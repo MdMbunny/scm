@@ -27,6 +27,9 @@ $SCM_typekit;
     require_once( SCM_DIR_LIBRARY . 'scm-install-types.php' );
     require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
 
+if ( ! function_exists( 'scm_admin_ui_init' ) ) {
+    function scm_admin_ui_init() {
+
 // *****************************************************
 // *      1.0 ACTIONS AND FILTERS
 // *****************************************************
@@ -80,5 +83,7 @@ $SCM_typekit;
         }
     }
 
+}}
+add_action( 'init', 'scm_admin_ui_init' );
 
 ?>

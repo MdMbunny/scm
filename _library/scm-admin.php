@@ -30,10 +30,11 @@
     add_filter( 'wp_handle_upload', 'scm_admin_upload_max_size', 3 );
     add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
     add_filter( 'intermediate_image_sizes_advanced', 'scm_admin_upload_def_sizes' );
-    add_action( 'admin_init', 'scm_admin_upload_cust_sizes' );
-    add_filter( 'image_size_names_choose', 'scm_admin_upload_cust_names' );
+    add_action( 'admin_init', 'scm_admin_upload_custom_sizes' );
+    add_filter( 'image_size_names_choose', 'scm_admin_upload_custom_names' );
     add_filter( 'upload_dir', 'scm_admin_upload_dir', 2 );
-    
+    add_action( 'admin_init', 'scm_admin_upload_custom_columns' );
+
     add_action( 'shutdown', 'scm_admin_debug_hooks');
 
 /*********************** AUTO NAV - UNDER COSTRUCTION ***/
@@ -114,7 +115,7 @@
     }
 
 // *****************************************************
-// *      2.0 UPLOAD
+// *      2.0 UPLOADS
 // *****************************************************
 
     if ( ! function_exists( 'scm_admin_upload_adjust_sizes' ) ) {
@@ -186,28 +187,20 @@
         }
     }
 
-    if ( ! function_exists( 'scm_admin_upload_cust_sizes' ) ) {
-        function scm_admin_upload_cust_sizes(){
+    if ( ! function_exists( 'scm_admin_upload_custom_sizes' ) ) {
+        function scm_admin_upload_custom_sizes(){
 
             add_image_size('small', 700, 0, false);
-            //add_image_size('square', 700, 700, true);
-            //add_image_size('square-medium', 500, 500, true);
-            //add_image_size('square-small', 300, 300, true);
-            //add_image_size('square-thumb', 150, 150, true);
 
         }
     }
 
-    if ( ! function_exists( 'scm_admin_upload_cust_names' ) ) {
-        function scm_admin_upload_cust_names( $sizes ) {
+    if ( ! function_exists( 'scm_admin_upload_custom_names' ) ) {
+        function scm_admin_upload_custom_names( $sizes ) {
 
             return array_merge( $sizes, array(
 
                 'small' => __( 'Small', SCM_THEME ),
-                //'square' => __( 'Quadrata', SCM_THEME ),
-                //'square-medium' => __( 'Quadrata Media', SCM_THEME ),
-                //'square-small' => __( 'Quadrata Piccola', SCM_THEME ),
-                //'square-thumb' => __( 'Quadrata Thumb', SCM_THEME ),
 
             ) );
 
@@ -244,6 +237,67 @@
             return $params;
         }
     }
+
+    if ( ! function_exists( 'scm_admin_upload_custom_columns' ) ) {
+        function scm_admin_upload_custom_columns() {
+
+            add_action( 'manage_media_custom_column', 'scm_admin_upload_custom_column',10,2 );
+            add_filter( 'manage_media_columns', 'scm_admin_upload_columns' );
+            //add_filter( 'manage_upload_sortable_columns', 'scm_admin_upload_custom_column_sortable' );
+            //add_filter( 'request', 'scm_admin_upload_custom_column_order' );
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_upload_columns' ) ) {
+        function scm_admin_upload_columns( $defaults ) {
+
+           $defaults['folder'] = __( 'Folder', SCM_THEME );
+           return $defaults;
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_upload_custom_column' ) ) {
+        function scm_admin_upload_custom_column( $column_name, $id ) {
+
+            if( $column_name == 'folder' ){
+
+                $meta = wp_get_attachment_metadata($id);
+                $folder = ucfirst( ( isset( $meta['file'] ) ? explode( '/', $meta['file'] )[0] : 'uploads' ) );
+                echo $folder;
+
+            }
+
+        }
+    }
+
+    /*if ( ! function_exists( 'scm_admin_upload_custom_column_order' ) ) {
+        function scm_admin_upload_custom_column_order( $vars ) {
+
+            if ( isset( $vars['orderby'] ) && 'Folder' == $vars['orderby'] ) {
+
+                consoleLog($vars);
+
+                $vars = array_merge( $vars, array(
+                    'meta_key' => 'folder',
+                    'orderby' => 'meta_value meta_value_num'
+                ) );
+            }
+
+            return $vars;
+
+        }
+    }
+
+    if ( ! function_exists( 'scm_admin_upload_custom_column_sortable' ) ) {
+        function scm_admin_upload_custom_column_sortable( $columns ) {
+
+            $columns['folder'] = 'Folder';
+            return $columns;
+
+        }
+    }*/
 
 // *****************************************************
 // *      3.0 DEBUG
