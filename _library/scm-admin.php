@@ -264,7 +264,13 @@
             if( $column_name == 'folder' ){
 
                 $meta = wp_get_attachment_metadata($id);
-                $folder = ucfirst( ( isset( $meta['file'] ) ? explode( '/', $meta['file'] )[0] : 'uploads' ) );
+
+                // -- PHP old
+                $meta = explode( '/', $meta['file'] );
+                $folder = ucfirst( ( isset( $meta['file'] ) ? $meta[0] : 'uploads' ) );
+                // -- PHP new
+                //$folder = ucfirst( ( isset( $meta['file'] ) ? explode( '/', $meta['file'] )[0] : 'uploads' ) );
+
                 echo $folder;
 
             }

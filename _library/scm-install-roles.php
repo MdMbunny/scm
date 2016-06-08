@@ -316,9 +316,19 @@ $SCM_roles = array();
 
             // Diventano funzioni getLast() e getFirst()
             end($SCM_roles);
-            $level = ( current($SCM_roles)[0] ?: 100);
+
+            // -- PHP old
+            $current = current($SCM_roles);
+            $level = ( $current[0] ?: 100);
+            // -- PHP new
+            //$level = ( current($SCM_roles)[0] ?: 100);
+
             reset($SCM_roles);
-            $flevel = ( current($SCM_roles)[0] ?: 0);
+
+            // -- PHP old
+            $flevel = ( $current[0] ?: 0);
+            // -- PHP new
+            //$flevel = ( current($SCM_roles)[0] ?: 0);
 
             if( !isset($obj) || !$obj ){
                 if( is_user_logged_in() )

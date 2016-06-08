@@ -1319,16 +1319,18 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 				else:
 					global $SCM_typekit;
 
-					$choices = array('no' => 'No Adobe font');
-					$kits = scm_field( 'styles-adobe', array(), 'option' );
-					foreach ( $kits as $field):
-						$kit = $SCM_typekit->get( $field['id'] );
-						if( !$kit || !$kit['kit'] )
-							continue;
-						foreach ( $kit['kit']['families'] as $family):
-							$choices[$family['slug']] = $family['name'];
+					if( $SCM_typekit ):
+						$choices = array('no' => 'No Adobe font');
+						$kits = scm_field( 'styles-adobe', array(), 'option' );
+						foreach ( $kits as $field):
+							$kit = $SCM_typekit->get( $field['id'] );
+							if( !$kit || !$kit['kit'] )
+								continue;
+							foreach ( $kit['kit']['families'] as $family):
+								$choices[$family['slug']] = $family['name'];
+							endforeach;
 						endforeach;
-					endforeach;
+					endif;
 				endif;
 
 			elseif( strpos( $list, 'webfonts_google' ) !== false ):

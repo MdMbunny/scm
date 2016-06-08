@@ -38,7 +38,13 @@
 	define( 'SCM_SHORTNAME',     	 	sanitize_title( SCM_SITENAME ) );
 	define( 'SCM_PROTOCOL',				( is_ssl() ? 'https://' : 'http://' ) );
 	define( 'SCM_SITE',				    site_url() );
-	define( 'SCM_DOMAIN',			    parse_url( SCM_SITE )["host"] );
+	
+	// -- PHP old
+	$SCM_parse = parse_url( SCM_SITE );
+	define( 'SCM_DOMAIN',			    $SCM_parse["host"] );
+	// -- PHP new
+	//define( 'SCM_DOMAIN',			    parse_url( SCM_SITE )["host"] );
+
 	define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
 	define( 'SCM_SCREEN',			    $_SERVER['REQUEST_URI'] );
 	define( 'SCM_CURRENT',			    SCM_SITE . SCM_SCREEN );
@@ -53,7 +59,12 @@
 //Directories constants
 
 	// UPLOADS FOLDER
-	define( 'SCM_URI_UPLOADS', 			wp_upload_dir()['baseurl'] );
+
+	// -- PHP old
+	$SCM_upload = wp_upload_dir();	
+	define( 'SCM_URI_UPLOADS', 			$SCM_upload['baseurl'] );
+	// -- PHP new
+	//define( 'SCM_URI_UPLOADS', 			wp_upload_dir()['baseurl'] );
 	
 	// MAIN THEME
 	define( 'SCM_DIR',			      	get_template_directory() . '/' );

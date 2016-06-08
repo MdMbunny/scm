@@ -45,7 +45,7 @@ if ( ! function_exists( 'scm_admin_ui_init' ) ) {
     remove_action( 'wp_head', 'rsd_link' );
     remove_action( 'wp_head', 'wp_generator' );
 
-    add_action( 'after_setup_theme', 'scm_typekit_install' );
+    //add_action( 'after_setup_theme', 'scm_typekit_install' );
     add_action( 'after_switch_theme', 'scm_theme_activate' );
     add_action( 'upgrader_process_complete', 'scm_theme_update' );
     add_action( 'switch_theme', 'scm_theme_deactivate' );
@@ -56,13 +56,15 @@ if ( ! function_exists( 'scm_admin_ui_init' ) ) {
 // *****************************************************
 
 // *** Install TypeKit
-    if ( ! function_exists( 'scm_typekit_install' ) ) {
-        function scm_typekit_install() {
+    //if ( ! function_exists( 'scm_typekit_install' ) ) {
+        //function scm_typekit_install() {
+
+            // todo: SOLO SE NECESSARIO
 
             global $SCM_typekit;
             $SCM_typekit = new Typekit_Client();
-        }
-    }
+        //}
+    //}
 
 // *** Theme Activation
     if ( ! function_exists( 'scm_theme_activate' ) ) {
