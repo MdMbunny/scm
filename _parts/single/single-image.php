@@ -85,8 +85,7 @@ if ( $layout == 'layout-thumbs' ) {
         if( !$id )
             return;
         
-        global $SCM_protocol;
-        $image = $SCM_protocol . 'img.youtube.com/vi/' . $id . '/1.jpg';
+        $image = SCM_PROTOCOL . 'img.youtube.com/vi/' . $id . '/1.jpg';
 
     }else{
         return;
