@@ -500,7 +500,8 @@
                 // + TAXONOMIES SLIDERS
                 $tax_sliders = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-options' );
                 $tax_sliders['location'][] = scm_acf_group_location( 'sliders', 'taxonomy' );
-                $tax_sliders['fields'] = scm_acf_template_sliders();
+                $tax_sliders['fields'] = scm_acf_fields_sliders();
+                //$tax_sliders['fields'] = scm_acf_template_sliders();
 
                 $groups[] = $tax_sliders;
 

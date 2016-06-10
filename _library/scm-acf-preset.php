@@ -242,14 +242,19 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 	        	case 'select':
 	        	case 'select2':
 
+	        		if($type=='select2'){
+	        			consoleLog($extra);
+	        		}
+
 	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
+	        		//$choices = array_merge( $choices, scm_acf_field_to3( $arg, 2, 'placeholder', array() ) ),
 	        		$choices = scm_acf_field_choices( $default, $choices );
 
 	        		$field = array(
 						'type' 					=> 'select',
 						'choices' 				=> $choices['choices'],
 						'default_value' 		=> $choices['default_value'],
-						'placeholder' 			=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
+						//'placeholder' 			=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
 						'ajax' 					=> scm_acf_field_to3( $arg, 3, 'ajax', 0 ),
 						'allow_null' 			=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
 						'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_field_to3( $arg, 5, 'ui', 0 ) ),
@@ -1206,7 +1211,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 					'26px' => 'Huge',
 				);
 			
-			elseif( strpos( $list, 'layout_main' ) !== false ):
+			elseif( strpos( $list, 'main_layout' ) !== false ):
 				$choices = array(
 					'responsive'		=> 'Responsive',
 					'full'				=> 'Full Width',

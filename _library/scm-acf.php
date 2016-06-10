@@ -33,7 +33,6 @@
 // *****************************************************
 
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
-	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-templates.php' );
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
@@ -608,7 +607,10 @@
 	if ( ! function_exists( 'scm_acf_column_width' ) ) {
 		function scm_acf_column_width( $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_column_width( 'column-width', 0, $width, 0, array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ) ) );
+			array_unshift( $list, scm_acf_field_select( 'column-width', array( 
+				'type'=>'2-columns_width',
+				'choices'=>array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ),
+			), $width, 0 ) );
 
 			return $list;
 
@@ -686,7 +688,7 @@
 	if ( ! function_exists( 'scm_acf_column_float' ) ) {
 		function scm_acf_column_float( $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_float( 'float', 0, $width, 0, __( ' - (se auto)', SCM_THEME ) ) );
+			array_unshift( $list, scm_acf_field_select( 'float', 'float', $width ) );
 			
 			return $list;
 
@@ -712,7 +714,7 @@
 	if ( ! function_exists( 'scm_acf_column_overlay' ) ) {
 		function scm_acf_column_overlay( $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field_select_overlay( 'overlay', 0, 20, 0 ) );
+			array_unshift( $list, scm_acf_field_select( 'overlay', 'overlay', 20 ) );
 			
 			return $list;
 

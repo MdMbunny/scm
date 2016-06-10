@@ -236,199 +236,24 @@
 		return scm_acf_preset( $name, $field, array('default'=>1, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
 	}
 
-
-// ************* DA QUI
-
-
 /* Select */
 
-	// SELECT 1
-	if ( ! function_exists( 'scm_acf_field_select1' ) ) {
-		function scm_acf_field_select1( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-			
-			return scm_acf_field( $name, array( 'select' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, ( $label ? __( 'Seleziona', SCM_THEME ) . ' ' . $label : '' ) ), $label, $width, $logic, $instructions, $required );
+	// SELECT
+	function scm_acf_field_select( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		$type = 'select';
+		if( is_string( $field ) ){
+			$type = $type . ( strpos($field, '2') === 0 ? '' : '-') . $field;
+			$field = 0;
+		}elseif( $field === 1 ){
+			$type = $type . '-default';
+			$field = 0;
+		}elseif( is_array( $field ) && $field['type'] ){
+			$field['type'] = $type . '-' . $field['type'];
 		}
+		return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 	}
 
-	// SELECT 2
-	if ( ! function_exists( 'scm_acf_field_select' ) ) {
-		function scm_acf_field_select( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-			
-			return scm_acf_field( $name, array( 'select2' . ( $type ? '-' . $type : '' ) . ( $default ? '-default' : '' ), $placeholder, ( $label ? __( 'Seleziona', SCM_THEME ) . ' ' . $label : '' ) ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// DATE FORMAT
-	if ( ! function_exists( 'scm_acf_field_select_date' ) ) {
-		function scm_acf_field_select_date( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-			
-
-			return scm_acf_field( $name, array( 'select-date_format' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// COLUMN WIDTH
-	if ( ! function_exists( 'scm_acf_field_select_column_width' ) ) {
-		function scm_acf_field_select_column_width( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select2-columns_width' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// OPTIONS
-	if ( ! function_exists( 'scm_acf_field_select_options' ) ) {
-		function scm_acf_field_select_options( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Opzioni', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select-options_show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// HIDE
-	if ( ! function_exists( 'scm_acf_field_select_hide' ) ) {
-		function scm_acf_field_select_hide( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// HIDE2
-	if ( ! function_exists( 'scm_acf_field_select_hide2' ) ) {
-		function scm_acf_field_select_hide2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select2-hide' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-	
-	// SHOW
-	if ( ! function_exists( 'scm_acf_field_select_show' ) ) {
-		function scm_acf_field_select_show( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// SHOW2
-	if ( ! function_exists( 'scm_acf_field_select_show2' ) ) {
-		function scm_acf_field_select_show2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Mostra', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select2-show' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// DISABLE
-	if ( ! function_exists( 'scm_acf_field_select_disable' ) ) {
-		function scm_acf_field_select_disable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// DISABLE2
-	if ( ! function_exists( 'scm_acf_field_select_disable2' ) ) {
-		function scm_acf_field_select_disable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select2-disable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// ENABLE
-	if ( ! function_exists( 'scm_acf_field_select_enable' ) ) {
-		function scm_acf_field_select_enable( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-
-	// ENABLE2
-	if ( ! function_exists( 'scm_acf_field_select_enable2' ) ) {
-		function scm_acf_field_select_enable2( $name = '', $default = 0, $placeholder = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			$label = ( $label ?: __( 'Abilita', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'select2-enable' . ( $default ? '-default' : '' ), $placeholder, $label ), $label . ( $placeholder ? ' ' . $placeholder : '' ), $width, $logic, $instructions, $required );
-		}
-	}
-	
-	// HEADINGS
-	if ( ! function_exists( 'scm_acf_field_select_headings' ) ) {
-		function scm_acf_field_select_headings( $name = '', $default = 0, $opt = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-
-			return scm_acf_field( $name, array( 'select-headings' . ( $opt === 1 ? '_low' : ( $opt === -1 ? '_min' : ( $opt === 2 ? '_max' : '' ) ) ) . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// LAYOUT
-	if ( ! function_exists( 'scm_acf_field_select_layout' ) ) {
-		function scm_acf_field_select_layout( $name = '', $default = 0, $label = '', $width = '', $logic = 0, $placeholder = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-layout_main' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// IMAGE FORMAT
-	if ( ! function_exists( 'scm_acf_field_select_image_format' ) ) {
-		function scm_acf_field_select_image_format( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-image_format' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// FLOAT
-	if ( ! function_exists( 'scm_acf_field_select_float' ) ) {
-		function scm_acf_field_select_float( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-float' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-	
-	// OVERLAY
-	if ( ! function_exists( 'scm_acf_field_select_overlay' ) ) {
-		function scm_acf_field_select_overlay( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-overlay' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-	
-	// ALIGN
-	if ( ! function_exists( 'scm_acf_field_select_align' ) ) {
-		function scm_acf_field_select_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// VERTICAL ALIGN
-	if ( ! function_exists( 'scm_acf_field_select_valign' ) ) {
-		function scm_acf_field_select_valign( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-vertical_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// TXT ALIGN
-	if ( ! function_exists( 'scm_acf_field_select_txt_align' ) ) {
-		function scm_acf_field_select_txt_align( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = '', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select2-txt_alignment' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-
-	// UNITS
-	if ( ! function_exists( 'scm_acf_field_select_units' ) ) {
-		function scm_acf_field_select_units( $name = '', $default = 0, $width = '', $logic = 0, $placeholder = 'px', $label = '', $instructions = '', $required = 0 ) {
-
-			return scm_acf_field( $name, array( 'select-units' . ( $default ? '-default' : '' ), $placeholder, __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
+// ************* DA QUI
 
 /* Object */
 

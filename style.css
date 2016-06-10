@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.12.9
+Version:			v2.13.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1621,6 +1621,7 @@ body:not(.ready) .navigation {
 	cursor: pointer;
 	max-width: 4em;
 	vertical-align: top;
+	margin: .8em;
 }
 
 .ie .navigation > .row > div.toggle-button{
@@ -2140,6 +2141,10 @@ body.touch .fancybox-nav span{
 	width: 44px;
 	height: 44px;
 	background: url('_assets/img/loading.gif') center center no-repeat;
+}
+
+.fancybox-image{
+	height: auto;
 }
 
 /*--------------------------------------------------------------

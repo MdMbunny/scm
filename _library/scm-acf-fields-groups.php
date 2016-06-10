@@ -34,17 +34,15 @@
 	if ( ! function_exists( 'scm_acf_fields_page' ) ) {
 		function scm_acf_fields_page() {
 
-			$default = 0; // todo: da rimuovere ovunque
-
 			$fields = array();
 
 			$fields = apply_filters( 'scm_filter_fields_page_before', $fields );
 
-			$fields[] = scm_acf_field_select_layout( 'page-layout', 1, '', 34, 0, 'default' );
+			$fields[] = scm_acf_field_select( 'page-layout', 'main_layout-default', 34 );
 
 			$fields = array_merge( $fields, scm_acf_preset_selectors( 'page', 33, 33 ) );
 
-			$fields[] = scm_acf_field_select1( 'page-menu', $default, 'wp_menu', 100, 0, '', __( 'Menu Principale', SCM_THEME ) );
+			$fields[] = scm_acf_field_select( 'page-menu', 'wp_menu', 100, 0, 0, __( 'Menu Principale', SCM_THEME ) );
 			
 			$fields = array_merge( $fields, scm_acf_preset_flexible_sections() );
 
@@ -111,18 +109,16 @@
 	if ( ! function_exists( 'scm_acf_fields_sections' ) ) {
 		function scm_acf_fields_sections( $elements = '' ) {
 
-			$default = 0; // todo: da rimuovere ovunque
-
 			$fields = array();
 
 			$fields = apply_filters( 'scm_filter_fields_section_before', $fields );
 
-			$fields[] = scm_acf_field_select_layout( 'layout', $default, '', 20 );
+			$fields[] = scm_acf_field_select( 'layout', 'main_layout', 20 );
 			$fields = array_merge( $fields, scm_acf_preset_selectors( '', 20, 20 ) );
 			$fields[] = scm_acf_field( 'attributes', 'attributes', '', 40 );
 
 			$fields = array_merge( $fields, scm_acf_preset_repeater_columns( '', $elements ) );
-			$fields = array_merge( $fields, scm_acf_preset_tags( 'section', $default, 'sections' ) );
+			$fields = array_merge( $fields, scm_acf_preset_tags( 'section', 0, 'sections' ) );
 
 			$fields = apply_filters( 'scm_filter_fields_section', $fields );
 
@@ -130,11 +126,42 @@
 		}
 	}
 
+	// SLIDERS
+	if ( ! function_exists( 'scm_acf_fields_sliders' ) ) {
+		function scm_acf_fields_sliders( $name = '' ) {
+
+			$name = ( $name ? $name . '-' : '');
+
+			$fields = array();
+
+			$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', '', 'auto', 'px', __( 'Altezza', SCM_THEME ), 100 ) );
+			$fields[] = scm_acf_field_select( $name . 'theme', 'themes_nivo', 100, 0, 0, __( 'Tema', SCM_THEME ) );
+			$fields[] = scm_acf_field_select( $name . 'alignment', 'vertical_alignment' );
+			
+				$fields[] = scm_acf_field_select( $name . 'effect', 'effect_nivo', 100, 0, 0, __( 'Effetto Slider', SCM_THEME ) );
+				$fields[] = scm_acf_field_number( $name . 'slices', array( 'default'=>30, 'prepend'=>__( 'Slices', SCM_THEME ), 'min'=>1, 'max'=>30 ) );
+				$fields[] = scm_acf_field_number( $name . 'cols', array( 'default'=>8, 'prepend'=>__( 'Colonne', SCM_THEME ), 'min'=>1, 'max'=>8 ) );
+				$fields[] = scm_acf_field_number( $name . 'rows', array( 'default'=>8, 'prepend'=>__( 'Righe', SCM_THEME ), 'min'=>1, 'max'=>100 ) );
+				$fields[] = scm_acf_field_number( $name . 'speed', array( 'default'=>1, 'prepend'=>__( 'Velocità', SCM_THEME ) ) );
+				$fields[] = scm_acf_field_number( $name . 'pause', array( 'default'=>5, 'prepend'=>__( 'Pausa', SCM_THEME ) ) );
+
+				$fields[] = scm_acf_field_option( $name . 'start', array( 'default'=>0, 'prepend'=>__( 'Start', SCM_THEME ) ) );
+				$fields[] = scm_acf_field_false( $name . 'hover', 0, 100, 0, 0, __( 'Pause on Hover', SCM_THEME ) );
+				$fields[] = scm_acf_field_false( $name . 'manual', 0, 100, 0, 0, __( 'Avanzamento Manuale', SCM_THEME ) );
+				$fields[] = scm_acf_field_false( $name . 'direction', 0, 100, 0, 0, __( 'Direction Nav', SCM_THEME ) );
+				$fields[] = scm_acf_field_false( $name . 'control', 0, 100, 0, 0, __( 'Control Nav', SCM_THEME ) );
+				$fields[] = scm_acf_field_false( $name . 'thumbs', 0, 100, 0, 0, __( 'Thumbs Nav', SCM_THEME ) );
+				$fields[] = scm_acf_field_icon( $name . 'prev', array('placeholder'=>'angle-left','label'=>__( 'Prev Icon', SCM_THEME )) );
+				$fields[] = scm_acf_field_icon( $name . 'next', array('placeholder'=>'angle-right','label'=>__( 'Next Icon', SCM_THEME )) );
+
+			return $fields;
+			
+		}
+	}
+
 	// SLIDES
 	if ( ! function_exists( 'scm_acf_fields_slides' ) ) {
 		function scm_acf_fields_slides() {
-
-			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
 			$hastaxes = checkTaxes( 'slides' );
@@ -147,12 +174,12 @@
 
 			if( $hastaxes ){
 				$fields[] = scm_acf_field_tab_left( 'tab-tax-slide', array('label'=>__( 'Impostazioni', SCM_THEME ) ) );
-					$fields = array_merge( $fields, scm_acf_preset_categories( 'slide', $default, 'slides' ) );
-					$fields = array_merge( $fields, scm_acf_preset_tags( 'slide', $default, 'slides' ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'slide', 0, 'slides' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'slide', 0, 'slides' ) );
 			}
 
 			// conditional link
-			$fields[] = scm_acf_field_select( 'slide-link', $default, 'links_type', 50, 0, '', __( 'Collegamento', SCM_THEME ) );
+			$fields[] = scm_acf_field_select( 'slide-link', 'links_type', 50, 0, 0, __( 'Collegamento', SCM_THEME ) );
 
 			$link = array(
 				'field' => 'slide-link',
@@ -167,16 +194,17 @@
 			);
 
 				$fields[] = scm_acf_field_link( 'slide-external', 0, 50, $link );
-				$fields[] = scm_acf_field_object_link( 'slide-internal', $default, 'page', 50, $page );
+				$fields[] = scm_acf_field_object_link( 'slide-internal', 0, 'page', 50, $page );
 
 			$fields[] = scm_acf_field_tab( 'tab-slide-caption', array('label'=>__( 'Didascalia', SCM_THEME ) ) );
 			// conditional caption
-			$fields[] = scm_acf_field_select_disable( 'slide-caption', $default, __( 'Didascalia', SCM_THEME ) );
+			//$fields[] = scm_acf_field_select_disable( 'slide-caption', 0, __( 'Didascalia', SCM_THEME ) );
+			$fields[] = scm_acf_field_false( 'slide-caption', 0, 100, 0, 0, __( 'Attiva Didascalia', SCM_THEME ) );
 
 			$caption = array(
 				'field' => 'slide-caption',
 				'operator' => '==',
-				'value' => 'on',
+				'value' => 1,
 			);
 
 				$fields[] = scm_acf_field( 'slide-caption-top', array( 'percent', '', '0' ), __( 'Dal lato alto', SCM_THEME ), 25, $caption );
@@ -252,7 +280,6 @@
 	if ( ! function_exists( 'scm_acf_fields_rassegne_stampa' ) ) {
 		function scm_acf_fields_rassegne_stampa() {
 
-			$default = 0; // todo: da rimuovere ovunque
 
 			$fields = array();
 			$hastaxes = checkTaxes( 'rassegne-stampa' );
@@ -263,7 +290,7 @@
 				$fields[] = scm_acf_field_tab_left( 'tab-set-rassegna', array('label'=>__( 'Impostazioni', SCM_THEME ) ) );
 				
 				// conditional link
-				$fields[] = scm_acf_field_select( 'rassegna-type', $default, 'rassegne_type', 100, 0, '', __( 'Articolo', SCM_THEME ) );
+				$fields[] = scm_acf_field_select( 'rassegna-type', 'rassegne_type', 100, 0, 0, __( 'Articolo', SCM_THEME ) );
 
 				$link = array(
 					'field' => 'rassegna-type',
@@ -285,8 +312,8 @@
 
 			if( $hastaxes ){
 				$fields[] = scm_acf_field_tab_left( 'tab-tax-rassegna', array('label'=>__( 'Categorie', SCM_THEME ) ) );
-					$fields = array_merge( $fields, scm_acf_preset_categories( 'rassegna', $default, 'rassegne-stampa' ) );
-					$fields = array_merge( $fields, scm_acf_preset_tags( 'rassegna', $default, 'rassegne-stampa' ) );
+					$fields = array_merge( $fields, scm_acf_preset_categories( 'rassegna', 0, 'rassegne-stampa' ) );
+					$fields = array_merge( $fields, scm_acf_preset_tags( 'rassegna', 0, 'rassegne-stampa' ) );
 			}
 
 			$fields = apply_filters( 'scm_filter_fields_rassegna', $fields );
