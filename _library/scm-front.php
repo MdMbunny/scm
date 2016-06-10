@@ -30,6 +30,8 @@ $SCM_page_id        = 0;
     add_action( 'after_setup_theme', 'scm_old_browser' );
     add_action( 'wp_enqueue_scripts', 'scm_site_assets_favicon' );
     add_filter( 'body_class','scm_body_class' );
+    add_filter( 'the_excerpt_rss', 'scm_feed_excerpt' );
+    add_filter( 'the_content_feed', 'scm_feed_content' );
 
 // *****************************************************
 // *      1.0 FRONT HOOKS
@@ -149,13 +151,36 @@ $SCM_page_id        = 0;
 
             $classes[] = $post->post_status;
 
-            // LANGUAGE classes - NEEDS PolyLang Plugin - (includerlo nel tema?)
+            // LANGUAGE classes - NEEDS PolyLang Plugin
             if( function_exists('pll_current_language') )
                 $classes[] = 'lang-' . ( pll_current_language() ?: language_attributes() );
 
             return $classes;
         }
     }
+
+//************************ FEED EXCERPT HOOK ***
+
+     if ( ! function_exists( 'scm_feed_excerpt' ) ) {
+        function scm_feed_excerpt( $excerpt ) {
+            if( !$excerpt )
+                $excerpt = scm_fields( array( 'excerpt', 'preview', 'anteprima' ), '' );
+            
+            return $excerpt;
+        }
+    }
+
+//************************ FEED CONTENT HOOK ***
+
+     if ( ! function_exists( 'scm_feed_content' ) ) {
+        function scm_feed_content( $content ) {
+            if( !$content )
+                $content = scm_fields( array( 'description', 'content' ), '' );
+            
+            return $content;
+        }
+    }
+
 
 // *****************************************************
 // *      2.0 FRONT PAGINATION

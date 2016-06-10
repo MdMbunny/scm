@@ -73,6 +73,21 @@
 				'style' => 'default',
 				'label_placement' => 'top',
 				'instruction_placement' => 'label',
+				/*'hide_on_screen' => '',
+				'hide_on_screen' => array(
+					0 => 'custom_fields',
+					1 => 'discussion',
+					2 => 'comments',
+					3 => 'revisions',
+					4 => 'slug',
+					5 => 'author',
+					6 => 'format',
+					7 => 'page_attributes',
+					8 => 'featured_image',
+					9 => 'categories',
+					10 => 'tags',
+					11 => 'send-trackbacks',
+				),*/
 				'hide_on_screen' => array(
 					0 => 'the_content',
 					1 => 'excerpt',
@@ -311,6 +326,26 @@
 	        $field = array_merge( $field, scm_acf_field_type( $default ) );
 
 			return $field;
+
+		}
+	}
+
+	// Get Field with Field Fallback
+    if ( ! function_exists( 'scm_fields' ) ) {
+        function scm_fields( $names, $fallback = '', $target = '', $no_option = 1, $before = '', $after = '' ) {
+
+        	if( !names || !is_array( $names ) || sizeof( $names ) === 0 )
+        		return scm_field( '', $fallback, $target, $no_option, $before, $after );
+
+        	foreach ($names as $name) {
+        		
+        		$content = scm_field( $name, '', $target, $no_option, $before, $after );
+        		if( $content )
+        			return $content;
+
+        	}
+
+        	return $fallback;
 
 		}
 	}
