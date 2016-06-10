@@ -86,6 +86,7 @@
 		define( 'SCM_DIR_PARTS',			    '_parts/content' );
 		define( 'SCM_DIR_PARTS_SINGLE',		    '_parts/single/single' );
 		define( 'SCM_DIR_PARTS_ARCHIVE',	    '_parts/archive/archive' );
+		define( 'SCM_DIR_PARTS_FEED',		    '_parts/feed/feed' );
 	
 	
 	// CHILD THEME
@@ -133,5 +134,6 @@ require_once( SCM_DIR_LIBRARY . 'scm-admin.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-content.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-front.php' );
+//require_once( SCM_DIR_LIBRARY . 'scm-feed.php' ); -- da esaminare e capire
 
 

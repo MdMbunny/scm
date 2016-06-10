@@ -21,6 +21,7 @@
 
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+<link rel="alternate" type="application/rss+xml" title="SCM Feed" href="/feed.xml">
 
 <?php wp_head(); ?><!-- WP Header Hook -->
 
