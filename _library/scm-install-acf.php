@@ -561,7 +561,11 @@
                 // + PAGE FOOTER
                 $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
                 $page_footer['location'][] = scm_acf_group_location( 'page' );
-                $page_footer['fields'][] = scm_acf_field_objects_rel( 'page-footer', 0, 'sections', 100, 0, 'Seleziona Sections' );
+                $page_footer['fields'][] = scm_acf_field_objects( 'page-footer', array( 
+                    'type'=>'rel-id', 
+                    'types'=>'sections',
+                    'label'=>__( 'Seleziona Sections', SCM_THEME ),
+                ) );
 
                 $groups[] = $page_footer;
 

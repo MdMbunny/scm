@@ -222,8 +222,6 @@
 		}
 	}
 
-// ************* DA QUI
-
 	// TERM
 	if ( ! function_exists( 'scm_acf_preset_term' ) ) {
 		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
@@ -237,7 +235,14 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_taxonomy( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instructions, $required );
+			$fields[] = scm_acf_field_taxonomy( $name . 'terms', array( 
+				'type'=>'id',
+				'taxes'=>$tax,
+				'label'=>$lb1 . ' ' . $placeholder,
+				'add'=>$add,
+				'save'=>$save,
+				'instructions'=>$instructions,
+			), $w1, $logic, $required );
 
 			return $fields;
 		}
@@ -256,7 +261,14 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$fields[] = scm_acf_field_taxonomies( $name . 'terms', $default, $tax, $lb1 . ' ' . $placeholder, $add, $save, $w1, $logic, $instructions, $required );
+			$fields[] = scm_acf_field_taxonomies( $name . 'terms', array( 
+				'type'=>'id',
+				'taxes'=>$tax,
+				'label'=>$lb1 . ' ' . $placeholder,
+				'add'=>$add,
+				'save'=>$save,
+				'instructions'=>$instructions,
+			), $w1, $logic, $required );
 
 			return $fields;
 		}
@@ -432,6 +444,8 @@
 		}
 	}
 
+// ************* DA QUI
+
 	// COLUMNS
 	if ( ! function_exists( 'scm_acf_preset_repeater_columns' ) ) {
 		function scm_acf_preset_repeater_columns( $name = '', $elements = '', $logic = 0, $req = 0, $instructions = '', $class = 'special-repeater' ) {
@@ -441,7 +455,11 @@
 			$name = ( $name ? $name . '-columns' : 'columns');
 			$fields = scm_acf_preset_instructions( $instructions,  $name, __( 'Impostazioni Colonne', SCM_THEME ) );
 			
-			$columns = scm_acf_field_repeater( $name, $default, __( 'Aggiungi Colonna', SCM_THEME ), '', 100, $logic, '', '', '', $req, $class );
+			$columns = scm_acf_field_repeater( $name, array( 
+				'button'=>__( 'Aggiungi Colonna', SCM_THEME ),
+				'label'=>'', 
+				'class'=>$class,
+			), 100, $logic, $req );
 
 				$columns['sub_fields'][] = scm_acf_field_select( 'column-width', '2-columns_width', 20 );
 				$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_selectors( '', 10, 15 ) );
@@ -503,11 +521,19 @@
 				break;
 
 				case 'page':
-					$fields[] = scm_acf_field_object_link( $name . 'link', $default, 'page', $width, 0, __( 'Pagina', SCM_THEME ) );
+					$fields[] = scm_acf_field_object( $name . 'link', array( 
+		                'type'=>'link', 
+		                'types'=>'page',
+		                //'label'=>__( 'Pagina', SCM_THEME ),
+		            ), $width );
 				break;
 				
 				case 'media':
-					$fields[] = scm_acf_field_object( $name . 'link', $default, array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), $width, 0, __( 'Media', SCM_THEME ) ); // todo: in install crea array di types Media (aggiungi campo Media nella creazione di types)
+					$fields[] = scm_acf_field_object( $name . 'link', array( 
+		                'type'=>'id', 
+		                'types'=>array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ),
+		                //'label'=>__( 'Media', SCM_THEME ),
+		            ), $width ); // todo: in install crea array di types Media (aggiungi campo Media nella creazione di types)
 				break;
 
 				case 'paypal':
@@ -515,7 +541,11 @@
 				break;
 				
 				default:
-					$fields[] = scm_acf_field_object( $name . 'link', $default, $type, $width, 0, __( 'Elemento', SCM_THEME ) );
+					$fields[] = scm_acf_field_object( $name . 'link', array( 
+		                'type'=>'id', 
+		                'types'=>$type,
+		                //'label'=>__( 'Elemento', SCM_THEME ),
+		            ), $width );
 				break;
 			}
 			
@@ -545,7 +575,10 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$contacts = scm_acf_field_flexible( $name . 'buttons' , $default, __( 'Aggiungi Pulsante', SCM_THEME ), '+' );			
+			$contacts = scm_acf_field_flexible( $name . 'buttons' , array( 
+				'label'=>__( 'Aggiungi Pulsante', SCM_THEME ),
+				'button'=>'+',
+			) );
 
 				foreach ( $SCM_fa[ $group ] as $key => $value ) {
 
@@ -596,12 +629,19 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$sections = scm_acf_field_repeater( $name . 'sections', $default, __( 'Aggiungi Sezione', SCM_THEME ), __( 'Sezioni', SCM_THEME ), 100, $logic, '', '', '', $required, $class );
+			$sections = scm_acf_field_repeater( $name . 'sections', array( 
+				'button'=>__( 'Aggiungi Sezione', SCM_THEME ),
+				'label'=>__( 'Sezioni', SCM_THEME ), 
+				'class'=>$class,
+			), 100, $logic, $required );
 
 				$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', 25, 25 ) );
 				$sections['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 50 );
 
-				$flexible = scm_acf_field_flexible( 'rows', $default, __( 'Moduli', SCM_THEME ) );			
+				$flexible = scm_acf_field_flexible( 'rows', array( 
+					'label'=>__( 'Moduli', SCM_THEME ),
+					'button'=>'+',
+				) );
 
 					$template = scm_acf_layout( 'template', 'block', __( 'Template', SCM_THEME ) );
 						
@@ -617,21 +657,30 @@
 						$row['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
 						$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
 						$row['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
-						$row['sub_fields'][] = scm_acf_field_object( 'row', $default, 'sections' );
+						$row['sub_fields'][] = scm_acf_field_object( 'row', array( 
+			                'type'=>'id', 
+			                'types'=>'sections',
+			            ) );
 
 					$module = scm_acf_layout( 'module', 'block', 'Module' );
 
 						$module['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
 						$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
 						$module['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
-						$module['sub_fields'][] = scm_acf_field_object( 'row', $default, 'modules' );
+						$module['sub_fields'][] = scm_acf_field_object( 'row', array( 
+			                'type'=>'id', 
+			                'types'=>'modules',
+			            ) );
 
 					$banner = scm_acf_layout( 'banner', 'block', 'Banner' );
 
 						$banner['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
 						$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
 						$banner['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
-						$banner['sub_fields'][] = scm_acf_field_object( 'row', $default, 'banners' );
+						$banner['sub_fields'][] = scm_acf_field_object( 'row', array( 
+			                'type'=>'id', 
+			                'types'=>'banners',
+			            ) );
 
 					$flexible['layouts'] = array( $template, $row, $module, $banner );
 
@@ -679,7 +728,11 @@
 
 			$name = ( $name ? $name . '-' : '');
 
-			$flexible = scm_acf_field_flexible( $name . 'modules', $default, '', '+', 100, $logic, '', '', '', $required, $class );
+			$flexible = scm_acf_field_flexible( $name . 'modules', array( 
+				'label'=>'',
+				'button'=>'+',
+				'class'=>$class
+			), 100, $logic, $required );
 
 				if( !$elements ){
 					$elements = array();
@@ -691,7 +744,6 @@
 				
 				if( !is_array( $elements ) )
 					$elements = array( $elements );
-
 
 				foreach ($elements as $el) {
 

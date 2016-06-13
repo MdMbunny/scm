@@ -41,7 +41,12 @@
 
 			$fields = array();
 
-			$types = scm_acf_field_repeater( $name . 'types-list', $default, __('Aggiungi Type', SCM_THEME), '', 100, 0, $min, $max );
+			$types = scm_acf_field_repeater( $name . 'types-list', array( 
+				'button'=>__( 'Aggiungi Type', SCM_THEME ),
+				'label'=>'', 
+				'min'=>$min,
+				'max'=>$max,
+			) );
 			$types['sub_fields'][] = scm_acf_field_false( 'active', 0, 30, 0, 0, __( 'Attiva', SCM_THEME ) );
 			$types['sub_fields'][] = scm_acf_field_name( 'plural', array( 'placeholder'=>__( 'Produzioni', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ), 'max' => 18 ), 70, 0, 1 );
 
@@ -108,7 +113,12 @@
 
 			$fields = array();
 
-			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', $default, __( 'Aggiungi Taxonomy', SCM_THEME ), __( 'Taxonomies', SCM_THEME ), 100, 0, $min, $max );
+			$taxes = scm_acf_field_repeater( $name . 'taxonomies-list', array( 
+				'button'=>__( 'Aggiungi Taxonomy', SCM_THEME ),
+				'label'=>__( 'Taxonomies', SCM_THEME ), 
+				'min'=>$min,
+				'max'=>$max,
+			) );
 			$taxes['sub_fields'][] = scm_acf_field_false( 'active', 0, 30, 0, 0, __( 'Attiva', SCM_THEME ) );
 			$taxes['sub_fields'][] = scm_acf_field_name( 'plural', array( 'max'=>18, 'placeholder'=>__( 'Nome Categorie', SCM_THEME ), 'prepend'=>__( 'Plurale', SCM_THEME ) ), 70, 0, 1 );
 
@@ -287,14 +297,21 @@
 				$fields = array_merge( $fields, scm_acf_preset_background_style( 'loading' ) );
 
 			$fields[] = scm_acf_field_tab_left( 'tab-fonts', array('label'=>__( 'Fonts', SCM_THEME)) );
-				$gfonts = scm_acf_field_repeater( 'styles-google', $default, __( 'Aggiungi Google Web Font', SCM_THEME ), __( 'Includi Google Web Fonts', SCM_THEME ), '', 0, '', '', __( 'Visita <a href="https://www.google.com/fonts">https://www.google.com/fonts</a>, scegli la famiglia e gli stili da includere.', SCM_THEME ) );
+				$gfonts = scm_acf_field_repeater( 'styles-google', array( 
+					'button'=>__( 'Aggiungi Google Web Font', SCM_THEME ),
+					'label'=>__( 'Includi Google Web Fonts', SCM_THEME ), 
+					'instructions'=>__( 'Visita <a href="https://www.google.com/fonts">https://www.google.com/fonts</a>, scegli la famiglia e gli stili da includere.', SCM_THEME ),
+				) );
 
 					$gfonts['sub_fields'][] = scm_acf_field( 'family', array( 'text', '', 'Open Sans', __( 'Family', SCM_THEME ) ), __( 'Family', SCM_THEME ), 'required' );
 					$gfonts['sub_fields'][] = scm_acf_field( 'style', array( 'checkbox-webfonts_google_styles', '', 'horizontal' ), __( 'Styles', SCM_THEME ) );
 
 				$fields[] = $gfonts;
 
-				$afonts = scm_acf_field_repeater( 'styles-adobe', $default, __( 'Aggiungi Adobe TypeKit', SCM_THEME ), __( 'Includi Adobe TypeKit', SCM_THEME ) );
+				$afonts = scm_acf_field_repeater( 'styles-adobe', array( 
+					'button'=>__( 'Aggiungi Adobe TypeKit', SCM_THEME ),
+					'label'=>__( 'Includi Adobe TypeKit', SCM_THEME ), 
+				) );
 
 					$afonts['sub_fields'][] = scm_acf_field( 'id', array( 'text', '', '000000', __( 'ID', SCM_THEME ) ), __( 'ID', SCM_THEME ), 'required' );
 					$afonts['sub_fields'][] = scm_acf_field( 'name', array( 'text', '', __( 'Nome Kit', SCM_THEME ), __( 'Kit', SCM_THEME ) ), __( 'Nome', SCM_THEME ) );
@@ -489,7 +506,11 @@
 			$fields[] = scm_acf_field_false( $name . '-enabled', array('label'=> __( 'Attiva Social Link', SCM_THEME ) ) );
 			$social = array( 'field' => $name . '-enabled', 'operator' => '==', 'value' => 1 );
 
-				$fields[] = scm_acf_field_object( 'element', 0, 'soggetti', 100, $social, __( 'Soggetto', SCM_THEME ) ); // mmmh
+				$fields[] = scm_acf_field_object( 'element', array( 
+	                'type'=>'id', 
+	                'types'=>'soggetti',
+	                'label'=>__( 'Soggetto', SCM_THEME ),
+	            ), 100, $social ); // mmmh
 				$fields[] = scm_acf_field_select( $name . '-position', 'head_social_position', 50, $social, 0, __( 'Posizione', SCM_THEME ) );
 				$fields[] = scm_acf_field_select( $name . '-alignment', 'alignment', 50, $social, 0, __( 'Allineamento', SCM_THEME ) );
 				

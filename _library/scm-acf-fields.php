@@ -253,111 +253,33 @@
 		return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 	}
 
-// ************* DA QUI
-
 /* Object */
 
-	// INTERNAL OBJECT ID BY TAXONOMY
-	if ( ! function_exists( 'scm_acf_field_object_tax' ) ) {
-		function scm_acf_field_object_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-			
-			return scm_acf_field( $name, array( 'object-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECTS ID BY TAXONOMY
-	if ( ! function_exists( 'scm_acf_field_objects_tax' ) ) {
-		function scm_acf_field_objects_tax( $name = '', $default = 0, $type = '', $tax = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'objects-id', $type, $tax , __( 'Seleziona', SCM_THEME ) . ' ' . $label), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECT OBJ
-	if ( ! function_exists( 'scm_acf_field_object_obj' ) ) {
-		function scm_acf_field_object_obj( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'object', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECT OBJ NULL
-	if ( ! function_exists( 'scm_acf_field_object_obj_null' ) ) {
-		function scm_acf_field_object_obj_null( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'object-null', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECT ID
+	// INTERNAL OBJECT
 	if ( ! function_exists( 'scm_acf_field_object' ) ) {
-		function scm_acf_field_object( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'object-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECT ID NULL
-	if ( ! function_exists( 'scm_acf_field_object_null' ) ) {
-		function scm_acf_field_object_null( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'object-id-null', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECT ID REL
-	if ( ! function_exists( 'scm_acf_field_object_rel' ) ) {
-		function scm_acf_field_object_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'object-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
+		function scm_acf_field_object( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+				$type = 'object';
+			if( is_string( $field ) ){
+				$type = $type . $field;
+				$field = 0;
+			}elseif( is_array( $field ) && $field['type'] ){
+				$type = $field['type'] = $type . '-' . $field['type'];
+			}
+			return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 		}
 	}
 
 	// INTERNAL OBJECTS
-	if ( ! function_exists( 'scm_acf_field_object_objs' ) ) {
-		function scm_acf_field_object_objs( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'objects', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECTS ID
 	if ( ! function_exists( 'scm_acf_field_objects' ) ) {
-		function scm_acf_field_objects( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'objects-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL OBJECTS ID REL
-	if ( ! function_exists( 'scm_acf_field_objects_rel' ) ) {
-		function scm_acf_field_objects_rel( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'objects-rel-id', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL LINKS
-	if ( ! function_exists( 'scm_acf_field_object_link' ) ) {
-		function scm_acf_field_object_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuto', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'object-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label, 1 ), $label, $width, $logic, $instructions, $required );
-		}
-	}
-
-	// INTERNAL LINKS
-	if ( ! function_exists( 'scm_acf_field_objects_link' ) ) {
-		function scm_acf_field_objects_link( $name = '', $default = 0, $type = '', $width = '', $logic = 0, $label = '', $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Contenuti', SCM_THEME ) );
-
-			return scm_acf_field( $name, array( 'objects-link', $type, '', __( 'Seleziona', SCM_THEME ) . ' ' . $label, 1 ), $label, $width, $logic, $instructions, $required );
+		function scm_acf_field_objects( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+				$type = 'objects';
+			if( is_string( $field ) ){
+				$type = $type . $field;
+				$field = 0;
+			}elseif( is_array( $field ) && $field['type'] ){
+				$type = $field['type'] = $type . '-' . $field['type'];
+			}
+			return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 		}
 	}
 
@@ -365,70 +287,57 @@
 
 	// TAXONOMY
 	if ( ! function_exists( 'scm_acf_field_taxonomy' ) ) {
-		function scm_acf_field_taxonomy( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Taxonomy', SCM_THEME ) );
-
-			//printPre( $name . ' - ' . $tax . ' - ' . $label . ' - ' . $save );
-
-			return scm_acf_field( $name, array( 'taxonomy-id', $tax, $add, $save ), $label, $width, $logic, $instructions, $required );
+		function scm_acf_field_taxonomy( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+				$type = 'taxonomy';
+			if( is_string( $field ) ){
+				$type = $type . '-' . $field;
+				$field = 0;
+			}elseif( is_array( $field ) && $field['type'] ){
+				$type = $field['type'] = $type . '-' . $field['type'];
+			}
+			return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 		}
 	}
 
 	// TAXONOMIES
 	if ( ! function_exists( 'scm_acf_field_taxonomies' ) ) {
-		function scm_acf_field_taxonomies( $name = '', $default = 0, $tax = '', $label = '', $add = 1, $save = 0, $width = '', $logic = 0, $instructions = '', $required = 0 ) {
-			//$label = ( $label ?: __( 'Taxonomies', SCM_THEME ) );
-			//printPre( $name . ' - ' . $tax . ' - ' . $label . ' - ' . $save );
-			return scm_acf_field( $name, array( 'taxonomies-id', $tax, $add, $save ), $label, $width, $logic, $instructions, $required );
+		function scm_acf_field_taxonomies( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+				$type = 'taxonomies';
+			if( is_string( $field ) ){
+				$type = $type . '-' . $field;
+				$field = 0;
+			}elseif( is_array( $field ) && $field['type'] ){
+				$type = $field['type'] = $type . '-' . $field['type'];
+			}
+			return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 		}
 	}
 
 /* Repeater */
 
-	// REPEATER BLOCK
+	// REPEATER
 	if ( ! function_exists( 'scm_acf_field_repeater' ) ) {
-		function scm_acf_field_repeater( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
-			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
-			//$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-block', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
+		function scm_acf_field_repeater( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+			$type = 'repeater';
+			if( is_string( $field ) ){
+				$type = $type . '-' . $field;
+				$field = 0;
+			}elseif( is_array( $field ) && $field['type'] ){
+				$type = $field['type'] = $type . '-' . $field['type'];
+			}else{
+				$type = 'repeater-block';
+			}
+
+			return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 		}
 	}
-
-	// REPEATER BLOCK LABELS
-	if ( ! function_exists( 'scm_acf_field_repeater_labels' ) ) {
-		function scm_acf_field_repeater_labels( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
-			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
-			//$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			$class .= ' repeater-labels' ;
-			return scm_acf_field( $name, array( 'repeater-block', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
-		}
-	}
-
-	// REPEATER ROW
-	if ( ! function_exists( 'scm_acf_field_repeater_row' ) ) {
-		function scm_acf_field_repeater_row( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
-			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
-			//$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-row', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
-		}
-	}
-
-	// REPEATER TABLE
-	if ( ! function_exists( 'scm_acf_field_repeater_table' ) ) {
-		function scm_acf_field_repeater_table( $name = '', $default = 0, $button = '', $label = '', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
-			$button = ( $button ?: __( 'Aggiungi', SCM_THEME ) );
-			//$label = ( $label ?: __( 'Elementi', SCM_THEME ) );
-			return scm_acf_field( $name, array( 'repeater-table', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
-		}
-	}
-
+	
 /* Flexible Content */
 
 	// FLEXIBLE CONTENT
 	if ( ! function_exists( 'scm_acf_field_flexible' ) ) {
-		function scm_acf_field_flexible( $name = '', $default = 0, $label = '', $button = '+', $width = '', $logic = 0, $min = '', $max = '', $instructions = '', $required = 0, $class = '' ) {
-			
-			return scm_acf_field( $name, array( 'flexible', $button, $min, $max ), $label, 100, $logic, $instructions, $required, $class );
+		function scm_acf_field_flexible( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+			return scm_acf_preset( $name, $field, array( 'type'=>'flexible', 'label'=>$label ), $width, $logic, $required );
 		}
 	}
 	

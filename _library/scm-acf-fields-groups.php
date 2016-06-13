@@ -18,8 +18,12 @@
 
 			$fields = array();
 
-
-			$template = scm_acf_field_repeater( $name . '-templates', $default, __( 'Aggiungi Modello', SCM_THEME ), __( 'Modelli', SCM_THEME ), 100, $logic, '', '', $instructions, $required, $class );
+			$template = scm_acf_field_repeater( $name . '-templates', array( 
+				'button'=>__( 'Aggiungi Modello', SCM_THEME ),
+				'label'=>__( 'Modelli', SCM_THEME ), 
+				'instructions'=>$instructions,
+				'class'=>$class,
+			), 100, $logic, $required );
 
 				$template['sub_fields'][] = scm_acf_field_name( 'name', array( 'placeholder'=>__( 'Nome Modello', SCM_THEME ) ), 60 );
 				$template['sub_fields'][] = scm_acf_field( 'id', array( 'text-read', '', '0', __( 'ID', SCM_THEME ) ), __( 'ID', SCM_THEME ), 40 );
@@ -62,7 +66,11 @@
 
 			$fields = apply_filters( 'scm_filter_fields_banner_before', $fields );
 			
-			$flexible = scm_acf_field_flexible( $name . 'modules', 0, __( 'Aggiungi Contesto', SCM_THEME ), __( 'Contesto', SCM_THEME ), 100, 0, 1 );
+			$flexible = scm_acf_field_flexible( $name . 'modules', array( 
+				'label'=>__( 'Aggiungi Contesto', SCM_THEME ),
+				'button'=>__( 'Contesto', SCM_THEME ),
+				'min'=>1,
+			) );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'quote', 'block', __( 'Quote', SCM_THEME ), '', '', scm_acf_object_quote( 0, 0, 1) );
                 $flexible['layouts'][] = scm_acf_layout( 'pulsanti', 'block', __( 'Pulsanti', SCM_THEME ), '', '', scm_acf_object_pulsanti( 0, 0, 1 ) );
@@ -87,7 +95,11 @@
 
 			$fields = apply_filters( 'scm_filter_fields_module_before', $fields );
 			
-			$flexible = scm_acf_field_flexible( $name . 'modules', 0, __( 'Componi', SCM_THEME ), '+', '', 0, 0, 30 );
+			$flexible = scm_acf_field_flexible( $name . 'modules', array( 
+				'label'=>__( 'Componi', SCM_THEME ),
+				'button'=>__( '+', SCM_THEME ),
+				'max'=>30,
+			) );
                 $flexible['layouts'][] = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', '', scm_acf_object_titolo( 0, 0, 2 ) );
                 $flexible['layouts'][] = scm_acf_layout( 'testo', 'block', __( 'Testo', SCM_THEME ), '', '', scm_acf_object_testo( '', 0, 1) ); // Se vedi che i testi inseriti fanno casino, sostituisci 1 con 0
                 $flexible['layouts'][] = scm_acf_layout( 'elenco_puntato', 'block', __( 'Elenco Puntato', SCM_THEME ), '', '', scm_acf_object_elenco_puntato( 0, 0, 1 ) );
@@ -194,7 +206,10 @@
 			);
 
 				$fields[] = scm_acf_field_link( 'slide-external', 0, 50, $link );
-				$fields[] = scm_acf_field_object_link( 'slide-internal', 0, 'page', 50, $page );
+				$fields[] = scm_acf_field_object( 'slide-internal', array( 
+                    'type'=>'link', 
+                    'types'=>'page',
+                ), 50, $page );
 
 			$fields[] = scm_acf_field_tab( 'tab-slide-caption', array('label'=>__( 'Didascalia', SCM_THEME ) ) );
 			// conditional caption
@@ -445,7 +460,10 @@
 
 			$fields[] = scm_acf_field_tab_left( 'tab-contatti-luogo', array('label'=>__( 'Contatti', SCM_THEME ) ) );
 
-				$contacts = scm_acf_field_flexible( 'luogo-contatti', $default, __( 'Aggiungi Contatti', SCM_THEME ), '+' );
+				$contacts = scm_acf_field_flexible( 'luogo-contatti', array( 
+					'label'=>__( 'Aggiungi Contatti', SCM_THEME ),
+					'button'=>'+',
+				) );
 
 					$web = scm_acf_layout( 'web', 'block', __( 'Web', SCM_THEME ) );
 						$web['sub_fields'] = scm_acf_preset_button( '', 'link', 'globe_contact', 'web', 2, __( 'Web', SCM_THEME ) );
@@ -526,7 +544,11 @@
 					__( 'Assegna dei Luoghi a questo Soggetto. Clicca sul pulsante Luoghi nella barra laterale per crearne uno. Il primo Luogo dell\'elenco sarà considerato Luogo Principale per questo Soggetto.', SCM_THEME ),
 				), __( 'Luoghi', SCM_THEME ) );
 
-				$fields[] = scm_acf_field_objects_rel( 'soggetto-luoghi', $default, 'luoghi', 100, 0, __( 'Seleziona Luoghi', SCM_THEME ) );
+				$fields[] = scm_acf_field_objects( 'soggetto-luoghi', array( 
+                    'type'=>'rel-id', 
+                    'types'=>'luoghi',
+                    'label'=>'Seleziona Luoghi',
+                ) );
 
 			$fields[] = scm_acf_field_tab_left( 'tab-social-soggetto', array('label'=>__( 'Social', SCM_THEME ) ) );
 				$fields = array_merge( $fields, scm_acf_preset_flexible_buttons( 'soggetto', $default, 'social', __( 'Social', SCM_THEME ) ) );

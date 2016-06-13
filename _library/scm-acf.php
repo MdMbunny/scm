@@ -304,14 +304,40 @@
 
 			$defaultname = ( is_string( $default ) ? $default : ( is_array( $default ) ? ( isset( $default[0] ) ? $default[0] : ( isset( $default['type'] ) ? $default['type'] : 'undefined-field' ) ) : 'undefined-field' ) );
 
+			if( is_array( $default ) ){
+				
+				if( isset( $default['label'] ) )
+					$def['label'] = $default['label'];
+				
+				if( isset( $default['instructions'] ) )
+					$def['instructions'] = $default['instructions'];
+				
+				
+				if( isset( $default['required'] ) )
+					$def['required'] = $default['required'];
+				
+				
+				if( isset( $default['logic'] ) )
+					$def['logic'] = $default['logic'];
+				
+				
+				if( isset( $default['width'] ) )
+					$def['width'] = $default['width'];
+				
+
+				if( isset( $default['class'] ) )
+					$def['class'] = $default['class'];
+
+			}
+
 			$field = array (
 				'key' => ( $def['name'] ? $def['name'] . '_' : '' ),
-				'label' => ( $def['label'] ?: ( is_array( $default ) && isset( $default['label'] ) ? $default['label'] : '' ) ),
+				'label' => ( $def['label'] ?: '' ),
 				'name' => ( $def['name'] ?: $defaultname ),
 				'prefix' => '',
 				'instructions' => ( $def['instructions'] ?: '' ),
 				'required' => ( $def['required'] ?: 0 ),
-				'conditional_logic' => ( is( $def['logic'] ) && !is_string( $def['logic'] ) ? array( scm_acf_group_condition( $def['logic'] ) ) : '' ),
+				'conditional_logic' => ( $def['logic'] && is( $def['logic'] ) && !is_string( $def['logic'] ) ? array( scm_acf_group_condition( $def['logic'] ) ) : '' ),
 				'wrapper' => array (
 					'width' => ( is_numeric( $def['width'] ) ? $def['width'] : '' ),
 					'class' => ( $def['class'] ? $def['class'] . ' ' : '' ) . $defaultname,

@@ -131,6 +131,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 * ———		'categories | tags | taxonomies' 		$multiple = 1
 * ———		'-id'									$return = 'id'
 * ———		'-add'									$add = 1
+* ———		'-null'									$null = 1
 * ———		'-{tax}'								$taxes = '{tax}'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -165,7 +166,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 
 
 	if ( ! function_exists( 'scm_acf_field_type' ) ) {
-		function scm_acf_field_type( $elem, $name = '' ) {
+		function scm_acf_field_type( $elem ) {
 
 			if( !$elem )
 				return;
@@ -241,10 +242,6 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 
 	        	case 'select':
 	        	case 'select2':
-
-	        		if($type=='select2'){
-	        			consoleLog($extra);
-	        		}
 
 	        		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
 	        		//$choices = array_merge( $choices, scm_acf_field_to3( $arg, 2, 'placeholder', array() ) ),
@@ -337,7 +334,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 							$field['return_format'] = ( scm_acf_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
 							$field['filters'] = toArray( scm_acf_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
 						break;
-					}						
+					}
 
 	        	break;
 				
@@ -357,7 +354,7 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 						'taxonomy' 					=> scm_acf_field_to3( $arg, 1, 'taxes', ( str_replace( array( '-id', '-' ), '', $extra ) ?: 'category' ) ),
 						'multiple' 					=> $multi,
 						'load_save_terms' 			=> $save,
-						'allow_null' 				=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
+						'allow_null' 				=> scm_acf_field_to3( $arg, 4, 'null', ( str_replace( array( '-null', '-' ), '', $extra ) ?: 0 ) ),
 						'return_format' 			=> ( scm_acf_field_to3( $arg, 5, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) ),
 						'field_type' 				=> ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'radio' : 'select' ) ),
 						'add_term' 					=> $add
