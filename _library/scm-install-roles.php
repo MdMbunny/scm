@@ -38,7 +38,7 @@ $SCM_roles = array();
 
             global $SCM_roles;
 
-            // ++todo: Questo oggetto si deve costruire con dei valori dei default (prendi capabilities da costanti SCM_ROLE_)
+            // ++todo: Questo oggetto si deve costruire con dei valori di default (prendi capabilities da costanti SCM_ROLE_)
             // ++todo: Ci vuole un plugin, o comunque una pagina opzioni, dove creare i Ruoli (Super e Visitatore non sono ruoli, Admin esiste già)
             // Dalle costanti SCM_ROLE_ scegli una cap di default (che attiva pure le sue superiori)
             // Scegli un livello tra 0 e 100 esclusi
@@ -195,7 +195,8 @@ $SCM_roles = array();
     if ( ! function_exists( 'scm_roles_post_caps' ) ) {
         function scm_roles_post_caps( $type = '', $admin = 0, $cap = 0 ){
 
-            //consoleLog($type);
+            /*consoleLog($type);
+            consoleLog($cap);*/
 
             global $SCM_roles;
 
@@ -203,7 +204,7 @@ $SCM_roles = array();
 
                 $level = scm_role_level( $role );
 
-                if(  ( 0 < $level ) && ( $level < 100 ) ){
+                if(  ( 0 <= $level ) && ( $level < 100 ) ){
                     scm_role_post_caps( $role, $type, $admin, $cap );
                 }
 
@@ -326,6 +327,7 @@ $SCM_roles = array();
             reset($SCM_roles);
 
             // -- PHP old
+            $current = current($SCM_roles);
             $flevel = ( $current[0] ?: 0);
             // -- PHP new
             //$flevel = ( current($SCM_roles)[0] ?: 0);
@@ -423,7 +425,8 @@ $SCM_roles = array();
             if ( !$role || !type )
                 return;
 
-            $role = ( is_string( $role ) ? get_role( $role ) : $role );
+            $name = ( is_string( $role ) ? ( $role=='super' ? 'administrator' : $role ) : '' );
+            $role = ( is_string( $role ) ? get_role( $name ) : $role );
 
             $role->remove_cap( 'read_private_' . $type );
             $role->remove_cap( 'edit_' . $type );
@@ -436,12 +439,12 @@ $SCM_roles = array();
             $role->remove_cap( 'delete_private_' . $type );
             $role->remove_cap( 'delete_published_' . $type );
 
-            if ( !$role->has_cap( SCM_ROLE_READ ) || ( !$role->has_cap( SCM_ROLE_ADMIN ) && $admin ) )
+            if ( $name != 'administrator' && ( !$role->has_cap( SCM_ROLE_READ ) || ( !$role->has_cap( SCM_ROLE_ADMIN ) && $admin ) ) )
                 return $role;
 
             $role->add_cap( 'read_private_' . $type );
 
-            if ( !$role->has_cap('read') )
+            if ( $name != 'administrator' && !$role->has_cap('read') )
                 return $role;
 
             $role->add_cap( 'edit_' . $type );
@@ -449,7 +452,7 @@ $SCM_roles = array();
             $role->add_cap( 'edit_others_' . $type );
             $role->add_cap( 'edit_published_' . $type );
 
-            if ( !$role->has_cap( SCM_ROLE_TAX ) || ( $role->has_cap( SCM_ROLE_TAX ) && !$cap ) )
+            if ( $name != 'administrator' && ( !$role->has_cap( SCM_ROLE_TAX ) || ( $role->has_cap( SCM_ROLE_TAX ) && !$cap ) ) )
                 return $role;
 
             $role->add_cap( 'publish_' . $type );

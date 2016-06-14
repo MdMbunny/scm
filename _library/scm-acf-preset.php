@@ -152,8 +152,8 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 * ———		'-no'					add 'no' 		=> 	'No Icon' 		to array('choices')
 *		'color'					$default = '' || '#000000' etc.
 *		'date'					$return = 'Y-m-d' 							$display = 'd F Y'					$firstday' = 1
-*		'datetime'				$picker = 'slider | select' 				$date = 'd F Y'						$time' = 'hh:mm' 				$week = 0 					$save = 1 				$get = 0
-*		'time'					$picker = 'slider | select' 				$time' = 'hh:mm'		 			$save = 1 						$get = 0
+*		'datetime'				$return = 'Y-m-d G:i' 						$display = 'd F Y G:i'				$firstday' = 1
+*		'time'					$return = 'G:i' 							$display = 'G:i'
 *
 * ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 */
@@ -455,14 +455,9 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 
 	        		$field = array(
 						'type' 						=> 'date_time_picker',
-						'show_date' 				=> 1,
-						'picker' 					=> scm_acf_field_to3( $arg, 1, 'picker',  'select' ),
-						'date_format' 				=> scm_acf_field_to3( $arg, 2, 'date',  'd F y' ),
-						'time_format' 				=> scm_acf_field_to3( $arg, 3, 'time',  'H:i' ),
-						'show_week_number' 			=> scm_acf_field_to3( $arg, 4, 'week',  0 ),
-						'save_as_timestamp' 		=> scm_acf_field_to3( $arg, 5, 'save',  1 ),
-						'get_as_timestamp' 			=> scm_acf_field_to3( $arg, 5, 'get',  0 ),
-
+						'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'd-m-Y G:i' ),
+						'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'd F Y G:i' ),
+						'first_day' 				=> scm_acf_field_to3( $arg, 3, 'firstday', 1 ),
 					);
 
 	        	break;
@@ -470,15 +465,9 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
 	        	case 'time':
 
 	        		$field = array(
-						'type' 						=> 'date_time_picker',
-						'show_date' 				=> 0,
-						'picker' 					=> scm_acf_field_to3( $arg, 1, 'picker', 'select' ),
-						'time_format' 				=> scm_acf_field_to3( $arg, 2, 'time', 'hh:mm' ),
-						'save_as_timestamp' 		=> scm_acf_field_to3( $arg, 3, 'save', 1 ),
-						'get_as_timestamp' 			=> scm_acf_field_to3( $arg, 4, 'get', 0 ),
-						'date_format' 				=> '',
-						'show_week_number' 			=> 0,
-
+						'type' 						=> 'time_picker',
+						'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'G:i' ),
+						'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'G:i' ),
 					);
 
 	        	break;

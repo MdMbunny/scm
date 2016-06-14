@@ -574,7 +574,7 @@
                     if($slug=='slides'){
                         $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
                         $group['location'][] = scm_acf_group_location( 'page' );
-                        $group['fields'] = scm_acf_options_slider( 'main', 1 );
+                        $group['fields'] = scm_acf_options_slider( 'main' );
                         $groups[] = $group;
                     }
                     

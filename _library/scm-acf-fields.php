@@ -174,11 +174,21 @@
 		return scm_acf_preset( $name, $field, array('type' => 'editor-visual-basic','label' => $label), $width, $logic, $required );
 	}
 
-/* Date */
+/* Date and Time */
 	
 	// DATE
 	function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 		return scm_acf_preset( $name, $field, array('type' => 'date','label' => $label), $width, $logic, $required );
+	}
+	
+	// TIME
+	function scm_acf_field_time( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'time','label' => $label), $width, $logic, $required );
+	}
+
+	// DATE TIME
+	function scm_acf_field_datetime( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+		return scm_acf_preset( $name, $field, array('type' => 'datetime','label' => $label), $width, $logic, $required );
 	}
 
 /* Color */

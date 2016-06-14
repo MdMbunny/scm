@@ -22,11 +22,12 @@
 		}
 	}
 
-	// SELECTORS
+// *****************************************************
+
+	// SELECTORS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_selectors' ) ) {
 		function scm_acf_preset_selectors( $name = '', $w1 = 100, $w2 = 100, $logic = 0, $req = 0, $instructions = '' ) {
 
-			//$name = ( $name ? $name . '-selectors' : 'selectors');
 			$name = ( $name ? $name . '-' : '');
 			$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Selettori', SCM_THEME ) );
 			
@@ -37,7 +38,7 @@
 		}
 	}
 
-	// SIZE
+	// SIZE - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_size' ) ) {
 		function scm_acf_preset_size( $name = 'size', $default = '', $pl1 = 'auto', $pl2 = 'px', $lb1 = '', $width = 100, $logic = 0, $req = 0, $instructions = '' ) {
 			$lb1 = ( $lb1 ?: __( 'Dimensione', SCM_THEME ) );
@@ -53,7 +54,7 @@
 		}
 	}
 	
-	// COLOR
+	// COLOR - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_rgba' ) ) {
 		function scm_acf_preset_rgba( $name = '', $pl1 = '', $pl2 = 1, $width = 100, $logic = 0, $lb2 = '', $lb1 = '', $req = 0, $instructions = '' ) {
 			$lb2 = ( $lb2 ?: __( 'Trasparenza', SCM_THEME ) );
@@ -69,7 +70,7 @@
 		}
 	}
 
-	// BACKGROUND STYLE
+	// BACKGROUND STYLE - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_background_style' ) ) {
 		function scm_acf_preset_background_style( $name = '', $width = 100, $logic = 0, $pl1 = '', $pl1 = 'center center', $pl2 = 'auto auto', $req = 0, $instructions = '' ) {
 			
@@ -87,7 +88,7 @@
 		}
 	}
 
-	// TEXT FONT
+	// TEXT FONT - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_text_font' ) ) {
 		function scm_acf_preset_text_font( $name = '', $logic = 0, $width = 100, $req = 0, $instructions = '' ) {
 			
@@ -102,7 +103,7 @@
 		}
 	}
 	
-	// TEXT SET
+	// TEXT SET - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_text_set' ) ) {
 		function scm_acf_preset_text_set( $name = '', $w1 = 100, $w2 = 100, $w3 = 100, $w4 = 100, $logic = 0, $req = 0, $instructions = '' ) {
 			
@@ -134,7 +135,7 @@
 		}
 	}
 
-	// TEXT STYLE
+	// TEXT STYLE - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_text_style' ) ) {
 		function scm_acf_preset_text_style( $name = '', $logic = 0, $req = 0, $instructions = '' ) {
 
@@ -159,7 +160,7 @@
 		}
 	}
 
-	// BOX SHAPE
+	// BOX SHAPE - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_box_shape' ) ) {
 		function scm_acf_preset_box_shape( $name = '', $width = 100, $logic = 0, $req = 0, $instructions = '' ) {
 
@@ -196,7 +197,7 @@
 		}
 	}
 	
-	// MAP ICON
+	// MAP ICON - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_map_icon' ) ) {
 		function scm_acf_preset_map_icon( $name = '', $width = 100, $logic = 0, $req = 0, $instructions = '' ) {
 			
@@ -222,9 +223,9 @@
 		}
 	}
 
-	// TERM
+	// TERM - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_term' ) ) {
-		function scm_acf_preset_term( $name = 'term', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_term( $name = 'term', $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Termine', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 			
@@ -248,9 +249,9 @@
 		}
 	}
 
-	// TERMS
+	// TERMS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_terms' ) ) {
-		function scm_acf_preset_terms( $name = 'terms', $default = 0, $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_terms( $name = 'terms', $tax = 'category', $placeholder = '', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Termini', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 			
@@ -274,9 +275,9 @@
 		}
 	}
 
-	// TAXONOMY
+	// TAXONOMY - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_taxonomy' ) ) {
-		function scm_acf_preset_taxonomy( $name = 'taxonomy', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomy( $name = 'taxonomy', $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Relazione', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -291,16 +292,16 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $value->name, $value->labels->singular_name, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// TAXONOMIES
+	// TAXONOMIES - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_taxonomies' ) ) {
-		function scm_acf_preset_taxonomies( $name = 'taxonomies', $default = 0, $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_taxonomies( $name = 'taxonomies', $type = 'post', $logic = 0, $add = 0, $save = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Relazioni', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -317,16 +318,16 @@
 
 			foreach ($taxes as $key => $value) {
 				if( $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $value->name, $value->label, $logic, $add, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// CATEGORY REQUIRED
+	// CATEGORY REQUIRED - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_category_req' ) ) {
-		function scm_acf_preset_category_req( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 1, $class = '' ) {		
+		function scm_acf_preset_category_req( $name = 'category', $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 1, $class = '' ) {		
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologia', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -341,16 +342,16 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $value->hierarchical && $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// CATEGORY
+	// CATEGORY - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_category' ) ) {
-		function scm_acf_preset_category( $name = 'category', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {		
+		function scm_acf_preset_category( $name = 'category', $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {		
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologia', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -365,16 +366,16 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $value->hierarchical && $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// CATEGORIES
+	// CATEGORIES - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_categories' ) ) {
-		function scm_acf_preset_categories( $name = 'categories', $default = 0, $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_categories( $name = 'categories', $type = 'post', $save = 1, $logic = 0, $w1 = 100, $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Tipologie', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -389,16 +390,16 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( $value->hierarchical && $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $value->name, $value->label, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// TAG
+	// TAG - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_tag' ) ) {
-		function scm_acf_preset_tag( $name = 'tag', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tag( $name = 'tag', $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Categoria', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -413,16 +414,16 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( !$value->hierarchical && $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $default, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_term( $name . $value->name, $value->name, $value->labels->singular_name, $logic, 0, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-	// TAGS
+	// TAGS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_tags' ) ) {
-		function scm_acf_preset_tags( $name = 'tags', $default = 0, $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
+		function scm_acf_preset_tags( $name = 'tags', $type = 'post_tag', $save = 1, $logic = 0, $w1 = '', $lb1 = '', $instructions = '', $placeholder = '', $required = 0, $class = '' ) {
 			$placeholder = ( $placeholder ?: __( 'Seleziona Categorie', SCM_THEME ) );
 			$lb1 = ( $lb1 ?: __( 'Seleziona', SCM_THEME ) );
 
@@ -437,23 +438,19 @@
 			reset( $taxes );
 			foreach ($taxes as $key => $value) {
 				if( !$value->hierarchical && $key != 'language' && $key != 'post_translations' )
-					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $default, $value->name, $value->label, $logic, 1, $save, $w1, $lb1, '', $required, $class ) );
+					$fields = array_merge( $fields, scm_acf_preset_terms( $name . $value->name, $value->name, $value->label, $logic, 1, $save, $w1, $lb1, '', $required, $class ) );
 			}
 
 			return $fields;
 		}
 	}
 
-// ************* DA QUI
-
-	// COLUMNS
+	// COLUMNS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_repeater_columns' ) ) {
 		function scm_acf_preset_repeater_columns( $name = '', $elements = '', $logic = 0, $req = 0, $instructions = '', $class = 'special-repeater' ) {
 
-			$default = 0; //todo: da rimuovere
-
 			$name = ( $name ? $name . '-columns' : 'columns');
-			$fields = scm_acf_preset_instructions( $instructions,  $name, __( 'Impostazioni Colonne', SCM_THEME ) );
+			$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Colonne', SCM_THEME ) );
 			
 			$columns = scm_acf_field_repeater( $name, array( 
 				'button'=>__( 'Aggiungi Colonna', SCM_THEME ),
@@ -472,12 +469,10 @@
 		}
 	}
 
-	// BUTTON
+	// BUTTON - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_button' ) ) {
 		function scm_acf_preset_button( $name = '', $type = 'link', $icon = '', $group = '', $options = 0, $label = '', $w = 100, $logic = 0, $req = 0 ) {
-			
-			$default = 0; //todo: da rimuovere
-			
+						
 			$fields = array();
 			$name = ( $name ? $name . '-' : '');
 
@@ -559,9 +554,9 @@
 		}
 	}
 
-	// ICONS
+	// ICONS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_flexible_buttons' ) ) {
-		function scm_acf_preset_flexible_buttons( $name = '', $default = 0, $group = '', $label = '', $logic = 0, $instructions = '', $required = 0, $class = 'buttons-flexible' ) {
+		function scm_acf_preset_flexible_buttons( $name = '', $group = '', $label = '', $logic = 0, $instructions = '', $required = 0, $class = 'buttons-flexible' ) {
 
 			$fields = array();
 
@@ -599,7 +594,7 @@
 		}
 	}
 
-	// BUTTON SHAPE
+	// BUTTON SHAPE - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_button_shape' ) ) {
 		function scm_acf_preset_button_shape( $name = 'but-style', $width = 100, $logic = 0, $req = 0, $instructions = '' ) {
 
@@ -618,9 +613,9 @@
 		}
 	}
 
-	// SECTIONS
+	// SECTIONS - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_flexible_sections' ) ) {
-		function scm_acf_preset_flexible_sections( $name = '', $default = 0, $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'rows-flexible' ) {
+		function scm_acf_preset_flexible_sections( $name = '', $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'rows-flexible' ) {
 
 			$fields = array();
 
@@ -692,11 +687,9 @@
 		}
 	}
 
-	// LAYOUTS ( vedi scm-acf-layouts.php )
+	// LAYOUTS ( vedi scm-acf-layouts.php ) - [ V ]
 	if ( ! function_exists( 'scm_acf_preset_flexible_elements' ) ) {
 		function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 0, $instructions = '', $required = 0, $class = 'elements-flexible' ) {
-
-			$default = 0; //todo: da rimuovere
 
 			global $SCM_types;
 

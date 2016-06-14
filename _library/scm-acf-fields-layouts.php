@@ -79,7 +79,7 @@
 	                    'types'=>$type,
 	                    'label'=>$type,
 	                ), 100, $single );
-					$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', 0, $type, $archive ) );
+					$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', $type, $archive ) );
 					$fields[] = scm_acf_field_text( 'archive-field', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), 50 );
 					$fields[] = scm_acf_field_text( 'archive-value', array( 'placeholder'=>__( 'field-value (default = postID)', SCM_THEME ), 'prepend'=>__( 'Value', SCM_THEME ) ), 50 );
 				
@@ -115,7 +115,7 @@
 			$fields = array();
 
 			if( !$obj )
-				$fields = scm_acf_preset_term( 'slider', $default, 'sliders', __( 'Slider', SCM_THEME ), $logic, $width );
+				$fields = scm_acf_preset_term( 'slider', 'sliders', __( 'Slider', SCM_THEME ), $logic, $width );
 
 			return $fields;
 		}
@@ -249,7 +249,7 @@
 	                'types'=>'luoghi',
 	                'label'=>__( 'Luoghi', SCM_THEME ),
 	            ), $width, $logic );
-				$fields = array_merge( $fields, scm_acf_preset_taxonomies( '', $default, 'luoghi' ) );
+				$fields = array_merge( $fields, scm_acf_preset_taxonomies( '', 'luoghi' ) );
 			}
 
 			$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
