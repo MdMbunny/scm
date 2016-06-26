@@ -336,8 +336,8 @@ $SCM_page_id        = 0;
             if( !$menu )
                 return;
 
-            $out = scm_field( 'menu-sticky-out', 'no', 'option' );
-            $sticky = scm_field( 'menu-sticky', 'no', 'option' );
+            $out = scm_field( 'menu-sticky-out', '', 'option' );
+            $sticky = scm_field( 'menu-sticky', '', 'option' );
             $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
             $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
 
@@ -347,7 +347,7 @@ $SCM_page_id        = 0;
             $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
             $toggle_active = scm_field( 'menu-toggle', 'smart', 'option' );
-            $home_active = scm_field( 'menu-home', 'no', 'option' );
+            $home_active = scm_field( 'menu-home', '', 'option' );
             $image_active = scm_field( 'menu-home-logo', 'no', 'option' );
 
             if( !$just ){
@@ -372,7 +372,7 @@ $SCM_page_id        = 0;
 
                 $menu_data_toggle = $toggle_active;
                 $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
-                $menu_data_image = ( $menu_data_home ? $image_active : 'no' );
+                $menu_data_image = ( $menu_data_home ? $image_active : '' );
 
                 // Print Main Menu
                 scm_get_menu( array(
@@ -385,10 +385,10 @@ $SCM_page_id        = 0;
                     'menu' => $menu,
                 ));
 
-                if( !$sticky || $sticky == 'no' ){
+                if( !$sticky ){
                     return 0;
                 }else{
-                    if( $out && $out != 'no' ){
+                    if( $out ){
                         return 1;
                     }
                 }
@@ -403,10 +403,10 @@ $SCM_page_id        = 0;
                         $sticky_id = $id . '-sticky';
 
                         $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
-                        $sticky_class = 'navigation sticky ' . ( ( $sticky && $sticky != 'no' ) ? $sticky . ' ' : '' );// . $sticky_layout . ' ' . $site_align;
+                        $sticky_class = 'navigation sticky ' . ( $sticky ? $sticky . ' ' : '' );
 
                         $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
-                        $sticky_row_class = '';// $sticky_row_layout . ' ' . $align;
+                        $sticky_row_class = '';
 
                         if( $position == 'inline' && $align != 'center' ){
                             $sticky_row_class .= ' half-width float-' . $align . ' ' . $align;
