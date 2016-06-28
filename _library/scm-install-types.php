@@ -184,7 +184,7 @@ $SCM_types = array();
             $pages = array( 'scm-options-intro', 'scm-custom-types', 'scm-custom-taxonomies', 'scm-default-types', 'scm-default-taxonomies' );
 
             //if( $pagenow == 'admin.php' && in_array( $_GET['page'], $pages ) ){
-            if( is_admin() && in_array( $_GET['page'], $pages ) ){
+            if( is_admin() && isset( $_GET['page'] ) && in_array( $_GET['page'], $pages ) ){
                 
                 global $SCM_roles, $SCM_types;
                 $objs = $SCM_types['objects'];

@@ -67,7 +67,7 @@ $SCM_roles = array();
 
     // ++todo: ADD: if RESET ROLES options is active (o qualcosa del genere)
     
-            if( is_admin() && $_GET['page'] == 'scm-options-intro' ) 
+            if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'scm-options-intro' ) 
                 scm_roles_reset();
             else
                 return;

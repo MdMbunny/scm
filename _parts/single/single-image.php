@@ -48,7 +48,7 @@ if ( $layout == 'layout-thumbs' ) {
 
     if( $thumb >= 0 ){
 
-        $image = $images[$thumb];
+        $image = ( isset( $images[$thumb] ) ? $images[$thumb] : array() );
 
     }else{
 

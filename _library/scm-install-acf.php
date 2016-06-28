@@ -599,7 +599,7 @@
 
                     $groups[] = $template;
 
-                    $template = scm_acf_group( __( 'Modello', SCM_THEME ) . ' ' . $title, $slug . '_temp-single' );
+                    $template = scm_acf_group( $title, $slug . '_temp-single' );
                     $template['location'][] = scm_acf_group_location( $slug . SCM_TEMPLATE_APP );
                     
                     $slug = str_replace( '-', '_', $slug );

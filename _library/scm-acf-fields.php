@@ -257,7 +257,7 @@
 		}elseif( $field === 1 ){
 			$type = $type . '-default';
 			$field = 0;
-		}elseif( is_array( $field ) && $field['type'] ){
+		}elseif( is_array( $field ) && isset( $field['type'] ) && $field['type'] ){
 			$field['type'] = $type . '-' . $field['type'];
 		}
 		return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
@@ -332,7 +332,7 @@
 			if( is_string( $field ) ){
 				$type = $type . '-' . $field;
 				$field = 0;
-			}elseif( is_array( $field ) && $field['type'] ){
+			}elseif( is_array( $field ) && isset( $field['type'] ) && $field['type'] ){
 				$type = $field['type'] = $type . '-' . $field['type'];
 			}else{
 				$type = 'repeater-block';

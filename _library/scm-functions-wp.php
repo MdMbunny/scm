@@ -14,6 +14,13 @@ require_once( SCM_DIR_LIBRARY . 'scm-functions.php' );
 // getYouTubeDuration:  get YT video duration (00:06:13)
 // ...
 
+function multiText( $obj, $sep = ' ', $theme = SCM_THEME ){
+    $txt = '';
+    foreach ( toArray( $obj ) as $wrd) {
+        $txt .= __( $wrd, $theme ) . $sep;
+    }
+    return trim( $txt, $sep );
+}
 
 function consoleDebug( $obj ){
     if( SCM_DEBUG )
@@ -106,6 +113,8 @@ function updatePostMeta( $id, $meta, $value = '' ){
     }
     
 }
+
+// GOOGLE
 
 /**
 * Get Latitude and Longitude from an address string (es. "Address+Country+State")

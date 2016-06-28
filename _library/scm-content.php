@@ -940,8 +940,6 @@
             $slug = $post->post_name;
             $link = '';
 
-            //printPre($content);
-
             switch ( $type ) {
                 case 'soggetti':
                     $link = ' data-href="' . scm_field( 'soggetto-link', '#', $id ) . '"';
@@ -1024,10 +1022,12 @@
                 if( $init == -1 )
                     return '';
                 $stored = scm_field( $field, array(), $id );
+                if( !$stored )
+                    $stored = array();
                 $images = array();
                 $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
                 
-                foreach ( $stored as $image)
+                foreach ( $stored as $image )
                     $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'], 'caption' => $image['caption'], 'alt' => $image['alt'], 'date' => $image['date'], 'modified' => $image['modified'], 'filename' => $image['filename'], 'type' => $image['mime_type'] );
                 
                 $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
@@ -1035,7 +1035,7 @@
                 $link .= ' data-popup-init="' . $init . '"';
                 $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
 
-                $link .= ' data-popup-list="' . scm_gallery_filter( $content, 'list', 0 ) . '"';
+                $link .= ' data-popup-list="' . ( scm_gallery_filter( $content, 'list', 0 ) ? scm_gallery_filter( $content, 'list-position', 'top' ) : 0 ) . '"';
 
                 $link .= ' data-popup-data="' . scm_gallery_filter( $content, 'data', 'float' ) . '"';
 

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.13.6
+Version:			v2.13.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2034,40 +2034,92 @@ body:not(.ready) .navigation {
 4.2 Plugins Fancybox
 --------------------------------------------------------------*/
 
-.fancybox-overlay{
-	/*overflow: hidden !important;*/
-	/*overflow-y: hidden !important;*/
-	/*height: 100% !important;
-	width: 100% !important;
-	-webkit-overflow-scrolling: touch;*/
+/* Overlay */
+
+.fancybox-overlay.list{
+	/*padding: 2em;*/
+	height: 95% !important;
+    top: 5%;
 }
+
+.fancybox-overlay.list-top{
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+}
+.fancybox-overlay.list-right{
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+}
+.fancybox-overlay.list-bottom{
+	padding-top: 0;
+	padding-right: 0;
+	padding-left: 0;
+}
+.fancybox-overlay.list-left{
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+}
+
+
+/* Wrap */
+
+.fancybox-wrap{
+}
+
+/* Skin */
+
+.fancybox-skin{
+}
+
+/* Outer */
+
+.fancybox-outer {
+}
+
+/* Inner */
 
 .fancybox-inner{
 	cursor: default !important;
-	height: auto !important;
 }
-
 .fancybox-inner > *{
 	margin: 0;
 }
 
-#fancybox-links {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    padding-top: 10px;
-    list-style: none;
-    text-align: center;
-    z-index: 99999;
-    padding: 0 2em;
+/* Image */
+
+.fancybox-image{
 }
 
-#fancybox-links li {
+/* img */
+
+.fancybox-image > img{
+}
+
+/******************************************************************************************/
+
+/* Navigation */
+
+.fancybox-links {
+    position: fixed !important;
+    list-style: none;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    padding-top: 2%;
+    height: 5%;
+    top: 0;
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.fancybox-links li {
     display: inline;
     padding: 0 5px;
 }
 
-#fancybox-links li label {
+.fancybox-links li label {
     width: 12px;
     height: 12px;
     border-radius: 100%;
@@ -2076,22 +2128,150 @@ body:not(.ready) .navigation {
     cursor: pointer;
 }
 
-#fancybox-links li.active label {
+.fancybox-links li.active label {
     background-color: white;
 }
 
-.fancybox-wrap h1{
-	color: #FFF;
-	margin-bottom: 25px;
-}
+/******************************************************************************************/
+
+/* Close */
 
 .fancybox-close {
 	cursor: zoom-out !important;
-	position: fixed;
-	right: 15px;
-	top: 15px;
+    height: 2em;
+    width: 44px;
+    background-position: center top;
 	background-image: url('_assets/img/fancybox_sprite.png');
+	z-index: 9995;
 }
+
+/* Close Float */
+
+.fancybox-overlay.float .fancybox-close {
+    position: fixed;
+    right: 1em;
+    top: 1em;
+}
+
+/* Close Over */
+
+.fancybox-overlay.over .fancybox-close {
+    position: absolute;
+    margin: 2em;
+}
+
+.fancybox-overlay.over .fancybox-wrap:hover .fancybox-close{
+}
+
+/******************************************************************************************/
+
+/* Title */
+
+.fancybox-wrap h1{
+	color: #FFF;
+	width: 100%;
+	padding: .5em 3em;
+	line-height: .8em;
+}
+
+/* Title Over */
+
+.fancybox-overlay.float .fancybox-name{
+}
+
+/* Title Over */
+
+.fancybox-overlay.over .fancybox-name{
+	position: absolute;
+	background: rgba(0, 0, 0, 1);
+	z-index: 9990;
+}
+
+
+
+/******************************************************************************************/
+
+/* Data */
+
+.fancybox-title{
+	width: 100%;
+	text-align: center;
+	padding: .5em 3em;
+	font-size: 1em;
+	z-index: 9993;
+}
+
+.fancybox-title .child {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    text-shadow: 0 1px 1px #000;
+    color: #FFF;
+    font-weight: bold;
+    line-height: 1.5em;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.fancybox-title .imgdata{
+	display: inline-block;
+    margin: 0 1em;
+    padding: .3em .5em;
+    background: transparent;
+}
+
+/* Data Float */
+
+.fancybox-overlay.float .fancybox-title .imgdata{
+    background: rgba(0, 0, 0, 1);
+}
+
+/* Data Over */
+
+.fancybox-overlay.over .fancybox-title{
+	background: rgba(0, 0, 0, 1);
+	padding: 0em;
+	bottom: -10em;
+	-webkit-transition: all .5s;
+	transition: all .5s;
+}
+
+
+.fancybox-overlay.over .fancybox-wrap:hover .fancybox-title{
+	padding: .5em 3em;
+	bottom: 0em;
+}
+
+/***************************************/
+
+/* Over */
+
+.fancybox-overlay.over .fancybox-name{
+	overflow: hidden;
+	padding: 0em;
+	line-height: 0em;
+	-webkit-transition: all .5s;
+	transition: all .5s;
+}
+
+
+
+
+
+.fancybox-overlay.over .fancybox-wrap:hover .fancybox-name{
+	padding: .5em;
+	line-height: 1em;
+}
+
+
+
+
+/******************************************************************************************/
+
+/* Arrows */
 
 a.fancybox-prev{
 	left: -16px;
@@ -2125,6 +2305,10 @@ body.touch .fancybox-nav span{
 	background-image: url('_assets/img/fancybox_sprite.png');
 }
 
+/******************************************************************************************/
+
+/* Loading */
+
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
 	background-image: url('_assets/img/fancybox_sprite.png');
 }
@@ -2147,66 +2331,7 @@ body.touch .fancybox-nav span{
 	background: url('_assets/img/loading.gif') center center no-repeat;
 }
 
-.fancybox-image{
-	height: auto;
-}
 
-.fancybox-title{
-	width: 100%;
-	text-align: center;
-}
-
-.fancybox-title-over-wrap{
-	opacity: 0;
-	-webkit-transition: opacity .5s;
-	transition: opacity .5s;
-}
-
-.fancybox-title .child {
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    text-shadow: 0 1px 1px #000;
-    color: #FFF;
-    font-weight: bold;
-    line-height: 1.5em;
-    white-space: nowrap;
-    text-align: center;
-}
-/*
-.fancybox-title-float-wrap .child {
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    text-shadow: 0 1px 1px #000;
-    color: #FFF;
-    font-weight: bold;
-    line-height: 1.5em;
-    white-space: nowrap;
-    text-align: center;
-}*/
-
-.fancybox-title .imgdata{
-	display: inline-block;
-    margin: 0 1em;
-    padding: .3em .5em;
-    background: transparent;
-}
-
-.fancybox-title-float-wrap .imgdata{
-    background: rgba(0, 0, 0, 0.8);
-}
-
-
-.fancybox-outer:hover .fancybox-title-over-wrap{
-	opacity: 1;
-}
 
 /*--------------------------------------------------------------
 4.3 Plugins Font Awesome

@@ -662,7 +662,7 @@
 	if ( ! function_exists( 'scm_acf_column_link' ) ) {
 		function scm_acf_column_link( $list = array(), $width = 100 ) {
 			
-			array_unshift( $list, scm_acf_field( 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), __( 'Link', SCM_THEME ), $width ) );
+			array_unshift( $list, scm_acf_field( 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', $width ) );
 
 			return $list;
 
