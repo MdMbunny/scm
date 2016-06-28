@@ -291,9 +291,7 @@
                     foreach ($field['sub_fields'] as $v) {
                         if( $v['name'] == 'id' ){
                             $field['value'][ $id ][ $v['key'] ] = $p->ID;
-                        }
-
-                        if( $v['name'] == 'name' ){
+                        }else if( $v['name'] == 'name' ){
                             $field['value'][ $id ][ $v['key'] ] = $p->post_title;
                         }
                     }
@@ -353,6 +351,7 @@
 // *****************************************************
 
 
+
     // TEMPLATES
     if ( ! function_exists( 'scm_acf_savepost_hook_templates' ) ) {
         function scm_acf_savepost_hook_templates( $post_id ) {
@@ -372,7 +371,7 @@
                         $type = str_replace( '-templates', SCM_TEMPLATE_APP, $field['name']);
 
                         $key_id = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'id' ) ]['key'];
-                        $key_name = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'name' ) ]['key'];;
+                        $key_name = $field['sub_fields'][ getByValueKey( $field['sub_fields'], 'name' ) ]['key'];
 
                         $posts = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date' ) );
                         $pub = array();

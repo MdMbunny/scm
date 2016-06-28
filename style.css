@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.13.5
+Version:			v2.13.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -300,11 +300,11 @@ sup {
    color:    #ddd;
 }
 
-form{
+form:not(.acf-form){
 	line-height: 0;
 }
 
-form br{
+form:not(.acf-form) br{
 	display: none;
 }
 
@@ -2149,6 +2149,63 @@ body.touch .fancybox-nav span{
 
 .fancybox-image{
 	height: auto;
+}
+
+.fancybox-title{
+	width: 100%;
+	text-align: center;
+}
+
+.fancybox-title-over-wrap{
+	opacity: 0;
+	-webkit-transition: opacity .5s;
+	transition: opacity .5s;
+}
+
+.fancybox-title .child {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    text-shadow: 0 1px 1px #000;
+    color: #FFF;
+    font-weight: bold;
+    line-height: 1.5em;
+    white-space: nowrap;
+    text-align: center;
+}
+/*
+.fancybox-title-float-wrap .child {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    text-shadow: 0 1px 1px #000;
+    color: #FFF;
+    font-weight: bold;
+    line-height: 1.5em;
+    white-space: nowrap;
+    text-align: center;
+}*/
+
+.fancybox-title .imgdata{
+	display: inline-block;
+    margin: 0 1em;
+    padding: .3em .5em;
+    background: transparent;
+}
+
+.fancybox-title-float-wrap .imgdata{
+    background: rgba(0, 0, 0, 0.8);
+}
+
+
+.fancybox-outer:hover .fancybox-title-over-wrap{
+	opacity: 1;
 }
 
 /*--------------------------------------------------------------

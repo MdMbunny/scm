@@ -745,6 +745,21 @@
 
 				$layout_thumb = scm_acf_layout( 'thumbs', 'block', __( 'Thumbs', SCM_THEME ) );
 					$layout_thumb['sub_fields'][] = scm_acf_field_option( 'thumb', array( 'default'=>0, 'prepend'=>__( 'Thumb', SCM_THEME ) ) );
+
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'list', 0, 100, 0, 0, __('List', SCM_THEME) );
+
+					$layout_thumb['sub_fields'][] = scm_acf_field_select( 'data', array( 'choices'=>array('float'=>'Float','over'=>'Over','inside'=>'Inside','outside'=>'Outside') ), 100, 0, 0, __('Data Position', SCM_THEME) );
+
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'titles', 0, 25, 0, 0, __('Titles', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'captions', 0, 25, 0, 0, __('Captions', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'alternatives', 0, 25, 0, 0, __('Alternatives', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'descriptions', 0, 25, 0, 0, __('Descriptions', SCM_THEME) );
+
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'dates', 0, 25, 0, 0, __('Dates', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'modifies', 0, 25, 0, 0, __('Modifies', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'filenames', 0, 25, 0, 0, __('Filenames', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_false( 'types', 0, 25, 0, 0, __('Mime Types', SCM_THEME) );
+
 					$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'width', '', '150', 'px', __( 'Larghezza', SCM_THEME ) ) );
 					$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'height', '', '120', 'px', __( 'Altezza', SCM_THEME ) ) );
 

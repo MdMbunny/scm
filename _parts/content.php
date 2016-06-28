@@ -47,6 +47,7 @@ if( $notpage ){
 // Build Contents ---------------------------------------------------------------------------------------------
 
 // Header
+//acf_form_head(); <-- se esiste acf_form in pagina / se opzione acf_form attiva / soprattutto se utente è loggato
 get_header();
 
 switch ($template) {
@@ -73,6 +74,8 @@ switch ($template) {
 	break;
 
 }
+
+//acf_form(array( 'id'=>$post->ID, 'fields'=>array('page-layout','page-id','page-class','page-menu') )); <-- moooolto interessante
 
 // Footer
 get_footer();

@@ -995,6 +995,18 @@
         }
     }
 
+
+    if ( ! function_exists( 'scm_gallery_filter' ) ) {
+        function scm_gallery_filter( $content, $str, $def = 0 ){
+
+            //consoleLog( $str );
+            $th = ( isset( $content['modules'] ) ? getByKey( $content['modules'], $str ) : null );
+
+            return ( !empty( $content ) && isset( $content[$str] ) ? $content[$str] : ( $th !== null ? ( isset( $th[$str] ) ? $th[$str] : $def ) : $def ) );
+        
+        }
+    }
+
     if ( ! function_exists( 'scm_gallery_link' ) ) {
         function scm_gallery_link( $content = array(), $field = 'galleria-images', $id = 0 ) {
 
@@ -1008,43 +1020,34 @@
             $slug = $post->post_name;
             $link = '';
 
-            //$to3 = scm_field('opt-to3-gallerie-folder', 0, 'options');
-
-            //if( !$to3 ){
-
-                $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
-                $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
+                $init = scm_gallery_filter( $content, 'thumb' );
                 if( $init == -1 )
                     return '';
                 $stored = scm_field( $field, array(), $id );
                 $images = array();
                 $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
-                //$path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/uploads' ) + 8 ) : '' );
                 
                 foreach ( $stored as $image)
-                    $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'] );
+                    $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'], 'caption' => $image['caption'], 'alt' => $image['alt'], 'date' => $image['date'], 'modified' => $image['modified'], 'filename' => $image['filename'], 'type' => $image['mime_type'] );
                 
                 $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
                 $link .= ' data-popup-path="' . $path . '"';
                 $link .= ' data-popup-init="' . $init . '"';
                 $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
-            
-            /*}else{
 
-                $thumb = ( isset( $content['modules'] ) ? getByKey( $content['modules'], 'thumb' ) : false );
-                $init = ( !empty( $content ) && isset( $content['thumb'] ) ? $content['thumb'] : ( $thumb != false ? ( isset( $thumb['thumb'] ) ? $thumb['thumb'] : 0 ) : 0 ) );
-                if( $init == -1 )
-                    return '';
-                $stored = scm_field( 'galleria-images', array(), $id );
-                $images = array();
-                $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $slug ) + strlen($slug) ) : '' );
-                
-                $link = ' data-popup="' . $path . '"';
-                $link .= ' data-popup-type="gallery"';
-                $link .= ' data-popup-init="' . $init . '"';
-                $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+                $link .= ' data-popup-list="' . scm_gallery_filter( $content, 'list', 0 ) . '"';
 
-            }*/
+                $link .= ' data-popup-data="' . scm_gallery_filter( $content, 'data', 'float' ) . '"';
+
+                $link .= ' data-popup-titles="' . scm_gallery_filter( $content, 'titles', 0 ) . '"';
+                $link .= ' data-popup-captions="' . scm_gallery_filter( $content, 'captions', 0 ) . '"';
+                $link .= ' data-popup-alternates="' . scm_gallery_filter( $content, 'alternates', 0 ) . '"';
+                $link .= ' data-popup-descriptions="' . scm_gallery_filter( $content, 'descriptions', 0 ) . '"';
+
+                $link .= ' data-popup-dates="' . scm_gallery_filter( $content, 'dates', 0 ) . '"';
+                $link .= ' data-popup-modifies="' . scm_gallery_filter( $content, 'modifies', 0 ) . '"';
+                $link .= ' data-popup-filenames="' . scm_gallery_filter( $content, 'filenames', 0 ) . '"';
+                $link .= ' data-popup-types="' . scm_gallery_filter( $content, 'types', 0 ) . '"';
 
             return $link;
         }
