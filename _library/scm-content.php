@@ -271,7 +271,6 @@
                     $name = $content['acf_fc_layout'];
                     $slug = str_replace( 'layout-', '', $name );
 
-
                     // -- Post
 
                     if( isset( $content['type'] ) ){
@@ -380,7 +379,9 @@
                     $odd = ( $odd ? '' : 'odd' );
                     
                     $layout = $content['column-width'];
-                    $content['inherit'] = ( $layout === 'auto' && $container !== 'post' );
+                    $content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && !$content['image'] );
+                    // ++todo: dovresti attivare inherit per tutti i contenuti vuoti
+                    // ++todo: probabilmente devi aggiungere opzione SKIP IF EMPTY a tutti gli elementi con contenuti (immagini, video, link, ...)
                    
                     if( !$content['inherit'] ){
 
@@ -997,7 +998,6 @@
     if ( ! function_exists( 'scm_gallery_filter' ) ) {
         function scm_gallery_filter( $content, $str, $def = 0 ){
 
-            //consoleLog( $str );
             $th = ( isset( $content['modules'] ) ? getByKey( $content['modules'], $str ) : null );
 
             return ( !empty( $content ) && isset( $content[$str] ) ? $content[$str] : ( $th !== null ? ( isset( $th[$str] ) ? $th[$str] : $def ) : $def ) );
@@ -1041,7 +1041,7 @@
                 $link .= ' data-popup-name="' . ( scm_gallery_filter( $content, 'name', 0 ) ) . '"';
                 $link .= ' data-popup-counter="' . ( scm_gallery_filter( $content, 'counter', 0 ) ) . '"';
 
-                $link .= ' data-popup-close="' . ( scm_gallery_filter( $content, 'close', 0 ) ) . '"';
+                //$link .= ' data-popup-close="' . ( scm_gallery_filter( $content, 'close', 0 ) ) . '"';
                 $link .= ' data-popup-info="' . ( scm_gallery_filter( $content, 'info', 0 ) ) . '"';
                 $link .= ' data-popup-color="' . ( scm_gallery_filter( $content, 'color', 0 ) ) . '"';
 

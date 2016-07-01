@@ -163,9 +163,11 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
         $value = '<img src="' . $value . '" alt="">';*/
         //***
 
-    }else{
+    }elseif( $value ){
         // RESPONSIVE
         $value = '<img src="' . $value . '" alt="">';
+    }else{
+        return;
     }
  
     indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $att ), 1 );

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.13.8
+Version:			v2.13.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2060,7 +2060,10 @@ body:not(.ready) .navigation {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
-    background-color: transparent !important;
+}
+
+.fancybox-overlay.image .fancybox-skin{
+	background-color: transparent !important;
 }
 
 /* Outer */
@@ -2072,6 +2075,8 @@ body:not(.ready) .navigation {
 
 .fancybox-inner{
 	cursor: default !important;
+	height: auto !important;
+	width: auto !important;
 }
 .fancybox-inner > *{
 	margin: 0;
@@ -2160,7 +2165,7 @@ body:not(.ready) .navigation {
 .fancybox-overlay .fancybox-tools{
 	color: #FFF;
 	padding: .5em;
-	line-height: .7em;
+	line-height: 1em;
 	-webkit-transition: all .5s;
 	transition: all .5s;
 
@@ -2218,13 +2223,16 @@ body:not(.ready) .navigation {
 
 .fancybox-overlay .fancybox-counter{
 	z-index: 9991;
-	left: 3em;
-}
-.r940 .fancybox-overlay .fancybox-counter,
-.smart .fancybox-overlay .fancybox-counter{
 	left: 1em;
 }
-.smartmid .fancybox-overlay .fancybox-counter{
+body.touch .fancybox-overlay .fancybox-counter{
+	left: 3em;
+}
+body.r940 .fancybox-overlay .fancybox-counter,
+body.smart .fancybox-overlay .fancybox-counter{
+	left: 1em;
+}
+body.smartmid .fancybox-overlay .fancybox-counter{
 	font-size: 1.5em;
 }
 
@@ -2241,20 +2249,24 @@ body:not(.ready) .navigation {
 /* Tools */
 
 .fancybox-overlay .fancybox-tools{
-	right: 4em;
+	right: 1em;
 	z-index: 9992;
 	font-size: 1.5em;
 	margin-top: .2em;
 }
-.r940 .fancybox-overlay .fancybox-tools{
-	right: 2em;
-}
-.r700 .fancybox-overlay .fancybox-tools,
-.smart .fancybox-overlay .fancybox-tools{
-	right: 1.5em;
-}
 .smartmid .fancybox-overlay .fancybox-tools{
 	font-size: 1em;
+}
+
+body.touch .fancybox-overlay .fancybox-tools{
+	right: 4em;
+}
+body.touch.r940 .fancybox-overlay .fancybox-tools{
+	right: 2em;
+}
+body.touch.r700 .fancybox-overlay .fancybox-tools,
+body.touch.smart .fancybox-overlay .fancybox-tools{
+	right: 1.5em;
 }
 
 .fancybox-overlay .fancybox-tools a{
