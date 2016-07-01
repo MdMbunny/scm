@@ -8,6 +8,7 @@ $post_id = $post->ID;
 
 $args = array(
 	'element' => 0,
+	'googlemaps' => 0,
 	'separator' => '-',
 	'icon' => 'on',
 	'alignment' => 'left',
@@ -49,12 +50,14 @@ $icon = ( $args['icon'] != 'no' ? $args['icon'] : '' );
 $class = 'address scm-address scm-object object scm-list list ' . $icon . ' ' . $args['class'];
 
 $attributes = $args['attributes'];
+$googlemaps = $args['googlemaps'];
 $style = $args['style'];
 $id = $args['id'];
 
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 
 /***************/
+
 
 indent( $SCM_indent + 1, openTag( 'ul', $id, $class, $style, $attributes ), 2 );
 
@@ -79,6 +82,8 @@ if( is( $element ) ){
 		$city = ( ( $city && $province ) ? $city . ' ' : $city );
 		$region = ( ( $region && $country ) ? $region . ', ' : $region );
 		$country = ( $country ? $country : '' );
+
+		$complete_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $country;
 		
 		$inline_address = ( $name ? '<strong class="name">' . $name . '</strong><br>' : '' );
 		
@@ -96,15 +101,17 @@ if( is( $element ) ){
 			$inline_address .= $region . $country . '</span>';
 		}
 		
+		// +++ todo: questo LI deve diventare un BUTTON. Crea un file single-button e usalo anche in single-list (e dove altro serve)
 		$li_class = 'button scm-button ' . $align;
+		$li_attr = '';
 		$i_style = ifnotequal( $marker['data'], 'img', '', ' color:', ';' );
 		$i_class = 'bullet ' . ( $icon == 'inside' ? ' float-' . $align : '' );
-        
-// +++ todo: ma questo deve essere un BUTTON a se, se no vedi che lo ripeti anche in single-list e fai casino coi vari attributi
+		
 
-// +++ todo: che possano essere linkati a Google Maps, un po' come il modello luogo, un po' come i Terms (scm_post_link)
+		if( $googlemaps )
+			$li_attr = ' data-href="https://maps.google.com/?q=' . $complete_address . '"';
 
-		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', '' ), 1 );
+		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', $li_attr ), 1 );
 
         if( $icon && $icon !== 'no' ){
         	if( !$i_style )

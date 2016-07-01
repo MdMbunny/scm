@@ -70,15 +70,15 @@ function getURL( $url ){
     }
 
     if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )
-        return $url;
+        return encodeEmail( $url );
 
     if( strpos( $url, '@' ) !== false )
         
-        return 'mailto:' . $url;
+        return 'mailto:' . encodeEmail( $url );
 
     if ( is_numeric( $url ) ){
 
-        if( !startsWith( $url, '+' ) !== false )
+        if( !startsWith( $url, '+' ) )
             return 'tel:+' . $url;
 
         return 'tel:' . $url;

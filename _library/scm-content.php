@@ -1035,7 +1035,15 @@
                 $link .= ' data-popup-init="' . $init . '"';
                 $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
 
-                $link .= ' data-popup-list="' . ( scm_gallery_filter( $content, 'list', 0 ) ? scm_gallery_filter( $content, 'list-position', 'top' ) : 0 ) . '"';
+                $link .= ' data-popup-arrows="' . ( scm_gallery_filter( $content, 'arrows', 0 ) ) . '"';
+
+                $link .= ' data-popup-list="' . ( scm_gallery_filter( $content, 'list', 0 ) ) . '"';
+                $link .= ' data-popup-name="' . ( scm_gallery_filter( $content, 'name', 0 ) ) . '"';
+                $link .= ' data-popup-counter="' . ( scm_gallery_filter( $content, 'counter', 0 ) ) . '"';
+
+                $link .= ' data-popup-close="' . ( scm_gallery_filter( $content, 'close', 0 ) ) . '"';
+                $link .= ' data-popup-info="' . ( scm_gallery_filter( $content, 'info', 0 ) ) . '"';
+                $link .= ' data-popup-color="' . ( scm_gallery_filter( $content, 'color', 0 ) ) . '"';
 
                 $link .= ' data-popup-data="' . scm_gallery_filter( $content, 'data', 'float' ) . '"';
 

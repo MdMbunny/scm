@@ -79,13 +79,19 @@
     if ( ! function_exists( 'scm_site_register_webfonts_google' ) ) {
         function scm_site_register_webfonts_google() {
             $fonts =  scm_field( 'styles-google', array(), 'option' );
-            foreach ($fonts as $value) {    
+            $len = sizeof( $fonts );
+            $script = 'https://fonts.googleapis.com/css?family=';
+            for ($i=0; $i < $len; $i++) {
+                $value = $fonts[$i];
                 $slug = sanitize_title( $value['family'] );           
                 $family = str_replace( ' ', '+', $value['family'] );
                 $styles = implode( '', $value['style'] );
-                wp_register_style( 'webfonts-google-' . $slug , 'https://fonts.googleapis.com/css?family=' . $family . ':' . $styles, false, null );
-                wp_enqueue_style( 'webfonts-google-' . $slug );                
+                $script .= $family . ':' . $styles;
+                if( $i < $len - 1 )
+                    $script .= '|';
             }
+            wp_register_style( 'webfonts-google' , $script, false, null );
+            wp_enqueue_style( 'webfonts-google' );            
         }
     }
 

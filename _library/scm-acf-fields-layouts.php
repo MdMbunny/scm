@@ -223,7 +223,9 @@
 	                'label'=>__( 'Luoghi', SCM_THEME ),
 	            ), $width, $logic );
 
-			$fields[] = scm_acf_field_text( 'separator', array( 'placeholder'=>'-', 'prepend'=>__( 'Separatore', SCM_THEME ) ), $width, $logic );
+			$fields[] = scm_acf_field_text( 'separator', array( 'placeholder'=>'-', 'prepend'=>__( 'Separatore', SCM_THEME ) ), $width*.5, $logic, $req );
+			$fields[] = scm_acf_field_false( 'googlemaps', 0, $width*.5, $logic, $req, __('Link to Google Maps', SCM_THEME) );
+
 			$fields[] = scm_acf_field_select( 'icon', array( 
 				'choices'=>array( 
 					'no' => __( 'Nascondi icona', SCM_THEME ), 
@@ -751,11 +753,19 @@
 						$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'height', '', '120', 'px', __( 'Altezza', SCM_THEME ) ) );
 
 					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-nav', array('label'=> __( 'Navigation', SCM_THEME ) ) );
-						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'list', 0, 100, 0, 0, __('List', SCM_THEME) );
-						$layout_thumb['sub_fields'][] = scm_acf_field_select( 'list-position',  array( 'choices'=>array('top'=>'Top','right'=>'Right','bottom'=>'Bottom','left'=>'Left') ), 100, 0, 0, __('List Position', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'arrows', 0, 33, 0, 0, __('Arrows', SCM_THEME) );
 
-					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-data', array('label'=> __( 'Data', SCM_THEME ) ) );
-						$layout_thumb['sub_fields'][] = scm_acf_field_select( 'data', array( 'choices'=>array('float'=>'Float','over'=>'Over','inside'=>'Inside','outside'=>'Outside') ), 100, 0, 0, __('Data Position', SCM_THEME) );
+					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-elems', array('label'=> __( 'Elements', SCM_THEME ) ) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'counter', 0, 33, 0, 0, __('Counter', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'name', 0, 33, 0, 0, __('Title', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'list', 0, 34, 0, 0, __('List', SCM_THEME) );
+
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'close', 0, 33, 0, 0, __('Close', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'info', 0, 33, 0, 0, __('Info', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'color', 0, 34, 0, 0, __('Color', SCM_THEME) );
+
+					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-data', array('label'=> __( 'Images Data', SCM_THEME ) ) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_select( 'data', array( 'choices'=>array('float'=>'Float','over'=>'Over','inside'=>'Inside (not implemented)','outside'=>'Outside (not implemented)') ), 100, 0, 0, __('Data Position', SCM_THEME) );
 
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'titles', 0, 25, 0, 0, __('Titles', SCM_THEME) );
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'captions', 0, 25, 0, 0, __('Captions', SCM_THEME) );

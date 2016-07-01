@@ -437,6 +437,9 @@ function doublesp( $str = '' ){
 
 }
 
+function encodeEmail( $email = '' ){
+    return str_replace( '@', '()', str_replace( '.', ',', $email ) );
+}
 
 function getHREF( $type = 'web', $link, $data = 0 ){
     if( !$link )
@@ -461,7 +464,7 @@ function getHREF( $type = 'web', $link, $data = 0 ){
         break;
 
         case 'email':
-            return ' ' . $data . 'href="mailto:' . $link . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="mailto:' . encodeEmail( $link ) . '" ' . $data . 'target="_blank"';
         break;
 
         case 'skype':
