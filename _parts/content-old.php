@@ -6,7 +6,7 @@
 
 <?php
 
-    $logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'opt-staff-logo', scm_field( 'brand-logo', SCM_URI_ASSETS . 'img/logo.png', 'option' ), 'option' ), 'option' ) );
+    $logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'opt-staff-logo', scm_field( 'brand-logo', SCM_URI_IMAGES . 'logo.png', 'option' ), 'option' ), 'option' ) );
     $html = scm_options_get( 'bg_color', 'loading-style-bg', 1 );
 
 ?>
@@ -85,11 +85,11 @@ echo '<p>' . __( 'Update your browser or download one of the following to correc
 ?>
 
 <div id="browsers">
-<!--<a href="http://windows.microsoft.com/it-it/internet-explorer/download-ie" target="_blank"><img src="<?php echo SCM_URI_ASSETS ?>img/landing_ie_icon_ie.png" /></a>-->
-<a class="browser" href="http://www.mozilla.org/it/firefox/new/" target="_blank"><img src="<?php echo SCM_URI_ASSETS ?>img/landing_ie_icon_firefox.png" /></a>
-<a class="browser" href="https://www.google.com/intl/en/chrome/browser/" target="_blank"><img src="<?php echo SCM_URI_ASSETS ?>img/landing_ie_icon_chrome.png" /></a>
-<!--<a class="browser" href="http://support.apple.com/downloads/#safari" target="_blank"><img src="<?php echo SCM_URI_ASSETS ?>img/landing_ie_icon_safari.png" /></a>-->
-<a class="browser" href="http://www.opera.com/it/computer/windows" target="_blank"><img src="<?php echo SCM_URI_ASSETS ?>img/landing_ie_icon_opera.png" /></a>
+<!--<a href="http://windows.microsoft.com/it-it/internet-explorer/download-ie" target="_blank"><img src="<?php echo SCM_URI_IMAGES ?>landing_ie_icon_ie.png" /></a>-->
+<a class="browser" href="http://www.mozilla.org/it/firefox/new/" target="_blank"><img src="<?php echo SCM_URI_IMAGES ?>landing_ie_icon_firefox.png" /></a>
+<a class="browser" href="https://www.google.com/intl/en/chrome/browser/" target="_blank"><img src="<?php echo SCM_URI_IMAGES ?>landing_ie_icon_chrome.png" /></a>
+<!--<a class="browser" href="http://support.apple.com/downloads/#safari" target="_blank"><img src="<?php echo SCM_URI_IMAGES ?>landing_ie_icon_safari.png" /></a>-->
+<a class="browser" href="http://www.opera.com/it/computer/windows" target="_blank"><img src="<?php echo SCM_URI_IMAGES ?>landing_ie_icon_opera.png" /></a>
 </div>
 </div>
 </body>

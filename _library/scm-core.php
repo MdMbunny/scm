@@ -109,7 +109,7 @@
 
             // SCM Print
             // +++ todo: if html header is PRINT
-            //wp_register_style( 'print', SCMJS_URI_ASSETS . 'css/scm-print.css', false, null, 'print' );
+            //wp_register_style( 'print', SCM_URI_CSS . 'scm-print.css', false, null, 'print' );
             //wp_enqueue_style( 'print' );
 
         }
@@ -120,7 +120,7 @@
     if ( ! function_exists( 'scm_admin_register_assets' ) ) {
         function scm_admin_register_assets() {
 
-            wp_register_style( 'scm-admin', SCM_URI_ASSETS . 'css/scm-admin.css', false, SCM_VERSION );
+            wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_VERSION );
             wp_enqueue_style('scm-admin');
             wp_register_style( 'scm-admin-child', SCM_URI_ASSETS_CHILD . 'css/admin.css', false, SCM_VERSION );
             wp_enqueue_style('scm-admin-child');
@@ -133,7 +133,7 @@
 
             /* Login Page */
 
-            wp_register_style( 'scm-login', SCM_URI_ASSETS . 'css/scm-login.css', false, SCM_VERSION );
+            wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_VERSION );
             wp_enqueue_style('scm-login');
 
             $login_logo = scm_field('opt-staff-logo', '', 'option');

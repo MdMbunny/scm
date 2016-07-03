@@ -70,9 +70,17 @@
 	define( 'SCM_DIR',			      	get_template_directory() . '/' );
 	define( 'SCM_URI',			      	get_template_directory_uri() . '/' );
 
-		// ASSETS
-		define( 'SCM_DIR_ASSETS',      			SCM_DIR . '_assets/' );
-		define( 'SCM_URI_ASSETS',      			SCM_URI . '_assets/' );
+		// CLASSES
+		define( 'SCM_DIR_CLASSES',      		SCM_DIR . '_classes/' );
+		define( 'SCM_URI_CLASSES',      		SCM_URI . '_classes/' );
+
+		// CSS
+		define( 'SCM_DIR_CSS',      			SCM_DIR . '_css/' );
+		define( 'SCM_URI_CSS',      			SCM_URI . '_css/' );
+
+		// IMAGES
+		define( 'SCM_DIR_IMAGES',      			SCM_DIR . '_img/' );
+		define( 'SCM_URI_IMAGES',      			SCM_URI . '_img/' );
 
 		// LANGUAGES
 		define( 'SCM_DIR_LANG',      			SCM_DIR . '_languages/' );
@@ -87,6 +95,10 @@
 		define( 'SCM_DIR_PARTS_SINGLE',		    '_parts/single/single' );
 		define( 'SCM_DIR_PARTS_ARCHIVE',	    '_parts/archive/archive' );
 		define( 'SCM_DIR_PARTS_FEED',		    '_parts/feed/feed' );
+
+		// SVG
+		define( 'SCM_DIR_SVG',      			SCM_DIR . '_svg/' );
+		define( 'SCM_URI_SVG',      			SCM_URI . '_svg/' );
 	
 	
 	// CHILD THEME
@@ -116,10 +128,10 @@
 *****************************************************
 */
 
-require_once( SCM_DIR_ASSETS . 'php/Typekit_Client.php' );
-require_once( SCM_DIR_ASSETS . 'php/Get_Template_Part.php' );
-require_once( SCM_DIR_ASSETS . 'php/Custom_Type.php' );
-require_once( SCM_DIR_ASSETS . 'php/Custom_Taxonomy.php' );
+require_once( SCM_DIR_CLASSES . 'Typekit_Client.php' );
+require_once( SCM_DIR_CLASSES . 'Get_Template_Part.php' );
+require_once( SCM_DIR_CLASSES . 'Custom_Type.php' );
+require_once( SCM_DIR_CLASSES . 'Custom_Taxonomy.php' );
 
 require_once( SCM_DIR_LIBRARY . 'scm-svg.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-functions-wp.php' );
