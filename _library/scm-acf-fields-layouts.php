@@ -754,6 +754,7 @@
 
 					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-nav', array('label'=> __( 'Navigation', SCM_THEME ) ) );
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'arrows', 0, 33, 0, 0, __('Arrows', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'miniarrows', 0, 33, 0, 0, __('Always Mini', SCM_THEME) );
 
 					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-elems', array('label'=> __( 'Elements', SCM_THEME ) ) );
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'counter', 0, 33, 0, 0, __('Counter', SCM_THEME) );
@@ -765,7 +766,8 @@
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'color', 0, 50, 0, 0, __('Color', SCM_THEME) );
 
 					$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-data', array('label'=> __( 'Images Data', SCM_THEME ) ) );
-						$layout_thumb['sub_fields'][] = scm_acf_field_select( 'data', array( 'choices'=>array('float'=>'Float','over'=>'Over','inside'=>'Inside (not implemented)','outside'=>'Outside (not implemented)') ), 100, 0, 0, __('Data Position', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_select( 'data', array( 'choices'=>array('float'=>'Float','over'=>'Over','inside'=>'Inside (not implemented)','outside'=>'Outside (not implemented)') ), 50, 0, 0, __('Data Position', SCM_THEME) );
+						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'reverse', 0, 50, 0, 0, __('Reverse', SCM_THEME) );
 
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'titles', 0, 25, 0, 0, __('Titles', SCM_THEME) );
 						$layout_thumb['sub_fields'][] = scm_acf_field_false( 'captions', 0, 25, 0, 0, __('Captions', SCM_THEME) );

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.14.3
+Version:			v2.14.4
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2305,6 +2305,7 @@ body:not(.touch).fancybox-overlay.white .fancybox-tools a:hover i{
 	z-index: 9993;
 	padding: .5em 0;
 	color: #FFF;
+	visibility: visible;
 }
 
 .fancybox-title .child {
@@ -2329,6 +2330,10 @@ body:not(.touch).fancybox-overlay.white .fancybox-tools a:hover i{
     font-weight: normal;
 }
 
+.fancybox-overlay.info .fancybox-title{
+	visibility: hidden;
+}
+
 /* Data Float */
 
 .fancybox-overlay.float .fancybox-title{
@@ -2338,18 +2343,22 @@ body:not(.touch).fancybox-overlay.white .fancybox-tools a:hover i{
 
 /* Data Over */
 
+
 .fancybox-overlay.over .fancybox-title{
 	background: rgba(0, 0, 0, .8);
-	opacity: 0;
-	visibility: hidden;
 	-webkit-transition: opacity .5s;
 	transition: opacity .5s;
 	padding: .5em 1em;
 }
 
-.fancybox-overlay.over .fancybox-wrap:hover .fancybox-title{
-	visibility: visible;
+.fancybox-overlay.over.reverse .fancybox-title,
+.fancybox-overlay.over:not(.reverse) .fancybox-wrap:hover .fancybox-title{
 	opacity: 1;
+}
+
+.fancybox-overlay.over:not(.reverse) .fancybox-title,
+.fancybox-overlay.over.reverse .fancybox-wrap:hover .fancybox-title{
+	opacity: 0;
 }
 
 .smart .fancybox-overlay.over .fancybox-title{
@@ -2429,15 +2438,28 @@ body:not( .touch ) .fancybox-next:hover{
 	opacity: 1;
 }
 
+.miniarrows .fancybox-nav,
 body.touch .fancybox-nav{
 	width: 3em;
+	background-color: transparent !important;
+    box-shadow: none !important;
+	-webkit-transition: none;
+    transition: none;
 }
 
+.miniarrows .fancybox-nav span,
 body.touch .fancybox-nav span{
 	visibility: visible;
 	text-align: center;
 	font-size: 3em;
 	opacity: 1;
+	-webkit-transition: all .2s;
+    transition: all .2s;
+}
+
+.miniarrows .fancybox-nav span:hover,
+body.touch .fancybox-nav span:hover{
+	opacity: .7;
 }
 
 /* white */
@@ -2452,7 +2474,7 @@ body:not( .touch ) .fancybox-overlay.white .fancybox-prev:hover{
     background-color: rgba(255,255,255,.3);
 }
 
-body:not( .touch ) .fancybox-overlay.white .fancybox-next:hover{
+.fancybox-overlay.white .fancybox-next:hover{
 	box-shadow: -100px 0 100px 0 rgba(255,255,255,.3);
     background-color: rgba(255,255,255,.3);
 }
