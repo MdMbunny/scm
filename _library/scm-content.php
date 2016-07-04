@@ -941,6 +941,8 @@
             $slug = $post->post_name;
             $link = '';
 
+            $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
+
             switch ( $type ) {
                 case 'soggetti':
                     $link = ' data-href="' . scm_field( 'soggetto-link', '#', $id ) . '"';
@@ -963,7 +965,6 @@
                 break;
 
                 case 'gallerie':
-
                     $link = scm_gallery_link( $content, 'galleria-images', $id );
 
                 break;
@@ -989,6 +990,8 @@
                 break;
             }
 
+            $link = apply_filters( 'scm_filter_object_after_link_' . $type, $link, $content, $id );
+
             return $link;
 
         }
@@ -1007,6 +1010,8 @@
 
     if ( ! function_exists( 'scm_gallery_link' ) ) {
         function scm_gallery_link( $content = array(), $field = 'galleria-images', $id = 0 ) {
+
+            consoleLog($content);
 
             global $post;
 
