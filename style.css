@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v2.14.2
+Version:			v2.14.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2473,19 +2473,27 @@ body:not( .touch ) .fancybox-overlay.white .fancybox-nav span{
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin-top: -22px;
-	margin-left: -22px;
+	width: 64px;
+	height: 64px;
+	margin-top: -32px;
+	margin-left: -32px;
 	opacity: 0.8;
 	cursor: pointer;
 	z-index: 8060;
 	border-radius: 5px;
 	overflow: hidden;
-	border: 3px solid #000;
+	border: 2px solid #000;
+	border-radius: 100%;
+	padding: 10px;
+	background-color: #000;
+	background-image: none !important;
 }
 
 #fancybox-loading div {
 	width: 44px;
 	height: 44px;
+	margin-top: -2px;
+	margin-left: -2px;
 	background: url('_img/loading.gif') center center no-repeat;
 }
 

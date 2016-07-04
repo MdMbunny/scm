@@ -5,8 +5,6 @@
  *
  * @package SCM
  */
-//header("Access-Control-Allow-Origin: *");
-
 
 ?><!DOCTYPE html>
 

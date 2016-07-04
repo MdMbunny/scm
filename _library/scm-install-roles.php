@@ -422,7 +422,7 @@ $SCM_roles = array();
     if ( ! function_exists( 'scm_role_post_caps' ) ) {
         function scm_role_post_caps( $role = '', $type = '', $admin = 0, $cap = 0 ){
 
-            if ( !$role || !type )
+            if ( !$role || !$type )
                 return;
 
             $name = ( is_string( $role ) ? ( $role=='super' ? 'administrator' : $role ) : '' );
