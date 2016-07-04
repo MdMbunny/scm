@@ -1011,8 +1011,6 @@
     if ( ! function_exists( 'scm_gallery_link' ) ) {
         function scm_gallery_link( $content = array(), $field = 'galleria-images', $id = 0 ) {
 
-            consoleLog($content);
-
             global $post;
 
             if( $id )
