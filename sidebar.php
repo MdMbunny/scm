@@ -1,8 +1,15 @@
 <?php
+
 /**
- * The sidebar containing the main widget area.
+ * sidebar.php
+ *
+ * Template for the sidebar.
+ *
+ * @link http://www.studiocreativo-m.it
  *
  * @package SCM
+ * @subpackage Root/Templates
+ * @since 1.0.0
  */
 
 if ( ! is_active_sidebar( 'sidebar-1' ) ) {

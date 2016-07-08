@@ -1,6 +1,15 @@
 <?php
+
 /**
+ * single-address.php
+ *
+ * Part Single Address content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Parts/Single/Address
+ * @since 1.0.0
  */
 
 global $post, $SCM_indent;
@@ -21,9 +30,6 @@ $args = array(
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-/***************/
-
-
 $element = ( $args['element'] ?: scm_field( 'luoghi', 0, $post_id ) );
 if( !$element ){
 
@@ -41,10 +47,6 @@ if( !$element ){
 		$element = array( $element->ID );
 }
 
-/***************/
-
-
-
 $icon = ( $args['icon'] != 'no' ? $args['icon'] : '' );
 
 $class = 'address scm-address scm-object object scm-list list ' . $icon . ' ' . $args['class'];
@@ -56,9 +58,6 @@ $id = $args['id'];
 
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 
-/***************/
-
-
 indent( $SCM_indent + 1, openTag( 'ul', $id, $class, $style, $attributes ), 2 );
 
 if( is( $element ) ){
@@ -66,7 +65,7 @@ if( is( $element ) ){
 	foreach( $element as $luogo ){
 
 		$fields = get_fields( $luogo );
-		$marker = scm_content_preset_marker( $luogo, $fields );
+		$marker = scm_preset_marker( $luogo, $fields );
 
 		$name = $fields['luogo-nome'];
 		$country = $fields['luogo-paese'];

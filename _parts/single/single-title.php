@@ -1,7 +1,15 @@
 <?php
 
 /**
+ * single-title.php
+ *
+ * Part Single Title content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Parts/Single/Title
+ * @since 1.0.0
  */
 
 global $post, $SCM_indent;
@@ -22,17 +30,11 @@ $args = array(
 if( isset( $this ) )
     $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-/***************/
-
-
 $class = 'title scm-title scm-object object ' . $args['class'];
 
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
-
-
-/***************/
 
 $layout = $args['acf_fc_layout'];
 

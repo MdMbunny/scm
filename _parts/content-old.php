@@ -1,3 +1,19 @@
+<?php
+
+/**
+ * content-old.php
+ *
+ * Part Old content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage Parts/Old
+ * @since 1.0.0
+ */
+
+?>
+
 <!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -12,9 +28,6 @@
 ?>
 
 <style>
-/***********************************************************************************************/
-
-/*** LANDING IE ***/
 
 body{
     <?php echo $html; ?>
@@ -68,8 +81,6 @@ img{
     list-style: none !important;
 }
 
-
-/***********************************************************************************************/
 </style>
 
 <link rel="stylesheet" id="old-css" href= '<?php echo SCM_URI_CHILD ?>style.css' type="text/css" media="screen">

@@ -2,21 +2,32 @@
 
 if ( ! class_exists( 'Typekit_Client' ) ) {
 
+/**
+ * Typekit_Client.php
+ *
+ * Typekit PHP API Client
+ *
+  * Example usage:
+ *
+```php
+$typekit = new Typekit();
 
-	/**
-	 * Typekit PHP API Client.
-	 *
-	 * Example usage:
-	 *
-	 *     $typekit = new Typekit();
-	 *
-	 *     $kit = $typekit->create([
-	 *         "name" => "Example",
-	 *         "families" => [[ "id" => "gkmg" ]]
-	 *         "domains" => ["*.example.com"]
-	 *     ], 'xxxxx');
-	 *
-	 */
+$kit = $typekit->create([
+    "name" => "Example",
+    "families" => [[ "id" => "gkmg" ]]
+    "domains" => ["*.example.com"]
+], 'xxxxx');
+```
+ *
+ * @return object Typekit object.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage Classes
+ * @since 1.0.0
+ */
+
 	class Typekit_Client {
 		private $timeout = 30;
 		private $api = "/api/v1/json/kits/";

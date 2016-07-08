@@ -1,6 +1,15 @@
 <?php
+
 /**
+ * search.php
+ *
+ * Template for search form.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Root/Templates
+ * @since 1.0.0
  */
 
 	if ( have_posts() ) {
@@ -24,5 +33,4 @@
 		<?php get_template_part( SCM_DIR_PARTS, 'none' );
 	
 	}
-
 ?>

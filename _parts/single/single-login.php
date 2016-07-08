@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * single-login.php
+ *
+ * Part Single Login content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage Parts/Single/Login
+ * @since 1.0.0
+ */
+
 // Global Variables
 global $post, $SCM_indent;
 $post_id = $post->ID;
@@ -14,10 +26,6 @@ $args = array(
 
 if( isset( $this ) )
     $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
-
-/***************/
-
-//consoleLog( $args );
 
 $redirect = ( $args['login-type'] ?: 'admin' );
 $link = $args['login-redirect'];
@@ -60,12 +68,5 @@ if ( is_user_logged_in() ) { // todo: non so, son buttati lì, vedi tu, magari c
 
     wp_login_form( $attr );
 }
-
-
-
-/***************/
-
-
-
 
 ?>

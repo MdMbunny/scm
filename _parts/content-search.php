@@ -1,11 +1,17 @@
 <?php
+
 /**
- * The template part for displaying results in search pages.
+ * content-search.php
  *
- * Learn more: http://codex.wordpress.org/Template_Hierarchy
+ * Part Search content.
+ *
+ * @link http://www.studiocreativo-m.it
  *
  * @package SCM
+ * @subpackage Parts/Search
+ * @since 1.0.0
  */
+
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

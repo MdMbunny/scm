@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * content.php
+ *
+ * Part content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage Parts
+ * @since 1.0.0
+ */
+
 global $SCM_indent, $SCM_types, $SCM_page_id;
 
 $id = get_the_ID();
@@ -9,7 +21,10 @@ $site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $single = is_single();
 $archive = is_archive();
 $template = 'page';
-$notpage = 0; $page = 0; $temp = '';
+$notpage = 0;
+$page = 0;
+$temp = '';
+
 if( $single ){
 	$notpage = 1;
 	$page = get_page_by_path( '_single-' . $type );
@@ -25,7 +40,7 @@ if( $single ){
 if( $notpage ){
 
 // If Type is not Public
-	if( getByKey( $SCM_types['public'], $type ) === false )
+	if( is_null( getByKey( $SCM_types['public'], $type ) ) )
 		get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home) 
 	
 // If a Page named '_single-{post_type}' | '_archive-{post_type}' exists
@@ -39,6 +54,8 @@ if( $notpage ){
 // If query arg ?template=XXX exists
 	}else{
 		$template = get_query_var( 'template', 0 );
+		// ++todo: 	se non esiste il template dovresti aver pronte delle parts per i type di default
+		// 			e per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto
 		if( !$template )
 			get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home)
 	}

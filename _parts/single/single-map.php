@@ -1,6 +1,15 @@
 <?php
+
 /**
+ * single-map.php
+ *
+ * Part Single Map content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Parts/Single/Map
+ * @since 1.0.0
  */
 
 global $post, $SCM_indent;
@@ -17,9 +26,6 @@ $args = array(
 
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
-
-/***************/
-
 
 $element = $args[ 'element' ];
 $cat = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
@@ -55,27 +61,15 @@ if( !$element ){
 		$element = array( $element->ID );
 }
 
-
-
-/***************/
-
-
 $class = 'map scm-map scm-object object full' . $args['class'];
-
 
 $attributes = ' data-zoom="' . ifexists( $args[ 'zoom' ], 10 ) . '"' . $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
 
-
-/***************/
-
-
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 2 );
 
 if( is( $element ) ){
-
-
 
 	foreach( $element as $luogo ){
 
@@ -90,13 +84,12 @@ if( is( $element ) ){
 		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
 		$attr = '';
 
-		$marker = scm_content_preset_marker( $luogo, $fields, 1 );
+		$marker = scm_preset_marker( $luogo, $fields, 1 );
 
-		if( $lat && $lng ){
+		if( $lat && $lng )
 			$attr = ' data-lat="' . $lat . '" data-lng="' . $lng . ' "';
-		}else{
+		else
 			$attr = ' data-address="' . $indirizzo . ( $citta ? ', ' . $citta : '') . '" ';
-		}
 
 		indent( $SCM_indent+1, '<div class="scm-marker marker marker-' . $luogo . '"' . $attr . $marker . '>' );
 				indent( $SCM_indent+2, '<strong>' . ( isset( $fields['luogo-nome'] ) ? $fields['luogo-nome'] : get_the_title( $luogo ) ) . '</strong><br>' );
@@ -108,7 +101,6 @@ if( is( $element ) ){
 						if( $contatto['onmap'] ){
 							$href = getHREF( str_replace( 'layout-', '', $contatto['acf_fc_layout']), (string)$contatto['link'] );
 							indent( $SCM_indent+2, '<a ' . $href . '>' . ( $contatto['name'] ?: (string)$contatto['link'] ) . '</a>' );
-							//indent( $SCM_indent+2, '<div ' . $href . ' data-target="_blank">' . ( $contatto['name'] ?: (string)$contatto['link'] ) . '</div>' );
 						}
 					}
 					indent( $SCM_indent+2, '</div>' );

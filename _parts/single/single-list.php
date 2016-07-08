@@ -1,9 +1,18 @@
 <?php
+
 /**
+ * single-list.php
+ *
+ * Part Single List content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Parts/Single/List
+ * @since 1.0.0
  */
 
-global $post, $SCM_indent, $SCM_fa;
+global $post, $SCM_indent;
 $post_id = $post->ID;
 
 $args = array(
@@ -35,16 +44,11 @@ $args = array(
 if( isset( $this ) )
     $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-//***************
-
-
 $class = 'scm-list list scm-object object ' . $args['class'];
 
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
-
-//***************
 
 $element = $args[ 'element' ];
 $layout = $args['acf_fc_layout'];
@@ -63,7 +67,6 @@ switch ( $layout ) {
         $layout = 'layout-link';
         $args['list'] = get_field( 'soggetto-buttons', ( is_numeric( $element ) ? $element : $element->ID ) );
         $args['color-filter'] = 'social';
-        //$args['display'] = 'inlineblock';
     break;
 
     case 'layout-contatti':
@@ -76,8 +79,6 @@ switch ( $layout ) {
         }
         $layout = 'layout-link';
         $args['list'] = get_field( 'luogo-contatti', ( is_numeric( $element ) ? $element : $element->ID ) );
-        //$args['color-filter'] = 'social';
-        //$args['display'] = 'inlineblock';
     break;
     
     case 'layout-elenco_puntato':
@@ -86,7 +87,6 @@ switch ( $layout ) {
             $style .= ' list-style:' . $type . ';' ;
             $style .= ' list-style-position:' . $pos . ';';
             $class .= ( $type == 'none' ? ' nobullet' : '' );
-            //$args['display'] = 'block'; // TOCCATO 2.5.6
         }
     break;
 }
@@ -98,11 +98,11 @@ $display = $args['display'];
 $direction = ( $args['display'] === 'block' ? 'vertical' : 'horizontal' );
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 $size = ifnotequal( $args['size'], 'default', 'normal' );
-$color = scm_content_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
+$color = scm_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
 $shape = ( $args['shape'] ? ifnotequal( $args['shape'], 'no', 'no-shape' ) : 'no-shape' );
 $shape_size = ( $shape ? ifnotequal( $shape, 'square', '', '', '-' . $args['shape-size'] ) : '' );
 $shape_angle = ifnotequal( $args['shape-angle'], array( 'all', 'square' ) );
-$bg = scm_content_preset_rgba( $args['box-color'], $args['box-alpha'] );
+$bg = scm_preset_rgba( $args['box-color'], $args['box-alpha'] );
 
 $icon_even = $args['icon-even'];
 $icon_odd = ifnotequal( $args['icon-odd'], 'no', $icon_even );
@@ -134,9 +134,8 @@ if( is( $list ) ){
 
         if( is( $args['color-filter'] ) ){
             if( !$color || !$bg ){
-                foreach ($SCM_fa[ $args['color-filter'] ] as $value) {
-                    $index = getByValue( $value['choices'], $button['icon'] );
-                    if( $index !== false ){
+                foreach( scm_acf_field_fa_preset( $args['color-filter'] ) as $value ) {
+                    if( !is_null( getByValue( $value['choices'], $button['icon'] ) ) ){
                         if( !$color )
                             $txt_col = ( $value['color'] ?: '' );
                         else
@@ -181,9 +180,7 @@ if( is( $list ) ){
 
             indent( $SCM_indent, '</li>', 2 );
         }
-
     }
-
 }
 
 indent( $SCM_indent, '</ul><!-- list -->', 2 );

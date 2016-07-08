@@ -1,6 +1,15 @@
 <?php
+
 /**
+ * single-image.php
+ *
+ * Part Single Image content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Parts/Single/Image
+ * @since 1.0.0
  */
 
 global $post, $SCM_indent;
@@ -32,8 +41,6 @@ $args = array(
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-/***************/
-
 $layout = $args['acf_fc_layout'];
 $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
 $images = ( $args[ 'images' ] ?: '' );
@@ -46,15 +53,10 @@ if ( $layout == 'layout-thumbs' ) {
 
     $images = ( $images ?: scm_field( 'galleria-images', array(), $post_id ) );
 
-    if( $thumb >= 0 ){
-
+    if( $thumb >= 0 )
         $image = ( isset( $images[$thumb] ) ? $images[$thumb] : array() );
-
-    }else{
-
+    else
         $image = $images;
-
-    }
 
 }elseif( !$image ){
     if( $post->post_type === 'soggetti' ){
@@ -95,34 +97,27 @@ if ( $layout == 'layout-thumbs' ) {
 
 $image = toArray( $image, true );
 
-/***************/
-
-
 $class = 'image scm-image scm-object object ' . $args['class'];
 
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
 
-
-/***************/
-
-
 switch ( $args[ 'format' ] ) {
     case 'full':
-        $image_height = scm_content_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
+        $image_height = scm_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
         $style .= ' max-height:' . $image_height . ';';
         $class .= ' mask full';
     break;
 
     case 'quad':
-        $image_size = scm_content_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
+        $image_size = scm_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
         $style .= ' width:' . $image_size . '; height:' . $image_size . ';';
     break;
     
     default:
-        $image_width = scm_content_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
-        $image_height = scm_content_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
+        $image_width = scm_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
+        $image_height = scm_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
 
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
     break;
@@ -139,36 +134,21 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
 
     if( $thumb >= -1 ){
 
-        if( $thumb == -1 ){
+        if( $thumb == -1 )
             $args['thumb'] = $i;
-
-        }
 
         if( $args['link'] == 'self' )
             $att .= scm_post_link( $args );
         
         $class .= ' thumb';
-        //$size = ( $args['thumb-size'] ?: '' );
     }
 
-    if(is_array($value)){
-
-        // RESPONSIVE
+    if( is_array( $value ) )
         $value = wp_get_attachment_image( $value['ID'], 'full' );
-        // NOT RESPONSIVE
-        /*if( $size )
-            $value = ( gettype( $value ) == 'array' ? $value['sizes'][$size] : $value );
-        else
-            $value = ( gettype( $value ) == 'array' ? $value['url'] : $value );
-        $value = '<img src="' . $value . '" alt="">';*/
-        //***
-
-    }elseif( $value ){
-        // RESPONSIVE
+    elseif( $value )
         $value = '<img src="' . $value . '" alt="">';
-    }else{
+    else
         return;
-    }
  
     indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $att ), 1 );
 
@@ -177,6 +157,5 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
     indent( $SCM_indent + 1, '</div><!-- image -->', 2 );
 
 }
-
 
 ?>

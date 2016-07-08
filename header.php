@@ -1,9 +1,15 @@
 <?php
 
 /**
+ * header.php
+ *
  * Front end : <head> <body> <page> <header> -> containers
  *
+ * @link http://www.studiocreativo-m.it
+ *
  * @package SCM
+ * @subpackage Root
+ * @since 1.0.0
  */
 
 ?><!DOCTYPE html>
@@ -27,9 +33,7 @@
 
 <?php
 
-//********************************
-//***************** END HEAD *****
-//********************************
+// END HEAD
 
 global $SCM_indent, $SCM_page_id, $post;
 

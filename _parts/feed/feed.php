@@ -1,8 +1,15 @@
 <?php
+
 /**
- * RSS2 Feed Template for displaying RSS2 Posts feed.
+ * feed.php
  *
- * @package WordPress
+ * Feed Single content.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage Parts/Feed
+ * @since 1.0.0
  */
 
 header('Content-Type: application/rss+xml; charset=utf-8', true);

@@ -1,10 +1,16 @@
 <?php
+
 /**
- * The template for displaying the footer.
+ * footer.php
  *
- * Contains the closing of the #content div and all content after
+ * The template for displaying the footer.
+ * Contains the closing of the #content div and all content after.
+ *
+ * @link http://www.studiocreativo-m.it
  *
  * @package SCM
+ * @subpackage Root
+ * @since 1.0.0
  */
 
 wp_reset_postdata();

@@ -1,91 +1,91 @@
 <?php
+
 /**
- * @package SCM
- */
-
-$SCM_typekit;
-
-// *****************************************************
-// *    SCM INSTALL
-// *****************************************************
-
-/*
-*****************************************************
+* scm-install.php.
 *
-*   0.0 Require
-*   1.0 Actions and Filters
-*   2.0 Functions
+* SCM install functions.
 *
-*****************************************************
+* @link http://www.studiocreativo-m.it
+*
+* @package SCM
+* @subpackage Install
+* @since 1.0.0
 */
 
-// *****************************************************
-// *      0.0 REQUIRE
-// *****************************************************
+/** Install roles. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-roles.php' );
 
-    require_once( SCM_DIR_LIBRARY . 'scm-install-roles.php' );
-    require_once( SCM_DIR_LIBRARY . 'scm-install-types.php' );
-    require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
+/** Install types. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-types.php' );
 
-if ( ! function_exists( 'scm_admin_ui_init' ) ) {
-    function scm_admin_ui_init() {
+/** Install acf. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
 
-// *****************************************************
-// *      1.0 ACTIONS AND FILTERS
-// *****************************************************
+// ------------------------------------------------------
 
-    // Removing unused WP actions
-    remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-    remove_action( 'wp_print_styles', 'print_emoji_styles' );
-    remove_action( 'admin_print_styles', 'print_emoji_styles' );
-    remove_action( 'wp_head', 'feed_links_extra', 3 );
-    remove_action( 'wp_head', 'feed_links', 2 );
-    remove_action( 'wp_head', 'wlwmanifest_link' );
-    remove_action( 'wp_head', 'rsd_link' );
-    remove_action( 'wp_head', 'wp_generator' );
+/**
+* @var {object} SCM_typekit Global array to store Adobe Typekit kits
+*/
+$SCM_typekit;
 
-    //add_action( 'after_setup_theme', 'scm_typekit_install' );
-    add_action( 'after_switch_theme', 'scm_theme_activate' );
-    add_action( 'upgrader_process_complete', 'scm_theme_update' );
-    add_action( 'switch_theme', 'scm_theme_deactivate' );
+// ------------------------------------------------------
+//
+// 0.0 Actions and Filters
+//
+// ------------------------------------------------------
 
+//if ( ! function_exists( 'scm_admin_ui_init' ) ) {
+//    function scm_admin_ui_init() {
 
-// *****************************************************
-// *      2.0 FUNCTIONS
-// *****************************************************
+// ------------------------------------------------------
+// 0.0 ACTIONS AND FILTERS
+// ------------------------------------------------------
 
-// *** Install TypeKit
-    //if ( ! function_exists( 'scm_typekit_install' ) ) {
-        //function scm_typekit_install() {
+/** Remove unused WP actions */
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+remove_action( 'admin_print_styles', 'print_emoji_styles' );
+remove_action( 'wp_head', 'feed_links_extra', 3 );
+remove_action( 'wp_head', 'feed_links', 2 );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wp_generator' );
 
-            // todo: SOLO SE NECESSARIO
+add_action( 'after_switch_theme', 'scm_hook_theme_activate' );
+add_action( 'switch_theme', 'scm_hook_theme_deactivate' );
+add_action( 'upgrader_process_complete', 'scm_hook_theme_update' );
 
-            global $SCM_typekit;
-            $SCM_typekit = new Typekit_Client();
-        //}
-    //}
+// ------------------------------------------------------
 
-// *** Theme Activation
-    if ( ! function_exists( 'scm_theme_activate' ) ) {
-        function scm_theme_activate() {
-            update_option( 'scm-settings-installed', 1 );
-        }
-    }
+/**
+* [SET] 'scm-settings-installed' option to true.
+*
+* Hooked by 'after_switch_theme'
+*/
+function scm_hook_theme_activate() {
+    update_option( 'scm-settings-installed', 1 );
+}
 
-    if ( ! function_exists( 'scm_theme_update' ) ) {
-        function scm_theme_update() {
-            update_option( 'scm-version', SCM_VERSION );
-        }
-    }
+/**
+* [SET] 'scm-settings-installed' option to false.
+*
+* Hooked by 'switch_theme'
+*/
+function scm_hook_theme_deactivate() {
+    update_option( 'scm-settings-installed', 0 );
+}
 
-    if ( ! function_exists( 'scm_theme_deactivate' ) ) {
-        function scm_theme_deactivate() {
-            update_option( 'scm-settings-installed', 0 );
-        }
-    }
+/**
+* [SET] 'scm-version' option to SCM_VERSION.
+*
+* Hooked by 'upgrader_process_complete'
+*/
+function scm_hook_theme_update() {
+    update_option( 'scm-version', SCM_VERSION );
+}
 
-}}
-add_action( 'init', 'scm_admin_ui_init' );
+//}}
+//add_action( 'init', 'scm_admin_ui_init' );
 
 ?>
