@@ -44,7 +44,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 	 * @since 1.0.0
 	 *
 	 * @package SCM
-	 * @subpackage Classes/TGM_Plugin_Activation
+	 * @subpackage Classes/TGM
 	 * @author  Thomas Griffin
 	 * @author  Gary Jones
 	 */
@@ -2178,7 +2178,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 	 * @since 2.2.0
 	 *
 	 * @package SCM
-	 * @subpackage Classes/TGM_Plugin_Activation
+	 * @subpackage Classes/TGM
 	 * @author  Thomas Griffin
 	 * @author  Gary Jones
 	 */
@@ -3180,7 +3180,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 *            This was done to prevent backward compatibility issues with v2.3.6.}}
 				 *
 				 * @package SCM
-				 * @subpackage Classes/TGM_Plugin_Activation
+				 * @subpackage Classes/TGM
 				 * @author  Thomas Griffin
 				 * @author  Gary Jones
 				 */
@@ -3512,7 +3512,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 * @see https://core.trac.wordpress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
 				 *
 				 * @package SCM
-				 * @subpackage Classes/TGM_Plugin_Activation
+				 * @subpackage Classes/TGM
 				 * @author  Thomas Griffin
 				 * @author  Gary Jones
 				 */
@@ -3740,7 +3740,7 @@ if ( ! class_exists( 'TGMPA_Utils' ) ) {
 	 * @since 2.5.0
 	 *
 	 * @package SCM
-	 * @subpackage Classes/TGM_Plugin_Activation
+	 * @subpackage Classes/TGM
 	 * @author  Juliette Reinders Folmer
 	 */
 	class TGMPA_Utils {

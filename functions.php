@@ -63,6 +63,9 @@ define( 'SCM_SITE',				    site_url() );
 $SCM_parse = parse_url( SCM_SITE );
 define( 'SCM_DOMAIN',			    $SCM_parse["host"] );
 
+/** Site complete LINK. */
+define( 'SCM_LINK',			      	SCM_PROTOCOL . SCM_DOMAIN );
+
 /** Site complete URL. */
 define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
 
@@ -70,7 +73,7 @@ define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
 define( 'SCM_SCREEN',			    $_SERVER['REQUEST_URI'] );
 
 /** Site current URL. */
-define( 'SCM_CURRENT',			    SCM_SITE . SCM_SCREEN );
+define( 'SCM_CURRENT',			    SCM_LINK . SCM_SCREEN );
 
 /** Site dashboard URL. */
 define( 'SCM_DASHBOARD',			( ( SCM_CURRENT == admin_url() || SCM_CURRENT == admin_url() . 'index.php' ) ? 1 : 0 ) );
@@ -114,6 +117,12 @@ define( 'SCM_DIR',			      		get_template_directory() . '/' );
 
 /** SCM uri. */
 define( 'SCM_URI',			      		get_template_directory_uri() . '/' );
+
+/** SCM API dir. */
+define( 'SCM_DIR_API',      			SCM_DIR . 'API/' );
+
+/** SCM classes uri. */
+define( 'SCM_URI_API',      			SCM_URI . 'API/' );
 
 /** SCM classes dir. */
 define( 'SCM_DIR_CLASSES',      		SCM_DIR . '_classes/' );
@@ -265,4 +274,3 @@ require_once( SCM_DIR_LIBRARY . 'scm-core.php' );
 
 /** Dynamic content builder. */
 require_once( SCM_DIR_LIBRARY . 'scm-content.php' );
-
