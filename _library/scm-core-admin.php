@@ -502,6 +502,15 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
         ),
 
         array(
+            'name'               => 'SCM API',
+            'slug'               => 'scm-api',
+            'source'             => 'scm-api.zip',
+            'required'           => true,
+            'force_activation'   => true,
+            'force_deactivation' => false,
+        ),
+
+        array(
             'name'               => 'GitHub Updater',
             'slug'               => 'github-updater',
             'source'             => 'github-updater.zip',
