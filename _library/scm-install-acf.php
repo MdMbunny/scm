@@ -70,6 +70,8 @@ function scm_hook_acf_option_pages_install(){
 
     if( function_exists('acf_add_options_page') ) {
 
+        consoleDebug('install acf pages');
+
         acf_add_options_page(array(
             'page_title'    => 'SCM Settings',
             'menu_title'    => 'SCM',
@@ -113,6 +115,8 @@ do_action( 'scm_action_option_pages' );
 function scm_hook_acf_option_subpages_install(){
 
     if( function_exists('acf_add_options_sub_page') ) {
+
+        consoleDebug('install acf sub-pages');
 
         acf_add_options_sub_page(array(
             'page_title'    => 'SCM Intro',
@@ -237,7 +241,7 @@ function scm_hook_acf_install() {
 
         global $SCM_types;
 
-        consoleDebug('install');
+        consoleDebug('install acf fields');
 
         // SCM Filter: Passing empty Array - Receiving Array of Groups
         $groups = apply_filters( 'scm_filter_register_before', array() );
@@ -355,6 +359,8 @@ function scm_hook_acf_install() {
             $groups[$i]['menu_order'] = $i;
             scm_acf_group_register( $groups[$i] );
         }
+
+        consoleDebug('acf fields installed!');
     }
 }
 

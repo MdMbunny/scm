@@ -48,7 +48,7 @@ function scm_acf_field_fa( $group = NULL, $filter = '' ){
 	if( isset( $fa ) ){
 		
 		if( $filter ){
-			foreach $filter as $value)
+			foreach( $filter as $value)
 				$choices = ( isset( $fa[$value] ) ? array_merge( $choices, $fa[$value]['choices'] ) : $choices );
 		}
 		

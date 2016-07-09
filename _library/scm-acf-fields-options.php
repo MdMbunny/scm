@@ -258,9 +258,9 @@ function scm_acf_options_general() {
 		$fields[] = scm_acf_field_image_url( 'opt-branding-144', array('label'=>__( 'Icon 144', SCM_THEME )), 33 );
 
 	$fields[] = scm_acf_field_tab_left( 'tab-uploads-settings', array('label'=>__( 'Media Upload', SCM_THEME )) );
-		$fields[] = scm_acf_field( 'opt-uploads-quality', array( 'percent', 100, '100', __( 'Qualità immagini', SCM_THEME ) ), __( 'Qualità', SCM_THEME ) );
-		$fields[] = scm_acf_field( 'opt-uploads-width', array( 'pixel-max', 1920, '1920', __( 'Largezza massima immagini', SCM_THEME ) ), __( 'Larghezza Massima', SCM_THEME ) );
-		$fields[] = scm_acf_field( 'opt-uploads-height', array( 'pixel-max', 1920, '1920', __( 'Altezza massima immagini', SCM_THEME ) ), __( 'Altezza Massima', SCM_THEME ) );
+		$fields[] = scm_acf_field( 'opt-uploads-quality', array( 'percent', 85, '85', __( 'Qualità immagini', SCM_THEME ) ), __( 'Qualità', SCM_THEME ) );
+		$fields[] = scm_acf_field( 'opt-uploads-width', array( 'pixel-max', 1600, '1600', __( 'Largezza massima immagini', SCM_THEME ) ), __( 'Larghezza Massima', SCM_THEME ) );
+		$fields[] = scm_acf_field( 'opt-uploads-height', array( 'pixel-max', 1100, '1100', __( 'Altezza massima immagini', SCM_THEME ) ), __( 'Altezza Massima', SCM_THEME ) );
 
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-settings', array('label'=> __( 'Strumenti', SCM_THEME )) );
 		$fields[] = scm_acf_field( 'msg-fader', 'message', __( 'Pages Fader', SCM_THEME ) );

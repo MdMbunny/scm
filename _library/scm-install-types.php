@@ -45,7 +45,7 @@ function scm_hook_types_fields() {
 
     if( function_exists('register_field_group') ) {
 
-        consoleDebug('install custom types repeater');
+        consoleDebug('install custom types fields');
 
         $types = scm_acf_group( 'Types', 'types-options' );
         $types['location'][] = scm_acf_group_location( 'scm-custom-types', 'options_page' );
@@ -53,7 +53,7 @@ function scm_hook_types_fields() {
 
         scm_acf_group_register( $types );
 
-        consoleDebug('install custom taxes repeater');
+        consoleDebug('install custom taxes fields');
 
         $taxonomies = scm_acf_group( 'Taxonomies', 'taxonomies-options' );
         $taxonomies['location'][] = scm_acf_group_location( 'scm-custom-taxonomies', 'options_page' );
@@ -133,14 +133,14 @@ function scm_hook_types_default(){
     $default_types = apply_filters( 'scm_filter_default_types', $default_types );
     $default_taxonomies = apply_filters( 'scm_filter_default_taxonomies', $default_taxonomies );
 
-    // DISABLE DEFAULT OPTIONS
+    // CREATE DEFAULT TYPES FIELDS
+    consoleDebug('install default types fields');
     $types = subArray( $default_types, 'plural', '', array( 'admin' => 0 ) );
-
     $group_types = scm_acf_group( 'Disable Default Types', 'default-types-options' );
     $group_types['location'][] = scm_acf_group_location( 'scm-default-types', 'options_page' );
     $group_types['fields'] = scm_acf_options_default_types( $types, $types );
-
     scm_acf_group_register( $group_types );
+
     $saved_types = scm_field( 'default-types-list', 0, 'option' );
     if( isset( $saved_types ) && is_array( $saved_types ) ){
         foreach ($saved_types as $key => $value) {
@@ -148,8 +148,9 @@ function scm_hook_types_default(){
         }
     }
 
+    // CREATE DEFAULT TAXONOMIES FIELDS
+    consoleDebug('install default taxes fields');
     $taxes = subArray( $default_taxonomies, 'plural' );
-
     $group_taxonomies = scm_acf_group( 'Disable Default Taxonomies', 'default-taxonomies-options' );
     $group_taxonomies['location'][] = scm_acf_group_location( 'scm-default-taxonomies', 'options_page' );
     $group_taxonomies['fields'] = scm_acf_options_default_taxonomies( $taxes, $taxes );

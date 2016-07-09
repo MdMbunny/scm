@@ -1115,7 +1115,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'bottom' => __( 'Basso', SCM_THEME ),
 			);
 
-		else if( strpos( $list, 'txt_alignment' ) !== false ):
+		elseif( strpos( $list, 'txt_alignment' ) !== false ):
         	$choices = array(
 				'left' => __( 'Sinistra', SCM_THEME ),
 				'right' => __( 'Destra', SCM_THEME ),

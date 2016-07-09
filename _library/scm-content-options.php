@@ -218,10 +218,9 @@ function scm_options_get_size( $type = '', $target = 'option', $add = false ) {
 
         $obj = get_field_object( is( $type, 'style-txt-' ) . 'set-size', $target );
 
-        if( !$obj )
-            return '';
+        if( !$obj ) return '';
 
-        $value = $obj['value'];
+        $value = $obj['default_value'];
         $choices = $obj['choices'];
         $label = $choices[ $value ];
 
@@ -230,8 +229,7 @@ function scm_options_get_size( $type = '', $target = 'option', $add = false ) {
     }
 
 	if( $size == 'default' ){
-		if( $type || $target != 'option' )
-    		return '';
+		if( $type || $target != 'option' ) return '';
     	$size = '';
     }
 

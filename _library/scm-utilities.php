@@ -29,9 +29,6 @@
 // ------------------------------------------------------
 // 0.0 WORDPRESS
 // ------------------------------------------------------
-// ------------------------------------------------------
-// 0.1 DEBUG
-// ------------------------------------------------------
 
 /**
  * [SET] Print javascript console messages
@@ -45,10 +42,6 @@ function consoleDebug( $var, $deb = SCM_DEBUG ){
     if( $deb )
         consoleLog( $var );
 }
-
-// ------------------------------------------------------
-// 0.2 LANGUAGES
-// ------------------------------------------------------
 
 /**
  * [GET] Combined multiple __( 'text', theme )
@@ -68,9 +61,34 @@ function multiText( $var, $sep = ' ', $theme = SCM_THEME ){
     return trim( $txt, $sep );
 }
 
-// ------------------------------------------------------
-// 0.3 TYPES AND TAXONOMIES
-// ------------------------------------------------------
+/**
+* [GET] Post data from $_REQUEST or current post
+*
+* @param {string} key Optional. Specific attribute.
+* @return {array|misc} Post attributes array or specific attribute.
+*/
+function thePost( $key = NULL ){
+    $the_post = array();
+    $id = 0;
+    $req = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : '' );
+    if( $req ) $id = (int)$req;
+    else $id = get_the_ID();
+
+    if ( $id && is_numeric( $id ) ) {
+        $the_post['id'] = $id;
+        $the_post['post'] = get_post( $id );  
+        $the_post['type'] = get_post_type( $id );
+        $the_post['slug'] = $the_post['post']->post_name;
+        $the_post['title'] = $the_post['post']->post_title;
+        $the_post['taxonomy'] = get_query_var( 'taxonomy' );
+        $the_post['term'] = get_query_var( 'term' );
+
+        if( is_null( $key ) ) return $the_post;
+        return $the_post[ $key ];
+    }
+
+    return NULL;
+}
 
 /**
  * [GET] Post type taxonomies exluding $taxes
@@ -85,10 +103,6 @@ function checkTaxes( $type, $taxes = array( 'language', 'post_translations' ) ) 
     if( !$type ) return array();
     return ( delArray( get_object_taxonomies( $type ), $taxes ) ?: array() );
 }
-
-// ------------------------------------------------------
-// 0.4 POST META
-// ------------------------------------------------------
 
 /**
  * [SET] Update, insert or delete post meta value
@@ -108,10 +122,6 @@ function updatePostMeta( $id, $meta, $value = NULL ){
     else
         update_post_meta( $id, $meta, $value );
 }
-
-// ------------------------------------------------------
-// 0.5 HTML
-// ------------------------------------------------------
 
 /**
  * [GET] Filter URL
@@ -182,7 +192,7 @@ function getURL( $url ){
 }
 
 // ------------------------------------------------------
-// 0.6 WORDPRESS GOOGLE
+// 0.2 WORDPRESS GOOGLE
 // ------------------------------------------------------
 
 /**
@@ -201,8 +211,7 @@ function getGoogleMapsLatLng( $address = '', $country = '' ){
         $country = ( $country ?: 'Italy' );
     }
 
-    //$google_address = str_replace('  ', '+', $address);
-    $google_address = str_replace(' ', '+', doublesp( $google_address );
+    $google_address = str_replace(' ', '+', doublesp( $google_address ) );
 
     $json = wp_remote_fopen( 'http://maps.google.com/maps/api/geocode/json?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY?address=$google_address&sensor=false&region=$country' );
     $json = json_decode( $json );
@@ -832,7 +841,7 @@ function subArray( $arr, $att_v = '', $att_k = '', $filter = array() ){
             }
         }
         $key = ( $att_k ? $value[$att_k] : $key );
-        $value = ( $att_v ? $value[$att_b] : $value );
+        $value = ( $att_v ? $value[$att_v] : $value );
         $new[$key] = $value;
     }
     return $new;

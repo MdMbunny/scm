@@ -84,6 +84,8 @@ function scm_hook_roles_install() {
             );
         }
     }
+
+    consoleDebug('roles installed!');
 }
 
 /**
@@ -129,7 +131,7 @@ function scm_hook_roles_allowed_list( $roles ) {
 * @return {array} Filtered list of capabilities.
 */
 function scm_hook_roles_allowed_edit( $caps, $cap = '', $user_ID = 0, $args = array() ) {
-    if ( ( $cap === 'edit_user' || $cap === 'delete_user' ) && !empty( $args ) ) ) {
+    if ( ( $cap === 'edit_user' || $cap === 'delete_user' ) && !empty( $args ) ) {
         $the_user = get_userdata( $user_ID ); // The user performing the task
         $user     = get_userdata( $args[0] ); // The user being edited/deleted
 
@@ -291,7 +293,7 @@ function scm_role_highest_level( $roles = array() ){
     $arr = array();
     foreach ( $roles as $role)
         $arr[] = scm_role_level( $role );
-    return min( sizeof( $arr ) !== false ? $arr : 100) );
+    return min( !empty( $arr ) ? $arr : 100 );
 }
 
 /**
@@ -436,7 +438,6 @@ function scm_role_by_level( $lv = 100 ){
 
 /**
 * [SET] Remove every role
-*
 */
 function scm_roles_reset() {
 

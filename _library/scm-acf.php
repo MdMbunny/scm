@@ -132,7 +132,7 @@ function scm_acf_group_location( $value = array(), $param = 'post_type', $cond =
 	if( !$value || is_asso( $value ) ) return $location;
 
 	foreach( $value as $loc )
-		$location[] = scm_acf_group_location_rule( $val, $param, $cond );
+		$location[] = scm_acf_group_location_rule( $loc, $param, $cond );
 
 	return $location;
 }
@@ -151,12 +151,12 @@ function scm_acf_group_location_rule( $value = NULL, $param = 'post_type', $cond
 	
 	$value = ( startsWith( $value, 'admin' ) ? 'administrator' : $value );
 	$cond = ( $cond ?: '==' );
-	$param = ( $param ?: ( $val == 'administrator' ? 'current_user_role' : 'post_type') );
+	$param = ( $param ?: ( $value == 'administrator' ? 'current_user_role' : 'post_type') );
 
 	$rule = array (
 		'param' => $param,
 		'operator' => $cond,
-		'value' => $val,
+		'value' => $value,
 	);
 
 	return $rule;

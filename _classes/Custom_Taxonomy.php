@@ -64,7 +64,7 @@ $tax = new Custom_Taxonomy( $args );
 
         	$this->attributes = array();
             
-            $this->theme = $attr['theme'];
+            $this->theme = $default['theme'];
             $this->plural = $default['plural'];
             $this->singular = ( $default['singular'] ?: $this->plural );
             $this->slug = ( $default['slug'] ?: sanitize_title( $this->plural ) );

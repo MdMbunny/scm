@@ -24,9 +24,10 @@ require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
 // ------------------------------------------------------
 
 /**
-* @var {object} SCM_typekit Global array to store Adobe Typekit kits
+* @global {object} SCM_typekit Global array to store Adobe Typekit kits
 */
 $SCM_typekit;
+consoleDebug( 'start installation:' );
 
 // ------------------------------------------------------
 //

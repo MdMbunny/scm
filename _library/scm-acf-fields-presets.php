@@ -167,7 +167,7 @@ function scm_acf_preset_background_style( $name = '', $width = 100, $logic = 0, 
 
 	$fields = array_merge( $fields, scm_acf_preset_rgba( $name, '', 1, $logic, $width ) );
 	$fields[] = scm_acf_field_image_url( $name . '-image', array('label'=>__( 'Immagine', SCM_THEME )), $width, $logic );
-	$fields[] = scm_acf_field_select( $name . '-repeat', 'bg_repeat', $width, $logic, $req, __( 'Ripetizione', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-repeat', 'bg_repeat', $width, $logic, $required, __( 'Ripetizione', SCM_THEME ) );
 	$fields[] = scm_acf_field_text( $name . '-position', array( 'default'=>$pl1, 'prepend'=>__( 'Posizione', SCM_THEME ) ), $width, $logic, $required );
 	$fields[] = scm_acf_field_text( $name . '-size', array( 'default'=>$pl2, 'prepend'=>__( 'Dimensione', SCM_THEME ) ), $width, $logic, $required );
 
@@ -189,9 +189,9 @@ function scm_acf_preset_text_font( $name = '', $logic = 0, $width = 100, $requir
 	$name = ( $name ? $name . '-webfonts' : 'webfonts');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Font', SCM_THEME ) );
 
-	$fields[] = scm_acf_field_select( $name . '-adobe', 'webfonts_adobe', $width*.33, $logic, $req, 'Adobe TypeKit' );
-	$fields[] = scm_acf_field_select( $name . '-google', 'webfonts_google', $width*.33, $logic, $req, 'Google Font' );
-	$fields[] = scm_acf_field_select( $name . '-fallback', 'webfonts_fallback', $width*.33, $logic, $req, __( 'Famiglia', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-adobe', 'webfonts_adobe', $width*.33, $logic, $required, 'Adobe TypeKit' );
+	$fields[] = scm_acf_field_select( $name . '-google', 'webfonts_google', $width*.33, $logic, $required, 'Google Font' );
+	$fields[] = scm_acf_field_select( $name . '-fallback', 'webfonts_fallback', $width*.33, $logic, $required, __( 'Famiglia', SCM_THEME ) );
 
 	return $fields;
 }
@@ -214,10 +214,10 @@ function scm_acf_preset_text_set( $name = '', $w1 = 100, $w2 = 100, $w3 = 100, $
 	$name = ( $name ? $name . '-set' : 'set');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Font', SCM_THEME ) );
 
-	$fields[] = scm_acf_field_select( $name . '-alignment', 'txt_alignment', $w1, $logic, $req, __( 'Allineamento', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . '-weight', 'font_weight', $w2, $logic, $req, __( 'Spessore', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . '-size', 'txt_size', $w3, $logic, $req, __( 'Dimensione', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . '-line-height', 'line_height', $w4, $logic, $req, __( 'Interlinea', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-alignment', 'txt_alignment', $w1, $logic, $required, __( 'Allineamento', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-weight', 'font_weight', $w2, $logic, $required, __( 'Spessore', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-size', 'txt_size', $w3, $logic, $required, __( 'Dimensione', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-line-height', 'line_height', $w4, $logic, $required, __( 'Interlinea', SCM_THEME ) );
 
 	return $fields;
 }
@@ -290,7 +290,7 @@ function scm_acf_preset_box_shape( $name = '', $width = 100, $logic = 0, $requir
 	$name = ( $name ? $name . '-shape' : 'shape');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Box', SCM_THEME ) );
 
-	$fields[] = scm_acf_field_select( $name, 'box_shape-no', $width, $logic, $req, __( 'Forma Box', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name, 'box_shape-no', $width, $logic, $required, __( 'Forma Box', SCM_THEME ) );
 		
 		$shape = array( $logic, array( 'field' => $name, 'operator' => '!=', 'value' => 'no' ) );
 		$rounded = scm_acf_group_condition( $logic, $shape, array( 'field' => $name, 'operator' => '!=', 'value' => 'square' ) );
@@ -877,13 +877,13 @@ function scm_acf_preset_button_shape( $name = 'but-style', $width = 100, $logic 
 
 	$fields = array();
 
-	$fields[] = scm_acf_field_select( $name . 'shape', 'box_shape-no', $width, $logic, $req, __( 'Forma Box', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . 'shape', 'box_shape-no', $width, $logic, $required, __( 'Forma Box', SCM_THEME ) );
 		
 		$shape = array( $logic, array( 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'no' ) );
 		$rounded = scm_acf_group_condition( $logic, $shape, array( 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ) );
 
-			$fields[] = scm_acf_field_select( $name . 'shape-angle', 'box_angle_type', $width*.5, $rounded, $req, __( 'Angoli Box', SCM_THEME ) );
-			$fields[] = scm_acf_field_select( $name . 'shape-size', 'simple_size', $width*.5, $rounded, $req, __( 'Dimensione angoli Box', SCM_THEME ) );
+			$fields[] = scm_acf_field_select( $name . 'shape-angle', 'box_angle_type', $width*.5, $rounded, $required, __( 'Angoli Box', SCM_THEME ) );
+			$fields[] = scm_acf_field_select( $name . 'shape-size', 'simple_size', $width*.5, $rounded, $required, __( 'Dimensione angoli Box', SCM_THEME ) );
 
 	return $fields;
 	
