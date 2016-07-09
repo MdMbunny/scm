@@ -118,12 +118,6 @@ define( 'SCM_DIR',			      		get_template_directory() . '/' );
 /** SCM uri. */
 define( 'SCM_URI',			      		get_template_directory_uri() . '/' );
 
-/** SCM API dir. */
-define( 'SCM_DIR_API',      			SCM_DIR . 'API/' );
-
-/** SCM classes uri. */
-define( 'SCM_URI_API',      			SCM_URI . 'API/' );
-
 /** SCM classes dir. */
 define( 'SCM_DIR_CLASSES',      		SCM_DIR . '_classes/' );
 

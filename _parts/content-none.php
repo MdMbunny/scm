@@ -12,11 +12,9 @@
  * @since 1.0.0
  */
 
-if( strpos( SCM_SCREEN, '/API' ) )
-	wp_redirect( SCM_URI_API );
-else
-	wp_redirect( home_url() );
+do_action( 'scm_action_content_none', SCM_SCREEN );
 
+wp_redirect( home_url() );
 exit();
 
 ?>
