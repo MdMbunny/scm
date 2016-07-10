@@ -65,7 +65,7 @@ if( is( $element ) ){
 	foreach( $element as $luogo ){
 
 		$fields = get_fields( $luogo );
-		$marker = scm_preset_marker( $luogo, $fields );
+		$marker = scm_utils_preset_map_marker( $luogo, $fields );
 
 		$name = $fields['luogo-nome'];
 		$country = $fields['luogo-paese'];

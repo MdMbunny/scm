@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-acf-preset-choices.php.
-*
-* Select choiches subsets.
+* ACF select choiches utilities.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF/Preset
+* @subpackage 2-ACF/UTILS
 * @since 1.0.0
 */
 

@@ -105,19 +105,19 @@ $id = $args['id'];
 
 switch ( $args[ 'format' ] ) {
     case 'full':
-        $image_height = scm_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
+        $image_height = scm_utils_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
         $style .= ' max-height:' . $image_height . ';';
         $class .= ' mask full';
     break;
 
     case 'quad':
-        $image_size = scm_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
+        $image_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
         $style .= ' width:' . $image_size . '; height:' . $image_size . ';';
     break;
     
     default:
-        $image_width = scm_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
-        $image_height = scm_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
+        $image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
+        $image_height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
 
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
     break;
@@ -138,7 +138,7 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
             $args['thumb'] = $i;
 
         if( $args['link'] == 'self' )
-            $att .= scm_post_link( $args );
+            $att .= scm_utils_link_post( $args );
         
         $class .= ' thumb';
     }

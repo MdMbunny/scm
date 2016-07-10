@@ -1,5 +1,15 @@
 <?php
 
+/**
+* SCM feed core hooks (disabled)
+*
+* @link http://www.studiocreativo-m.it
+*
+* @package SCM
+* @subpackage 4-Init/Feed
+* @since 1.0.0
+*/
+
 // ------------------------------------------------------
 //
 // 0.0 Actions and Filters

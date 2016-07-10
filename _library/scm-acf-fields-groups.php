@@ -1,21 +1,21 @@
 <?php
 
 /**
- * scm-acf-fields-groups.php.
- *
- * All available Custom Fields Groups.
+ * ACF all available Custom Fields Groups.
  *
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage ACF/Fields/Groups
+ * @subpackage 2-ACF/Fields/GROUP
  * @since 1.0.0
  */
 
 // ------------------------------------------------------
 //
 // 1.0 Groups
-//		TEMPLATES
+//		+ ADVANCED OPTIONS
+//		TEMPLATES (list)
+//		TEMPLATE (single)
 //		PAGES
 //		BANNERS
 //		MODULES
@@ -38,7 +38,39 @@
 // ------------------------------------------------------
 
 /**
-* [GET] Fields TEMPLATES
+* [GET] Preset advanced options
+*
+* @param {string} name
+* @param {int} opt [0|1|2]
+* @return {array} Fields.
+*/
+function scm_acf_fields_advanced_options( $name = '', $opt = 0 ) {
+
+	$fields = array();
+
+	switch ( $opt ) {
+		case 2:
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 25 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 10, 15, 45 ) );
+			break;
+		case 1:
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 25 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 25 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 40 ) );
+			break;
+		
+		default:
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 20 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 20, 20, 20, 20 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 40 ) );
+			break;
+	}
+	
+	return $fields;
+}
+
+/**
+* [GET] Fields TEMPLATES (list)
 *
 * @param {string} name
 * @param {array} logic
@@ -47,7 +79,7 @@
 * @param {string} class
 * @return {array} Fields.
 */
-function scm_acf_fields_template( $name = '', $logic = 0, $instructions = '', $required = 0, $class = 'posts-repeater' ) {
+function scm_acf_fields_templates( $name = '', $logic = 0, $instructions = '', $required = 0, $class = 'posts-repeater' ) {
 
 	$instructions = ( $instructions ?: __( 'Costruisci dei modelli da poter poi scegliere durante la creazione di nuovi contenuti. Per ogni modello è obbligatorio inserire almeno il Nome.', SCM_THEME ) );
 
@@ -67,6 +99,131 @@ function scm_acf_fields_template( $name = '', $logic = 0, $instructions = '', $r
 		$template['sub_fields'][] = scm_acf_field( 'id', array( 'text-read', '', '0', __( 'ID', SCM_THEME ) ), '', 40 );
 	
 	$fields[] = $template;
+
+	return $fields;
+}
+
+/**
+* [GET] Fields TEMPLATE (single)
+*
+* @param {string} type
+* @param {misc} default
+* @return {array} Fields.
+*/
+function scm_acf_fields_template( $type = '', $default = 0 ) {
+
+	$fields = array();
+
+	$slug = str_replace( '_', '-', $type);
+
+	$fields[] = scm_acf_field_select( 'link', 'template_link-no', 34, 0, 0, multiText( array( 'Seleziona', 'Link' ) ) );
+
+	$fields[] = scm_acf_field_object( 'template', array( 
+        'type'=>'id-null', 
+        'types'=>$slug . SCM_TEMPLATE_APP,
+        'label'=>multiText( array( 'Seleziona', 'Modello' ) ),
+    ), 33 );
+
+	$fields[] = scm_acf_field_link( 'url', 0, 33, 0, 0, multiText( array( 'Inserisci', 'Link' ) ) );
+
+// SCM Filter: Passing Fields - Receiving Fields
+	$fields = apply_filters( 'scm_filter_element_before_' . $type, $fields );
+	$fields = apply_filters( 'scm_filter_element_before', $fields, $slug );
+
+// SCM Filter: Passing Fields - Receiving Fields
+	$fields = apply_filters( 'scm_filter_element_' . $type, $fields );
+	$fields = apply_filters( 'scm_filter_element', $fields, $slug );
+
+	$flexible = scm_acf_field_flexible( 'modules', array( 
+		'label'=>multiText( 'Componi' ),
+		'button'=>'+',
+	) );
+
+		// TITLE
+		$layout_name = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ), '', 1 );
+
+			$layout_name['sub_fields'] = scm_acf_object_titolo( $default, 1 );
+
+// SCM Filter: Passing Title Fields and Type - Receiving Title Fields
+		$layout_name = apply_filters( 'scm_filter_layout_title_' . $type, $layout_name );
+		$layout_name = apply_filters( 'scm_filter_layout_title_', $layout_name, $slug );
+
+		// DATE
+		$layout_date = scm_acf_layout( 'data', 'block', __( 'Data', SCM_THEME ), '', 1 );
+
+// SCM Filter: Passing Date Fields and Type - Receiving Date Fields
+			$layout_date = apply_filters( 'scm_filter_layout_date_' . $type, $layout_date );
+			$layout_date = apply_filters( 'scm_filter_layout_date', $layout_date, $slug );
+
+			// +++ todo: va bene tag, ma devi almeno aggiungere le fields: flexible date ( day/month/year/week/hour => format )
+			$layout_date['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 50 );
+            $layout_date['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 50 );
+            $layout_date['sub_fields'] = array_merge( $layout_date['sub_fields'], scm_acf_object_data( '', 1 ) );			
+
+		$layout_taxes = array();
+		$taxes = get_object_taxonomies( $slug, 'objects' );
+		reset( $taxes );
+		if( sizeof( $taxes ) ){
+			foreach ($taxes as $key => $value) {
+				if( $key != 'language' && $key != 'post_translations' ){
+					$layout_tax = array();
+					$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
+
+						$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
+						$layout_tax['sub_fields'][] = scm_acf_field_select( 'tag', array( 
+							'type'=>'headings_low',
+							'default'=>'span',
+						), 25 );
+						$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), __( 'Separatore', SCM_THEME ) ), __( 'Separatore', SCM_THEME ), 25 );
+						$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
+
+// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
+						$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $type, $layout_tax, $value->name );
+						$layout_taxes[] = apply_filters( 'scm_filter_layout_tax', $layout_tax, $value->name, $slug );
+				}
+			}
+		}
+
+		// Tools
+		$layout_empty = array();
+		
+		$layout_tit = scm_acf_layout( 'titolo-empty', 'block', __( 'Titolo Vuoto', SCM_THEME ) );
+            $layout_tit['sub_fields'] = array_merge( $layout_tit['sub_fields'], scm_acf_object_titolo( $default ) );
+
+        $layout_list = scm_acf_layout( 'pulsanti', 'block', __( 'Pulsanti', SCM_THEME ) );
+            $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti( $default ) );
+
+        $layout_icon = scm_acf_layout( 'icona', 'block', __( 'Icona', SCM_THEME ) );
+            $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona( $default ) );
+
+        $layout_divider = scm_acf_layout( 'separatore', 'block', __( 'Divider', SCM_THEME ) );
+            $layout_divider['sub_fields'] = array_merge( $layout_divider['sub_fields'], scm_acf_object_separatore( $default ) );
+
+        $layout_share = scm_acf_layout( 'share', 'block', __( 'Social share', SCM_THEME ) );
+            $layout_share['sub_fields'] = array_merge( $layout_share['sub_fields'], scm_acf_object_social_share( $default ) );
+
+        $layout_empty[] = $layout_tit;
+        $layout_empty[] = $layout_list;
+        $layout_empty[] = $layout_icon;
+        $layout_empty[] = $layout_divider;
+        $layout_empty[] = $layout_share;
+
+// SCM Filter: Passing Layouts and Type - Receiving Layouts ( Before Column Width and Column Link )
+			$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $type, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
+			$flexible['layouts'] = apply_filters( 'scm_filter_layout', $flexible['layouts'], $layout_taxes, $slug );
+
+		// layout fields
+
+		if( function_exists( 'scm_acf_layout_' . $type ) )
+			$flexible['layouts'] = call_user_func( 'scm_acf_layout_' . $type, $flexible['layouts'] );
+
+		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 0 );
+
+// SCM Filter: Passing Layouts and Type - Receiving Layouts ( After Column Width and Column Link )
+			$flexible['layouts'] = apply_filters( 'scm_filter_layout_after_' . $type, $flexible['layouts'] );
+			$flexible['layouts'] = apply_filters( 'scm_filter_layout_after', $flexible['layouts'], $slug );
+
+	$fields[] = $flexible;
 
 	return $fields;
 }
@@ -179,8 +336,7 @@ function scm_acf_fields_sections( $name = '' ) {
 	$fields = apply_filters( 'scm_filter_fields_section_before', $fields );
 
 	$fields[] = scm_acf_field_select( $name . 'layout', 'main_layout', 20 );
-	$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20 ) );
-	$fields[] = scm_acf_field( $name . 'attributes', 'attributes', '', 40 );
+	$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 40 ) );
 
 	$fields = array_merge( $fields, scm_acf_preset_repeater_columns( $name ) );
 	$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'section', 0, 'sections' ) );

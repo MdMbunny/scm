@@ -40,7 +40,7 @@ global $SCM_indent, $SCM_page_id, $post;
 $id = $SCM_page_id;
 
 $site_align = scm_field( 'layout-alignment', 'center', 'option' );
-$txt_align = scm_options_get( 'align', 'option', 0 );
+$txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
 $wrap_id = 'site-page';
 $wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );

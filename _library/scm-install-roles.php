@@ -1,26 +1,24 @@
 <?php
 
 /**
-* scm-install-roles.php.
-*
-* SCM install roles functions.
+* SCM install roles.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Install/Roles
+* @subpackage 3-Install/Roles
 * @since 1.0.0
 */
 
 // ------------------------------------------------------
 //
-// 0.0 Actions and Filters
-// 1.0 Functions
+// ACTIONS AND FILTERS
+// FUNCTIONS
 //
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 0.0 ACTIONS AND FILTERS
+// ACTIONS AND FILTERS
 // ------------------------------------------------------
 
 add_action( 'after_setup_theme', 'scm_hook_roles_install' );
@@ -36,6 +34,7 @@ add_action( 'scm_action_types_capabilities', 'scm_hook_roles_post_caps', 10, 3 )
 * [SET] Install roles
 *
 * Hooked by 'after_setup_theme'
+* @subpackage 3-Install/Roles/HOOKS
 *
 * @todo 1 - Aggiungi un'opzione per resettare i ruoli quando vuoi, eliminando il reset attuale:
 ```php
@@ -92,6 +91,7 @@ function scm_hook_roles_install() {
 * [SET] Redirect low cap Users to Home Page on log in
 *
 * Hooked by 'init'
+* @subpackage 3-Install/Roles/HOOKS
 */
 function scm_hook_roles_admin_redirect() {
     if( is_admin() && is_user_logged_in() && ( SCM_DASHBOARD || ( !current_user_can( SCM_ROLE_ENTER ) && !( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) ) ){
@@ -104,6 +104,7 @@ function scm_hook_roles_admin_redirect() {
 * [GET] Role capabilities allowed to list posts
 *
 * Hooked by 'editable_roles'
+* @subpackage 3-Install/Roles/HOOKS
 *
 * @param {array} roles List of Roles.
 * @return {array} Filtered list of allowed roles.
@@ -123,6 +124,7 @@ function scm_hook_roles_allowed_list( $roles ) {
 * [GET] Role capabilities allowed to edit users
 *
 * Hooked by 'map_meta_cap'
+* @subpackage 3-Install/Roles/HOOKS
 *
 * @param {array} caps List of capabilities.
 * @param {string=} cap Capability [edit_user|delete_user] (default is '').
@@ -151,6 +153,7 @@ function scm_hook_roles_allowed_edit( $caps, $cap = '', $user_ID = 0, $args = ar
 * [SET] Filter users list
 *
 * Hooked by 'pre_user_query'
+* @subpackage 3-Install/Roles/HOOKS
 *
 * @param {Object} user_search Users query.
 */
@@ -192,6 +195,7 @@ function scm_hook_roles_allowed_show( $user_search ) {
 * [SET] Add custom type capabilities to roles
 *
 * Hooked by 'scm_action_types_capabilities'
+* @subpackage 3-Install/Roles/HOOKS
 *
 * @param {string=} type Custom type slug (default is '').
 * @param {boolean=} admin Admin caps (default is false).
@@ -210,11 +214,13 @@ function scm_hook_roles_post_caps( $type = '', $admin = false, $cap = false ){
 }
 
 // ------------------------------------------------------
-// 1.0 FUNCTIONS
+// FUNCTIONS
 // ------------------------------------------------------
 
 /**
 * [GET] SCM roles list
+*
+* @subpackage 3-Install/Roles/FUNCTIONS
 *
 * @todo Array restituito da sostituire con uno dinamico, con valori di default (prendi capabilities da costanti SCM_ROLE_)<br>
 *       Ci vuole una pagina opzioni dove creare i Ruoli (Super e Visitatore non sono ruoli, Admin esiste già)<br>
@@ -242,6 +248,8 @@ function scm_roles_list() {
 /**
 * [GET] User allowed roles
 *
+* @subpackage 3-Install/Roles/FUNCTIONS
+*
 * @param {Object=} user User object (default is current user).
 * @return {array} User allowed roles list.
 */
@@ -266,6 +274,8 @@ function scm_roles_allowed( $user ) {
 /**
 * [GET] Admin redirect by user roles
 *
+* @subpackage 3-Install/Roles/FUNCTIONS
+*
 * @param {Object=} user User object (default is current user).
 * @return {string} Redirect admin URL.
 */
@@ -286,6 +296,8 @@ function scm_role_redirect( $user ) {
 /**
 * [GET] Highest role level
 *
+* @subpackage 3-Install/Roles/FUNCTIONS
+*
 * @param {array=} roles List of roles (default is empty array).
 * @return {int} Highest role level.
 */
@@ -298,6 +310,8 @@ function scm_role_highest_level( $roles = array() ){
 
 /**
 * [GET] Highest role name
+*
+* @subpackage 3-Install/Roles/FUNCTIONS
 *
 * @param {array=} roles List of roles (default is empty array).
 * @return {string} Highest role name.
@@ -317,6 +331,8 @@ function scm_role_highest_name( $roles = array() ){
 
 /**
 * [GET] Role level
+*
+* @subpackage 3-Install/Roles/FUNCTIONS
 *
 * @todo 1 - Diventano funzioni getLast() e getFirst()
 *
@@ -376,6 +392,8 @@ function scm_role_level( $obj = NULL ){
 /**
 * [GET] Role name
 *
+* @subpackage 3-Install/Roles/FUNCTIONS
+*
 * @param {string|array|WP_User|WP_Role} obj Role name | List of roles | User object | Role object.
 * @return {string} Role name.
 */
@@ -421,6 +439,8 @@ function scm_role_name( $obj = '' ){
 /**
 * [GET] Role by level
 *
+* @subpackage 3-Install/Roles/FUNCTIONS
+*
 * @param {int=} lv Level (default is 100).
 * @return {string} Role name.
 */
@@ -438,6 +458,8 @@ function scm_role_by_level( $lv = 100 ){
 
 /**
 * [SET] Remove every role
+*
+* @subpackage 3-Install/Roles/FUNCTIONS
 */
 function scm_roles_reset() {
 
@@ -457,6 +479,8 @@ function scm_roles_reset() {
 
 /**
 * [SET] Add post type capabilities to role
+*
+* @subpackage 3-Install/Roles/FUNCTIONS
 *
 * @param {string} role Role name.
 * @param {string} type Custom type slug.

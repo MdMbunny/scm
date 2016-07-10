@@ -1,23 +1,22 @@
 <?php
 
 /**
-* scm-install-acf.php.
-*
-* SCM install acf functions.
+* SCM install ACF.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Install/ACF
+* @subpackage 3-Install/ACF
 * @since 1.0.0
 */
 
 // ------------------------------------------------------
 //
-// 0.0 Actions and Filters
+// ACTIONS AND FILTERS
 //      0.1 ACF Option Pages
 //      0.2 ACF Fields
 //      0.3 ACF Admin Menu
+// FILTERS
 //      0.4 ACF / Load Field
 //      0.5 ACF / Save Post
 //      0.6 ACF / Query Field
@@ -26,7 +25,7 @@
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 0.0 ACTIONS AND FILTERS
+// ACTIONS AND FILTERS
 // ------------------------------------------------------
 
 add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install' );
@@ -63,6 +62,7 @@ add_filter( 'acf/format_value/type=wysiwyg', 'scm_hook_acf_formatvalue_hook_edit
 // Before option pages are created
 do_action( 'scm_action_option_pages_before' );
 ```
+* @subpackage 3-Install/ACF/HOOKS
 */
 function scm_hook_acf_option_pages_install(){
 
@@ -111,6 +111,7 @@ function scm_hook_acf_option_pages_install(){
 // After option pages are created
 do_action( 'scm_action_option_pages' );
 ```
+* @subpackage 3-Install/ACF/HOOKS
 */
 function scm_hook_acf_option_subpages_install(){
 
@@ -235,6 +236,7 @@ $group = apply_filters( 'scm_filter_register_{post_type}, $group );
 // Filters fields list after initialized
 $groups = apply_filters( 'scm_filter_register', $groups );
 ```
+* @subpackage 3-Install/ACF/HOOKS
 */
 function scm_hook_acf_install() {
     if( function_exists('register_field_group') ) {
@@ -339,7 +341,7 @@ function scm_hook_acf_install() {
 
             $template = scm_acf_group( __( 'Elenco Modelli', SCM_THEME ), 'template-' . $slug );
             $template['location'][] = scm_acf_group_location( 'scm-templates-' . $slug, 'options_page' );
-            $template['fields'] = scm_acf_fields_template( $slug );
+            $template['fields'] = scm_acf_fields_templates( $slug );
             $groups[] = $template;
 
             $template = scm_acf_group( $title, $slug . '_temp-single' );
@@ -347,7 +349,7 @@ function scm_hook_acf_install() {
 
             $slug = str_replace( '-', '_', $slug );
 
-            $template['fields'] = array_merge( $template['fields'], scm_acf_build_element( $slug ) );
+            $template['fields'] = array_merge( $template['fields'], scm_acf_fields_template( $slug ) );
             $groups[] = $template;
         }
 
@@ -372,6 +374,7 @@ function scm_hook_acf_install() {
 * [GET] SCM admin menu order
 *
 * Hooked by 'scm_filter_admin_ui_menu_order'
+* @subpackage 3-Install/ACF/HOOKS
 *
 * @param {array} menu_order Menu list
 * @return {array} Modified menu list
@@ -390,6 +393,7 @@ function scm_hook_acf_option_menu_order( $menu_order ) {
 * [GET] Current user ACF capability
 *
 * Hooked by 'acf/settings/show_admin'
+* @subpackage 3-Install/ACF/HOOKS
 *
 * @return {bool} Current user has ACF capability.
 */
@@ -401,6 +405,10 @@ function scm_hook_acf_admin_hide() {
 }
 
 // ------------------------------------------------------
+// FILTERS
+// ------------------------------------------------------
+
+// ------------------------------------------------------
 // 0.4 ACF / LOAD FIELD
 // ------------------------------------------------------
 
@@ -408,6 +416,7 @@ function scm_hook_acf_admin_hide() {
 * [GET] Filter each load field
 *
 * Hooked by 'acf/load_field'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Merge default choices with preset choices
 *
@@ -444,6 +453,7 @@ function scm_hook_acf_loadfield_hook_choices_get( $field ){
 * [GET] Filter each repeater load field
 *
 * Hooked by 'acf/load_field/type=repeater'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Filter template repeater field
 *
@@ -481,6 +491,7 @@ function scm_hook_acf_loadfield_hook_repeater_list( $field ){
 * [GET] Filter each FA load field
 *
 * Hooked by 'acf/load_field/type=font-awesome'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Filter FA icons using groups/presets
 *
@@ -531,6 +542,7 @@ function scm_hook_acf_loadfield_hook_fontawesome_list( $field ){
 * [SET] Filter each save post
 *
 * Hooked by 'acf/save_post'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Filter template save post
 *
@@ -611,6 +623,7 @@ function scm_hook_acf_savepost_hook_templates( $post_id ) {
 * [GET] Filter each field query
 *
 * Hooked by 'acf/fields/post_object/query'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Hide drafts from query
 *
@@ -634,9 +647,10 @@ function scm_hook_acf_queryfield_hook_objects( $options, $field, $the_post ) {
 /**
 * [GET] Filter each format value
 *
-* Hooked by 'acf/format_value/type=textarea'
-* Hooked by 'acf/format_value/type=limiter'
+* Hooked by 'acf/format_value/type=textarea'<br>
+* Hooked by 'acf/format_value/type=limiter'<br>
 * Hooked by 'acf/format_value/type=wysiwyg'
+* @subpackage 3-Install/ACF/FILTERS
 *
 * 1 - Format textarea, limiter and editor content
 *

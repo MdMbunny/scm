@@ -98,11 +98,11 @@ $display = $args['display'];
 $direction = ( $args['display'] === 'block' ? 'vertical' : 'horizontal' );
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 $size = ifnotequal( $args['size'], 'default', 'normal' );
-$color = scm_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
+$color = scm_utils_preset_rgba( $args['rgba-color'], $args['rgba-alpha'] );
 $shape = ( $args['shape'] ? ifnotequal( $args['shape'], 'no', 'no-shape' ) : 'no-shape' );
 $shape_size = ( $shape ? ifnotequal( $shape, 'square', '', '', '-' . $args['shape-size'] ) : '' );
 $shape_angle = ifnotequal( $args['shape-angle'], array( 'all', 'square' ) );
-$bg = scm_preset_rgba( $args['box-color'], $args['box-alpha'] );
+$bg = scm_utils_preset_rgba( $args['box-color'], $args['box-alpha'] );
 
 $icon_even = $args['icon-even'];
 $icon_odd = ifnotequal( $args['icon-odd'], 'no', $icon_even );

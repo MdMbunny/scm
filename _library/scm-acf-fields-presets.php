@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-acf-fields-presets.php.
-*
-* All available Custom Fields Presets.
+* ACF all available Custom Fields Presets.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF/Fields/Presets
+* @subpackage 2-ACF/Fields/PRESET
 * @since 1.0.0
 */
 
@@ -17,6 +15,8 @@
 // 1.0 Presets
 //		INSTRUCTIONS
 //		SELECTORS
+//		COLUMN WIDTH
+//		BEHAVIOUR
 //		SIZE
 //		COLOR
 //		BACKGROUND STYLE
@@ -77,21 +77,73 @@ function scm_acf_preset_instructions( $instructions = '', $name = 'instructions'
 * @param {string} name
 * @param {int} w1
 * @param {int} w2
+* @param {int} w3
 * @param {array} logic
 * @param {bool} required
 * @param {string} instructions
 * @return {array} Fields.
 */
-function scm_acf_preset_selectors( $name = '', $w1 = 100, $w2 = 100, $logic = 0, $required = 0, $instructions = '' ) {
+function scm_acf_preset_selectors( $name = '', $w1 = 100, $w2 = 100, $w3 = 0, $logic = 0, $required = 0, $instructions = '' ) {
 
 	$name = ( $name ? $name . '-' : '');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Selettori', SCM_THEME ) );
 	
 	$fields[] = scm_acf_field_id( $name . 'id', 0, $w1, $logic, $required );
 	$fields[] = scm_acf_field_class( $name . 'class', 0, $w2, $logic, $required );
+	if( $w3 ) $fields[] = scm_acf_field_attributes( $name . 'attributes', 0, $w3, $logic, $required );
 
 	return $fields;
 }
+
+/**
+* [GET] Preset column width
+*
+* @param {string} name
+* @param {int} width
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @return {array} Fields.
+*/
+function scm_acf_preset_column_width( $name = '', $width = 100, $logic = 0, $required = 0, $instructions = '' ) {
+
+	$name = ( $name ? $name . '-' : '');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Larghezza colonna', SCM_THEME ) );
+	
+	$fields[] = scm_acf_field_select( $name . 'column-width', array( 
+		'type'=>'2-columns_width',
+		'choices'=>array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ),
+	), $width, $logic, $required )
+
+	return $fields;
+}
+
+/**
+* [GET] Preset behaviour
+*
+* @param {string} name
+* @param {int} w1
+* @param {int} w2
+* @param {int} w3
+* @param {int} w4
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @return {array} Fields.
+*/
+function scm_acf_preset_behaviour( $name = '', $w1 = 33, $w2 = 33, $w3 = 34, $w4 = 0 $logic = 0, $required = 0, $instructions = '' ) {
+
+	$name = ( $name ? $name . '-' : '');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Comportamenti', SCM_THEME ) );
+	
+	$fields[] = scm_acf_field( $name . 'alignment', array( 'select-alignment', array( 'default' => __( 'Allineamento generale', SCM_THEME ) ) ), '', $w3, $logic, $required );
+	$fields[] = scm_acf_field_select( $name . 'float', 'float', $w2, $logic, $required );
+	$fields[] = scm_acf_field_select( $name . 'overlay', 'overlay', $w3, $logic, $required );
+	if( $w4 ) $fields[] = scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', $width );
+
+	return $fields;
+}
+
 
 /**
 * [GET] Preset size
@@ -293,7 +345,7 @@ function scm_acf_preset_box_shape( $name = '', $width = 100, $logic = 0, $requir
 	$fields[] = scm_acf_field_select( $name, 'box_shape-no', $width, $logic, $required, __( 'Forma Box', SCM_THEME ) );
 		
 		$shape = array( $logic, array( 'field' => $name, 'operator' => '!=', 'value' => 'no' ) );
-		$rounded = scm_acf_group_condition( $logic, $shape, array( 'field' => $name, 'operator' => '!=', 'value' => 'square' ) );
+		$rounded = scm_acf_merge_conditions( $logic, $shape, array( 'field' => $name, 'operator' => '!=', 'value' => 'square' ) );
 
 			$fields[] = scm_acf_field_select( $name . '-angle', 'box_angle_type', $width * .5, $rounded, 0, __( 'Angoli Box', SCM_THEME ) );
 			$fields[] = scm_acf_field_select( $name . '-size', 'simple_size', $width * .5, $rounded, 0, __( 'Dimensione angoli Box', SCM_THEME ) );
@@ -347,9 +399,9 @@ function scm_acf_preset_map_icon( $name = '', $width = 100, $logic = 0, $require
 	), $width, $logic );
 
 	$icon = array( 'field' => $name . '-icon', 'operator' => '==', 'value' => 'icon' );
-	$icon = ( $logic ? scm_acf_group_condition( $icon, $logic ) : $icon );
+	$icon = ( $logic ? scm_acf_merge_conditions( $icon, $logic ) : $icon );
 	$img = array( 'field' => $name . '-icon', 'operator' => '==', 'value' => 'img' );
-	$img = ( $logic ? scm_acf_group_condition( $img, $logic ) : $img );
+	$img = ( $logic ? scm_acf_merge_conditions( $img, $logic ) : $img );
 		
 		$fields[] = scm_acf_field_icon( $name . '-icon-fa', array('default'=>'map-marker'), 100, $icon );
 		$fields = array_merge( $fields, scm_acf_preset_rgba( $name, '#e3695f', 1, 100, $icon ) );
@@ -715,9 +767,10 @@ function scm_acf_preset_repeater_columns( $name = '', $elements = '', $logic = 0
 		'class'=>$class,
 	), 100, $logic, $required );
 
-		$columns['sub_fields'][] = scm_acf_field_select( 'column-width', '2-columns_width', 20 );
-		$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_selectors( '', 10, 15 ) );
-		$columns['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 45 );
+		$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_fields_advanced_options( '', 2 ) );
+
+		//$columns['sub_fields'][] = scm_acf_preset_column_width( '', 20 );
+		//$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_selectors( '', 10, 15, 45 ) );
 		$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_flexible_elements( '', $elements ) );
 		
 	$fields[] = $columns;
@@ -880,7 +933,7 @@ function scm_acf_preset_button_shape( $name = 'but-style', $width = 100, $logic 
 	$fields[] = scm_acf_field_select( $name . 'shape', 'box_shape-no', $width, $logic, $required, __( 'Forma Box', SCM_THEME ) );
 		
 		$shape = array( $logic, array( 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'no' ) );
-		$rounded = scm_acf_group_condition( $logic, $shape, array( 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ) );
+		$rounded = scm_acf_merge_conditions( $logic, $shape, array( 'field' => $name . 'shape', 'operator' => '!=', 'value' => 'square' ) );
 
 			$fields[] = scm_acf_field_select( $name . 'shape-angle', 'box_angle_type', $width*.5, $rounded, $required, __( 'Angoli Box', SCM_THEME ) );
 			$fields[] = scm_acf_field_select( $name . 'shape-size', 'simple_size', $width*.5, $rounded, $required, __( 'Dimensione angoli Box', SCM_THEME ) );
@@ -914,8 +967,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		'class'=>$class,
 	), 100, $logic, $required );
 
-		$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', 25, 25 ) );
-		$sections['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 50 );
+		$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', 25, 25, 50 ) );
 
 		$flexible = scm_acf_field_flexible( 'rows', array( 
 			'label'=>__( 'Moduli', SCM_THEME ),
@@ -925,8 +977,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 			$template = scm_acf_layout( 'template', 'block', __( 'Template', SCM_THEME ) );
 				
 				$template['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
-				$template['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
+				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'archive', array( 'placeholder'=>'type[:field[=value]', 'prepend'=>__( 'Archivio', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'post', array( 'placeholder'=>__( 'ID or Option Name', SCM_THEME ), 'prepend'=>__( 'Post', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_positive( 'template', array( 'prepend'=>__( 'Template', SCM_THEME ) ) );
@@ -934,8 +985,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 			$row = scm_acf_layout( 'row', 'block', 'Section' );
 				
 				$row['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
-				$row['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
+				$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
 				$row['sub_fields'][] = scm_acf_field_object( 'row', array( 
 	                'type'=>'id', 
 	                'types'=>'sections',
@@ -944,8 +994,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 			$module = scm_acf_layout( 'module', 'block', 'Module' );
 
 				$module['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
-				$module['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
+				$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
 				$module['sub_fields'][] = scm_acf_field_object( 'row', array( 
 	                'type'=>'id', 
 	                'types'=>'modules',
@@ -954,8 +1003,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 			$banner = scm_acf_layout( 'banner', 'block', 'Banner' );
 
 				$banner['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', 20, 20 ) );
-				$banner['sub_fields'][] = scm_acf_field( 'attributes', 'attributes', '', 40 );
+				$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
 				$banner['sub_fields'][] = scm_acf_field_object( 'row', array( 
 	                'type'=>'id', 
 	                'types'=>'banners',
@@ -973,7 +1021,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 /**
 * [GET] Preset flexible elements
 *
-* @see ACF/Fields/Layouts
+* @see ACF/Fields/OBJECTS
 *
 * @param {string} name
 * @param {array} elements
@@ -1044,15 +1092,15 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 			$layout = scm_acf_layout( $key, 'block', $element );
 
 			if( $fun != 'scm_acf_object' && function_exists( $fun ) )
-				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun ) ); // Call Elements function in scm-acf-layouts.php
+				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun ) ); // Call objects function in scm-acf-objects.php
 			else
-				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun, $key ) ); // Call Elements function in scm-acf-layouts.php
+				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun, $key ) ); // Call objects function in scm-acf-objects.php
 			
 			$flexible['layouts'][] = $layout;
 			
 		}
 
-		$flexible['layouts'] = scm_acf_layouts_preset( $flexible['layouts'] );
+		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 1 );
 
 	$fields[] = $flexible;
 	

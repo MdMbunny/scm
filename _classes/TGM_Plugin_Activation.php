@@ -8,6 +8,7 @@
  * or theme author for support.
  *
  * @package SCM
+ * @subpackage 4-Init/Admin/7-PLUGINS
  * @version   2.6.1
  * @link      http://tgmpluginactivation.com/
  * @author    Thomas Griffin, Gary Jones, Juliette Reinders Folmer
@@ -43,8 +44,6 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @package SCM
-	 * @subpackage Classes/TGM
 	 * @author  Thomas Griffin
 	 * @author  Gary Jones
 	 */
@@ -2121,6 +2120,7 @@ if ( ! function_exists( 'tgmpa' ) ) {
 	 * @since 2.0.0
 	 * @api
 	 *
+	 *
 	 * @param array $plugins An array of plugin arrays.
 	 * @param array $config  Optional. An array of configuration values.
 	 */
@@ -2177,8 +2177,6 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 	 *
 	 * @since 2.2.0
 	 *
-	 * @package SCM
-	 * @subpackage Classes/TGM
 	 * @author  Thomas Griffin
 	 * @author  Gary Jones
 	 */
@@ -3116,6 +3114,7 @@ if ( ! class_exists( 'TGM_Bulk_Installer' ) ) {
 	 *
 	 * @since 2.5.2
 	 *
+	 *
 	 * {@internal The TGMPA_Bulk_Installer class was originally called TGM_Bulk_Installer.
 	 *            For more information, see that class.}}
 	 */
@@ -3128,6 +3127,7 @@ if ( ! class_exists( 'TGM_Bulk_Installer_Skin' ) ) {
 	 * Hack: Prevent TGMPA v2.4.1- bulk installer skin class from being loaded if 2.4.1- is loaded after 2.5+.
 	 *
 	 * @since 2.5.2
+	 *
 	 *
 	 * {@internal The TGMPA_Bulk_Installer_Skin class was originally called TGM_Bulk_Installer_Skin.
 	 *            For more information, see that class.}}
@@ -3179,8 +3179,6 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 * {@internal Since 2.5.2 the class has been renamed from TGM_Bulk_Installer to TGMPA_Bulk_Installer.
 				 *            This was done to prevent backward compatibility issues with v2.3.6.}}
 				 *
-				 * @package SCM
-				 * @subpackage Classes/TGM
 				 * @author  Thomas Griffin
 				 * @author  Gary Jones
 				 */
@@ -3511,8 +3509,6 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 *
 				 * @see https://core.trac.wordpress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
 				 *
-				 * @package SCM
-				 * @subpackage Classes/TGM
 				 * @author  Thomas Griffin
 				 * @author  Gary Jones
 				 */
@@ -3739,8 +3735,6 @@ if ( ! class_exists( 'TGMPA_Utils' ) ) {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @package SCM
-	 * @subpackage Classes/TGM
 	 * @author  Juliette Reinders Folmer
 	 */
 	class TGMPA_Utils {

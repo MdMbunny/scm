@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-acf-fields.php.
-*
-* All available Custom Fields.
+* ACF all available Custom Fields.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF/Fields
+* @subpackage 2-ACF/Fields/FIELD
 * @since 1.0.0
 */
 
@@ -44,7 +42,7 @@
 /**
 * [GET] Main helper for building fields
 *
-* Use {@see scm_acf_preset_default()} and {@see scm_acf_preset_specific()} to filter arguments
+* Use {@see scm_acf_helper_default()} and {@see scm_acf_helper_specific()} to filter arguments
 *
 * @param {misc} name
 * @param {misc} field
@@ -54,14 +52,14 @@
 * @param {misc} required
 * @return {array} Field.
 */
-function scm_acf_preset( $name = '', $field = 0, $default = 0, $width = 100, $logic = 0, $required = 0  ) {
-	return scm_acf_field( scm_acf_preset_default( $name, $width, $logic, $required ), scm_acf_preset_specific( $field, $default ) );
+function scm_acf_helper( $name = '', $field = 0, $default = 0, $width = 100, $logic = 0, $required = 0  ) {
+	return scm_acf_field( scm_acf_helper_default( $name, $width, $logic, $required ), scm_acf_helper_specific( $field, $default ) );
 }
 
 /**
 * [GET] General helper for building fields
 *
-* Used by {@see scm_acf_preset()}
+* Used by {@see scm_acf_helper()}
 *
 * @param {misc} arg
 * @param {misc} width
@@ -69,7 +67,7 @@ function scm_acf_preset( $name = '', $field = 0, $default = 0, $width = 100, $lo
 * @param {misc} required
 * @return {array} General field attributes.
 */
-function scm_acf_preset_default( $arg = '', $width = 100, $logic = 0, $required = 0  ) {
+function scm_acf_helper_default( $arg = '', $width = 100, $logic = 0, $required = 0  ) {
 
 	$default = array(
 		'name' 					=> '',
@@ -97,12 +95,12 @@ function scm_acf_preset_default( $arg = '', $width = 100, $logic = 0, $required 
 /**
 * [GET] Specific helper for building fields
 *
-* Used by {@see scm_acf_preset()}
+* Used by {@see scm_acf_helper()}
 *
 * @param {misc} field
 * @return {array} Specific field attributes.
 */
-function scm_acf_preset_specific( $field = 0, $arg = 0 ) {
+function scm_acf_helper_specific( $field = 0, $arg = 0 ) {
 	$default = '';
 	if( $field && is_string( $field ) ){
 		$default = $field;
@@ -139,7 +137,7 @@ function scm_acf_preset_specific( $field = 0, $arg = 0 ) {
 * @return {array} Field.
 */
 function scm_acf_field_tab( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'tab','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'tab','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -162,7 +160,7 @@ function scm_acf_field_tab( $name = '', $field = 0, $width = 100, $logic = 0, $r
 * @return {array} Field.
 */
 function scm_acf_field_tab_left( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'tab-left','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'tab-left','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -185,7 +183,7 @@ function scm_acf_field_tab_left( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_message( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'message','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'message','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -218,7 +216,7 @@ function scm_acf_field_message( $name = '', $field = 0, $width = 100, $logic = 0
 * @return {array} Field.
 */
 function scm_acf_field_number( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'number','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'number','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -241,7 +239,7 @@ function scm_acf_field_number( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_option( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'option','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'option','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -264,7 +262,7 @@ function scm_acf_field_option( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_positive( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'positive','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'positive','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -287,7 +285,7 @@ function scm_acf_field_positive( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'negative','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'negative','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -313,7 +311,7 @@ function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_alpha( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'alpha','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'alpha','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -344,7 +342,7 @@ function scm_acf_field_alpha( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_text( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'text','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'text','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -368,7 +366,7 @@ function scm_acf_field_text( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_id( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'id','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'id','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -392,7 +390,31 @@ function scm_acf_field_id( $name = '', $field = 0, $width = 100, $logic = 0, $re
 * @return {array} Field.
 */
 function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'class','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'class','label' => $label), $width, $logic, $required );
+}
+
+/**
+* [GET] ATTRIBUTES field builder
+*
+* Specific field attributes:
+```php
+'type' => 'attributes'
+'prepend' => 'Data'
+'placeholder' => 'data-href="www.website.com" data-target="_blank"'
+```
+*
+* @see scm_acf_field_text()
+*
+* @param {array|string=} name Field name or field general attributes (default is '').
+* @param {array|string|0=} field Field specific attributes or field default attribute (default is 0).
+* @param {int|0=} width Field width (default is 100).
+* @param {array|0=} logic Field conditional logics (default is 0).
+* @param {bool=} required Field conditional logics (default is false).
+* @param {string=} label Field label (default is '').
+* @return {array} Field.
+*/
+function scm_acf_field_attribites( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+	return scm_acf_helper( $name, $field, array('type' => 'attributes', 'label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -417,7 +439,7 @@ function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_name( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'name','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'name','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -441,7 +463,7 @@ function scm_acf_field_name( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_link( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'link','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'link','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -465,7 +487,7 @@ function scm_acf_field_link( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_email( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'email','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'email','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -489,7 +511,7 @@ function scm_acf_field_email( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_user( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'user','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'user','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -513,7 +535,7 @@ function scm_acf_field_user( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_phone( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'phone','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'phone','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -539,7 +561,7 @@ function scm_acf_field_phone( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_limiter( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type'=>'limiter','max'=>350,'display'=>1,'label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type'=>'limiter','max'=>350,'display'=>1,'label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -570,7 +592,7 @@ function scm_acf_field_limiter( $name = '', $field = 0, $width = 100, $logic = 0
 * @return {array} Field.
 */
 function scm_acf_field_textarea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type'=>'textarea', 'rows'=>8,'label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type'=>'textarea', 'rows'=>8,'label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -595,7 +617,7 @@ function scm_acf_field_textarea( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_codearea( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type'=>'textarea-no', 'rows'=>8, 'class'=>'widefat code','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type'=>'textarea-no', 'rows'=>8, 'class'=>'widefat code','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -623,7 +645,7 @@ function scm_acf_field_codearea( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'editor-media-basic','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'editor-media-basic','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -647,7 +669,7 @@ function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'editor-media-visual-basic','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'editor-media-visual-basic','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -673,7 +695,7 @@ function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logi
 * @return {array} Field.
 */
 function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'editor-visual-basic','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'editor-visual-basic','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -700,7 +722,7 @@ function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logi
 * @return {array} Field.
 */
 function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'date','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'date','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -722,7 +744,7 @@ function scm_acf_field_date( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_time( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'time','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'time','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -745,7 +767,7 @@ function scm_acf_field_time( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_datetime( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'datetime','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'datetime','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -770,7 +792,7 @@ function scm_acf_field_datetime( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_color( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'color','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'color','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -800,7 +822,7 @@ function scm_acf_field_color( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_icon( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'icon','default'=>'star','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'icon','default'=>'star','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -823,7 +845,7 @@ function scm_acf_field_icon( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_icon_no( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'icon-no','default'=>'no','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'icon-no','default'=>'no','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -857,7 +879,7 @@ function scm_acf_field_icon_no( $name = '', $field = 0, $width = 100, $logic = 0
 * @return {array} Field.
 */
 function scm_acf_field_image( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'image','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'image','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
 }
 
 /**
@@ -880,7 +902,7 @@ function scm_acf_field_image( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_image_url( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'image-url','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'image-url','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -909,7 +931,7 @@ function scm_acf_field_image_url( $name = '', $field = 0, $width = 100, $logic =
 * @return {array} Field.
 */
 function scm_acf_field_file( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'file','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'file','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
 }
 
 /**
@@ -932,7 +954,7 @@ function scm_acf_field_file( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_file_url( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('type' => 'file-url','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'file-url','label'=>($label ?: __( 'Seleziona un file', SCM_THEME ))), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -957,7 +979,7 @@ function scm_acf_field_file_url( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_false( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('default'=>0, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('default'=>0, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
 }
 
 /**
@@ -979,7 +1001,7 @@ function scm_acf_field_false( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @return {array} Field.
 */
 function scm_acf_field_true( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array('default'=>1, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('default'=>1, 'type' => 'true_false','label'=>( $label ?: __( 'Abilita', SCM_THEME ) ) ), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -1022,7 +1044,7 @@ function scm_acf_field_select( $name = '', $field = 0, $width = 100, $logic = 0,
 	}elseif( is_array( $field ) && isset( $field['type'] ) && $field['type'] ){
 		$field['type'] = $type . '-' . $field['type'];
 	}
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -1061,7 +1083,7 @@ function scm_acf_field_object( $name = '', $field = 0, $width = 100, $logic = 0,
 	}elseif( is_array( $field ) && $field['type'] ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 /**
@@ -1091,7 +1113,7 @@ function scm_acf_field_objects( $name = '', $field = 0, $width = 100, $logic = 0
 	}elseif( is_array( $field ) && $field['type'] ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -1128,7 +1150,7 @@ function scm_acf_field_taxonomy( $name = '', $field = 0, $width = 100, $logic = 
 	}elseif( is_array( $field ) && $field['type'] ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 /**
@@ -1158,7 +1180,7 @@ function scm_acf_field_taxonomies( $name = '', $field = 0, $width = 100, $logic 
 	}elseif( is_array( $field ) && $field['type'] ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -1197,7 +1219,7 @@ function scm_acf_field_repeater( $name = '', $field = 0, $width = 100, $logic = 
 		$type = 'repeater-block';
 	}
 
-	return scm_acf_preset( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
 // ------------------------------------------------------
@@ -1225,7 +1247,7 @@ function scm_acf_field_repeater( $name = '', $field = 0, $width = 100, $logic = 
 * @return {array} Field.
 */
 function scm_acf_field_flexible( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_preset( $name, $field, array( 'type'=>'flexible', 'label'=>$label ), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array( 'type'=>'flexible', 'label'=>$label ), $width, $logic, $required );
 }
 
 ?>

@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-acf-fields-options.php.
-*
-* All available Custom Fields Options.
+* ACF all available Custom Fields Options.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF/Fields/Options
+* @subpackage 2-ACF/Fields/OPTIONS
 * @since 1.0.0
 */
 
@@ -47,7 +45,7 @@ function scm_acf_options_default_types( $cont = array(), $default = array() ) {
 
 	$fields = array();
 
-	$fields[] = scm_acf_preset( 'default-types-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
+	$fields[] = scm_acf_helper( 'default-types-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
 
 	return $fields;
 }
@@ -63,7 +61,7 @@ function scm_acf_options_default_taxonomies( $cont = array(), $default = array()
 
 	$fields = array();
 
-	$fields[] = scm_acf_preset( 'default-taxonomies-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
+	$fields[] = scm_acf_helper( 'default-taxonomies-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
 
 	return $fields;
 }
@@ -558,8 +556,8 @@ function scm_acf_options_head_social( $name = '' ) {
 		$fields = array_merge( $fields, scm_acf_preset_rgba( $orig, '', 1, 100, $social ) );
 		
 		$fields[] = scm_acf_field_select( $name . '-shape', 'box_shape-no', 100, $social, 0, __( 'Forma Box', SCM_THEME ) );
-		$shape = scm_acf_group_condition( $social, array( 'field' => $name . '-shape', 'operator' => '!=', 'value' => 'no' ) );
-		$rounded = scm_acf_group_condition( $shape, array( 'field' => $name . '-shape', 'operator' => '!=', 'value' => 'square' ) );
+		$shape = scm_acf_merge_conditions( $social, array( 'field' => $name . '-shape', 'operator' => '!=', 'value' => 'no' ) );
+		$rounded = scm_acf_merge_conditions( $shape, array( 'field' => $name . '-shape', 'operator' => '!=', 'value' => 'square' ) );
 
 			$fields[] = scm_acf_field_select( $name . '-shape-size', 'simple_size', 50, $rounded, 0, __( 'Dimensione angoli Box', SCM_THEME ) );
 			$fields[] = scm_acf_field_select( $name . '-shape-angle', 'box_angle_type', 50, $rounded, 0, __( 'Angoli Box', SCM_THEME ) );

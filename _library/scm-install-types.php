@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-install-types.php.
-*
-* SCM install types functions.
+* SCM install types.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Install/Types
+* @subpackage 3-Install/Types
 * @since 1.0.0
 */
 
@@ -19,14 +17,16 @@ $SCM_types = array();
 
 // ------------------------------------------------------
 //
-// 0.0 Actions and Filters
-// 1.0 Functions
+// ACTIONS AND FILTERS
+// FUNCTIONS
 //
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 0.0 ACTIONS AND FILTERS
+// ACTIONS AND FILTERS
 // ------------------------------------------------------
+
+add_filter( 'query_vars', 'scm_hook_types_query_vars' );
 
 add_action( 'acf/include_fields', 'scm_hook_types_fields' );
 add_action( 'acf/include_fields', 'scm_hook_types_default' );
@@ -36,9 +36,24 @@ add_action( 'acf/include_fields', 'scm_hook_types_capabilities' );
 // ------------------------------------------------------
 
 /**
+* [GET] Add custom query vars
+*
+* Hooked by 'query_vars'
+* @subpackage 3-Install/Types/HOOKS
+*
+* @param {array=} public_query_vars List of query vars (default is empty array).
+* @return {array} Modified list of query vars.
+*/
+function scm_hook_types_query_vars( $public_query_vars = array() ) {
+    $public_query_vars[] = 'template';
+    return $public_query_vars;
+}
+
+/**
 * [SET] Custom types and taxonomies fields
 *
 * Hooked by 'acf/include_fields'
+* @subpackage 3-Install/Types/HOOKS
 *
 */
 function scm_hook_types_fields() {
@@ -67,6 +82,7 @@ function scm_hook_types_fields() {
 * [SET] Default types and taxonomies
 *
 * Hooked by 'acf/include_fields'
+* @subpackage 3-Install/Types/HOOKS
 *
 * Hooks:
 ```php
@@ -172,6 +188,7 @@ function scm_hook_types_default(){
 * [SET] Custom types and taxonomies
 *
 * Hooked by 'acf/include_fields'
+* @subpackage 3-Install/Types/HOOKS
 *
 */
 function scm_hook_types_custom(){
@@ -189,6 +206,7 @@ function scm_hook_types_custom(){
 * [SET] Roles capabilities for types and taxonomies
 *
 * Hooked by 'acf/include_fields'
+* @subpackage 3-Install/Types/HOOKS
 *
 * Hooks:
 ```php
@@ -217,6 +235,8 @@ function scm_hook_types_capabilities(){
 /**
 * [SET] Install types
 *
+* @subpackage 3-Install/Types/FUNCTIONS
+*
 * @param {array} types List of types.
 */
 function scm_types_install( $types = NULL ){
@@ -240,14 +260,13 @@ function scm_types_install( $types = NULL ){
         $type['singular'] = is_attr( $type, 'singular', $plural );
         $type['slug'] = sanitize_title( is_attr( $type, 'slug', $plural ) );
         $type['icon'] = is_attr( $type, 'icon', '', '\\' );
-        $type['theme'] = SCM_THEME;
 
         if( $type['active'] === 1 ){
 
             $SCM_types['complete'][ $type['slug'] ] = $plural;
             $SCM_types['custom'][ $type['slug'] ] = $plural;
-            $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
-            $obj->CT_register();
+            $obj = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type, SCM_THEME );
+            $obj->register();
 
             if( $type['public'] === 1 ){
 
@@ -262,10 +281,9 @@ function scm_types_install( $types = NULL ){
                 $type['menupos'] = 0;
                 $type['menu'] = 0;
                 $type['post'] = 0;
-                $type['theme'] = SCM_THEME;
 
-                $temp = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type );
-                $temp->CT_register();
+                $temp = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type, SCM_THEME );
+                $temp->register();
 
             }else{
 
@@ -278,6 +296,8 @@ function scm_types_install( $types = NULL ){
 
 /**
 * [SET] Install taxonomies
+*
+* @subpackage 3-Install/Types/FUNCTIONS
 *
 * @param {array} taxonomies List of taxonomies.
 */
@@ -299,14 +319,11 @@ function scm_taxonomies_install( $taxonomies = NULL ){
         $tax['add_cap'] = (int)is_attr( $tax, 'add_cap', 0 );
         $tax['template'] = (int)is_attr( $tax, 'template', 0 );
         $tax['active'] = (int)is_attr( $tax, 'active', 0 );
-        $tax['theme'] = SCM_THEME;
 
         if( $tax['active'] === 1 ){
 
-            if( $tax['hierarchical'] )
-                $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['categories'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
-            else
-                $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types['tags'][ $tax['slug'] ] = new Custom_Taxonomy( $tax );
+            $obj = $SCM_types['taxonomies'][ $tax['slug'] ] = $SCM_types[ ( $tax['hierarchical'] ? 'categories' : 'tags' ) ][ $tax['slug'] ] = new Custom_Taxonomy( $tax, SCM_THEME );
+            $obj->register();
 
             if( $tax['template'] === 1 ){
 
@@ -320,8 +337,8 @@ function scm_taxonomies_install( $taxonomies = NULL ){
                 $tax_type['menu'] = 0;
                 $tax_type['post'] = 0;
 
-                $tax_temp = $SCM_types['objects'][ $tax_type['slug'] ] = new Custom_Type( $tax_type );
-                $tax_temp->CT_register();
+                $tax_temp = $SCM_types['objects'][ $tax_type['slug'] ] = new Custom_Type( $tax_type, SCM_THEME );
+                $tax_temp->register();
             }
         }
     }

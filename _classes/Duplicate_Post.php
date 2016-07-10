@@ -2,23 +2,54 @@
 
 if ( ! class_exists( 'Duplicate_Post' ) ) {
 
+/**
+ * Duplicate_Post.php
+ *
+ * Duplicate Post service.
+ * Apply to posts and pages.
+ *
+ * @link http://www.studiocreativo-m.it
+ *
+ * @package SCM
+ * @subpackage 4-Init/Admin/7-PLUGINS
+ * @since 1.0.0
+ */
     class Duplicate_Post {
 
+        /**
+         * Duplicate Post init
+         *
+         * Add actions and filters:<br>
+         * @see duplicate() in 'admin_action_{duplicate}' action from query var
+         * @see add_link() in 'page_row_actions' filter
+         * @see add_link() in 'post_row_actions' filter
+         *
+         * @param {string=} lang Theme slug for translations (default is theme slug).
+         */
     	function Duplicate_Post( $lang = '' ) {
 
-    		$this->lang = $lang;
+    		$this->lang = ( $lang ?: sanitize_title( get_bloginfo() ) );
 
-    		add_action( 'admin_action_DP_duplicate', array(&$this, 'DP_duplicate' ) );
-        	add_filter( 'page_row_actions', array(&$this, 'DP_add_link' ), 10, 2 );
-        	add_filter( 'post_row_actions', array(&$this, 'DP_add_link' ), 10, 2 );
+    		add_action( 'admin_action_duplicate', array(&$this, 'duplicate' ) );
+        	add_filter( 'page_row_actions', array(&$this, 'add_link' ), 10, 2 );
+        	add_filter( 'post_row_actions', array(&$this, 'add_link' ), 10, 2 );
     	}
 
-	// Function creates post duplicate as a draft and redirects then to the edit post screen
-        function DP_duplicate(){
+// ------------------------------------------------------
+// ADMIN HOOKS
+// ------------------------------------------------------
+
+        /**
+         * Duplicate Post action
+         * Duplicates post as draft, redirects to the edit post screen.
+         *
+         * Hooked by 'admin_action_duplicate'
+         */
+        protected function duplicate(){
 
             global $wpdb;
 
-            if ( !( isset( $_GET['post']) || isset( $_POST['post']) || ( isset($_REQUEST['action']) && 'DP_duplicate' == $_REQUEST['action'] ) ) ) {
+            if ( !( isset( $_GET['post']) || isset( $_POST['post']) || ( isset($_REQUEST['action']) && 'duplicate' == $_REQUEST['action'] ) ) ) {
                 wp_die( __( 'No post to duplicate has been supplied!', $this->lang ) );
             }
 
@@ -83,11 +114,20 @@ if ( ! class_exists( 'Duplicate_Post' ) ) {
             }
         }
     
-
-	// Add the duplicate link to action list
-        function DP_add_link( $actions, $post ) {
+        /**
+         * Duplicate Post link
+         * Adds duplicate link to action list.
+         *
+         * Hooked by 'page_row_actions', 'post_row_actions'
+         *
+         * @param {array} actions List of actions (default is empty array).
+         * @param {Object} post Post object.
+         * @return {array} Modified list of actions.
+         */
+        protected function add_link( $actions = array(), $post = NULL ) {
+            if( is_null( $post ) ) return $actions;
             if( current_user_can( 'manage_options' ) || current_user_can( 'publish_' . $post->post_type ) ) {
-                $actions['duplicate'] = '<a href="admin.php?action=DP_duplicate&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', $this->lang ) . '" rel="permalink">' . __( 'Duplica', $this->lang ) . '</a>';
+                $actions['duplicate'] = '<a href="admin.php?action=duplicate&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', $this->lang ) . '" rel="permalink">' . __( 'Duplica', $this->lang ) . '</a>';
             }
             return $actions;
         }

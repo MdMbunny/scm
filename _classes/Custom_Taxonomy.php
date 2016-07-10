@@ -3,9 +3,7 @@
 if ( ! class_exists( 'Custom_Taxonomy' ) ) {
 
 /**
- * Custom_Taxonomy.php
- *
- * Custom Taxonomies Class.
+ * Create Custom Taxonomies
  *
  * Example usage:
  *
@@ -19,29 +17,31 @@ $args = array(
     'singular'              => '',           // string Taxonomies singular name
     'plural'                => '',           // string Taxonomies plural name
     'slug'                  => '',           // string Taxonomies slug
-    'theme'                 => '',           // string Theme slug for translations
 );
 
 $tax = new Custom_Taxonomy( $args );
 ```
  *
- * @param array $build The arguments to pass to this file. Optional.
- * Default empty array.
- *
- * @return object Custom Taxonomy object.
- *
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage Classes
+ * @subpackage 3-Install/Types
  * @since 1.0.0
  */
     class Custom_Taxonomy {
-     
-        function __construct( $build ) {
 
-        	if( !$build )
-                return;
+        /**
+        * [GET] Custom Taxonomy init
+        *
+        * @param {array} build Required. List of arguments.
+        * @param {string=} lang Theme slug for translations (default is theme slug).
+        * @return {Object} Custom taxonomy object.
+        */
+        function Custom_Taxonomy( $build, $lang = '' ) {
+
+        	if( !$build ) return;
+
+            $this->lang = ( $lang ?: sanitize_title( get_bloginfo() ) );
 
             $default = array(
             	'template'              => 0,
@@ -52,7 +52,6 @@ $tax = new Custom_Taxonomy( $args );
                 'slug'                  => '',
                 'types' 				=> array(),
                 'add_cap'               => 0,
-                'theme'                 => '',
             );
 
             if( is_array( $build ) )
@@ -64,7 +63,6 @@ $tax = new Custom_Taxonomy( $args );
 
         	$this->attributes = array();
             
-            $this->theme = $default['theme'];
             $this->plural = $default['plural'];
             $this->singular = ( $default['singular'] ?: $this->plural );
             $this->slug = ( $default['slug'] ?: sanitize_title( $this->plural ) );
@@ -74,56 +72,73 @@ $tax = new Custom_Taxonomy( $args );
             $this->active = $default['active'];
             $this->add_cap = ( !$default['add_cap'] ? 'manage_options' : ( $default['add_cap'] == 'member' ? 'upload_files' : 'list_users' ) );
 
-            $this->CT_taxonomy();
+            $this->attributes = array(
+                'labels' => array(
+                    'name'                       => $this->plural,
+                    'singular_name'              => $this->singular,
+                    'menu_name'                  => $this->plural,
+                    'all_items'                  => __( 'Elenco', $this->lang ),
+                    'parent_item'                => __( 'Genitore', $this->lang ),
+                    'parent_item_colon'          => __( 'Genitore:', $this->lang ),
+                    'new_item_name'              => __( 'Aggiungi', $this->lang ),
+                    'add_new_item'               => __( 'Aggiungi', $this->lang ),
+                    'edit_item'                  => __( 'Modifica', $this->lang ),
+                    'update_item'                => __( 'Aggiorna', $this->lang ),
+                    'separate_items_with_commas' => __( 'Separa gli elementi con una virgola', $this->lang ),
+                    'search_items'               => __( 'Cerca', $this->lang ),
+                    'add_or_remove_items'        => __( 'Aggiungi o Rimuovi', $this->lang ),
+                    'choose_from_most_used'      => __( 'I pi&ugrave; usati', $this->lang ),
+                    'not_found'                  => __( 'Non trovato', $this->lang )
+                ),
+                'hierarchical'               => $this->tag,
+                'public'                     => true,
+                'show_ui'                    => true,
+                'show_admin_column'          => false,
+                'show_in_nav_menus'          => true,
+                'show_tagcloud'              => false,
+                'capabilities' => array(
+                    'manage_terms' => $this->add_cap,
+                ),
+            );
+        }
+
+// ------------------------------------------------------
+// PUBLIC
+// ------------------------------------------------------
+
+        /**
+        * [SET] Registers Custom Taxonomy
+        */
+        function register(){
             if( !empty( $this->types ) ){
+                add_action( 'admin_menu', array( &$this, 'remove_metaboxes' ) );
+
                 $arr = array();
                 foreach ( $this->types as $key ) {
                     if( post_type_exists( $key . '_temp' ) )
                         $arr[] = $key . '_temp';
                 }
+
                 $this->types = array_merge( $this->types, $arr );
-    	        register_taxonomy( $this->slug, $this->types, $this->attributes);
-    	        add_action( 'admin_menu', array( &$this, 'CT_remove_metaboxes' ) );	        
-    	    }
+                register_taxonomy( $this->slug, $this->types, $this->attributes);
+            }
         }
 
-        function CT_remove_metaboxes() {
+// ------------------------------------------------------
+// ADMIN HOOKS
+// ------------------------------------------------------
+
+        /**
+        * [SET] Removes default WP taxonomy metaboxes from edit page
+        *
+        * Hooked by 'admin_menu'
+        */
+        protected function remove_metaboxes() {
             foreach ($this->types as $type) {
                 remove_meta_box( $this->slug . 'div', $type, 'side');
                 remove_meta_box( 'tagsdiv-' . $this->slug, $type, 'side');
             }
         }
-     	
-     	function CT_taxonomy() {
-     		$this->attributes = array(
-    			'labels' => array(
-    				'name'                       => $this->plural,
-    				'singular_name'              => $this->singular,
-    				'menu_name'                  => $this->plural,
-    				'all_items'                  => __( 'Elenco', $this->theme ),
-    				'parent_item'                => __( 'Genitore', $this->theme ),
-    				'parent_item_colon'          => __( 'Genitore:', $this->theme ),
-    				'new_item_name'              => __( 'Aggiungi', $this->theme ),
-    				'add_new_item'               => __( 'Aggiungi', $this->theme ),
-    				'edit_item'                  => __( 'Modifica', $this->theme ),
-    				'update_item'                => __( 'Aggiorna', $this->theme ),
-    				'separate_items_with_commas' => __( 'Separa gli elementi con una virgola', $this->theme ),
-    				'search_items'               => __( 'Cerca', $this->theme ),
-    				'add_or_remove_items'        => __( 'Aggiungi o Rimuovi', $this->theme ),
-    				'choose_from_most_used'      => __( 'I pi&ugrave; usati', $this->theme ),
-    				'not_found'                  => __( 'Non trovato', $this->theme )
-    			),
-    			'hierarchical'               => $this->tag,
-    			'public'                     => true,
-    			'show_ui'                    => true,
-    			'show_admin_column'          => false,
-    			'show_in_nav_menus'          => true,
-    			'show_tagcloud'              => false,
-                'capabilities' => array(
-                    'manage_terms' => $this->add_cap,
-                ),
-    		);
-     	}
     }
 }
 

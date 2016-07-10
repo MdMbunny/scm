@@ -1,82 +1,48 @@
 <?php
 
 /**
-* scm-acf.php.
-*
-* ACF Fields and Groups base functions.
+* ACF setup and functions.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF
+* @subpackage 2-ACF
 * @since 1.0.0
 */
 
-/** ACF Font Awesome icons subsets. */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-fa.php' );
-
-/** ACF select choices subsets. */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-preset-choices.php' );
-
-/** ACF field preset. */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-preset.php' );
-
-// ------------------------------------------------------
-
-/** ACF layouts */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
-
-/** ACF options */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
-
-/** ACF groups */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
-
-/** ACF presets */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
-
-/** ACF fields */
-require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
-
 // ------------------------------------------------------
 //
-// 1.0 ACF Groups
-// 		Set Group
-// 		Location
-// 		Keys
-// 		Conditional
-// 		Register
-// 2.0 ACF Fields
-// 		Set Field
-// 		Get Field
-// 		Get Key by Field Name
-// 3.0 ACF Flexible Layout
-// 		Set Layout
-// 		Layout Preset
-// 		Layout Column Selectors
-// 		Layout Column Width
-// 		Layout Column Link
-// 		Layout Column Align
-// 		Layout Column Float
-// 		Layout Column Overlay
+// SETUP
+// 		SET
+//		GET
+// FUNCTIONS
 //
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 1.0 ACF GROUPS
+// SETUP
 // ------------------------------------------------------
+// ------------------------------------------------------
+// SET
+// ------------------------------------------------------
+
+// GROUP
 
 /**
-* [GET] Field Group
+* [SET] Group
+*
+* @subpackage 2-ACF/Core/SET
 *
 * @param {string} name Required. Field Group name.
-* @param {string} key Required. Unique key.
+* @param {string=} key Unique key (default is '' = sanitized name).
 * @param {array=} attr Optional. List of attributes (default is empty array).
 * @return {array} Field Group settings.
 */
-function scm_acf_group( $name, $key, $attr = array() ) {
+function scm_acf_group( $name, $key = '', $attr = array() ) {
 
-	if( !$name || !$key ) return;
+	if( !$name ) return;
+
+	$key = ( $key ?: sanitize_title( $name ) );
 
 	$group = array (
 		'key' => $key,
@@ -84,8 +50,8 @@ function scm_acf_group( $name, $key, $attr = array() ) {
 		'fields' => array(),
 		'location' => array(
 			array(
-				scm_acf_group_location_rule( 'post' ),
-				scm_acf_group_location_rule_not( 'post' ),
+				scm_acf_get_location_rule( 'post' ),
+				scm_acf_get_location_rule_not( 'post' ),
 			),
 		),
 		'menu_order' => 0,
@@ -118,189 +84,28 @@ function scm_acf_group( $name, $key, $attr = array() ) {
 }
 
 /**
-* [GET] Field Group location group
+* [SET] Group registration
 *
-* @param {string|array=} value Single location or array of locations (default is empty array).
-* @param {string=} param Location parameter (default is 'post_type').
-* @param {string=} cond Location condition (default is '==').
-* @return {array} Location group.
-*/
-function scm_acf_group_location( $value = array(), $param = 'post_type', $cond = '==' ) {
-
-	$location = array();
-	$value = toArray( $value, false, true );
-	if( !$value || is_asso( $value ) ) return $location;
-
-	foreach( $value as $loc )
-		$location[] = scm_acf_group_location_rule( $loc, $param, $cond );
-
-	return $location;
-}
-
-/**
-* [GET] Field Group location rule
-*
-* @param {string} value Required. Single location.
-* @param {string=} param Location parameter (default is 'post_type').
-* @param {string=} cond Location condition (default is '==').
-* @return {array} Location rule.
-*/
-function scm_acf_group_location_rule( $value = NULL, $param = 'post_type', $cond = '==' ) {
-	$rule = array();
-	if( is_null( $value ) || !isset( $value ) || !$value || !is_string( $value ) ) return $rule;
-	
-	$value = ( startsWith( $value, 'admin' ) ? 'administrator' : $value );
-	$cond = ( $cond ?: '==' );
-	$param = ( $param ?: ( $value == 'administrator' ? 'current_user_role' : 'post_type') );
-
-	$rule = array (
-		'param' => $param,
-		'operator' => $cond,
-		'value' => $value,
-	);
-
-	return $rule;
-}
-
-/**
-* [GET] Field Group location rule 'not equal'
-*
-* @param {string} value Required. Single location.
-* @param {string=} param Location parameter (default is 'post_type').
-* @return {array} Location rule.
-*/
-function scm_acf_group_location_rule_not( $value = NULL, $param = 'post_type' ) {
-	$rule = array();
-	if( is_null( $value ) || !isset( $value ) || !$value || !is_string( $value ) ) return $rule;
-	
-	return scm_acf_group_location_rule( $value, $param, '!=' );
-}
-
-/**
-* [GET] Field Group set keys to fields and return
-*
-* @param {string} key Key base.
-* @param {array} list List of fields.
-* @return {array} Modified list of fields.
-*/
-function scm_acf_group_keys( $key, $list ) {
-
-	if( !$key || !$list )
-		return array();
-
-	for ( $i = 0; $i < sizeof( $list ); $i++ ) {
-
-		$new = $key . ( substr( $key, -1 ) != '_' ? '_' : '' ) . $list[$i]['key'];
-		$list[$i]['key'] = $new;
-
-		if( isset( $list[$i]['layouts'] ) ){
-			
-			for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
-				$lay = $list[$i]['layouts'][$j]['key'] = 'layout_' . hash('ripemd160', $new . $list[$i]['layouts'][$j]['name'] );
-				$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_group_keys( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
-			}
-
-		}else if( isset( $list[$i]['sub_fields'] ) ){
-			$list[$i]['sub_fields'] = scm_acf_group_keys( $new, $list[$i]['sub_fields'] );
-		}
-
-		$list[$i]['key'] = 'field_' . hash('ripemd160', $list[$i]['key'] . $list[$i]['type'] );
-		$list[$i] = scm_acf_group_conditional( $list[$i], $list );
-	}
-
-	return $list;
-}
-
-/**
-* [GET] Field Group conditional logics merging
-*
-* @param {array} ... One or more conditional logic array.
-* @return {array} Conditional logic array.
-*/
-function scm_acf_group_condition() {
-
-	// Get arguments
-	if( !func_num_args() ) return;
-	$logic = func_get_args();
-
-	$arr = array();
-
-	foreach ($logic as $value) {
-		if( !$value || !is_array( $value ) ) continue;
-		if( !isset( $value[0] ) ){
-			$arr[] = $value;
-		}else{
-			foreach ($value as $sub) {
-				if( !$sub || !is_array( $sub ) )
-					continue;
-				if( !isset( $sub[0] ) ){
-					$arr[] = $sub;				
-				}else{
-					foreach ($sub as $last) {
-						if( !$last || !is_array( $last ) )
-							continue;
-						if( !isset( $last[0] ) )
-							$arr[] = $last;
-					}
-				}
-			}
-		}
-	}
-
-	return $arr;
-}
-
-/**
-* [GET] Field Group conditional logic
-*
-* @param {array} group Field Group.
-* @param {array} list List of fields.
-* @return {array} Modified Field Group.
-*/
-function scm_acf_group_conditional( $group, $list ) {
-
-	if( !$group || !$list )
-		return $group;
-
-	if( !is( $group['conditional_logic'] ) )
-		return $group;
-
-	$cond = $group['conditional_logic'];
-
-	for ( $i = 0; $i < sizeof( $cond ); $i++ ) {
-		for ( $j = 0; $j < sizeof( $cond[$i] ); $j++ ) {
-			$name = $cond[$i][$j]['field'];
-			$field = getByValueKey( $list, $name );
-			if( !is_null( $field ) )
-				$cond[$i][$j]['field'] = $list[$field]['key'];
-		}
-	}
-
-	$group['conditional_logic'] = $cond;
-
-	return $group;
-}
-
-/**
-* [SET] Field Group registration
+* @subpackage 2-ACF/Core/SET
 *
 * @param {array} group Field Group.
 */
 function scm_acf_group_register( $group ) {
 
-	$group['fields'] = scm_acf_group_keys( $group['key'], $group['fields'] );
-	$group['key'] = 'group_' . hash('ripemd160', $group['key'] );
+	$group['fields'] = scm_acf_key( $group['key'], $group['fields'] );
+	$group['fields'] = scm_acf_condition( $group['fields'] );
+	$group['key'] = scm_acf_get_key( $group['key'], 'group_' );
 
 	register_field_group( $group );
 
 }
 
-// ------------------------------------------------------
-// 2.0 ACF FIELDS
-// ------------------------------------------------------
+// FIELD
 
 /**
-* [GET] Field
+* [SET] Field
+*
+* @subpackage 2-ACF/Core/SET
 *
 * General field attributes:
 ```php
@@ -347,7 +152,7 @@ $attr = [
 ]
 scm_acf_field( 'my_field', $attr, 'My Label', 100, $logic, 'My Instructions', false, 'my-classes' );
 ```
-* @see scm_acf_field_type()
+* @see scm_acf_get_field()
 *
 * @todo Trasforma tutte le chiamate a scm_acf_field( name, {indexed array}) con array associativi, per maggiore leggibilità.
 *
@@ -381,7 +186,7 @@ function scm_acf_field( $name = NULL, $default = NULL, $label = '', $width = 100
 		'prefix' => '',
 		'instructions' => ( $def['instructions'] ?: '' ),
 		'required' => ( $def['required'] ?: 0 ),
-		'conditional_logic' => ( $def['logic'] && is( $def['logic'] ) && !is_string( $def['logic'] ) ? array( scm_acf_group_condition( $def['logic'] ) ) : '' ),
+		'conditional_logic' => ( $def['logic'] && is( $def['logic'] ) && !is_string( $def['logic'] ) ? array( scm_acf_merge_conditions( $def['logic'] ) ) : '' ),
 		'wrapper' => array (
 			'width' => ( is_numeric( $def['width'] ) ? $def['width'] : '' ),
 			'class' => ( $def['class'] ? $def['class'] . ' ' : '' ) . $type,
@@ -392,44 +197,293 @@ function scm_acf_field( $name = NULL, $default = NULL, $label = '', $width = 100
     if( $def['width'] === 'required' || $def['logic'] === 'required' )
     	$field['required'] = 1;
 
-    $field = array_merge( $field, scm_acf_field_type( $default ) );
+    $field = array_merge( $field, scm_acf_get_field( $default ) );
 
 	return $field;
 }
 
+// LAYOUT
+
 /**
-* [GET] Field content or fallback from a selection of fields
+* [SET] Layout
 *
-* Example usage:
-```php
-// Look for a field named 'excerpt' or 'preview'
-scm_fields( array( 'excerpt', 'preview' ), 'My fallback', 'option', 0, 'Prepend', 'Append' );
-```
+* @subpackage 2-ACF/Core/SET
 *
-* @param {array} names List of field names.
-* @param {misc=} fallback Field fallback (default is '').
-* @param {int|string=} target Post ID or 'option' (default is '', current post ID).
-* @param {bool=} no_option Skip field option fallback (default is true).
-* @param {string=} before Prepend if string field (default is '').
-* @param {string=} after Append if string field (default is '').
-* @return {misc} Field content or fallback.
+* @param {string} name Required. Layout name.
+* @param {string=} type Layout type (default is 'block').
+* @param {string=} label Layout label (default is 'Layout').
+* @param {int=} min Layout min items (default is 0).
+* @param {int=} max Layout max items (default is 0).
+* @param {array} subfields Layout subfields (default is empty array).
+* @return {string} Layout.
 */
-function scm_fields( $names, $fallback = '', $target = '', $no_option = true, $before = '', $after = '' ) {
+function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = 0, $max = 0, $subfields = array() ) {
 
-	if( !names || !is_array( $names ) || empty( $names ) )
-		return scm_field( '', $fallback, $target, $no_option, $before, $after );
+	if( !$name )
+		return;
 
-	foreach ($names as $name) {
-		$content = scm_field( $name, '', $target, $no_option, $before, $after );
-		if( $content )
-			return $content;
-	}
+	$layout = array (
+		'key' => $name,
+		'name' => 'layout-' . $name,
+		'label' => $label,
+		'display' => $type,
+		'sub_fields' => $subfields,
+		'min' => $min,
+		'max' => $max,
+	);
 
-	return $fallback;
+	return $layout;
 }
 
 /**
+* [SET] Insert advanced options
+*
+* @subpackage 2-ACF/Core/SET
+*
+* @param {array=} list Single layout or list of layouts (default is empty array).
+* @param {int=} opt Advanced options preset [0|1|2] (default is 1).
+* @return {array} Modified list of layouts.
+*/
+function scm_acf_layouts_advanced_options( $list = array(), $opt = 0 ) {
+
+	$list = toArray( $list, true, true);
+	if( !$list ) return array();
+
+	for ( $i = 0; $i < sizeof( $list ); $i++ )
+		$list[$i]['sub_fields'] = array_merge( scm_acf_fields_advanced_options( '', $opt ), $list[$i]['sub_fields'] );
+
+	return $list;
+}
+
+// KEY
+
+/**
+* [SET] Set key
+*
+* @subpackage 2-ACF/Core/SET
+*
+* @param {string} key Required. Key prefix.
+* @param {array} list Required. Field or list of fields.
+* @return {array} Modified list of fields.
+*/
+function scm_acf_key( $key, $list ) {
+
+	if( !$key || !$list )
+		return array();
+
+	$list = toArray( $list, true );
+
+	for ( $i = 0; $i < sizeof( $list ); $i++ ) {
+
+		$new = $key . ( substr( $key, -1 ) != '_' ? '_' : '' ) . $list[$i]['key'];
+		$list[$i]['key'] = $new;
+
+		if( isset( $list[$i]['layouts'] ) ){
+			
+			for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
+				$lay = $list[$i]['layouts'][$j]['key'] = scm_acf_get_key( $new . $list[$i]['layouts'][$j]['name'], 'layout_' );
+				$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_key( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
+			}
+
+		}else if( isset( $list[$i]['sub_fields'] ) ){
+			$list[$i]['sub_fields'] = scm_acf_key( $new, $list[$i]['sub_fields'] );
+		}
+
+		$list[$i]['key'] = scm_acf_get_key( $list[$i]['key'] . $list[$i]['type'], 'field_' );
+	}
+
+	return $list;
+}
+
+// CONDITION
+
+/**
+* [SET] Conditional logic
+*
+* @subpackage 2-ACF/Core/SET
+*
+* @param {array} fields Required. Field or list of fields.
+* @param {array} logic Conditional logic (if NULL it looks for field['conditional_logic']).
+* @return {array} Modified list of fields.
+*/
+function scm_acf_condition( $fields, $logic = NULL ) {
+
+	$fields = toArray( $fields, true, true );
+	if( !$fields ) return NULL;
+
+	// Loop fields array
+	for ( $f = 0; $f < sizeof( $fields ); $f++ ) {
+		
+		// Get conditional logic
+		$cond = ( is_null( $logic ) ? is( $fields[$f]['conditional_logic'] ) : $logic );
+		if( !$cond ) continue;
+		
+		// Loop field conditions
+		for ( $c = 0; $c < sizeof( $cond ); $c++ ) {
+		
+			// Loop fields in condition
+			for ( $i = 0; $i < sizeof( $cond[$c] ); $i++ ) {
+		
+				// Changing field-name to field-key
+				$name_c = $cond[$c][$i]['field'];
+				$field_c = getByValueKey( $fields, $name_c );
+				if( !is_null( $field_c ) )
+					$cond[$c][$i]['field'] = $fields[$field_c]['key'];
+			}
+		}
+
+		// Set conditional logic
+		$fields[$f]['conditional_logic'] = $cond;
+	}
+
+	return $fields;
+}
+
+// ------------------------------------------------------
+// GET
+// ------------------------------------------------------
+
+// LOCATION
+
+/**
+* [GET] Group location
+*
+* @subpackage 2-ACF/Core/GET
+*
+* @todo [NEXT][CHILD] Change function name to 'scm_acf_get_location'
+*
+* @param {string|array=} value Single location or array of locations (default is empty array).
+* @param {string=} param Location parameter (default is 'post_type').
+* @param {string=} cond Location condition (default is '==').
+* @return {array} Location group.
+*/
+function scm_acf_group_location( $value = array(), $param = 'post_type', $cond = '==' ) {
+
+	$location = array();
+	$value = toArray( $value, false, true );
+	if( !$value || is_asso( $value ) ) return $location;
+
+	foreach( $value as $loc )
+		$location[] = scm_acf_get_location_rule( $loc, $param, $cond );
+
+	return $location;
+}
+
+/**
+* [GET] Group location rule
+*
+* @subpackage 2-ACF/Core/GET
+*
+* @param {string} value Required. Single location.
+* @param {string=} param Location parameter (default is 'post_type').
+* @param {string=} cond Location condition (default is '==').
+* @return {array} Location rule.
+*/
+function scm_acf_get_location_rule( $value = NULL, $param = 'post_type', $cond = '==' ) {
+	$rule = array();
+	if( is_null( $value ) || !isset( $value ) || !$value || !is_string( $value ) ) return $rule;
+	
+	$value = ( startsWith( $value, 'admin' ) ? 'administrator' : $value );
+	$cond = ( $cond ?: '==' );
+	$param = ( $param ?: ( $value == 'administrator' ? 'current_user_role' : 'post_type') );
+
+	$rule = array (
+		'param' => $param,
+		'operator' => $cond,
+		'value' => $value,
+	);
+
+	return $rule;
+}
+
+/**
+* [GET] Group location rule 'not equal'
+*
+* @subpackage 2-ACF/Core/GET
+*
+* @param {string} value Required. Single location.
+* @param {string=} param Location parameter (default is 'post_type').
+* @return {array} Location rule.
+*/
+function scm_acf_get_location_rule_not( $value = NULL, $param = 'post_type' ) {
+	$rule = array();
+	if( is_null( $value ) || !isset( $value ) || !$value || !is_string( $value ) ) return $rule;
+	
+	return scm_acf_get_location_rule( $value, $param, '!=' );
+}
+
+// KEY
+
+/**
+* [GET] Get key
+*
+* @subpackage 2-ACF/Core/GET
+*
+* @param {string} name Required. Key name.
+* @param {string=} prepend Prepend string (default is 'key_').
+* @return {string} Unique key.
+*/
+function scm_acf_get_key( $name, $prepend = 'key_' ) {
+	if( !$name ) return;
+	return $prepend . hash('ripemd160', $name );
+}
+
+// CONDITION
+
+/**
+* [GET] Merge conditional logics
+*
+* @subpackage 2-ACF/Core/GET
+*
+* @param {array} ... One or more conditional logic array.
+* @return {array} Conditional logic array.
+*/
+function scm_acf_merge_conditions() {
+
+	// Get arguments
+	if( !func_num_args() ) return;
+	$logic = func_get_args();
+
+	$arr = array();
+
+	foreach ($logic as $value) {
+		if( !$value || !is_array( $value ) ) continue;
+		if( !isset( $value[0] ) ){
+			$arr[] = $value;
+		}else{
+			foreach ($value as $sub) {
+				
+				if( !$sub || !is_array( $sub ) )
+					continue;
+
+				if( !isset( $sub[0] ) ){
+					$arr[] = $sub;				
+				}else{
+					foreach ($sub as $last) {
+						if( !$last || !is_array( $last ) )
+							continue;
+						if( !isset( $last[0] ) )
+							$arr[] = $last;
+					}
+				}
+			}
+		}
+	}
+
+	return $arr;
+}
+
+
+// ------------------------------------------------------
+// FUNCTIONS
+// ------------------------------------------------------
+
+// FIELD
+
+/**
 * [GET] Field content or fallback
+*
+* @subpackage 2-ACF/FUNCTIONS
 *
 * Get ACF Field through: Post Option > default? > General Option > default? > Fallback
 *
@@ -540,7 +594,42 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
 }
 
 /**
+* [GET] Field content or fallback from a selection of fields
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* Example usage:
+```php
+// Look for a field named 'excerpt' or 'preview'
+scm_fields( array( 'excerpt', 'preview' ), 'My fallback', 'option', 0, 'Prepend', 'Append' );
+```
+*
+* @param {array} names List of field names.
+* @param {misc=} fallback Field fallback (default is '').
+* @param {int|string=} target Post ID or 'option' (default is '', current post ID).
+* @param {bool=} no_option Skip field option fallback (default is true).
+* @param {string=} before Prepend if string field (default is '').
+* @param {string=} after Append if string field (default is '').
+* @return {misc} Field content or fallback.
+*/
+function scm_fields( $names, $fallback = '', $target = '', $no_option = true, $before = '', $after = '' ) {
+
+	if( !names || !is_array( $names ) || empty( $names ) )
+		return scm_field( '', $fallback, $target, $no_option, $before, $after );
+
+	foreach ($names as $name) {
+		$content = scm_field( $name, '', $target, $no_option, $before, $after );
+		if( $content )
+			return $content;
+	}
+
+	return $fallback;
+}
+
+/**
 * [GET] Field objects by type and filter
+*
+* @subpackage 2-ACF/FUNCTIONS
 *
 * Example usage:
 ```php
@@ -558,6 +647,7 @@ function scm_field_objects( $post_id = 0, $fields = array(), $type = 'text', $fi
     global $post;
     $arr = array();
     $post_id = ( $post_id ?: $post->ID );
+
     foreach ($fields as $key => $value) {
 
         $field = get_field_object($key, $post_id );
@@ -579,11 +669,14 @@ function scm_field_objects( $post_id = 0, $fields = array(), $type = 'text', $fi
             $arr[] = $field;
         }
     }
+
     return $arr;
 }
 
 /**
 * [GET] Field key by field name and filter
+*
+* @subpackage 2-ACF/FUNCTIONS
 *
 * @param {int} post_id Required. Post ID.
 * @param {array=} fields List of fields (default is empty array).
@@ -626,157 +719,6 @@ function scm_field_key( $post_id = NULL, $fields = array(), $name = '', $filter 
     }
 
     return '';
-}
-
-// ------------------------------------------------------
-// 3.0 ACF LAYOUTS
-// ------------------------------------------------------
-
-/**
-* [GET] Layout
-*
-* @param {string} name Required. Layout name.
-* @param {string=} type Layout type (default is 'block').
-* @param {string=} label Layout label (default is 'Layout').
-* @param {int=} min Layout min items (default is 0).
-* @param {int=} max Layout max items (default is 0).
-* @param {array} subfields Layout subfields (default is empty array).
-* @return {string} Layout.
-*/
-function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = 0, $max = 0, $subfields = array() ) {
-
-	if( !$name )
-		return;
-
-	$layout = array (
-		'key' => $name,
-		'name' => 'layout-' . $name,
-		'label' => $label,
-		'display' => $type,
-		'sub_fields' => $subfields,
-		'min' => $min,
-		'max' => $max,
-	);
-
-	return $layout;
-}
-
-/**
-* [GET] Insert layouts presets
-*
-* @see scm_acf_column_selectors()
-* @see scm_acf_column_link()
-* @see scm_acf_column_overlay()
-* @see scm_acf_column_float()
-* @see scm_acf_column_align()
-* @see scm_acf_column_width()
-*
-* @param {array=} list Single layout or list of layouts (default is empty array).
-* @param {bool=} link Add link preset field (default is false).
-* @return {array} Modified list of layouts.
-*/
-function scm_acf_layouts_preset( $list = array(), $link = 0 ) {
-
-	$row1 = 4 + $link;
-	$row2 = 3;
-
-	$list = toArray( $list, true, true);
-	if( !$list ) return array();
-
-	for ( $i = 0; $i < sizeof( $list ); $i++ ){
-		$list[$i]['sub_fields'] = scm_acf_column_selectors( $list[$i]['sub_fields'], floor( 75/$row2 ), floor( 75/$row2 ), floor( 150/$row2 ) );
-		if( $link )
-			$list[$i]['sub_fields'] = scm_acf_column_link( $list[$i]['sub_fields'], floor( 100/$row1 ) );
-		$list[$i]['sub_fields'] = scm_acf_column_overlay( $list[$i]['sub_fields'], floor( 100/$row1 ) );
-		$list[$i]['sub_fields'] = scm_acf_column_float( $list[$i]['sub_fields'], floor( 100/$row1 ) );
-		$list[$i]['sub_fields'] = scm_acf_column_align( $list[$i]['sub_fields'], floor( 100/$row1 ) );
-		$list[$i]['sub_fields'] = scm_acf_column_width( $list[$i]['sub_fields'], floor( 100/$row1 ) );
-	}
-
-	return $list;
-}
-
-/**
-* [GET] Insert layout selectors preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} w1 Width id selector (default is 30).
-* @param {int=} w2 Width class selector (default is 30).
-* @param {int=} w3 Width attributes selector (default is 40).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_selectors( $subfields = array(), $w1 = 30, $w2 = 30, $w3 = 40 ) {
-	
-	array_unshift( $subfields, scm_acf_field( array( 'name'=>'attributes', 'width'=>$w3, 'class'=>'scm-advanced-field' ), 'attributes' ) );
-	array_unshift( $subfields, scm_acf_field_class( 'class', 0, $w2 ) );
-	array_unshift( $subfields, scm_acf_field_id( 'id', 0, $w1 ) );
-
-	return $subfields;
-}
-
-/**
-* [GET] Insert layout width preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} width Field width (default is 100).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_width( $list = array(), $width = 100 ) {
-	
-	array_unshift( $list, scm_acf_field_select( 'column-width', array( 
-		'type'=>'2-columns_width',
-		'choices'=>array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ),
-	), $width, 0 ) );
-
-	return $list;
-}
-
-/**
-* [GET] Insert layout link preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} width Field width (default is 100).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_link( $list = array(), $width = 100 ) {
-	array_unshift( $list, scm_acf_field( 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', $width ) );
-	return $list;
-}
-
-/**
-* [GET] Insert layout alignment preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} width Field width (default is 100).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_align( $list = array(), $width = 100 ) {
-	array_unshift( $list, scm_acf_field( 'alignment', array( 'select-alignment', array( 'default' => __( 'Allineamento generale', SCM_THEME ) ) ), '', $width ) );
-	return $list;
-}
-
-/**
-* [GET] Insert layout float preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} width Field width (default is 100).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_float( $list = array(), $width = 100 ) {
-	array_unshift( $list, scm_acf_field_select( 'float', 'float', $width ) );
-	return $list;
-}
-
-/**
-* [GET] Insert overlay float preset
-*
-* @param {array=} subfields Layout subfields (default is empty array).
-* @param {int=} width Field width (default is 100).
-* @return {array} Modified layout subfields.
-*/
-function scm_acf_column_overlay( $list = array(), $width = 100 ) {
-	array_unshift( $list, scm_acf_field_select( 'overlay', 'overlay', 20 ) );
-	return $list;
 }
 
 ?>

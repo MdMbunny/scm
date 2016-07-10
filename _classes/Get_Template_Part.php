@@ -34,7 +34,7 @@ Get_Template_Part::get_part( '_parts/single/single-title.php', array( 'cont' => 
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage Classes
+ * @subpackage 4-Init/Admin/7-PLUGINS
  * @since 1.0.0
  */
 	class Get_Template_Part{

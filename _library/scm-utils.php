@@ -1,14 +1,12 @@
 <?php
 
 /**
- * scm-utilities.php
- *
- * SCM functions.
+ * SCM utilities.
  *
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage Utilities
+ * @subpackage 1-Utilities
  * @since 1.0.0
  */
 
@@ -33,7 +31,7 @@
 /**
  * [SET] Print javascript console messages
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {misc} var Value to console.
  * @param {bool} deb Active console logging.
@@ -46,7 +44,7 @@ function consoleDebug( $var, $deb = SCM_DEBUG ){
 /**
  * [GET] Combined multiple __( 'text', theme )
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string|array} var String or array of strings.
  * @param {string=} sep Separator (default is ' ').
@@ -63,6 +61,8 @@ function multiText( $var, $sep = ' ', $theme = SCM_THEME ){
 
 /**
 * [GET] Post data from $_REQUEST or current post
+*
+* @subpackage 1-Utilities/WP
 *
 * @param {string} key Optional. Specific attribute.
 * @return {array|misc} Post attributes array or specific attribute.
@@ -93,7 +93,7 @@ function thePost( $key = NULL ){
 /**
  * [GET] Post type taxonomies exluding $taxes
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string} type Post type.
  * @param {array=} taxes Excluded taxonomies (default is ['language', 'post_translations']).
@@ -107,7 +107,7 @@ function checkTaxes( $type, $taxes = array( 'language', 'post_translations' ) ) 
 /**
  * [SET] Update, insert or delete post meta value
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {int} id Post id.
  * @param {string} meta Post meta.
@@ -126,7 +126,7 @@ function updatePostMeta( $id, $meta, $value = NULL ){
 /**
  * [GET] Filter URL
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string} url URL to be filtered.
  * @return {string} Filtered URL.
@@ -198,7 +198,7 @@ function getURL( $url ){
 /**
  * [GET] Latitude and longitude from address string
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string=} address Address string (default is '').
  * @param {string=} country Country string (default is '').
@@ -228,7 +228,7 @@ function getGoogleMapsLatLng( $address = '', $country = '' ){
 /**
  * [GET] YouTube video duration from URL
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string=} url Youtube video URL (default is '').
  * @return {string} Video duration.
@@ -269,7 +269,7 @@ function getYouTubeDuration( $url = '' ){
  * Limitations
  * This only works for one sheet
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string} key Google spreadsheet key.
  * @return {array} Spreadsheet as array.
@@ -312,7 +312,7 @@ function googleSpreadsheetToArray( $key = NULL ) {
  * to extract spreadsheet contents.
  * This is because API v3 requires authentication and we don't want to put credentials in code.
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string} url Google spreadsheet URL.
  * @return {array} Spreadsheet as array.
@@ -351,7 +351,7 @@ function googleSpreadsheetToArrayV3( $url=NULL ) {
 /**
  * [GET] CSV file as an array.
  *
- * @subpackage Utilities/WP
+ * @subpackage 1-Utilities/WP
  *
  * @param {string} csvFile CSV file.
  * @return {array} CSV file as array.
@@ -373,7 +373,7 @@ function readCSV( $csvFile = NULL ){
 /**
  * [SET] Echo array into PRE tag
  *
- * @subpackage Utilities/DEBUG
+ * @subpackage 1-Utilities/DEBUG
  *
  * @param {array} arr Array to print.
  */
@@ -386,7 +386,7 @@ function printPre( $arr ){
 /**
  * [SET] Echo javascript alert()
  *
- * @subpackage Utilities/DEBUG
+ * @subpackage 1-Utilities/DEBUG
  *
  * @param {string} str String to print.
  * @param {string=} more String to append (default is '').
@@ -399,7 +399,7 @@ function alert( $str, $more = '', $divider = ': ' ){
 /**
  * [SET] Echo javascript console.log()
  *
- * @subpackage Utilities/DEBUG
+ * @subpackage 1-Utilities/DEBUG
  *
  * @param {misc} obj Item to print.
  */
@@ -418,7 +418,7 @@ function consoleLog( $obj ){
 /**
  * [GET] Value exists (0 is not), or fallback
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var Value to check.
  * @param {misc=} fall Fallback (default is '').
@@ -434,7 +434,7 @@ function is( $var = NULL, $fall = '', $pre = '', $app = '' ){
 /**
  * [GET] Value exists (0 is)
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var Value to check.
  * @return {bool} Value exists.
@@ -446,7 +446,7 @@ function exists( $var = '' ){
 /**
  * [GET] Value exists (0 is), or fallback
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var Value to check.
  * @param {misc=} fall Fallback (default is '').
@@ -462,7 +462,7 @@ function ifexists( $var = NULL, $fall = '', $pre = '', $app = '' ){
 /**
  * [GET] Value is number, or fallback
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var Value to check.
  * @param {misc=} fall Fallback (default is '').
@@ -478,7 +478,7 @@ function isNumber( $var = NULL, $fall = 0, $pre = 0, $app = 0 ){
 /**
  * [GET] Value A is equal to value B, or fallback
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var First value to compare.
  * @param {misc=} equal Second value to compare, or a list of values (default is empty array).
@@ -500,7 +500,7 @@ function ifequal( $var = NULL, $equal = array(), $fall = '', $pre = '', $app = '
 /**
  * [GET] Value A is not equal to value B, or fallback
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} var First value to compare.
  * @param {misc} equal Second value to compare, or a list of values (default is empty array).
@@ -522,7 +522,7 @@ function ifnotequal( $var = NULL, $equal = array(), $fall = '', $pre = '', $app 
 /**
  * [GET] Compare two values
  *
- * @subpackage Utilities/MISC
+ * @subpackage 1-Utilities/MISC
  *
  * @param {misc} a First value.
  * @param {string=} op Operator [==|===|!=|!==|>|>=|>|>=|ends|starts] (default is '==').
@@ -557,7 +557,7 @@ function compare($a = NULL, $op = '==', $b = NULL) {
  * Acts like strpos() {@link http://php.net/manual/en/function.strpos.php}
  * adding string length to result.
  *
- * @subpackage Utilities/STRING
+ * @subpackage 1-Utilities/STRING
  *
  * @param {string} haystack String to check.
  * @param {string=} needle String to look for (default is '').
@@ -576,7 +576,7 @@ function rstrpos( $haystack, $needle = '' ){
 /**
  * [GET] Remove double spaces
  *
- * @subpackage Utilities/STRING
+ * @subpackage 1-Utilities/STRING
  *
  * @param {string=} str String where to look for double spaces (default is '').
  * @return {string} String without double spaces.
@@ -589,7 +589,7 @@ function doublesp( $str = '' ){
 /**
  * [GET] Check if string starts with needle
  *
- * @subpackage Utilities/STRING
+ * @subpackage 1-Utilities/STRING
  *
  * @param {string} str String to check.
  * @param {string=} needle String to look for (default is '').
@@ -613,7 +613,7 @@ function startsWith( $str, $needle = '' ) {
 /**
  * [GET] Check if string ends with needle
  *
- * @subpackage Utilities/STRING
+ * @subpackage 1-Utilities/STRING
  *
  * @todo Check it out if it actually works
  *
@@ -649,7 +649,7 @@ print( is_asso( $array ) ) // false
 print( is_asso( $asso ) ) // true
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array to check.
  * @return {bool|null} NULL if arr is not an array. It returns true if array is associative, otherwise it returns false.
@@ -669,7 +669,7 @@ function is_asso( $arr ){
 /**
  * [GET] Associative array attribute exists, or fallback
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} var Array to check.
  * @param {string} attr Attribute to look for.
@@ -693,7 +693,7 @@ function ex_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
 /**
  * [GET] Associative array attribute is, or fallback
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} var Array to check.
  * @param {string} attr Attribute to look for.
@@ -751,7 +751,7 @@ $new = toArray( $asso, true );
 print( $new ) // [ [ 'key' => 'value' ] ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {misc=} var Item to convert (default is '').
  * @param {bool=} asso New indexed array if var is associative array (default is false).
@@ -781,7 +781,7 @@ $new = delArray( $arr, [ 'surname' ] );
 print( $new ) // [ 'name'=>'John', 'city'=>'New York' ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array to copy.
  * @param {array} elems Array of items to be removed.
@@ -822,7 +822,7 @@ $sub = subArray( $arr );
 print( $sub ) 
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to subtract items.
  * @param {int|string=} att_v Item index|attribute to pick up as new values (default is '').
@@ -858,7 +858,7 @@ $new = copyArray( $arr );
 print( $new ) // [ 'key'=>'value' ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array to copy.
  * @return {array} Copy of the array.
@@ -893,7 +893,7 @@ insertArray( $arr, 2, 'elephant', true );
 print( $arr ) // [ 'insert', 'an', 'elephant' ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to insert value.
  * @param {int=} offset Index where to insert value (default is 0).
@@ -936,7 +936,7 @@ $val = getByKey( $arr, 'key' );
 print( $val ) // 'value'
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for.
  * @param {string} key Key to look for.
@@ -961,7 +961,7 @@ $key = getByValue( $arr, 'value' );
 print( $key ) // 'key'
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for.
  * @param {string} value Value to look for.
@@ -992,7 +992,7 @@ $val = getByString( $arr, 'key' );
 print( $val ) // 'my_value_1'
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} string Needle to look for
@@ -1027,7 +1027,7 @@ $val = getAllByString( $arr, 'key' );
 print( $val ) // ['my_value_1','my_value_2']
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} string Needle to look for
@@ -1060,7 +1060,7 @@ $val = getByPrefix( $arr, 'my_key' );
 print( $val ) // 'my_value_1'
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} prefix Prefix to look for
@@ -1105,7 +1105,7 @@ $arr1 = getAllByPrefix( $arr, 'my_', 2 );
 print( $arr1 ) // [ 'key_1'=>'my_value_1', 'key_2'=>'my_value_2' ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} prefix Prefix to look for
@@ -1143,7 +1143,7 @@ $ind = getByValueKey( $arr, 'element', 'other' );
 print( $ind ) // 1
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} value Value to look for
@@ -1175,7 +1175,7 @@ $res = getAllByValueKey( $arr, 'Black', 'sur' );
 print( $res ) // [ [ 'name'=>'Jack', 'sur'=>'Black' ], [ 'name'=>'John', 'sur'=>'Black' ] ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} value Value to look for
@@ -1208,7 +1208,7 @@ $res = getAllByValuePrefixKey( $arr, 'Mc', 'sur' );
 print( $res ) // [ [ 'name'=>'Jack', 'sur'=>'Mc Key' ], [ 'name'=>'John', 'sur'=>'Mc Key' ] ]
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array where to look for
  * @param {string} prefix Prefix to look for
@@ -1249,7 +1249,7 @@ print( $html )
 </ul>
 ```
  *
- * @subpackage Utilities/ARRAY
+ * @subpackage 1-Utilities/ARRAY
  *
  * @param {array} arr Array to transform.
  * @param {int=} indent Indents in HTML code (default is 1).
@@ -1314,7 +1314,7 @@ function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array() ){
 /**
  * [GET|SET] Return or echo HTML indents
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {int=} indent Amount of indents (default is 1).
  * @param {string=} echo Appended to indents. Returns final string if empty (default is '').
@@ -1334,7 +1334,7 @@ function indent( $indent = 1, $echo = '', $break = 1 ){
 /**
  * [GET] Return line breaks
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {int=} Amount of line breaks (default is 1).
  * @return {string} String containing line breaks.
@@ -1346,7 +1346,7 @@ function lbreak( $break = 1 ){
 /**
  * [GET] Get HTML Tag Content
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string} string String (html) where to look for $tagname.
  * @param {string=} tagname HTML tag to look for (default is 'p').
@@ -1361,7 +1361,7 @@ function getTagContent( $string = '', $tagname = 'p' ){
 /**
  * [GET] Open new HTML tag
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @todo Integra data attributes per ogni elemento, con Select > Attributes
  *
@@ -1393,7 +1393,7 @@ function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes 
 /**
  * [GET] Open new HTML div tag
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string=} id ID attribute (default is '').
  * @param {string=} class Class attribute (default is '').
@@ -1408,7 +1408,7 @@ function openDiv( $id = '', $class = '', $style = '', $attributes = '' ){
 /**
  * [GET] Close HTML tag
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string=} tag HTML tag (default is 'div').
  * @param {string=} app String to be appended (default is '').
@@ -1421,7 +1421,7 @@ function closeTag( $tag = 'div', $app = '' ){
 /**
  * [GET] Encode email address
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string=} email Email address to be encoded (default is '').
  * @return {string} Encoded email address.
@@ -1433,7 +1433,7 @@ function encodeEmail( $email = '' ){
 /**
  * [GET] Add http:// if a protocol doesn't exist
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string=} url URL to check (default is '').
  * @return {string} Modified URL.
@@ -1449,7 +1449,7 @@ function addHTTP( $url = '' ){
 /**
  * [GET] Filter HREF
  *
- * @subpackage Utilities/HTML
+ * @subpackage 1-Utilities/HTML
  *
  * @param {string=} type Link type [media|paypal|phone|fax|skype|skype-call|skype-phone|web] (default is 'web').
  * @param {string} link Link to be insered.
@@ -1464,7 +1464,7 @@ function getHREF( $type = 'web', $link, $data = false ){
 
     switch ( $type ) {
         case 'media':
-            return scm_post_link( array(), $link );
+            return scm_utils_link_post( array(), $link );
         break;
 
         case 'paypal':
@@ -1511,7 +1511,7 @@ function getHREF( $type = 'web', $link, $data = false ){
 /**
  * [GET] Converts a number to a style measure
  *
- * @subpackage Utilities/STYLE
+ * @subpackage 1-Utilities/STYLE
  *
  * @param {float} value Number to convert.
  * @return {string} Style measure in pixel (4 becomes '4px'), otherwise it returns style measure in percentage (-4 becomes'40%') if $value is negative.
@@ -1531,7 +1531,7 @@ function numberToStyle( $value ){
 /**
  * [GET] Converts hexadecimal color into rgba color
  *
- * @subpackage Utilities/STYLE
+ * @subpackage 1-Utilities/STYLE
  *
  * @param {string} hex Hexadecimal color.
  * @param {float=} alpha Alpha value (default is 1).
@@ -1568,7 +1568,7 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 /**
  * [GET] Get webfont and family font as a correct string (just comma separated families, or css attribute ready)
  *
- * @subpackage Utilities/STYLE
+ * @subpackage 1-Utilities/STYLE
  *
  * @param {array=} webfont List of webfonts (default is empty array).
  * @param {string=} family Fallback font family (default is '').
@@ -1596,7 +1596,7 @@ function font2string( $webfont = array(), $family = '', $add = false ) {
 /**
  * [GET] Set font-size based on amount of characters
  *
- * @subpackage Utilities/STYLE
+ * @subpackage 1-Utilities/STYLE
  *
  * @param {string} txt String to check
  * @param {array} char List of characters amounts [ num char, num char, ... ].
@@ -1620,7 +1620,7 @@ function fontSizeLimiter( $txt, $char, $size ){
 /**
  * [GET] Get file date
  *
- * @subpackage Utilities/FILE
+ * @subpackage 1-Utilities/FILE
  *
  * @param {string} uri File URI
  * @return {string} File date
@@ -1655,7 +1655,7 @@ function filemtimeRemote( $uri ){
 /**
  * [GET] Get file data
  *
- * @subpackage Utilities/FILE
+ * @subpackage 1-Utilities/FILE
  *
  * @param {array|string} file Array containing 'url' attribute, or file url as string.
  * @param {string=} name New name (default is '').
@@ -1707,7 +1707,7 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
 /** 
  * [GET] Converts bytes into human readable file size
  *
- * @subpackage Utilities/FILE
+ * @subpackage 1-Utilities/FILE
  *
  * @param {float|string} bytes Bytes to convert.
  * @param {int=} dec Round decimal (default is 0).
@@ -1751,7 +1751,7 @@ function fileSizeConvert($bytes, $dec = 0){
 /** 
  * [GET] Converts file extension to a general file type
  *
- * @subpackage Utilities/FILE
+ * @subpackage 1-Utilities/FILE
  *
  * @param {string} ext Extension to convert.
  * @return {string} File type (i.e. 'doc' or 'txt' are converted to 'Text Document').
@@ -1840,7 +1840,7 @@ function fileExtensionConvert( $ext ){
 /** 
  * [GET] Converts file extension to Font Awesome icon
  *
- * @subpackage Utilities/FILE
+ * @subpackage 1-Utilities/FILE
  *
  * @param {string} ext Extension to convert.
  * @return {string} FA icon without 'fa-' prefix (i.e. 'jpg' or 'png' are converted to 'file-image-o').
@@ -1938,7 +1938,7 @@ function fileExtensionToIcon( $ext ){
 /**
  * [SET] Create SVG line
  *
- * @subpackage Utilities/SVG
+ * @subpackage 1-Utilities/SVG
  *
  * @param {array=} attr Attributes (default is empty array).
  * @param {string=} type Line type (default is 'solid').

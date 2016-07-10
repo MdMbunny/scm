@@ -25,6 +25,25 @@ $notpage = 0;
 $page = 0;
 $temp = '';
 
+// Check if OLD BROWSER ------------------------------------------------------------------------
+
+if( function_exists( 'get_browser_version' ) ){
+
+    $version = ( (int)get_browser_version() ?: 1000 );
+
+    if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+        (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+        (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+        (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+        (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
+
+        get_template_part( SCM_DIR_PARTS, 'old' );
+        die();
+    }
+}
+
+// Check if PAGE, SINGLE or ARCHIVE ------------------------------------------------------------
+
 if( $single ){
 	$notpage = 1;
 	$page = get_page_by_path( '_single-' . $type );
@@ -34,8 +53,6 @@ if( $single ){
 	$page = get_page_by_path( '_archive-' . $type );
 	$temp = SCM_DIR_PARTS_ARCHIVE;
 }
-
-// Check if is PAGE, SINGLE or ARCHIVE ------------------------------------------------------------------------
 
 if( $notpage ){
 
@@ -82,7 +99,7 @@ switch ($template) {
 // Content from Template
 	default:
 		indent( $SCM_indent + 1, '<div id="post-' . $id . '" class="section scm-section object scm-object single-post full ' . $site_align . '">', 2 );
-			indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_options_get( 'align', 'option', 0 ) . '">', 2 );
+			indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_utils_style_get( 'align', 'option', 0 ) . '">', 2 );
 				$SCM_indent += 3;
 				scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'template' => $template, 'type' => 'single', 'single' => array( $id ) ) );
 				$SCM_indent -= 3;

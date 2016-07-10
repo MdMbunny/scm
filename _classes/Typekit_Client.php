@@ -7,16 +7,16 @@ if ( ! class_exists( 'Typekit_Client' ) ) {
  *
  * Typekit PHP API Client
  *
-  * Example usage:
+ * Example usage:
  *
 ```php
-$typekit = new Typekit();
-
-$kit = $typekit->create([
-    "name" => "Example",
-    "families" => [[ "id" => "gkmg" ]]
-    "domains" => ["*.example.com"]
-], 'xxxxx');
+` $typekit = new Typekit();
+` 
+` $kit = $typekit->create([
+`     "name" => "Example",
+`     "families" => [[ "id" => "gkmg" ]]
+`     "domains" => ["*.example.com"]
+` ], 'xxxxx');
 ```
  *
  * @return object Typekit object.
@@ -24,7 +24,7 @@ $kit = $typekit->create([
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage Classes
+ * @subpackage 4-Init/Admin/7-PLUGINS
  * @since 1.0.0
  */
 

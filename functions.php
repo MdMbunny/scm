@@ -250,21 +250,70 @@ require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
 // UTILITIES
 
-/** Utilities. */
-require_once( SCM_DIR_LIBRARY . 'scm-utilities.php' );
+/** SCM Utilities. */
+require_once( SCM_DIR_LIBRARY . 'scm-utils.php' );
 
-/** ACF utilities. */
+/** SCM ACF utilities. */
 require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
-// INIT
+	/** ACF Font Awesome icons subsets. */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils-fa.php' );
 
-/** SCM install. */
-require_once( SCM_DIR_LIBRARY . 'scm-install.php' );
+	/** ACF select choices subsets. */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils-choices.php' );
 
-/** SCM core. */
-require_once( SCM_DIR_LIBRARY . 'scm-core.php' );
+	/** ACF field utilities. */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils.php' );
 
-// BUILD
+	// ------------------------------------------------------
 
-/** Dynamic content builder. */
-require_once( SCM_DIR_LIBRARY . 'scm-content.php' );
+	/** ACF fields */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
+
+	/** ACF presets */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
+
+	/** ACF objects */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-objects.php' );
+
+	/** ACF layouts */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
+
+	/** ACF groups */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
+
+	/** ACF options */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
+
+// INSTALL
+
+/** SCM install roles. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-roles.php' );
+
+/** SCM install types. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-types.php' );
+
+/** SCM install ACF. */
+require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
+
+// CORE
+
+/** SCM init core. */
+require_once( SCM_DIR_LIBRARY . 'scm-init-core.php' );
+
+/** SCM init admin. */
+require_once( SCM_DIR_LIBRARY . 'scm-init-admin.php' );
+
+/** SCM init feed. */
+//require_once( SCM_DIR_LIBRARY . 'scm-init-feed.php' );
+
+// CONTENT
+
+/** SCM content core. */
+require_once( SCM_DIR_LIBRARY . 'scm-content-core.php' );
+
+/** SCM content front. */
+require_once( SCM_DIR_LIBRARY . 'scm-content-front.php' );
+
+/** SCM content utilities. */
+require_once( SCM_DIR_LIBRARY . 'scm-content-utils.php' );

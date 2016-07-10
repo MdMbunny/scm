@@ -1,129 +1,54 @@
 <?php
 
 /**
-* scm-core.php.
-*
-* SCM core functions.
+* SCM core init hooks.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Core
+* @subpackage 4-Init/Core
 * @since 1.0.0
 */
 
-/** SCM core admin. */
-require_once( SCM_DIR_LIBRARY . 'scm-core-admin.php' );
-
-/** SCM feed. */
-//require_once( SCM_DIR_LIBRARY . 'scm-core-feed.php' );
-
 // ------------------------------------------------------
 //
-// 0.0 Actions and Filters
-//      0.1 Init
-//      0.2 Register and Enqueue Scripts
-//      0.3 Register and Enqueue Styles
-//      0.4 Register and Enqueue Admin and Login
-//      0.5 Header Styles
-//      0.6 Body Classes
+// ACTIONS AND FILTERS
+//      1-Register and enqueue scripts and styles
+//      2-Register and enqueue inline styles
+//      3-Body
 //
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 0.0 ACTIONS AND FILTERS
+// ACTIONS AND FILTERS
 // ------------------------------------------------------
 
-add_filter( 'query_vars', 'scm_hook_query_vars' );
-add_action( 'after_setup_theme', 'scm_hook_load_textdomain' );
-add_action( 'after_setup_theme', 'scm_hook_register_menus' );
-add_action( 'after_setup_theme', 'scm_hook_old_browser' );
-
-//add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
+// ENQUEUE
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles' );
+//add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
+
+// INLINE
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles_inline' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_assets_favicon' );
 
-add_action( 'admin_enqueue_scripts', 'scm_hook_admin_register_assets', 998 );
-add_action( 'login_enqueue_scripts', 'scm_hook_login_register_assets', 10 );
-add_filter( 'login_headerurl', 'scm_hook_login_logo_url' );
-add_filter( 'login_headertitle', 'scm_hook_login_logo_url_title' );
-
+// BODY
 add_filter( 'body_class','scm_hook_body_class' );
 
-add_theme_support( 'title-tag' );
-add_theme_support( 'automatic-feed-links' );
-add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
-add_theme_support( 'post-thumbnails' );
+// REMOVE
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+remove_action( 'admin_print_styles', 'print_emoji_styles' );
+remove_action( 'wp_head', 'feed_links_extra', 3 );
+remove_action( 'wp_head', 'feed_links', 2 );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wp_generator' );
 
 // ------------------------------------------------------
-//  0.1 INIT
-// ------------------------------------------------------
-
-/**
-* [GET] Add query vars
-*
-* Hooked by 'query_vars'
-*
-* @param {array=} public_query_vars List of query vars (default is empty array).
-* @return {array} Modified list of query vars.
-*/
-function scm_hook_query_vars( $public_query_vars = array() ) {
-    $public_query_vars[] = 'template';
-    return $public_query_vars;
-}
-
-/**
-* [SET] Load textdomain
-*
-* Hooked by 'after_setup_theme'
-*/
-function scm_hook_load_textdomain() {
-    load_theme_textdomain( SCM_THEME, SCM_DIR_LANG );
-    load_child_theme_textdomain( SCM_CHILD, SCM_DIR_LANG_CHILD );
-}
-
-/**
-* [SET] Register menus
-*
-* Hooked by 'after_setup_theme'
-*/
-function scm_hook_register_menus() {
-    register_nav_menus( array(
-        'primary' => __( 'Menu Principale', SCM_THEME ),
-        'secondary' => __( 'Menu Secondario', SCM_THEME ),
-        'temporary' => __( 'Menu Temporaneo', SCM_THEME ),
-        'auto' => __( 'Menu Auto', SCM_THEME )
-        )
-    );
-}
-
-/**
-* [SET] Redirect old browsers
-*
-* Hooked by 'after_setup_theme'
-*/
-function scm_hook_old_browser() {
-    if( function_exists('get_browser_name') ){
-
-        $version = ( (int)get_browser_version() ?: 1000 );
-
-        if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
-            (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
-            (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
-            (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
-            (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
-
-            get_template_part( SCM_DIR_PARTS, 'old' );
-            die();
-        }
-    }
-}
-
-// ------------------------------------------------------
-// 0.2 REGISTER AND ENQUEUE SCRIPTS
+// 1-ENQUEUE
 // ------------------------------------------------------
 
 // ASYND AND DEFER JS
@@ -138,6 +63,7 @@ function scm_hook_old_browser() {
 * [SET] Register and enqueue Adobe Typekit script
 *
 * Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Core/1-ENQUEUE
 */
 function scm_hook_site_register_webfonts_adobe() {
 
@@ -157,14 +83,11 @@ function scm_hook_site_register_webfonts_adobe() {
     }
 }
 
-// ------------------------------------------------------
-// 0.3 REGISTER AND ENQUEUE STYLES
-// ------------------------------------------------------
-
 /**
 * [SET] Register and enqueue Google Webfonts style
 *
 * Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Core/1-ENQUEUE
 */
 function scm_hook_site_register_webfonts_google() {
     $fonts =  scm_field( 'styles-google', array(), 'option' );
@@ -189,6 +112,7 @@ function scm_hook_site_register_webfonts_google() {
 * [SET] Register and enqueue styles
 *
 * Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Core/1-ENQUEUE
 *
 * @todo 1 - Se Header PRINT aggiungi:
 ```php
@@ -211,85 +135,14 @@ function scm_hook_site_register_styles() {
 }
 
 // ------------------------------------------------------
-// 0.4 REGISTER AND ENQUEUE ADMIN AND LOGIN
-// ------------------------------------------------------
-
-/**
-* [SET] Register and enqueue admin styles
-*
-* Hooked by 'wp_enqueue_scripts'
-*/
-function scm_hook_admin_register_assets() {
-    wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_VERSION );
-    wp_enqueue_style('scm-admin');
-    wp_register_style( 'scm-admin-child', SCM_URI_ASSETS_CHILD . 'css/admin.css', false, SCM_VERSION );
-    wp_enqueue_style('scm-admin-child');
-} 
-
-/**
-* [SET] Register and enqueue login styles
-*
-* Hooked by 'wp_enqueue_scripts'
-*/
-function scm_hook_login_register_assets() {
-    wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_VERSION );
-    wp_enqueue_style('scm-login');
-
-    $login_logo = scm_field('opt-staff-logo', '', 'option');
-
-    if( $login_logo ):
-        ?>
-        <style type="text/css">
-            body.login h1 a {
-                background-image: url(<?php echo esc_url( $login_logo ); ?>);
-            }
-        </style>
-        <?php
-    else:
-        ?>
-        <style type="text/css">
-            body.login h1 a {
-                display: none !important;
-            }
-        </style>
-        <?php
-    endif;
-
-    wp_register_style( 'scm-login-child', SCM_URI_ASSETS_CHILD . 'css/login.css', false, SCM_VERSION );
-    wp_enqueue_style('scm-login-child');
-}
-
-/**
-* [GET] Get login logo URL
-*
-* Hooked by 'login_headerurl'
-*
-* @return {string} The home page URL
-*/
-function scm_hook_login_logo_url() {
-    return home_url();
-}
-
-/**
-* [GET] Get login logo URL title
-*
-* Hooked by 'login_headertitle'
-*
-* @return {string} The website name
-*/
-function scm_hook_login_logo_url_title() {
-    global $SCM_sitename;
-    return $SCM_sitename;
-}
-
-// ------------------------------------------------------
-// 0.5 HEADER STYLES
+// 2-INLINE
 // ------------------------------------------------------
 
 /**
 * [SET] Echo SCM favicons in header
 *
 * Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Core/2-INLINE
 */
 function scm_hook_site_assets_favicon() {
 
@@ -321,37 +174,38 @@ function scm_hook_site_assets_favicon() {
 * [SET] Echo SCM style in header
 *
 * Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Core/2-INLINE
 */
 function scm_hook_site_register_styles_inline() {
 
-    $html = scm_options_get( 'bg_color', 'loading-style-bg', 1 );
-    $html .= ( scm_options_get( 'bg_image', 'loading-style-bg', 1 ) ?: '' );
-    $html .= scm_options_get( 'bg_size', 'loading-style-bg', 1 );
+    $html = scm_utils_style_get( 'bg_color', 'loading-style-bg', 1 );
+    $html .= ( scm_utils_style_get( 'bg_image', 'loading-style-bg', 1 ) ?: '' );
+    $html .= scm_utils_style_get( 'bg_size', 'loading-style-bg', 1 );
 
-    $font = scm_options_get( 'font', 'option', 1 );
+    $font = scm_utils_style_get( 'font', 'option', 1 );
 
-    $opacity = scm_options_get( 'opacity', 'option', 1 );
-    $align = scm_options_get( 'align', 'option', 1 );
+    $opacity = scm_utils_style_get( 'opacity', 'option', 1 );
+    $align = scm_utils_style_get( 'align', 'option', 1 );
 
-    $line_height = scm_options_get( 'line_height', 'option', 1 );
+    $line_height = scm_utils_style_get( 'line_height', 'option', 1 );
 
-    $body = scm_options_get( 'size', 'option', 1 );
-    $body .= scm_options_get( 'color', 'option', 1 );
-    $body .= scm_options_get( 'weight', 'option', 1 );
-    $body .= scm_options_get( 'shadow', 'option', 1 );
-    $body .= scm_options_get( 'margin', 'option', 1 );
-    $body .= scm_options_get( 'padding', 'option', 1 );
+    $body = scm_utils_style_get( 'size', 'option', 1 );
+    $body .= scm_utils_style_get( 'color', 'option', 1 );
+    $body .= scm_utils_style_get( 'weight', 'option', 1 );
+    $body .= scm_utils_style_get( 'shadow', 'option', 1 );
+    $body .= scm_utils_style_get( 'margin', 'option', 1 );
+    $body .= scm_utils_style_get( 'padding', 'option', 1 );
 
-    $body .= scm_options_get( 'bg_image', 'option', 1 );
-    $body .= scm_options_get( 'bg_repeat', 'option', 1 );
-    $body .= scm_options_get( 'bg_position', 'option', 1 );
-    $body .= scm_options_get( 'bg_size', 'option', 1 );
-    $body .= scm_options_get( 'bg_color', 'option', 1 );
+    $body .= scm_utils_style_get( 'bg_image', 'option', 1 );
+    $body .= scm_utils_style_get( 'bg_repeat', 'option', 1 );
+    $body .= scm_utils_style_get( 'bg_position', 'option', 1 );
+    $body .= scm_utils_style_get( 'bg_size', 'option', 1 );
+    $body .= scm_utils_style_get( 'bg_color', 'option', 1 );
 
-    $menu_font = scm_options_get( 'font', 'menu', 1 );
+    $menu_font = scm_utils_style_get( 'font', 'menu', 1 );
 
-    $top_bg = scm_options_get( 'bg_color', 'opt-tools-topofpage-bg', 1 );
-    $top_icon = scm_options_get( 'text_color', 'opt-tools-topofpage-txt', 1 );
+    $top_bg = scm_utils_style_get( 'bg_color', 'opt-tools-topofpage-bg', 1 );
+    $top_icon = scm_utils_style_get( 'text_color', 'opt-tools-topofpage-txt', 1 );
 
     // Print Main Style
 
@@ -408,7 +262,7 @@ function scm_hook_site_register_styles_inline() {
 
     $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
-    $base = (int)str_replace( 'px', '', scm_options_get( 'size', 'option' ) );
+    $base = (int)str_replace( 'px', '', scm_utils_style_get( 'size', 'option' ) );
 
     $r_desktop = $base + (int)scm_field( 'styles-size-desktop', -1, 'option' );
     $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();
@@ -430,13 +284,14 @@ function scm_hook_site_register_styles_inline() {
 }
 
 // ------------------------------------------------------
-// 0.6 BODY CLASSES
+// 3-BODY
 // ------------------------------------------------------
 
 /**
 * [GET] Body classes (page, browser, language)
 *
 * Hooked by 'body_class'
+* @subpackage 4-Init/Core/3-BODY
 *
 * @param {array=} classes List of classes (default is empty array).
 * @return {array} Modified list of classes.

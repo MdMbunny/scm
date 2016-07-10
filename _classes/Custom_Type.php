@@ -3,9 +3,7 @@
 if ( ! class_exists( 'Custom_Type' ) ) {
 
 /**
- * Custom_Type.php
- *
- * Custom Types Class.
+ * Create Custom Type
  *
  * Example usage:
  *
@@ -32,23 +30,27 @@ $args = array(
  
 $type = new Custom_Type( $args );
 ```
- * @param array $build The arguments to pass to this file. Optional.
- * Default empty array.
- *
- * @return object Custom Type object.
  *
  * @link http://www.studiocreativo-m.it
  *
  * @package SCM
- * @subpackage Classes
+ * @subpackage 3-Install/Types
  * @since 1.0.0
  */
     class Custom_Type {
 
-        function __construct( $build ) {
+        /**
+        * [GET] Custom Type init
+        *
+        * @param {array} build Required. List of arguments.
+        * @param {string=} lang Theme slug for translations (default is theme slug).
+        * @return {Object} Custom type object.
+        */
+        function Custom_Type( $build, $lang = '' ) {
 
-            if( !$build )
-                return;
+            if( !$build ) return;
+
+            $this->lang = ( $lang ?: sanitize_title( get_bloginfo() ) );
 
             $attr = array(
                 'admin'                 => 0,
@@ -67,7 +69,6 @@ $type = new Custom_Type( $args );
                 'menupos'               => 0,
                 'menu'                  => '',
                 'description'           => '',
-                'theme'                 => '',
             );
 
             if( is_array( $build ) )
@@ -84,8 +85,6 @@ $type = new Custom_Type( $args );
             $slug = ( $attr['slug'] ?: sanitize_title($plural) );
 
             $this->attributes = array();
-
-            $this->theme = $attr['theme'];
 
             $this->admin = $attr['admin'];
             $this->add_cap = $attr['add_cap'];
@@ -118,16 +117,16 @@ $type = new Custom_Type( $args );
                     'name'                => $this->plural,
                     'singular_name'       => $this->singular,
                     'menu_name'           => $this->plural,
-                    'parent_item_colon'   => __( 'Genitore:', $this->theme ),
-                    'all_items'           => __( 'Elenco', $this->theme ),
-                    'view_item'           => __( 'Visualizza', $this->theme ) . ' ' . $this->short_singular,
-                    'add_new_item'        => __( 'Aggiungi', $this->theme ) . ' ' . $this->short_singular,
-                    'add_new'             => __( 'Aggiungi', $this->theme ),
-                    'edit_item'           => __( 'Modifica', $this->theme ) . ' ' . $this->short_singular,
-                    'update_item'         => __( 'Aggiorna', $this->theme ) . ' ' . $this->short_singular,
-                    'search_items'        => __( 'Cerca', $this->theme ) . ' ' . $this->short_plural,
-                    'not_found'           => $this->short_singular . ' ' . __( 'non trovato', $this->theme ),
-                    'not_found_in_trash'  => $this->short_singular . ' ' . __( 'non trovato nel Cestino', $this->theme ),
+                    'parent_item_colon'   => __( 'Genitore:', $this->lang ),
+                    'all_items'           => __( 'Elenco', $this->lang ),
+                    'view_item'           => __( 'Visualizza', $this->lang ) . ' ' . $this->short_singular,
+                    'add_new_item'        => __( 'Aggiungi', $this->lang ) . ' ' . $this->short_singular,
+                    'add_new'             => __( 'Aggiungi', $this->lang ),
+                    'edit_item'           => __( 'Modifica', $this->lang ) . ' ' . $this->short_singular,
+                    'update_item'         => __( 'Aggiorna', $this->lang ) . ' ' . $this->short_singular,
+                    'search_items'        => __( 'Cerca', $this->lang ) . ' ' . $this->short_plural,
+                    'not_found'           => $this->short_singular . ' ' . __( 'non trovato', $this->lang ),
+                    'not_found_in_trash'  => $this->short_singular . ' ' . __( 'non trovato nel Cestino', $this->lang ),
                 ),
                 'label'               => $this->slug,
                 'description'         => $this->description,
@@ -147,40 +146,84 @@ $type = new Custom_Type( $args );
                 'capability_type'     => array( $this->cap_singular, $this->cap_plural ),
                 'map_meta_cap'        => true,
             );
-
-            add_filter( 'scm_filter_admin_ui_menu_order', array( &$this, 'CT_admin_menu_order' ) );
-            add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'CT_admin_columns' ) ) ;
-            add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'CT_manage_admin_columns' ), 10, 2 );
-            add_action( 'load-edit.php', array( &$this, 'CT_admin_edit_page_load' ) );
-            add_action( 'admin_menu', array( &$this, 'CT_admin_menu_hide' ) );
-            add_action( 'admin_head', array( &$this, 'CT_admin_elems_hide' ) );
-            add_action( 'admin_bar_menu', array( &$this, 'CT_admin_bar_hide' ), 999 );
-
         }
 
-        function CT_register() {
+// ------------------------------------------------------
+// PUBLIC
+// ------------------------------------------------------
+
+        /**
+        * [SET] Registers Custom Type
+        */
+        function register() {
+
+            add_filter( 'scm_filter_admin_ui_menu_order', array( &$this, 'admin_menu_order' ) );
+            add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'admin_columns' ) ) ;
+            add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'manage_admin_columns' ), 10, 2 );
+            add_action( 'load-edit.php', array( &$this, 'admin_edit_page_load' ) );
+
+            add_action( 'admin_head', array( &$this, 'admin_elems_hide' ) );
+            add_action( 'admin_bar_menu', array( &$this, 'admin_bar_hide' ), 999 );
+            add_action( 'admin_menu', array( &$this, 'admin_menu_hide' ) );
 
             register_post_type( $this->slug, $this->attributes );
             flush_rewrite_rules();
-            
         }
 
-        function CT_admin_columns( $columns ) {
+// ------------------------------------------------------
+// ADMIN HOOKS
+// ------------------------------------------------------
 
-                //$columns['cb'] = '<input type="checkbox" />';
-                $columns['id'] = __( 'ID', $this->theme );
+        /**
+        * [GET] Sets area and position in admin menu
+        *
+        * Hooked by 'scm_filter_admin_ui_menu_order'
+        *
+        * @param {array} menu_order Original menu order array (default is empty array).
+        * @return {array} Modified menu order array.
+        */
+        protected function admin_menu_order( $menu_order = array() ) {
 
-                $taxonomies = get_object_taxonomies( $this->slug, 'objects' );
-                foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
-                    if( $taxonomy_slug != 'language' && $taxonomy_slug != 'post_translations' )
-                        $columns[ 'tax-' . $taxonomy_slug ] = $taxonomy->label;
-                }
+            $scm_menu = ( $this->menu && is_array( $menu_order ) && is_array( $menu_order[ $this->menu ] ) ? $menu_order[ $this->menu ] : 0 );
+            $this->menupos = ( $this->menupos ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
+            
+            if( $scm_menu )
+                insertArray( $menu_order[ $this->menu ], $this->menupos, 'edit.php?post_type=' . $this->slug );
+
+            return $menu_order;
+        }
+
+        /**
+        * [GET] Adds taxonomies column in list page
+        *
+        * Hooked by 'acf/include_fields'
+        *
+        * @param {array} columns Original columns array (default is empty array).
+        * @return {array} Modified columns array.
+        */
+        protected function admin_columns( $columns = array() ) {
+
+            $columns['id'] = __( 'ID', $this->lang );
+            $taxonomies = get_object_taxonomies( $this->slug, 'objects' );
+            foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+                if( $taxonomy_slug != 'language' && $taxonomy_slug != 'post_translations' )
+                    $columns[ 'tax-' . $taxonomy_slug ] = $taxonomy->label;
+            }
 
             return $columns;
-
         }
+        
+        /**
+        * [SET] Fills columns in list page
+        *
+        * Hooked by 'manage_' . $this->slug . '_posts_custom_column'
+        *
+        * @param {string=} column Column name (default is '').
+        * @param {int=} column Post ID (default is 0).
+        */
+        protected function manage_admin_columns( $column = '', $post_id = 0 ) {
 
-        function CT_manage_admin_columns( $column, $post_id ) {
+            if( !$post_id ) return;
 
             switch( $column ) {
                 case 'id':
@@ -215,18 +258,32 @@ $type = new Custom_Type( $args );
             }
         }
 
-        function CT_admin_edit_page_load() {
-        
-            add_filter( 'request', array( &$this, 'CT_admin_orderby' ) );
-
+        /**
+        * [SET] Helper for posts ordering in list admin page
+        *
+        * Hooked by 'load-edit.php'
+        *
+        * @param {string=} column Column name (default is '').
+        * @param {int=} column Post ID (default is 0).
+        */
+        protected function admin_edit_page_load() {
+            add_filter( 'request', array( &$this, 'admin_orderby' ) );
         }
-
-        function CT_admin_orderby( $vars ) {
+        
+        /**
+        * [SET] Order posts in list admin page
+        *
+        * Hooked by 'request'
+        *
+        * @param {array} list Posts list.
+        * @return {array} Modified posts list.
+        */
+        protected function admin_orderby( $list = NULL ) {
             
-            if ( isset( $vars['post_type'] ) && $this->slug == $vars['post_type'] ) {
+            if ( !is_null( $list ) && isset( $list['post_type'] ) && $this->slug == $list['post_type'] ) {
 
-                $vars = array_merge(
-                    $vars,
+                $list = array_merge(
+                    $list,
                     array(
                         'orderby' => $this->orderby,
                         'order' => ( $this->order ? $this->order : ( $this->orderby == 'title' ? 'ASC' : 'DESC' ) )
@@ -234,11 +291,16 @@ $type = new Custom_Type( $args );
                 );
             }
 
-            return $vars;
+            return $list;
         
         }
 
-        function CT_admin_elems_hide(){
+        /**
+        * [SET] Hides elements in edit pages to lower capabilities users
+        *
+        * Hooked by 'admin_head'
+        */
+        protected function admin_elems_hide(){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;
@@ -252,7 +314,12 @@ $type = new Custom_Type( $args );
             
         }
 
-        function CT_admin_bar_hide( $wp_admin_bar ){
+        /**
+        * [SET] Hides elements in admin bar to lower capabilities users
+        *
+        * Hooked by 'admin_bar_menu'
+        */
+        protected function admin_bar_hide( $wp_admin_bar ){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;
@@ -261,7 +328,12 @@ $type = new Custom_Type( $args );
             
         }
 
-        function CT_admin_menu_hide(){
+        /**
+        * [SET] Hides elements in admin menu to lower capabilities users
+        *
+        * Hooked by 'admin_menu'
+        */
+        protected function admin_menu_hide(){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;
@@ -278,18 +350,6 @@ $type = new Custom_Type( $args );
                 }
 
             }
-
-        }
-
-        function CT_admin_menu_order( $menu_order ) {
-
-            $scm_menu = ( $this->menu && is_array( $menu_order[ $this->menu ] ) ? $menu_order[ $this->menu ] : 0 );
-            $this->menupos = ( $this->menupos ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
-            
-            if( $scm_menu )
-                insertArray( $menu_order[ $this->menu ], $this->menupos, 'edit.php?post_type=' . $this->slug );
-
-            return $menu_order;
 
         }
     }

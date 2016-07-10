@@ -1,14 +1,12 @@
 <?php
 
 /**
-* scm-acf-preset-fa.php.
-*
-* Font Awesome icons subsets.
+* ACF Font Awesome icons utilities.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage ACF/Preset
+* @subpackage 2-ACF/UTILS
 * @since 1.0.0
 */
 

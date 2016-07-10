@@ -1,49 +1,64 @@
 <?php
 
 /**
-* scm-core-admin.php.
-*
 * SCM admin functions.
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Core/Admin
+* @subpackage 4-Init/Admin
 * @since 1.0.0
 */
 
 // ------------------------------------------------------
 //
-// 0.0 Actions and Filters
-//      0.1 Users
-//      0.2 Menu
-//      0.3 Hide
-//      0.4 Uploads
-//      0.5 Plugins
-//      0.6 Debug
+// ACTIONS AND FILTERS
+//      1-Register and enqueue scripts and styles
+//      2-Theme settings
+//      3-Admin menu setup
+//      4-Hide elements from admin
+//      5-Email hooks
+//      6-Uploads hooks
+//      7-Plugins hooks
+//      8-Debug hooks
 //
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 0.0 ACTIONS AND FILTERS
+// ACTIONS AND FILTERS
 // ------------------------------------------------------
 
-add_filter( 'wp_mail_from', 'scm_admin_mail_from' );
-add_filter( 'wp_mail_from_name', 'scm_admin_mail_from_name' );
+// ENQUEUE
+add_action( 'admin_enqueue_scripts', 'scm_hook_admin_register_assets', 998 );
+add_action( 'login_enqueue_scripts', 'scm_hook_admin_login_register_assets', 10 );
+add_filter( 'login_headerurl', 'scm_hook_admin_login_logo_url' );
+add_filter( 'login_headertitle', 'scm_hook_admin_login_logo_url_title' );
 
+// THEME
+add_action( 'after_setup_theme', 'scm_hook_admin_theme_load_textdomain' );
+add_action( 'after_setup_theme', 'scm_hook_admin_theme_register_menus' );
+add_action( 'after_switch_theme', 'scm_hook_admin_theme_activate' );
+add_action( 'switch_theme', 'scm_hook_admin_theme_deactivate' );
+add_action( 'upgrader_process_complete', 'scm_hook_admin_theme_update' );
+
+// MENU
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_remove' );
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_add' );
 add_filter( 'custom_menu_order', 'scm_hook_admin_ui_menu_order' );
 add_filter( 'menu_order', 'scm_hook_admin_ui_menu_order' );
 
-/** Always disable front end admin bar */
-add_filter('show_admin_bar', '__return_false');
+// HIDE
 add_action( 'wp_dashboard_setup', 'scm_hook_admin_ui_hide_dashboard_widgets' );
 add_action( 'admin_head', 'scm_hook_admin_ui_hide_from_users' );
 add_action( 'admin_bar_menu', 'scm_hook_admin_ui_hide_tools', 999 );
+/** Always disable front end admin bar */
+add_filter('show_admin_bar', '__return_false');
 
-/** Always disable year/month folders in upload */
-add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
+// EMAIL
+add_filter( 'wp_mail_from', 'scm_hook_admin_mail_from' );
+add_filter( 'wp_mail_from_name', 'scm_hook_admin_mail_from_name' );
+
+// UPLOADS
 add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10, 2 );
 add_filter( 'wp_handle_upload', 'scm_hook_admin_upload_max_size', 3 );
 add_filter( 'intermediate_image_sizes_advanced', 'scm_hook_admin_upload_def_sizes' );
@@ -52,12 +67,22 @@ add_filter( 'image_size_names_choose', 'scm_hook_admin_upload_custom_names' );
 add_filter( 'upload_dir', 'scm_hook_admin_upload_dir', 2 );
 add_filter( 'manage_media_columns', 'scm_hook_admin_upload_columns' );
 add_action( 'manage_media_custom_column', 'scm_hook_admin_upload_custom_column',10, 2 );
+/** Always disable year/month folders in upload */
+add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
 
+// PLUGINS
 add_action( 'plugins_loaded', 'scm_hook_admin_plugins_duplicate_post' );
 add_action( 'plugins_loaded', 'scm_hook_admin_plugins_backup_restore_options' );
 add_action( 'tgmpa_register', 'scm_hook_admin_plugins_tgm_plugin_activation' );
 
+// DEBUG
 add_action( 'shutdown', 'scm_hook_admin_debug_hooks');
+
+// THEME SUPPORT
+add_theme_support( 'title-tag' );
+add_theme_support( 'automatic-feed-links' );
+add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
+add_theme_support( 'post-thumbnails' );
 
 /*
 // AUTO NAV - UNDER COSTRUCTION
@@ -111,43 +136,151 @@ function scm_hook_nav_auto_menu(){
 */
 
 // ------------------------------------------------------
-// 0.1 USERS
+// 1-ENQUEUE
 // ------------------------------------------------------
 
 /**
-* [GET] Mail from [website name]
+* [SET] Register and enqueue admin styles
 *
-* Hooked by 'wp_mail_from_name'
-*
-* @return {string} Website title
+* Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Admin/1-ENQUEUE
 */
-function scm_hook_admin_mail_from_name() {
-    $name = get_option('blogname');
-    $name = esc_attr($name);
-    return $name;
+function scm_hook_admin_register_assets() {
+    wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_VERSION );
+    wp_enqueue_style('scm-admin');
+    wp_register_style( 'scm-admin-child', SCM_URI_ASSETS_CHILD . 'css/admin.css', false, SCM_VERSION );
+    wp_enqueue_style('scm-admin-child');
+} 
+
+/**
+* [SET] Register and enqueue login styles
+*
+* Hooked by 'wp_enqueue_scripts'
+* @subpackage 4-Init/Admin/1-ENQUEUE
+*/
+function scm_hook_admin_login_register_assets() {
+    wp_register_style( 'scm-login', SCM_URI_CSS . 'scm-login.css', false, SCM_VERSION );
+    wp_enqueue_style('scm-login');
+
+    $login_logo = scm_field('opt-staff-logo', '', 'option');
+
+    if( $login_logo ):
+        ?>
+        <style type="text/css">
+            body.login h1 a {
+                background-image: url(<?php echo esc_url( $login_logo ); ?>);
+            }
+        </style>
+        <?php
+    else:
+        ?>
+        <style type="text/css">
+            body.login h1 a {
+                display: none !important;
+            }
+        </style>
+        <?php
+    endif;
+
+    wp_register_style( 'scm-login-child', SCM_URI_ASSETS_CHILD . 'css/login.css', false, SCM_VERSION );
+    wp_enqueue_style('scm-login-child');
 }
 
 /**
-* [GET] Mail from [opt-staff-email]
+* [GET] Get login logo URL
 *
-* Hooked by 'wp_mail_from'
+* Hooked by 'login_headerurl'
+* @subpackage 4-Init/Admin/1-ENQUEUE
 *
-* @return {string} Email from opt-staff-email option
+* @return {string} The home page URL
 */
-function scm_hook_admin_mail_from() {
-    $email = scm_field( 'opt-staff-email', '', 'option' );
-    $email = is_email($email);
-    return $email;
+function scm_hook_admin_login_logo_url() {
+    return home_url();
+}
+
+/**
+* [GET] Get login logo URL title
+*
+* Hooked by 'login_headertitle'
+* @subpackage 4-Init/Admin/1-ENQUEUE
+*
+* @return {string} The website name
+*/
+function scm_hook_admin_login_logo_url_title() {
+    global $SCM_sitename;
+    return $SCM_sitename;
 }
 
 // ------------------------------------------------------
-// 0.2 MENU
+// 2-THEME
+// ------------------------------------------------------
+
+/**
+* [SET] Load textdomain
+*
+* Hooked by 'after_setup_theme'
+* @subpackage 4-Init/Admin/2-THEME
+*/
+function scm_hook_admin_theme_load_textdomain() {
+    load_theme_textdomain( SCM_THEME, SCM_DIR_LANG );
+    load_child_theme_textdomain( SCM_CHILD, SCM_DIR_LANG_CHILD );
+}
+
+/**
+* [SET] Register menus
+*
+* Hooked by 'after_setup_theme'
+* @subpackage 4-Init/Admin/2-THEME
+*/
+function scm_hook_admin_theme_register_menus() {
+    register_nav_menus( array(
+        'primary' => __( 'Menu Principale', SCM_THEME ),
+        'secondary' => __( 'Menu Secondario', SCM_THEME ),
+        'temporary' => __( 'Menu Temporaneo', SCM_THEME ),
+        'auto' => __( 'Menu Auto', SCM_THEME )
+        )
+    );
+}
+
+/**
+* [SET] 'scm-settings-installed' option to true.
+*
+* Hooked by 'after_switch_theme'
+* @subpackage 4-Init/Admin/2-THEME
+*/
+function scm_hook_admin_theme_activate() {
+    update_option( 'scm-settings-installed', 1 );
+}
+
+/**
+* [SET] 'scm-settings-installed' option to false.
+*
+* Hooked by 'switch_theme'
+* @subpackage 4-Init/Admin/2-THEME
+*/
+function scm_hook_admin_theme_deactivate() {
+    update_option( 'scm-settings-installed', 0 );
+}
+
+/**
+* [SET] 'scm-version' option to SCM_VERSION.
+*
+* Hooked by 'upgrader_process_complete'
+* @subpackage 4-Init/Admin/2-THEME
+*/
+function scm_hook_admin_theme_update() {
+    update_option( 'scm-version', SCM_VERSION );
+}
+
+// ------------------------------------------------------
+// 3-MENU
 // ------------------------------------------------------
 
 /**
 * [SET] Remove unused WP menu elements
 *
 * Hooked by 'admin_menu'
+* @subpackage 4-Init/Admin/3-MENU
 */
 function scm_hook_admin_ui_menu_remove(){
 
@@ -166,6 +299,7 @@ function scm_hook_admin_ui_menu_remove(){
 * [SET] Add custom WP menu elements
 *
 * Hooked by 'admin_menu'
+* @subpackage 4-Init/Admin/3-MENU
 */
 function scm_hook_admin_ui_menu_add(){
 
@@ -181,6 +315,7 @@ function scm_hook_admin_ui_menu_add(){
 * [SET] Set WP menu order
 *
 * Hooked by 'custom_menu_order', 'menu_order'
+* @subpackage 4-Init/Admin/3-MENU
 */
 function scm_hook_admin_ui_menu_order( $menu_ord ) {
     
@@ -225,13 +360,14 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
 }
 
 // ------------------------------------------------------
-// 0.3 HIDE
+// 4-HIDE
 // ------------------------------------------------------
 
 /**
 * [SET] Remove WP dashboard widgets
 *
 * Hooked by 'wp_dashboard_setup'
+* @subpackage 4-Init/Admin/4-HIDE
 */
 function scm_hook_admin_ui_hide_dashboard_widgets(){
     remove_action( 'welcome_panel', 'wp_welcome_panel' );
@@ -250,6 +386,7 @@ function scm_hook_admin_ui_hide_dashboard_widgets(){
 * [SET] Removes WP screen meta links and admin notices to users
 *
 * Hooked by 'admin_head'
+* @subpackage 4-Init/Admin/4-HIDE
 */
 function scm_hook_admin_ui_hide_from_users(){
    
@@ -265,6 +402,7 @@ function scm_hook_admin_ui_hide_from_users(){
 * [SET] Remove tools from toolbar
 *
 * Hooked by 'admin_bar_menu'
+* @subpackage 4-Init/Admin/4-HIDE
 */
 function scm_hook_admin_ui_hide_tools( $wp_admin_bar ) {
     $wp_admin_bar->remove_node( 'wp-logo' );
@@ -276,13 +414,46 @@ function scm_hook_admin_ui_hide_tools( $wp_admin_bar ) {
 }
 
 // ------------------------------------------------------
-// 0.4 UPLOADS
+// 5-EMAIL
+// ------------------------------------------------------
+
+/**
+* [GET] Mail from [website name]
+*
+* Hooked by 'wp_mail_from_name'
+* @subpackage 4-Init/Admin/5-EMAIL
+*
+* @return {string} Website title
+*/
+function scm_hook_admin_mail_from_name() {
+    $name = get_option('blogname');
+    $name = esc_attr($name);
+    return $name;
+}
+
+/**
+* [GET] Mail from [opt-staff-email]
+*
+* Hooked by 'wp_mail_from'
+* @subpackage 4-Init/Admin/5-EMAIL
+*
+* @return {string} Email from opt-staff-email option
+*/
+function scm_hook_admin_mail_from() {
+    $email = scm_field( 'opt-staff-email', '', 'option' );
+    $email = is_email($email);
+    return $email;
+}
+
+// ------------------------------------------------------
+// 6-UPLOADS
 // ------------------------------------------------------
 
 /**
 * [GET] Calculate image responsive sizes
 *
 * Hooked by 'wp_calculate_image_sizes'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {string=} sizes Original responsive sizes (default is '').
 * @param {array} size Original image size array (default is empty array).
@@ -307,6 +478,7 @@ function scm_hook_admin_upload_adjust_sizes( $sizes = '', $size = array() ) {
 * [GET] Manage existing sizes for uploaded images
 *
 * Hooked by 'intermediate_image_sizes_advanced'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {array=} sizes Original sizes array (default is empty array).
 * @return {array} Modified sizes array.
@@ -325,6 +497,7 @@ function scm_hook_admin_upload_def_sizes( $sizes = array() ) {
 * [SET] Add new sizes for uploaded images
 *
 * Hooked by 'admin_init'
+* @subpackage 4-Init/Admin/6-UPLOADS
 */
 function scm_hook_admin_upload_custom_sizes(){
     add_image_size('small', 700, 0, false);
@@ -334,6 +507,7 @@ function scm_hook_admin_upload_custom_sizes(){
 * [GET] New size names for uploaded images
 *
 * Hooked by 'image_size_names_choose'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {array=} sizes Original sizes array (default is empty array).
 * @return {array} Modified sizes array.
@@ -348,6 +522,7 @@ function scm_hook_admin_upload_custom_names( $sizes = array() ) {
 * [SET|GET] Set max size for uploading image and delete original files
 *
 * Hooked by 'wp_handle_upload'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {array=} params Original image parameters (default is empty array).
 * @return {array} Original image parameters.
@@ -384,6 +559,7 @@ function scm_hook_admin_upload_max_size( $params = array() ){
 * [GET] Create and redirect images to type folders in upload folder
 *
 * Hooked by 'upload_dir'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {array=} img Original image array (default is empty array).
 * @return {array} Modified image array.
@@ -411,6 +587,7 @@ function scm_hook_admin_upload_dir( $img = array() ){
 * [GET] Add custom columns to media list page
 *
 * Hooked by 'manage_media_columns'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @param {array=} defaults Original columns array (default is empty array).
 * @return {array} Modified columns array.
@@ -424,6 +601,7 @@ function scm_hook_admin_upload_columns( $defaults = array() ) {
 * [SET] Echo custom columns added to media list page
 *
 * Hooked by 'manage_media_custom_column'
+* @subpackage 4-Init/Admin/6-UPLOADS
 *
 * @todo 1 - PHP update:
 ´´´php
@@ -452,13 +630,14 @@ function scm_hook_admin_upload_custom_column( $column_name = NULL, $id = NULL ) 
 }
 
 // ------------------------------------------------------
-// 0.5 PLUGINS
+// 7-PLUGINS
 // ------------------------------------------------------
 
 /**
 * [SET] Duplicate Post init
 *
 * Hooked by 'plugins_loaded'
+* @subpackage 4-Init/Admin/7-PLUGINS
 */
 function scm_hook_admin_plugins_duplicate_post() {
     new Duplicate_Post( SCM_THEME );    
@@ -468,6 +647,7 @@ function scm_hook_admin_plugins_duplicate_post() {
 * [SET] Backup Restore Options init
 *
 * Hooked by 'plugins_loaded'
+* @subpackage 4-Init/Admin/7-PLUGINS
 */
 function scm_hook_admin_plugins_backup_restore_options() {
     new Backup_Restore_Options( SCM_THEME );
@@ -477,6 +657,7 @@ function scm_hook_admin_plugins_backup_restore_options() {
 * [SET] TGM Plugin Activation init
 *
 * Hooked by 'tgmpa_register'
+* @subpackage 4-Init/Admin/7-PLUGINS
 */
 function scm_hook_admin_plugins_tgm_plugin_activation() {
 
@@ -694,13 +875,14 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
 }
 
 // ------------------------------------------------------
-// 0.6 DEBUG
+// 8-DEBUG
 // ------------------------------------------------------
 
 /**
 * [SET] Console log hooks list
 *
 * Hooked by 'shutdown'
+* @subpackage 4-Init/Admin/8-DEBUG
 */
 function scm_hook_admin_debug_hooks() {
     global $SCM_debug;

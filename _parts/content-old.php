@@ -23,7 +23,7 @@
 <?php
 
     $logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'opt-staff-logo', scm_field( 'brand-logo', SCM_URI_IMAGES . 'logo.png', 'option' ), 'option' ), 'option' ) );
-    $html = scm_options_get( 'bg_color', 'loading-style-bg', 1 );
+    $html = scm_utils_style_get( 'bg_color', 'loading-style-bg', 1 );
 
 ?>
 

@@ -84,7 +84,7 @@ if( is( $element ) ){
 		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
 		$attr = '';
 
-		$marker = scm_preset_marker( $luogo, $fields, 1 );
+		$marker = scm_utils_preset_map_marker( $luogo, $fields, 1 );
 
 		if( $lat && $lng )
 			$attr = ' data-lat="' . $lat . '" data-lng="' . $lng . ' "';

@@ -35,7 +35,7 @@ $style = $args['style'];
 $id = $args['id'];
 
 $icon = $args['icon'];
-$icon_size = scm_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 'inherit' );
+$icon_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 'inherit' );
 $style .= ' font-size:' . $icon_size . ';';
 
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );

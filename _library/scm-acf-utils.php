@@ -1,16 +1,14 @@
 <?php
 
 /**
- * scm-acf-preset.php.
- *
- * Fields builder.
- *
- * @link http://www.studiocreativo-m.it
- *
- * @package SCM
- * @subpackage ACF/Preset
- * @since 1.0.0
- */
+* ACF utilities.
+*
+* @link http://www.studiocreativo-m.it
+*
+* @package SCM
+* @subpackage 2-ACF/UTILS
+* @since 1.0.0
+*/
 
 // ------------------------------------------------------
 //
@@ -34,7 +32,7 @@
 * @param {misc} d
 * @return {array} Filtered field.
 */
-function scm_acf_field_to3( $a, $n, $t, $d ) {
+function scm_acf_get_field_to3( $a, $n, $t, $d ) {
 	return ( isset( $a[$n] ) ? $a[$n] : ( isset( $a[$t] ) ? $a[$t] : $d ) );
 }
 
@@ -203,7 +201,7 @@ function scm_acf_field_to3( $a, $n, $t, $d ) {
 * @param {string|array} elem Field type-{options} or associative array.
 * @return {array} Field.
 */
-function scm_acf_field_type( $elem ) {
+function scm_acf_get_field( $elem ) {
 
 	if( !$elem )
 		return;
@@ -213,7 +211,7 @@ function scm_acf_field_type( $elem ) {
 
 	if( is_array( $elem ) ){
 
-		$el = scm_acf_field_to3( $elem, 0, 'type', '' );
+		$el = scm_acf_get_field_to3( $elem, 0, 'type', '' );
 
 		if( !$el )
 			return;
@@ -252,9 +250,9 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' 					=> 'message',
-				'message' 				=> scm_acf_field_to3( $arg, 1, 'placeholder', '' ),
-				'esc_html' 				=> scm_acf_field_to3( $arg, 2, 'eschtml', 0 ),
-				'new_lines' 			=> scm_acf_field_to3( $arg, 3, 'lines', '' ),
+				'message' 				=> scm_acf_get_field_to3( $arg, 1, 'placeholder', '' ),
+				'esc_html' 				=> scm_acf_get_field_to3( $arg, 2, 'eschtml', 0 ),
+				'new_lines' 			=> scm_acf_get_field_to3( $arg, 3, 'lines', '' ),
 			);
 
     	break;
@@ -263,7 +261,7 @@ function scm_acf_field_type( $elem ) {
 			
     		$field = array(
 				'type' 					=> 'tab',
-				'placement' 			=> scm_acf_field_to3( $arg, 1, 'placeholder', ( strpos( $extra , '-left' ) !== false ? 'left' : 'top' ) ),
+				'placement' 			=> scm_acf_get_field_to3( $arg, 1, 'placeholder', ( strpos( $extra , '-left' ) !== false ? 'left' : 'top' ) ),
 			);
 
     	break;
@@ -272,7 +270,7 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' 					=> 'true_false',
-				'default_value' 		=> scm_acf_field_to3( $arg, 1, 'default', 0 ),
+				'default_value' 		=> scm_acf_get_field_to3( $arg, 1, 'default', 0 ),
 			);
 
 		break;
@@ -280,21 +278,21 @@ function scm_acf_field_type( $elem ) {
     	case 'select':
     	case 'select2':
 
-    		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
-    		//$choices = array_merge( $choices, scm_acf_field_to3( $arg, 2, 'placeholder', array() ) ),
+    		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
+    		//$choices = array_merge( $choices, scm_acf_get_field_to3( $arg, 2, 'placeholder', array() ) ),
     		$choices = scm_acf_field_choices( $default, $choices );
 
     		$field = array(
 				'type' 					=> 'select',
 				'choices' 				=> $choices['choices'],
 				'default_value' 		=> $choices['default_value'],
-				//'placeholder' 			=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
-				'ajax' 					=> scm_acf_field_to3( $arg, 3, 'ajax', 0 ),
-				'allow_null' 			=> scm_acf_field_to3( $arg, 4, 'null', 0 ),
-				'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_field_to3( $arg, 5, 'ui', 0 ) ),
-				'multiple' 				=> scm_acf_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ?: 0 ) ),
-				'readonly' 				=> scm_acf_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ?: 0 ) ),
-				'disabled' 				=> scm_acf_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ?: 0 ) ),
+				//'placeholder' 			=> scm_acf_get_field_to3( $arg, 2, 'placeholder', '' ),
+				'ajax' 					=> scm_acf_get_field_to3( $arg, 3, 'ajax', 0 ),
+				'allow_null' 			=> scm_acf_get_field_to3( $arg, 4, 'null', 0 ),
+				'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_get_field_to3( $arg, 5, 'ui', 0 ) ),
+				'multiple' 				=> scm_acf_get_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ?: 0 ) ),
+				'readonly' 				=> scm_acf_get_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ?: 0 ) ),
+				'disabled' 				=> scm_acf_get_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ?: 0 ) ),
 				'preset' 				=> str_replace( array( '-multi', '-read', '-disabled' ), '', $extra),
 			);
 
@@ -304,9 +302,9 @@ function scm_acf_field_type( $elem ) {
 
     	case 'checkbox':
 
-    		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
-    		$layout = scm_acf_field_to3( $arg, 2, 'layout', 'vertical' );
-    		$toggle = scm_acf_field_to3( $arg, 3, 'toggle', 0 );
+    		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
+    		$layout = scm_acf_get_field_to3( $arg, 2, 'layout', 'vertical' );
+    		$toggle = scm_acf_get_field_to3( $arg, 3, 'toggle', 0 );
     		$choices = scm_acf_field_choices( $default, $choices );
     		
     		$field = array(
@@ -322,17 +320,17 @@ function scm_acf_field_type( $elem ) {
 
     	case 'radio':
 
-    		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
-    		$layout = scm_acf_field_to3( $arg, 1, '' );
+    		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
+    		$layout = scm_acf_get_field_to3( $arg, 1, '' );
     		$choices = scm_acf_field_choices( $default, $choices );
-    		$more = scm_acf_field_to3( $arg, 3, 'more', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
+    		$more = scm_acf_get_field_to3( $arg, 3, 'more', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
     		
     		$field = array(
 				'type' 					=> 'radio',
 				'choices' 				=> $choices['choices'],
 				'default_value' 		=> $choices['default_value'],
 				'other_choice' 			=> $more,
-				'save_other_choice' 	=> scm_acf_field_to3( $arg, 4, 'save', ( isset( $arg[3] ) ? $more : 0 ) ),
+				'save_other_choice' 	=> scm_acf_get_field_to3( $arg, 4, 'save', ( isset( $arg[3] ) ? $more : 0 ) ),
 				'layout' 				=> ( ( $layout && $layout !== 'vertical' ) || strpos( $extra , '-horizontal' ) !== false ? 'horizontal' : 'vertical' ),
 				'preset' 				=> str_replace( array('-multi', '-horizontal'), '', $extra),
 			);
@@ -346,30 +344,30 @@ function scm_acf_field_type( $elem ) {
 	        		
 			$field = array(
     			'type' 					=> $typ,
-				'post_type' 			=> toArray( scm_acf_field_to3( $arg, 1, 'types', '' ), 0, 1 ),
-				'taxonomy' 				=> toArray( scm_acf_field_to3( $arg, 2, 'taxes', '' ), 0, 1 ),
-				'placeholder' 			=> scm_acf_field_to3( $arg, 3, 'placeholder', '' ),
+				'post_type' 			=> toArray( scm_acf_get_field_to3( $arg, 1, 'types', '' ), 0, 1 ),
+				'taxonomy' 				=> toArray( scm_acf_get_field_to3( $arg, 2, 'taxes', '' ), 0, 1 ),
+				'placeholder' 			=> scm_acf_get_field_to3( $arg, 3, 'placeholder', '' ),
 			);
 
 			switch ( $typ ) {
 				case 'post_object':
-					$field['allow_null'] = scm_acf_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
-					$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_field_to3( $arg, 5, 'multi', 0 ) );
-					$field['return_format'] = ( scm_acf_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
-					$field['filters'] = toArray( scm_acf_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
-					$field['ui'] = scm_acf_field_to3( $arg, 8, 'ui', 1 );
+					$field['allow_null'] = scm_acf_get_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
+					$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_get_field_to3( $arg, 5, 'multi', 0 ) );
+					$field['return_format'] = ( scm_acf_get_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
+					$field['filters'] = toArray( scm_acf_get_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
+					$field['ui'] = scm_acf_get_field_to3( $arg, 8, 'ui', 1 );
 				break;
 				
 				case 'page_link':
-					$field['allow_null'] = scm_acf_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
-					$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_field_to3( $arg, 5, 'multi', 0 ) );
+					$field['allow_null'] = scm_acf_get_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) );
+					$field['multiple'] = ( $type == 'objects' ? 1 : scm_acf_get_field_to3( $arg, 5, 'multi', 0 ) );
 				break;
 
 				case 'relationship':
-					$field['elements'] = scm_acf_field_to3( $arg, 4, 'elements', '' );
-					$field['max'] = ( $type == 'objects' ? 0 : scm_acf_field_to3( $arg, 5, 'max', 1 ) );
-					$field['return_format'] = ( scm_acf_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
-					$field['filters'] = toArray( scm_acf_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
+					$field['elements'] = scm_acf_get_field_to3( $arg, 4, 'elements', '' );
+					$field['max'] = ( $type == 'objects' ? 0 : scm_acf_get_field_to3( $arg, 5, 'max', 1 ) );
+					$field['return_format'] = ( scm_acf_get_field_to3( $arg, 6, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) );
+					$field['filters'] = toArray( scm_acf_get_field_to3( $arg, 7, 'filters', ( strpos( $extra , '-search' ) !== false ? 'search' : '' ) ), 0, 1 );
 				break;
 			}
 
@@ -383,16 +381,16 @@ function scm_acf_field_type( $elem ) {
     	case 'taxonomies':      		
 			
 			$multi = ( endsWith( $type, 's' ) ?: 0 );
-			$add = scm_acf_field_to3( $arg, 2, 'add', 0 );
-			$save = ( $add ?: scm_acf_field_to3( $arg, 3, 'save', 0 ) );
+			$add = scm_acf_get_field_to3( $arg, 2, 'add', 0 );
+			$save = ( $add ?: scm_acf_get_field_to3( $arg, 3, 'save', 0 ) );
 
     		$field = array(
 				'type' 						=> 'taxonomy',
-				'taxonomy' 					=> scm_acf_field_to3( $arg, 1, 'taxes', ( str_replace( array( '-id', '-' ), '', $extra ) ?: 'category' ) ),
+				'taxonomy' 					=> scm_acf_get_field_to3( $arg, 1, 'taxes', ( str_replace( array( '-id', '-' ), '', $extra ) ?: 'category' ) ),
 				'multiple' 					=> $multi,
 				'load_save_terms' 			=> $save,
-				'allow_null' 				=> scm_acf_field_to3( $arg, 4, 'null', ( str_replace( array( '-null', '-' ), '', $extra ) ?: 0 ) ),
-				'return_format' 			=> ( scm_acf_field_to3( $arg, 5, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) ),
+				'allow_null' 				=> scm_acf_get_field_to3( $arg, 4, 'null', ( str_replace( array( '-null', '-' ), '', $extra ) ?: 0 ) ),
+				'return_format' 			=> ( scm_acf_get_field_to3( $arg, 5, 'return', 'object' ) !== 'object' ? 'id' : ( strpos( $extra , '-id' ) !== false ? 'id' : 'object' ) ),
 				'field_type' 				=> ( $multi ? ( $save ? 'checkbox' : 'multi_select' ) : ( $save ? 'radio' : 'select' ) ),
 				'add_term' 					=> $add
 			);
@@ -403,10 +401,10 @@ function scm_acf_field_type( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'file',
-				'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
-				'min_size' 					=> scm_acf_field_to3( $arg, 2, 'minsize', '' ),
-				'max_size' 					=> scm_acf_field_to3( $arg, 3, 'maxsize', '' ),
-				'return_format' 			=> scm_acf_field_to3( $arg, 5, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
+				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'min_size' 					=> scm_acf_get_field_to3( $arg, 2, 'minsize', '' ),
+				'max_size' 					=> scm_acf_get_field_to3( $arg, 3, 'maxsize', '' ),
+				'return_format' 			=> scm_acf_get_field_to3( $arg, 5, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
 			);
 
     	break;
@@ -415,17 +413,17 @@ function scm_acf_field_type( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'gallery',
-				'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
-				'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
-				'min' 						=> scm_acf_field_to3( $arg, 3, 'min', 0 ),
-				'max' 						=> scm_acf_field_to3( $arg, 4, 'max', 0 ),
-				'min_width' 				=> scm_acf_field_to3( $arg, 5, 'minwidth', 0 ),
-				'max_width' 				=> scm_acf_field_to3( $arg, 6, 'maxwidth', 0 ),
-				'min_height' 				=> scm_acf_field_to3( $arg, 7, 'minheight', 0 ),
-				'max_height' 				=> scm_acf_field_to3( $arg, 8, 'maxheight', 0 ),
-				'min_size' 					=> scm_acf_field_to3( $arg, 9, 'minsize', 0 ),
-				'max_size' 					=> scm_acf_field_to3( $arg, 10, 'maxsize', 0 ),
-				'mime_types' 				=> scm_acf_field_to3( $arg, 11, 'mime', 'jpg, png, JPG, PNG, gif, GIF, jpeg, JPEG' ),
+				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'preview_size' 				=> scm_acf_get_field_to3( $arg, 2, 'preview', 'thumbnail' ),
+				'min' 						=> scm_acf_get_field_to3( $arg, 3, 'min', 0 ),
+				'max' 						=> scm_acf_get_field_to3( $arg, 4, 'max', 0 ),
+				'min_width' 				=> scm_acf_get_field_to3( $arg, 5, 'minwidth', 0 ),
+				'max_width' 				=> scm_acf_get_field_to3( $arg, 6, 'maxwidth', 0 ),
+				'min_height' 				=> scm_acf_get_field_to3( $arg, 7, 'minheight', 0 ),
+				'max_height' 				=> scm_acf_get_field_to3( $arg, 8, 'maxheight', 0 ),
+				'min_size' 					=> scm_acf_get_field_to3( $arg, 9, 'minsize', 0 ),
+				'max_size' 					=> scm_acf_get_field_to3( $arg, 10, 'maxsize', 0 ),
+				'mime_types' 				=> scm_acf_get_field_to3( $arg, 11, 'mime', 'jpg, png, JPG, PNG, gif, GIF, jpeg, JPEG' ),
 			);
 
     	break;
@@ -434,23 +432,23 @@ function scm_acf_field_type( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'image',
-				'library' 					=> ( scm_acf_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
-				'preview_size' 				=> scm_acf_field_to3( $arg, 2, 'preview', 'thumbnail' ),
-				'min_width' 				=> scm_acf_field_to3( $arg, 3, 'minwidth', 0 ),
-				'max_width' 				=> scm_acf_field_to3( $arg, 4, 'maxwidth', 0 ),
-				'min_height' 				=> scm_acf_field_to3( $arg, 5, 'minheight', 0 ),
-				'max_height' 				=> scm_acf_field_to3( $arg, 6, 'maxheight', 0 ),
-				'min_size' 					=> scm_acf_field_to3( $arg, 7, 'minsize', 0 ),
-				'max_size' 					=> scm_acf_field_to3( $arg, 8, 'maxsize', 0 ),
-				'mime_types' 				=> scm_acf_field_to3( $arg, 9, 'mime', '' ),
-				'return_format' 			=> scm_acf_field_to3( $arg, 10, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
+				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'preview_size' 				=> scm_acf_get_field_to3( $arg, 2, 'preview', 'thumbnail' ),
+				'min_width' 				=> scm_acf_get_field_to3( $arg, 3, 'minwidth', 0 ),
+				'max_width' 				=> scm_acf_get_field_to3( $arg, 4, 'maxwidth', 0 ),
+				'min_height' 				=> scm_acf_get_field_to3( $arg, 5, 'minheight', 0 ),
+				'max_height' 				=> scm_acf_get_field_to3( $arg, 6, 'maxheight', 0 ),
+				'min_size' 					=> scm_acf_get_field_to3( $arg, 7, 'minsize', 0 ),
+				'max_size' 					=> scm_acf_get_field_to3( $arg, 8, 'maxsize', 0 ),
+				'mime_types' 				=> scm_acf_get_field_to3( $arg, 9, 'mime', '' ),
+				'return_format' 			=> scm_acf_get_field_to3( $arg, 10, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
 			);
 
     	break;
 
     	case 'icon':
 
-    		$default = scm_acf_field_to3( $arg, 1, 'default', 'fa-star' );
+    		$default = scm_acf_get_field_to3( $arg, 1, 'default', 'fa-star' );
     		$no = isset( $choices['no'] );
     		$filter_group = '';
     		$new = '';
@@ -465,11 +463,11 @@ function scm_acf_field_type( $elem ) {
     		$field = array(
     			'type' 						=> 'font-awesome',
     			'default_value' 			=> ( strpos( $default, 'fa-' ) === 0 ? '' : 'fa-' ) . $default,
-				'filter' 					=> scm_acf_field_to3( $arg, 2, 'filter', '' ),
-				'save_format' 				=> scm_acf_field_to3( $arg, 3, 'save', 'class' ),
-				'enqueue_fa' 				=> scm_acf_field_to3( $arg, 4, 'enqueue', 0 ),
-				'allow_null' 				=> scm_acf_field_to3( $arg, 5, 'null', 0 ),
-				'fa_live_preview' 			=> scm_acf_field_to3( $arg, 6, 'preview', 1 ),
+				'filter' 					=> scm_acf_get_field_to3( $arg, 2, 'filter', '' ),
+				'save_format' 				=> scm_acf_get_field_to3( $arg, 3, 'save', 'class' ),
+				'enqueue_fa' 				=> scm_acf_get_field_to3( $arg, 4, 'enqueue', 0 ),
+				'allow_null' 				=> scm_acf_get_field_to3( $arg, 5, 'null', 0 ),
+				'fa_live_preview' 			=> scm_acf_get_field_to3( $arg, 6, 'preview', 1 ),
 				'filter_group' 				=> $filter_group,
 				'no_option' 				=> $no,
 			);
@@ -481,9 +479,9 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' 						=> 'date_picker',
-				'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'd-m-Y' ),
-				'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'd F Y' ),
-				'first_day' 				=> scm_acf_field_to3( $arg, 3, 'firstday', 1 ),
+				'return_format' 			=> scm_acf_get_field_to3( $arg, 1, 'return', 'd-m-Y' ),
+				'display_format' 			=> scm_acf_get_field_to3( $arg, 2, 'display', 'd F Y' ),
+				'first_day' 				=> scm_acf_get_field_to3( $arg, 3, 'firstday', 1 ),
 			);
 
     	break;
@@ -492,9 +490,9 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' 						=> 'date_time_picker',
-				'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'd-m-Y G:i' ),
-				'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'd F Y G:i' ),
-				'first_day' 				=> scm_acf_field_to3( $arg, 3, 'firstday', 1 ),
+				'return_format' 			=> scm_acf_get_field_to3( $arg, 1, 'return', 'd-m-Y G:i' ),
+				'display_format' 			=> scm_acf_get_field_to3( $arg, 2, 'display', 'd F Y G:i' ),
+				'first_day' 				=> scm_acf_get_field_to3( $arg, 3, 'firstday', 1 ),
 			);
 
     	break;
@@ -503,8 +501,8 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' 						=> 'time_picker',
-				'return_format' 			=> scm_acf_field_to3( $arg, 1, 'return', 'G:i' ),
-				'display_format' 			=> scm_acf_field_to3( $arg, 2, 'display', 'G:i' ),
+				'return_format' 			=> scm_acf_get_field_to3( $arg, 1, 'return', 'G:i' ),
+				'display_format' 			=> scm_acf_get_field_to3( $arg, 2, 'display', 'G:i' ),
 			);
 
     	break;
@@ -513,7 +511,7 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' => 'color_picker',
-				'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
+				'default_value' 			=> scm_acf_get_field_to3( $arg, 1, 'default', '' ),
 			);
 
     	break;
@@ -528,7 +526,7 @@ function scm_acf_field_type( $elem ) {
     	case 'second':
     	case 'msecond':
 
-    		$default = scm_acf_field_to3( $arg, 1, 'default', '' );
+    		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
 
     		switch ( $type ) {
     			case 'number': 		$place = $default;																	break;
@@ -545,14 +543,14 @@ function scm_acf_field_type( $elem ) {
     		$field = array(
 				'type' 						=> 'number',
 				'default_value' 			=> $default,
-				'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
-				'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
-				'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
-				'min' 						=> scm_acf_field_to3( $arg, 5, 'min', ( isset( $min ) ? $min : ( strpos( $extra , '-pos' ) !== false ? 0 : ( strpos( $extra , '-min' ) !== false ? -9999 : '' ) ) ) ),
-				'max' 						=> scm_acf_field_to3( $arg, 6, 'max', ( isset( $max ) ? $max : ( strpos( $extra , '-neg' ) !== false ? 0 : ( strpos( $extra , '-max' ) !== false ? 9999 : '' ) ) ) ),
-				'step' 						=> scm_acf_field_to3( $arg, 7, 'step', ( isset( $step ) ? $step : 1 ) ),
-				'readonly' 					=> scm_acf_field_to3( $arg, 8, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
-				'disabled' 					=> scm_acf_field_to3( $arg, 9, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
+				'placeholder' 				=> scm_acf_get_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
+				'prepend' 					=> scm_acf_get_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
+				'append' 					=> scm_acf_get_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
+				'min' 						=> scm_acf_get_field_to3( $arg, 5, 'min', ( isset( $min ) ? $min : ( strpos( $extra , '-pos' ) !== false ? 0 : ( strpos( $extra , '-min' ) !== false ? -9999 : '' ) ) ) ),
+				'max' 						=> scm_acf_get_field_to3( $arg, 6, 'max', ( isset( $max ) ? $max : ( strpos( $extra , '-neg' ) !== false ? 0 : ( strpos( $extra , '-max' ) !== false ? 9999 : '' ) ) ) ),
+				'step' 						=> scm_acf_get_field_to3( $arg, 7, 'step', ( isset( $step ) ? $step : 1 ) ),
+				'readonly' 					=> scm_acf_get_field_to3( $arg, 8, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
+				'disabled' 					=> scm_acf_get_field_to3( $arg, 9, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
 			);
 
     	break;
@@ -582,13 +580,13 @@ function scm_acf_field_type( $elem ) {
 
 			$field = array(
     			'type' 						=> 'text',
-				'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
-				'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
-				'prepend' 					=> scm_acf_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
-				'append' 					=> scm_acf_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
-				'maxlength' 				=> scm_acf_field_to3( $arg, 5, 'max', ( isset( $maxl ) ? $maxl : '' ) ),
-				'readonly' 					=> scm_acf_field_to3( $arg, 6, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
-				'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
+				'default_value' 			=> scm_acf_get_field_to3( $arg, 1, 'default', '' ),
+				'placeholder' 				=> scm_acf_get_field_to3( $arg, 2, 'placeholder', ( isset( $place ) ? $place : '' ) ),
+				'prepend' 					=> scm_acf_get_field_to3( $arg, 3, 'prepend', ( isset( $prepend ) ? $prepend : '' ) ),
+				'append' 					=> scm_acf_get_field_to3( $arg, 4, 'append', ( isset( $append ) ? $append : '' ) ),
+				'maxlength' 				=> scm_acf_get_field_to3( $arg, 5, 'max', ( isset( $maxl ) ? $maxl : '' ) ),
+				'readonly' 					=> scm_acf_get_field_to3( $arg, 6, 'read', ( isset( $read ) ? $read : ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ) ),
+				'disabled' 					=> scm_acf_get_field_to3( $arg, 7, 'disabled', ( isset( $dis ) ? $dis : ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ) ),
 			);
 
 		break;
@@ -597,13 +595,13 @@ function scm_acf_field_type( $elem ) {
 
 			$field = array(
 				'type' 						=> 'textarea',
-				'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
-				'placeholder' 				=> scm_acf_field_to3( $arg, 2, 'placeholder', '' ),
-				'rows' 						=> scm_acf_field_to3( $arg, 3, 'rows', 8 ),
-				'maxlength' 				=> scm_acf_field_to3( $arg, 4, 'max', '' ),
-				'new_lines' 				=> scm_acf_field_to3( $arg, 5, 'lines', ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ),
-				'readonly' 					=> scm_acf_field_to3( $arg, 6, 'read', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
-				'disabled' 					=> scm_acf_field_to3( $arg, 7, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
+				'default_value' 			=> scm_acf_get_field_to3( $arg, 1, 'default', '' ),
+				'placeholder' 				=> scm_acf_get_field_to3( $arg, 2, 'placeholder', '' ),
+				'rows' 						=> scm_acf_get_field_to3( $arg, 3, 'rows', 8 ),
+				'maxlength' 				=> scm_acf_get_field_to3( $arg, 4, 'max', '' ),
+				'new_lines' 				=> scm_acf_get_field_to3( $arg, 5, 'lines', ( strpos( $extra , '-no' ) !== false ? '' : ( strpos( $extra , '-br' ) !== false ? 'br' : 'wpautop' ) ) ),
+				'readonly' 					=> scm_acf_get_field_to3( $arg, 6, 'read', ( strpos( $extra , '-read' ) !== false ? 1 : 0 ) ),
+				'disabled' 					=> scm_acf_get_field_to3( $arg, 7, 'disabled', ( strpos( $extra , '-disabled' ) !== false ? 1 : 0 ) ),
 			);
 
     	break;
@@ -612,10 +610,10 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
     			'type' 						=> 'wysiwyg',
-    			'default_value' 			=> scm_acf_field_to3( $arg, 1, 'default', '' ),
-				'tabs' 						=> scm_acf_field_to3( $arg, 2, 'tabs', ( strpos( $extra, '-visual' ) !== false ? 'visual' : 'all' ) ),
-				'toolbar' 					=> scm_acf_field_to3( $arg, 3, 'toolbar', ( strpos( $extra, '-basic' ) !== false ? 'basic' : 'normal' ) ),
-				'media_upload' 				=> scm_acf_field_to3( $arg, 4, 'media', ( strpos( $extra, '-media' ) !== false ? 1 : 0 ) ),
+    			'default_value' 			=> scm_acf_get_field_to3( $arg, 1, 'default', '' ),
+				'tabs' 						=> scm_acf_get_field_to3( $arg, 2, 'tabs', ( strpos( $extra, '-visual' ) !== false ? 'visual' : 'all' ) ),
+				'toolbar' 					=> scm_acf_get_field_to3( $arg, 3, 'toolbar', ( strpos( $extra, '-basic' ) !== false ? 'basic' : 'normal' ) ),
+				'media_upload' 				=> scm_acf_get_field_to3( $arg, 4, 'media', ( strpos( $extra, '-media' ) !== false ? 1 : 0 ) ),
 			);
 
     	break;
@@ -624,8 +622,8 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
     			'type' 						=> 'limiter',
-				'character_number' 			=> scm_acf_field_to3( $arg, 1, 'max', ( isset( $max ) ? $max : 350 ) ),
-				'display_characters' 		=> scm_acf_field_to3( $arg, 2, 'display', ( isset( $chars ) ? $chars : ( strpos( $extra, '-chars' ) !== false ? 1 : 0 ) ) ),
+				'character_number' 			=> scm_acf_get_field_to3( $arg, 1, 'max', ( isset( $max ) ? $max : 350 ) ),
+				'display_characters' 		=> scm_acf_get_field_to3( $arg, 2, 'display', ( isset( $chars ) ? $chars : ( strpos( $extra, '-chars' ) !== false ? 1 : 0 ) ) ),
 			);
 
     	break;
@@ -634,11 +632,11 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' => 'repeater',
-				'button_label' => scm_acf_field_to3( $arg, 1, 'button', 'Aggiungi' ),
-				'min' => scm_acf_field_to3( $arg, 2, 'min', '' ),
-				'max' => scm_acf_field_to3( $arg, 3, 'max', '' ),
-				'layout' => scm_acf_field_to3( $arg, 4, 'layout', ( strpos( $extra , '-block' ) !== false ? 'block' : ( strpos( $extra , '-table' ) !== false ? 'table' : 'row' ) ) ),
-				'sub_fields' => scm_acf_field_to3( $arg, 5, 'sub', array() ),
+				'button_label' => scm_acf_get_field_to3( $arg, 1, 'button', 'Aggiungi' ),
+				'min' => scm_acf_get_field_to3( $arg, 2, 'min', '' ),
+				'max' => scm_acf_get_field_to3( $arg, 3, 'max', '' ),
+				'layout' => scm_acf_get_field_to3( $arg, 4, 'layout', ( strpos( $extra , '-block' ) !== false ? 'block' : ( strpos( $extra , '-table' ) !== false ? 'table' : 'row' ) ) ),
+				'sub_fields' => scm_acf_get_field_to3( $arg, 5, 'sub', array() ),
 			);
 
     	break;
@@ -647,10 +645,10 @@ function scm_acf_field_type( $elem ) {
 
     		$field = array(
 				'type' => 'flexible_content',
-				'button_label' => scm_acf_field_to3( $arg, 1, 'button', '+' ),
-				'min' => scm_acf_field_to3( $arg, 2, 'min', '' ),
-				'max' => scm_acf_field_to3( $arg, 3, 'max', '' ),
-				'layouts' => scm_acf_field_to3( $arg, 4, 'layouts', array() ),
+				'button_label' => scm_acf_get_field_to3( $arg, 1, 'button', '+' ),
+				'min' => scm_acf_get_field_to3( $arg, 2, 'min', '' ),
+				'max' => scm_acf_get_field_to3( $arg, 3, 'max', '' ),
+				'layouts' => scm_acf_get_field_to3( $arg, 4, 'layouts', array() ),
 			);
 
     	break;

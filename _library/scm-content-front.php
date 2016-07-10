@@ -1,26 +1,14 @@
 <?php
 
 /**
-* scm-content-front.php.
-*
-* SCM front end functions.
+* SCM echo front elements (head menu, pagination, footer credits ...).
 *
 * @link http://www.studiocreativo-m.it
 *
 * @package SCM
-* @subpackage Content/Front
+* @subpackage 5-Content/Front
 * @since 1.0.0
 */
-
-/**
-* @global int $SCM_indent Used for formatting HTML
-*/
-$SCM_indent         = 1;
-
-/**
-* @global int $SCM_page_id Current page id
-*/
-$SCM_page_id        = 0;
 
 // ------------------------------------------------------
 //
@@ -36,16 +24,17 @@ $SCM_page_id        = 0;
 // ------------------------------------------------------
 
 /**
-* [GET] Pagination
+* [ECHO|GET] Pagination
 *
 * @param {query} query Current query.
 * @param {string=} page Query argument for pagination (default is 'paged').
 * @param {string=} anchor Optional anchor attached (default is '').
+* @param {bool=} echo Echo content if true, returns it otherwise (default is true).
 * @return {string} HTML pagination.
 */
-function scm_pagination( $query = NULL, $page = 'paged', $anchor = '' ) {
+function scm_pagination( $query = NULL, $page = 'paged', $anchor = '', $echo = true ) {
 
-    global $wp_query, $wp_rewrite;
+    global $wp_query, $wp_rewrite, $SCM_indent;
 
     //Override global WordPress query if custom used
     if ( $query ) $wp_query = $query;
@@ -76,10 +65,15 @@ function scm_pagination( $query = NULL, $page = 'paged', $anchor = '' ) {
     $pagination['base'] .=  $anchor;
 
     //Output
+    $pag = '';
     if( 1 < $wp_query->max_num_pages )
-        return paginate_links( $pagination );
+        $pag = paginate_links( $pagination );
 
-    return '';
+    if( $echo )
+        indent( $SCM_indent + 1, $pag, 1 );
+    else
+        return $pag;
+
 }
 
 // ------------------------------------------------------
@@ -87,7 +81,7 @@ function scm_pagination( $query = NULL, $page = 'paged', $anchor = '' ) {
 // ------------------------------------------------------
 
 /**
-* [GET] Echo head logo
+* [ECHO] Echo head logo
 */
 function scm_logo() {
 
@@ -145,7 +139,7 @@ function scm_logo() {
 }
 
 /**
-* [GET] Echo head social links
+* [ECHO] Head social links
 */
 function scm_social_follow() {
 
@@ -188,7 +182,7 @@ function scm_social_follow() {
 }
 
 /**
-* [SET|GET] Echo head menu
+* [ECHO] Head menus
 *
 * @todo 1 - For each page with menu item linked, build auto sub menu items from sections #id:
 ```php
@@ -308,7 +302,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
 }
 
 /**
-* [GET] Head menu
+* [ECHO] Head menu
 *
 * @param {string=} id (default is 'site-navigation' ).
 * @param {string=} class (default is 'navigation full' ).
@@ -420,7 +414,7 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
      * @link http://www.studiocreativo-m.it
      *
      * @package SCM
-     * @subpackage Content/Front
+     * @subpackage 5-Content/Front
      * @since 1.0.0
      */
     class Sublevel_Walker extends Walker_Nav_Menu {
@@ -484,52 +478,12 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
 // 3.0 FRONT CONTENT
 // ------------------------------------------------------
 
-/**
-* [GET] Column data
-*
-* @param {int=} counter Column counter (default is 0).
-* @param {int=} size Column counter size (default is 0).
-* @return {array} Array containing 'count' and 'data'.
-*/
-function scm_column_data( $counter = 0, $size = 0 ) {
-
-    if( $counter == 1 && $size == 1 )
-        return array( 'count' => 0, 'data' => 'solo' );
-    elseif( $counter == $size || $counter > 1 )
-        return array( 'count' => $counter, 'data' => 'first' );
-    elseif( $counter == 1 )
-        return array( 'count' => 0, 'data' => 'last' );
-    else
-        return array( 'count' => $counter, 'data' => 'middle' );
-}
-
-/**
-* [GET] Column class
-*
-* @param {int=} current Current column (default is 0).
-* @param {int=} total Column total (default is 0).
-* @return {string} String class.
-*/
-function scm_count_class( $current = 0, $total = 0 ) {
-
-    $class = '';
-
-    if( $current == 1 )
-        $class .= ' first';
-    if( $current == $total )
-        $class .= ' last';
-
-    $class .= ' count-' . ( $current );
-
-    return $class;
-}
-
 // ------------------------------------------------------
 // 4.0 FRONT FOOTER
 // ------------------------------------------------------
 
 /**
-* [SET] Echo footer credits
+* [ECHO] Footer credits
 */
 function scm_credits() {
 
@@ -562,7 +516,7 @@ function scm_credits() {
 }
 
 /**
-* [SET] Echo footer top of page
+* [ECHO] Footer top of page
 */
 function scm_top_of_page() {
 
