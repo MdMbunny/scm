@@ -413,7 +413,7 @@ function scm_acf_field_class( $name = '', $field = 0, $width = 100, $logic = 0, 
 * @param {string=} label Field label (default is '').
 * @return {array} Field.
 */
-function scm_acf_field_attribites( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+function scm_acf_field_attributes( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
 	return scm_acf_helper( $name, $field, array('type' => 'attributes', 'label' => $label), $width, $logic, $required );
 }
 

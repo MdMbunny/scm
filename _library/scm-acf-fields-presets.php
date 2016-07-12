@@ -113,7 +113,7 @@ function scm_acf_preset_column_width( $name = '', $width = 100, $logic = 0, $req
 	$fields[] = scm_acf_field_select( $name . 'column-width', array( 
 		'type'=>'2-columns_width',
 		'choices'=>array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ),
-	), $width, $logic, $required )
+	), $width, $logic, $required );
 
 	return $fields;
 }
@@ -131,7 +131,7 @@ function scm_acf_preset_column_width( $name = '', $width = 100, $logic = 0, $req
 * @param {string} instructions
 * @return {array} Fields.
 */
-function scm_acf_preset_behaviour( $name = '', $w1 = 33, $w2 = 33, $w3 = 34, $w4 = 0 $logic = 0, $required = 0, $instructions = '' ) {
+function scm_acf_preset_behaviour( $name = '', $w1 = 33, $w2 = 33, $w3 = 34, $w4 = 0, $logic = 0, $required = 0, $instructions = '' ) {
 
 	$name = ( $name ? $name . '-' : '');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Comportamenti', SCM_THEME ) );
@@ -139,7 +139,7 @@ function scm_acf_preset_behaviour( $name = '', $w1 = 33, $w2 = 33, $w3 = 34, $w4
 	$fields[] = scm_acf_field( $name . 'alignment', array( 'select-alignment', array( 'default' => __( 'Allineamento generale', SCM_THEME ) ) ), '', $w3, $logic, $required );
 	$fields[] = scm_acf_field_select( $name . 'float', 'float', $w2, $logic, $required );
 	$fields[] = scm_acf_field_select( $name . 'overlay', 'overlay', $w3, $logic, $required );
-	if( $w4 ) $fields[] = scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', $width );
+	if( $w4 ) $fields[] = scm_acf_field( $name . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', $w4, $logic, $required );
 
 	return $fields;
 }

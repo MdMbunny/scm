@@ -133,7 +133,7 @@ $tax = new Custom_Taxonomy( $args );
         *
         * Hooked by 'admin_menu'
         */
-        protected function remove_metaboxes() {
+        function remove_metaboxes() {
             foreach ($this->types as $type) {
                 remove_meta_box( $this->slug . 'div', $type, 'side');
                 remove_meta_box( 'tagsdiv-' . $this->slug, $type, 'side');

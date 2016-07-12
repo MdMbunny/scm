@@ -317,6 +317,7 @@ function scm_hook_acf_install() {
         ) );
         $groups[] = $page_footer;
 
+        // + CUSTOM TYPES
         foreach ($SCM_types['custom'] as $slug => $title) {
             if($slug=='slides'){
                 $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
@@ -331,6 +332,8 @@ function scm_hook_acf_install() {
                 $group = scm_acf_group( __( 'Opzioni '. $obj->singular, SCM_THEME ), $slug . '-single' );
                 $group['location'][] = scm_acf_group_location( $slug );
                 $group['fields'] = call_user_func( $fun );
+                
+                // SCM Filter: Passing Group - Receiving Group
                 $group = apply_filters( 'scm_filter_register_' . str_replace( '_', '-', $slug ), $group );
                 $groups[] = $group;
             }

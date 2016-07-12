@@ -45,7 +45,7 @@ if ( ! class_exists( 'Duplicate_Post' ) ) {
          *
          * Hooked by 'admin_action_duplicate'
          */
-        protected function duplicate(){
+        function duplicate(){
 
             global $wpdb;
 
@@ -124,7 +124,7 @@ if ( ! class_exists( 'Duplicate_Post' ) ) {
          * @param {Object} post Post object.
          * @return {array} Modified list of actions.
          */
-        protected function add_link( $actions = array(), $post = NULL ) {
+        function add_link( $actions = array(), $post = NULL ) {
             if( is_null( $post ) ) return $actions;
             if( current_user_can( 'manage_options' ) || current_user_can( 'publish_' . $post->post_type ) ) {
                 $actions['duplicate'] = '<a href="admin.php?action=duplicate&amp;post=' . $post->ID . '" title="' . __( 'Duplica questo oggetto', $this->lang ) . '" rel="permalink">' . __( 'Duplica', $this->lang ) . '</a>';

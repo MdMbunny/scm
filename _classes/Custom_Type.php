@@ -182,7 +182,7 @@ $type = new Custom_Type( $args );
         * @param {array} menu_order Original menu order array (default is empty array).
         * @return {array} Modified menu order array.
         */
-        protected function admin_menu_order( $menu_order = array() ) {
+        function admin_menu_order( $menu_order = array() ) {
 
             $scm_menu = ( $this->menu && is_array( $menu_order ) && is_array( $menu_order[ $this->menu ] ) ? $menu_order[ $this->menu ] : 0 );
             $this->menupos = ( $this->menupos ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
@@ -201,7 +201,7 @@ $type = new Custom_Type( $args );
         * @param {array} columns Original columns array (default is empty array).
         * @return {array} Modified columns array.
         */
-        protected function admin_columns( $columns = array() ) {
+        function admin_columns( $columns = array() ) {
 
             $columns['id'] = __( 'ID', $this->lang );
             $taxonomies = get_object_taxonomies( $this->slug, 'objects' );
@@ -221,7 +221,7 @@ $type = new Custom_Type( $args );
         * @param {string=} column Column name (default is '').
         * @param {int=} column Post ID (default is 0).
         */
-        protected function manage_admin_columns( $column = '', $post_id = 0 ) {
+        function manage_admin_columns( $column = '', $post_id = 0 ) {
 
             if( !$post_id ) return;
 
@@ -266,7 +266,7 @@ $type = new Custom_Type( $args );
         * @param {string=} column Column name (default is '').
         * @param {int=} column Post ID (default is 0).
         */
-        protected function admin_edit_page_load() {
+        function admin_edit_page_load() {
             add_filter( 'request', array( &$this, 'admin_orderby' ) );
         }
         
@@ -278,7 +278,7 @@ $type = new Custom_Type( $args );
         * @param {array} list Posts list.
         * @return {array} Modified posts list.
         */
-        protected function admin_orderby( $list = NULL ) {
+        function admin_orderby( $list = NULL ) {
             
             if ( !is_null( $list ) && isset( $list['post_type'] ) && $this->slug == $list['post_type'] ) {
 
@@ -300,7 +300,7 @@ $type = new Custom_Type( $args );
         *
         * Hooked by 'admin_head'
         */
-        protected function admin_elems_hide(){
+        function admin_elems_hide(){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;
@@ -319,7 +319,7 @@ $type = new Custom_Type( $args );
         *
         * Hooked by 'admin_bar_menu'
         */
-        protected function admin_bar_hide( $wp_admin_bar ){
+        function admin_bar_hide( $wp_admin_bar ){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;
@@ -333,7 +333,7 @@ $type = new Custom_Type( $args );
         *
         * Hooked by 'admin_menu'
         */
-        protected function admin_menu_hide(){
+        function admin_menu_hide(){
 
             if( current_user_can( 'publish_' . $this->cap_plural ) )
                 return;

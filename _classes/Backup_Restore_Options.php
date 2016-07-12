@@ -70,7 +70,7 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
 		*
 		* Hooked by 'admin_menu'
 		*/
-		protected function admin_menu() {
+		function admin_menu() {
 			$page = add_submenu_page( 'tools.php', __( 'Backup Options', $this->lang ), __( 'Backup Options', $this->lang ), 'manage_options', 'backup-options', array( &$this, 'options_page' ) );
 			add_action( 'load-{$page}', array( &$this, 'import_export' ) );
 		}
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
 		*
 		* Hooked by 'admin_menu'
 		*/
-		protected function import_export() {
+		function import_export() {
 
 			if( isset( $_GET['action'] ) && ( $_GET['action'] == 'download' ) ) {
 				header( 'Cache-Control: public, must-revalidate' );
@@ -109,7 +109,7 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
 		/**
 		* Create options page
 		*/
-		protected function options_page() { ?>
+		function options_page() { ?>
 
 			<div class="wrap">
 				<?php screen_icon(); ?>

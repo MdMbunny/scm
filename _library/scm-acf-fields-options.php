@@ -45,7 +45,7 @@ function scm_acf_options_default_types( $cont = array(), $default = array() ) {
 
 	$fields = array();
 
-	$fields[] = scm_acf_helper( 'default-types-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
+	$fields[] = scm_acf_field( 'default-types-list', array( 'type' => 'checkbox', 'default' => $default, 'choices' => $cont, 'toggle' => 1 ) );
 
 	return $fields;
 }
@@ -61,7 +61,7 @@ function scm_acf_options_default_taxonomies( $cont = array(), $default = array()
 
 	$fields = array();
 
-	$fields[] = scm_acf_helper( 'default-taxonomies-list', array( 'default' => $default, 'choices' => $cont, 'toggle' => 1 ), array( 'type' => 'checkbox' ) );
+	$fields[] = scm_acf_field( 'default-taxonomies-list', array( 'type' => 'checkbox', 'default' => $default, 'choices' => $cont, 'toggle' => 1 ) );
 
 	return $fields;
 }
