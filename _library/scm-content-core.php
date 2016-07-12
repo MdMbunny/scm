@@ -366,8 +366,10 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $layout = $content['column-width'];
 
             // ++todo 1
-            $content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && !$content['image'] );
+            $content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) );
+            //$content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) );
 
+            //consoleLog($content);
             if( !$content['inherit'] ){
 
                 if( strpos( $layout, '/' ) !== false ){
@@ -376,6 +378,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                     $size = (int)$layout[0] / (int)$layout[1];
                     $counter += $size;
                     $data = scm_utils_data_column( $counter, $size );
+                    $counter = $data['count'];
 
                     $content['attributes'] = ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '"' . $content['attributes'];
                     $content['class'] .= ' ' . 'column-layout';

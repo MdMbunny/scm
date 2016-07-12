@@ -37,11 +37,11 @@
 */
 function scm_utils_data_column( $counter = 0, $size = 0 ) {
 
-    if( $counter === 1 && $size === 1 )
+    if( $counter == 1 && $size == 1 )
         return array( 'count' => 0, 'data' => 'solo' );
-    elseif( $counter === $size || $counter > 1 )
+    elseif( $counter == $size || $counter > 1 )
         return array( 'count' => $counter, 'data' => 'first' );
-    elseif( $counter === 1 )
+    elseif( $counter == 1 )
         return array( 'count' => 0, 'data' => 'last' );
     else
         return array( 'count' => $counter, 'data' => 'middle' );

@@ -244,7 +244,7 @@ function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = 0, $m
 * @param {int=} opt Advanced options preset [0|1|2] (default is 1).
 * @return {array} Modified list of layouts.
 */
-function scm_acf_layouts_advanced_options( $list = array(), $opt = 0 ) {
+function scm_acf_layouts_advanced_options( $list = array(), $opt = 1 ) {
 
 	$list = toArray( $list, true, true);
 	if( !$list ) return array();

@@ -50,19 +50,19 @@ function scm_acf_fields_advanced_options( $name = '', $opt = 0 ) {
 
 	switch ( $opt ) {
 		case 2:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 25 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 10, 15, 45 ) );
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 15, 15, 45 ) );
 			break;
 		case 1:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 25 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 25 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 40 ) );
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 45 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 34, 33, 33 ) );
 			break;
 		
 		default:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 20 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 20, 20, 20, 20 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 40 ) );
+			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
+			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 45 ) );
+			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ) );
 			break;
 	}
 	
