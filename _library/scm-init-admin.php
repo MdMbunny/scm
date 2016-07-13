@@ -686,8 +686,8 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'name'               => 'SCM API',
             'slug'               => 'scm-api',
             'source'             => 'scm-api.zip',
-            'required'           => true,
-            'force_activation'   => true,
+            'required'           => false,
+            'force_activation'   => false,
             'force_deactivation' => false,
         ),
 
