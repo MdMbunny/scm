@@ -435,6 +435,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 /**
 * [ECHO] Content
 *
+* It uses @see scm_contents_single() to filter the Contents array.
+*
 * Hooks:
 ```php
 // Filter any $content before echoed
@@ -479,7 +481,23 @@ function scm_contents( $content = NULL ) {
 
     foreach ( $content as $args ) {
 
-        $default = array(
+        $args = scm_contents_single( $args );
+
+        do_action( 'scm_action_echo_content', $args, $SCM_indent );
+        do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
+
+        $SCM_indent--;
+    }
+}
+
+/**
+* [GET] Content Helper
+*
+* @param {array} content Single content (default is empty array).
+* @return {array} Modified Single content.
+*/
+function scm_contents_single( $args = array() ) {
+    $default = array(
             'acf_fc_layout' => '',
             'id' => '',
             'class' => '',
@@ -487,235 +505,231 @@ function scm_contents( $content = NULL ) {
             'style' => '',
         );
 
-        $args = array_merge( $default, $args );
+    $args = array_merge( $default, $args );
 
-        $element = $args['acf_fc_layout'];
-        $class = $args['class'];
-        $id = $args['id'];
-        $attributes = $args['attributes'];
-        $style = $args['style'];
+    $element = $args['acf_fc_layout'];
+    $class = $args['class'];
+    $id = $args['id'];
+    $attributes = $args['attributes'];
+    $style = $args['style'];
 
-        switch ($element) {
+    switch ($element) {
 
 // Dynamic Objects
 
-            case 'layout-modules':
-                $args['modules'] = scm_field( 'modules', '', $post->ID );
-                scm_content( $args );
-            break;
+        case 'layout-modules':
+            $args['modules'] = scm_field( 'modules', '', $post->ID );
+            scm_content( $args );
+        break;
 
-            case 'layout-banner':
-            case 'layout-module':
-            case 'layout-section':
+        case 'layout-banner':
+        case 'layout-module':
+        case 'layout-section':
 
-                scm_containers( array( $args ), 'row' );
+            scm_containers( array( $args ), 'row' );
 
-            break;
+        break;
 
-            case 'layout-indirizzo':
+        case 'layout-indirizzo':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-address.php', array(
-                    'cont' => $args,
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-address.php', array(
+                'cont' => $args,
+            ));
 
-            break;
+        break;
 
-            case 'layout-map':
+        case 'layout-map':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
-                    'cont' => $args,
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-map.php', array(
+                'cont' => $args,
+            ));
 
-            break;
+        break;
 
-            case 'layout-contatti':
-            case 'layout-social_follow':
-            case 'layout-elenco_puntato':
-            case 'layout-pulsanti':
-            case 'layout-link':
-            case 'layout-pagine':
-            case 'layout-media':
+        case 'layout-contatti':
+        case 'layout-social_follow':
+        case 'layout-elenco_puntato':
+        case 'layout-pulsanti':
+        case 'layout-link':
+        case 'layout-pagine':
+        case 'layout-media':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-list.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-list.php', array(
+                'cont' => $args
+            ));
 
-            break;
+        break;
 
-            // ++todo 1
-            case 'layout-slider':
+        // ++todo 1
+        case 'layout-slider':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-slider.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-slider.php', array(
+                'cont' => $args
+            ));
 
-            break;
+        break;
 
-            case 'layout-form':
+        case 'layout-form':
 
-                if( !shortcode_exists('contact-form-7') )
-                    continue;
+            if( !shortcode_exists('contact-form-7') )
+                continue;
 
-                $prev = $post->ID;
-                $single = $args['form'];
-                if(!$single) continue;
-                $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
-                setup_postdata( $post );
+            $prev = $post->ID;
+            $single = $args['form'];
+            if(!$single) continue;
+            $post = ( is_numeric( $single ) ? get_post( $single ) : $single );
+            setup_postdata( $post );
 
-                indent( $SCM_indent + 1, do_shortcode('[contact-form-7 id="' . get_the_ID() . '" title="' . get_the_title() . '"]'), 2 );
-                wp_reset_query();
-            break;
+            indent( $SCM_indent + 1, do_shortcode('[contact-form-7 id="' . get_the_ID() . '" title="' . get_the_title() . '"]'), 2 );
+            wp_reset_query();
+        break;
 
 // Static Objects
 
-            case 'layout-login':
+        case 'layout-login':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-login.php', array(
-                    'cont' => $args,
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-login.php', array(
+                'cont' => $args,
+            ));
 
-            break;
+        break;
 
-            case 'layout-share':
+        case 'layout-share':
 
-                if( !shortcode_exists('ssba') )
-                    continue;
+            if( !shortcode_exists('ssba') )
+                continue;
 
-                indent( $SCM_indent + 1, do_shortcode('[ssba]'), 2 );
+            indent( $SCM_indent + 1, do_shortcode('[ssba]'), 2 );
 
-            break;
+        break;
 
-            case 'layout-separatore':
+        case 'layout-separatore':
 
-                $height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 1 );
-                $style = 'height:' . $height . ';';
+            $height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 1 );
+            $style = 'height:' . $height . ';';
 
-                $line = ( $args['line'] ?: 'no' );
+            $line = ( $args['line'] ?: 'no' );
 
-                if( $line != 'no' ){
+            if( $line != 'no' ){
 
-                    $svg_args = array();
-                    $svg_args['height'] = $height;
-                    $svg_args['y1'] = $svg_args['y2'] = scm_utils_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
-                    $svg_args['color'] = scm_utils_preset_rgba( $args['color-color'], $args['color-alpha'], '#ddd' );
-                    $svg_args['stroke'] = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 5 );
-                    $svg_args['cap'] = ( $args['cap'] ?: 'round' );
-                    $svg_args['space'] = scm_utils_preset_size( $args[ 'space-number' ], $args[ 'space-units' ], 26 );
-                    $svg_args['dash'] = scm_utils_preset_size( $args[ 'dash-number' ], $args[ 'dash-units' ], 8 );
+                $svg_args = array();
+                $svg_args['height'] = $height;
+                $svg_args['y1'] = $svg_args['y2'] = scm_utils_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
+                $svg_args['color'] = scm_utils_preset_rgba( $args['color-color'], $args['color-alpha'], '#ddd' );
+                $svg_args['stroke'] = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 5 );
+                $svg_args['cap'] = ( $args['cap'] ?: 'round' );
+                $svg_args['space'] = scm_utils_preset_size( $args[ 'space-number' ], $args[ 'space-units' ], 26 );
+                $svg_args['dash'] = scm_utils_preset_size( $args[ 'dash-number' ], $args[ 'dash-units' ], 8 );
 
-                    indent( $SCM_indent, svgLine( $svg_args, $line, $SCM_indent ), 2 );
+                indent( $SCM_indent, svgLine( $svg_args, $line, $SCM_indent ), 2 );
 
-                }else{
+            }else{
 
-                    indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ) . '<!-- divider -->', 2 );
+                indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ) . '<!-- divider -->', 2 );
 
-                }
+            }
 
-            break;
+        break;
 
-            case 'layout-icona':
+        case 'layout-icona':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-icon.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-icon.php', array(
+                'cont' => $args
+            ));
 
-            break;
+        break;
 
-            case 'layout-logo-icona':
-            case 'layout-logo':
-            case 'layout-immagine':
-            case 'layout-image':
-            case 'layout-thumbs':
+        case 'layout-logo-icona':
+        case 'layout-logo':
+        case 'layout-immagine':
+        case 'layout-image':
+        case 'layout-thumbs':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-image.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-image.php', array(
+                'cont' => $args
+            ));
 
-            break;
+        break;
 
-            case 'layout-quote':
-            case 'layout-copy':
-            case 'layout-cf':
-            case 'layout-piva':
-            case 'layout-intestazione':
-            case 'layout-titolo':
-            case 'layout-sottotitolo':
-            case 'layout-titolo-empty':
-            case 'layout-excerpt':
+        case 'layout-quote':
+        case 'layout-copy':
+        case 'layout-cf':
+        case 'layout-piva':
+        case 'layout-intestazione':
+        case 'layout-titolo':
+        case 'layout-sottotitolo':
+        case 'layout-titolo-empty':
+        case 'layout-excerpt':
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                'cont' => $args
+            ));
 
-            break;
-            
-            // ++todo 2
-            case 'layout-data':
+        break;
+        
+        // ++todo 2
+        case 'layout-data':
 
-                $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
-                $args['title'] = ( isset( $args[ 'date' ] ) ? date_i18n( $date_format, strtotime( $args[ 'date' ] ) ) : ( get_the_date( $date_format ) ?: '' ) );
+            $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
+            $args['title'] = ( isset( $args[ 'date' ] ) ? date_i18n( $date_format, strtotime( $args[ 'date' ] ) ) : ( get_the_date( $date_format ) ?: '' ) );
 
-                $args['class'] = 'scm-date date' . is( $class );
+            $args['class'] = 'scm-date date' . is( $class );
 
-                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
-                    'cont' => $args
-                ));
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                'cont' => $args
+            ));
 
-            break;
+        break;
 
-            // ++todo 3
-            case 'layout-testo':
+        // ++todo 3
+        case 'layout-testo':
 
-                $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : scm_field( 'editor', '', get_the_ID() ) ) );
-                if(!$text) continue;
+            $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : scm_field( 'editor', '', get_the_ID() ) ) );
+            if(!$text) continue;
 
-                indent( $SCM_indent, $text, 1 );
+            indent( $SCM_indent, $text, 1 );
 
-            break;
+        break;
 
-            default:
+        default:
 
-                if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
+            if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
 
-                    $tax = str_replace( 'layout-SCMTAX-', '', $element );
-                    $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
+                $tax = str_replace( 'layout-SCMTAX-', '', $element );
+                $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
 
-                    $sep = $args['separator'];
+                $sep = $args['separator'];
 
-                    $args['title'] = '';
+                $args['title'] = '';
 
-                    if ( ! is_wp_error( $terms ) ) {
+                if ( ! is_wp_error( $terms ) ) {
 
-                        for ($i=0; $i < sizeof( $terms ) ; $i++){
+                    for ($i=0; $i < sizeof( $terms ) ; $i++){
 
-                            $term = $terms[$i];
-                            $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
+                        $term = $terms[$i];
+                        $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
 
-                            $args['title'] .= indent( $SCM_indent + 1 ) . '<' . ( $href ? 'a' : 'span' ) . ' class="term"' . $href . '>' . esc_html( $term->name ) . '</' . ( $href ? 'a' : 'span' ) . '>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : '' ) . lbreak();
+                        $args['title'] .= indent( $SCM_indent + 1 ) . '<' . ( $href ? 'a' : 'span' ) . ' class="term"' . $href . '>' . esc_html( $term->name ) . '</' . ( $href ? 'a' : 'span' ) . '>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : '' ) . lbreak();
 
-                        }
-
-                        $args['title'] = ( $args['title'] ?: '—' );
-
-                        Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
-                            'cont' => $args
-                        ));
                     }
 
-                }else{
+                    $args['title'] = ( $args['title'] ?: '—' );
 
-                    scm_post( $args );
-
+                    Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                        'cont' => $args
+                    ));
                 }
 
-            break;
-        }
+            }else{
 
-        do_action( 'scm_action_echo_content', $content, $SCM_indent );
-        do_action( 'scm_action_echo_content_' . $type, $content, $SCM_indent );
+                scm_post( $args );
 
-        $SCM_indent--;
+            }
+
+        break;
     }
+
+    return $args;
 }
 
 // ------------------------------------------------------

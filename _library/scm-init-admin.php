@@ -622,7 +622,7 @@ function scm_hook_admin_upload_custom_column( $column_name = NULL, $id = NULL ) 
         $meta = wp_get_attachment_metadata( $id );
 
         // ++todo 1
-        $meta = explode( '/', $meta['file'] );
+        $meta = explode( '/', ( $meta ? $meta['file'] : '' ) );
         $folder = ucfirst( ( isset( $meta['file'] ) ? $meta[0] : 'uploads' ) );
 
         echo $folder;
