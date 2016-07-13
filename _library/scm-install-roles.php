@@ -163,7 +163,7 @@ function scm_hook_roles_allowed_show( $user_search ) {
     $where = 'WHERE 1=1';
 
     // Temporarily remove this hook otherwise we might be stuck in an infinite loop
-    remove_action( 'pre_user_query', 'scm_roles_allowed_show' );
+    remove_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
 
     if( SCM_LEVEL > 0 ){
 
@@ -172,9 +172,9 @@ function scm_hook_roles_allowed_show( $user_search ) {
 
         foreach ( scm_roles_list() as $role => $value ) {
 
-            if( !$roles[$role] && SCM_ROLE != $role ){
+            if( !isset($roles[$role]) && SCM_ROLE != $role ){
                 foreach ( get_users( array( 'role' => $role ) ) as $user )
-                    $admin_ids[] = $user->id;
+                    $admin_ids[] = $user->ID;
             }
         }
 
@@ -188,7 +188,7 @@ function scm_hook_roles_allowed_show( $user_search ) {
     );
 
     // Re-add the hook
-    add_action( 'pre_user_query', 'scm_roles_allowed_show' );
+    add_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
 }
 
 /**
