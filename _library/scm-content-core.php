@@ -497,6 +497,8 @@ function scm_contents( $content = NULL ) {
 * @return {array} Modified Single content.
 */
 function scm_contents_single( $args = array() ) {
+    global $post;
+    
     $default = array(
             'acf_fc_layout' => '',
             'id' => '',
