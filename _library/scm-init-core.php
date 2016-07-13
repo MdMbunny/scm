@@ -113,13 +113,6 @@ function scm_hook_site_register_webfonts_google() {
 *
 * Hooked by 'wp_enqueue_scripts'
 * @subpackage 4-Init/Core/1-ENQUEUE
-*
-* @todo 1 - Se Header PRINT aggiungi:
-```php
-// SCM Print
-wp_register_style( 'print', SCM_URI_CSS . 'scm-print.css', false, null, 'print' );
-wp_enqueue_style( 'print' );
-```
 */
 function scm_hook_site_register_styles() {
 
@@ -131,7 +124,6 @@ function scm_hook_site_register_styles() {
     wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_VERSION );
     wp_enqueue_style( 'child' );
 
-    // ++todo 1
 }
 
 // ------------------------------------------------------

@@ -367,9 +367,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
             // ++todo 1
             $content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) );
-            //$content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) );
+            //$content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( isset( $content['image'] ) && !$content['image'] );
 
-            //consoleLog($content);
             if( !$content['inherit'] ){
 
                 if( strpos( $layout, '/' ) !== false ){
@@ -465,6 +464,9 @@ function scm_contents( $content = NULL ) {
     if( is_null( $content ) ) return;
 
     $content = apply_filters( 'scm_filter_echo_content', $content );
+
+    if( is_null( $content ) || !$content ) return;
+
     if( $content['acf_fc_layout'] ) $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );                
 
     $content = toArray( $content, true, true );
