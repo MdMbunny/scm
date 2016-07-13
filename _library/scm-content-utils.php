@@ -217,7 +217,7 @@ function scm_utils_link_gallery( $content = array(), $field = 'galleria-images',
         $link .= ' data-popup-dates="' . scm_utils_link_gallery_helper( $content, 'dates', 0 ) . '"';
         $link .= ' data-popup-modifies="' . scm_utils_link_gallery_helper( $content, 'modifies', 0 ) . '"';
         $link .= ' data-popup-filenames="' . scm_utils_link_gallery_helper( $content, 'filenames', 0 ) . '"';
-        $link .= ' data-popup-types="' . scm_utils_link_gallery_helper( $content, 'types', 0 ) . '"';
+        $link .= ' data-popup-types="' . scm_utils_link_gallery_helper( $content, 'types', 0 ) . '"';        
 
     return $link;
 }
@@ -230,9 +230,9 @@ function scm_utils_link_gallery( $content = array(), $field = 'galleria-images',
 * @param {misc} fallback Fallback (default is 0).
 * @return {misc} Attribute value, or fallback.
 */
-function scm_utils_link_gallery_helper( $content = NULL, $attr = NULL, $fallback = 0 ){
+function scm_utils_link_gallery_helper( $content, $attr, $fallback = 0 ){
 
-    if( is_null( $content ) || is_null( $attr ) ) return $fallback;
+    if( !$content || !$attr ) return $fallback;
 
     $th = ( isset( $content['modules'] ) ? getByKey( $content['modules'], $attr ) : NULL );
 

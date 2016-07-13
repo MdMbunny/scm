@@ -635,6 +635,44 @@ function endsWith($str, $needle = '') {
 // ------------------------------------------------------
 
 /**
+ * [GET] Is array or object
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array or Object to check.
+ * @return {bool} Is array or object
+ */
+function is_arr( $arr ){
+
+    if( !is_array( $arr ) && !is_object( $arr ) )
+        return false;
+
+    return true;
+}
+
+/**
+ * [GET] Is indexed array, associative array or object
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array or Object to check.
+ * @return {string} Is indexed array, associative array or object [arr|asso|obj]
+ */
+function is_list( $arr ){
+
+    if( !is_arr( $arr ) )
+        return '';
+
+    if( is_object( $arr ) )
+        return 'obj';
+
+    if( is_asso( $arr ) )
+        return 'asso';
+
+    return 'arr';
+}
+
+/**
  * [GET] Is associative array
  *
  * Example usage:
@@ -656,7 +694,7 @@ print( is_asso( $asso ) ) // true
  */
 function is_asso( $arr ){
 
-    if( !is_array( $arr ) )
+    if( !is_arr( $arr ) )
         return null;
 
     foreach( array_keys( $arr ) as $key){
@@ -680,7 +718,7 @@ function is_asso( $arr ){
  */
 function ex_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
     $ret = '';
-    if(!isset($var) || !is_array($var) || !$attr || !is_string($attr) || !isset($var[$attr]))
+    if(!isset($var) || !is_asso($var) || !$attr || !is_string($attr) || !isset($var[$attr]))
         $ret = $fall;
     else
         $ret = $var[$attr];
@@ -704,7 +742,7 @@ function ex_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
  */
 function is_attr( $var, $attr, $fall = '', $pre = '', $app = '' ){
     $ret = '';
-    if( !isset($var) || !is_array($var) || !isset($attr) || !exists($attr) || !is_string($attr) || !isset($var[$attr]) || !$var[$attr] )
+    if( !isset($var) || !is_asso($var) || !isset($attr) || !exists($attr) || !is_string($attr) || !isset($var[$attr]) || !$var[$attr] )
         $ret = $fall;
     else
         $ret = $var[$attr];
@@ -943,9 +981,9 @@ print( $val ) // 'value'
  * @return {misc|null} NULL if the key does not exist, otherwise it returns the value of the key.
  */
 function getByKey( $arr, $key ){
-    if( !isset( $arr ) || !is_array( $arr ) ) return NULL;
+    if( !isset( $arr ) || !is_arr( $arr ) ) return NULL;
     foreach ($arr as $k => $v) {
-        if( $k === $key ) return $v;
+        if( $k == $key ) return $v;
     }
     return NULL;
 }
@@ -970,7 +1008,7 @@ print( $key ) // 'key'
 function getByValue( $arr, $value ){
     if( !isset( $arr ) || !is_array( $arr ) ) return NULL;
     foreach ($arr as $key => $elem) {
-        if( $elem === $value ) return $key;
+        if( $elem == $value ) return $key;
     }
     return NULL;
 }
