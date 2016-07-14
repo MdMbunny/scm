@@ -371,53 +371,53 @@ function scm_acf_options_styles() {
 */
 function scm_acf_options_layout( $name = '' ) {
 
-	$name = ( $name ? $name . '-layout' : 'layout');
+	$name = ( $name ? $name . '-layout-' : 'layout');
 
 	$fields = array();
 
 	$fields[] = scm_acf_field_select( $name . '-alignment', 'alignment' );
 	
 	// conditional
-	$fields[] = scm_acf_field_select( $name . 'page', array(
+	$fields[] = scm_acf_field_select( $name . '-page', array(
 		'type'=>'main_layout',
 		'label'=>__( 'Larghezza Pagine', SCM_THEME ),
 	) );
 	
 	$layout = array(
-		'field' => $name . 'page',
+		'field' => $name . '-page',
 		'operator' => '==',
 		'value' => 'full',
 	);
 
-		$fields[] = scm_acf_field_select( $name . 'head', array( 
+		$fields[] = scm_acf_field_select( $name . '-head', array( 
 			'type'=>'main_layout',
 			'label'=> __( 'Larghezza Header', SCM_THEME ),
 			'default'=>'responsive',
 		), 34, $layout );
-		$fields[] = scm_acf_field_select( $name . 'content', array( 
+		$fields[] = scm_acf_field_select( $name . '-content', array( 
 			'type'=>'main_layout',
 			'label'=> __( 'Larghezza Contenuti', SCM_THEME ),
 			'default'=>'responsive',
 		), 33, $layout );
-		$fields[] = scm_acf_field_select( $name . 'foot', array( 
+		$fields[] = scm_acf_field_select( $name . '-foot', array( 
 			'type'=>'main_layout',
 			'label'=> __( 'Larghezza Footer', SCM_THEME ),
 			'default'=>'responsive',
 		), 33, $layout );
-		$fields[] = scm_acf_field_select( $name . 'menu', array( 
+		$fields[] = scm_acf_field_select( $name . '-menu', array( 
 			'type'=>'main_layout',
 			'label'=> __( 'Larghezza Menu', SCM_THEME ),
 			'default'=>'responsive',
 		), 50, $layout );
-		$fields[] = scm_acf_field_select( $name . 'sticky', array( 
+		$fields[] = scm_acf_field_select( $name . '-sticky', array( 
 			'type'=>'main_layout',
 			'label'=> __( 'Larghezza Sticky Menu', SCM_THEME ),
 			'default'=>'responsive',
 		), 50, $layout );
 
-	$fields[] = scm_acf_field_select( $name . 'tofull', 'responsive_events', 34, 0, 0, __( 'Responsive to Full', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . 'tocolumn', 'responsive_events', 33, 0, 0, __( 'Responsive Columns', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . 'max', 'responsive_layouts', 33, 0, 0, __( 'Max Responsive Width', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-tofull', 'responsive_events', 34, 0, 0, __( 'Responsive to Full', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-tocolumn', 'responsive_events', 33, 0, 0, __( 'Responsive Columns', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-max', 'responsive_layouts', 33, 0, 0, __( 'Max Responsive Width', SCM_THEME ) );
 
 	return $fields;
 }

@@ -171,10 +171,10 @@ function scm_acf_field( $name = NULL, $default = NULL, $label = '', $width = 100
 	if( is_null( $name ) || is_null( $default ) ) return;
 
 	$def = get_defined_vars();
-	if( is_array( $name ) )
+	if( is_arr( $name ) )
         $def = wp_parse_args( $name, $def );
 
-	$type = ( is_string( $default ) ? $default : ( is_array( $default ) ? ( isset( $default[0] ) ? $default[0] : ( isset( $default['type'] ) ? $default['type'] : 'undefined-field' ) ) : 'undefined-field' ) );
+	$type = ( is_string( $default ) ? $default : ( is_arr( $default ) ? ( isset( $default[0] ) ? $default[0] : ( isset( $default['type'] ) ? $default['type'] : 'undefined-field' ) ) : 'undefined-field' ) );
 
 	if( is_asso( $default ) )
 		$def = array_merge( $def, $default );
@@ -447,22 +447,22 @@ function scm_acf_merge_conditions() {
 	$arr = array();
 
 	foreach ($logic as $value) {
-		if( !$value || !is_array( $value ) ) continue;
-		if( !isset( $value[0] ) ){
+		if( !$value || !is_arr( $value ) ) continue;
+		if( is_asso( $value ) ){
 			$arr[] = $value;
 		}else{
 			foreach ($value as $sub) {
 				
-				if( !$sub || !is_array( $sub ) )
+				if( !$sub || !is_arr( $sub ) )
 					continue;
 
-				if( !isset( $sub[0] ) ){
+				if( is_asso( $sub ) ){
 					$arr[] = $sub;				
 				}else{
 					foreach ($sub as $last) {
-						if( !$last || !is_array( $last ) )
+						if( !$last || !is_arr( $last ) )
 							continue;
-						if( !isset( $last[0] ) )
+						if( is_asso( $last ) )
 							$arr[] = $last;
 					}
 				}

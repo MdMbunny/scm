@@ -80,7 +80,7 @@ function scm_acf_helper_default( $arg = '', $width = 100, $logic = 0, $required 
 		'id' 					=> '',
     );
 
-	if( is_array( $arg ) ){
+	if( is_arr( $arg ) ){
         $default = array_merge( $default, $arg );
     }else{
     	$default['name'] = $arg;
