@@ -160,7 +160,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         	$caption = indent( $indent + 2 ) . openTag( 'div', $caption_id, $caption_class ) . lbreak();
             $caption .= indent( $indent + 3 ) . openTag( 'div', $slide_id, $slide_class, $slide_style, '' ) . lbreak();
 
-                if( !$slide[ 'slide-caption' ] ){
+                if( !isset( $slide[ 'slide-caption' ] ) || !$slide[ 'slide-caption' ] ){
                     $slide['slide-caption-title'] = $slide['slide-caption-cont'] = '';
                 }
                 
