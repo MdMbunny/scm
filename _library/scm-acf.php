@@ -92,8 +92,7 @@ function scm_acf_group( $name, $key = '', $attr = array() ) {
 */
 function scm_acf_group_register( $group ) {
 
-	$group['fields'] = scm_acf_key( $group['key'], $group['fields'] );
-	$group['fields'] = scm_acf_condition( $group['fields'] );
+	$group['fields'] = scm_acf_key_and_condition( $group['key'], $group['fields'] );
 	$group['key'] = scm_acf_get_key( $group['key'], 'group_' );
 
 	register_field_group( $group );
@@ -266,7 +265,7 @@ function scm_acf_layouts_advanced_options( $list = array(), $opt = 1 ) {
 * @param {array} list Required. Field or list of fields.
 * @return {array} Modified list of fields.
 */
-function scm_acf_key( $key, $list ) {
+function scm_acf_key_and_condition( $key, $list ) {
 
 	if( !$key || !$list )
 		return array();
@@ -279,17 +278,18 @@ function scm_acf_key( $key, $list ) {
 		$list[$i]['key'] = $new;
 
 		if( isset( $list[$i]['layouts'] ) ){
-			
 			for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
 				$lay = $list[$i]['layouts'][$j]['key'] = scm_acf_get_key( $new . $list[$i]['layouts'][$j]['name'], 'layout_' );
-				$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_key( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
+				$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_key_and_condition( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
 			}
 
 		}else if( isset( $list[$i]['sub_fields'] ) ){
-			$list[$i]['sub_fields'] = scm_acf_key( $new, $list[$i]['sub_fields'] );
+			$list[$i]['sub_fields'] = scm_acf_key_and_condition( $new, $list[$i]['sub_fields'] );
 		}
 
 		$list[$i]['key'] = scm_acf_get_key( $list[$i]['key'] . $list[$i]['type'], 'field_' );
+
+		$list[$i] = scm_acf_condition( $list[$i], $list );
 	}
 
 	return $list;
@@ -302,41 +302,32 @@ function scm_acf_key( $key, $list ) {
 *
 * @subpackage 2-ACF/Core/SET
 *
-* @param {array} fields Required. Field or list of fields.
-* @param {array} logic Conditional logic (if NULL it looks for field['conditional_logic']).
-* @return {array} Modified list of fields.
+* @param {array} elem Required. Field.
+* @param {array} fields Required. List of fields.
+* @return {array} Modified Field.
 */
-function scm_acf_condition( $fields, $logic = NULL ) {
+function scm_acf_condition( $elem, $list ) {
 
-	$fields = toArray( $fields, true, true );
-	if( !$fields ) return NULL;
+	if( !$elem || !$list )
+		return $elem;
 
-	// Loop fields array
-	for ( $f = 0; $f < sizeof( $fields ); $f++ ) {
-		
-		// Get conditional logic
-		$cond = ( is_null( $logic ) ? is( $fields[$f]['conditional_logic'] ) : $logic );
-		if( !$cond ) continue;
-		
-		// Loop field conditions
-		for ( $c = 0; $c < sizeof( $cond ); $c++ ) {
-		
-			// Loop fields in condition
-			for ( $i = 0; $i < sizeof( $cond[$c] ); $i++ ) {
-		
-				// Changing field-name to field-key
-				$name_c = $cond[$c][$i]['field'];
-				$field_c = getByValueKey( $fields, $name_c );
-				if( !is_null( $field_c ) )
-					$cond[$c][$i]['field'] = $fields[$field_c]['key'];
-			}
+	if( !is( $elem['conditional_logic'] ) )
+		return $elem;
+
+	$cond = $elem['conditional_logic'];
+
+	for ( $i = 0; $i < sizeof( $cond ); $i++ ) {
+		for ( $j = 0; $j < sizeof( $cond[$i] ); $j++ ) {
+			$name = $cond[$i][$j]['field'];
+			$field = getByValueKey( $list, $name );
+			if( $field !== false )
+				$cond[$i][$j]['field'] = $list[$field]['key'];
 		}
-
-		// Set conditional logic
-		$fields[$f]['conditional_logic'] = $cond;
 	}
 
-	return $fields;
+	$elem['conditional_logic'] = $cond;
+
+	return $elem;
 }
 
 // ------------------------------------------------------

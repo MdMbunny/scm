@@ -328,20 +328,20 @@ function scm_acf_object_separatore( $default = '', $obj = 0, $opt = '', $width =
 
 	if( !$opt ){
 
-		$do = array( $logic, array( 'field' => 'line', 'operator' => '!=', 'value' => 'no' ) );
-		$line = array( $logic, array( 'field' => 'line', 'operator' => '==', 'value' => 'line' ) );
-		$dash = array( $logic, array( 'field' => 'line', 'operator' => '==', 'value' => 'dashed' ) );
+		$all = array( 'field' => 'line', 'operator' => '!=', 'value' => 'no' );
+		$line = array( 'field' => 'line', 'operator' => '==', 'value' => 'line' );
+		$dash = array( 'field' => 'line', 'operator' => '==', 'value' => 'dashed' );
 
 		// +++ todo: aggiungere bg_image e tutte bg_cose
 
 		$height = scm_acf_preset_size( 'height', 0, '1', 'px', __( 'Altezza', SCM_THEME ), $width );
 		$position = scm_acf_preset_size( 'position', '', 50, '%', __( 'Posizione', SCM_THEME ), $width, $dash );
-		$size = scm_acf_preset_size( 'size', 0, '4', 'px', __( 'Spessore', SCM_THEME ), $width, $do );
+		$size = scm_acf_preset_size( 'size', 0, '4', 'px', __( 'Spessore', SCM_THEME ), $width, $all );
 		$space = scm_acf_preset_size( 'space', 0, '26', 'px', __( 'Spazio', SCM_THEME ), $width, $dash );
-		//$space_dot = scm_acf_preset_size( 'space', 0, '26', 'px', 'Spazio', $width, $dot );
+		//$space_dot = scm_acf_preset_size( 'space', 0, '26', 'px', 'Spazio', $width, $allt );
 		$weight = scm_acf_preset_size( 'dash', 0, '8', 'px', __( 'Tratto', SCM_THEME ), $width, $dash );
-		$cap = array( scm_acf_field_select( 'cap', 'line_cap', $width, $do, 0, __( 'Cap', SCM_THEME ) ) );
-		$color = scm_acf_preset_rgba( 'color', '', 1, $width, $do );
+		$cap = array( scm_acf_field_select( 'cap', 'line_cap', $width, $all, 0, __( 'Cap', SCM_THEME ) ) );
+		$color = scm_acf_preset_rgba( 'color', '', 1, $width, $all );
 			
 		$fields = array_merge( $fields, $height, $position, $cap, $size, $space, $weight, $color );
 

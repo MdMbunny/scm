@@ -617,7 +617,7 @@ function scm_contents_single( $args = array() ) {
                 $svg_args = array();
                 $svg_args['height'] = $height;
                 $svg_args['y1'] = $svg_args['y2'] = scm_utils_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
-                $svg_args['color'] = scm_utils_preset_rgba( $args['color-color'], $args['color-alpha'], '#ddd' );
+                $svg_args['color'] = scm_utils_preset_rgba( $args['color-rgba-color'], $args['color-rgba-alpha'], '#ddd' );
                 $svg_args['stroke'] = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 5 );
                 $svg_args['cap'] = ( $args['cap'] ?: 'round' );
                 $svg_args['space'] = scm_utils_preset_size( $args[ 'space-number' ], $args[ 'space-units' ], 26 );
