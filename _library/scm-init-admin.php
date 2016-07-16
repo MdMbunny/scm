@@ -59,11 +59,14 @@ add_filter( 'wp_mail_from', 'scm_hook_admin_mail_from' );
 add_filter( 'wp_mail_from_name', 'scm_hook_admin_mail_from_name' );
 
 // UPLOADS
+add_action( 'admin_footer-post-new.php', 'scm_admin_upload_media_default_tab' );
+add_action( 'admin_footer-post.php', 'scm_admin_upload_media_default_tab' );
+add_action( 'wp_head', 'scm_admin_upload_media_default_tab' );
 add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10, 2 );
 add_filter( 'wp_handle_upload', 'scm_hook_admin_upload_max_size', 3 );
 add_filter( 'intermediate_image_sizes_advanced', 'scm_hook_admin_upload_def_sizes' );
 add_action( 'admin_init', 'scm_hook_admin_upload_custom_sizes' );
-add_filter( 'image_size_names_choose', 'scm_hook_admin_upload_custom_names' );
+add_filter( 'image_size_names_choose', 'scm_hook_admin_upload_custom_sizes_names' );
 add_filter( 'upload_dir', 'scm_hook_admin_upload_dir', 2 );
 add_filter( 'manage_media_columns', 'scm_hook_admin_upload_columns' );
 add_action( 'manage_media_custom_column', 'scm_hook_admin_upload_custom_column',10, 2 );
@@ -148,6 +151,7 @@ function scm_hook_nav_auto_menu(){
 function scm_hook_admin_register_assets() {
     wp_register_style( 'scm-admin', SCM_URI_CSS . 'scm-admin.css', false, SCM_VERSION );
     wp_enqueue_style('scm-admin');
+    
     wp_register_style( 'scm-admin-child', SCM_URI_ASSETS_CHILD . 'css/admin.css', false, SCM_VERSION );
     wp_enqueue_style('scm-admin-child');
 } 
@@ -450,6 +454,25 @@ function scm_hook_admin_mail_from() {
 // ------------------------------------------------------
 
 /**
+* [SET] Set Upload Image tab as default in Media Uploader popup
+*
+* Hooked by 'admin_footer-post-new.php', 'admin_footer-post.php', 'wp_head'
+* @subpackage 4-Init/Admin/6-UPLOADS
+*/
+function scm_admin_upload_media_default_tab() {
+//console.log(wp.media.view.settings);
+    $script =   '<script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        if(wp.media){
+                            wp.media.controller.Library.prototype.defaults.contentUserSetting=false;
+                        }
+                    });
+                </script>';
+    indent( 1, $script, 1);
+
+}
+
+/**
 * [GET] Calculate image responsive sizes
 *
 * Hooked by 'wp_calculate_image_sizes'
@@ -512,7 +535,7 @@ function scm_hook_admin_upload_custom_sizes(){
 * @param {array=} sizes Original sizes array (default is empty array).
 * @return {array} Modified sizes array.
 */
-function scm_hook_admin_upload_custom_names( $sizes = array() ) {
+function scm_hook_admin_upload_custom_sizes_names( $sizes = array() ) {
     return array_merge( $sizes, array(
         'small' => __( 'Small', SCM_THEME ),
     ) );

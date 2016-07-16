@@ -18,7 +18,7 @@ $SCM_indent         = 1;
 /**
 * @global int $SCM_page_id Current page id
 */
-$SCM_page_id        = 0;
+//$SCM_page_id        = 0;
 
 // ------------------------------------------------------
 //
@@ -465,6 +465,8 @@ function scm_contents( $content = NULL ) {
 
     if( is_null( $content ) ) return;
 
+    global $SCM_forms;
+
     $content = apply_filters( 'scm_filter_echo_content', $content );
 
     if( is_null( $content ) || !$content ) return;
@@ -476,6 +478,7 @@ function scm_contents( $content = NULL ) {
 
     global $post, $SCM_indent;
 
+    $id = $post->ID;
     $type = $post->post_type;
     $SCM_indent++;
 
@@ -485,6 +488,9 @@ function scm_contents( $content = NULL ) {
 
         do_action( 'scm_action_echo_content', $args, $SCM_indent );
         do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
+
+        $SCM_forms = apply_filters( 'scm_filter_content_form', $SCM_forms, $args, $type, $id, $SCM_indent );
+        $SCM_forms = apply_filters( 'scm_filter_content_form_' . $type, $SCM_forms, $args, $id, $SCM_indent );
 
         $SCM_indent--;
     }

@@ -120,6 +120,10 @@ function scm_hook_site_register_styles() {
     wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_VERSION );
     wp_enqueue_style( 'global' );
 
+    // ACF
+    wp_register_style( 'scm-acf', SCM_URI_CSS . 'scm-acf.css', false, NULL );
+    wp_enqueue_style('scm-acf');
+
     // SCM Child
     wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_VERSION );
     wp_enqueue_style( 'child' );

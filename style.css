@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.1.9
+Version:			v3.2.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -337,9 +337,9 @@ input[type="email"],
 input[type="url"],
 input[type="password"],
 input[type="search"],*/
-select,
-input,
-textarea,
+.wpcf7-form select,
+.wpcf7-form input,
+.wpcf7-form textarea,
 .wpcf7 .destinatario { /*  +++ todo: mira a select e non nello specifico wpcf7 */
 	display: block;
 	color: #a7a7a7;
@@ -362,7 +362,7 @@ textarea,
 	transition: all .3s;
 }
 
-select {
+.wpcf7-form select {
 	height: 3.4em;
 	width: 100%;
 	background-color: transparent;
@@ -375,14 +375,14 @@ input[type="email"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,*/
-select:focus,
-input:focus,
-textarea:focus {
+.wpcf7-form select:focus,
+.wpcf7-form input:focus,
+.wpcf7-form textarea:focus {
 	color: #666;
 	border-color: #666;
 }
 
-textarea {
+.wpcf7-form textarea {
 	overflow: auto; /* Removes default vertical scrollbar in IE6/7/8/9 */
 	/*padding-left: 10px;*/
 	vertical-align: top; /* Improves readability and alignment in all browsers */
@@ -1134,9 +1134,9 @@ a:hover{
 /* Buttons */
 
 button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"],
+.wpcf7-form input[type="button"],
+.wpcf7-form input[type="reset"],
+.wpcf7-form input[type="submit"],
 .page-numbers,
 blockquote,
 .topofpage a,
@@ -1148,9 +1148,9 @@ blockquote,
 .scm-list.elenco-puntato > .button.shape,
 .scm-button:not(.elenco_puntato):not(.no-shape),
 button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"],
+.wpcf7-form input[type="button"],
+.wpcf7-form input[type="reset"],
+.wpcf7-form input[type="submit"],
 .page-numbers,
 blockquote,
 .topofpage a,
@@ -2588,6 +2588,16 @@ body:not( .touch ) .fancybox-overlay.white .fancybox-nav span{
     max-height: initial !important;
 }
 
+/*.acf-form {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}*/
+
 /*--------------------------------------------------------------
 0.0 Accessibility
 --------------------------------------------------------------*/
@@ -2621,5 +2631,4 @@ body:not( .touch ) .fancybox-overlay.white .fancybox-nav span{
 	width: auto;
 	z-index: 100000; /* Above WP toolbar */
 }
-
 

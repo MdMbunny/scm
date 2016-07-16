@@ -1,0 +1,228 @@
+/* ACF Frond End */
+
+/* Colors */
+
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-side,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-side .button-secondary{
+    color: #666;
+}
+
+/* Borders */
+
+#scm-forms,
+#scm-forms .acf-form,
+#scm-forms > .acf-form > .acf-fields,
+#scm-forms > .acf-form > .acf-fields > .acf-field,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-input-wrap,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-input-wrap > input,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main > .acf-gallery-attachments,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main > .acf-gallery-toolbar,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-side,
+#scm-forms input{
+    border: none !important;
+}
+
+/* Heights */
+
+#scm-forms,
+#scm-forms > .acf-form > .acf-fields,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-input-wrap,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-input-wrap > input,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main{
+    height: 100% !important;
+    border: none !important;
+}
+
+#scm-forms .acf-form,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main > .acf-gallery-attachments,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-side{
+    height: 90% !important;
+}
+
+#scm-forms .acf-fields > .acf-field-gallery{
+    height: 20% !important;
+}
+
+#scm-forms .acf-fields > .acf-field,
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-main > .acf-gallery-toolbar{
+    height: 10% !important;
+}
+
+#scm-forms > .acf-form > .acf-fields > .acf-field > .acf-input .acf-gallery > .acf-gallery-side .acf-gallery-toolbar{
+    height: auto;
+}
+
+/* Container and Forms */
+
+#scm-forms{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: rgba(0,0,0,.9);
+    font-size: 16px;
+}
+
+/* Form */
+
+.acf-form {
+    display: none;
+    clear: both;
+    float: none;
+    top: 10%;
+    position: absolute;
+    width: 100%;
+}
+
+#scm-forms.show,
+.acf-form.show {
+    display: block;
+}
+
+/* Loading */
+
+#scm-forms .acf-loading, #scm-forms .acf-spinner {
+    height: 1em;
+    width: 1em;
+    background-color: #FFF;
+    border-radius: 100%;
+    vertical-align: bottom;
+}
+
+/* Buttons */
+
+#scm-forms .acf-form-submit,
+#scm-close-forms{
+    cursor: pointer;
+    margin: 1.5em;
+    padding: .5em;
+    border: 1px solid;
+    display: inline-block;
+    background-color: #000;
+    color: #FFF;
+    font-size: 1em;
+    line-height: 1em;
+}
+
+#scm-forms .acf-form-submit{
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+#scm-close-forms{
+    float: right;
+}
+
+#scm-forms .acf-form-submit:hover,
+#scm-close-forms:hover{
+    opacity: .8;
+}
+
+#scm-forms .acf-button{
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+}
+
+#scm-forms .acf-button,
+#scm-forms .button-secondary,
+#scm-forms input,
+#scm-forms label{
+    font-size: 1em;
+    line-height: 1em;
+    height: auto;
+}
+
+#scm-forms input{
+    line-height: 1.5em;
+}
+
+/* Fields */
+
+#scm-forms .acf-fields > .acf-field{
+    padding: 1.5em 1.5em;
+    border-top: 1px dashed #888;
+    /*margin-bottom: 1.5em;*/
+}
+
+#scm-forms .acf-fields > .acf-field > .acf-label{
+	padding-bottom: 1em;
+}
+
+#scm-forms .acf-fields > .acf-field > .acf-input{
+	
+}
+
+/* GALLERY */
+
+#scm-forms .acf-gallery{
+    border: none;
+}
+
+#scm-forms .acf-gallery .acf-gallery-main{
+    background-color: transparent;
+}
+
+#scm-forms .acf-gallery .acf-gallery-attachments{
+    bottom: initial;
+    padding: 1em;
+    background-color: #FFF;
+}
+
+#scm-forms .acf-gallery .acf-gallery-attachment{
+    width: 20%;
+    clear: none;
+}
+
+#scm-forms .acf-gallery .acf-gallery-attachment:nth-child(5n+1){
+    clear: both;
+}
+
+#scm-forms .acf-gallery .acf-gallery-toolbar{
+    /*padding: 1em 1em;*/
+    background-color: transparent;
+    /*position: fixed;*/
+    bottom: 0;
+}
+
+#scm-forms .acf-gallery .ui-resizable-s{
+    display: none;
+}
+
+#scm-forms .acf-gallery .acf-gallery-side *{
+    text-align: left;
+    line-height: 1.5em;
+}
+
+#scm-forms .acf-gallery .acf-gallery-side tr{
+    padding-bottom: .5em;
+}
+
+#scm-forms .acf-gallery .acf-gallery-side .acf-label{
+    padding: 0 !important;
+}
+
+#scm-forms .acf-gallery .acf-gallery-side label{
+    padding: 0 1em 1em 0 !important;
+    display: inline-block;
+    float: right;
+}
+
+#scm-forms .acf-gallery .acf-gallery-side label,
+#scm-forms .acf-gallery .acf-gallery-side label *{
+    text-align: right !important;
+}
+
+/*#scm-forms .acf-gallery .acf-gallery-side .button-secondary{
+    display: block;
+    margin-bottom: 1em;
+}*/

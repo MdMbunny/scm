@@ -12,6 +12,10 @@
  * @since 1.0.0
  */
 
+// ACF Form
+if( SCM_LEVEL <= 30 && SCM_PAGE_FORM )
+    acf_form_head();
+
 ?><!DOCTYPE html>
 
 <html class="scm-<?php echo SCM_VERSION; ?> no-js" <?php language_attributes(); ?>>
@@ -35,17 +39,17 @@
 
 // END HEAD
 
-global $SCM_indent, $SCM_page_id, $post;
+global $SCM_indent, $post;//, $SCM_page_id;
 
-$id = $SCM_page_id;
+//SCM_PAGE_ID = $SCM_page_id;
 
-$site_align = scm_field( 'layout-alignment', 'center', 'option' );
+//$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
 $wrap_id = 'site-page';
-$wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), $id );
+$wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), SCM_PAGE_ID );
 $wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
-$wrap_class = 'site-page hfeed site ' . $wrap_layout . $site_align;
+$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN;
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -74,8 +78,8 @@ $head_id = 'site-header';
 $head_layout = scm_field( 'layout-head', 'full', 'option' );
 $head_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
-$head_class = 'site-header full ' . $site_align;
-$head_row_class = 'row scm-row object scm-object ' . $head_layout . $site_align;
+$head_class = 'site-header full ' . SCM_SITE_ALIGN;
+$head_row_class = 'row scm-row object scm-object ' . $head_layout . SCM_SITE_ALIGN;
 
 $menu_position = scm_field( 'menu-position', 'inline', 'option' );
 $menu_align = scm_field( 'menu-alignment', 'right', 'option' );
@@ -85,17 +89,17 @@ $follow_position = scm_field( 'follow-position', 'top', 'option' );
 $cont_id = 'site-content';
 $cont_layout = scm_field( 'layout-content', 'full', 'option' );
 $cont_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
-$cont_class = 'site-content ' . $cont_layout . $site_align ;
+$cont_class = 'site-content ' . $cont_layout . SCM_SITE_ALIGN ;
 
 $cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
 $cont_offset = scm_field( 'opt-tools-fadecontent-offset', '0%', 'option' );
 
 $page_class = 'page scm-page object scm-object ' . $post->post_name;
-$page_id = scm_field( 'page-selectors-id', '', $id, 1, ' id="', '"' );
-$page_class .= scm_field( 'page-selectors-class', '', $id, 1, ' ' );
+$page_id = scm_field( 'page-selectors-id', '', SCM_PAGE_ID, 1, ' id="', '"' );
+$page_class .= scm_field( 'page-selectors-class', '', SCM_PAGE_ID, 1, ' ' );
     
-$page_slider = scm_field( 'main-slider-active', '', $id );
-$page_slider_terms = scm_field( 'main-slider-terms', '', $id );
+$page_slider = scm_field( 'main-slider-active', '', SCM_PAGE_ID );
+$page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
 
 ?>
 
@@ -195,7 +199,7 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
                     // Page Header
                     if( $page_slider ){
 
-                        indent( $SCM_indent, '<header class="header scm-header full ' . $site_align . '">', 2 );
+                        indent( $SCM_indent, '<header class="header scm-header full ' . SCM_SITE_ALIGN . '">', 2 );
 
                             indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
 

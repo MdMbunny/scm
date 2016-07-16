@@ -13,20 +13,31 @@
  * @since 1.0.0
  */
 
+global $SCM_indent, $SCM_forms;
+
 wp_reset_postdata();
 
-global $SCM_indent, $SCM_page_id;
+    // ACF Forms
+    if( SCM_LEVEL <= 30 && SCM_PAGE_FORM && !empty( $SCM_forms ) ){
+        indent( $SCM_indent + 1, '<div id="scm-forms">', 2 );
+            indent( $SCM_indent + 1, '<div id="scm-close-forms">', 2 );
+                indent( $SCM_indent + 1, '<span class="acf-button">' . __( 'Chiudi senza salvare' ) . '</span>', 2 );
+            indent( $SCM_indent + 1, '</div>', 2 );
+            foreach ( $SCM_forms as $form) 
+                acf_form( $form );
+        indent( $SCM_indent + 1, '</div><!-- scm-forms -->', 2 );
+    }
 
     $foot_layout = scm_field( 'layout-foot', 'full', 'option' );
-    $site_align = scm_field( 'layout-alignment', 'center', 'option' );
+    //$site_align = scm_field( 'layout-alignment', 'center', 'option' );
     $foot_layout = ( scm_field( 'layout-page', 'full', 'option' ) === 'responsive' ? 'full ' : ( $foot_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
     $foot_id = 'site-footer';
-    $foot_class = 'footer site-footer ' . $foot_layout . $site_align;
+    $foot_class = 'footer site-footer ' . $foot_layout . SCM_SITE_ALIGN;
 
-    $id = $SCM_page_id;
+    //$id = $SCM_page_id;
 
-    $foot_page = scm_field( 'page-footer', array(), $id );
+    $foot_page = scm_field( 'page-footer', array(), SCM_PAGE_ID );
 
     $indent = $SCM_indent + 1;
 
@@ -64,7 +75,10 @@ global $SCM_indent, $SCM_page_id;
     indent( $SCM_indent, '</div><!-- page -->', 2 );
 
     wp_footer();
+
     wp_reset_postdata();
+
+
 
     echo '</body>' . lbreak();
 

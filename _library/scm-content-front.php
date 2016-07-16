@@ -198,10 +198,10 @@ if( scm_field( 'menu-auto', '', 'option' ) ){
 */
 function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) {
 
-    global $SCM_page_id;;
-    $id = $SCM_page_id;
+    //global $SCM_page_id;;
+    //$id = $SCM_page_id;
 
-    $menu = scm_field( 'page-menu', 'default', $id );
+    $menu = scm_field( 'page-menu', 'default', SCM_PAGE_ID );
     if( !$menu ) return;
 
     $menu = ( $menu != 'default' ? $menu : scm_field( 'menu-wp', 'primary', 'option' ) );
@@ -214,7 +214,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
 
     $id = 'site-navigation';
 
-    $site_align = scm_field( 'layout-alignment', 'center', 'option' );
+    //$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 
     $toggle_active = scm_field( 'menu-toggle', 'smart', 'option' );
     $home_active = scm_field( 'menu-home', '', 'option' );
@@ -234,7 +234,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
             $menu_class .= 'half-width float-' . $align;
             $row_class = 'full';
         }else{
-            $menu_class .= $menu_layout . ' ' . $site_align;
+            $menu_class .= $menu_layout . ' ' . SCM_SITE_ALIGN;
             $row_class = $row_layout . ' ' . $align;
         }
 
@@ -274,7 +274,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         if( $position == 'inline' && $align != 'center' ){
             $sticky_row_class .= ' half-width float-' . $align . ' ' . $align;
         }else{
-            $sticky_class .= $sticky_layout . ' ' . $site_align;
+            $sticky_class .= $sticky_layout . ' ' . SCM_SITE_ALIGN;
             $sticky_row_class = $sticky_row_layout . ' ' . $align;
         }
 

@@ -713,39 +713,42 @@ function scm_field_key( $post_id = NULL, $fields = array(), $name = '', $filter 
 }
 
 /**
-* [SET] Remove fields from group
+* [SET] Remove fields
 *
 * @subpackage 2-ACF/FUNCTIONS
 *
-* @param {array=} group Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
 * @param {array=} names Single field name or list of names (default is empty array).
 * @return {array} Modified Field Group.
 */
 function scm_field_remove( $group = array(), $names = array() ) {
 	$names = toArray( $names );
-	$fields = ( isset( $group['fields'] ) ? $group['fields'] : array() );
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
 	foreach ( $names as $name) {
 		$ind = getByValueKey( $fields, $name );
 		if( !is_null( $ind ) ) array_splice( $fields, $ind, 1 );
 	}
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
 	$group['fields'] = $fields;
 	return $group;
 }
 
 /**
-* [SET] Insert fields in group
+* [SET] Insert fields
 *
 * @subpackage 2-ACF/FUNCTIONS
 *
-* @param {array=} group Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
 * @param {array=} new Single field or list of fields (default is empty array).
 * @param {int=} index Index where new fileds are insered (default is 0, first array index).
 * @return {array} Modified Field Group.
 */
 function scm_field_insert( $group = array(), $new = array(), $index = 0 ) {
 	$new = toArray( $new, true );
-	$fields = ( isset( $group['fields'] ) ? $group['fields'] : array() );
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
 	reset( $fields );
 	//consoleLog($new);
@@ -755,6 +758,38 @@ function scm_field_insert( $group = array(), $new = array(), $index = 0 ) {
 		
 		$index++;
 	}
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
+	$group['fields'] = $fields;
+	return $group;
+}
+
+/**
+* [SET] Modify fields
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} names Single field name or list of names (default is empty array).
+* @param {array=} attr Array containing attributes and new values (default is empty array).
+* @return {array} Modified Field Group.
+*/
+function scm_field_modify( $group = array(), $names = array(), $attr = array() ) {
+	$names = toArray( $names );
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	if( !is_array( $fields ) || empty( $fields ) ) return $group;
+	foreach ( $names as $name) {
+		$ind = getByValueKey( $fields, $name );
+		if( !is_null( $ind ) ){
+			foreach ( $attr as $key => $value ) {
+				$fields[$ind][$key] = $value;
+			}
+		}
+	}
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
 	$group['fields'] = $fields;
 	return $group;
 }
