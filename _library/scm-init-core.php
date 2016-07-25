@@ -117,7 +117,7 @@ function scm_hook_site_register_webfonts_google() {
 function scm_hook_site_register_styles() {
 
     // SCM
-    wp_register_style( 'global', SCM_URI . 'style.css', false, SCM_VERSION );
+    wp_register_style( 'global', SCM_URI . 'style.css', false, NULL );
     wp_enqueue_style( 'global' );
 
     // ACF
@@ -125,7 +125,7 @@ function scm_hook_site_register_styles() {
     wp_enqueue_style('scm-acf');
 
     // SCM Child
-    wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, SCM_VERSION );
+    wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, NULL );
     wp_enqueue_style( 'child' );
 
 }

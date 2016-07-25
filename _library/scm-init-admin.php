@@ -739,6 +739,16 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'force_deactivation' => false,
         ),
 
+// ADMIN
+        array(
+            'name'               => 'SEO',
+            'slug'               => 'all-in-one-seo-pack',
+            'required'           => false,
+            'force_activation'   => false,
+            'force_deactivation' => false,
+        ),
+
+
 // UTILITIES
         array(
             'name'               => 'Contact Form 7',
@@ -748,13 +758,13 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'force_deactivation' => false,
         ),
 
-        array(
+        /*array(
             'name'               => 'Captcha 7',
             'slug'               => 'really-simple-captcha',
             'required'           => false,
             'force_activation'   => false,
             'force_deactivation' => false,
-        ),
+        ),*/
 
         array(
             'name'               => 'Loco Translate',
