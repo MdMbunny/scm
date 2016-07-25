@@ -35,7 +35,7 @@ if( $single ){
 
 // CONSTANTS ------------------------------------------------------------
 
-define( 'SCM_PAGE_ID',			    ( $page ? $page->ID() : get_the_ID() ) );
+define( 'SCM_PAGE_ID',			    ( $page ? $page->ID : get_the_ID() ) );
 define( 'SCM_PAGE_FORM',			scm_field( 'page-form', false ) );
 define( 'SCM_SITE_ALIGN',			scm_field( 'layout-alignment', 'center', 'option' ) );
 
