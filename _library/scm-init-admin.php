@@ -394,12 +394,11 @@ function scm_hook_admin_ui_hide_dashboard_widgets(){
 */
 function scm_hook_admin_ui_hide_from_users(){
    
-    if( !current_user_can( 'manage_options' ) )
+    if( SCM_LEVEL > 0 ){
+        echo '<style>#advanced-sortables{display: none !important;}</style>';
         echo '<style>#screen-meta-links{display: none !important;}</style>';
-
-    if (!current_user_can('update_core')) {
         remove_action( 'admin_notices', 'update_nag', 3 );
-    }            
+    }
 }
 
 /**

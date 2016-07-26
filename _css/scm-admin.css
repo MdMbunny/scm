@@ -75,7 +75,11 @@ body.loading *{
 	pointer-events: none;
 }
 
-#screen-meta-links,
+#screen-meta-links{
+	position: absolute;
+    width: 70%;
+}
+
 #wpfooter{
 	display: none;
 }
