@@ -28,10 +28,10 @@
 // ACTIONS AND FILTERS
 // ------------------------------------------------------
 
-add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install' );
-add_action( 'acf/include_fields', 'scm_hook_acf_option_subpages_install' );
+add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install', 10 );
+add_action( 'acf/include_fields', 'scm_hook_acf_option_subpages_install', 10 );
 
-add_action( 'acf/include_fields', 'scm_hook_acf_install' );
+add_action( 'acf/include_fields', 'scm_hook_acf_install', 10 );
 
 add_filter( 'scm_filter_admin_ui_menu_order', 'scm_hook_acf_option_menu_order' );
 add_filter( 'acf/settings/show_admin', 'scm_hook_acf_admin_hide' );
@@ -77,7 +77,7 @@ function scm_hook_acf_option_pages_install(){
             'menu_title'    => 'SCM',
             'menu_slug'     => 'scm-options-general',
             'icon_url'      => 'dashicons-carrot',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
             'redirect'      => true,
         ));
 
@@ -86,7 +86,7 @@ function scm_hook_acf_option_pages_install(){
             'menu_title'    => 'SCM Types',
             'menu_slug'     => 'scm-types-general',
             'icon_url'      => 'dashicons-star-filled',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
             'redirect'      => true,
         ));
 
@@ -95,7 +95,7 @@ function scm_hook_acf_option_pages_install(){
             'menu_title'    => 'SCM Templates',
             'menu_slug'     => 'scm-templates-general',
             'icon_url'      => 'dashicons-art',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
             'redirect'      => false,
         ));
     }
@@ -124,7 +124,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Introduzione', SCM_THEME ),
             'menu_slug'     => 'scm-options-intro',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -132,7 +132,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Opzioni', SCM_THEME ),
             'menu_slug'     => 'scm-options-opzioni',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -140,7 +140,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Layout', SCM_THEME ),
             'menu_slug'     => 'scm-options-layout',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -148,7 +148,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Stili', SCM_THEME ),
             'menu_slug'     => 'scm-options-stili',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -156,7 +156,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Header', SCM_THEME ),
             'menu_slug'     => 'scm-options-header',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -164,15 +164,23 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Footer', SCM_THEME ),
             'menu_slug'     => 'scm-options-footer',
             'parent_slug'   => 'scm-options-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
+
+        /*acf_add_options_sub_page(array(
+            'page_title'    => 'SCM Roles Settings',
+            'menu_title'    => __( 'Roles and Levels', SCM_THEME ),
+            'menu_slug'     => 'scm-options-roles',
+            'parent_slug'   => 'scm-options-general',
+            'capability'    => SCM_ROLE_OPTIONS,
+        ));*/
 
         acf_add_options_sub_page(array(
             'page_title'    => 'SCM Default Types',
             'menu_title'    => __( 'Default Types', SCM_THEME ),
             'menu_slug'     => 'scm-default-types',
             'parent_slug'   => 'scm-types-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -180,7 +188,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Default Taxonomies', SCM_THEME ),
             'menu_slug'     => 'scm-default-taxonomies',
             'parent_slug'   => 'scm-types-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -188,7 +196,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Custom Types', SCM_THEME ),
             'menu_slug'     => 'scm-custom-types',
             'parent_slug'   => 'scm-types-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
@@ -196,7 +204,7 @@ function scm_hook_acf_option_subpages_install(){
             'menu_title'    => __( 'Custom Taxonomies', SCM_THEME ),
             'menu_slug'     => 'scm-custom-taxonomies',
             'parent_slug'   => 'scm-types-general',
-            'capability'    => 'manage_options',
+            'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         global $SCM_types;
@@ -208,7 +216,7 @@ function scm_hook_acf_option_subpages_install(){
                 'menu_title'    => $title,
                 'menu_slug'     => 'scm-templates-' . $slug,
                 'parent_slug'   => 'scm-templates-general',
-                'capability'    => 'manage_options',
+                'capability'    => SCM_ROLE_OPTIONS,
             ));
         }
     }
@@ -300,6 +308,12 @@ function scm_hook_acf_install() {
         $footer['location'][] = scm_acf_group_location( 'scm-options-footer', 'options_page' );
         $footer['fields'] = array_merge( $footer['fields'], scm_acf_options_foot() );
         $groups[] = $footer;
+
+        // + OPT ROLES
+        $roles = scm_acf_group( __( 'Opzioni Ruoli', SCM_THEME ), 'roles-options' );
+        $roles['location'][] = scm_acf_group_location( 'scm-options-roles', 'options_page' );
+        $roles['fields'] = array_merge( $roles['fields'], scm_acf_options_roles() );
+        $groups[] = $roles;
 
         // + PAGE
         $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );

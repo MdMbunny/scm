@@ -13,7 +13,6 @@
 // ------------------------------------------------------
 //
 // 1.0 Groups
-//		+ ADVANCED OPTIONS
 //		TEMPLATES (list)
 //		TEMPLATE (single)
 //		PAGES
@@ -36,38 +35,6 @@
 // ------------------------------------------------------
 // 1.0 GROUPS
 // ------------------------------------------------------
-
-/**
-* [GET] Preset advanced options
-*
-* @param {string} name
-* @param {int} opt [0|1|2]
-* @return {array} Fields.
-*/
-function scm_acf_fields_advanced_options( $name = '', $opt = 0 ) {
-
-	$fields = array();
-
-	switch ( $opt ) {
-		case 2:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
-			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 15, 15, 45 ) );
-			break;
-		case 1:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
-			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 45 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 34, 33, 33 ) );
-			break;
-		
-		default:
-			$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 15 ) );
-			$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 45 ) );
-			$fields = array_merge( $fields, scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ) );
-			break;
-	}
-	
-	return $fields;
-}
 
 /**
 * [GET] Fields TEMPLATES (list)
@@ -217,7 +184,7 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 		if( function_exists( 'scm_acf_layout_' . $type ) )
 			$flexible['layouts'] = call_user_func( 'scm_acf_layout_' . $type, $flexible['layouts'] );
 
-		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 0 );
+		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 'complete' );
 
 // SCM Filter: Passing Layouts and Type - Receiving Layouts ( After Column Width and Column Link )
 			$flexible['layouts'] = apply_filters( 'scm_filter_layout_after_' . $type, $flexible['layouts'] );
@@ -242,13 +209,13 @@ function scm_acf_fields_page( $name = '' ) {
 
 	$fields = apply_filters( 'scm_filter_fields_page_before', $fields );
 
-	$fields[] = scm_acf_field_select( $name . 'page-layout', 'main_layout-default', 34 );
+	// ADVANCED
+		$fields = array_merge( $fields, scm_acf_preset_advanced_options( $name . 'page', 'page' ) );
 
-	$fields = array_merge( $fields, scm_acf_preset_selectors( $name . 'page', 33, 33 ) );
-
-	$fields[] = scm_acf_field_select( $name . 'page-menu', 'wp_menu', 50 );
-
-	$fields[] = scm_acf_field_false( $name . 'page-form', 0, 50, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) );
+		//$fields[] = scm_acf_field_select( $name . 'page-layout', 'main_layout-default', 34 );
+		//$fields = array_merge( $fields, scm_acf_preset_selectors( $name . 'page', 33, 33 ) );
+		//$fields[] = scm_acf_field_select( $name . 'page-menu', 'wp_menu', 50 );
+		//$fields[] = scm_acf_field_false( $name . 'page-form', 0, 50, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) );
 	
 	$fields = array_merge( $fields, scm_acf_preset_flexible_sections( $name ) );
 
@@ -331,17 +298,22 @@ function scm_acf_fields_modules( $name = '' ) {
 */
 function scm_acf_fields_sections( $name = '' ) {
 
-	$name = ( $name ? $name . '-' : '');
+	//$name = ( $name ? $name . '-' : '');
 
 	$fields = array();
 
 	$fields = apply_filters( 'scm_filter_fields_section_before', $fields );
 
-	$fields[] = scm_acf_field_select( $name . 'layout', 'main_layout', 20 );
-	$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 40 ) );
+	// ADVANCED
+		$fields = array_merge( $fields, scm_acf_preset_advanced_options( $name, 'module' ) );
+
+		//$fields[] = scm_acf_field_select( $name . 'layout', 'main_layout', 20 );
+		//$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 20, 40 ) );
 
 	$fields = array_merge( $fields, scm_acf_preset_repeater_columns( $name ) );
-	$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'section', 0, 'sections' ) );
+	
+	// ADVANCED
+		$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_tags( $name . '-section', 'sections' ), 'scm-advanced-options hidden' ) );
 
 	$fields = apply_filters( 'scm_filter_fields_section', $fields );
 

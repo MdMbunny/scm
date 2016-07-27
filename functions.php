@@ -197,29 +197,31 @@ define( 'SCM_URI_LANG_CHILD',      		SCM_URI_CHILD . 'languages/' );
 // 0.6 ROLE CONSTANTS
 // ------------------------------------------------------
 
-/** Admin role. */
 define( 'SCM_ROLE_ADMIN',     	 		'update_core' );
-
-/** Options role. */
 define( 'SCM_ROLE_OPTIONS',     		'manage_options' );
-
-/** Private role. */
 define( 'SCM_ROLE_PRIVATE',   	 		'edit_private_pages' );
-
-/** Taxonomies role. */
 define( 'SCM_ROLE_TAX',     	 		'manage_categories' );
-
-/** Edit role. */
 define( 'SCM_ROLE_EDIT',     	 		'upload_files' );
-
-/** Users role. */
 define( 'SCM_ROLE_USERS',     	 		'list_users' );
-
-/** Enter role. */
 define( 'SCM_ROLE_ENTER',     	 		'read' );
-
-/** Read role. */
 define( 'SCM_ROLE_READ',     	 		'read_private_pages' );
+
+// ------------------------------------------------------
+// 0.7 LEVEL CONSTANTS
+// ------------------------------------------------------
+
+define( 'SCM_LEVEL_ADVANCED',  	 		0 );
+
+/*define( 'SCM_ROLE_ADMIN',               scm_field( 'role-admin', 'update_core', 'options' ) );
+define( 'SCM_ROLE_OPTIONS',             scm_field( 'role-options', 'manage_options', 'options' ) );
+define( 'SCM_ROLE_PRIVATE',             scm_field( 'role-private', 'edit_private_pages', 'options' ) );
+define( 'SCM_ROLE_TAX',                 scm_field( 'role-tax', 'manage_categories', 'options' ) );
+define( 'SCM_ROLE_EDIT',                scm_field( 'role-edit', 'upload_files', 'options' ) );
+define( 'SCM_ROLE_USERS',               scm_field( 'role-users', 'list_users', 'options' ) );
+define( 'SCM_ROLE_ENTER',               scm_field( 'role-enter', 'read', 'options' ) );
+define( 'SCM_ROLE_READ',                scm_field( 'role-read', 'read_private_pages', 'options' ) );
+define( 'SCM_LEVEL_ADVANCED',           scm_field( 'level-advanced', 1, 'options' ) );*/
+
 
 // ------------------------------------------------------
 // 1.0 REQUIRE CLASSES

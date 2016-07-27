@@ -13,6 +13,7 @@
 // ------------------------------------------------------
 //
 // 1.0 Presets
+//		ADVANCED OPTIONS
 //		INSTRUCTIONS
 //		SELECTORS
 //		COLUMN WIDTH
@@ -48,6 +49,64 @@
 // ------------------------------------------------------
 // 1.0 PRESETS
 // ------------------------------------------------------
+
+/**
+* [GET] Preset advanced options
+*
+* @param {string} name
+* @param {int} opt [ 0 | 1 or 'nolink' | 2 or 'simple' | 3 or 'module' | 4 or 'row' | 5 or 'section' | 6 or 'page' ]
+* @return {array} Fields.
+*/
+function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
+
+	$second = ( $name ? $name . '-' : '');
+
+	$fields = array();
+
+	// ADVANCED
+
+		switch ( $opt ) {
+			case 6:
+			case 'page':
+				$fields[] = scm_acf_field_select( $second . 'layout', 'main_layout-default', 100 );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 25, 25 ), 'scm-advanced-options hidden' ) );
+				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'menu', 'wp_menu', 25 ), 'scm-advanced-options hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'form', 0, 25, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) ), 'scm-advanced-options hidden' );
+				break;
+			case 5:
+			case 'section':
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 25, 25, 50 ), 'scm-advanced-options hidden' ) );
+				break;
+			case 4:
+			case 'row':
+				$fields[] = scm_acf_field_select( $second . 'layout', 'main_layout-default', 100 );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), 'scm-advanced-options hidden' ) );
+				break;
+			case 3:
+			case 'module':
+				$fields[] = scm_acf_field_select( $second . 'layout', 'main_layout', 100 );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), 'scm-advanced-options hidden' ) );
+				break;
+			case 2:
+			case 'simple':
+				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 100 ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), 'scm-advanced-options hidden' ) );
+				break;
+			case 1:
+			case 'nolink':
+				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 100 ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), 'scm-advanced-options hidden' ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 34, 33, 33 ), 'scm-advanced-options hidden' ) );
+				break;
+			default:
+				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 100 ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), 'scm-advanced-options hidden' ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ), 'scm-advanced-options hidden' ) );
+				break;
+		}
+	
+	return $fields;
+}
 
 /**
 * [GET] Preset instructions
@@ -445,6 +504,7 @@ function scm_acf_preset_term( $name = 'term', $tax = 'category', $placeholder = 
 		'add'=>$add,
 		'save'=>$save,
 		'instructions'=>$instructions,
+		'class'=>$class,
 	), $w1, $logic, $required );
 
 	return $fields;
@@ -484,6 +544,7 @@ function scm_acf_preset_terms( $name = 'terms', $tax = 'category', $placeholder 
 		'add'=>$add,
 		'save'=>$save,
 		'instructions'=>$instructions,
+		'class'=>$class,
 	), $w1, $logic, $required );
 
 	return $fields;
@@ -767,7 +828,7 @@ function scm_acf_preset_repeater_columns( $name = '', $elements = '', $logic = 0
 		'class'=>$class,
 	), 100, $logic, $required );
 
-		$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_fields_advanced_options( '', 2 ) );
+		$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_advanced_options( '', 'simple' ) );
 
 		//$columns['sub_fields'][] = scm_acf_preset_column_width( '', 20 );
 		//$columns['sub_fields'] = array_merge( $columns['sub_fields'], scm_acf_preset_selectors( '', 10, 15, 45 ) );
@@ -896,6 +957,7 @@ function scm_acf_preset_flexible_buttons( $name = '', $group = '', $label = '', 
 	$contacts = scm_acf_field_flexible( $name . 'buttons' , array( 
 		'label'=>__( 'Aggiungi Pulsante', SCM_THEME ),
 		'button'=>'+',
+		'class'=>$class,
 	) );
 
 		foreach ( $choices as $key => $value ) {
@@ -954,6 +1016,8 @@ function scm_acf_preset_button_shape( $name = 'but-style', $width = 100, $logic 
 */
 function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions = '', $required = 0, $class = 'rows-flexible' ) {
 
+	global $SCM_types;
+
 	$fields = array();
 
 	if( $instructions )
@@ -963,51 +1027,66 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 
 	$sections = scm_acf_field_repeater( $name . 'sections', array( 
 		'button'=>__( 'Aggiungi Sezione', SCM_THEME ),
-		'label'=>__( 'Sezioni', SCM_THEME ), 
+		//'label'=>__( 'Sezioni', SCM_THEME ), 
 		'class'=>$class,
 	), 100, $logic, $required );
 
-		$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', 25, 25, 50 ) );
+		$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_advanced_options( '', 'section' ) );
+		//$sections['sub_fields'] = array_merge( $sections['sub_fields'], scm_acf_preset_selectors( '', 25, 25, 50 ) );
 
 		$flexible = scm_acf_field_flexible( 'rows', array( 
-			'label'=>__( 'Moduli', SCM_THEME ),
+			//'label'=>__( 'Moduli', SCM_THEME ),
 			'button'=>'+',
 		) );
 
 			$template = scm_acf_layout( 'template', 'block', __( 'Template', SCM_THEME ) );
 				
-				$template['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
+				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_advanced_options( '', 'row' ) );
+
+				//$template['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
+				//$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'archive', array( 'placeholder'=>'type[:field[=value]', 'prepend'=>__( 'Archivio', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'post', array( 'placeholder'=>__( 'ID or Option Name', SCM_THEME ), 'prepend'=>__( 'Post', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_positive( 'template', array( 'prepend'=>__( 'Template', SCM_THEME ) ) );
 
-			$row = scm_acf_layout( 'row', 'block', 'Section' );
-				
-				$row['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
-				$row['sub_fields'][] = scm_acf_field_object( 'row', array( 
-	                'type'=>'id', 
-	                'types'=>'sections',
-	            ) );
+			if( isset( $SCM_types['complete']['sections'] ) ){
+				$row = scm_acf_layout( 'row', 'block', 'Section' );
 
-			$module = scm_acf_layout( 'module', 'block', 'Module' );
+					$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_advanced_options( '', 'row' ) );
+					
+					//$row['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
+					//$row['sub_fields'] = array_merge( $row['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
+					$row['sub_fields'][] = scm_acf_field_object( 'row', array( 
+		                'type'=>'id', 
+		                'types'=>'sections',
+		            ) );
+			}
 
-				$module['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
-				$module['sub_fields'][] = scm_acf_field_object( 'row', array( 
-	                'type'=>'id', 
-	                'types'=>'modules',
-	            ) );
+			if( isset( $SCM_types['complete']['modules'] ) ){
+				$module = scm_acf_layout( 'module', 'block', 'Module' );
 
-			$banner = scm_acf_layout( 'banner', 'block', 'Banner' );
+					$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_advanced_options( '', 'row' ) );
 
-				$banner['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
-				$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
-				$banner['sub_fields'][] = scm_acf_field_object( 'row', array( 
-	                'type'=>'id', 
-	                'types'=>'banners',
-	            ) );
+					//$module['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
+					//$module['sub_fields'] = array_merge( $module['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
+					$module['sub_fields'][] = scm_acf_field_object( 'row', array( 
+		                'type'=>'id', 
+		                'types'=>'modules',
+		            ) );
+			}
+
+			if( isset( $SCM_types['complete']['banners'] ) ){
+				$banner = scm_acf_layout( 'banner', 'block', 'Banner' );
+
+					$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_advanced_options( '', 'row' ) );
+
+					//$banner['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
+					//$banner['sub_fields'] = array_merge( $banner['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
+					$banner['sub_fields'][] = scm_acf_field_object( 'row', array( 
+		                'type'=>'id', 
+		                'types'=>'banners',
+		            ) );
+			}
 
 			$flexible['layouts'] = array( $template, $row, $module, $banner );
 
@@ -1100,7 +1179,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 			
 		}
 
-		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 1 );
+		$flexible['layouts'] = scm_acf_layouts_advanced_options( $flexible['layouts'], 'nolink' );
 
 	$fields[] = $flexible;
 	

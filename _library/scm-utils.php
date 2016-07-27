@@ -191,8 +191,31 @@ function getURL( $url ){
     return $url;
 }
 
+/**
+ * [GET] List of Roles
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {array} Array containing Roles slugs.
+ */
+function getRoles(){
+
+    $roles = array();
+
+    $users = get_editable_roles();
+    $users = $users['administrator'];
+    $users = $users['capabilities'];
+
+    foreach ( $users as $role => $value ) {
+        $roles[$role] = $role;
+    }
+
+    return $roles;
+
+}
+
 // ------------------------------------------------------
-// 0.2 WORDPRESS GOOGLE
+// 0.1 WORDPRESS GOOGLE
 // ------------------------------------------------------
 
 /**

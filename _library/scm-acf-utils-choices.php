@@ -1564,6 +1564,9 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'easeInOutBounce' 	=> 'Bounce InOut',
 		);
 
+	elseif( strpos( $list, 'roles' ) !== false ):
+		$choices = getRoles();
+	
 	endif;
 
 	if( $get )

@@ -27,6 +27,7 @@
 //		HEAD MENU OPTIONS
 //		HEAD SOCIAL OPTIONS
 //		FOOTER
+//		ROLES
 //
 // ------------------------------------------------------
 
@@ -580,6 +581,32 @@ function scm_acf_options_foot( $name = '' ) {
 	$fields = array();
 
 	$fields = array_merge( $fields, scm_acf_preset_flexible_sections( $name . 'footer' ) );
+
+	return $fields;
+}
+
+/**
+* [GET] Options roles
+*
+* @param {string} name
+* @return {array} Fields.
+*/
+function scm_acf_options_roles( $name = '' ) {
+
+	$name = ( $name ? $name . '-' : '');
+
+	$fields = array();
+
+	$fields[] = scm_acf_field_select( $name . 'role-admin', array( 'type'=>'roles', 'default'=>'update_core', 'label'=>'ROLE_ADMIN' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-options', array( 'type'=>'roles', 'default'=>'manage_options', 'label'=>'ROLE_OPTIONS' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-private', array( 'type'=>'roles', 'default'=>'edit_private_pages', 'label'=>'ROLE_PRIVATE' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-tax', array( 'type'=>'roles', 'default'=>'manage_categories', 'label'=>'ROLE_TAX' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-edit', array( 'type'=>'roles', 'default'=>'upload_files', 'label'=>'ROLE_EDIT' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-users', array( 'type'=>'roles', 'default'=>'list_users', 'label'=>'ROLE_USERS' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-enter', array( 'type'=>'roles', 'default'=>'read', 'label'=>'ROLE_ENTER' ) );
+	$fields[] = scm_acf_field_select( $name . 'role-read', array( 'type'=>'roles', 'default'=>'read_private_pages', 'label'=>'ROLE_READ' ) );
+
+	$fields[] = scm_acf_field_positive( $name . 'level-advanced', array( 'placeholder'=>0, 'default'=>1, 'label'=>'LEVEL_ADVANCED' ) );
 
 	return $fields;
 }

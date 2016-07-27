@@ -240,16 +240,16 @@ function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = 0, $m
 * @subpackage 2-ACF/Core/SET
 *
 * @param {array=} list Single layout or list of layouts (default is empty array).
-* @param {int=} opt Advanced options preset [0|1|2] (default is 1).
+* @param {int=} opt Advanced options preset [ 0 | 1 or 'nolink' | 2 or 'simple' | 3 or 'module' | 4 or 'row' | 5 or 'section' | 6 or 'page' ] (default is 'nolink').
 * @return {array} Modified list of layouts.
 */
-function scm_acf_layouts_advanced_options( $list = array(), $opt = 1 ) {
+function scm_acf_layouts_advanced_options( $list = array(), $opt = 'nolink' ) {
 
 	$list = toArray( $list, true, true);
 	if( !$list ) return array();
 
 	for ( $i = 0; $i < sizeof( $list ); $i++ )
-		$list[$i]['sub_fields'] = array_merge( scm_acf_fields_advanced_options( '', $opt ), $list[$i]['sub_fields'] );
+		$list[$i]['sub_fields'] = array_merge( scm_acf_preset_advanced_options( '', $opt ), $list[$i]['sub_fields'] );
 
 	return $list;
 }
@@ -721,7 +721,7 @@ function scm_field_key( $post_id = NULL, $fields = array(), $name = '', $filter 
 * @param {array=} names Single field name or list of names (default is empty array).
 * @return {array} Modified Field Group.
 */
-function scm_field_remove( $group = array(), $names = array() ) {
+function scm_fields_remove( $group = array(), $names = array() ) {
 	$names = toArray( $names );
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
@@ -746,7 +746,7 @@ function scm_field_remove( $group = array(), $names = array() ) {
 * @param {int=} index Index where new fileds are insered (default is 0, first array index).
 * @return {array} Modified Field Group.
 */
-function scm_field_insert( $group = array(), $new = array(), $index = 0 ) {
+function scm_fields_insert( $group = array(), $new = array(), $index = 0 ) {
 	$new = toArray( $new, true );
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
@@ -775,7 +775,7 @@ function scm_field_insert( $group = array(), $new = array(), $index = 0 ) {
 * @param {array=} attr Array containing attributes and new values (default is empty array).
 * @return {array} Modified Field Group.
 */
-function scm_field_modify( $group = array(), $names = array(), $attr = array() ) {
+function scm_fields_modify( $group = array(), $names = array(), $attr = array() ) {
 	$names = toArray( $names );
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
@@ -792,6 +792,48 @@ function scm_field_modify( $group = array(), $names = array(), $attr = array() )
 
 	$group['fields'] = $fields;
 	return $group;
+}
+
+/**
+* [SET] Modify fields class
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {string=} class HTML class to add (default is '').
+* @param {bool=} replace Replace current class if true (default is false).
+* @return {array} Modified Field Group.
+*/
+function scm_fields_add_class( $group = array(), $class = '', $replace = false ) {
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	if( !is_array( $fields ) || empty( $fields ) ) return $group;
+
+	for ($i=0; $i < sizeof( $fields ); $i++)
+		$fields[$i] = scm_field_add_class( $fields[$i], $class, $replace );
+	
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
+	$group['fields'] = $fields;
+	return $group;
+}
+
+/**
+* [SET] Modify field class
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {object=} field Field (default is empty array).
+* @param {string=} class HTML class to add (default is '').
+* @param {bool=} replace Replace current class if true (default is false).
+* @return {object} Modified Field.
+*/
+function scm_field_add_class( $field = array(), $class = '', $replace = false ) {
+
+	if( !isset( $field['wrapper'] ) || !isset( $field['wrapper']['class'] ) ) return $field;
+	$field['wrapper']['class'] = ( $replace ? $class : ( $field['wrapper']['class'] ? $field['wrapper']['class'] . ' ' . $class : $class ) );
+
+	return $field;
 }
 
 ?>
