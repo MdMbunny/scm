@@ -955,7 +955,7 @@ function scm_acf_preset_flexible_buttons( $name = '', $group = '', $label = '', 
 	$name = ( $name ? $name . '-' : '');
 
 	$contacts = scm_acf_field_flexible( $name . 'buttons' , array( 
-		'label'=>__( 'Aggiungi Pulsante', SCM_THEME ),
+		//'label'=>__( 'Aggiungi Pulsante', SCM_THEME ),
 		'button'=>'+',
 		'class'=>$class,
 	) );
@@ -1049,6 +1049,8 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 				$template['sub_fields'][] = scm_acf_field_text( 'post', array( 'placeholder'=>__( 'ID or Option Name', SCM_THEME ), 'prepend'=>__( 'Post', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_positive( 'template', array( 'prepend'=>__( 'Template', SCM_THEME ) ) );
 
+			$flexible['layouts'][] = $template;
+
 			if( isset( $SCM_types['complete']['sections'] ) ){
 				$row = scm_acf_layout( 'row', 'block', 'Section' );
 
@@ -1060,6 +1062,8 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		                'type'=>'id', 
 		                'types'=>'sections',
 		            ) );
+
+		        $flexible['layouts'][] = $row;
 			}
 
 			if( isset( $SCM_types['complete']['modules'] ) ){
@@ -1073,6 +1077,8 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		                'type'=>'id', 
 		                'types'=>'modules',
 		            ) );
+
+		        $flexible['layouts'][] = $module;
 			}
 
 			if( isset( $SCM_types['complete']['banners'] ) ){
@@ -1086,9 +1092,11 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		                'type'=>'id', 
 		                'types'=>'banners',
 		            ) );
+
+		        $flexible['layouts'][] = $banner;
 			}
 
-			$flexible['layouts'] = array( $template, $row, $module, $banner );
+			//$flexible['layouts'] = array( $template, $row, $module, $banner );
 
 		$sections['sub_fields'][] = $flexible;
 

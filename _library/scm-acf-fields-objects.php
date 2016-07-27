@@ -542,15 +542,15 @@ function scm_acf_object_elenco_puntato( $default = '', $obj = 0, $opt = '', $wid
 		
 		$links = scm_acf_field_repeater( 'list', array( 
 			'button'=>__( 'Aggiungi Punto', SCM_THEME ),
-			'label'=>__( 'Punti', SCM_THEME ), 
+			//'label'=>__( 'Punti', SCM_THEME ), 
 			'min'=>1,
 		), $width, $logic );
 
-			$links['sub_fields'][] = scm_acf_field_editor_basic( 'name', array( 'placeholder'=>'inserisci testo', 'label'=>__( 'Punto', SCM_THEME ) ), $width, $logic );
+			$links['sub_fields'][] = scm_acf_field_editor_basic( 'name', array( 'placeholder'=>'inserisci testo' ), $width, $logic );
 		$fields[] = $links;
 	}
 
-	$fields[] = scm_acf_field_select( 'type', 'list_type', $width*.5, $logic, $req, __( 'Punti righe', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( 'type', 'list_type', $width*.5, $logic, $req, __( 'Punti elenco', SCM_THEME ) );
 	$fields[] = scm_acf_field_select( 'position', array(
 		'type'=>'list_position',
 		'choices'=>array( 'outside' => __( 'Esterni', SCM_THEME ), 'inside' => __( 'Interni', SCM_THEME ) ),
@@ -679,7 +679,7 @@ function scm_acf_object_pulsanti( $default = '', $obj = 0, $opt = '', $width = 1
 	if ( !$obj ){
 
 		$flexible = scm_acf_field_flexible( 'list', array( 
-			'label'=>__( 'Aggiungi Pulsanti ', SCM_THEME ),
+			//'label'=>__( 'Aggiungi Pulsanti ', SCM_THEME ),
 			'button'=>'+',
 		), $width, $logic );
 
