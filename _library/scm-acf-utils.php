@@ -45,158 +45,158 @@ function scm_acf_get_field_to3( $a, $n, $t, $d ) {
 *
 * Complete options:
 ```php
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'tab'					$place ['top'|'left'|0|1]
-` 
-` 	'-left'				$place = 'left'
-` 
-` 'message'				$message ['']				$eschtml [false]			$lines [''|'br'|'wpautop']
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'repeater'			$button ['+']				$min [0] 					$max [0] 						$layout ['row'|'table'|'block']		$sub [array()]
-` 
-` 	'-block':			$layout = 'block'
-` 	'-table':			$layout = 'table'
-` 
-` 'flexible'			$button ['+']				$min [0] 					$max [0] 						$layouts = [array()]
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'number'				$default ['']				$placeholder ['']			$prepend ['']					$append ['']						$min ['']							$max ['']						$step ['']						$read [false]					$disabled [false]
-` 
-` 	'positive':			$min = 0
-` 	'negative':			$max = 0
-` 	'option':			$min = -1
-` 	'pixel':			$step = 1 					$append = 'px'
-` 	'percent':			$min = 0 					$max = 100 					$append = '%'
-` 	'alpha':			$min = 0 					$max = 1 					$step = .1 						$placeholder = '1'
-` 	'second':			$min = 0 					$step = .1 					$append = 'sec'					$placeholder = '1'
-` 	'msecond':			$min = 0 					$step = 100					$append = 'ms'					$placeholder = '1000'
-` 	'-max'				$max = 9999
-` 	'-min'				$min = -9999
-` 	'-pos'				$min = 0
-` 	'-neg'				$max = 0
-` 	'-read'				$read-only = true
-` 	'-disabled'			$disabled = true
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'text'				$default ['']				$placeholder ['']			$prepend ['']					$append [''] 						$max ['']							$read [false]					$disabled [false]
-` 
-` 	'id':			 	$prepend = '#'				$placeholder = 'id'
-` 	'class':			$prepend = '.'				$placeholder = 'class'
-` 	'attributes':		$prepend = 'Data'			$placeholder = 'data-href="www.website.com" data-target="_blank"'
-` 	'name':			 	$prepend = 'Nome' 			$placeholder = 'senza nome'									$max = 30		
-` 	'link':			 	$prepend = 'URL' 			$placeholder = 'http://www.website.com'
-` 	'email':			$prepend = '@' 				$placeholder = 'info@.website.com'
-` 	'user':			 	$prepend = 'User' 			$placeholder = 'user name'
-` 	'phone':			$prepend = 'N.' 			$placeholder = '+39 123 4567'
-` 	'video':			$prepend = 'YouTube' 		$placeholder = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
-` 	'-read'				$read = true
-` 	'-disabled'			$disabled = true
-` 
-` 'textarea'			$default ['']				$placeholder ['']			$rows [8] 						$max ['']							$lines ['wpautop'|'br'|'']			$read [false]					$disabled [false]
-` 
-` 	'-no'				$lines = ''
-` 	'-br'				$lines = 'br'
-` 	'-read'				$read = true
-` 	'-disabled'			$disabled = true
-` 
-` 'editor'				$default ['']				$tabs ['all'|'visual']		$toolbar ['normal'|'basic']		$media [false]
-` 
-` 	'-visual'			$tabs = 'visual'
-` 	'-basic'			$toolbar = 'basic'
-` 	'-media'			$media = 1
-` 
-` 'limiter'				$max [350]					$display [false]
-` 
-` 	'-chars'			$display = true
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'true_false'			$default [false|true]
-` 
-` 'select'				$default [''|array()]* 		$placeholder ['']			$ajax [false]					$null [false]						$ui [false]							$multiple [false] 				$read [false]					$disabled [false]
-` 
-` 	'select2'			$ui = true
-` 
-` 'checkbox'			$default [''|array()]*		$layout ['vertical'|'horizontal'|0|1]				 		$toggle [false]
-` 
-` 'radio'				$default [''|array()]*		$layout ['vertical'|'horizontal'|0|1]						$more [false]						$save [$more|false]
-` 
-` 	'-default'			add 'default' => 'Default' 	to $field['choices']
-` 	'-no'				add 'no' 	  => '-' 		to $field['choices']
-` 	'-multi'			$multiple | $more = true
-` 	'-read'				$read = true
-` 	'-disabled'			$disabled = true
-` 	'-horizontal'		$layout = true
-` 
-` * $default: 			array 				>	 field['choices'] = $default + choices 		field['default_value'] = field['choices'][0]
-` 						string not exist	>	 field['choices'][0] = $default				field['default_value'] = field['choices'][0]
-` 						string exists 		>	 -											field['default_value'] = $default
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'object'				$types [''|array()]			$taxes [''|array()] 		$placeholder ['']				$null [false]						$multiple [false]					$return ['object'|'id'|0|1]		$filters [array( 'search', 'post_type', 'taxonomy' )]			$ui [true]
-` 
-` 'object-rel'			$types [''|array()]			$taxes [''|array()]			$placeholder ['']				$elements [''] 						$max [1]							$return ['object'|'id'|0|1]		$filters [array( 'search', 'post_type', 'taxonomy' )]
-` 
-` 	'-id'				$return = 'id'
-` 	'-search'			$filters[] = 'search'
-` 	'-null'				$null = true
-` 
-` 'object-link'			$types [''|array()]			$taxes [''|array()]			$placeholder ['']				$null [false] 						$multiple [false]
-` 
-` 	'objects'			$multiple = true
-` 	'objects-rel'		$max = 0
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'category'
-` 'tag'
-` 'taxonomy'			$taxes ['']					$add [false]				$save [$multiple]				$null [false] 						$return ['object'|'id']				($multiple = false)
-` 
-` 	'*plural'			$multiple = true
-` 	'-id'				$return = 'id'
-` 	'-add'				$add = true
-` 	'-null'				$null = true
-` 	'-{tax}'			$taxes = '{tax}'
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'gallery'				$library ['uploadedTo'|'all'|0|1]						$preview ['thumbnail'] 			$min [0] 							$max [0] 							$minwidth [0] 					$maxwidth [0] 					$minheight [0] 					$maxheight [0] 					$minsize [0]				$maxsize [0] 				$mime ['jpg,png,...']*
-` 
-` 'file'				$library ['uploadedTo'|'all'|0|1]						$minsize [0]					$maxsize [0] 						$mime ['jpg,png,...']* 				$return ['array'|'url|'id']
-` 
-` 	'-url'				$return = 'url'
-` 	'-id'				$return = 'id'
-` 	'-all'				$library = 'all'
-` 
-` 'image'				$library ['uploadedTo'|'all'|0|1]						$preview ['thumbnail'] 			$minwidth [0] 						$maxwidth [0] 						$minheight [0] 					$maxheight [0] 					$minsize [0]					$maxsize [0] 					$mime ['jpg,png,...']* 		$return ['array'|'url'|'id']
-` 
-` 	'-url'				$return = 'url'
-` 	'-id'				$return = 'id'
-` 	'-all'				$library = 'all'
-` 
-` * $mime: 				'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar'
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-` 
-` 'icon'				$default ['star']	 		$filter [array(fa-groups)]	$save ['class'|'unicode'|'element'|'object']						$enqueue' [false]					$null [false] 					$preview [true]
-` 
-` 	'-no'				add 'no' => 'No Icon' 		to array('choices')
-` 
-` 'color'				$default [''|'#000000'|...]
-` 
-` 'date'				$return ['Y-m-d']			$display ['d F Y']			$firstday' [1]
-` 
-` 'datetime'			$return ['Y-m-d G:i'] 		$display ['d F Y G:i']		$firstday' [1]
-` 
-` 'time'				$return ['G:i']				$display ['G:i']
-` 
-` ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'tab'					$place ['top'|'left'|0|1]
+
+	'-left'				$place = 'left'
+
+'message'				$message ['']				$eschtml [false]			$lines [''|'br'|'wpautop']
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'repeater'			$button ['+']				$min [0] 					$max [0] 						$layout ['row'|'table'|'block']		$sub [array()]
+
+	'-block':			$layout = 'block'
+	'-table':			$layout = 'table'
+
+'flexible'			$button ['+']				$min [0] 					$max [0] 						$layouts = [array()]
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'number'				$default ['']				$placeholder ['']			$prepend ['']					$append ['']						$min ['']							$max ['']						$step ['']						$read [false]					$disabled [false]
+
+	'positive':			$min = 0
+	'negative':			$max = 0
+	'option':			$min = -1
+	'pixel':			$step = 1 					$append = 'px'
+	'percent':			$min = 0 					$max = 100 					$append = '%'
+	'alpha':			$min = 0 					$max = 1 					$step = .1 						$placeholder = '1'
+	'second':			$min = 0 					$step = .1 					$append = 'sec'					$placeholder = '1'
+	'msecond':			$min = 0 					$step = 100					$append = 'ms'					$placeholder = '1000'
+	'-max'				$max = 9999
+	'-min'				$min = -9999
+	'-pos'				$min = 0
+	'-neg'				$max = 0
+	'-read'				$read-only = true
+	'-disabled'			$disabled = true
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'text'				$default ['']				$placeholder ['']			$prepend ['']					$append [''] 						$max ['']							$read [false]					$disabled [false]
+
+	'id':			 	$prepend = '#'				$placeholder = 'id'
+	'class':			$prepend = '.'				$placeholder = 'class'
+	'attributes':		$prepend = 'Data'			$placeholder = 'data-href="www.website.com" data-target="_blank"'
+	'name':			 	$prepend = 'Nome' 			$placeholder = 'senza nome'									$max = 30		
+	'link':			 	$prepend = 'URL' 			$placeholder = 'http://www.website.com'
+	'email':			$prepend = '@' 				$placeholder = 'info@.website.com'
+	'user':			 	$prepend = 'User' 			$placeholder = 'user name'
+	'phone':			$prepend = 'N.' 			$placeholder = '+39 123 4567'
+	'video':			$prepend = 'YouTube' 		$placeholder = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
+	'-read'				$read = true
+	'-disabled'			$disabled = true
+
+'textarea'			$default ['']				$placeholder ['']			$rows [8] 						$max ['']							$lines ['wpautop'|'br'|'']			$read [false]					$disabled [false]
+
+	'-no'				$lines = ''
+	'-br'				$lines = 'br'
+	'-read'				$read = true
+	'-disabled'			$disabled = true
+
+'editor'				$default ['']				$tabs ['all'|'visual']		$toolbar ['normal'|'basic']		$media [false]
+
+	'-visual'			$tabs = 'visual'
+	'-basic'			$toolbar = 'basic'
+	'-media'			$media = 1
+
+'limiter'				$max [350]					$display [false]
+
+	'-chars'			$display = true
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'true_false'			$default [false|true]
+
+'select'				$default [''|array()]* 		$placeholder ['']			$ajax [false]					$null [false]						$ui [false]							$multiple [false] 				$read [false]					$disabled [false]
+
+	'select2'			$ui = true
+
+'checkbox'			$default [''|array()]*		$layout ['vertical'|'horizontal'|0|1]				 		$toggle [false]
+
+'radio'				$default [''|array()]*		$layout ['vertical'|'horizontal'|0|1]						$more [false]						$save [$more|false]
+
+	'-default'			add 'default' => 'Default' 	to $field['choices']
+	'-no'				add 'no' 	  => '-' 		to $field['choices']
+	'-multi'			$multiple | $more = true
+	'-read'				$read = true
+	'-disabled'			$disabled = true
+	'-horizontal'		$layout = true
+
+* $default: 			array 				>	 field['choices'] = $default + choices 		field['default_value'] = field['choices'][0]
+						string not exist	>	 field['choices'][0] = $default				field['default_value'] = field['choices'][0]
+						string exists 		>	 -											field['default_value'] = $default
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'object'				$types [''|array()]			$taxes [''|array()] 		$placeholder ['']				$null [false]						$multiple [false]					$return ['object'|'id'|0|1]		$filters [array( 'search', 'post_type', 'taxonomy' )]			$ui [true]
+
+'object-rel'			$types [''|array()]			$taxes [''|array()]			$placeholder ['']				$elements [''] 						$max [1]							$return ['object'|'id'|0|1]		$filters [array( 'search', 'post_type', 'taxonomy' )]
+
+	'-id'				$return = 'id'
+	'-search'			$filters[] = 'search'
+	'-null'				$null = true
+
+'object-link'			$types [''|array()]			$taxes [''|array()]			$placeholder ['']				$null [false] 						$multiple [false]
+
+	'objects'			$multiple = true
+	'objects-rel'		$max = 0
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'category'
+'tag'
+'taxonomy'			$taxes ['']					$add [false]				$save [$multiple]				$null [false] 						$return ['object'|'id']				($multiple = false)
+
+	'*plural'			$multiple = true
+	'-id'				$return = 'id'
+	'-add'				$add = true
+	'-null'				$null = true
+	'-{tax}'			$taxes = '{tax}'
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'gallery'				$library ['uploadedTo'|'all'|0|1]						$preview ['thumbnail'] 			$min [0] 							$max [0] 							$minwidth [0] 					$maxwidth [0] 					$minheight [0] 					$maxheight [0] 					$minsize [0]				$maxsize [0] 				$mime ['jpg,png,...']*
+
+'file'				$library ['uploadedTo'|'all'|0|1]						$minsize [0]					$maxsize [0] 						$mime ['jpg,png,...']* 				$return ['array'|'url|'id']
+
+	'-url'				$return = 'url'
+	'-id'				$return = 'id'
+	'-all'				$library = 'all'
+
+'image'				$library ['uploadedTo'|'all'|0|1]						$preview ['thumbnail'] 			$minwidth [0] 						$maxwidth [0] 						$minheight [0] 					$maxheight [0] 					$minsize [0]					$maxsize [0] 					$mime ['jpg,png,...']* 		$return ['array'|'url'|'id']
+
+	'-url'				$return = 'url'
+	'-id'				$return = 'id'
+	'-all'				$library = 'all'
+
+* $mime: 				'pdf, ppt, pptx, xls, xlsx, doc, docx, pages, numbers, keynote, txt, rtf, jpg, png, gif, zip, rar'
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+'icon'				$default ['star']	 		$filter [array(fa-groups)]	$save ['class'|'unicode'|'element'|'object']						$enqueue' [false]					$null [false] 					$preview [true]
+
+	'-no'				add 'no' => 'No Icon' 		to array('choices')
+
+'color'				$default [''|'#000000'|...]
+
+'date'				$return ['Y-m-d']			$display ['d F Y']			$firstday' [1]
+
+'datetime'			$return ['Y-m-d G:i'] 		$display ['d F Y G:i']		$firstday' [1]
+
+'time'				$return ['G:i']				$display ['G:i']
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 ```
 * @param {string|array} elem Field type-{options} or associative array.
 * @return {array} Field.

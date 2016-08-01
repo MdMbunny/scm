@@ -259,6 +259,7 @@ function scm_hook_site_register_styles_inline() {
     $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
     $base = (int)str_replace( 'px', '', scm_utils_style_get( 'size', 'option' ) );
+    $base = ( $base ?: 16 );
 
     $r_desktop = $base + (int)scm_field( 'styles-size-desktop', -1, 'option' );
     $css .= 'body.desktop { font-size: ' . $r_desktop . 'px; }' . lbreak();

@@ -490,7 +490,7 @@ scm_field( 'my-field', 'My fallback', 'option', false, 'Prepend', 'Append' );
 * @param {sring} name Field name.
 * @param {misc=} fallback Field fallback (default is '').
 * @param {int|string=} target Post ID or 'option' (default is '', current post ID).
-* @param {bool=} no_option Skip field option fallback (default is true).
+* @param {bool=} no_option Skip field option fallback (default is false).
 * @param {string=} before Prepend if string field (default is '').
 * @param {string=} after Append if string field (default is '').
 * @return {misc} Field content or fallback.

@@ -827,11 +827,10 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	elseif( strpos( $list, 'wp_menu' ) !== false ):
 		$menus = get_registered_nav_menus();
-		$lang = '';
-		$def = '';
 		foreach ( $menus as $location => $description )
 			$choices[$location] = $description;
 
+		$choices['auto'] = __( 'Menu Auto', SCM_THEME );
 		$choices['no'] = __( 'Nessun Menu', SCM_THEME );
 
 	elseif( strpos( $list, 'templates_' ) !== false ):

@@ -70,7 +70,7 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 			case 'page':
 				$fields[] = scm_acf_field_select( $second . 'layout', 'main_layout-default', 100 );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 25, 25 ), 'scm-advanced-options hidden' ) );
-				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'menu', 'wp_menu', 25 ), 'scm-advanced-options hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'menu', 'wp_menu-default', 25 ), 'scm-advanced-options hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'form', 0, 25, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) ), 'scm-advanced-options hidden' );
 				break;
 			case 5:

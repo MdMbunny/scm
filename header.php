@@ -39,17 +39,15 @@ if( SCM_LEVEL <= 30 && SCM_PAGE_FORM )
 
 // END HEAD
 
-global $SCM_indent, $post;//, $SCM_page_id;
+global $SCM_indent, $post;
 
-//SCM_PAGE_ID = $SCM_page_id;
-
-//$site_align = scm_field( 'layout-alignment', 'center', 'option' );
 $txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
 $wrap_id = 'site-page';
 $wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), SCM_PAGE_ID );
 $wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
-$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN;
+$wrap_class = scm_field( 'page-class', '', SCM_PAGE_ID, true );
+$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' );
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -78,7 +76,7 @@ $head_id = 'site-header';
 $head_layout = scm_field( 'layout-head', 'full', 'option' );
 $head_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
-$head_class = 'site-header full ' . SCM_SITE_ALIGN;
+$head_class = 'site-header full ' . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky' : '' );
 $head_row_class = 'row scm-row object scm-object ' . $head_layout . SCM_SITE_ALIGN;
 
 $menu_position = scm_field( 'menu-position', 'inline', 'option' );

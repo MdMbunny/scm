@@ -188,7 +188,7 @@ $type = new Custom_Type( $args );
             $this->menupos = ( $this->menupos ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
             
             if( $scm_menu )
-                insertArray( $menu_order[ $this->menu ], $this->menupos, 'edit.php?post_type=' . $this->slug );
+                $menu_order[ $this->menu ] = arr_insert( $menu_order[ $this->menu ], $this->menupos, 'edit.php?post_type=' . $this->slug );
 
             return $menu_order;
         }

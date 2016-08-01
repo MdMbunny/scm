@@ -133,6 +133,11 @@ function scm_acf_layout_soggetti( $layouts = array(), $default = 0 ) {
 */
 function scm_acf_layout_luoghi( $layouts = array(), $default = 0 ) {
 
+	$layout_logo = scm_acf_layout( 'logo', 'block', __( 'Logo', SCM_THEME ) );
+		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'width', '', 'auto', '%', __( 'Larghezza', SCM_THEME ) ) );
+		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'height', '', 'auto', '%', __( 'Altezza', SCM_THEME ) ) );
+		$layout_logo['sub_fields'][] = scm_acf_field_select( 'negative', 'positive_negative', 100, 0, 0, __( 'Scegli una versione', SCM_THEME ) );
+
 	$layout_map = scm_acf_layout( 'map', 'block', __( 'Mappa', SCM_THEME ), '', 1 );
 		$layout_map['sub_fields'] = scm_acf_object_map( $default, 1 );
 
@@ -142,7 +147,7 @@ function scm_acf_layout_luoghi( $layouts = array(), $default = 0 ) {
 	$layout_address = scm_acf_layout( 'indirizzo', 'block', __( 'Indirizzo', SCM_THEME ) );
 		$layout_address['sub_fields'] = scm_acf_object_indirizzo( $default, 1 );
 
-	$layouts = array_merge( $layouts, array( $layout_map, $layout_address, $layout_data ) );
+	$layouts = array_merge( $layouts, array( $layout_logo, $layout_map, $layout_address, $layout_data ) );
 
 	return $layouts;
 }

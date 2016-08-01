@@ -128,33 +128,17 @@ function scm_hook_acf_option_subpages_install(){
         ));
 
         acf_add_options_sub_page(array(
-            'page_title'    => 'SCM Main Settings',
-            'menu_title'    => __( 'Opzioni', SCM_THEME ),
-            'menu_slug'     => 'scm-options-opzioni',
+            'page_title'    => 'SCM General Settings',
+            'menu_title'    => __( 'Generali', SCM_THEME ),
+            'menu_slug'     => 'scm-options-settings',
             'parent_slug'   => 'scm-options-general',
             'capability'    => SCM_ROLE_OPTIONS,
         ));
 
         acf_add_options_sub_page(array(
-            'page_title'    => 'SCM Layout Settings',
-            'menu_title'    => __( 'Layout', SCM_THEME ),
-            'menu_slug'     => 'scm-options-layout',
-            'parent_slug'   => 'scm-options-general',
-            'capability'    => SCM_ROLE_OPTIONS,
-        ));
-
-        acf_add_options_sub_page(array(
-            'page_title'    => 'SCM Design Settings',
-            'menu_title'    => __( 'Stili', SCM_THEME ),
-            'menu_slug'     => 'scm-options-stili',
-            'parent_slug'   => 'scm-options-general',
-            'capability'    => SCM_ROLE_OPTIONS,
-        ));
-
-        acf_add_options_sub_page(array(
-            'page_title'    => 'SCM Header Settings',
-            'menu_title'    => __( 'Header', SCM_THEME ),
-            'menu_slug'     => 'scm-options-header',
+            'page_title'    => 'SCM Navigation Settings',
+            'menu_title'    => __( 'Navigation', SCM_THEME ),
+            'menu_slug'     => 'scm-options-nav',
             'parent_slug'   => 'scm-options-general',
             'capability'    => SCM_ROLE_OPTIONS,
         ));
@@ -167,13 +151,21 @@ function scm_hook_acf_option_subpages_install(){
             'capability'    => SCM_ROLE_OPTIONS,
         ));
 
-        /*acf_add_options_sub_page(array(
-            'page_title'    => 'SCM Roles Settings',
-            'menu_title'    => __( 'Roles and Levels', SCM_THEME ),
-            'menu_slug'     => 'scm-options-roles',
+        acf_add_options_sub_page(array(
+            'page_title'    => 'SCM Tools Settings',
+            'menu_title'    => __( 'Strumenti', SCM_THEME ),
+            'menu_slug'     => 'scm-options-tools',
             'parent_slug'   => 'scm-options-general',
             'capability'    => SCM_ROLE_OPTIONS,
-        ));*/
+        ));
+
+        acf_add_options_sub_page(array(
+            'page_title'    => 'SCM Design Settings',
+            'menu_title'    => __( 'Stili', SCM_THEME ),
+            'menu_slug'     => 'scm-options-stili',
+            'parent_slug'   => 'scm-options-general',
+            'capability'    => SCM_ROLE_OPTIONS,
+        ));
 
         acf_add_options_sub_page(array(
             'page_title'    => 'SCM Default Types',
@@ -269,7 +261,6 @@ function scm_hook_acf_install() {
         $tax_sliders = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-options' );
         $tax_sliders['location'][] = scm_acf_group_location( 'sliders', 'taxonomy' );
         $tax_sliders['fields'] = scm_acf_fields_sliders();
-        //$tax_sliders['fields'] = scm_acf_template_sliders();
 
         $groups[] = $tax_sliders;
 
@@ -280,40 +271,34 @@ function scm_hook_acf_install() {
         $groups[] = $intro;
 
         // + OPT GENERAL
-        $general = scm_acf_group( __( 'Opzioni Stili', SCM_THEME ), 'general-options' );
-        $general['location'][] = scm_acf_group_location( 'scm-options-opzioni', 'options_page' );
+        $general = scm_acf_group( __( 'Opzioni Generali', SCM_THEME ), 'general-options' );
+        $general['location'][] = scm_acf_group_location( 'scm-options-settings', 'options_page' );
         $general['fields'] = scm_acf_options_general();
         $groups[] = $general;
 
+        // + OPT NAVIGATION
+        $nav = scm_acf_group( __( 'Opzioni Navigazione', SCM_THEME ), 'nav-options' );
+        $nav['location'][] = scm_acf_group_location( 'scm-options-nav', 'options_page' );
+        $nav['fields'] = scm_acf_options_nav();
+        $groups[] = $nav;
+
+        // + OPT FOOTER
+        $footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'foot-options' );
+        $footer['location'][] = scm_acf_group_location( 'scm-options-footer', 'options_page' );
+        $footer['fields'] = scm_acf_options_foot();
+        $groups[] = $footer;
+
+        // + OPT TOOLS
+        $tools = scm_acf_group( __( 'Opzioni Strumenti', SCM_THEME ), 'tools-options' );
+        $tools['location'][] = scm_acf_group_location( 'scm-options-tools', 'options_page' );
+        $tools['fields'] = scm_acf_options_tools();
+        $groups[] = $tools;
+
         // + OPT STYLE
-        $style = scm_acf_group( __( 'Stili', SCM_THEME ), 'styles-options' );
+        $style = scm_acf_group( __( 'Opzioni Stili', SCM_THEME ), 'styles-options' );
         $style['location'][] = scm_acf_group_location( 'scm-options-stili', 'options_page' );
         $style['fields'] = scm_acf_options_styles();
         $groups[] = $style;
-
-        // + OPT LAYOUT
-        $layout = scm_acf_group( __( 'Layout', SCM_THEME ), 'layout-options' );
-        $layout['location'][] = scm_acf_group_location( 'scm-options-layout', 'options_page' );
-        $layout['fields'] = scm_acf_options_layout();
-        $groups[] = $layout;
-
-        // + OPT HEAD
-        $head = scm_acf_group( __( 'Header', SCM_THEME ), 'head-options' );
-        $head['location'][] = scm_acf_group_location( 'scm-options-header', 'options_page' );
-        $head['fields'] = array_merge( $head['fields'], scm_acf_options_head() );
-        $groups[] = $head;
-
-        // + OPT FOOTER
-        $footer = scm_acf_group( __( 'Componi Footer', SCM_THEME ), 'foot-options' );
-        $footer['location'][] = scm_acf_group_location( 'scm-options-footer', 'options_page' );
-        $footer['fields'] = array_merge( $footer['fields'], scm_acf_options_foot() );
-        $groups[] = $footer;
-
-        // + OPT ROLES
-        $roles = scm_acf_group( __( 'Opzioni Ruoli', SCM_THEME ), 'roles-options' );
-        $roles['location'][] = scm_acf_group_location( 'scm-options-roles', 'options_page' );
-        $roles['fields'] = array_merge( $roles['fields'], scm_acf_options_roles() );
-        $groups[] = $roles;
 
         // + PAGE
         $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
@@ -336,7 +321,7 @@ function scm_hook_acf_install() {
             if($slug=='slides'){
                 $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
                 $group['location'][] = scm_acf_group_location( 'page' );
-                $group['fields'] = scm_acf_options_slider( 'main' );
+                $group['fields'] = scm_acf_options_slider();
                 $groups[] = $group;
             }
 
@@ -398,9 +383,9 @@ function scm_hook_acf_install() {
 */
 function scm_hook_acf_option_menu_order( $menu_order ) {
 
-    insertArray( $menu_order[ 'scm' ], 1, 'scm-options-intro' );
-    insertArray( $menu_order[ 'scm' ], 2, 'scm-default-types' );
-    insertArray( $menu_order[ 'scm' ], 3, 'scm-templates-general' );
+    $menu_order[ 'scm' ] = arr_insert( $menu_order[ 'scm' ], 1, 'scm-options-intro' );
+    $menu_order[ 'scm' ] = arr_insert( $menu_order[ 'scm' ], 2, 'scm-default-types' );
+    $menu_order[ 'scm' ] = arr_insert( $menu_order[ 'scm' ], 3, 'scm-templates-general' );
 
     return $menu_order;
 

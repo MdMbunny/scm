@@ -870,9 +870,13 @@ function delArray( $arr, $elems ){
 ```php
 $arr = [ [ 'id'=>'JN','num'=>'one','cat'=>0 ], [ 'id'=>'PT','num'=>'two','cat'=>1 ], [ 'id'=>'SM','num'=>'three','cat'=>1 ]];
 
-// With $filter
+// With $filter (include)
 $sub = subArray( $arr, '', '', [ 'cat'=>1 ] );
 print( $sub ) // [ [ 'id'=>'PT', 'num'=>'two', 'cat'=>1 ], [ 'id'=>'SM', 'num'=>'three', 'cat'=>1 ] ]
+
+// With $filter (exclude)
+$sub = subArray( $arr, '', '', [ 'cat'=>1 ], true );
+print( $sub ) // [ [ 'id'=>'JN','num'=>'one','cat'=>0 ] ]
 
 // With $att_v and $att_k
 $sub = subArray( $arr, 'id', 'num' );
@@ -891,19 +895,49 @@ print( $sub )
  * @param {array=} filter Filter items by key and value (default is empty array).
  * @return {array} New subtracted array.
  */
-function subArray( $arr, $att_v = '', $att_k = '', $filter = array() ){
+function subArray( $arr, $att_v = '', $att_k = '', $filter = array(), $exclude = false ){
     $new = array();
     if( !isset( $arr ) || !is_array( $arr ) ) return $new;
     foreach ( $arr as $key => $value ) {
         if ( !empty( $filter ) ) {
             foreach ( $filter as $k => $v ) {
-                if ( !isset( $value[$k] ) || ( isset( $value[$k] ) && $value[$k] !== $v ) )
-                    continue(2);
+                if( !$exclude ){
+                    if ( !array_key_exists( $k, $value ) || ( array_key_exists( $k, $value ) && $value[$k] !== $v ) )
+                        continue(2);
+                }else{
+                    if ( array_key_exists( $k, $value ) && $value[$k] == $v )
+                        continue(2);
+                }
             }
         }
         $key = ( $att_k ? $value[$att_k] : $key );
         $value = ( $att_v ? $value[$att_v] : $value );
         $new[$key] = $value;
+    }
+    return $new;
+}
+
+/**
+ * [GET] Copy object with selected items
+ *
+ * @see subArray()
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array where to subtract items.
+ * @param {key} filter Filter items by key and value (default is '').
+ * @param {misc=} filter Filter items by key and value (default is '').
+ * @return {array} New subtracted array.
+ */
+function subObject( $arr, $key = '', $filter = NULL, $exclude = false ){
+    if( !$key || !is_string( $key ) ) return $arr;
+    $new = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    foreach ( $arr as $obj ) {
+        if( property_exists( $obj, $key ) ){
+            if ( is_null( $filter ) || ( ( !$exclude && $obj->$key == $filter ) || ( $exclude && $obj->$key != $filter ) ) )
+                $new[] = $obj;
+        }
     }
     return $new;
 }
@@ -938,6 +972,38 @@ function copyArray( $arr ){
 }
 
 /**
+* [SET] Inserts a new value before any index in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {misc} $value The value to insert.
+* @return {array} The new array.
+*
+* @see asso_push()
+*/
+function arr_unshift( $arr = array(), $value = NULL ){
+    if( is_null( $value ) ) return $arr;
+    return array_merge( array( $value ), $arr );
+}
+
+/**
+* [SET] Inserts a new value after any index in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {misc} $value The value to insert.
+* @return {array} The new array.
+*
+* @see asso_unshift()
+*/
+function arr_push( $arr = array(), $value = NULL ){
+    if( is_null( $value ) ) return $arr;
+    return array_merge( $arr, array( $value ) );
+}
+
+/**
  * [SET] Insert or replace value in array
  *
  * Example usage:
@@ -946,44 +1012,181 @@ function copyArray( $arr ){
 $arr = [ 'insert', 'element' ];
 
 // Insert item in array
-insertArray( $arr, 1, 'an' );
+$arr = arr_insert( $arr, 1, 'an' );
 print( $arr ) // [ 'insert', 'an', 'element' ]
 
 // Replace item in array
-insertArray( $arr, 2, 'elephant', true );
+$arr = arr_insert( $arr, 2, 'elephant', true );
 print( $arr ) // [ 'insert', 'an', 'elephant' ]
 ```
  *
  * @subpackage 1-Utilities/ARRAY
  *
- * @param {array} arr Array where to insert value.
+ * @param {array=} $arr An array to insert in to (default is empty array).
  * @param {int=} offset Index where to insert value (default is 0).
  * @param {misc=} value Value to be insered (default is '').
  * @param {boolean=} replace Replace value at index with the new one (default is false).
+ */
+function arr_insert( $arr = array(), $offset = 0, $value = '', $replace = false ){
+
+    if( isset( $arr ) && is_arr( $arr ) ){
+        if( $replace ){
+            $offset = ( $offset < 0 ? 0 : ( $offset > count( $arr ) - 1 ? count( $arr ) - 1 : $offset ) );
+            return array_replace( $arr, array( $offset => $value ) );
+        }else{
+            if( $offset == 0 ){
+                return arr_unshift( $arr, $value );
+            }else if( $offset >= count( $arr ) ){
+                return arr_push( $arr, $value );
+            }else{
+                $a1 = array_slice( $arr, 0, $offset );
+                $a2 = array_slice( $arr, $offset );
+                $a1 = arr_push( $a1, $value );
+                return array_merge( $a1, $a2 );
+            }
+        }
+    }
+
+    return $arr;
+}
+
+/**
+ * [SET] Insert or replace value in array (deprecated)
+ *
+ * @deprecated Use arr_insert()
+ * @see arr_insert()
  * @return WARNING: this function does not return a new array. The original array is altered.
  */
 function insertArray( &$arr, $offset = 0, $value = '', $replace = false ){
 
-    if( isset( $arr ) && is_array( $arr ) ){
-        if( $replace ){
-            if( $offset < 0 )
-                $offset = 0;
-            elseif( $offset > count( $arr ) - 1 )
-                $offset = count( $arr )-1;
-            $arr = array_replace( $arr, array( $offset => $value ) );
-        }else{
-            if( $offset == 0 ){
-                array_unshift( $arr, $value );
-            }else if( $offset >= count( $arr ) ){
-                array_push( $arr, $value );
-            }else{
-                $a1 = array_slice( $arr, 0, $offset );
-                $a2 = array_slice( $arr, $offset );
-                array_push( $a1, $value );
-                $arr = array_merge( $a1, $a2 );
-            }
+    consoleLog( 'insertArray() is deprecated. Switching to arr_insert().' );
+    consoleLog( debug_backtrace() );
+
+    $arr = arr_insert( $arr, $offset, $value, $replace );
+}
+
+/**
+* [SET] Inserts a new key/value before any key in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {string} $key The key to insert.
+* @param {misc} $value The value to insert.
+* @return {array} The new array.
+*
+* @see asso_push()
+*/
+function asso_unshift( $arr = array(), $key = NULL, $value = NULL ){
+    if( is_null( $key ) || !is_string( $key ) || is_null( $value ) ) return $arr;
+    return array_merge( array( $key=>$value ), $arr );
+}
+
+/**
+* [SET] Inserts a new key/value after any key in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {string} $key The key to insert.
+* @param {misc} $value The value to insert.
+* @return {array} The new array.
+*
+* @see asso_unshift()
+*/
+function asso_push( $arr = array(), $key = NULL, $value = NULL ){
+    if( is_null( $key ) || !is_string( $key ) || is_null( $value ) ) return $arr;
+    return array_merge( $arr, array( $key=>$value ) );
+}
+
+/**
+* [SET] Inserts a new key/value before the key in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {string} $offset The key to insert before.
+* @param {string} $key The key to insert.
+* @param {misc} $value An value to insert.
+* @return {array} The new array.
+*
+* @see asso_insert_after()
+*/
+function asso_insert_before( $arr = array(), $offset, $key, $value ) {
+    if ( array_key_exists( $offset, $arr ) ) {
+        $new = array();
+        foreach ( $arr as $k => $v ) {
+            if ( $k === $offset )
+            $new[ $key ] = $value;
+            $new[ $k ] = $v;
         }
+        return $new;
     }
+    return $arr;
+}
+
+/**
+* [SET] Inserts a new key/value after the key in the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @param {string} $offset The key to insert after.
+* @param {string} $key The key to insert.
+* @param {misc} $value An value to insert.
+* @return {array} The new array.
+*
+* @see asso_insert_before()
+*/
+function asso_insert_after( $arr = array(), $offset, $key, $value ) {
+    if ( array_key_exists( $offset, $arr ) ) {
+        $new = array();
+        foreach ( $arr as $k => $v ) {
+            $new[ $k ] = $v;
+            if ( $k === $offset )
+            $new[ $key ] = $value;
+        }
+        return $new;
+    }
+    return arr;
+}
+
+/**
+* [SET] Insert element in associative array after or before a specific key
+ *
+ * Example usage:
+ *
+```php
+$arr = [ 'name' => 'John', 'surname' => 'Smith' ];
+
+// Insert item in associative array after key
+asso_insert( $arr, 'nickname', 'Johnny', 'name' );
+print( $arr ) // [ 'name' => 'John', 'nickname' => 'Johnny', 'surname' => 'Smith' ];
+
+// Insert item in associative array before key
+asso_insert( $arr, 'id', 123, 'name', true );
+print( $arr ) // [ 'id' => 123, 'name' => 'John', 'surname' => 'Smith' ];
+```
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array} arr Associative array where to insert value.
+* @param {string} key Index to be insered.
+* @param {misc} value Value to be insered.
+* @param {string=} offset Index where to insert value (default is '').
+* @param {boolean=} before Insert before the offset if true (default is false).
+*/
+function asso_insert( $arr, $key = NULL, $value = NULL, $offset = '', $before = false ){
+    if( is_null( $key ) || !is_string( $key ) || is_null( $value ) ) return $arr;
+    if( isset( $arr ) && is_asso( $arr ) ){
+        if( !$offset || !array_key_exists( $offset, $arr ) )
+            return asso_unshift( $arr, $key, $value );
+        else if( $before )
+            return asso_insert_before( $arr, $offset, $key, $value );
+        else
+            return asso_insert_after( $arr, $offset, $key, $value );
+    }
+    return $arr;
 }
 
 /**

@@ -74,6 +74,28 @@ if ( $layout == 'layout-thumbs' ) {
                 else
                     $image = scm_field( 'soggetto-icona', '', $post_id );
             break;
+            
+            default:
+                return;
+            break;
+        }
+        
+        
+        if( !$image )
+            return;
+
+    }if( $post->post_type === 'luoghi' ){
+        switch ( $layout ) {
+            case 'layout-logo':
+                if( $negative )
+                    $image = scm_field( 'luogo-logo-neg', '', $post_id );
+                else
+                    $image = scm_field( 'luogo-logo', '', $post_id );
+            break;
+            
+            default:
+                return;
+            break;
         }
         
         

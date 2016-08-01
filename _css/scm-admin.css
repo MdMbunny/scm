@@ -6,6 +6,98 @@
 * ORANGE #e14d43
 */
 
+/*#wpadminbar .ab-top-menu>li>.ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item,
+#wpadminbar .ab-top-menu>li.hover>.ab-item,
+#wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus,
+#wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus,
+#adminmenu,
+#adminmenuback,
+#adminmenuwrap{
+	background-color: #26292c !important;
+}
+
+#adminmenu .wp-submenu{
+	background-color: #363b3f !important;
+}*/
+
+#adminmenu a{
+	color: #888;
+}
+
+#adminmenu li.wp-has-current-submenu .wp-submenu{
+	padding: 11px 0;
+	box-shadow: 0 0 4px 0 rgba(0,0,0,.5) inset;
+}
+
+#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
+	border-bottom: 1px dashed #FFF;
+}
+
+#adminmenu .wp-has-current-submenu .wp-submenu, #adminmenu .wp-has-current-submenu .wp-submenu.sub-open, #adminmenu .wp-has-current-submenu.opensub .wp-submenu, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu, .no-js li.wp-has-current-submenu:hover .wp-submenu{
+	background-color: #444 !important;
+}
+
+#adminmenu > .scm-separator.active{
+	background-color: #FFF !important
+}
+
+#adminmenu > .scm-separator.active > .separator:after,
+#wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover>a, #wpadminbar .quicklinks .menupop ul li a:focus, #wpadminbar .quicklinks .menupop ul li a:focus strong, #wpadminbar .quicklinks .menupop ul li a:hover, #wpadminbar .quicklinks .menupop ul li a:hover strong, #wpadminbar .quicklinks .menupop.hover ul li a:focus, #wpadminbar .quicklinks .menupop.hover ul li a:hover, #wpadminbar li #adminbarsearch.adminbar-focused:before, #wpadminbar li .ab-item:focus:before, #wpadminbar li a:focus .ab-icon:before, #wpadminbar li.hover .ab-icon:before, #wpadminbar li.hover .ab-item:before, #wpadminbar li:hover #adminbarsearch:before, #wpadminbar li:hover .ab-icon:before, #wpadminbar li:hover .ab-item:before, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:focus, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:hover,
+#wpadminbar .ab-top-menu>li.hover>.ab-item, #wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus, #wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item, #wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus,
+#wpadminbar:not(.mobile)>#wp-toolbar a:focus span.ab-label, #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label, #wpadminbar>#wp-toolbar li.hover span.ab-label,
+#adminmenu .wp-submenu li:not(.current) a:focus,
+#adminmenu .wp-submenu li:not(.current) a:hover,
+#adminmenu a:not(.wp-has-current-submenu):hover,
+#adminmenu li.menu-top>a:not(.wp-has-current-submenu):focus,
+#adminmenu li:not(.wp-has-current-submenu) a:focus div.wp-menu-image:before,
+#adminmenu li:not(.wp-has-current-submenu).opensub div.wp-menu-image:before,
+#adminmenu li:not(.wp-has-current-submenu):hover div.wp-menu-image:before,
+#adminmenu li:not(.wp-has-current-submenu).menu-top:hover,
+#adminmenu li:not(.wp-has-current-submenu).opensub>a.menu-top,
+#adminmenu li:not(.wp-has-current-submenu)>a.menu-top:focus,
+#collapse-menu:hover,
+#collapse-menu:hover #collapse-button div:after,
+input[type=checkbox]:checked:before,
+.acf-field-true-false ul.acf-checkbox-list li input:checked{
+	color: #e14d43 !important;
+}
+
+#adminmenu > .scm-separator.current,
+.wp-core-ui .button-primary,
+.posts-repeater .order:hover,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content),
+.acf-fc-popup a:hover,
+.button.blue,
+.button.blue.disabled,
+.acf-field .show-field-key,
+#edittag p.submit,
+#publishing-action,
+#adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head,
+#adminmenu .wp-menu-arrow,
+#adminmenu .wp-menu-arrow div,
+#adminmenu li.current a.menu-top,
+.folded #adminmenu li.current.menu-top,
+.folded #adminmenu li.wp-has-current-submenu{
+	background-color: #e14d43 !important;
+}
+
+#adminmenu > .scm-separator:not(.current):not(.active):hover > .separator:after,
+#adminmenu > .scm-separator.current > .separator:after{
+	color: #FFF !important;
+}
+
+#adminmenu li.wp-has-current-submenu,
+#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
+	background-color: transparent !important;
+}
+
+.wp-core-ui .button-primary{
+	text-shadow: none;
+	box-shadow: none;
+}
+
 
 /******************************/
 /*** WP ***********************/
@@ -61,6 +153,7 @@
     display: none !important;
 }
 
+.user-new-php .form-field:last-child,
 .user-new-php #wpbody-content .wrap form tr .form-field:last-child{
     display: block !important;
 }
@@ -111,13 +204,6 @@ body.loading *{
 
 #adminmenu .opensub .wp-submenu-head{
 	color: #fff !important;
-	/*background: #e14d43;*/
-}
-
-#adminmenu li.wp-menu-separator{
-	background-color: #26292c;
-	height: 2px;
-	margin: 0px;
 }
 
 #adminmenu div.wp-menu-image {
@@ -139,6 +225,70 @@ body.loading *{
 	min-width: 0;
 	opacity: 1;
 }
+
+#adminmenu > li:not(.scm-separator){
+	display: none;
+}
+
+#adminmenu > li:not(.scm-separator):last-child,
+#adminmenu > li:not(.scm-separator).active{
+	display: block;
+}
+
+#adminmenu > .scm-separator{
+    background-color: rgba(255,255,255,.4) !important;
+    height: 3em !important;
+    margin: 0px !important;
+    padding: 0 11px !important;
+    line-height: 3em !important;
+    cursor: pointer !important;
+    border-top: 1px solid #000 !important;
+}
+
+/*#adminmenu > .scm-separator.active{
+	background-color: rgba(255,255,255,.7) !important;
+}*/
+
+/*#adminmenu > .scm-separator.current{
+	background-color: rgba(255,255,255,1) !important;
+}*/
+
+#adminmenu > .scm-separator > .separator{
+	height: auto;
+	overflow: hidden;
+	max-height: 100%;
+}
+
+#adminmenu > .scm-separator > .separator:after {
+    color: #111;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/*#adminmenu > li:first-child,
+#adminmenu > li:not(.scm-pages) + li.scm-pages,
+#adminmenu > li:not(.scm-types) + li.scm-types,
+#adminmenu > li:not(.scm-contacts) + li.scm-contacts,
+#adminmenu > li:not(.scm-settings) + li.scm-settings,
+#adminmenu > li.scm-separator-last:after){
+	margin-top: 3em;
+}*/
+
+#adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
+#adminmenu > .scm-separator1 > .separator:after { content: "S - Sections"; }
+#adminmenu > .scm-separator2 > .separator:after { content: "C - Contents"; }
+#adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
+#adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
+#adminmenu > .scm-separator5 > .separator:after { content: "W - Settings"; }
+#adminmenu > .scm-separator-last > .separator:after { content: "P - Plugins"; }
+
+html[lang="it-IT"] #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
+html[lang="it-IT"] #adminmenu > .scm-separator1 > .separator:after { content: "S - Sezioni"; }
+html[lang="it-IT"] #adminmenu > .scm-separator2 > .separator:after { content: "C - Contenuti"; }
+html[lang="it-IT"] #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
+html[lang="it-IT"] #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
+html[lang="it-IT"] #adminmenu > .scm-separator5 > .separator:after { content: "W - Impostazioni"; }
+html[lang="it-IT"] #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugin"; }
 
 /* Media */
 
@@ -501,6 +651,7 @@ body.loading *{
 #publishing-action *,
 #options-action *{
 	font-size: 18px !important;
+	text-shadow: none;
 }
 
 @media screen and (max-width: 782px){
@@ -514,7 +665,6 @@ body.loading *{
 
 #edittag p.submit,
 #publishing-action{
-	background: #e14d43 !important;
 	display: inline-block;
 	float: none;
 	font-size: .8em;
@@ -800,7 +950,6 @@ body.loading *{
 	display:block;
 	padding: 20px 10px;
 	margin-top: 5px;
-	background-color: #e14d43;
 	border-radius: 3px;
 	font-size: 16px;
 	color: #FFF;
@@ -1169,7 +1318,6 @@ input.acf-is-prepended {
 .acf-repeater-add-row.disabled:not(.small),*/
 .button.blue,
 .button.blue.disabled{
-	background-color: #e14d43 !important;
 	color: #FFF !important;
 }
 
@@ -1256,9 +1404,6 @@ input.acf-is-prepended {
 
 /* 4.3 Flexible Content */
 
-.acf-fc-popup a:hover{
-	background-color: #e14d43;
-}
 
 .acf-flexible-content .layout .acf-fc-layout-controlls {
  	top: 10px;
@@ -1332,7 +1477,7 @@ input.acf-is-prepended {
 	margin: 0px;
 	padding: 10px;
 	z-index: 9;
-	box-shadow: 0px 1px 6px 0 rgba(0,0,0,.5);
+	/*box-shadow: 0px 1px 6px 0 rgba(0,0,0,.5);*/
 }
 
 .acf-flexible-content .layout .acf-fc-layout-handle,
@@ -1369,7 +1514,7 @@ input.acf-is-prepended {
 .acf-flexible-content .layout{
 	box-shadow: 0 0 30px 0px rgba(0,0,0,.2);
     margin: 20px 10px !important;
-    overflow: hidden;
+    /*overflow: hidden;*/
     -webkit-transition: box-shadow 1s, margin 1s;
     transition: box-shadow 1s, margin 1s;
 }
@@ -1610,7 +1755,6 @@ input.acf-is-prepended {
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) {
 	padding: 0px 10% !important;
     border-radius: 0;
-    background-color: #e14d43 !important;
     height: 3em;
     line-height: 3em;
 }
@@ -1723,12 +1867,8 @@ input.acf-is-prepended {
 }
 
 .posts-repeater .order:hover{
-	background-color: #e14d43;
 	color: #FFF !important;
 }
-
-
-
 
 
 

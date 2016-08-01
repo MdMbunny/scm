@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.2.5
+Version:			v3.2.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -636,8 +636,19 @@ blockquote .append{
 	overflow: hidden;
 }
 
+.site.sticky-header{
+	padding-top: 5em;
+}
+
 .site-header{
 	font-size: 1em;
+}
+
+.site-header.sticky{
+	position: fixed;
+	z-index: 8000;
+	top: 0;
+	left: 0;
 }
 
 .smartmin .site-header > .row{
@@ -1389,12 +1400,12 @@ input[type="submit"]:active {
 
 .navigation .row {
 	padding: 0px 20px;
-	text-shadow: 0px -1px 0px rgba(0,0,0,.2);
+	/*text-shadow: 0px -1px 0px rgba(0,0,0,.2);*/
 }
 
 .navigation li,
 .navigation a {
-	color: #FFF;
+	color: #000;
 	display: inline-block;
 	vertical-align: top;
 	text-decoration: none;
@@ -1409,6 +1420,7 @@ input[type="submit"]:active {
 .navigation:not(.toggle) li{
 	-webkit-transition: background-color .5s ease-in;
 	transition: background-color .5s ease-in;
+	background-color: #EEE;
 }
 
 .navigation:not(.toggle) li:hover{
@@ -1416,10 +1428,13 @@ input[type="submit"]:active {
 	transition: background-color .3s ease-out;
 }
 
-.navigation:not(.toggle) li:hover,
+/*.navigation:not(.toggle) li:hover,
 .navigation:not(.toggle) li.current:hover,
-.navigation:not(.toggle) li.active:hover {
-	background-color: #FFF;
+.navigation:not(.toggle) li.active:hover */
+.navigation li:hover,
+.navigation li.current,
+.navigation li.active {
+	background-color: #AAA;
 }
 
 /* Level 0 */
@@ -1650,6 +1665,23 @@ body:not(.ready) .navigation {
 
 .old-ie .navigation {
 	display: none !important;
+}
+
+/* Side Menu */
+
+#side-menu{
+	position: fixed;
+	z-index: 8000;
+	right: 0;
+	top: 25%;
+}
+
+#side-menu .side-menu{
+}
+
+#side-menu .side-menu li{
+	display: block;
+	overflow: hidden;
 }
 
 /*--------------------------------------------------------------

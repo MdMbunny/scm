@@ -225,6 +225,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
 
+            $content['id'] = sanitize_title( $content['id'] );
+
             // -- Layout
             if($container == 'sub-section')
                 $container = 'section';

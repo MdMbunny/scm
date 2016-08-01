@@ -643,7 +643,10 @@ function scm_acf_fields_luoghi( $name = '' ) {
 
 	$fields[] = scm_acf_field_tab_left( $name . 'tab-set-luogo', array('label'=>__( 'Dati', SCM_THEME ) ) );
 		
-		$fields[] = scm_acf_field_name( $name . 'luogo-nome', array( 'placeholder'=>__( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) ) );
+		$fields[] = scm_acf_field_image_url( $name . 'luogo-logo', array('label'=> __( 'Logo (per fondi chiari)', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_image_url( $name . 'luogo-logo-neg', array('label'=> __( 'Logo (per fondi scuri)', SCM_THEME ) ), 50 );
+
+		$fields[] = scm_acf_field_name( $name . 'luogo-nome', array( 'placeholder'=>__( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) ), 100 );
 
 		$fields[] = scm_acf_field_text( $name . 'luogo-indirizzo', array( 'placeholder'=>'Corso Giulio Cesare 1', 'prepend'=>__( 'Indirizzo', SCM_THEME ) ), 70 );
 		$fields[] = scm_acf_field_text( $name . 'luogo-provincia', array( 'placeholder'=>'RM', 'prepend'=>__( 'Provincia', SCM_THEME ) ), 30 );

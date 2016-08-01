@@ -10,17 +10,24 @@
 * @since 1.0.0
 */
 
+/**
+* @global {array} SCM_admin_menu Stores admin menu elements
+*/
+$SCM_admin_menu = array();
+
 // ------------------------------------------------------
 //
 // ACTIONS AND FILTERS
 //      1-Register and enqueue scripts and styles
 //      2-Theme settings
-//      3-Admin menu setup
-//      4-Hide elements from admin
-//      5-Email hooks
-//      6-Uploads hooks
-//      7-Plugins hooks
-//      8-Debug hooks
+//      3-Admin UI
+//          -Edit list columns
+//          -Admin menu setup
+//          -Hide elements from admin
+//      4-Email hooks
+//      5-Uploads hooks
+//      6-Plugins hooks
+//      7-Debug hooks
 //
 // ------------------------------------------------------
 
@@ -41,13 +48,18 @@ add_action( 'after_switch_theme', 'scm_hook_admin_theme_activate' );
 add_action( 'switch_theme', 'scm_hook_admin_theme_deactivate' );
 add_action( 'upgrader_process_complete', 'scm_hook_admin_theme_update' );
 
-// MENU
+// UI - COLUMNS
+add_filter( 'manage_edit-page_columns', 'scm_hook_admin_ui_columns_page' ) ;
+add_action( 'manage_page_posts_custom_column', 'scm_hook_admin_ui_columns_manage_page', 10, 2 );
+
+// UI - MENU
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_remove' );
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_add' );
 add_filter( 'custom_menu_order', 'scm_hook_admin_ui_menu_order' );
 add_filter( 'menu_order', 'scm_hook_admin_ui_menu_order' );
+add_action( 'admin_init', 'scm_hook_admin_ui_menu_classes' );
 
-// HIDE
+// UI - HIDE
 add_action( 'wp_dashboard_setup', 'scm_hook_admin_ui_hide_dashboard_widgets' );
 add_action( 'admin_head', 'scm_hook_admin_ui_hide_from_users' );
 add_action( 'admin_bar_menu', 'scm_hook_admin_ui_hide_tools', 999 );
@@ -86,57 +98,6 @@ add_theme_support( 'title-tag' );
 add_theme_support( 'automatic-feed-links' );
 add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
 add_theme_support( 'post-thumbnails' );
-
-/*
-// AUTO NAV - UNDER COSTRUCTION
-add_action( 'after_setup_theme', 'scm_hook_nav_auto_menu' ); // TESTING
-
-function scm_hook_nav_auto_menu(){
-
-    //if( !scm_field( 'menu-auto', 0, 'option' ) )
-        //return;
-
-    //$locations = get_nav_menu_locations();
-    $locations = get_theme_mod('nav_menu_locations');
-    $menu = get_term( $locations[ 'auto' ], 'nav_menu' );
-
-    if( $menu && SCM_LEVEL === 0 && $pagenow == 'nav-menus.php' ){
-
-        $menu_name = $menu->name;
-        unregister_nav_menu( 'auto' );
-        wp_delete_nav_menu( $menu_name );
-
-        $menu = wp_create_nav_menu($menu_name);
-
-        //$pages = ;
-
-        $title = 'Services';
-        $slug = 'services';
-
-        $item = wp_update_nav_menu_item($menu, 0, array(
-            'menu-item-title' => $title,
-            'menu-item-object' => 'page',
-            'menu-item-object-id' => get_page_by_path( $slug )->ID,
-            'menu-item-type' => 'post_type',
-            'menu-item-status' => 'publish'
-            )
-        );
-
-            //$sub_item = wp_update_nav_menu_item($menu, 0, array(
-            //    'menu-item-title' => $subtitle,
-            //    'menu-item-url' => '#' . $subid,
-            //    'menu-item-type' => 'custom',
-            //    'menu-item-status' => 'publish',
-            //    'menu-item-parent-id' => $item,
-            //    )
-            //);
-
-        $locations[ 'auto' ] = $menu;
-        set_theme_mod( 'nav_menu_locations', $locations );
-    }
-}
-}
-*/
 
 // ------------------------------------------------------
 // 1-ENQUEUE
@@ -241,7 +202,6 @@ function scm_hook_admin_theme_register_menus() {
         'primary' => __( 'Menu Principale', SCM_THEME ),
         'secondary' => __( 'Menu Secondario', SCM_THEME ),
         'temporary' => __( 'Menu Temporaneo', SCM_THEME ),
-        'auto' => __( 'Menu Auto', SCM_THEME )
         )
     );
 }
@@ -277,7 +237,52 @@ function scm_hook_admin_theme_update() {
 }
 
 // ------------------------------------------------------
-// 3-MENU
+// 3-UI
+// ------------------------------------------------------
+// ------------------------------------------------------
+// -COLUMNS
+// ------------------------------------------------------
+
+/**
+* [SET] Add columns in list edit Page
+*
+* Hooked by 'admin_menu'
+* @subpackage 4-Init/Admin/3-MENU
+*/
+function scm_hook_admin_ui_columns_page( $columns = array() ) {
+    $columns = asso_insert( $columns, 'id', __( 'ID', SCM_THEME ), 'author', true );
+    $columns = asso_insert( $columns, 'menu', __( 'Menu Order', SCM_THEME ), 'author', true );
+
+    return $columns;
+}
+
+/**
+* [SET] Manage columns in list edit Page
+*
+* Hooked by 'admin_menu'
+* @subpackage 4-Init/Admin/3-MENU
+*/
+function scm_hook_admin_ui_columns_manage_page( $column = '', $post_id = 0 ) {
+    if( !$post_id ) return;
+
+    switch( $column ) {
+        case 'id':
+            echo $post_id;
+            break;
+
+        case 'menu':
+            $pag = get_post( $post_id );
+            echo $pag->menu_order;
+            break;
+
+        default:
+            break;
+
+    }
+}
+
+// ------------------------------------------------------
+// -MENU
 // ------------------------------------------------------
 
 /**
@@ -313,6 +318,8 @@ function scm_hook_admin_ui_menu_add(){
     $menu[] = array('','read',"separator3",'','wp-menu-separator');
     $menu[] = array('','read',"separator4",'','wp-menu-separator');
     $menu[] = array('','read',"separator5",'','wp-menu-separator');
+    if( SCM_LEVEL < 1 )
+        $menu[] = array('','read',"separator0",'','wp-menu-separator');
 }
 
 /**
@@ -325,7 +332,10 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
     
     if ( !$menu_ord ) return true;
 
+    global $SCM_admin_menu;
+
     $menu_order = array(
+        //'separator1' => array( 'separator1' ),
         'scm' => array(
             'index.php', // Dashboard
         ),
@@ -358,13 +368,43 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
         'separator-last' => array( 'separator-last' ),
     );
 
-    $menu_order = apply_filters( 'scm_filter_admin_ui_menu_order', $menu_order );
+    if( SCM_LEVEL < 1 )
+        $menu_order = array( 'separator0' => array( 'separator0' ) ) + $menu_order;
+
+    $SCM_admin_menu = $menu_order = apply_filters( 'scm_filter_admin_ui_menu_order', $menu_order );
+
+    //consoleLog($menu_order);
 
     return call_user_func_array( 'array_merge', $menu_order );
 }
 
+/**
+* [SET] Add custom classes to WP menu elements
+*
+* Hooked by 'admin_init'
+* @subpackage 4-Init/Admin/3-MENU
+*/
+function scm_hook_admin_ui_menu_classes(){
+
+    global $menu, $SCM_admin_menu;
+
+    foreach ( $menu as $key => $value ) {
+        foreach ($SCM_admin_menu as $pos => $cont) {
+            $class = getByValue( $cont, $menu[$key][2] );
+            if( !is_null( $class ) ){
+                if( strpos( $pos, 'separator' ) === 0 )
+                    $menu[$key][4] .= ' scm-separator';
+                else
+                    $menu[$key][4] .= ' scm-item';
+
+                $menu[$key][4] .= ' scm-' . $pos;
+            }
+        }
+    }
+}
+
 // ------------------------------------------------------
-// 4-HIDE
+// -HIDE
 // ------------------------------------------------------
 
 /**
@@ -417,7 +457,7 @@ function scm_hook_admin_ui_hide_tools( $wp_admin_bar ) {
 }
 
 // ------------------------------------------------------
-// 5-EMAIL
+// 4-EMAIL
 // ------------------------------------------------------
 
 /**
@@ -449,7 +489,7 @@ function scm_hook_admin_mail_from() {
 }
 
 // ------------------------------------------------------
-// 6-UPLOADS
+// 5-UPLOADS
 // ------------------------------------------------------
 
 /**
@@ -652,7 +692,7 @@ function scm_hook_admin_upload_custom_column( $column_name = NULL, $id = NULL ) 
 }
 
 // ------------------------------------------------------
-// 7-PLUGINS
+// 6-PLUGINS
 // ------------------------------------------------------
 
 /**
@@ -907,7 +947,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
 }
 
 // ------------------------------------------------------
-// 8-DEBUG
+// 7-DEBUG
 // ------------------------------------------------------
 
 /**
