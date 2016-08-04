@@ -36,6 +36,22 @@ function scm_acf_get_field_to3( $a, $n, $t, $d ) {
 	return ( isset( $a[$n] ) ? $a[$n] : ( isset( $a[$t] ) ? $a[$t] : $d ) );
 }
 
+/**
+* [GET] Value or fallback 
+*
+* @todo Una volta eliminata {@see 2-ACF/UTILS/scm_acf_get_field_to3() } sostituire con questa nuova funzione.
+*
+* @param {array} arr Field array.
+* @param {string} par Field attribute.
+* @param {misc} fallback Fallback value
+* @return {array} Field attribute value.
+*/
+function scm_acf_get_value( $arr = NULL, $par = NULL, $fallback = NULL ) {
+	if( is_null( $arr ) ) return '';
+	return ( isset( $arr[$par] ) ? $arr[$par] : ( !is_null( $fallback ) ? $fallback : '' ) );
+}
+
+
 // ------------------------------------------------------
 // 2.0 CHOICES
 // ------------------------------------------------------
@@ -118,7 +134,7 @@ function scm_acf_get_field_to3( $a, $n, $t, $d ) {
 
 'true_false'			$default [false|true]
 
-'select'				$default [''|array()]* 		$placeholder ['']			$ajax [false]					$null [false]						$ui [false]							$multiple [false] 				$read [false]					$disabled [false]
+'select'				$default [''|array()]* 		$placeholder ['']			$ajax [false]					$null [false]						$ui [false]							$multi [false] 				$read [false]					$disabled [false]
 
 	'select2'			$ui = true
 
@@ -279,21 +295,26 @@ function scm_acf_get_field( $elem ) {
     	case 'select2':
 
     		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
-    		//$choices = array_merge( $choices, scm_acf_get_field_to3( $arg, 2, 'placeholder', array() ) ),
     		$choices = scm_acf_field_choices( $default, $choices );
+
+			$ajax = scm_acf_get_field_to3( $arg, 3, 'ajax', ( strpos( $extra , '-ajax' ) !== false ?: 0 ) );
+    		$multi = scm_acf_get_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ?: $type == 'select2' ) );
+    		$ui = scm_acf_get_field_to3( $arg, 5, 'ui', ( strpos( $extra , '-ui' ) !== false ?: $multi ) );
+    		$null = scm_acf_get_field_to3( $arg, 4, 'null', ( strpos( $extra , '-null' ) !== false ?: $multi ) );
+    		$read = scm_acf_get_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ?: 0 ) );
+    		$disabled = scm_acf_get_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ?: 0 ) );
 
     		$field = array(
 				'type' 					=> 'select',
 				'choices' 				=> $choices['choices'],
-				'default_value' 		=> $choices['default_value'],
-				//'placeholder' 			=> scm_acf_get_field_to3( $arg, 2, 'placeholder', '' ),
-				'ajax' 					=> scm_acf_get_field_to3( $arg, 3, 'ajax', 0 ),
-				'allow_null' 			=> scm_acf_get_field_to3( $arg, 4, 'null', 0 ),
-				'ui' 					=> ( $type == 'select2' ? 1 : scm_acf_get_field_to3( $arg, 5, 'ui', 0 ) ),
-				'multiple' 				=> scm_acf_get_field_to3( $arg, 6, 'multi', ( strpos( $extra , '-multi' ) !== false ?: 0 ) ),
-				'readonly' 				=> scm_acf_get_field_to3( $arg, 7, 'read', ( strpos( $extra , '-read' ) !== false ?: 0 ) ),
-				'disabled' 				=> scm_acf_get_field_to3( $arg, 8, 'disabled', ( strpos( $extra , '-disabled' ) !== false ?: 0 ) ),
-				'preset' 				=> str_replace( array( '-multi', '-read', '-disabled' ), '', $extra),
+				'default_value' 		=> ( $multi ? array() : $choices['default_value'] ),
+				'ajax' 					=> $ajax,
+				'allow_null' 			=> $null,
+				'ui' 					=> $ui,
+				'multiple' 				=> $multi,
+				'readonly' 				=> $read,
+				'disabled' 				=> $disabled,
+				'preset' 				=> str_replace( array( '-multi', '-read', '-disabled', '-ui', '-ajax' ), '', $extra),
 			);
 
     	break;
@@ -633,8 +654,8 @@ function scm_acf_get_field( $elem ) {
     		$field = array(
 				'type' => 'repeater',
 				'button_label' => scm_acf_get_field_to3( $arg, 1, 'button', 'Aggiungi' ),
-				'min' => scm_acf_get_field_to3( $arg, 2, 'min', '' ),
-				'max' => scm_acf_get_field_to3( $arg, 3, 'max', '' ),
+				'min' => scm_acf_get_field_to3( $arg, 2, 'min', 0 ),
+				'max' => scm_acf_get_field_to3( $arg, 3, 'max', 0 ),
 				'layout' => scm_acf_get_field_to3( $arg, 4, 'layout', ( strpos( $extra , '-block' ) !== false ? 'block' : ( strpos( $extra , '-table' ) !== false ? 'table' : 'row' ) ) ),
 				'sub_fields' => scm_acf_get_field_to3( $arg, 5, 'sub', array() ),
 			);

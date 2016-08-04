@@ -10,11 +10,6 @@
 * @since 1.0.0
 */
 
-/**
-* @global {array} SCM_types Stores post types
-*/
-$SCM_types = array();
-
 // ------------------------------------------------------
 //
 // ACTIONS AND FILTERS
@@ -26,28 +21,12 @@ $SCM_types = array();
 // ACTIONS AND FILTERS
 // ------------------------------------------------------
 
-add_filter( 'query_vars', 'scm_hook_types_query_vars' );
-
 add_action( 'acf/include_fields', 'scm_hook_types_fields' );
 add_action( 'acf/include_fields', 'scm_hook_types_default' );
 add_action( 'acf/include_fields', 'scm_hook_types_custom' );
 add_action( 'acf/include_fields', 'scm_hook_types_capabilities' );
 
 // ------------------------------------------------------
-
-/**
-* [GET] Add custom query vars
-*
-* Hooked by 'query_vars'
-* @subpackage 3-Install/Types/HOOKS
-*
-* @param {array=} public_query_vars List of query vars (default is empty array).
-* @return {array} Modified list of query vars.
-*/
-function scm_hook_types_query_vars( $public_query_vars = array() ) {
-    $public_query_vars[] = 'template';
-    return $public_query_vars;
-}
 
 /**
 * [SET] Custom types and taxonomies fields
@@ -116,7 +95,7 @@ function scm_hook_types_default(){
     consoleDebug('install default types and taxes');
 
     $default_types = array(
-        'sections'              => array( 'admin' => 1,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
+        'sections'              => array( 'admin' => 1,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Section', SCM_THEME),                'plural' => __('Sections', SCM_THEME),              'slug' => 'sections',           'icon' => 'schedule',           'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
         'modules'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Module', SCM_THEME),                 'plural' => __('Modules', SCM_THEME),               'slug' => 'modules',            'icon' => 'screenoptions',      'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
         'banners'               => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 0,         'active' => 1,      'public' => 0,       'hidden' => 0,      'post' => 0,       'singular' => __('Banner', SCM_THEME),                 'plural' => __('Banners', SCM_THEME),               'slug' => 'banners',            'icon' => 'align-center',       'orderby' => 'title',       'ordertype' => '',      'menupos' => 0,         'menu' => 'pages',                                                                                                           ),
         'news'                  => array( 'admin' => 0,      'custom' => 1,         'add_cap' => 1,         'active' => 1,      'public' => 1,       'hidden' => 0,      'post' => 1,       'singular' => __('News', SCM_THEME),                   'plural' => __('News', SCM_THEME),                  'slug' => 'news',               'icon' => 'megaphone',          'orderby' => 'date',        'ordertype' => '',      'menupos' => 0,         'menu' => 'types',                                                                                                           ),
@@ -216,10 +195,8 @@ do_action( 'scm_action_types_capabilities', $obj->cap_plural, $obj->admin, $obj-
 */
 function scm_hook_types_capabilities(){
 
-    $pages = array( 'scm-options-intro', 'scm-custom-types', 'scm-custom-taxonomies', 'scm-default-types', 'scm-default-taxonomies' );
-
-    if( is_admin() && isset( $_GET['page'] ) && in_array( $_GET['page'], $pages ) ){
-
+    if( is_admin() && !get_option( 'scm-roles-installed' ) ){
+        
         global $SCM_types;
         $objs = $SCM_types['objects'];
 

@@ -192,27 +192,49 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
 		'type'=>'links_type', 
 		'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ) ), 
 		'label'=>__( 'Redirect', SCM_THEME ),
-	), 50 );
+	), 100 );
 
-	$link = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'link' );
+	$link = array( 'field' => 'login-type', 'operator' => '!=', 'value' => 'page' );
 	$page = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'page' );
 
-	$fields[] = scm_acf_field_link( 'login-redirect', 0, 50, $link );
+	$fields[] = scm_acf_field_link( 'login-redirect', 0, 100, $link );
 	$fields[] = scm_acf_field_object( 'login-redirect', array( 
         'type'=>'link', 
         'types'=>'page',
-        'label'=>__( 'Pagina', SCM_THEME ),
-    ), 50, $page );
+        'label'=>'',
+    ), 100, $page );
 
-	$fields[] = scm_acf_field_text( 'login-user', array( 'placeholder'=>__( 'Email Address', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 50, 0 );
-	$fields[] = scm_acf_field_text( 'login-uservalue', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Placeholder', SCM_THEME ) ), 50, 0 );
+	$fields[] = scm_acf_field_text( 'login-label-user', array( 'default'=>__( 'User', SCM_THEME ), 'prepend'=>__( 'User Label', SCM_THEME ) ), 50, 0 );
+	$fields[] = scm_acf_field_text( 'login-value-user', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Default User', SCM_THEME ) ), 50, 0 );
 
-	$fields[] = scm_acf_field_text( 'login-password', array( 'placeholder'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 50, 0 );
-	$fields[] = scm_acf_field_text( 'login-send', array( 'placeholder'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 50, 0 );
+	$fields[] = scm_acf_field_text( 'login-label-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Label', SCM_THEME ) ), 100, 0 );
+	$fields[] = scm_acf_field_text( 'login-send', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Submit Button Label', SCM_THEME ) ), 100, 0 );
 
-	$fields[] = scm_acf_field_true( 'login-rememberme', array('label'=>'Remember Me'), 10 );
-	$remember = array( 'field' => 'login-rememberme', 'operator' => '==', 'value' => 1 );
-	$fields[] = scm_acf_field_text( 'login-remember', array( 'placeholder'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Label', SCM_THEME ) ), 25, $remember );
+	$fields[] = scm_acf_field_false( 'login-remember', array( 'label'=>'Remember Me' ), 20 );
+	$remember = array( 'field' => 'login-remember', 'operator' => '==', 'value' => 1 );
+	$fields[] = scm_acf_field_text( 'login-label-remember', array( 'default'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Remember Me Label', SCM_THEME ) ), 40, $remember );
+	$fields[] = scm_acf_field_false( 'login-value-remember', array( 'label'=>'Default Remember Me' ), 40, $remember );
+
+	$buttons = scm_acf_field_repeater( 'login-buttons', array( 'button'=>__( 'Aggiungi Pulsante', SCM_THEME ) ), 100 );
+		$buttons['sub_fields'][] = scm_acf_field_select( 'type', array( 'choices'=>array( 'edit'=>__( 'Edit', SCM_THEME ), 'enter'=>__( 'Enter', SCM_THEME ), 'logout'=>__( 'Log Out', SCM_THEME ) ) ) );
+		$buttons['sub_fields'][] = scm_acf_field_text( 'label', array( 'placeholder'=>__( 'Override default Label', SCM_THEME), 'prepend'=>__( 'Label', SCM_THEME ) ) );
+		$buttons['sub_fields'][] = scm_acf_field_select( 'login', array( 
+			'type'=>'links_type', 
+			'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ) ), 
+			'label'=>__( 'Redirect', SCM_THEME ),
+		), 100 );
+
+		$lnk = array( 'field' => 'login', 'operator' => '!=', 'value' => 'page' );
+		$pag = array( 'field' => 'login', 'operator' => '==', 'value' => 'page' );
+
+		$buttons['sub_fields'][] = scm_acf_field_link( 'redirect', 0, 100, $lnk );
+		$buttons['sub_fields'][] = scm_acf_field_object( 'redirect', array( 
+	        'type'=>'link', 
+	        'types'=>'page',
+	        'label'=>'',
+	    ), 100, $pag );
+
+	$fields[] = $buttons;
 
 	return $fields;
 }
@@ -418,12 +440,12 @@ function scm_acf_object_icona( $default = '', $obj = 0, $opt = '', $width = 100,
 * @param {bool} req
 * @return {array} Fields.
 */
-function scm_acf_object_titolo( $default = '', $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) { // $opt = 1 || low, -1 || min, 2 || max
+function scm_acf_object_titolo( $default = 0, $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) { // $opt = 1 || low, -1 || min, 2 || max
 
 	$fields = array();
 
 	if ( !$obj )
-		$fields[] = scm_acf_field_textarea( 'title', 0, $width, $logic );
+		$fields[] = scm_acf_field_textarea( 'title', $default, $width, $logic, $req );
 
 	if( !is_string( $opt ) ){
 		switch( $opt ) {

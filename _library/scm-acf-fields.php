@@ -1019,7 +1019,7 @@ function scm_acf_field_true( $name = '', $field = 0, $width = 100, $logic = 0, $
 'ajax' => false
 'null' => false
 'ui' => false
-'multiple' => false
+'multi' => false
 'read' => false
 'disabled' => false
 'choices' => []

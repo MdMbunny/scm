@@ -12,35 +12,54 @@
  * @since 1.0.0
  */
 
-global $SCM_indent, $SCM_types;
+// CHECK PAGE TYPE ------------------------------------------------------------------------
+
+global $SCM_indent, $SCM_types, $post;
+
+// If no page supplied (index.php) - Load Home Page
+if( is_null( $post ) ){
+	$post = get_post( get_option('page_on_front') );
+	setup_postdata( $post );
+}
 
 $template = 'page';
-
 $type = get_post_type();
 $single = is_single();
 $archive = is_archive();
-$notpage = 0;
 $page = 0;
-$temp = '';
+$part = '';
 
-if( $single ){
-	$notpage = 1;
-	$page = get_page_by_path( '_single-' . $type );
-	$temp = SCM_DIR_PARTS_SINGLE;
-}elseif( $archive ){
-	$notpage = 1;
-	$page = get_page_by_path( '_archive-' . $type );
-	$temp = SCM_DIR_PARTS_ARCHIVE;
+// Is Single or Archive
+if( $single || $archive ){
+	// IF Post Type not public - Load Home Page
+	if( is_null( getByKey( $SCM_types['public'], $type ) ) ){
+		get_template_part( SCM_DIR_PARTS, 'none' );
+	}else{
+		
+		if( $single ){
+			$page = get_page_by_path( '_single-' . $type );
+			$part = SCM_DIR_PARTS_SINGLE;
+		}elseif( $archive ){
+			$page = get_page_by_path( '_archive-' . $type );
+			$part = SCM_DIR_PARTS_ARCHIVE;
+		}
+		// If a template file '_parts/single/single-{post_type}.php' | '_parts/archive/archive-{post_type}.php' exists
+		if( locate_template( $part . '-' . $type . '.php' ) ){
+			$template = 'part';
+		// If query arg ?template=XXX exists
+		}elseif( !$page ){
+			$template = SCM_PAGE_TEMPLATE;
+			// IF Template not exists - Load Home Page
+			// ++todo: 	se non esiste il template dovresti aver pronte delle parts per i type di default
+			// 			e per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto
+			if( !$template ){
+				get_template_part( SCM_DIR_PARTS, 'none' );
+			}
+		}
+	}
 }
 
-// CONSTANTS ------------------------------------------------------------
-
-define( 'SCM_PAGE_ID',			    ( $page ? $page->ID : get_the_ID() ) );
-define( 'SCM_PAGE_FORM',			scm_field( 'page-form', false ) );
-define( 'SCM_SITE_ALIGN',			scm_field( 'layout-alignment', 'center', 'option' ) );
-
-
-// IF OLD BROWSER ------------------------------------------------------------------------
+// REDIRECT OLD BROWSER ------------------------------------------------------------------------
 
 if( function_exists( 'get_browser_version' ) ){
 
@@ -57,34 +76,21 @@ if( function_exists( 'get_browser_version' ) ){
     }
 }
 
-// IF not PAGE ---------------------------------------------------------------------------------
+// CONSTANTS ------------------------------------------------------------
 
-if( $notpage ){
 
-// If Type is not Public
-	if( is_null( getByKey( $SCM_types['public'], $type ) ) )
-		get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home) 
-	
-// If a Page named '_single-{post_type}' | '_archive-{post_type}' exists
-	//if( $page ){
-		//SCM_PAGE_ID = $SCM_page_id = $page->ID;
+define( 'SCM_PAGE_ID',			    ( $page ? $page->ID : get_the_ID() ) );
+define( 'SCM_PAGE_EDIT',			( scm_field( 'page-form', false ) ? ( is_user_logged_in() && SCM_LEVEL_EDIT ? ( get_query_var( 'action' ) != 'view' ? get_query_var( 'action' ) == 'edit' || get_option( 'scm-settings-edit-' . SCM_ID ) : 0 ) : 0 ) : 0 ) );
+define( 'SCM_PAGE_TEMPLATE',		get_query_var( 'template', 0 ) );
+define( 'SCM_SITE_ALIGN',			scm_field( 'layout-alignment', 'center', 'option' ) );
 
-// If a template file '_parts/single/single-{post_type}.php' | '_parts/archive/archive-{post_type}.php' exists
-	if( locate_template( $temp . '-' . $type . '.php' ) ){
-		$template = 'part';
+if( SCM_PAGE_EDIT )
+	scm_hook_admin_ui_edit_mode();
+else
+	scm_hook_admin_ui_view_mode();
 
-// If query arg ?template=XXX exists
-	}elseif( !$page ){
-		$template = get_query_var( 'template', 0 );
-		// ++todo: 	se non esiste il template dovresti aver pronte delle parts per i type di default
-		// 			e per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto
-		if( !$template )
-			get_template_part( SCM_DIR_PARTS, 'none' ); // (back to home)
-	}
-}
 
 // Build Contents ---------------------------------------------------------------------------------------------
-
 
 
 // Header
@@ -99,7 +105,7 @@ switch ($template) {
 
 // Content from Single Part or Archive Part
 	case 'part':
-		get_template_part( $temp, $type );
+		get_template_part( $part, $type );
 		break;
 
 // Content from Template

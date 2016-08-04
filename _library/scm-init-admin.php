@@ -21,9 +21,11 @@ $SCM_admin_menu = array();
 //      1-Register and enqueue scripts and styles
 //      2-Theme settings
 //      3-Admin UI
+//          -Add body classes
 //          -Edit list columns
 //          -Admin menu setup
 //          -Hide elements from admin
+//          -Edit Mode
 //      4-Email hooks
 //      5-Uploads hooks
 //      6-Plugins hooks
@@ -48,6 +50,9 @@ add_action( 'after_switch_theme', 'scm_hook_admin_theme_activate' );
 add_action( 'switch_theme', 'scm_hook_admin_theme_deactivate' );
 add_action( 'upgrader_process_complete', 'scm_hook_admin_theme_update' );
 
+// UI - BODY
+add_filter( 'admin_body_class', 'scm_hook_admin_ui_body_class' ) ;
+
 // UI - COLUMNS
 add_filter( 'manage_edit-page_columns', 'scm_hook_admin_ui_columns_page' ) ;
 add_action( 'manage_page_posts_custom_column', 'scm_hook_admin_ui_columns_manage_page', 10, 2 );
@@ -65,6 +70,10 @@ add_action( 'admin_head', 'scm_hook_admin_ui_hide_from_users' );
 add_action( 'admin_bar_menu', 'scm_hook_admin_ui_hide_tools', 999 );
 /** Always disable front end admin bar */
 add_filter('show_admin_bar', '__return_false');
+
+// UI - EDIT MODE
+add_action('clear_auth_cookie', 'scm_hook_admin_ui_view_mode', 1 );
+//add_action('clear_auth_cookie', 'scm_hook_admin_ui_edit_mode', 1 );
 
 // EMAIL
 add_filter( 'wp_mail_from', 'scm_hook_admin_mail_from' );
@@ -86,8 +95,8 @@ add_action( 'manage_media_custom_column', 'scm_hook_admin_upload_custom_column',
 add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
 
 // PLUGINS
-add_action( 'plugins_loaded', 'scm_hook_admin_plugins_duplicate_post' );
-add_action( 'plugins_loaded', 'scm_hook_admin_plugins_backup_restore_options' );
+add_action( 'after_setup_theme', 'scm_hook_admin_plugins_duplicate_post' );
+add_action( 'after_setup_theme', 'scm_hook_admin_plugins_backup_restore_options' );
 add_action( 'tgmpa_register', 'scm_hook_admin_plugins_tgm_plugin_activation' );
 
 // DEBUG
@@ -213,7 +222,16 @@ function scm_hook_admin_theme_register_menus() {
 * @subpackage 4-Init/Admin/2-THEME
 */
 function scm_hook_admin_theme_activate() {
-    update_option( 'scm-settings-installed', 1 );
+    $current_user = wp_get_current_user();
+    if ( $current_user && md5( $current_user->user_email ) != '85f0a70841ed3570c2bcecfb38025ef4' ){
+        //update_option( 'scm-hacked', 1 );
+        alert( 'Software under license.' );
+        die;
+    }else{
+        update_option( 'scm-installed' );
+        update_option( 'scm-settings-installed', 1 );
+        update_option( 'scm-settings-edit-' . SCM_ID, 0 );
+    }
 }
 
 /**
@@ -224,6 +242,7 @@ function scm_hook_admin_theme_activate() {
 */
 function scm_hook_admin_theme_deactivate() {
     update_option( 'scm-settings-installed', 0 );
+    update_option( 'scm-settings-edit-' . SCM_ID, 0 );
 }
 
 /**
@@ -239,6 +258,20 @@ function scm_hook_admin_theme_update() {
 // ------------------------------------------------------
 // 3-UI
 // ------------------------------------------------------
+// ------------------------------------------------------
+// -BODY
+// ------------------------------------------------------
+
+/**
+* [SET] Add admin body classes
+*
+* Hooked by 'admin_body_class'
+* @subpackage 4-Init/Admin/3-MENU
+*/
+function scm_hook_admin_ui_body_class( $classes = '' ) {
+    return $classes . ( SCM_LEVEL_ADVANCED ? ' scm-advanced ' : '' );
+}
+
 // ------------------------------------------------------
 // -COLUMNS
 // ------------------------------------------------------
@@ -454,6 +487,30 @@ function scm_hook_admin_ui_hide_tools( $wp_admin_bar ) {
     $wp_admin_bar->remove_node( 'new-media' );
     $wp_admin_bar->remove_node( 'new-page' );
     $wp_admin_bar->remove_node( 'view' );
+}
+
+// ------------------------------------------------------
+// -EDIT MODE
+// ------------------------------------------------------
+
+/**
+* [SET] Exit Edit Mode
+*
+* Hooked by 'clear_auth_cookie' (on logout)
+* @subpackage 4-Init/Admin/5-EDIT
+*/
+function scm_hook_admin_ui_view_mode(){
+    update_option( 'scm-settings-edit-' . SCM_ID, 0 );
+}
+
+/**
+* [SET] Enter Edit Mode
+*
+* Hooked by '' (on login)
+* @subpackage 4-Init/Admin/5-EDIT
+*/
+function scm_hook_admin_ui_edit_mode(){
+    update_option( 'scm-settings-edit-' . SCM_ID, 1 );
 }
 
 // ------------------------------------------------------
@@ -741,7 +798,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'source'             => 'scm-assets.zip',
             'required'           => true,
             'force_activation'   => true,
-            'force_deactivation' => false,
+            'force_deactivation' => true,
         ),
 
         array(

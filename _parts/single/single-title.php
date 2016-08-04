@@ -95,14 +95,12 @@ if( !$text ){
     }
 }
 
-
-
 $prepend = ( $args['prepend'] && $args['prepend'] != 'no' ? ( $layout !== 'layout-quote' ? '<span class="prepend">' . $args['prepend'] . '</span>' : ( $args['prepend'] !== 'fa-no' ? '<i class="prepend fa ' . $args['prepend'] . '"></i>' : '' ) ) : '' );
 $append = ( $args['append'] && $args['append'] != 'no' ? ( $layout !== 'layout-quote' ? '<span class="append">' . $args['append'] . '</span>' : ( $args['append'] !== 'fa-no' ? '<i class="append fa ' . $args['append'] . '"></i>' : '' ) ) : '' );
 
 $text = ( startsWith( $text, '<p>' ) ? str_replace( '<p>', '', $text ) : $text );
 
-// VAI A RIVEDERE FUNZIONE endsWith in scm-functions.php
+// VAI A RIVEDERE FUNZIONE endsWith in scm-utils.php
 $text = ( strpos( $text, '</p>' ) != false ? str_replace( '</p>', '', $text ) : $text );
 
 $text = $prepend . $text . $append;
@@ -119,6 +117,7 @@ $replaceArray = array(
     '(tm)' => '&trade;',
     '(TM)' => '&trade;',
 
+    '(Y)' => date( 'Y' ),
     'YEAR' => date( 'Y' ),
 
     'TITLE' => get_bloginfo( 'name' ),
@@ -126,6 +125,6 @@ $replaceArray = array(
 
 $text = strtr( $text, $replaceArray );
 
-indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$text . '</' . $tag . '><!-- title -->', 2 );
+indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$text . '</' . $tag . '><!-- title -->', 1 );
 
 ?>

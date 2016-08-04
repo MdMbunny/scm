@@ -221,7 +221,8 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
     $out = scm_field( 'menu-sticky-out', '', 'option' );
     $sticky = scm_field( 'menu-sticky', '', 'option' );
     $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
-    $attach = ( $sticky === 'self' ? 'nav-top' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
+    $attach = ( $sticky === 'self' ? '' : scm_field( 'menu-sticky-attach', 'nav-top', 'option' ) );
+    $anim = ( $sticky === 'self' ? '' : scm_field( 'menu-sticky-anim', 'top', 'option' ) );
 
     $id = 'site-navigation';
 
@@ -264,12 +265,10 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
             'side' => $menu_side,
         ));
 
-        if( !$sticky ){
+        if ( !$sticky ) {
             return 0;
-        }else{
-            if( $out ){
-                return 1;
-            }
+        }else if ( $sticky != 'head' && $out ) {
+            return 1;
         }
     }
 
@@ -277,7 +276,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         $sticky_id = $id . '-sticky';
 
         $sticky_layout = scm_field( 'layout-page', 'full', 'option' );
-        $sticky_class = 'navigation sticky ' . ( $sticky ? $sticky . ' ' : '' );
+        $sticky_class = 'navigation sticky ' . ( $sticky ? $sticky . ' ' : '' ) . ( $attach ? 'attach-' . $attach . ' ' : '' ) . ( $anim ? 'anim-' . $anim . ' ' : '' ) ;
 
         $sticky_row_layout = scm_field( 'layout-sticky', 'full', 'option' );
         $sticky_row_class = '';
@@ -306,6 +305,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
             'type' => $sticky,
             'offset' => $offset,
             'attach' => $attach,
+            'anim' => $anim,
         ));
 
         return 0;
@@ -327,11 +327,13 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
 * @param {string=} image_active (default is 'no' ).
 * @param {string=} menu (default is 'primary' ).
 * @param {string=} sticky (default is '' ).
+* @param {bool=} side (default is false ).
 * @param {string=} type (default is 'self' ).
 * @param {int=} offset (default is 0 ).
 * @param {string=} attach (default is 'nav-top' ).
+* @param {string=} anim (default is 'top' ).
 */
-function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $side = 0, $type = 'self', $offset = 0, $attach = 'nav-top' ) {
+function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $side = false, $type = 'self', $offset = 0, $attach = 'nav-top' ) {
 
     global $SCM_indent;
 
@@ -344,10 +346,11 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         'image_active'     => 'no',
         'menu'             => 'primary',
         'sticky'           => '',
-        'side'             => 0,
+        'side'             => false,
         'type'             => 'self',
         'offset'           => 0,
         'attach'           => 'nav-top',
+        'anim'           => 'top',
     );
 
     if( is_array( $id ) )
@@ -363,24 +366,25 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         'data-sticky="' . $sticky . '" 
         data-sticky-type="' . $type . '" 
         data-sticky-offset="' . $offset . '" 
-        data-sticky-attach="' . $attach . '" ' : '' );
+        data-sticky-attach="' . $attach . '" 
+        data-sticky-anim="' . $anim . '" ' : '' );
 
     $in = $SCM_indent + 1;
 
-    $content = ( $menu == 'auto' ? scm_auto_menu() : '%3$s' );
+    $content = ( $menu == 'auto' ? scm_auto_menu() : ( $menu == 'mono' ? scm_mono_menu() : ( $menu == 'mini' ? scm_mini_menu() : '%3$s' ) ) );
 
     $wrap = indent( $in ) . '<nav id="' . $id . '" class="' . $class . '" 
-        data-toggle="true" 
-        data-switch-toggle="' . $toggle_active . '" 
-        ' . $data . '
-    >' . lbreak();
+                data-toggle="true" 
+                data-switch-toggle="' . $toggle_active . '" 
+                ' . $data . '
+            >' . lbreak();
 
         $wrap .= indent( $in + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
 
             $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 
                 $wrap .= indent( $in + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
-                $wrap .= indent( $in + 3 ) . '<a class="icon-home" href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak();
+                $wrap .= indent( $in + 3 ) . '<a class="icon-home" href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak(2);
 
             $wrap .= indent( $in + 2 ) . '</div>' . lbreak(2);
 
@@ -403,20 +407,18 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
         if( $side ){
-            $children = scm_field( 'sections', array(), SCM_PAGE_ID, true );
-            $wrap .= lbreak() . indent( $SCM_indent ) . '<div id="side-menu">' . lbreak();
-                $wrap .= lbreak() . indent( $SCM_indent + 1 ) . '<ul class="side-menu">' . lbreak();
-                    $wrap .= scm_auto_menu_sub( $children );
-                $wrap .= indent( $SCM_indent + 1 ) . '</ul>' . lbreak();
-            $wrap .= indent( $SCM_indent ) . '</div><!-- Side Menu -->' . lbreak();
+            $wrap .= scm_side_menu();
         }
 
     $wrap .= indent( $in ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
 
     $SCM_indent += 2;
 
+    // Print Auto Menu or Mono Menu
+    if( $menu == 'auto' || $menu == 'mono' || $menu == 'mini' ){
+        echo $wrap;
     // Print WP Menu
-    if( $menu != 'auto' ){
+    }else{
         wp_nav_menu( array(
             'container' => false,
             'theme_location' => $menu,
@@ -424,9 +426,6 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
             'items_wrap' => $wrap,
             'walker' => new Sublevel_Walker
         ) );
-    // Print Auto Menu
-    }else{
-        echo $wrap;
     }
 
     $SCM_indent -= 2;
@@ -454,20 +453,31 @@ function scm_auto_menu() {
         $current = $id == $post->ID;
 
         $children = scm_field( 'sections', array(), $id, true );
-        $has_children = sizeof( $children );
+        $has = scm_auto_menu_sub( $children, $depth + 1 );
+        $has_children = sizeof( $children ) && $has;
 
         $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current );
 
-        if( $has_children ){
-            $ret .= scm_get_submenu_open( $depth );
-
-                $ret .= scm_auto_menu_sub( $children );
-
-            $ret .= scm_get_submenu_close( $depth );
-        }
+            if( $has_children )
+                $ret .= scm_get_submenu_open( $depth + 1 ) . $has . scm_get_submenu_close( $depth + 1 );
 
         $ret .= scm_get_menu_item_close( $depth );
         
+    }
+    return $ret;
+}
+
+/**
+* [GET] Sub menu Mini for Menu Auto
+*
+* @param {array} children.
+* @param {int=} depth (default is 0).
+* @return {string} HTML tag.
+*/
+function scm_auto_menu_sub_mini( $children, $depth = 0 ) {
+    $ret = '';
+    foreach ($children as $child ) {
+        $ret .= scm_auto_menu_item( $child, $depth );
     }
     return $ret;
 }
@@ -482,10 +492,10 @@ function scm_auto_menu() {
 function scm_auto_menu_sub( $children, $depth = 0 ) {
     $ret = '';
     foreach ($children as $child ) {
-        $ret .= scm_auto_menu_sub_item( $child );
+        $ret .= scm_auto_menu_item( $child, $depth );
         $sections = $child['rows'];
         foreach ( $sections as $section )
-            $ret .= scm_auto_menu_sub_item( $section, 1 );
+            $ret .= scm_auto_menu_item( $section, $depth + 1 );
     }
     return $ret;
 }
@@ -497,7 +507,7 @@ function scm_auto_menu_sub( $children, $depth = 0 ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub_item( &$item, $depth = 0 ) {
+function scm_auto_menu_item( &$item, $depth = 0 ) {
     if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) ) return '';
     $id = $item['id'];
     if( $id ){
@@ -507,7 +517,74 @@ function scm_auto_menu_sub_item( &$item, $depth = 0 ) {
 }
 
 // ------------------------------------------------------
-// 2.3.4 MENU WP
+// 2.3.4 MENU MONO
+// ------------------------------------------------------
+
+/**
+* [GET] Menu Mono
+*
+* @return {string} HTML tag.
+*/
+function scm_mono_menu() {
+    $ret = '';
+    $id = SCM_PAGE_ID;
+
+    $children = scm_field( 'sections', array(), $id, true );
+    $has_children = sizeof( $children );
+
+    if( $has_children ){
+        $ret .= scm_auto_menu_sub( $children, 0 );
+    }
+        
+    return $ret;
+}
+
+// ------------------------------------------------------
+// 2.3.5 MENU MINI
+// ------------------------------------------------------
+
+/**
+* [GET] Menu Mini
+*
+* @return {string} HTML tag.
+*/
+function scm_mini_menu() {
+    $ret = '';
+    $id = SCM_PAGE_ID;
+
+    $children = scm_field( 'sections', array(), $id, true );
+    $has_children = sizeof( $children );
+
+    if( $has_children ){
+        $ret .= scm_auto_menu_sub_mini( $children, 0 );
+    }
+        
+    return $ret;
+}
+
+// ------------------------------------------------------
+// 2.3.6 MENU SIDE
+// ------------------------------------------------------
+
+/**
+* [GET] Menu Side
+*
+* @return {string} HTML tag.
+*/
+function scm_side_menu() {
+    global $SCM_indent;
+    $children = scm_field( 'sections', array(), SCM_PAGE_ID, true );
+    $ret = lbreak() . indent( $SCM_indent + 2 ) . '<div id="side-menu">' . lbreak();
+        $ret .= lbreak() . indent( $SCM_indent + 3 ) . '<ul class="side-menu">' . lbreak();
+            $ret .= scm_auto_menu_sub( $children, 0 );
+        $ret .= indent( $SCM_indent + 3 ) . '</ul>' . lbreak(2);
+    $ret .= indent( $SCM_indent + 2 ) . '</div><!-- Side Menu -->' . lbreak(2);
+        
+    return $ret;
+}
+
+// ------------------------------------------------------
+// 2.3.7 MENU WP
 // ------------------------------------------------------
 
 if ( ! class_exists( 'Sublevel_Walker' ) ) {
@@ -542,7 +619,7 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
 }
 
 // ------------------------------------------------------
-// 2.3.5 HTML TAGS
+// 2.3.8 HTML TAGS
 // ------------------------------------------------------
 
 /**
@@ -559,8 +636,8 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
 function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_children = false, $current = false, $class = '' ) {
 
     global $SCM_indent;
-    $ind = $SCM_indent + 3;
-    if( !$depth ) $ind = $SCM_indent + 2;
+    $ind = $SCM_indent + 4 + $depth;
+    //if( !$depth ) $ind = $SCM_indent + 2;
 
     $type = 'site';
     $data = '';
@@ -575,7 +652,7 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
     if( $has_children ){
         $data = 'data-toggle="true" ';
         $class .= ' has-children toggle no-toggled';
-        $link = '<div class="toggle-button">' . $link . '</div>';
+        $link = lbreak() . indent( $ind + $depth + 1 ) . '<div class="toggle-button">' . $link . '</div>';
     }
 
     return indent( $ind + $depth ) . '<li class="' . sanitize_title( $link ) . ' menu-item link-' . $type . $class . ' depth-' . $depth . '"' . ( $data ? ' ' . $data : '' ) . '>' . $link;
@@ -598,8 +675,9 @@ function scm_get_menu_item_close( $depth = 0 ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_get_submenu_open( $depth = 0 ) {
-    return lbreak() . indent( 7 + $depth ) . '<ul class="toggle-content sub-menu depth-' . $depth . '">' . lbreak();
+function scm_get_submenu_open( $depth = 1 ) {
+    global $SCM_indent;
+    return lbreak() . indent( $SCM_indent + 4 + $depth ) . '<ul class="toggle-content sub-menu depth-' . $depth . '">' . lbreak();
 }
 
 /**
@@ -608,8 +686,9 @@ function scm_get_submenu_open( $depth = 0 ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_get_submenu_close( $depth = 0 ) {
-    return indent( 7 + $depth ) . '</ul>' . lbreak() . indent( 6 );
+function scm_get_submenu_close( $depth = 1 ) {
+    global $SCM_indent;
+    return indent( $SCM_indent + 4 + $depth ) . '</ul>' . lbreak() . indent( 6 );
 }
 
 // ------------------------------------------------------

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.2.6
+Version:			v3.2.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -64,7 +64,7 @@ GitHub Branch:		master
 	display: none;
 }
 
-*{
+*:not(form.acf-form):not(form.acf-form *){
 	/*cursor: default;*/
 	vertical-align: top;
 	font-style: inherit;
@@ -77,9 +77,15 @@ GitHub Branch:		master
 	-webkit-tap-highlight-color: transparent;
 }
 
-*, *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+*:not(form.acf-form):not(form.acf-form *), *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 	box-sizing: inherit;
 }
+
+article, aside, details, figcaption, figure, footer, header, nav, hr,
+.section, .row, .column-layout, a{
+	box-sizing: border-box;
+}
+
 
 ::-moz-selection{
 	background-color: #aaa;
@@ -175,7 +181,8 @@ blockquote, q {
 
 ul {
 	list-style: none;
-
+	padding: 0;
+    margin: 0;
 }
 
 ol {
@@ -420,45 +427,57 @@ h6 { font-size: 1.2em; }
 .h9 { font-size: 1.05em; }
 
 .min,
-.minion {
+.text-min,
+.minion,
+.text-minion {
 	font-size: 60%;
 }
 
-.half {
+.half,
+.text-half {
 	font-size: 75%;
 }
 
-.small {
+.small,
+.text-small {
 	font-size: 85%;
 }
 
-.normal {
+.normal,
+.text-normal {
 	font-size: 100%;
 }
 
-.medium {
+.medium,
+.text-medium {
 	font-size: 125%;
 }
 
-.big {
+.big,
+.text-big {
 	font-size: 150%;
 }
 
-.huge {
+.huge,
+.text-huge {
 	font-size: 180%;
 }
 
 .max,
-.double {
+.text-max,
+.double,
+.text-double {
 	font-size: 200%;
 }
 
 
-.triple {
+.triple,
+.text-triple {
 	font-size: 3em;
 }
 
-.quadruple {
+.quadruple,
+.text-quadruple {
 	font-size: 4em;
 }
 
@@ -481,9 +500,33 @@ h6 { font-size: 1.2em; }
 /*--------------------------------------------------------------
 2.3 Attributes Position
 --------------------------------------------------------------*/
-.affix, .fixed, .positionfixed, .position-fixed { position: fixed; }
-.absolute, .positionabsolute, .position-absolute { position: absolute; }
-.relative, .positionrelative, .position-relative { position: relative; }
+.affix, .fixed, .positionfixed, .position-fixed { position: fixed !important; }
+.absolute, .positionabsolute, .position-absolute { position: absolute !important; }
+.relative, .positionrelative, .position-relative { position: relative !important; }
+
+.affix-bottom, .fixed-bottom, .positionfixed-bottom, .position-fixed-bottom,
+.absolute-bottom, .positionabsolute-bottom, .position-absolute-bottom,
+.relative-bottom, .positionrelative-bottom, .position-relative-bottom{
+	bottom: 0;
+}
+
+.affix-top, .fixed-top, .positionfixed-top, .position-fixed-top,
+.absolute-top, .positionabsolute-top, .position-absolute-top,
+.relative-top, .positionrelative-top, .position-relative-top{
+	top: 0;
+}
+
+.affix-left, .fixed-left, .positionfixed-left, .position-fixed-left,
+.absolute-left, .positionabsolute-left, .position-absolute-left,
+.relative-left, .positionrelative-left, .position-relative-left{
+	left: 0;
+}
+
+.affix-right, .fixed-right, .positionfixed-right, .position-fixed-right,
+.absolute-right, .positionabsolute-right, .position-absolute-right,
+.relative-right, .positionrelative-right, .position-relative-right{
+	right: 0;
+}
 
 .fixed.middle{
 	top: 50%;
@@ -498,9 +541,10 @@ h6 { font-size: 1.2em; }
 }
 
 .overlay{
-	position: absolute;
+	position: absolute !important;
 	z-index: 1;
-	left: 0;
+	left: inherit;
+	top: inherit;
 }
 
 .underlay{
@@ -640,6 +684,11 @@ blockquote .append{
 	padding-top: 5em;
 }
 
+.site-header,
+.site-credits{
+	background-color: #FFF;
+}
+
 .site-header{
 	font-size: 1em;
 }
@@ -651,9 +700,9 @@ blockquote .append{
 	left: 0;
 }
 
-.smartmin .site-header > .row{
+/*.smartmin .site-header > .row{
 	display: none;
-}
+}*/
 
 .tocolumn .site-header{
 	font-size: .7em;
@@ -869,6 +918,10 @@ blockquote .append{
 .smartold .half-width{
 	width: 100%;
 	text-align: center;
+	padding: 1em;
+}
+
+.site-credits{
 	padding: 1em;
 }
 
@@ -1549,17 +1602,25 @@ body:not(.ready) .navigation {
 
 .navigation.sticky {
 	position: fixed;
-	left: 0;
+	top: 0;
 	z-index: 8000;
 	margin-bottom: 0 !important;
-	-webkit-transition: background-color .3s, top .3s, visibility .3s;
-	transition: background-color .3s, top .3s, visibility .3s;
-	/*-webkit-transition: all .3s;
-	transition: all .3s;*/
+	-webkit-transition: all .3s;
+	transition: all .3s;
 	visibility: hidden;
 	display: inline-block;
 }
 
+.navigation.sticky.self,
+.navigation.sticky.anim-top,
+.navigation.sticky.anim-opacity,
+.navigation.sticky.anim-left{
+	left: 0;
+}
+
+.navigation.sticky.anim-right{
+	right: 0;
+}
 
 .navigation.sticky.responsive{
 	left: auto;
@@ -1582,6 +1643,18 @@ body:not(.ready) .navigation {
 	top: 0px !important;
 }
 
+.navigation.affix.anim-left {
+	left: 0px !important;
+}
+
+.navigation.affix.anim-right {
+	right: 0px !important;
+}
+
+.navigation.affix.anim-opacity {
+	opacity: 1 !important;
+}
+
 .navigation.sticky .menu > .current > a:hover,
 .navigation.sticky .menu > .active > a:hover,
 .navigation.sticky .current > .toggle-button > a:hover,
@@ -1595,17 +1668,23 @@ body:not(.ready) .navigation {
 .navigation.toggle .row{
 	text-align: center;
 	margin-bottom: 0 !important;
+	padding: 0;
+}
+
+.navigation.toggle .row{
+	background-color: #DDD;
 }
 
 .navigation.toggle .menu a {
-	display: inline-block;
-	font-size: 1.5em;
-	padding: 0 0 1.4em 0;
+    display: inline-block;
+    font-size: 1.5em;
+    padding: 1em;
+    width: 100%;
 }
 
-.navigation.toggle li:first-child a {
+/*.navigation.toggle li:first-child a {
 	padding-top: .7em;
-}
+}*/
 
 .navigation.toggle .menu {
 	visibility: hidden;
@@ -1631,16 +1710,19 @@ body:not(.ready) .navigation {
 
 .navigation > .row > div.toggle-button {
 	padding: 0px;
-	font-size: 1.6em;
-	line-height: 2.2em;
+	font-size: 1em;
+	line-height: 1em;
 	float: none;
 	display: inline-block;
 	text-align: center;
 	background-color: transparent;
 	cursor: pointer;
-	max-width: 4em;
+	/*max-width: 4em;*/
 	vertical-align: top;
-	/*margin: .8em;*/
+}
+
+.navigation.toggle > .row > div.toggle-button {
+	width: 100%;
 }
 
 .ie .navigation > .row > div.toggle-button{
@@ -1653,10 +1735,21 @@ body:not(.ready) .navigation {
 	color: #FFF;
 }
 
+.icon-toggle, .icon-home > i {
+    font-size: 2em;
+    padding: .5em;
+    width: 100%;
+}
+
+.navigation > .row > div.toggle-button > .icon-home{
+	width: 100%;
+}
+
 .navigation > .row > div.toggle-button img{
 	max-height: 80%;
 	max-width: 80%;
 }
+
 
 .navigation.toggle .sub-menu{
 	display: none;
@@ -1674,6 +1767,11 @@ body:not(.ready) .navigation {
 	z-index: 8000;
 	right: 0;
 	top: 25%;
+}
+
+.tofull #side-menu,
+.smart #side-menu{
+	display: none;
 }
 
 #side-menu .side-menu{
@@ -1988,6 +2086,15 @@ body:not(.ready) .navigation {
 	border-right-color: transparent !important;
 	border-top-color: transparent !important;
 	border-bottom-color: transparent !important;
+}
+
+/*--------------------------------------------------------------
+3.8 Elements Content Fade
+--------------------------------------------------------------*/
+
+.content-fade .current-fade{
+	opacity: 1 !important;
+	top: 0 !important;
 }
 
 /*--------------------------------------------------------------

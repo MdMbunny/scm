@@ -513,7 +513,7 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
     		return __( 'id non trovato', SCM_THEME );
 		
 		$field = get_field( $name, $id );
-		$field = ( ( !is_null( $field ) ) ? $field : '' );
+		$field = ( !is_null( $field ) ? $field : '' );
 
 		// ++todo 1
 		if( !$field && $no_option == -1 )

@@ -499,13 +499,22 @@ function scm_utils_style_get_fonts( $type = '', $target = 'option', $add = false
 * @return {misc|string} Result or result wrapped in style property if add is true.
 */
 function scm_utils_style_get_color( $type = '', $target = 'option', $add = false ) {
-	$alpha = ( get_field( is( $type, 'style-txt-' ) .  'rgba-alpha', $target) ?: 1 );
-	$color = ( get_field( is( $type, 'style-txt-' ) .  'rgba-color', $target) ?: '' );
-	
-	if( !$color && ( $type || $target != 'option' ) )
-		return '';
+    
+    $library = scm_field( is( $type, 'style-txt-' ) . 'rgba-library', 0, $target, (bool)$type );
+    if( $library ){
+        global $SCM_libraries;
+        $alpha = $SCM_libraries['colors'][$library]['alpha'];
+        $color = $SCM_libraries['colors'][$library]['color'];
+    }else{
+    	$alpha = scm_field( is( $type, 'style-txt-' ) . 'rgba-alpha', 1, $target, (bool)$type );
+        $color = scm_field( is( $type, 'style-txt-' ) . 'rgba-color', '', $target, (bool)$type );
+	}
 
     $color = hex2rgba( ( $color ?: '#000000' ), $alpha );
+    if( !$color ) return '';
+
+	/*if( !$color && ( $type || $target != 'option' ) )
+		return '';*/
 
     return ( !$add ? $color : 'color:' . $color . ';' );
 }
@@ -706,11 +715,22 @@ function scm_utils_style_get_bg_size( $type = '', $target = 'option', $add = fal
 * @return {misc|string} Result or result wrapped in style property if add is true.
 */
 function scm_utils_style_get_bg_color( $type = '', $target = 'option', $add = false ) {
-    $bg_alpha = ( get_field( is( $type, 'style-bg-' ) . 'rgba-alpha', $target) ?: 1 );
-    $bg_color = ( get_field( is( $type, 'style-bg-' ) . 'rgba-color', $target) ? hex2rgba( get_field( is( $type, 'style-bg-' ) . 'rgba-color', $target ), $bg_alpha ) : 'transparent' );
+    
+    $library = scm_field( is( $type, 'style-bg-' ) . 'rgba-library', 0, $target, (bool)$type );
+    if( $library ){
+        global $SCM_libraries;
+        $bg_alpha = $SCM_libraries['colors'][$library]['alpha'];
+        $bg_color = $SCM_libraries['colors'][$library]['color'];
+    }else{
+        $bg_alpha = scm_field( is( $type, 'style-bg-' ) . 'rgba-alpha', 1, $target, (bool)$type );
+        $bg_color = scm_field( is( $type, 'style-bg-' ) . 'rgba-color', '', $target, (bool)$type );
+    }
 
-    if( $bg_color == 'transparent' && ( $type || $target != 'option' ) )
-        return '';
+    $bg_color = hex2rgba( $bg_color, $bg_alpha );
+    if( !$bg_color ) return '';
+
+    /*if( $bg_color == 'transparent' && ( $type || $target != 'option' ) )
+        return '';*/
 
     return ( !$add ? $bg_color : 'background-color:' . $bg_color . ';' );
 }

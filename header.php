@@ -13,12 +13,12 @@
  */
 
 // ACF Form
-if( SCM_LEVEL <= 30 && SCM_PAGE_FORM )
+if( SCM_PAGE_EDIT )
     acf_form_head();
 
 ?><!DOCTYPE html>
 
-<html class="scm-<?php echo SCM_VERSION; ?> no-js" <?php language_attributes(); ?>>
+<html class="scm-<?php echo SCM_VERSION; echo ( SCM_PAGE_EDIT ? ' edit' : '' ); ?> no-js" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
@@ -45,9 +45,10 @@ $txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
 $wrap_id = 'site-page';
 $wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), SCM_PAGE_ID );
+$wrap_selectors = scm_field( 'page-selectors', array(), SCM_PAGE_ID );
 $wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
 $wrap_class = scm_field( 'page-class', '', SCM_PAGE_ID, true );
-$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' );
+$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' ) . ' ' . implode( ' ', $wrap_selectors );
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -84,13 +85,13 @@ $menu_align = scm_field( 'menu-alignment', 'right', 'option' );
 
 $follow_position = scm_field( 'follow-position', 'top', 'option' );
 
+$cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
+$cont_offset = scm_field( 'opt-tools-fadecontent-offset', '0%', 'option' );
+
 $cont_id = 'site-content';
 $cont_layout = scm_field( 'layout-content', 'full', 'option' );
 $cont_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $cont_layout === 'full' ? 'full ' : 'responsive float-' ) );
-$cont_class = 'site-content ' . $cont_layout . SCM_SITE_ALIGN ;
-
-$cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
-$cont_offset = scm_field( 'opt-tools-fadecontent-offset', '0%', 'option' );
+$cont_class = 'site-content ' . $cont_layout . SCM_SITE_ALIGN . ( $cont_fade ? ' content-fade' : '' ) ;
 
 $page_class = 'page scm-page object scm-object ' . $post->post_name;
 $page_id = scm_field( 'page-selectors-id', '', SCM_PAGE_ID, 1, ' id="', '"' );
@@ -121,22 +122,19 @@ $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
 
 // Page Wrapper
 indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
-            data-current-link="' . $single_class . '"
-            data-current-link-interval="' . $single_interval . '"
-            data-current-link-offset="' . $single_offset . '"
-            data-current-link-offset-units="' . $single_units . '"
-            data-current-link-threshold="' . $single_threshold . '" 
-        >', 2 );
+        data-current-link="' . $single_class . '"
+        data-current-link-interval="' . $single_interval . '"
+        data-current-link-offset="' . $single_offset . '"
+        data-current-link-offset-units="' . $single_units . '"
+        data-current-link-threshold="' . $single_threshold . '" 
+    >', 2 );
     
     $SCM_indent += 1;
     
     // Head
-    indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner"
-        >', 2 );
-
+    indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner">', 2 );
 
     $just = 0;
-    
 
         // Menu above head
     if ( $menu_position == 'top' )
@@ -178,8 +176,7 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
     // Page Containers
     indent( $SCM_indent, '<div id="' . $cont_id . '" class="' . $cont_class . '"
             data-content-fade="' . $cont_fade . '" 
-            data-content-fade-offset="' . $cont_offset . '" 
-        >', 2 );
+            data-content-fade-offset="' . $cont_offset . '" >', 2 );
 
         $SCM_indent += 1;
         

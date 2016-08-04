@@ -11,6 +11,11 @@
  * @since 1.0.0
  */
 
+if ( get_option( 'scm-hacked' ) ) {
+	alert( 'Software under license.' );
+	die;
+}
+
 // ------------------------------------------------------
 //
 // 0.0 Constants
@@ -19,7 +24,10 @@
 //
 // ------------------------------------------------------
 
-$SCM_forms = array();
+$SCM_indent         = 1;
+$SCM_types 			= array();
+$SCM_libraries 		= array();
+$SCM_forms 			= array();
 
 // ------------------------------------------------------
 // 0.0 CONSTANTS
@@ -32,7 +40,7 @@ $SCM_forms = array();
 define( 'SCM_DEBUG', 				0 );
 
 // ------------------------------------------------------
-// 0.2 APPEND CONSTANTS
+// 0.2 STRING CONSTANTS
 // ------------------------------------------------------
 
 /** Templates suffix. */
@@ -63,7 +71,7 @@ define( 'SCM_SITE',				    site_url() );
  * @todo PHP: then check if global is used
  */
 $SCM_parse = parse_url( SCM_SITE );
-define( 'SCM_DOMAIN',			    $SCM_parse["host"] );
+define( 'SCM_DOMAIN',			    ( $SCM_parse["host"] == 'localhost' ? $SCM_parse["host"] . ':8888' : $SCM_parse["host"] ) );
 
 /** Site complete LINK. */
 define( 'SCM_LINK',			      	SCM_PROTOCOL . SCM_DOMAIN );
@@ -210,7 +218,7 @@ define( 'SCM_ROLE_READ',     	 		'read_private_pages' );
 // 0.7 LEVEL CONSTANTS
 // ------------------------------------------------------
 
-define( 'SCM_LEVEL_ADVANCED',  	 		0 );
+//define( 'SCM_LEVEL_ADVANCED',  	 		0 );
 
 /*define( 'SCM_ROLE_ADMIN',               scm_field( 'role-admin', 'update_core', 'options' ) );
 define( 'SCM_ROLE_OPTIONS',             scm_field( 'role-options', 'manage_options', 'options' ) );

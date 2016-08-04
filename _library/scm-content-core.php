@@ -10,16 +10,6 @@
 * @since 1.0.0
 */
 
-/**
-* @global int $SCM_indent Used for formatting HTML
-*/
-$SCM_indent         = 1;
-
-/**
-* @global int $SCM_page_id Current page id
-*/
-//$SCM_page_id        = 0;
-
 // ------------------------------------------------------
 //
 // 1.0 Echo Content
@@ -173,9 +163,11 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 'layout' => '',
 
                 'acf_fc_layout' => '',
+                'field' => '',
                 'inherit' => false,
 
                 'id' => '',
+                'selectors' => array(),
                 'class' => '',
                 'attributes' => '',
                 'style' => '',
@@ -189,6 +181,10 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 'url' => '#',
 
             );
+
+
+            // --------------------------------------------------------------------------
+
 
             if( $container == 'post' ){
                 $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
@@ -224,6 +220,10 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             }
 
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
+
+
+            // --------------------------------------------------------------------------
+
 
             $content['id'] = sanitize_title( $content['id'] );
 
@@ -310,15 +310,15 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             if( isset( $content['row'] ) && !empty( $content['row'] ) ){
 
                 $mod_post = $content['row'];
-                $mod_post = ( is_numeric( $mod_post ) ? $mod_post : ( isset( $mod_post->ID ) ? $mod_post->ID : $mod_post ) );
-                $module = ( is_numeric( $mod_post ) ? get_fields( $mod_post ) : $mod_post );
+                $mod_post_id = ( is_numeric( $mod_post ) ? $mod_post : ( isset( $mod_post->ID ) ? $mod_post->ID : $mod_post ) );
 
-                if( is( $module ) ){
+                $module = ( is_numeric( $mod_post_id ) ? get_fields( $mod_post_id ) : $mod_post );
+
+                if( $module ){
 
                     $mod_layout = ( isset( $content['layout'] ) ? $content['layout'] : '' );
                     $mod_id = ( isset( $content['id'] ) ? $content['id'] : '' );
                     $mod_class = ( isset( $content['class'] ) ? $content['class'] : '' );
-                    $mod_attr = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
 
                     $content = array_merge( $content, $module );
 
@@ -326,6 +326,23 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                     $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
                     $content['id'] = is( $mod_id, $content['id'] );
                     $content['class'] = $mod_class . ' ' . $content['class'];
+
+                    // ---------
+                    // ACF FROM
+                    // ---------
+                    if( SCM_PAGE_EDIT && is_numeric( $mod_post_id ) ){
+
+                        $content['acf-form'] = array(
+                            'id'=> $mod_post_id,
+                            'form_attributes'=>array( 'id'=>'form-sections-' . $mod_post_id, 'class'=>'form-sections' ),
+                            'post_id'=>$mod_post_id,
+                            'fields'=>array( 'columns' ),
+                            'updated_message' => false,
+                            'return' => get_page_link( SCM_PAGE_ID ) . '?view=true',
+                            'submit_value' => __( 'Salva', SCM_THEME ),
+                        );
+
+                    }
 
                 }
 
@@ -368,8 +385,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $layout = $content['column-width'];
 
             // ++todo 1
-            $content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) );
-            //$content['inherit'] = ( $layout === 'auto' && $container !== 'post' ) || ( isset( $content['image'] ) && !$content['image'] );
+            $content['inherit'] = ( $content['inherit'] ?: ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) ) );
 
             if( !$content['inherit'] ){
 
@@ -401,29 +417,50 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
             $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
             $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );
-
-            // FILTER contents before echo            
-            $content = apply_filters( 'scm_filter_echo_container', $content );
             
-            // -- Open Container
-            if( !$content['inherit'] ){
+            $selectors = ( isset( $content['selectors'] ) && is_array( $content['selectors'] ) ? $content['selectors'] : array() );
+            $content['class'] .= ' ' . implode( ' ', $selectors );
 
-                $content['class'] = $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
+            // -- Field Name
+            $content['field'] = str_replace( 'layout-', '', $content['acf_fc_layout'] );
 
-                    indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
 
-                $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
+            // --------------------------------------------------------------------------
+
+
+            // -- Form
+            if( SCM_PAGE_EDIT && isset( $content['acf-form'] ) ){
+
+                $content['acf-form']['form_attributes']['class'] .= multisp( ' ' . $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'] );
+                acf_form( $content['acf-form'] );
+            
+            // -- Div
+            }else{
+
+                // FILTER contents before echo            
+                $content = apply_filters( 'scm_filter_echo_container', $content );
+                
+                // -- Open Container
+                if( !$content['inherit'] ){
+
+                    $content['class'] = $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
+
+                        indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
+
+                    $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
+                }
+
+                // -- Content
+                scm_content( $content );
+
+                if( function_exists( (string)$action ) )
+                    call_user_func( (string)$action, $content );
+
+                // -- Close Container
+                if( !$content['inherit'] )
+                    indent( $SCM_indent, '</div><!-- ' . $container . ' -->', 2 );
+
             }
-
-            // -- Content
-            scm_content( $content );
-
-            if( function_exists( (string)$action ) )
-                call_user_func( (string)$action, $content );
-
-            // -- Close Container
-            if( !$content['inherit'] )
-                indent( $SCM_indent, '</div><!-- ' . $container . ' -->', 2 );
         }
     }
 
@@ -487,15 +524,19 @@ function scm_contents( $content = NULL ) {
     foreach ( $content as $args ) {
 
         $args = scm_contents_single( $args );
+        $field = $args['field'];
 
         do_action( 'scm_action_echo_content', $args, $SCM_indent );
         do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
 
-        $SCM_forms = apply_filters( 'scm_filter_content_form', $SCM_forms, $args, $type, $id, $SCM_indent );
+        $SCM_forms = apply_filters( 'scm_filter_content_form', $SCM_forms, $args, $field, $type, $id, $SCM_indent );
+        $SCM_forms = apply_filters( 'scm_filter_content_form_' . $field, $SCM_forms, $args, $type, $id, $SCM_indent );
         $SCM_forms = apply_filters( 'scm_filter_content_form_' . $type, $SCM_forms, $args, $id, $SCM_indent );
 
         $SCM_indent--;
     }
+
+
 }
 
 /**

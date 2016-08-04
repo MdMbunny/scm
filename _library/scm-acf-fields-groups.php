@@ -216,7 +216,7 @@ function scm_acf_fields_page( $name = '' ) {
 		//$fields = array_merge( $fields, scm_acf_preset_selectors( $name . 'page', 33, 33 ) );
 		//$fields[] = scm_acf_field_select( $name . 'page-menu', 'wp_menu', 50 );
 		//$fields[] = scm_acf_field_false( $name . 'page-form', 0, 50, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) );
-	
+
 	$fields = array_merge( $fields, scm_acf_preset_flexible_sections( $name ) );
 
 	$fields = apply_filters( 'scm_filter_fields_page', $fields );
@@ -313,7 +313,7 @@ function scm_acf_fields_sections( $name = '' ) {
 	$fields = array_merge( $fields, scm_acf_preset_repeater_columns( $name ) );
 	
 	// ADVANCED
-		$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_tags( $name . '-section', 'sections' ), 'scm-advanced-options hidden' ) );
+		$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_tags( $name . '-section', 'sections' ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 
 	$fields = apply_filters( 'scm_filter_fields_section', $fields );
 

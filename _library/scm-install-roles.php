@@ -22,6 +22,7 @@
 // ------------------------------------------------------
 
 add_action( 'after_setup_theme', 'scm_hook_roles_install' );
+add_action( 'scm_action_install_fields_intro-options', 'scm_hook_roles_advanced' );
 add_action( 'init', 'scm_hook_roles_admin_redirect' );
 add_filter( 'editable_roles', 'scm_hook_roles_allowed_list' );
 add_filter( 'map_meta_cap', 'scm_hook_roles_allowed_edit', 10, 4 );
@@ -42,22 +43,28 @@ if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'scm-options-intro'
 scm_roles_reset();
 ```
 */
-function scm_hook_roles_install() {
-
-    $roles_list = scm_roles_list();
+function scm_hook_roles_install() {    
 
     if( is_user_logged_in() ){
+        define( 'SCM_ID', wp_get_current_user()->ID );
         define( 'SCM_ROLE', scm_role_name() );
         define( 'SCM_LEVEL', scm_role_level() );
     }else{
+        define( 'SCM_ID', 0 );
         define( 'SCM_ROLE', 'visitatore' );
         define( 'SCM_LEVEL', 100 );
     }
 
-    if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'scm-options-intro' ) 
-        scm_roles_reset();
-    else
-        return;
+    if( !get_option( 'scm-roles-installed' ) )
+        scm_roles_install();
+
+}
+
+function scm_roles_install() {
+
+    $roles_list = scm_roles_list();
+    
+    scm_roles_reset();
 
     foreach ( $roles_list as $role => $value) {
 
@@ -84,7 +91,24 @@ function scm_hook_roles_install() {
         }
     }
 
+    do_action( 'scm_action_install_roles' );
+
+    update_option( 'scm-roles-installed', 1 );
+
     consoleDebug('roles installed!');
+}
+
+/**
+* [SET] Define Andvanced Constants
+*
+* Hooked by 'scm_action_option_pages'
+* @subpackage 3-Install/Roles/HOOKS
+*/
+function scm_hook_roles_advanced() {
+    /** Advanced options. */
+    define( 'SCM_LEVEL_EDIT',           SCM_LEVEL <= scm_field( 'admin-level-edit', 0, 'option' ) );
+    define( 'SCM_LEVEL_ADVANCED',       SCM_LEVEL <= scm_field( 'admin-level-advanced', 0, 'option' ) );
+    define( 'SCM_ADVANCED_OPTIONS',     ( SCM_LEVEL_ADVANCED ? 'scm-advanced-options' : 'scm-options' ) );
 }
 
 /**
@@ -487,7 +511,7 @@ function scm_roles_reset() {
 * @param {boolean=} admin Admin caps (default is false).
 * @param {boolean=} cap Extra caps (default is false).
 */
-function scm_role_post_caps( $role = NULL, $type = NULL, $admin = false, $cap = false ){
+function scm_role_post_caps( $role = NULL, $type = NULL, $adm = false, $cap = false ){
 
     if ( is_null( $role ) || !$role || is_null( $type ) || !$type ) return;
 
@@ -505,12 +529,19 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $admin = false, $cap = 
     $role->remove_cap( 'delete_private_' . $type );
     $role->remove_cap( 'delete_published_' . $type );
 
-    if ( $name != 'administrator' && ( !$role->has_cap( SCM_ROLE_READ ) || ( !$role->has_cap( SCM_ROLE_ADMIN ) && $admin ) ) )
+    $admin = $name == 'administrator';
+    $iscritto = $name == 'iscritto';
+    $utente = $name == 'utente';
+    $member = $name == 'member';
+    $staff = $name == 'staff';
+    $manager = $name == 'manager';
+    
+    if( !$admin && !$manager && !$staff && $adm )
         return $role;
-
+    
     $role->add_cap( 'read_private_' . $type );
 
-    if ( $name != 'administrator' && !$role->has_cap('read') )
+    if( !$admin && !$manager && $adm )
         return $role;
 
     $role->add_cap( 'edit_' . $type );
@@ -518,7 +549,7 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $admin = false, $cap = 
     $role->add_cap( 'edit_others_' . $type );
     $role->add_cap( 'edit_published_' . $type );
 
-    if ( $name != 'administrator' && ( !$role->has_cap( SCM_ROLE_TAX ) || ( $role->has_cap( SCM_ROLE_TAX ) && !$cap ) ) )
+    if( !$admin && $adm && !$cap )
         return $role;
 
     $role->add_cap( 'publish_' . $type );

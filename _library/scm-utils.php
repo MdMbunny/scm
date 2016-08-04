@@ -124,6 +124,25 @@ function updatePostMeta( $id, $meta, $value = NULL ){
 }
 
 /**
+ * [GET] Login Redirect
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string=} type Redirect type [page|admin|link] (default is 'page').
+ * @param {int|string=} link URL, admin page URL, page ID (default is '').
+ * @return {string} Filtered URL.
+ */
+function loginRedirect( $type = 'page', $link = '' ){
+    if( $type == 'page' )
+        return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) ? getURL( 'page:' . $link ) : $link ) );
+    elseif( $type == 'admin' )
+        return ( $link ? site_url( '/wp-admin/' . $link ) : site_url('/wp-admin/users.php') );
+    else
+        return ( $link ?: site_url( '/wp-admin/users.php' ) );
+}
+
+
+/**
  * [GET] Filter URL
  *
  * @subpackage 1-Utilities/WP
@@ -150,15 +169,22 @@ function getURL( $url ){
             $url = substr( $url, 0, rstrpos( $url, '-' ) );
         }
 
-        if( !is_numeric( $url ) )
-            $url = get_page_by_path( $url )->ID;
+        if( !is_numeric( $url ) ){
+            $page = get_page_by_path( $url );
+            $id = $page->ID;
+        }else{
+            $id = $url;
+            $page = get_post( $id );
+        }
 
-        $page = get_page_link( $url );
+        $slug = $page->post_name;
+        //$link = get_page_link( $id );
+        $link = SCM_SITE . '/' . $slug;
 
-        if( $page === get_the_permalink() )
+        if( $link === get_the_permalink() && $add ) // toccato
             return $add;
 
-        return $page . $add;
+        return $link . $add;
     }
 
     if( startsWith( $url, array( 'logout:', 'http://logout:', 'https://logout:' ) ) ) {
@@ -610,6 +636,19 @@ function doublesp( $str = '' ){
 }
 
 /**
+ * [GET] Remove multiple spaces
+ *
+ * @subpackage 1-Utilities/STRING
+ *
+ * @param {string=} str String where to look for multiple spaces (default is '').
+ * @return {string} String without multiple spaces.
+ */
+function multisp( $str = '' ){
+    if( !$str ) return '';
+    return preg_replace( '!\s+!', ' ', $str );
+}
+
+/**
  * [GET] Check if string starts with needle
  *
  * @subpackage 1-Utilities/STRING
@@ -725,6 +764,27 @@ function is_asso( $arr ){
     }
 
     return false;
+}
+
+/**
+ * [GET] To associative array
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array to convert.
+ * @return {array|null} NULL if arr is not an array. It returns an associative array.
+ */
+function array_to_asso( $arr ){
+
+    if( !is_arr( $arr ) )
+        return null;
+
+    $new = array();
+    foreach( $arr as $value ){
+        $new[ $value ] = $value;
+    }
+
+    return $new;
 }
 
 /**
@@ -1797,14 +1857,14 @@ function numberToStyle( $value ){
  *
  * @subpackage 1-Utilities/STYLE
  *
- * @param {string} hex Hexadecimal color.
+ * @param {string=} hex Hexadecimal color (default is '').
  * @param {float=} alpha Alpha value (default is 1).
  * @param {bool=} toarr Returns an array (default is false).
- * @return {string|array} RGBA string in style format, otherwise it returns an array if $toarr is true.
+ * @return {string|array} RGBA string in style format, otherwise it returns an array if $toarr is true. Returns 'transparent' if no $hex and 0 $alpha are supplied.
  */
-function hex2rgba( $hex, $alpha = 1, $toarr = false ){
+function hex2rgba( $hex = '', $alpha = 1, $toarr = false ){
 
-    if( isset( $hex ) ){
+    if( $hex ){
         $hex = str_replace('#', '', $hex);
 
         if(strlen($hex) == 3) {
@@ -1826,6 +1886,10 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
 
         return $rgba; // returns an array with the rgba values
     }
+
+    if( $alpha === 0 )
+        return 'transparent';
+
     return '';
 }
 
@@ -1841,11 +1905,16 @@ function hex2rgba( $hex, $alpha = 1, $toarr = false ){
  */
 function font2string( $webfont = array(), $family = '', $add = false ) {
 
+    global $SCM_libraries;
+
     $str = '';
 
     $webfont = toArray( $webfont );
     foreach ( $webfont as $font ) {
-        $str .= ( ( $font && $font != 'no' && $font != 'default' ) ? $font . ', ' : '' );
+        if( $font && $font != 'no' && $font != 'default' ){
+            $lib = $SCM_libraries['fonts'][$font];
+            $str .= ( isset( $lib ) ? $lib['family'] : $font ) . ', ';
+        }
     }
 
     $str .= ( $family ? str_replace( '_', ', ', $family ) : 'Helvetica, Arial, san-serif' );

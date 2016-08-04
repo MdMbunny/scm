@@ -67,6 +67,8 @@ input[type=checkbox]:checked:before,
 #adminmenu > .scm-separator.current,
 .wp-core-ui .button-primary,
 .posts-repeater .order:hover,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select-2-columns_width,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select2-selectors,
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content),
 .acf-fc-popup a:hover,
 .button.blue,
@@ -828,6 +830,7 @@ html[lang="it-IT"] #adminmenu > .scm-separator-last > .separator:after { content
 
 /* Advanced Options */
 
+.scm-options.hidden,
 .scm-advanced-options.hidden{
 	display: none !important;
 }
@@ -1748,31 +1751,19 @@ input.acf-is-prepended {
 
 /* 10.2 TOP FIELDS */
 
-/*.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:not(.acf-flexible-content) {
-	padding: 0 !important;
-}*/
 
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) {
-	padding: 0px 10% !important;
+/*.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content){*/
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select-2-columns_width{
+	padding: 0px 1em 0 10% !important;
     border-radius: 0;
     height: 3em;
     line-height: 3em;
 }
 
-
-/*.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div{
-	padding: 0 !important;
-	margin: 0 1%;
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select2-selectors{
+	padding: .25em 10% 0 1em !important;
+    height: 3em;
 }
-
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div + div{
-	padding: 0 !important;
-	margin-right: 1% !important;
-}
-
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content) + div + div + div{
-	padding: 0 !important;
-}*/
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content){
 	width: 100% !important;
@@ -1780,8 +1771,8 @@ input.acf-is-prepended {
 }
 
 /* Hide Selectors */
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content) + div,
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content) + div + div{
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content)+ div,
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row.column:not(.column-11) > .acf-fields > div:first-child:not(.acf-flexible-content)+ div + div{
 	display: none;
 }
 

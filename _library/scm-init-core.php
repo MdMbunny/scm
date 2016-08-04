@@ -16,6 +16,7 @@
 //      1-Register and enqueue scripts and styles
 //      2-Register and enqueue inline styles
 //      3-Body
+//      4-Query
 //
 // ------------------------------------------------------
 
@@ -35,6 +36,10 @@ add_action( 'wp_enqueue_scripts', 'scm_hook_site_assets_favicon' );
 
 // BODY
 add_filter( 'body_class','scm_hook_body_class' );
+
+// QUERY
+add_filter( 'query_vars', 'scm_hook_query_vars' );
+
 
 // REMOVE
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -179,24 +184,21 @@ function scm_hook_site_register_styles_inline() {
     $html .= scm_utils_style_get( 'bg_size', 'loading-style-bg', 1 );
 
     $font = scm_utils_style_get( 'font', 'option', 1 );
-
-    $opacity = scm_utils_style_get( 'opacity', 'option', 1 );
     $align = scm_utils_style_get( 'align', 'option', 1 );
-
     $line_height = scm_utils_style_get( 'line_height', 'option', 1 );
 
-    $body = scm_utils_style_get( 'size', 'option', 1 );
-    $body .= scm_utils_style_get( 'color', 'option', 1 );
-    $body .= scm_utils_style_get( 'weight', 'option', 1 );
-    $body .= scm_utils_style_get( 'shadow', 'option', 1 );
-    $body .= scm_utils_style_get( 'margin', 'option', 1 );
-    $body .= scm_utils_style_get( 'padding', 'option', 1 );
+    $body = indent() . scm_utils_style_get( 'size', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'color', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'weight', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'shadow', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'margin', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'padding', 'option', 1 ) . lbreak();
 
-    $body .= scm_utils_style_get( 'bg_image', 'option', 1 );
-    $body .= scm_utils_style_get( 'bg_repeat', 'option', 1 );
-    $body .= scm_utils_style_get( 'bg_position', 'option', 1 );
-    $body .= scm_utils_style_get( 'bg_size', 'option', 1 );
-    $body .= scm_utils_style_get( 'bg_color', 'option', 1 );
+    $body .= indent() . scm_utils_style_get( 'bg_image', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'bg_repeat', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'bg_position', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'bg_size', 'option', 1 ) . lbreak();
+    $body .= indent() . scm_utils_style_get( 'bg_color', 'option', 1 ) . lbreak();
 
     $menu_font = scm_utils_style_get( 'font', 'menu', 1 );
 
@@ -205,54 +207,38 @@ function scm_hook_site_register_styles_inline() {
 
     // Print Main Style
 
-    $css = lbreak() . 'html{ ' . $html . ' }' . lbreak();
-
+    $css = lbreak() . '/* Main Styles */' . lbreak(2);
+    $css .= 'html{ ' . $html . ' }' . lbreak();
     $css .= '*, input, textarea{ ' . $font . ' }' . lbreak();
-
-    $css .= 'body { ' . $body . ' }' . lbreak();
-
-    $css .= '.site-page { ' . $opacity . ' }' . lbreak();
-
+    $css .= 'body {' . lbreak() . $body . '}' . lbreak();
     $css .= '.scm-row { ' . $align . ' }' . lbreak();
-
     $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
-
     $css .= '.navigation ul li a { ' . $menu_font . ' }' . lbreak();
-
     $css .= '.topofpage { ' . $top_bg . ' }' . lbreak();
     $css .= '.topofpage a i { ' . $top_icon . ' }' . lbreak();
 
     // Responsive
 
+    $css .= lbreak() . '/* Responsive Styles */' . lbreak(2);
+
     $r_max = (int)scm_field( 'layout-max', '1400', 'option' );
 
-    if( $r_max >= 1400 )
-        $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
-    else
-        $css .= '.r1400 .responsive, ';
+    if( $r_max >= 1400 ) $css .= '.r1400 .responsive { width: 1250px; }' . lbreak();
+    else $css .= '.r1400 .responsive, ';
 
-    if( $r_max >= 1120 )
-        $css .= '.r1120 .responsive { width: 1120px; }' . lbreak();
-    else
-        $css .= '.r1120 .responsive, ';
+    if( $r_max >= 1120 ) $css .= '.r1120 .responsive { width: 1120px; }' . lbreak();
+    else $css .= '.r1120 .responsive, ';
 
-    if( $r_max >= 1030 )
-        $css .= '.r1030 .responsive { width: 1030px; }' . lbreak();
-    else
-        $css .= '.r1030 .responsive, ';
+    if( $r_max >= 1030 ) $css .= '.r1030 .responsive { width: 1030px; }' . lbreak();
+    else $css .= '.r1030 .responsive, ';
 
-    if( $r_max >= 940 )
-        $css .= '.r940 .responsive { width: 940px; }' . lbreak();
-    else
-        $css .= '.r940 .responsive, ';
+    if( $r_max >= 940 ) $css .= '.r940 .responsive { width: 940px; }' . lbreak();
+    else $css .= '.r940 .responsive, ';
 
-    if( $r_max >= 800 )
-        $css .= '.r800 .responsive { width: 800px; }' . lbreak();
-    else
-        $css .= '.r800 .responsive, ';
+    if( $r_max >= 800 ) $css .= '.r800 .responsive { width: 800px; }' . lbreak();
+    else $css .= '.r800 .responsive, ';
 
-    if( $r_max >= 700 )
-        $css .= '.r700 .responsive { width: 700px; }' . lbreak();
+    if( $r_max >= 700 ) $css .= '.r700 .responsive { width: 700px; }' . lbreak();
 
     $r_full = scm_field( 'layout-tofull', '', 'option' );
 
@@ -275,6 +261,26 @@ function scm_hook_site_register_styles_inline() {
 
     $r_smart = $base + (int)scm_field( 'styles-size-smart', 3, 'option' );
     $css .= 'body.smart { font-size: ' . $r_smart . 'px; }' . lbreak();
+
+    $css .= lbreak() . '/* Fade Content Styles */' . lbreak(2);
+
+    $cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
+    if( $cont_fade )
+        $css .= '.content-fade ' . $cont_fade . '{ opacity: 0; top: 3em; transition: all .5s; }' . lbreak();
+
+    global $SCM_libraries;
+
+    $css .= lbreak() . '/* Colors Library Styles */' . lbreak(2);
+
+    $css .= '.color-white { color:#FFF; }' . lbreak();
+    $css .= '.bg-color-white { background-color:#FFF; }' . lbreak();
+    $css .= '.color-black { color:#000; }' . lbreak();
+    $css .= '.bg-color-black { background-color:#000; }' . lbreak();
+
+    foreach ($SCM_libraries['colors'] as $key => $color) {
+        $css .= '.color-' . $key .' { color: ' . hex2rgba( ( $color['color'] ?: '' ), $color['alpha'] ) . ' }' . lbreak();
+        $css .= '.bg-color-' . $key .' { background-color: ' . hex2rgba( ( $color['color'] ?: '' ), $color['alpha'] ) . ' }' . lbreak();
+    }
 
     if( $css )
         wp_add_inline_style( 'global', $css );
@@ -343,10 +349,11 @@ function scm_hook_body_class( $classes = array() ) {
         elseif ( $is_chrome ) $classes[] = 'chrome';
         elseif ( $is_opera ) $classes[] = 'opera';
         elseif ( $is_IE ) $classes[] = 'ie';
-        elseif ( $is_iphone ) $classes[] = 'safari is-iphone';
         else $classes[] = 'safari';
 
     }
+
+    if ( wp_is_mobile() ) $classes[] = 'is-mobile';
 
     $classes[] = $post->post_status;
 
@@ -355,6 +362,31 @@ function scm_hook_body_class( $classes = array() ) {
         $classes[] = 'lang-' . ( pll_current_language() ?: language_attributes() );
 
     return $classes;
+}
+
+// ------------------------------------------------------
+// 4-QUERY
+// ------------------------------------------------------
+
+/**
+* [GET] Add custom query vars
+*
+* template = template id for dynamic content<br />
+* edit = ON dynamic editing<br />
+* view = OFF dynamic editing<br />
+*
+* Hooked by 'query_vars'
+* @subpackage 4-Init/Core/4-QUERY
+*
+* @param {array=} public_query_vars List of query vars (default is empty array).
+* @return {array} Modified list of query vars.
+*/
+function scm_hook_query_vars( $public_query_vars = array() ) {
+    $public_query_vars[] = 'template';
+    $public_query_vars[] = 'action';
+    /*$public_query_vars[] = 'edit';
+    $public_query_vars[] = 'view';*/
+    return $public_query_vars;
 }
 
 ?>
