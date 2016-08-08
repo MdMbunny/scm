@@ -1078,7 +1078,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		$flexible = scm_acf_field_flexible( 'rows', array( 
 			//'label'=>__( 'Moduli', SCM_THEME ),
 			'button'=>'+',
-		) );
+		), 100 );
 
 			$template = scm_acf_layout( 'template', 'block', __( 'Template', SCM_THEME ) );
 				

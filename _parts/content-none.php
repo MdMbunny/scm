@@ -12,7 +12,7 @@
  * @since 1.0.0
  */
 
-do_action( 'scm_action_content_none', SCM_SCREEN );
+do_action( 'scm_action_content_none', get_option( 'scm-screen' ) );
 
 wp_redirect( home_url() );
 exit();

@@ -22,7 +22,24 @@
 	background-color: #363b3f !important;
 }*/
 
-#adminmenu a{
+
+/*.select2-selectors*/
+body:not(.loaded) .acf-field{
+	display: none !important;
+}
+
+.loaded .acf-field{
+	display: inherit;
+}
+
+.wrap .add-new-h2, .wrap .page-title-action,
+.wrap .add-new-h2:hover, .wrap .page-title-action:hover{
+	border: none;
+}
+
+#adminmenu a,
+.wrap .add-new-h2,
+.wrap .page-title-action{
 	color: #888;
 }
 
@@ -81,12 +98,16 @@ input[type=checkbox]:checked:before,
 #adminmenu .wp-menu-arrow div,
 #adminmenu li.current a.menu-top,
 .folded #adminmenu li.current.menu-top,
-.folded #adminmenu li.wp-has-current-submenu{
+.folded #adminmenu li.wp-has-current-submenu,
+.wrap .add-new-h2:hover,
+.wrap .page-title-action:hover{
 	background-color: #e14d43 !important;
 }
 
 #adminmenu > .scm-separator:not(.current):not(.active):hover > .separator:after,
-#adminmenu > .scm-separator.current > .separator:after{
+#adminmenu > .scm-separator.current > .separator:after,
+.wrap .add-new-h2:hover,
+.wrap .page-title-action:hover{
 	color: #FFF !important;
 }
 
@@ -873,11 +894,14 @@ html[lang="it-IT"] #adminmenu > .scm-separator-last > .separator:after { content
   vertical-align: top;
 }
 
+.acf-field:not([data-width]) {
+    display: block;
+}
+
 .ie7 .acf-field[data-width] {
     display:inline; 
     zoom:1
 }
-
 
 .acf-field input{
 	line-height: 1.5em !important;

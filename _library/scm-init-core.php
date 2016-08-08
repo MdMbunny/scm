@@ -39,7 +39,8 @@ add_filter( 'body_class','scm_hook_body_class' );
 
 // QUERY
 add_filter( 'query_vars', 'scm_hook_query_vars' );
-
+add_action( 'wp_ajax_nopriv_load_content', 'scm_hook_load_content' );
+add_action( 'wp_ajax_load_content', 'scm_hook_load_content' );
 
 // REMOVE
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -266,7 +267,7 @@ function scm_hook_site_register_styles_inline() {
 
     $cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
     if( $cont_fade )
-        $css .= '.content-fade ' . $cont_fade . '{ opacity: 0; top: 3em; transition: all .5s; }' . lbreak();
+        $css .= '.content-fade ' . $cont_fade . '{ opacity: 0; top: 3em; transition: opacity .5s, top .5s; }' . lbreak();
 
     global $SCM_libraries;
 
@@ -372,8 +373,7 @@ function scm_hook_body_class( $classes = array() ) {
 * [GET] Add custom query vars
 *
 * template = template id for dynamic content<br />
-* edit = ON dynamic editing<br />
-* view = OFF dynamic editing<br />
+* action = edit|view
 *
 * Hooked by 'query_vars'
 * @subpackage 4-Init/Core/4-QUERY
@@ -384,9 +384,31 @@ function scm_hook_body_class( $classes = array() ) {
 function scm_hook_query_vars( $public_query_vars = array() ) {
     $public_query_vars[] = 'template';
     $public_query_vars[] = 'action';
-    /*$public_query_vars[] = 'edit';
-    $public_query_vars[] = 'view';*/
     return $public_query_vars;
 }
+
+/**
+* [GET] Load dynamic content
+*
+* Hooked by 'wp_ajax_nopriv_load_content'
+* Hooked by 'wp_ajax_load_content'
+* @subpackage 4-Init/Core/4-QUERY
+*
+*/
+function scm_hook_load_content() {
+    
+    $query_vars = json_decode( stripslashes( $_POST['query_vars'] ), true );
+    
+    // ARCHIVE
+    $archive = $_POST['archive'];
+    if( !is_null( $archive ) ){
+        $name = $_POST['name'];
+        $page = $_POST[$name];
+        scm_post( $archive, $page );
+    }
+    
+    die;
+}
+
 
 ?>

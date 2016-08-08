@@ -18,36 +18,45 @@ if ( get_option( 'scm-hacked' ) ) {
 
 // ------------------------------------------------------
 //
-// 0.0 Constants
-// 1.0 Require Classes
-// 2.0 Require Modules
+// G.0 Globals
+// C.0 Constants
+// R.0 Require Classes
+// R.1 Require Modules
 //
+// ------------------------------------------------------
+
+// ------------------------------------------------------
+// G.0 GLOBALS
 // ------------------------------------------------------
 
 $SCM_indent         = 1;
 $SCM_types 			= array();
 $SCM_libraries 		= array();
 $SCM_forms 			= array();
+$SCM_archives		= array();
 
 // ------------------------------------------------------
-// 0.0 CONSTANTS
+// C.0 CONSTANTS
 // ------------------------------------------------------
 // ------------------------------------------------------
-// 0.1 DEBUG CONSTANTS
+// DEBUG
 // ------------------------------------------------------
 
 /** Debug mode. */
 define( 'SCM_DEBUG', 				0 );
 
 // ------------------------------------------------------
-// 0.2 STRING CONSTANTS
+// STRING
 // ------------------------------------------------------
 
 /** Templates suffix. */
 define( 'SCM_TEMPLATE_APP',			'_t' );
 
+/** Admin AJAX url. */
+define( 'SCM_AJAX', 				'wp-admin/admin-ajax.php' );
+
 // ------------------------------------------------------
-// 0.3 WEBSITE CONSTANTS
+// WEBSITE
 // ------------------------------------------------------
 
 /** Site name. */
@@ -65,13 +74,11 @@ define( 'SCM_SITE',				    site_url() );
 /**
  * Site domain.
  *
- * @global string $SCM_parse
- *
  * @todo PHP: define( 'SCM_DOMAIN', parse_url( SCM_SITE )["host"] );
  * @todo PHP: then check if global is used
  */
-$SCM_parse = parse_url( SCM_SITE );
-define( 'SCM_DOMAIN',			    ( $SCM_parse["host"] == 'localhost' ? $SCM_parse["host"] . ':8888' : $SCM_parse["host"] ) );
+$parse = parse_url( SCM_SITE );
+define( 'SCM_DOMAIN',			    ( $parse["host"] == 'localhost' ? $parse["host"] . ':8888' : $parse["host"] ) );
 
 /** Site complete LINK. */
 define( 'SCM_LINK',			      	SCM_PROTOCOL . SCM_DOMAIN );
@@ -79,17 +86,15 @@ define( 'SCM_LINK',			      	SCM_PROTOCOL . SCM_DOMAIN );
 /** Site complete URL. */
 define( 'SCM_URL',			      	SCM_PROTOCOL . SCM_DOMAIN . '/' );
 
-/** Site current page. */
-define( 'SCM_SCREEN',			    $_SERVER['REQUEST_URI'] );
-
-/** Site current URL. */
-define( 'SCM_CURRENT',			    SCM_LINK . SCM_SCREEN );
-
-/** Site dashboard URL. */
-define( 'SCM_DASHBOARD',			( ( SCM_CURRENT == admin_url() || SCM_CURRENT == admin_url() . 'index.php' ) ? 1 : 0 ) );
+if( is_admin() ){
+	/** Site current URL. */
+	define( 'SCM_CURRENT',			    SCM_LINK . $_SERVER['REQUEST_URI'] );
+	/** Site dashboard URL. */
+	define( 'SCM_DASHBOARD',			( ( SCM_CURRENT == admin_url() || SCM_CURRENT == admin_url() . 'index.php' ) ? 1 : 0 ) );
+}
 
 // ------------------------------------------------------
-// 0.4 THEME CONSTANTS
+// C.4 THEME CONSTANTS
 // ------------------------------------------------------
 
 /** SCM version. */
@@ -105,7 +110,7 @@ define( 'SCM_CHILD', 				SCM_THEME . '-' . 'child' );
 define( 'SCM_NAME',     	 		wp_get_theme( sanitize_title( get_template() ) )->Name );
 
 // ------------------------------------------------------
-// 0.5 PATH CONSTANTS
+// C.5 PATH CONSTANTS
 // ------------------------------------------------------
 
 // UPLOADS FOLDER
@@ -115,8 +120,8 @@ define( 'SCM_NAME',     	 		wp_get_theme( sanitize_title( get_template() ) )->Na
  *
  * @todo PHP: define( 'SCM_URI_UPLOADS', 			wp_upload_dir()['baseurl'] );
  */
-$SCM_upload = wp_upload_dir();	
-define( 'SCM_URI_UPLOADS', 				$SCM_upload['baseurl'] );
+$upload = wp_upload_dir();	
+define( 'SCM_URI_UPLOADS', 				$upload['baseurl'] );
 
 // ------------------------------------------------------
 
@@ -202,7 +207,7 @@ define( 'SCM_DIR_LANG_CHILD',      		SCM_DIR_CHILD . 'languages/' );
 define( 'SCM_URI_LANG_CHILD',      		SCM_URI_CHILD . 'languages/' );		
 
 // ------------------------------------------------------
-// 0.6 ROLE CONSTANTS
+// C.6 ROLE CONSTANTS
 // ------------------------------------------------------
 
 define( 'SCM_ROLE_ADMIN',     	 		'update_core' );
@@ -214,8 +219,9 @@ define( 'SCM_ROLE_USERS',     	 		'list_users' );
 define( 'SCM_ROLE_ENTER',     	 		'read' );
 define( 'SCM_ROLE_READ',     	 		'read_private_pages' );
 
+
 // ------------------------------------------------------
-// 0.7 LEVEL CONSTANTS
+// C.7 LEVEL CONSTANTS
 // ------------------------------------------------------
 
 //define( 'SCM_LEVEL_ADVANCED',  	 		0 );
@@ -232,7 +238,7 @@ define( 'SCM_LEVEL_ADVANCED',           scm_field( 'level-advanced', 1, 'options
 
 
 // ------------------------------------------------------
-// 1.0 REQUIRE CLASSES
+// R.0 REQUIRE CLASSES
 // ------------------------------------------------------
 
 /** Typekit_Client Class, for Adobe TypeKit Fonts integration. */
@@ -257,7 +263,7 @@ require_once( SCM_DIR_CLASSES . 'Duplicate_Post.php' );
 require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
 // ------------------------------------------------------
-// 2.0 REQUIRE MODULES
+// R.1 REQUIRE MODULES
 // ------------------------------------------------------
 
 // UTILITIES
@@ -329,3 +335,4 @@ require_once( SCM_DIR_LIBRARY . 'scm-content-front.php' );
 
 /** SCM content utilities. */
 require_once( SCM_DIR_LIBRARY . 'scm-content-utils.php' );
+

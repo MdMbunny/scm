@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.2.7
+Version:			v3.2.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -64,8 +64,7 @@ GitHub Branch:		master
 	display: none;
 }
 
-*:not(form.acf-form):not(form.acf-form *){
-	/*cursor: default;*/
+* {
 	vertical-align: top;
 	font-style: inherit;
 	font-weight: inherit;
@@ -77,7 +76,19 @@ GitHub Branch:		master
 	-webkit-tap-highlight-color: transparent;
 }
 
-*:not(form.acf-form):not(form.acf-form *), *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+form.acf-form, form.acf-form *{
+	vertical-align: top;
+	font-style: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	border: inherit;
+	outline: inherit;
+	margin: inherit;
+	padding: inherit;
+}
+
+/**:not(form.acf-form):not(form.acf-form *), *:before, *:after {*/
+*, *:before, *:after { /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 	box-sizing: inherit;
 }
 
@@ -732,12 +743,6 @@ blockquote .append{
 .scm-object.column-layout,  .scm-object.full,  .scm-object.responsive{
 	display: inline-block;
 	vertical-align: top;
-	/*height: 100%;
-}
-
-.scm-archive,
-.scm-archive .scm-object.scm-post{
-	height: auto !important;*/
 }
 
 
@@ -797,19 +802,40 @@ blockquote .append{
 }
 
 .scm-loading{
-	background-color: rgba(153,153,153,.7);
-	border-radius: 50%;
-	color: #FFF;
-	padding: .5em;
-	margin: -2em 0 0 -1em;
-	width: 2em;
-	height: 2em;
+	color: #DDD;
+	background: url('_img/loading/loading_stripes_50.gif') repeat center center transparent;
+	height: 1em;
+	border-radius: 5px;
+	border: 1px solid rgba(255,255,255,.5);
+	box-shadow: 1px 1px 2px 0px rgba(0,0,0,.5) inset;
+	background-clip: content-box;
 }
 
-.scm-loading.relative{
+/*.scm-loading:before{
+	content: " ";
+	border-radius: 50%;
+	border: 2px solid #DDD;
+	padding: .5em;
+	width: 1em;
+	height: 1em;
+	margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}*/
+
+.scm-loading .fa{
+	font-size: .6em;
+	width: 1em;
+	height: 1em;
+}
+
+/*.scm-loading.relative{
 	top: 50%;
 	left: 50%;
-}
+}*/
 
 /* SCM Images */
 

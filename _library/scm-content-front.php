@@ -32,37 +32,30 @@
 * @param {bool=} echo Echo content if true, returns it otherwise (default is true).
 * @return {string} HTML pagination.
 */
-function scm_pagination( $query = NULL, $page = 'paged', $anchor = '', $echo = true ) {
+function scm_pagination( $query = NULL, $paged = 'paged', $echo = true ) {
 
     global $wp_query, $wp_rewrite, $SCM_indent;
 
     //Override global WordPress query if custom used
     if ( $query ) $wp_query = $query;
-
-    $paged = $wp_query->query['paged'];
+    $current = $wp_query->query[ 'paged' ];
 
     //WordPress pagination settings
     $pagination = array(
-            'base'      => @add_query_arg( $page, '%#%' ),
-            'format'    => '?' . $page . '=%#%',
-            'current'   => max( 1, $paged ),
+            'base'      => @add_query_arg( $paged, '%#%' ),
+            'format'    => '?' . $paged . '=%#%',
+            'current'   => max( 1, $current ),
             'total'     => $wp_query->max_num_pages,
             'prev_text' => '<i class="fa fa-chevron-left"></i>',
             'next_text' => '<i class="fa fa-chevron-right"></i>',
-            //'add_args'  => array( $page => urlencode( $paged ) ),
         );
 
-    //Nice URLs
-    /*if ( $wp_rewrite->using_permalinks() ) {
-        $pagination['base'] = user_trailingslashit( trailingslashit( remove_query_arg( 's', get_pagenum_link( 1 ) ) ) . 'page' . $type . '/%#%/', $page );
-    }*/
-
     //Search page
-    if ( get_query_var( 's' ) ) {
+    if ( get_query_var( 's' ) )
         $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
-    }
 
-    $pagination['base'] .=  $anchor;
+    //$pagination['base'] .=  $anchor;
+    $pagination['base'] = str_replace( SCM_AJAX, '', $pagination['base']);
 
     //Output
     $pag = '';

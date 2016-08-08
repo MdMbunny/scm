@@ -91,10 +91,9 @@ function scm_acf_object( $type = '', $obj = 0 ) {
 
 		$partial_cond = scm_acf_merge_conditions( array( 'field' => 'archive-complete', 'operator' => '==', 'value' => 'partial' ), $archive );
 
-			$fields[] = scm_acf_field_positive( 'archive-perpage', array( 'default'=>5, 'prepend'=>__( 'Per pagina', SCM_THEME ), 'min'=>1 ), 25, $partial_cond );
-			$fields[] = scm_acf_field_number( 'archive-offset', array( 'default'=>0, 'prepend'=>__( 'Offset', SCM_THEME ) ), 25, $partial_cond );
-			$fields[] = scm_acf_field_select( 'archive-pagination', 'archive_pagination', 25, $partial_cond, 0, __( 'Paginazione', SCM_THEME ) );
-			$fields[] = scm_acf_field_text( 'archive-pag-text', array( 'placeholder'=>'', 'prepend'=>__( 'Button', SCM_THEME ) ), 25, $partial_cond );
+			$fields[] = scm_acf_field_positive( 'archive-perpage', array( 'default'=>5, 'prepend'=>__( 'Per pagina', SCM_THEME ), 'min'=>1 ), 33, $partial_cond );
+			$fields[] = scm_acf_field_select( 'archive-pagination', 'archive_pagination', 33, $partial_cond );
+			$fields[] = scm_acf_field_text( 'archive-pag-text', array( 'placeholder'=>'', 'prepend'=>__( 'Button', SCM_THEME ) ), 34, $partial_cond );
 	}
 		
 	$fields[] = scm_acf_field_editor_basic( 'archive-fallback', array( 'default'=>__('No items available yet', SCM_THEME), 'label'=>__('Fallback Text', SCM_THEME) ), 100, $archive );

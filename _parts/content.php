@@ -40,6 +40,7 @@ if( $single || $archive ){
 			$page = get_page_by_path( '_single-' . $type );
 			$part = SCM_DIR_PARTS_SINGLE;
 		}elseif( $archive ){
+			consoleLog(get_page_by_path( '_archive-' . $type ));
 			$page = get_page_by_path( '_archive-' . $type );
 			$part = SCM_DIR_PARTS_ARCHIVE;
 		}
@@ -48,7 +49,7 @@ if( $single || $archive ){
 			$template = 'part';
 		// If query arg ?template=XXX exists
 		}elseif( !$page ){
-			$template = SCM_PAGE_TEMPLATE;
+			$template = get_query_var( 'template', 0 );
 			// IF Template not exists - Load Home Page
 			// ++todo: 	se non esiste il template dovresti aver pronte delle parts per i type di default
 			// 			e per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto
@@ -81,7 +82,6 @@ if( function_exists( 'get_browser_version' ) ){
 
 define( 'SCM_PAGE_ID',			    ( $page ? $page->ID : get_the_ID() ) );
 define( 'SCM_PAGE_EDIT',			( scm_field( 'page-form', false ) ? ( is_user_logged_in() && SCM_LEVEL_EDIT ? ( get_query_var( 'action' ) != 'view' ? get_query_var( 'action' ) == 'edit' || get_option( 'scm-settings-edit-' . SCM_ID ) : 0 ) : 0 ) : 0 ) );
-define( 'SCM_PAGE_TEMPLATE',		get_query_var( 'template', 0 ) );
 define( 'SCM_SITE_ALIGN',			scm_field( 'layout-alignment', 'center', 'option' ) );
 
 if( SCM_PAGE_EDIT )

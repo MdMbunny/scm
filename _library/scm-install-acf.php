@@ -705,6 +705,7 @@ function scm_hook_acf_savedpost_hook( $post_id ) {
         
         // - Types
         if( $opt_types ){
+            flush_rewrite_rules();
             update_option( 'scm-roles-installed', 0 );
         }
 

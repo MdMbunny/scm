@@ -142,9 +142,10 @@ $type = new Custom_Type( $args );
                 'can_export'          => true,
                 'has_archive'         => $this->public,
                 'exclude_from_search' => !$this->public,
-                'publicly_queryable'  => true,
                 'capability_type'     => array( $this->cap_singular, $this->cap_plural ),
                 'map_meta_cap'        => true,
+                'publicly_queryable'  => true,
+                //'rewrite'             => array( 'slug'=>$this->slug, 'with_front'=>FALSE ),
             );
         }
 
@@ -167,7 +168,6 @@ $type = new Custom_Type( $args );
             add_action( 'admin_menu', array( &$this, 'admin_menu_hide' ) );
 
             register_post_type( $this->slug, $this->attributes );
-            flush_rewrite_rules();
         }
 
 // ------------------------------------------------------

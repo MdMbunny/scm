@@ -105,7 +105,7 @@ wp_reset_postdata();
 
         indent( $SCM_indent+1, '</footer><!-- footer -->', 2 );
     indent( $SCM_indent, '</div><!-- page -->', 2 );
-
+    
     wp_footer();
 
     wp_reset_postdata();
@@ -123,6 +123,7 @@ wp_reset_postdata();
         indent( $SCM_indent + 1, '</div><!-- scm-forms -->', 2 );
     }
     // ---
+
 
     echo '</body>' . lbreak();
 

@@ -240,6 +240,9 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             if( isset( $content['type'] ) ){
 
                 if( $content['type'] == 'archive' ){
+                    
+                    $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
+                    
                     if( $content['archive-complete'] != 'complete' ){
                         if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
                             $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
@@ -248,14 +251,10 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                         }
                     }
 
-                    $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
-
                 }else if( $content['type'] == 'single' ){
 
                     $content['class'] = 'scm-single single ' . $content['class'];
-
                 }
-
             }
 
             // -- Single Post
@@ -801,10 +800,10 @@ $before = apply_filters( 'scm_filter_archive_before_{post_type}}', $content, $po
 *
 * @param {array} content Content array.
 */
-function scm_post( $content = array() ) {
+function scm_post( $content = array(), $page = NULL, $no_pagination = false ) {
 
-    global $post, $SCM_types, $SCM_indent;
-
+    global $post, $SCM_types, $SCM_indent, $SCM_archives;
+    
     $element = ( isset( $content[ 'acf_fc_layout' ] ) ? $content[ 'acf_fc_layout' ] : '' );
 
     $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
@@ -813,6 +812,13 @@ function scm_post( $content = array() ) {
         return;
 
     $archive = ( isset( $content['type'] ) ? $content['type'] === 'archive' : 0 );
+    if( $archive && isset( $content['archive-paginated'] ) ){
+        if( isset( $SCM_archives[ $content['archive-paginated'] ] ) )
+            $content['archive-paginated'] .= '_n';
+
+        $SCM_archives[ $content['archive-paginated'] ] = $content;
+    }
+    
     $width = ( isset( $content['width'] ) ? $content['width'] : 'auto' );
     $query = array();
     $loop = array( $post->ID );
@@ -859,14 +865,12 @@ function scm_post( $content = array() ) {
 
         $complete = ( isset( $content['archive-complete'] ) ? $content['archive-complete'] === 'complete' : true );
         $perpage = ( $complete ? -1 : ( isset( $content['archive-perpage'] ) ? $content['archive-perpage'] : get_option( 'posts_per_page' ) ) );
-        $offset = ( isset( $content['archive-offset'] ) ? $content['archive-offset'] : '0' );
         $pagination = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'yes' : false ) );
         $more = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'more' : false ) ); // non in uso
         $all = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'all' : false ) ); // non in uso
         $button = ( isset( $content['archive-pag-text'] ) && $content['archive-pag-text'] ? $content['archive-pag-text'] : '' );
         $paginated = ( isset( $content['archive-paginated'] ) ? $content['archive-paginated'] : '' );
-        $page = 'page-' . $type;
-        $paged = ( $pagination ? ( isset( $_GET[ $page ] ) ? (int) $_GET[ $page ] : 1 ) : 1 );
+        $current = ( $pagination ? ( !is_null( $page ) ? $page : ( isset( $_GET[ $paginated ] ) ? (int) $_GET[ $paginated ] : ( isset( $_POST[ $paginated ] ) ? (int) $_POST[ $paginated ] : 1 ) ) ) : 1 );
         $orderby = ( isset( $content['archive-orderby'] ) ? $content['archive-orderby'] : 'date' );
         $ordertype = ( isset( $content['archive-ordertype'] ) ? $content['archive-ordertype'] : 'DESC' );
         $field = ( isset( $content['archive-field'] ) && $content['archive-field'] ? $content['archive-field'] : ( ( $orderby == 'meta_value' && isset( $content['archive-order'] ) ) ? $content['archive-order'] : '' ) );
@@ -879,7 +883,7 @@ function scm_post( $content = array() ) {
             'posts_per_page' => $perpage,
             'order' => $ordertype,
             'orderby' => $orderby,
-            'paged' => $paged,
+            'paged' => $current,
             'meta_key' => $field,
             'meta_query' => $meta,
             'meta_value' => $value,
@@ -915,16 +919,16 @@ function scm_post( $content = array() ) {
     scm_containers( $template, 'post' );
 
     // Pagination and button
-    if( sizeof( $template['posts'] ) > 0 ){
+    if( !$no_pagination && sizeof( $template['posts'] ) > 0 ){
         if( $pagination ){
 
             if( $button )
                 indent( $SCM_indent, '<h5>' . $button . '</h5>', 1 );
 
-            indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="#' . $paginated . '" data-load-page="' . $page . '" data-load-paged="' . $paged . '" data-load-offset="' . $offset . '">', 1 );
+            indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="' . $paginated . '" data-load-page="' . $current . '">', 1 );
 
                 $SCM_indent++;
-                    scm_pagination( $loop, $page, '#' . $paginated );
+                    scm_pagination( $loop, $paginated );
                 $SCM_indent--;
 
             indent( $SCM_indent, '</div> <!-- pagination -->', 1 );
@@ -933,13 +937,13 @@ function scm_post( $content = array() ) {
 
             $button = ( $button ?: __( 'Archive', SCM_THEME ) );
 
-            indent( $SCM_indent, '<div class="button button-archive" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 );
+            indent( $SCM_indent, '<div class="center inline-block scm-object scm-button button button-archive" data-href="' . SCM_SITE . '/' . $type . '">' . $button . '</div>', 1 );
 
         }else if( isset( $more ) && $more ){
 
             $button = ( $button ?: __( 'More', SCM_THEME ) );
 
-            indent( $SCM_indent, '<div class="button button-more" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 ); // DA FARE
+            indent( $SCM_indent, '<div class="center inline-block scm-object scm-button button button-more" data-href="' . get_post_type_archive_link( $type ) . '">' . $button . '</div>', 1 ); // DA FARE
 
         }
     }
