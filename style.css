@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.2.8
+Version:			v3.2.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -801,62 +801,7 @@ blockquote .append{
 	transition: max-height .7s;
 }
 
-.scm-loading{
-	color: #DDD;
-	background: url('_img/loading/loading_stripes_50.gif') repeat center center transparent;
-	height: 1em;
-	border-radius: 5px;
-	border: 1px solid rgba(255,255,255,.5);
-	box-shadow: 1px 1px 2px 0px rgba(0,0,0,.5) inset;
-	background-clip: content-box;
-}
-
-/*.scm-loading:before{
-	content: " ";
-	border-radius: 50%;
-	border: 2px solid #DDD;
-	padding: .5em;
-	width: 1em;
-	height: 1em;
-	margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-}*/
-
-.scm-loading .fa{
-	font-size: .6em;
-	width: 1em;
-	height: 1em;
-}
-
-/*.scm-loading.relative{
-	top: 50%;
-	left: 50%;
-}*/
-
-/* SCM Images */
-
-/* Vertical Align - IMPORTANT: TO TEMPLATE and OPTIONS */
-/*.scm-image:not(.thumb){
-	width: auto;
-	height: 10em;
-	white-space: nowrap;
-	text-align: center;
-}
-
-.scm-image:not(.thumb):before{
-	content: '';
-	display: inline-block;
-	height: 100%;
-	vertical-align: middle;
-}
-
-.scm-image:not(.thumb) > img{
-	vertical-align: middle;
-}*/
+/* SCM WIDTH */
 
 .half-width, *[data-column-width="12"] { width: 50%; }
 
@@ -1410,6 +1355,43 @@ input[type="submit"]:active {
 .page-numbers.current {
 	background-color: #666;
 	color: #FFF;
+}
+
+.pagination-more .page-numbers{
+	width: auto;
+}
+
+/* Loading */
+
+.scm-loading.loading-bar{
+	color: #DDD;
+	background: url('_img/loading/loading_stripes_50.gif') repeat center center transparent;
+	height: 1em;
+	border-radius: 5px;
+	border: 1px solid rgba(255,255,255,.5);
+	box-shadow: 1px 1px 2px 0px rgba(0,0,0,.5) inset;
+	background-clip: content-box;
+}
+
+.scm-loading.loding-icon .fa{
+	font-size: .6em;
+	width: 1em;
+	height: 1em;
+}
+
+.scm-loading.loading-circle:before{
+	content: " ";
+	border-radius: 50%;
+	border: 2px solid #DDD;
+	padding: .5em;
+	width: 1em;
+	height: 1em;
+	margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 /* Scroll To Top */

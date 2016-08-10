@@ -401,11 +401,8 @@ function scm_hook_load_content() {
     
     // ARCHIVE
     $archive = $_POST['archive'];
-    if( !is_null( $archive ) ){
-        $name = $_POST['name'];
-        $page = $_POST[$name];
-        scm_post( $archive, $page );
-    }
+    if( !is_null( $archive ) )
+        scm_post( $archive );
     
     die;
 }

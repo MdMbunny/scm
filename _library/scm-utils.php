@@ -596,6 +596,19 @@ function compare($a = NULL, $op = '==', $b = NULL) {
     return false;
 }
 
+/**
+ * [GET] Get Query var
+ *
+ * @subpackage 1-Utilities/MISC
+ *
+ * @param {string=} var Var name (default is '').
+ * @param {misc=} fallback Fallback (default is '').
+ * @return {misc} Query var value or fallback.
+ */
+function getQueryVar( $var = '', $fallback = '' ) {
+    return isset( $_GET[ $var ] ) ? $_GET[ $var ] : ( isset( $_POST[ $var ] ) ? $_POST[ $var ] : $fallback );
+}
+
 // ------------------------------------------------------
 // 3.0 STRING
 // ------------------------------------------------------

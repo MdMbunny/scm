@@ -61,7 +61,7 @@ $smooth_units = scm_field( 'opt-tools-smoothscroll-offset-units', 0, 'option' );
 $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
 $smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
 $smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
-$smooth_post = scm_field( 'opt-tools-smoothscroll-page', 1, 'option' );
+$smooth_page = scm_field( 'opt-tools-smoothscroll-page', 1, 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
 $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );
@@ -113,7 +113,7 @@ $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
     data-smooth-ease="<?php echo $smooth_ease; ?>"
     data-smooth-delay="<?php echo $smooth_delay; ?>"
     data-smooth-new="<?php echo $smooth_new; ?>"
-    data-smooth-post="<?php echo $smooth_post; ?>" 
+    data-smooth-page="<?php echo $smooth_page; ?>" 
     data-tofull="<?php echo $tofull; ?>" 
     data-tocolumn="<?php echo $tocolumn; ?>"
 >

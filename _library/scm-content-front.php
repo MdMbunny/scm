@@ -28,22 +28,19 @@
 *
 * @param {query} query Current query.
 * @param {string=} page Query argument for pagination (default is 'paged').
-* @param {string=} anchor Optional anchor attached (default is '').
 * @param {bool=} echo Echo content if true, returns it otherwise (default is true).
 * @return {string} HTML pagination.
 */
-function scm_pagination( $query = NULL, $paged = 'paged', $echo = true ) {
+function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = true ) {
 
-    global $wp_query, $wp_rewrite, $SCM_indent;
+    global $wp_query, $SCM_indent;
 
-    //Override global WordPress query if custom used
     if ( $query ) $wp_query = $query;
-    $current = $wp_query->query[ 'paged' ];
+    //$current = $wp_query->query[ 'paged' ];
 
-    //WordPress pagination settings
     $pagination = array(
-            'base'      => @add_query_arg( $paged, '%#%' ),
-            'format'    => '?' . $paged . '=%#%',
+            'base'      => @add_query_arg( $var, '%#%' ),
+            'format'    => '?' . $var . '=%#%',
             'current'   => max( 1, $current ),
             'total'     => $wp_query->max_num_pages,
             'prev_text' => '<i class="fa fa-chevron-left"></i>',
@@ -64,6 +61,47 @@ function scm_pagination( $query = NULL, $paged = 'paged', $echo = true ) {
 
     if( $echo )
         indent( $SCM_indent + 1, $pag, 1 );
+    else
+        return $pag;
+
+}
+
+/**
+* [ECHO|GET] Pagination More
+*
+* @param {query} query Current query.
+* @param {string=} button HTML button content (default is '').
+* @param {string=} page Query argument for pagination (default is 'paged').
+* @param {bool=} echo Echo content if true, returns it otherwise (default is true).
+* @return {string} HTML pagination.
+*/
+function scm_pagination_more( $query = NULL, $current = 1, $button = '', $var = 'paged', $echo = true ) {
+
+    global $wp_query, $SCM_indent;
+
+    if ( $query ) $wp_query = $query;
+    //$current = $wp_query->query[ 'paged' ];
+
+    $pagination = array(
+            'base'      => @add_query_arg( $var, '%#%' ),
+            'format'    => '?' . $var . '=%#%',
+            'current'   => max( 1, $current ),
+            'total'     => $wp_query->max_num_pages,
+            'end_size'  => 1,
+            'mid_size'  => 1,
+            'prev_text' => '',
+            'type'      => 'array',
+            'next_text' => ( $button ?: '<i class="fa fa-chevron-down"></i>' ),
+        );
+
+    $pagination['base'] = str_replace( SCM_AJAX, '', $pagination['base']);
+
+    $pag = array();
+    if( $current < $wp_query->max_num_pages )
+        $pag = paginate_links( $pagination );
+
+    if( $echo && sizeof($pag) )
+        indent( $SCM_indent + 1, $pag[sizeof($pag)-1], 1 );
     else
         return $pag;
 
