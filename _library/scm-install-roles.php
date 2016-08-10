@@ -62,9 +62,7 @@ function scm_hook_roles_install() {
 
 function scm_roles_install() {
 
-    $roles_list = scm_roles_list();
-    
-    scm_roles_reset();
+    $roles_list = scm_roles_reset();
 
     foreach ( $roles_list as $role => $value) {
 
@@ -89,6 +87,12 @@ function scm_roles_install() {
                 $arr
             );
         }
+    }
+
+    foreach ( get_users() as $user ) {
+        $color = get_user_option( 'admin_color', $user->ID );
+        if( $color != 'default' )
+            update_user_option( $user->ID, 'admin_color', 'default' );
     }
 
     do_action( 'scm_action_install_roles' );
@@ -499,6 +503,7 @@ function scm_roles_reset() {
         if( $key != 'administrator' )
             remove_role($key);
     }
+    return $roles_list;
 }
 
 /**

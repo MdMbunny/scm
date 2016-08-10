@@ -36,7 +36,6 @@ function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = tr
     global $wp_query, $SCM_indent;
 
     if ( $query ) $wp_query = $query;
-    //$current = $wp_query->query[ 'paged' ];
 
     $pagination = array(
             'base'      => @add_query_arg( $var, '%#%' ),
@@ -47,14 +46,14 @@ function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = tr
             'next_text' => '<i class="fa fa-chevron-right"></i>',
         );
 
-    //Search page
+    // Search page
     if ( get_query_var( 's' ) )
         $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
 
-    //$pagination['base'] .=  $anchor;
+    // Remove ajax call
     $pagination['base'] = str_replace( SCM_AJAX, '', $pagination['base']);
 
-    //Output
+    // Output
     $pag = '';
     if( 1 < $wp_query->max_num_pages )
         $pag = paginate_links( $pagination );
@@ -80,7 +79,6 @@ function scm_pagination_more( $query = NULL, $current = 1, $button = '', $var = 
     global $wp_query, $SCM_indent;
 
     if ( $query ) $wp_query = $query;
-    //$current = $wp_query->query[ 'paged' ];
 
     $pagination = array(
             'base'      => @add_query_arg( $var, '%#%' ),
@@ -93,13 +91,15 @@ function scm_pagination_more( $query = NULL, $current = 1, $button = '', $var = 
             'type'      => 'array',
             'next_text' => ( $button ?: '<i class="fa fa-chevron-down"></i>' ),
         );
-
+    
+    // Remove ajax call
     $pagination['base'] = str_replace( SCM_AJAX, '', $pagination['base']);
 
     $pag = array();
     if( $current < $wp_query->max_num_pages )
         $pag = paginate_links( $pagination );
 
+    // Output
     if( $echo && sizeof($pag) )
         indent( $SCM_indent + 1, $pag[sizeof($pag)-1], 1 );
     else
@@ -123,12 +123,16 @@ function scm_logo() {
 
     $logo_id = 'site-branding';
 
-    //$follow = scm_field( 'follow-enabled', 0, 'option' );
-
-    $logo_image = esc_url( scm_field( 'brand-logo', '', 'option' ) );
+    $logo_image = scm_field( 'brand-logo', '', 'option' );
+    if( is_numeric( $logo_image ) ){
+        $logo_image = get_post( (int)$logo_image );
+        $logo_image = $logo_image->guid;
+        consoleLog('wrong');
+    }else{
+        $logo_image = esc_url( $logo_image );
+    }
     $logo_height = scm_field( 'brand-height-number', '100%', 'option' );
     $logo_height = ( is_numeric( $logo_height ) ? $logo_height . scm_field( 'brand-height-units', 'px', 'option' ) : $logo_height );
-    //$logo_height= numberToStyle( scm_field( 'branding_header_logo_height', 40, 'option' ) );
     $logo_align = scm_field( 'brand-alignment', 'left', 'option' );
 
     $logo_title = get_bloginfo( 'name' );
@@ -143,7 +147,6 @@ function scm_logo() {
     $logo_class .= ( ( $logo_align != 'center' ) ? 'half-width float-' . $logo_align . ' ' : 'full ' );
     $logo_class .= $logo_align . ' inlineblock';
 
-    //SEO logo HTML tag
     $logo_tag = ( is_front_page() ? 'h1' : 'div' );
 
     $in = $SCM_indent + 1;
