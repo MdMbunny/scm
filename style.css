@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.0
+Version:			v3.3.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1407,12 +1407,12 @@ input[type="submit"]:active {
 	opacity: 0;
 	-webkit-transition: opacity 0.5s;
 	transition: opacity 0.5s;
-	visibility: hidden;
+	/*visibility: hidden;*/
 	pointer-events: none;
 }
 
 .topofpage.affix {
-	visibility: visible;
+	/*visibility: visible;*/
 	opacity: 0.5;
 	pointer-events: inherit;
 }
@@ -1500,24 +1500,6 @@ input[type="submit"]:active {
 
 /* Level 0 */
 
-.toggle-home > i{
-	font-size: 1em;
-}
-
-.toggle-image > img{
-	height: 1em;
-}
-
-.toggle-home,
-.toggle-image{
-	position: absolute;
-}
-
-.toggle .toggle-home,
-.toggle .toggle-image{
-
-}
-
 .navigation li.en,
 .navigation li.fr,
 .navigation li.de,
@@ -1534,10 +1516,6 @@ input[type="submit"]:active {
 	display: inline-block;
 	clear: both;
 	float: none;
-}
-
-.toggle-home + .menu {
-	padding: 0 0 0 3em;
 }
 
 .menu > li {

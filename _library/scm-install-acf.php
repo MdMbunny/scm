@@ -231,13 +231,13 @@ function scm_hook_acf_option_subpages_install(){
             'capability'    => SCM_ROLE_OPTIONS,
         ));
 
-        acf_add_options_sub_page(array(
+        /*acf_add_options_sub_page(array(
             'page_title'    => 'SCM Library Settings',
             'menu_title'    => __( 'Library', SCM_THEME ),
             'menu_slug'     => 'scm-options-library',
             'parent_slug'   => 'scm-options-general',
             'capability'    => SCM_ROLE_OPTIONS,
-        ));
+        ));*/
 
         acf_add_options_sub_page(array(
             'page_title'    => 'SCM Default Types',
@@ -363,13 +363,19 @@ function scm_acf_install_options_fields() {
     $style = scm_acf_group( __( 'Opzioni Stili', SCM_THEME ), 'styles-options' );
     $style['location'][] = scm_acf_group_location( 'scm-options-stili', 'options_page' );
     $style['fields'] = scm_acf_options_styles();
+    $style['fields'] = array_merge( $style['fields'], scm_acf_options_library() );
     scm_hook_acf_install_helper( $style, $m++ );
 
+    
+    // SICCOME OGNI FIELD KEY VIENE ASSEGNATA IN BASE AL NOME DEL SUO GRUPPO
+    // NON PUOI CAMBIAR GRUPPO A FIELD SALVATE IN PRECEDENZA
+    // NELLO STESSO TEMPO SEMBREREBBE CHE LA COSA CAPITI SOLO AI REPEATER (E IMMAGINO AI FLEXIBLE CONTENT)
+
     // + OPT LIBRARY
-    $library = scm_acf_group( __( 'Opzioni Libreria', SCM_THEME ), 'library-options' );
+    /*$library = scm_acf_group( __( 'Opzioni Libreria', SCM_THEME ), 'library-options' );
     $library['location'][] = scm_acf_group_location( 'scm-options-library', 'options_page' );
     $library['fields'] = scm_acf_options_library();
-    scm_hook_acf_install_helper( $library, $m++ );
+    scm_hook_acf_install_helper( $library, $m++ );*/
 
     do_action( 'scm_action_options_fields' );
 }

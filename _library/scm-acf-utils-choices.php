@@ -186,7 +186,6 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'both' => __( 'Menu + Sticky', SCM_THEME ),
 			'sticky' => __( 'Solo Sticky', SCM_THEME ),
 			'menu' => __( 'Solo Menu', SCM_THEME ),
-			'no' => __( 'Solo Toggle', SCM_THEME ),
 		);
 
 	elseif( strpos( $list, 'branding_header' ) !== false ):

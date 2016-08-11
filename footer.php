@@ -75,20 +75,20 @@ wp_reset_postdata();
 
                             if( $foot_piva ){
                                 if( $foot_separator && $foot_credits )
-                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1 );
+                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                                 
                                 $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_piva, 'tag'=>'span', 'inherit'=>1 );
                             }
 
                             if( $foot_designed ){
                                 if( $foot_separator && ( $foot_credits || $foot_piva ) )
-                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1 );
+                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                                 
                                 $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>'Designed by ' . $foot_designed, 'attributes'=>( $foot_designed_link ? ' data-href="' . getURL( $foot_designed_link ) . '" ' : '' ), 'tag'=>'span', 'inherit'=>1 );
                             }
 
                             if( $foot_separator && ( $foot_credits || $foot_piva || $foot_designed ) )
-                                $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1 );
+                                $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                             
                             $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>'Powered by SCM', 'attributes'=>' data-href="' . getURL( 'info@mdmbunny.com' ) . '" ', 'tag'=>'span', 'inherit'=>1 );
 

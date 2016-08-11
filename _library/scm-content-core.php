@@ -910,7 +910,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $template['posts'] = $loop->posts;
     $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-    $template = array_merge( $template, $more );
+    $template = array_merge( $template, ( $more ?: array() ) );
 
     // Filter before
     $before = apply_filters( 'scm_filter_archive_before_' . str_replace('-', '_', $type), '', $content, $template['posts'] );
@@ -921,7 +921,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     scm_containers( $template, 'post' );
 
     // Pagination and button
-    if( sizeof( $template['posts'] ) > 0 ){
+    if( $archive && sizeof( $template['posts'] ) > 0 ){
 
         if( $pagination ){
 

@@ -289,6 +289,31 @@ function scm_acf_field_negative( $name = '', $field = 0, $width = 100, $logic = 
 }
 
 /**
+* [GET] PERCENT field builder
+*
+* Specific field attributes:
+```php
+'type' => 'percent'
+'append' => '%'
+'min' => 100
+'max' => 100
+```
+*
+* @see scm_acf_field_number()
+*
+* @param {array|string=} name Field name or field general attributes (default is '').
+* @param {array|string|0=} field Field specific attributes or field default attribute (default is 0).
+* @param {int|0=} width Field width (default is 100).
+* @param {array|0=} logic Field conditional logics (default is 0).
+* @param {bool=} required Field conditional logics (default is false).
+* @param {string=} label Field label (default is '').
+* @return {array} Field.
+*/
+function scm_acf_field_percent( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+	return scm_acf_helper( $name, $field, array('type' => 'percent','label' => $label), $width, $logic, $required );
+}
+
+/**
 * [GET] ALPHA field builder
 *
 * Specific field attributes:

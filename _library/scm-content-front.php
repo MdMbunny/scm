@@ -127,7 +127,7 @@ function scm_logo() {
     if( is_numeric( $logo_image ) ){
         $logo_image = get_post( (int)$logo_image );
         $logo_image = $logo_image->guid;
-        consoleLog('wrong');
+        consoleLog('NOTE: save logo head option page');
     }else{
         $logo_image = esc_url( $logo_image );
     }
@@ -284,7 +284,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         }
 
         $menu_data_toggle = $toggle_active;
-        $menu_data_home = ( ( $home_active == 'both' || $home_active == 'menu' ) ? 'true' : 'false' );
+        $menu_data_home = $home_active != 'sticky';
         $menu_data_image = ( $menu_data_home ? $image_active : '' );
 
         // Print Main Menu
@@ -323,7 +323,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         }
 
         $sticky_data_toggle = $toggle_active;
-        $sticky_data_home = ( ( $home_active == 'both' || $home_active == 'sticky' ) ? 'true' : 'false' );
+        $sticky_data_home = $home_active != 'menu';
         $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
 
         // Print Sticky Menu
@@ -367,7 +367,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
 * @param {string=} attach (default is 'nav-top' ).
 * @param {string=} anim (default is 'top' ).
 */
-function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 'false', $image_active = 'no', $menu = 'primary', $sticky = '', $side = false, $type = 'self', $offset = 0, $attach = 'nav-top' ) {
+function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 0, $image_active = 'no', $menu = 'primary', $sticky = '', $side = false, $type = 'self', $offset = 0, $attach = 'nav-top' ) {
 
     global $SCM_indent;
 
@@ -376,7 +376,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         'class'            => 'navigation full',
         'row_class'        => 'full',
         'toggle_active'    => 'smart',
-        'home_active'      => 'false',
+        'home_active'      => 0,
         'image_active'     => 'no',
         'menu'             => 'primary',
         'sticky'           => '',
@@ -391,11 +391,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         extract( wp_parse_args( $id, $default ) );
 
     $home = get_home_url();
-    $toggle_link = ( $sticky ? '#top' : $home );
-    $toggle_icon = 'fa ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
-    $home_icon = 'fa ' . ( $sticky ? scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' ) : scm_field( 'menu-home-icon', 'fa-home', 'option' ) );
-    $image_icon = scm_field( 'menu-home-image', '', 'option' );
-
+    
     $data = ( $sticky ? 
         'data-sticky="' . $sticky . '" 
         data-sticky-type="' . $type . '" 
@@ -415,26 +411,45 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
 
         $wrap .= indent( $in + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
 
+            // TOGGLE BUTTON
+
+            $toggle_top = scm_field( 'menu-toggle-top', false, 'option' );
+            $toggle_home = scm_field( 'menu-toggle-home', false, 'option' );
+            $toggle_link = ( $sticky && $toggle_top ? '#top' : ( !$sticky && $toggle_home ? $home : '' ) );
+            $toggle_open = 'fa ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
+            $toggle_close = 'fa ' . ( $sticky ? scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' ) : scm_field( 'menu-home-icon', 'fa-home', 'option' ) );
+            
             $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 
-                $wrap .= indent( $in + 3 ) . '<i class="icon-toggle ' . $toggle_icon . '" data-toggle-button="off"></i>' . lbreak();
-                $wrap .= indent( $in + 3 ) . '<a class="icon-home" href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $home_icon . '"></i></a>' . lbreak(2);
+                $wrap .= indent( $in + 3 ) . '<i class="icon-toggle ' . $toggle_open . '" data-toggle-button="off"></i>' . lbreak();
+                if( !$toggle_link )
+                    $wrap .= indent( $in + 3 ) . '<i class="icon-home ' . $toggle_close . '" data-toggle-button="on"></i>' . lbreak(2);
+                else
+                    $wrap .= indent( $in + 3 ) . '<a class="icon-home" href="' . $toggle_link . '" data-toggle-button="on"><i class="' . $toggle_close . '"></i></a>' . lbreak(2);
 
             $wrap .= indent( $in + 2 ) . '</div>' . lbreak(2);
 
-            if( $home_active == 'true' ){
+            // HOME BUTTON
 
-                if( $image_active && $image_active != 'no' ){
+            $home_icon = scm_field( 'menu-home-icon', '', 'option' );
+            $home_image = scm_field( 'menu-home-image', '', 'option' );
+            $home_text = scm_field( 'menu-home-text', '', 'option' );
 
-                    $wrap .= indent( $in + 2 ) . '<a class="toggle-image" href="' . $toggle_link . '" data-switch="' . $image_active . '" data-switch-with=".toggle-home"><img src="' . $image_icon . '" alt="" /></a>' . lbreak(2);
-                    $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '"><i class="' . $home_icon . '"></i></a>' . lbreak(2);
+            if( $home_active ){
 
-                }else{
+                $wrap .= indent( $in + 2 ) . '<a class="home-button" href="' . $home . '">';
 
-                    $wrap .= indent( $in + 2 ) . '<a class="toggle-home" href="' . $toggle_link . '" data-switch><i class="' . $home_icon . '"></i></a>' . lbreak(2);
+                    if( $home_icon )
+                        $wrap .= '<i class="' . $home_icon . '"></i>';
+                    if( $home_image )
+                        $wrap .= '<img src="' . $home_image . '" alt="" />' . lbreak(2);
+                    if( $home_text )
+                        $wrap .= '<span>' . $home_text . '</span>';
 
-                }
+                $wrap .= '</a>' . lbreak(2);
             }
+
+            // MENU
 
             $wrap .= indent( $in + 2 ) . '<ul class="toggle-content menu">' . lbreak(2) . $content . lbreak() . indent( $in + 2 ) . '</ul>' . lbreak(2);
 
@@ -732,39 +747,6 @@ function scm_get_submenu_close( $depth = 1 ) {
 // ------------------------------------------------------
 // 4.0 FRONT FOOTER
 // ------------------------------------------------------
-
-/**
-* [ECHO] Footer credits
-*/
-function scm_credits() {
-
-    $copyText = scm_field('footer_credits', '', 'option');
-    if(!$copyText){
-        return;
-    }
-
-    $replaceArray = array(
-        '(c)'  => '&copy;',
-        '(C)'  => '&copy;',
-
-        '(r)'  => '&reg;',
-        '(R)'  => '&reg;',
-
-        '(tm)' => '&trade;',
-        '(TM)' => '&trade;',
-
-        'YEAR' => date( 'Y' ),
-
-        'TITLE' => get_bloginfo( 'name' ),
-    );
-    $copyText = strtr( $copyText, $replaceArray );
-    ?>
-    <!-- CREDITS -->
-    <div class="credits">
-        <?php echo $copyText; ?>
-    </div>
-    <?php
-}
 
 /**
 * [ECHO] Footer top of page
