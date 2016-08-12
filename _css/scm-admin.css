@@ -56,11 +56,11 @@ body:not(.loaded) .acf-field{
 	background-color: #444 !important;
 }
 
-#adminmenu > .scm-separator.active{
+.scm-edit #adminmenu > .scm-separator.active{
 	background-color: #FFF !important
 }
 
-#adminmenu > .scm-separator.active > .separator:after,
+.scm-edit #adminmenu > .scm-separator.active > .separator:after,
 #wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover>a, #wpadminbar .quicklinks .menupop ul li a:focus, #wpadminbar .quicklinks .menupop ul li a:focus strong, #wpadminbar .quicklinks .menupop ul li a:hover, #wpadminbar .quicklinks .menupop ul li a:hover strong, #wpadminbar .quicklinks .menupop.hover ul li a:focus, #wpadminbar .quicklinks .menupop.hover ul li a:hover, #wpadminbar li #adminbarsearch.adminbar-focused:before, #wpadminbar li .ab-item:focus:before, #wpadminbar li a:focus .ab-icon:before, #wpadminbar li.hover .ab-icon:before, #wpadminbar li.hover .ab-item:before, #wpadminbar li:hover #adminbarsearch:before, #wpadminbar li:hover .ab-icon:before, #wpadminbar li:hover .ab-item:before, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:focus, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:hover,
 #wpadminbar .ab-top-menu>li.hover>.ab-item, #wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus, #wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item, #wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus,
 #wpadminbar:not(.mobile)>#wp-toolbar a:focus span.ab-label, #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label, #wpadminbar>#wp-toolbar li.hover span.ab-label,
@@ -81,7 +81,7 @@ input[type=checkbox]:checked:before,
 	color: #e14d43 !important;
 }
 
-#adminmenu > .scm-separator.current,
+.scm-edit #adminmenu > .scm-separator.current,
 .wp-core-ui .button-primary,
 .posts-repeater .order:hover,
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select-2-columns_width,
@@ -99,20 +99,21 @@ input[type=checkbox]:checked:before,
 #adminmenu li.current a.menu-top,
 .folded #adminmenu li.current.menu-top,
 .folded #adminmenu li.wp-has-current-submenu,
+#adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu .wp-menu-arrow, #adminmenu .wp-menu-arrow div, #adminmenu li.current a.menu-top, #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, .folded #adminmenu li.current.menu-top, .folded #adminmenu li.wp-has-current-submenu,
 .wrap .add-new-h2:hover,
 .wrap .page-title-action:hover{
 	background-color: #e14d43 !important;
 }
 
-#adminmenu > .scm-separator:not(.current):not(.active):hover > .separator:after,
-#adminmenu > .scm-separator.current > .separator:after,
+.scm-edit #adminmenu > .scm-separator:not(.current):not(.active):hover > .separator:after,
+.scm-edit #adminmenu > .scm-separator.current > .separator:after,
 .wrap .add-new-h2:hover,
 .wrap .page-title-action:hover{
 	color: #FFF !important;
 }
 
-#adminmenu li.wp-has-current-submenu,
-#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
+.scm-edit #adminmenu li.wp-has-current-submenu,
+.scm-edit #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
 	background-color: transparent !important;
 }
 
@@ -249,16 +250,26 @@ body.loading *{
 	opacity: 1;
 }
 
-#adminmenu > li:not(.scm-separator){
+.scm-edit #adminmenu > li:not(.scm-separator){
 	display: none;
 }
 
-#adminmenu > li:not(.scm-separator):last-child,
-#adminmenu > li:not(.scm-separator).active{
+.scm-edit #adminmenu > li:not(.scm-separator):last-child,
+.scm-edit #adminmenu > li:not(.scm-separator).active{
 	display: block;
 }
 
-#adminmenu > .scm-separator{
+body:not(.scm-edit) #adminmenu div.separator{
+	background-color: #555;
+	height: 1px;
+}
+
+body:not(.scm-edit) #adminmenu li.wp-menu-separator{
+	margin: 0;
+	height: auto;
+}
+
+.scm-edit #adminmenu > .scm-separator{
     background-color: rgba(255,255,255,.4) !important;
     height: 3em !important;
     margin: 0px !important;
@@ -276,13 +287,13 @@ body.loading *{
 	background-color: rgba(255,255,255,1) !important;
 }*/
 
-#adminmenu > .scm-separator > .separator{
+.scm-edit #adminmenu > .scm-separator > .separator{
 	height: auto;
 	overflow: hidden;
 	max-height: 100%;
 }
 
-#adminmenu > .scm-separator > .separator:after {
+.scm-edit #adminmenu > .scm-separator > .separator:after {
     color: #111;
     font-weight: bold;
     text-transform: uppercase;
@@ -297,21 +308,21 @@ body.loading *{
 	margin-top: 3em;
 }*/
 
-#adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
-#adminmenu > .scm-separator1 > .separator:after { content: "S - Sections"; }
-#adminmenu > .scm-separator2 > .separator:after { content: "C - Contents"; }
-#adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
-#adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
-#adminmenu > .scm-separator5 > .separator:after { content: "W - Settings"; }
-#adminmenu > .scm-separator-last > .separator:after { content: "P - Plugins"; }
+.scm-edit #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
+.scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "S - Sections"; }
+.scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "C - Contents"; }
+.scm-edit #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
+.scm-edit #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
+.scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "W - Settings"; }
+.scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugins"; }
 
-html[lang="it-IT"] #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
-html[lang="it-IT"] #adminmenu > .scm-separator1 > .separator:after { content: "S - Sezioni"; }
-html[lang="it-IT"] #adminmenu > .scm-separator2 > .separator:after { content: "C - Contenuti"; }
-html[lang="it-IT"] #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
-html[lang="it-IT"] #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
-html[lang="it-IT"] #adminmenu > .scm-separator5 > .separator:after { content: "W - Impostazioni"; }
-html[lang="it-IT"] #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugin"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "S - Sezioni"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "C - Contenuti"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "W - Impostazioni"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugin"; }
 
 /* Media */
 

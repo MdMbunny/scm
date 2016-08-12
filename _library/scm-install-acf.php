@@ -682,8 +682,8 @@ function scm_hook_acf_savepost_hook( $post_id ) {
 
                 if( $field['name'] == 'admin-reset-roles' && $value ){
                     $_POST['acf'][$key] = 0;
-                    //scm_roles_install();
                     update_option( 'scm-roles-installed', 0 );
+                    update_option( 'scm-capabilities-installed', 0 );
                 }
             }
         }

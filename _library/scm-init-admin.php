@@ -269,7 +269,7 @@ function scm_hook_admin_theme_update() {
 * @subpackage 4-Init/Admin/3-MENU
 */
 function scm_hook_admin_ui_body_class( $classes = '' ) {
-    return $classes . ( SCM_LEVEL_ADVANCED ? ' scm-advanced ' : '' );
+    return $classes . ( SCM_LEVEL_ADVANCED ? ' scm-advanced ' : '' ) . ( SCM_LEVEL_EDIT ? ' scm-edit ' : '' );
 }
 
 // ------------------------------------------------------

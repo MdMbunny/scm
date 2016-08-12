@@ -567,6 +567,7 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_true( 'opt-tools-smoothscroll-page', 0, 100, 0, 0, __( 'Smooth Scroll (su nuove pagine)', SCM_THEME ) );
 		$fields[] = scm_acf_field( 'opt-tools-smoothscroll-delay-new', array( 'type'=>'second', 'placeholder'=>'0,3', 'prepend'=>__( 'Delay su nuova pagina', SCM_THEME ) ) );
 		$fields = array_merge( $fields, scm_acf_preset_size( 'opt-tools-smoothscroll-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-smoothscroll-head', 0, 100, 0, 0, __( 'Includi altezza Sticky Header', SCM_THEME ) );
 		$fields[] = scm_acf_field_select( 'opt-tools-smoothscroll-ease', 'ease', 100, 0, 0, __( 'Ease', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-greensock', array( 'label'=>'Greensock' ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-greensock', 0, 20, 0, 0, __( 'Greensock', SCM_THEME ) );

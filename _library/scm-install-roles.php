@@ -110,7 +110,7 @@ function scm_roles_install() {
 */
 function scm_hook_roles_advanced() {
     /** Advanced options. */
-    define( 'SCM_LEVEL_EDIT',           SCM_LEVEL <= scm_field( 'admin-level-edit', 0, 'option' ) );
+    define( 'SCM_LEVEL_EDIT',           SCM_LEVEL <= scm_field( 'admin-level-edit', 10, 'option' ) );
     define( 'SCM_LEVEL_ADVANCED',       SCM_LEVEL <= scm_field( 'admin-level-advanced', 0, 'option' ) );
     define( 'SCM_ADVANCED_OPTIONS',     ( SCM_LEVEL_ADVANCED ? 'scm-advanced-options' : 'scm-options' ) );
 }
@@ -187,36 +187,41 @@ function scm_hook_roles_allowed_edit( $caps, $cap = '', $user_ID = 0, $args = ar
 */
 function scm_hook_roles_allowed_show( $user_search ) {
 
-    global $wpdb;
-    $where = 'WHERE 1=1';
+    if( is_admin() ){
 
-    // Temporarily remove this hook otherwise we might be stuck in an infinite loop
-    remove_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
+        global $wpdb;
+        $where = 'WHERE 1=1';
 
-    if( SCM_LEVEL > 0 ){
+        // Temporarily remove this hook otherwise we might be stuck in an infinite loop
+        remove_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
 
-        $roles = get_editable_roles();
-        $admin_ids = array( 1 );
+        if( SCM_LEVEL > 0 ){
 
-        foreach ( scm_roles_list() as $role => $value ) {
+            //$roles = get_editable_roles();
+            $admin_ids = array( 1 );
 
-            if( !isset($roles[$role]) && SCM_ROLE != $role ){
-                foreach ( get_users( array( 'role' => $role ) ) as $user )
-                    $admin_ids[] = $user->ID;
+            foreach ( scm_roles_list() as $role => $value ) {
+
+                //if( !isset($roles[$role]) && SCM_ROLE != $role ){
+                if( SCM_ROLE != $role ){
+                    foreach ( get_users( array( 'role' => $role ) ) as $user )
+                        $admin_ids[] = $user->ID;
+                }
             }
+
+            $where .= ' AND '.$wpdb->users.'.ID NOT IN ('.implode(',', $admin_ids).')';
         }
 
-        $where .= ' AND '.$wpdb->users.'.ID NOT IN ('.implode(',', $admin_ids).')';
+        $user_search->query_where = str_replace(
+            'WHERE 1=1',
+            $where,
+            $user_search->query_where
+        );
+
+        // Re-add the hook
+        add_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
+
     }
-
-    $user_search->query_where = str_replace(
-        'WHERE 1=1',
-        $where,
-        $user_search->query_where
-    );
-
-    // Re-add the hook
-    add_action( 'pre_user_query', 'scm_hook_roles_allowed_show' );
 }
 
 /**
@@ -235,7 +240,7 @@ function scm_hook_roles_post_caps( $type = '', $admin = false, $cap = false ){
 
         $level = scm_role_level( $role );
 
-        if(  ( 0 <= $level ) && ( $level < 100 ) ){
+        if(  ( 0 < $level ) && ( $level < 100 ) ){
             scm_role_post_caps( $role, $type, $admin, $cap );
         }
     }
@@ -314,7 +319,7 @@ function scm_role_redirect( $user ) {
     if( $level === 0 )
         return admin_url('themes.php?page=scm-install-plugins');
     elseif( current_user_can( SCM_ROLE_OPTIONS ) )
-        return admin_url('admin.php?page=scm-options-intro');
+        return admin_url('admin.php?page=scm-install-plugins');
     elseif( current_user_can( SCM_ROLE_USERS ) )
         return admin_url('users.php');
 

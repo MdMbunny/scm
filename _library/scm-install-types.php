@@ -195,7 +195,8 @@ do_action( 'scm_action_types_capabilities', $obj->cap_plural, $obj->admin, $obj-
 */
 function scm_hook_types_capabilities(){
 
-    if( is_admin() && !get_option( 'scm-roles-installed' ) ){
+    if( is_admin() && !get_option( 'scm-capabilities-installed' ) ){
+        update_option( 'scm-capabilities-installed', 1 );
         
         global $SCM_types;
         $objs = $SCM_types['objects'];
