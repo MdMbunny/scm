@@ -284,7 +284,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         }
 
         $menu_data_toggle = $toggle_active;
-        $menu_data_home = $home_active != 'sticky';
+        $menu_data_home = $home_active && $home_active != 'sticky';
         $menu_data_image = ( $menu_data_home ? $image_active : '' );
 
         // Print Main Menu
@@ -323,7 +323,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         }
 
         $sticky_data_toggle = $toggle_active;
-        $sticky_data_home = $home_active != 'menu';
+        $sticky_data_home = $home_active && $home_active != 'menu';
         $sticky_data_image = ( $sticky_data_home ? $image_active : 'no' );
 
         // Print Sticky Menu
@@ -390,7 +390,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
     if( is_array( $id ) )
         extract( wp_parse_args( $id, $default ) );
 
-    $home = get_home_url();
+    
     
     $data = ( $sticky ? 
         'data-sticky="' . $sticky . '" 
@@ -411,13 +411,15 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
 
         $wrap .= indent( $in + 1 ) . '<div class="row ' . $row_class . '">' . lbreak( 2 );
 
+            $home = get_home_url();
+            
             // TOGGLE BUTTON
 
             $toggle_top = scm_field( 'menu-toggle-top', false, 'option' );
             $toggle_home = scm_field( 'menu-toggle-home', false, 'option' );
-            $toggle_link = ( $sticky && $toggle_top ? '#top' : ( !$sticky && $toggle_home ? $home : '' ) );
+            $toggle_link = ( $toggle_top && !$toggle_home ? '#top' : ( !$toggle_top && $toggle_home ? $home : ( $toggle_top && $toggle_home ? ( $sticky ? '#top' : $home ) : '' ) ) );
             $toggle_open = 'fa ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
-            $toggle_close = 'fa ' . ( $sticky ? scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' ) : scm_field( 'menu-home-icon', 'fa-home', 'option' ) );
+            $toggle_close = 'fa ' . scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' );
             
             $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 

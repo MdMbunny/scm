@@ -84,7 +84,7 @@ if ( $layout == 'layout-thumbs' ) {
         if( !$image )
             return;
 
-    }if( $post->post_type === 'luoghi' ){
+    }elseif( $post->post_type === 'luoghi' ){
         switch ( $layout ) {
             case 'layout-logo':
                 if( $negative )

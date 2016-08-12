@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.1
+Version:			v3.3.2
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1708,20 +1708,20 @@ body:not(.ready) .navigation {
 }
 
 .navigation.toggle > .row > div.toggle-button {
-	width: 100%;
+	/*width: 100%;*/
 }
 
 .ie .navigation > .row > div.toggle-button{
-	line-height: 1.1em;
-	padding: .55em;
+	/*line-height: 1.1em;
+	padding: .55em;*/
 }
 
 .navigation > .row > div.toggle-button > * {
 	cursor: pointer;
-	color: #FFF;
+	/*color: #FFF;*/
 }
 
-.icon-toggle, .icon-home > i {
+/*.icon-toggle, .icon-home > i {
     font-size: 2em;
     padding: .5em;
     width: 100%;
@@ -1734,7 +1734,7 @@ body:not(.ready) .navigation {
 .navigation > .row > div.toggle-button img{
 	max-height: 80%;
 	max-width: 80%;
-}
+}*/
 
 
 .navigation.toggle .sub-menu{
