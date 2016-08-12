@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.2
+Version:			v3.3.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1668,10 +1668,6 @@ body:not(.ready) .navigation {
     width: 100%;
 }
 
-/*.navigation.toggle li:first-child a {
-	padding-top: .7em;
-}*/
-
 .navigation.toggle .menu {
 	visibility: hidden;
 	overflow: hidden;
@@ -1703,39 +1699,19 @@ body:not(.ready) .navigation {
 	text-align: center;
 	background-color: transparent;
 	cursor: pointer;
-	/*max-width: 4em;*/
 	vertical-align: top;
-}
-
-.navigation.toggle > .row > div.toggle-button {
-	/*width: 100%;*/
-}
-
-.ie .navigation > .row > div.toggle-button{
-	/*line-height: 1.1em;
-	padding: .55em;*/
 }
 
 .navigation > .row > div.toggle-button > * {
 	cursor: pointer;
-	/*color: #FFF;*/
+	padding: .5em;
+	font-size: 2em;
 }
 
-/*.icon-toggle, .icon-home > i {
-    font-size: 2em;
-    padding: .5em;
-    width: 100%;
+.ie .navigation > .row > div.toggle-button > *{
+	line-height: 1.1em;
+	padding: .55em;
 }
-
-.navigation > .row > div.toggle-button > .icon-home{
-	width: 100%;
-}
-
-.navigation > .row > div.toggle-button img{
-	max-height: 80%;
-	max-width: 80%;
-}*/
-
 
 .navigation.toggle .sub-menu{
 	display: none;

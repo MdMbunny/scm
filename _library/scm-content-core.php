@@ -134,13 +134,13 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
         $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
     }
 
-    if( !isset( $build ) ) return;
-    
-    global $post, $SCM_indent;
+    if( !isset( $build ) || !$build ) return;
 
+    global $post, $SCM_indent;
     $SCM_indent++;
-    //$count = 0;
+
     $total = ( $total ?: sizeof( $build ) );
+    
 
     if( $total === 0 ){ 
 
