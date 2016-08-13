@@ -119,28 +119,27 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
     $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $action );
     $builder = array();
+
+    if( !isset( $build ) || !$build ) return;
     
     $current = 0;
     $counter = 0;
     $odd = '';
     $total = 0;
 
-    if( is( $container == 'post' ) ){
+    if( $container == 'post' ){
         $builder = $build;
         $current =  ( isset( $build['current'] ) ? $build['current'] : 0 );
         $counter =  ( isset( $build['counter'] ) ? $build['counter'] : 0 );
         $odd =  ( isset( $build['odd'] ) ? $build['odd'] : '' );
-        $total =  ( isset( $build['total'] ) ? $build['total'] : 0 );
         $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
+        $total =  ( isset( $build['total'] ) ? $build['total'] : sizeof( $build ) );
+    }else{
+        $total = sizeof( $build );
     }
-
-    if( !isset( $build ) || !$build ) return;
 
     global $post, $SCM_indent;
     $SCM_indent++;
-
-    $total = ( $total ?: sizeof( $build ) );
-    
 
     if( $total === 0 ){ 
 
