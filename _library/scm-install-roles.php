@@ -546,18 +546,22 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $adm = false, $cap = fa
     $staff = $name == 'staff';
     $manager = $name == 'manager';
     
-    if( !$admin && !$manager && !$staff && $adm )
+    if( $iscritto || ( !$admin && !$manager && !$staff && $adm ) )
         return $role;
     
     $role->add_cap( 'read_private_' . $type );
 
-    if( !$admin && !$manager && $adm )
+    if( $utente || ( !$admin && !$manager && $adm ) )
         return $role;
 
     $role->add_cap( 'edit_' . $type );
+    $role->add_cap( 'edit_published_' . $type );
+
+    if( $member )
+        return $role;
+
     $role->add_cap( 'edit_private_' . $type );
     $role->add_cap( 'edit_others_' . $type );
-    $role->add_cap( 'edit_published_' . $type );
 
     if( !$admin && $adm && !$cap )
         return $role;
