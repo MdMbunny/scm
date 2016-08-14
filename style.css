@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.8
+Version:			v3.3.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -695,10 +695,10 @@ blockquote .append{
 	padding-top: 5em;
 }
 
-.site-header,
+/*.site-header,
 .site-credits{
 	background-color: #FFF;
-}
+}*/
 
 .site-header{
 	font-size: 1em;
@@ -894,6 +894,7 @@ blockquote .append{
 
 .site-credits{
 	padding: 1em;
+	font-size: .7em;
 }
 
 /*--------------------------------------------------------------
@@ -1657,9 +1658,9 @@ body:not(.ready) .navigation {
 	padding: 0;
 }
 
-.navigation.toggle .row{
+/*.navigation.toggle .row{
 	background-color: #DDD;
-}
+}*/
 
 .navigation.toggle .menu a {
     display: inline-block;
@@ -1700,6 +1701,7 @@ body:not(.ready) .navigation {
 	background-color: transparent;
 	cursor: pointer;
 	vertical-align: top;
+	color: #FFF;
 }
 
 .navigation > .row > div.toggle-button > * {
