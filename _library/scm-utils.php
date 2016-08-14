@@ -134,7 +134,7 @@ function updatePostMeta( $id, $meta, $value = NULL ){
  */
 function loginRedirect( $type = 'page', $link = '' ){
     if( $type == 'page' )
-        return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) ? getURL( 'page:' . $link ) : $link ) );
+        return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) || ( (int)$link > 1 ) ? getURL( 'page:' . $link ) : $link ) );
     elseif( $type == 'admin' )
         return ( $link ? site_url( '/wp-admin/' . $link ) : site_url('/wp-admin/users.php') );
     else

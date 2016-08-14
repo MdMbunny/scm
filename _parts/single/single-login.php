@@ -31,7 +31,7 @@ $args = array(
     'login-label-user' => __( 'Username', SCM_THEME ),
     'login-label-password' => __( 'Password', SCM_THEME ),
     'login-label-remember' => __( 'Remember Me', SCM_THEME ),
-    'login-label-send' => __( 'Log In', SCM_THEME ),
+    'login-send' => __( 'Log In', SCM_THEME ),
 
     'login-remember' => false,
     
@@ -62,7 +62,7 @@ if ( is_user_logged_in() ) {
         $b_type = ( isset( $button['type'] ) ? $button['type'] : 'logout' );
         $b_label = ( isset( $button['label'] ) ? $button['label'] : '' );
         $b_login = ( isset( $button['login'] ) ? $button['login'] : 'page' );
-        $b_link = loginRedirect( $b_login, ( isset( $button['link'] ) ? $button['link'] : '' ) );
+        $b_link = loginRedirect( $b_login, ( isset( $button['redirect'] ) ? $button['redirect'] : '' ) );
         if( $b_type == 'edit' ){
             $b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
             $b_label = ( SCM_PAGE_EDIT ? __( 'View', SCM_THEME ) : ( $b_label ?: __( 'Edit', SCM_THEME ) ) );
@@ -89,7 +89,7 @@ if ( is_user_logged_in() ) {
     $label_user = $args['login-label-user'];
     $label_password = $args['login-label-password'];
     $label_remember = $args['login-label-remember'];
-    $label_login = $args['login-label-send'];
+    $label_login = $args['login-send'];
     
     $attr = array(
             'echo'           => true,

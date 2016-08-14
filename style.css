@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.7
+Version:			v3.3.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1365,7 +1365,7 @@ input[type="submit"]:active {
 
 .scm-loading.loading-bar{
 	color: #DDD;
-	background: url('_img/loading/loading_stripes_50.gif') repeat center center transparent;
+	background: url('_img/loading/loading_stripes_50.gif') repeat center center #DDD;
 	height: 1em;
 	border-radius: 5px;
 	border: 1px solid rgba(255,255,255,.5);
