@@ -1202,24 +1202,23 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 			foreach ( $SCM_types['public'] as $slug => $value) {
 				$elements[] = array( $slug, $value );
 			}
-			$elements = array_merge( $elements, $objects );
+			$objects = array_merge( $elements, $objects );
 		}
 		
-		if( !is_array( $elements ) )
-			$elements = array( $elements );
+		$objects = toArray( $objects );
 
-		foreach ($elements as $el) {
+		foreach ($objects as $el) {
 
 			if( gettype( $el ) != 'array' )
 				return;
 
-			$fun = ( strpos( $el[0], 'scm_acf_object_' ) === 0 ? $el[0] : 'scm_acf_object');
+			$fun = ( strpos( $el[0], 'scm_acf_object_' ) === 0 ? $el[0] : 'scm_acf_object_post');
 			$element = $el[1];
 			$key = str_replace( 'scm_acf_object_', '', $el[0] );
 
 			$layout = scm_acf_layout( $key, 'block', $element );
 
-			if( $fun != 'scm_acf_object' && function_exists( $fun ) )
+			if( $fun != 'scm_acf_object_post' && function_exists( $fun ) )
 				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun ) ); // Call objects function in scm-acf-objects.php
 			else
 				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun, $key ) ); // Call objects function in scm-acf-objects.php

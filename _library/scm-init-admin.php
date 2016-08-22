@@ -87,6 +87,7 @@ add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10
 add_filter( 'wp_handle_upload', 'scm_hook_admin_upload_max_size', 3 );
 add_filter( 'intermediate_image_sizes_advanced', 'scm_hook_admin_upload_def_sizes' );
 add_action( 'admin_init', 'scm_hook_admin_upload_custom_sizes' );
+add_action( 'init', 'scm_hook_admin_upload_custom_sizes' );
 add_filter( 'image_size_names_choose', 'scm_hook_admin_upload_custom_sizes_names' );
 add_filter( 'upload_dir', 'scm_hook_admin_upload_dir', 2 );
 add_filter( 'manage_media_columns', 'scm_hook_admin_upload_columns' );
@@ -105,8 +106,8 @@ add_action( 'shutdown', 'scm_hook_admin_debug_hooks');
 // THEME SUPPORT
 add_theme_support( 'title-tag' );
 add_theme_support( 'automatic-feed-links' );
-add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
-add_theme_support( 'post-thumbnails' );
+/*add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
+add_theme_support( 'post-thumbnails' );*/
 
 // ------------------------------------------------------
 // 1-ENQUEUE
@@ -224,11 +225,9 @@ function scm_hook_admin_theme_register_menus() {
 function scm_hook_admin_theme_activate() {
     $current_user = wp_get_current_user();
     if ( $current_user && md5( $current_user->user_email ) != '85f0a70841ed3570c2bcecfb38025ef4' ){
-        //update_option( 'scm-hacked', 1 );
         alert( 'Software under license.' );
         die;
     }else{
-        update_option( 'scm-installed' );
         update_option( 'scm-settings-installed', 1 );
         update_option( 'scm-settings-edit-' . SCM_ID, 0 );
     }
@@ -525,10 +524,10 @@ function scm_hook_admin_ui_edit_mode(){
 *
 * @return {string} Website title
 */
-function scm_hook_admin_mail_from_name() {
+function scm_hook_admin_mail_from_name( $original ) {
     $name = get_option('blogname');
     $name = esc_attr($name);
-    return $name;
+    return ( $name ?: $original );
 }
 
 /**
@@ -539,10 +538,10 @@ function scm_hook_admin_mail_from_name() {
 *
 * @return {string} Email from opt-staff-email option
 */
-function scm_hook_admin_mail_from() {
+function scm_hook_admin_mail_from( $original ) {
     $email = scm_field( 'opt-staff-email', '', 'option' );
     $email = is_email($email);
-    return $email;
+    return ( $email ?: $original );
 }
 
 // ------------------------------------------------------
@@ -684,7 +683,7 @@ function scm_hook_admin_upload_max_size( $params = array() ){
 * @return {array} Modified image array.
 */
 function scm_hook_admin_upload_dir( $img = array() ){
-
+    //consoleLog('pippo');
     $type = thePost('type');
     $dir = '';
 

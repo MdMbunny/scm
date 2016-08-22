@@ -91,7 +91,13 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	$choices = array();
         				
-	if( strpos( $list, 'types_' ) !== false ):
+	if( strpos( $list, 'languages' ) !== false ):
+	    
+	    if( function_exists( 'pll_languages_list' ) ):
+			$choices = array_to_asso( pll_languages_list() );
+			endif;
+
+	elseif( strpos( $list, 'types_' ) !== false ):
 		global $SCM_types;
 		if( strpos( $list, '_complete') !== false )
 			$choices = $SCM_types['complete'];
@@ -114,13 +120,11 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 		$selectors = $SCM_libraries['selectors'];
 		$choices = call_user_func_array('array_merge', $selectors );
 
-		foreach ( $selectors as $key => $sel ):
+		foreach ( $selectors as $key => $sel )
 			if( strpos( $list, $key ) !== false ) $choices = $sel;
-		endforeach;
 
 		$choices = array_to_asso( $choices );
 
-	
 	elseif( strpos( $list, 'wp_menu' ) !== false ):
 		$menus = get_registered_nav_menus();
 		foreach ( $menus as $location => $description )

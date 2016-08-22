@@ -62,7 +62,6 @@ function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = tr
         indent( $SCM_indent + 1, $pag, 1 );
     else
         return $pag;
-
 }
 
 /**
@@ -104,7 +103,6 @@ function scm_pagination_more( $query = NULL, $current = 1, $button = '', $var = 
         indent( $SCM_indent + 1, $pag[sizeof($pag)-1], 1 );
     else
         return $pag;
-
 }
 
 // ------------------------------------------------------
@@ -172,7 +170,6 @@ function scm_logo() {
         indent( $in+1 , '<h2 class="site-description">' . $logo_slogan . '</h2>', 2 );
 
     indent( $in , '</div><!-- #site-branding -->', 2 );
-
 }
 
 // ------------------------------------------------------

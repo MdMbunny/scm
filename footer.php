@@ -33,6 +33,8 @@ wp_reset_postdata();
     $foot_credits = scm_field( 'opt-credits-credits', '', 'option' );
     $foot_separator = scm_field( 'opt-credits-separator', '', 'option' );
     $foot_piva = scm_field( 'opt-credits-piva', '', 'option' );
+    $foot_policy = scm_field( 'opt-credits-policy', 0, 'option' );
+    $foot_policy_link = scm_field( 'opt-credits-policy-link', '', 'option' );
     
     $foot_designed = scm_field( 'opt-credits-designed', '', 'option' );
     $foot_designed_link = scm_field( 'opt-credits-designed-link', '', 'option' );   
@@ -80,8 +82,28 @@ wp_reset_postdata();
                                 $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_piva, 'tag'=>'span', 'inherit'=>1 );
                             }
 
+                            if( $foot_policy ){
+                                $link = '';
+                                if( $foot_policy_link ){
+                                    $link = $foot_policy_link;
+                                }else{
+                                    $policy = scm_utils_preset_policies();
+                                    if ( $foot_policy )
+                                        $link = 'http://www.iubenda.com/privacy-policy/' . $policy['id'];
+                                }
+
+                                if ( $link ) {
+                                    if( $foot_separator && ( $foot_credits || $foot_piva ) )
+                                        $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
+                                    
+                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>__( 'Privacy Policy', SCM_THEME ), 'attributes'=>' data-href="' . $link . '" data-target="_self"', 'tag'=>'span', 'inherit'=>1 );
+                                }else{
+                                    $foot_policy = 0;
+                                }
+                            }
+
                             if( $foot_designed ){
-                                if( $foot_separator && ( $foot_credits || $foot_piva ) )
+                                if( $foot_separator && ( $foot_credits || $foot_piva || $foot_policy ) )
                                     $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                                 
                                 $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>'Designed by ' . $foot_designed, 'attributes'=>( $foot_designed_link ? ' data-href="' . getURL( $foot_designed_link ) . '" ' : '' ), 'tag'=>'span', 'inherit'=>1 );
@@ -107,7 +129,6 @@ wp_reset_postdata();
     indent( $SCM_indent, '</div><!-- page -->', 2 );
     
     wp_footer();
-
     wp_reset_postdata();
 
     // ACF Forms
@@ -128,3 +149,5 @@ wp_reset_postdata();
     echo '</body>' . lbreak();
 
 echo '</html>';
+
+?>

@@ -144,6 +144,7 @@ function scm_acf_get_value( $arr = NULL, $par = NULL, $fallback = NULL ) {
 
 	'-default'			add 'default' => 'Default' 	to $field['choices']
 	'-no'				add 'no' 	  => '-' 		to $field['choices']
+	'-empty'			add '' 	  	  => '-' 		to $field['choices']
 	'-multi'			$multiple | $more = true
 	'-read'				$read = true
 	'-disabled'			$disabled = true
@@ -249,6 +250,9 @@ function scm_acf_get_field( $elem ) {
 	if( endsWith( $elem, '-no' ) ){
 		$choices['no'] = '-';
 		$elem = str_replace( '-no', '', $elem);
+	}elseif( endsWith( $elem, '-empty' ) ){
+		$choices[''] = '-';
+		$elem = str_replace( '-empty', '', $elem);
 	}
 
 	$type = $elem;

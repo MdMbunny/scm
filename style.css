@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.3.9
+Version:			v3.4.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1460,7 +1460,7 @@ input[type="submit"]:active {
 	text-transform: uppercase;
 }
 
-.navigation .row {
+.navigation .row.full {
 	padding: 0px 20px;
 	/*text-shadow: 0px -1px 0px rgba(0,0,0,.2);*/
 }

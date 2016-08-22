@@ -67,14 +67,14 @@ if( is( $element ) ){
 		$fields = get_fields( $luogo );
 		$marker = scm_utils_preset_map_marker( $luogo, $fields );
 
-		$name = $fields['luogo-nome'];
-		$country = $fields['luogo-paese'];
-		$region = $fields['luogo-regione'];
-		$province = is( $fields['luogo-provincia'], '', '(', ')' );
-		$code = $fields['luogo-cap'];
-		$city = $fields['luogo-citta'];
-		$town = $fields['luogo-frazione'];
-		$address = $fields['luogo-indirizzo'];
+		$name = ex_attr( $fields, 'luogo-nome', '' );
+		$country = ex_attr( $fields, 'luogo-paese', '' );
+		$region = ex_attr( $fields, 'luogo-regione', '' );
+		$province = ex_attr( $fields, 'luogo-provincia', '', '(', ')' );
+		$code = ex_attr( $fields, 'luogo-cap', '' );
+		$city = ex_attr( $fields, 'luogo-citta', '' );
+		$town = ex_attr( $fields, 'luogo-frazione', '' );
+		$address = ex_attr( $fields, 'luogo-indirizzo', '' );
 
 		$town = ( ( $town && ( $city || $code || $province ) ) ? $town . ' ' : $town );
 		$code = ( ( $code && ( $city || $province ) ) ? $code . ' ' : $code );

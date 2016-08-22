@@ -43,9 +43,9 @@ body:not(.loaded) .acf-field{
 	color: #888;
 }
 
-#adminmenu li.wp-has-current-submenu .wp-submenu{
-	padding: 11px 0;
-	box-shadow: 0 0 4px 0 rgba(0,0,0,.5) inset;
+#adminmenu li .wp-submenu{
+	padding: 7px 0 0 0;
+	box-shadow: 0 0 4px 0 rgba(0,0,0,.5) inset !important;
 }
 
 #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
@@ -54,6 +54,26 @@ body:not(.loaded) .acf-field{
 
 #adminmenu .wp-has-current-submenu .wp-submenu, #adminmenu .wp-has-current-submenu .wp-submenu.sub-open, #adminmenu .wp-has-current-submenu.opensub .wp-submenu, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu, .no-js li.wp-has-current-submenu:hover .wp-submenu{
 	background-color: #444 !important;
+}
+
+#adminmenu li .wp-submenu li:last-child{
+	padding-bottom: 7px;
+}
+
+
+#adminmenu li.scm-contacts .wp-submenu .wp-first-item + li,
+#adminmenu li.scm-media .wp-submenu .wp-first-item + li,
+#adminmenu li.scm-types .wp-submenu .wp-first-item + li,
+#adminmenu li.scm-media .wp-submenu .wp-first-item + li{
+	padding-bottom: 7px;
+}
+
+#adminmenu li.scm-contacts .wp-submenu .wp-first-item + li + li,
+#adminmenu li.scm-media .wp-submenu .wp-first-item + li + li,
+#adminmenu li.scm-types .wp-submenu .wp-first-item + li + li,
+#adminmenu li.scm-media .wp-submenu .wp-first-item + li + li{
+	border-top: 1px dashed rgba( 255, 255, 255, .3 );
+	padding-top: 7px;
 }
 
 .scm-edit #adminmenu > .scm-separator.active{
@@ -261,7 +281,7 @@ body.loading *{
 
 body:not(.scm-edit) #adminmenu div.separator{
 	background-color: #555;
-	height: 1px;
+	height: 3px;
 }
 
 body:not(.scm-edit) #adminmenu li.wp-menu-separator{

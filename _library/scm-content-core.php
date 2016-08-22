@@ -109,8 +109,6 @@ function scm_content( $content = array(), $container = '' ) {
 $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $action );
 ```
 *
-* @todo 1 - Attivare inherit per tutti i contenuti vuoti e/o aggiungi opzione SKIP IF EMPTY a tutti gli elementi con contenuti (immagini, video, link, ...)
-*
 * @param {array=} build Content array (default is empty array).
 * @param {string=} container Container name (default is 'module').
 * @param {string=} action Optional function name run at the end of the process (default is '').
@@ -138,7 +136,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
         $total = sizeof( $build );
     }
 
-    global $post, $SCM_indent;
+    global $SCM_indent;
     $SCM_indent++;
 
     if( $total === 0 ){ 
@@ -157,13 +155,11 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
         foreach ( $build as $content ) {
 
-            $current++;
-            $odd = ( $odd ? '' : 'odd' );
-
             $args = array(
 
                 'column-width' => '',
                 'layout' => '',
+                'container' => $container,
 
                 'acf_fc_layout' => '',
                 'field' => '',
@@ -185,254 +181,51 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
             );
 
+            // --------------------------------------------------------------------------
+
+        // Post PRE
+            $content = scm_container_post_pre( $content, $builder, $container );
 
             // --------------------------------------------------------------------------
 
-
-            if( $container == 'post' ){
-                $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
-                setup_postdata( $post );
-                $content = $builder;
-
-                $taxes = get_object_taxonomies( $post );
-
-                if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
-
-                    foreach ( $taxes as $key => $tax ) {
-
-                        $content['class'] .= ' ' . $tax;
-
-                        if( $tax === 'docs-tags' ){
-
-                            $terms = get_the_terms( $post->ID, 'docs-tags' );
-
-                            if( !is_wp_error( $terms ) && is_array( $terms ) ){
-
-                                foreach ( $terms as $key => $term ) {
-
-                                    $content['class'] .= ' term-' . $term->slug;
-
-                                }
-                            }
-                        }
-                    }
-                }
-
-                $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
-                $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: $args['attributes'] );
-            }
-
+            // Merge defaults with arguments
+            // Set $slug variable from Layout's name
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
-
-
-            // --------------------------------------------------------------------------
-
-
-            $content['id'] = sanitize_title( $content['id'] );
-
-            // -- Layout
-            if($container == 'sub-section')
-                $container = 'section';
-            else
-                $content['id'] = is( $content['id'], ( $container == 'section' ? $post->post_name . '-' . $current : '' ) );
-
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
 
-            // -- Post
-            if( isset( $content['type'] ) ){
-
-                if( $content['type'] == 'archive' ){
-                    
-                    $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
-                    
-                    if( $content['archive-complete'] != 'complete' ){
-                        if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
-                            $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
-                            $content['archive-paginated'] = $content['id'];
-                            $content['class'] .= ' paginated';
-                        }
-                    }
-
-                }else if( $content['type'] == 'single' ){
-
-                    $content['class'] = 'scm-single single ' . $content['class'];
-                }
-            }
-
-            // -- Single Post
-            if( isset( $content['template'] ) && $content['acf_fc_layout'] === 'layout-template' ){
-
-                if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
-
-                    $content['type'] = 'archive';
-
-                    $temp = explode( ':', $content['archive'] );
-                    $archive = $temp[0];
-                    $field = '';
-                    $value = '';
-                    if( isset( $temp[1] ) ){
-                        $filter = explode( '=', $temp[1] );
-                        $field = $filter[0];
-                        if( isset( $filter[1] ) )
-                            $value = $filter[1];
-                    }
-
-                    $content['acf_fc_layout'] = 'layout-' . $archive;
-                    $content['archive-field'] = $field;
-                    $content['archive-value'] = $value;
-
-                }elseif( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
-
-                    $content['type'] = 'single';
-
-                    if( (int)$content['post'] > 1 ){
-                        $content['single'] = array_walk( explode( ',', str_replace( ' ', '', $content['post'] ) ), 'intval' );
-                    }else{
-                        $content['single'] = array( scm_field( (string)$content['post'], null, 'option' ) );
-                    }
-
-                    if( !empty( $content['single'] ) ){
-                        $temp = get_post( $content['single'][0] );
-                        $content['acf_fc_layout'] = 'layout-' . $temp->post_type;
-                    }
-                }else{
-
-                    $content['type'] = 'single';
-
-                    $content['acf_fc_layout'] = 'layout-' . $post->post_type;
-                    $content['single'] = array( $post->ID );
-
-                    $content['layout'] = ( isset( $content['layout'] ) && $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
-                    $content['alignment'] = ( isset( $content['alignment'] ) && $content['alignment'] != 'default' ? $content['alignment'] : '' );
-                }
-            }
-
-            // -- Row
-            if( isset( $content['row'] ) && !empty( $content['row'] ) ){
-
-                $mod_post = $content['row'];
-                $mod_post_id = ( is_numeric( $mod_post ) ? $mod_post : ( isset( $mod_post->ID ) ? $mod_post->ID : $mod_post ) );
-
-                $module = ( is_numeric( $mod_post_id ) ? get_fields( $mod_post_id ) : $mod_post );
-
-                if( $module ){
-
-                    $mod_layout = ( isset( $content['layout'] ) ? $content['layout'] : '' );
-                    $mod_id = ( isset( $content['id'] ) ? $content['id'] : '' );
-                    $mod_class = ( isset( $content['class'] ) ? $content['class'] : '' );
-
-                    $content = array_merge( $content, $module );
-
-                    $content['layout'] = ( $mod_layout && $mod_layout != 'default' ? $mod_layout : $content['layout'] );
-                    $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
-                    $content['id'] = is( $mod_id, $content['id'] );
-                    $content['class'] = $mod_class . ' ' . $content['class'];
-
-                    // ---------
-                    // ACF FROM
-                    // ---------
-                    if( SCM_PAGE_EDIT && is_numeric( $mod_post_id ) ){
-
-                        $content['acf-form'] = array(
-                            'id'=> $mod_post_id,
-                            'form_attributes'=>array( 'id'=>'form-sections-' . $mod_post_id, 'class'=>'form-sections' ),
-                            'post_id'=>$mod_post_id,
-                            'fields'=>array( 'columns' ),
-                            'updated_message' => false,
-                            'return' => get_page_link( SCM_PAGE_ID ) . '?view=true',
-                            'submit_value' => __( 'Salva', SCM_THEME ),
-                        );
-
-                    }
-
-                }
-
-            }
-
-            // -- Link
-            $link = ( $content['link'] ?: 'no' );
-
-            if( isset( $link ) && $link && $link != 'no' ){
-
-                $href = '';
-                $target = ' data-target="_blank"';
-
-                if( $container != 'post' ){
-                    $href = scm_utils_link_post( $content );
-                }else{
-                    switch ( $link ) {
-                        case 'self':
-                            // if thumbs $content['link'] = $href e $href = '' else...
-                            $href = scm_utils_link_post( $content );
-                        break;
-
-                        case 'template':
-                            $target = ' data-target="_self"';
-                            $href = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
-                        break;
-
-                        case 'link':
-                            $href = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
-                        break;
-
-                        default: break;
-                    }
-                }
-
-                $content['attributes'] .= ( $href ? $href . $target : '' );
-            }
-
-            // -- Column Width and Count
-            $layout = $content['column-width'];
-
-            // ++todo 1
-            $content['inherit'] = ( $content['inherit'] ?: ( $layout === 'auto' && $container !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) ) );
-
-            if( !$content['inherit'] ){
-
-                if( strpos( $layout, '/' ) !== false ){
-
-                    $layout = str_replace( '/', '', $layout );
-                    $size = (int)$layout[0] / (int)$layout[1];
-                    $counter += $size;
-                    $data = scm_utils_data_column( $counter, $size );
-                    $counter = $data['count'];
-
-                    $content['attributes'] = ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '" data-counter="' . $counter . '" data-total="' . $total . '" data-current="' . $current . '" data-odd="' . $odd . '" ' . $content['attributes'];
-                    $content['class'] .= ' ' . 'column-layout';
-
-                }else{
-
-                    $content['class'] .= ' ' . $content['layout'];
-
-                }
-            }
-
-            // -- Class
-            $content['class'] .= ' ' . $odd;
-            $content['class'] .= ' ' . scm_utils_class_count( $current, $total );
-            $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
-            $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
-            $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );
-            
-            $selectors = ( isset( $content['selectors'] ) && is_array( $content['selectors'] ) ? $content['selectors'] : array() );
-            $content['class'] .= ' ' . implode( ' ', $selectors );
-
-            // -- Field Name
-            $content['field'] = str_replace( 'layout-', '', $content['acf_fc_layout'] );
-
-
             // --------------------------------------------------------------------------
-
+            
+        // -- Post
+            $content = scm_container_post( $content );
+        // -- Post Template
+            $content = scm_container_template( $content );
+        // -- Section
+            $content = scm_container_section( $content, $current );
+        // -- Row
+            $content = scm_container_row( $content );
+        // -- Link
+            $content = scm_container_link( $content );
+        // -- Column
+            $current++;
+            $odd = ( $odd ? '' : 'odd' );
+            $column = scm_container_column( $content, $counter, $current, $total, $odd );
+            $content = $column['content'];
+            $counter = $column['counter'];
+        // -- Class
+            $content = scm_container_class( $content );
+            $content['field'] = str_replace( 'layout-', '', $content['acf_fc_layout'] );
+            
+            // --------------------------------------------------------------------------
 
             // -- Form
             if( SCM_PAGE_EDIT && isset( $content['acf-form'] ) ){
 
-                $content['acf-form']['form_attributes']['class'] .= multisp( ' ' . $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'] );
+                $content['acf-form']['form_attributes']['class'] .= multisp( ' ' . $content['container'] . ' scm-' . $content['container'] . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'] );
                 acf_form( $content['acf-form'] );
+
+            // --------------------------------------------------------------------------
             
-            // -- Div
             }else{
 
                 // FILTER contents before echo            
@@ -441,28 +234,352 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 // -- Open Container
                 if( !$content['inherit'] ){
 
-                    $content['class'] = $container . ' scm-' . $container . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
+                    $content['class'] = $content['container'] . ' scm-' . $content['container'] . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
 
                         indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
 
                     $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
                 }
 
-                // -- Content
-                scm_content( $content );
+                    // -- Content
+                    scm_content( $content );
 
-                if( function_exists( (string)$action ) )
-                    call_user_func( (string)$action, $content );
+                    if( function_exists( (string)$action ) )
+                        call_user_func( (string)$action, $content );
 
                 // -- Close Container
                 if( !$content['inherit'] )
-                    indent( $SCM_indent, '</div><!-- ' . $container . ' -->', 2 );
-
+                    indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
             }
         }
     }
 
     $SCM_indent--;
+}
+
+/**
+* [SET] Post Container PRE
+*
+* Setup Post container PRE.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_post_pre( $content = array(), $builder = array(), $container = '' ){
+
+    // If the element is a Post, adds Taxonomies and Terms to 'class'
+    // and 'data-id' attribute to Post ID.
+    if( $container == 'post' ){
+        global $post;
+        $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
+        setup_postdata( $post );
+
+        $content = $builder;
+    
+        $taxes = get_object_taxonomies( $post );
+        if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
+
+            foreach( $taxes as $key => $tax ){
+                $content['class'] .= ' ' . $tax;
+
+                $terms = get_the_terms( $post->ID, $tax );
+                if( !is_wp_error( $terms ) && is_array( $terms ) ){
+
+                    foreach( $terms as $key => $term )
+                        $content['class'] .= ' term-' . $term->slug;
+                }
+            }
+        }
+
+        $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
+        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: '' );
+    }
+
+    return $content;
+}
+
+/**
+* [SET] Post Container
+*
+* Setup Post container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_post( $content = array() ){
+
+    if( isset( $content['type'] ) ){
+
+        $slug = str_replace( 'layout-', '', $content['acf_fc_layout'] );
+
+        if( $content['type'] == 'archive' ){
+            
+            $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
+            
+            if( $content['archive-complete'] != 'complete' ){
+                if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
+                    $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
+                    $content['archive-paginated'] = $content['id'];
+                    $content['class'] .= ' paginated';
+                }
+            }
+
+        }else if( $content['type'] == 'single' ){
+
+            $content['class'] = 'scm-single single ' . $content['class'];
+        }
+    }
+
+   return $content;
+}
+
+/**
+* [SET] Template Container
+*
+* Setup Template container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_template( $content = array() ){
+
+    if( isset( $content['template'] ) && $content['acf_fc_layout'] === 'layout-template' ){
+
+        if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
+
+            $content['type'] = 'archive';
+
+            $temp = explode( ':', $content['archive'] );
+            $archive = $temp[0];
+            $field = '';
+            $value = '';
+            if( isset( $temp[1] ) ){
+                $filter = explode( '=', $temp[1] );
+                $field = $filter[0];
+                if( isset( $filter[1] ) )
+                    $value = $filter[1];
+            }
+
+            $content['acf_fc_layout'] = 'layout-' . $archive;
+            $content['archive-field'] = $field;
+            $content['archive-value'] = $value;
+
+        }elseif( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+
+            $content['type'] = 'single';
+
+            if( (int)$content['post'] > 1 ){
+                $content['single'] = array_walk( explode( ',', str_replace( ' ', '', $content['post'] ) ), 'intval' );
+            }else{
+                $content['single'] = array( scm_field( (string)$content['post'], null, 'option' ) );
+            }
+
+            if( !empty( $content['single'] ) ){
+                $temp = get_post( $content['single'][0] );
+                $content['acf_fc_layout'] = 'layout-' . $temp->post_type;
+            }
+        }else{
+
+            $content['type'] = 'single';
+
+            global $post;
+            $content['acf_fc_layout'] = 'layout-' . $post->post_type;
+            $content['single'] = array( $post->ID );
+
+            $content['layout'] = ( isset( $content['layout'] ) && $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
+            $content['alignment'] = ( isset( $content['alignment'] ) && $content['alignment'] != 'default' ? $content['alignment'] : '' );
+        }
+    }
+    return $content;
+}
+
+/**
+* [SET] Section Container
+*
+* Setup Section container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_section( $content = array(), $current = 0 ){
+    
+    global $post;
+
+    // Sanitize the 'id' as anchor for SmoothScroll and AutoMenu functions.
+    $content['id'] = sanitize_title( $content['id'] );
+
+    // Distinguish sub Sections (inside main Sections) from main Sections (inside Pages)
+    // If Container is Section and no 'id' exists, set 'id' = post_name-{n}
+    // Each Page Section needs an 'id' as anchor for SmoothScroll and AutoMenu functions.
+    if( $content['container'] == 'sub-section' )
+        $content['container'] = 'section';
+    else
+        $content['id'] = is( $content['id'], ( $content['container'] == 'section' ? $post->post_name . '-' . $current : '' ) );
+
+    return $content;
+}
+
+/**
+* [SET] Row Container
+*
+* Setup Row container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_row( $content = array() ){
+
+    if( isset( $content['row'] ) && !empty( $content['row'] ) ){
+
+        $mod_post = $content['row'];
+        $mod_post_id = ( is_numeric( $mod_post ) ? $mod_post : ( isset( $mod_post->ID ) ? $mod_post->ID : $mod_post ) );
+
+        $module = ( is_numeric( $mod_post_id ) ? get_fields( $mod_post_id ) : $mod_post );
+
+        if( $module ){
+
+            $mod_layout = ( isset( $content['layout'] ) ? $content['layout'] : '' );
+            $mod_id = ( isset( $content['id'] ) ? $content['id'] : '' );
+            $mod_class = ( isset( $content['class'] ) ? $content['class'] : '' );
+
+            $content = array_merge( $content, $module );
+
+            $content['layout'] = ( $mod_layout && $mod_layout != 'default' ? $mod_layout : $content['layout'] );
+            $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
+            $content['id'] = is( $mod_id, $content['id'] );
+            $content['class'] = $mod_class . ' ' . $content['class'];
+
+            // ---------
+            // ACF FROM
+            // ---------
+            if( SCM_PAGE_EDIT && is_numeric( $mod_post_id ) ){
+
+                $content['acf-form'] = array(
+                    'id'=> $mod_post_id,
+                    'form_attributes'=>array( 'id'=>'form-sections-' . $mod_post_id, 'class'=>'form-sections' ),
+                    'post_id'=>$mod_post_id,
+                    'fields'=>array( 'columns' ),
+                    'updated_message' => false,
+                    'return' => get_page_link( SCM_PAGE_ID ) . '?view=true',
+                    'submit_value' => __( 'Salva', SCM_THEME ),
+                );
+
+            }
+
+        }
+
+    }
+    return $content;
+}
+
+/**
+* [SET] Link Container
+*
+* Setup Link container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_link( $content = array() ){
+
+    $link = ( isset( $content['link'] ) && $content['link'] ? $content['link'] : 'no' );
+
+    if( $link && $link != 'no' ){
+
+        $href = '';
+        $target = ' data-target="_blank"';
+
+        if( $content['container'] != 'post' ){
+            $href = scm_utils_link_post( $content );
+        }else{
+            switch ( $link ) {
+                case 'self':
+                    // if thumbs $content['link'] = $href e $href = '' else...
+                    $href = scm_utils_link_post( $content );
+                break;
+
+                case 'template':
+                    $target = ' data-target="_self"';
+                    $href = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
+                break;
+
+                case 'link':
+                    $href = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
+                break;
+
+                default: break;
+            }
+        }
+
+        $content['attributes'] .= ( $href ? $href . $target : '' );
+    }
+    return $content;
+}
+
+/**
+* [SET] Column Container
+*
+* Setup Column container.
+*
+* @todo 1 - Attivare inherit per tutti i contenuti vuoti e/o aggiungi opzione SKIP IF EMPTY a tutti gli elementi con contenuti (immagini, video, link, ...)
+*
+* @param {array=} content Content array (default is empty array).
+* @param {float=} counter Current width reached (default is 0).
+* @param {int=} current Current column (default is 0).
+* @param {int=} total Total columns (default is 0).
+* @param {string=} odd Current column odd (default is '').
+* @return {array} Array containing modified 'content' and 'counter'.
+*/
+function scm_container_column( $content = array(), $counter = 0, $current = 0, $total = 0, $odd = '' ){
+
+    $layout = $content['column-width'];
+    $slug = str_replace( 'layout-', '', $content['acf_fc_layout'] );
+
+    // ++todo 1
+    $content['inherit'] = ( $content['inherit'] ?: ( $layout === 'auto' && $content['container'] !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) ) );
+
+    if( !$content['inherit'] ){
+
+        if( strpos( $layout, '/' ) !== false ){
+
+            $layout = str_replace( '/', '', $layout );
+            $size = (int)$layout[0] / (int)$layout[1];
+            $counter += $size;
+            $data = scm_utils_data_column( $counter, $size );
+            $counter = $data['count'];
+
+            $content['attributes'] = ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '" data-counter="' . $counter . '" data-total="' . $total . '" data-current="' . $current . '" data-odd="' . $odd . '" ' . $content['attributes'];
+            $content['class'] .= ' ' . 'column-layout';
+
+        }else{
+
+            $content['class'] .= ' ' . $content['layout'];
+
+        }
+    }
+    $content['class'] .= ' ' . $odd;
+    $content['class'] .= ' ' . scm_utils_class_count( $current, $total );
+
+    return array( 'content'=>$content, 'counter'=>$counter );
+}
+
+/**
+* [SET] Class Container
+*
+* Setup Class container.
+*
+* @param {array=} content Content array (default is empty array).
+* @return {array} Modified content array.
+*/
+function scm_container_class( $content = array() ){
+
+    $content['class'] .= ' ' . ( $content['alignment'] != 'default' ? $content['alignment'] : '' );
+    $content['class'] .= ' ' . ( $content['inherit'] ? is( $content['float'], '' ) : is( $content['overlay'] ) );
+    $content['class'] .= ' ' . ifnotequal( is( $content['alignment'], 'default' ), 'default' );
+    $selectors = ( isset( $content['selectors'] ) && is_array( $content['selectors'] ) ? $content['selectors'] : array() );
+    $content['class'] .= ' ' . implode( ' ', $selectors );
+    
+    return $content;
 }
 
 // ------------------------------------------------------
@@ -502,8 +619,6 @@ function scm_contents( $content = NULL ) {
 
     if( is_null( $content ) ) return;
 
-    global $SCM_forms;
-
     $content = apply_filters( 'scm_filter_echo_content', $content );
 
     if( is_null( $content ) || !$content ) return;
@@ -513,7 +628,7 @@ function scm_contents( $content = NULL ) {
     $content = toArray( $content, true, true );
     if( ! $content ) return;
 
-    global $post, $SCM_indent;
+    global $post, $SCM_indent, $SCM_forms;
 
     $id = $post->ID;
     $type = $post->post_type;
@@ -533,8 +648,6 @@ function scm_contents( $content = NULL ) {
 
         $SCM_indent--;
     }
-
-
 }
 
 /**
@@ -564,7 +677,7 @@ function scm_contents_single( $args = array() ) {
 
     switch ($element) {
 
-// Dynamic Objects
+    // Dynamic Objects
 
         case 'layout-modules':
             $args['modules'] = scm_field( 'modules', '', $post->ID );
@@ -633,7 +746,7 @@ function scm_contents_single( $args = array() ) {
             wp_reset_query();
         break;
 
-// Static Objects
+    // Static Objects
 
         case 'layout-login':
 

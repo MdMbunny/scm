@@ -25,6 +25,7 @@
 // ------------------------------------------------------
 
 // ENQUEUE
+add_action( 'wp_head', 'scm_hook_site_policies' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles' );
@@ -64,6 +65,31 @@ remove_action( 'wp_head', 'wp_generator' );
     if ( strpos( $url, 'jquery.js' ) ) return $url;
     return "$url' async='async' defer='defer";
 }*/
+
+/**
+* [SET] Iubenda Policies Script
+*
+* Hooked by 'wp_head'
+* @subpackage 4-Init/Core/1-ENQUEUE
+*/
+function scm_hook_site_policies() {
+
+    $siteid = scm_field( 'opt-policies-id', 0, 'option' );
+    $policy = scm_utils_preset_policies();
+
+    if( !$policy || !is_asso( $policy ) || empty( $policy ) ) return;
+    
+    echo '<script type="text/javascript">';
+        echo 'var _iub = _iub || [];';
+        echo '_iub.csConfiguration = {';
+            echo 'cookiePolicyId: ' . $policy['id'] . ',';
+            echo 'siteId: ' . $siteid . ',';
+            echo 'lang: "' . $policy['lang'] . '"';
+        echo '};';
+    echo '</script>';
+    echo '<script type="text/javascript" src="//cdn.iubenda.com/cookie_solution/safemode/iubenda_cs.js" charset="UTF-8" async></script>';
+
+}
 
 /**
 * [SET] Register and enqueue Adobe Typekit script

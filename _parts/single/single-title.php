@@ -52,6 +52,7 @@ if( strpos( $tag, '.' ) === 0 ){
 
 if( !$text ){
     if( $post->post_type === 'soggetti' ){
+
         switch ( $layout ) {
             
             case 'layout-copy':

@@ -805,6 +805,38 @@ function scm_utils_styles( $target = 'option', $add = false, $type = '' ) {
 // ------------------------------------------------------
 
 /**
+* [GET] Policies from preset
+*
+* @return {array} Array containing policy ID and LANG.
+*/
+function scm_utils_preset_policies() {
+
+    $policies = scm_field( 'opt-policies-list', array(), 'option' );
+    if( !$policies || empty( $policies ) ) return array();
+
+    $index = 0;
+    $lang = scm_field( 'opt-policies-lang', 'en', 'option' );
+    
+    if( sizeof( $policies ) >= 1 && function_exists( 'pll_current_language' ) ){
+        $current = pll_current_language();
+        foreach ( $policies as $key=>$policy ) {
+        
+            if( $policy['lang'] === $current ){
+                $index = $key;
+                continue;
+            }
+
+            if( $policy['lang'] === $lang ){
+                $index = $key;
+            }
+        
+        }
+    }
+
+    return $policies[$index];
+}
+
+/**
 * [GET] Size from preset
 *
 * @param {float|string} size Size numeric value or [auto|initial|inherit].

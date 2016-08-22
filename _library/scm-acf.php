@@ -713,22 +713,51 @@ function scm_field_key( $post_id = NULL, $fields = array(), $name = '', $filter 
 }
 
 /**
-* [SET] Remove fields
+* [SET] Remove fields (modifies original array)
 *
 * @subpackage 2-ACF/FUNCTIONS
 *
 * @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
 * @param {array=} names Single field name or list of names (default is empty array).
+* @return {array} Removed field.
+* WARNING: this function does not return a new array. The original array is altered.
+*/
+function scm_field_remove( &$group = array(), $name = '' ) {
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	$field = NULL;
+	if( !is_array( $fields ) || empty( $fields ) ) return $field;
+	$ind = getByValueKey( $fields, $name );
+	if( !is_null( $ind ) ){
+		$field = array_splice( $fields, $ind, 1 );
+		if( isset( $group['fields'] ) )
+			$group['fields'] = $fields;
+	}
+	return $field;
+}
+
+
+
+/**
+* [SET] Move field
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} new Single field or list of fields (default is empty array).
+* @param {int=} index Index where new fileds are insered (default is 0, first array index).
 * @return {array} Modified Field Group.
 */
-function scm_fields_remove( $group = array(), $names = array() ) {
-	$names = toArray( $names );
+function scm_field_move( $group = array(), $name = '', $index = 0 ) {
+
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
-	foreach ( $names as $name) {
-		$ind = getByValueKey( $fields, $name );
-		if( !is_null( $ind ) ) array_splice( $fields, $ind, 1 );
-	}
+	reset( $fields );
+	
+	if( is_string( $index ) )
+		$index = getByValueKey( $fields, $index );
+
+	array_splice( $fields, $index, 0, scm_field_remove( $fields, $name ) );
+
 	if( !isset( $group['fields'] ) )
 		return $fields;
 
@@ -751,7 +780,10 @@ function scm_fields_insert( $group = array(), $new = array(), $index = 0 ) {
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
 	reset( $fields );
-	//consoleLog($new);
+	
+	if( is_string( $index ) )
+		$index = getByValueKey( $fields, $index );
+
 	foreach ( $new as $field) {
 
 		array_splice( $fields, $index, 0, array( $field ) );
@@ -834,6 +866,79 @@ function scm_field_add_class( $field = array(), $class = '', $replace = false ) 
 	$field['wrapper']['class'] = ( $replace ? $class : ( $field['wrapper']['class'] ? $field['wrapper']['class'] . ' ' . $class : $class ) );
 
 	return $field;
+}
+
+/**
+* [SET] Remove field
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} names Single field name or list of names (default is empty array).
+* @return {array} Modified Field Group.
+*/
+function scm_fields_remove( $group = array(), $names = array() ) {
+	$names = toArray( $names );
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	if( !is_array( $fields ) || empty( $fields ) ) return $group;
+	foreach ( $names as $name) {
+		$ind = getByValueKey( $fields, $name );
+		if( !is_null( $ind ) ) array_splice( $fields, $ind, 1 );
+	}
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
+	$group['fields'] = $fields;
+	return $group;
+}
+
+/**
+* [SET] Remove fields by prefix
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {string=} prefix Fields prefix (default is '').
+* @return {array} Modified Field Group.
+*/
+function scm_fields_remove_by_prefix( $group = array(), $prefix = '' ) {
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	if( !is_array( $fields ) || empty( $fields ) ) return $group;
+	if( $prefix ){
+		$prefs = getAllByValuePrefixKey( $fields, $prefix );
+		foreach ( $prefs as $pref) {
+			$fields = scm_fields_remove( $fields, $pref['name'] );
+		}
+	}
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
+	$group['fields'] = $fields;
+	return $group;
+}
+
+/**
+* [SET] Remove Tab fields
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @return {array} Modified Field Group.
+*/
+function scm_fields_remove_tabs( $group = array() ) {
+	return scm_fields_remove_by_prefix( $group, 'tab-' );
+}
+
+/**
+* [SET] Remove Messages fields
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @return {array} Modified Field Group.
+*/
+function scm_fields_remove_messages( $group = array() ) {
+	return scm_fields_remove_by_prefix( $group, 'msg-' );
 }
 
 ?>

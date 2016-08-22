@@ -93,6 +93,7 @@ $tax = new Custom_Taxonomy( $args );
                 'hierarchical'               => $this->tag,
                 'public'                     => true,
                 'show_ui'                    => true,
+                'show_in_menu'               => true,//( !current_user_can( 'update_core' ) && !$this->tag ? false : true ),
                 'show_admin_column'          => false,
                 'show_in_nav_menus'          => true,
                 'show_tagcloud'              => false,

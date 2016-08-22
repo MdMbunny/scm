@@ -120,7 +120,8 @@ define( 'SCM_NAME',     	 		wp_get_theme( sanitize_title( get_template() ) )->Na
  *
  * @todo PHP: define( 'SCM_URI_UPLOADS', 			wp_upload_dir()['baseurl'] );
  */
-$upload = wp_upload_dir();	
+$upload = wp_upload_dir();
+define( 'SCM_DIR_UPLOADS', 				$upload['basedir'] );
 define( 'SCM_URI_UPLOADS', 				$upload['baseurl'] );
 
 // ------------------------------------------------------
@@ -285,23 +286,23 @@ require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
 	// ------------------------------------------------------
 
-	/** ACF fields */
+	/** ACF fields singles */
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
 
-	/** ACF presets */
+	/** ACF fields presets */
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
 
-	/** ACF objects */
-	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-objects.php' );
+	/** ACF layouts objects */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts-objects.php' );
 
-	/** ACF layouts */
-	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-layouts.php' );
+	/** ACF layouts templates */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts-templates.php' );
 
-	/** ACF groups */
-	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-groups.php' );
+	/** ACF groups posts */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-groups-posts.php' );
 
-	/** ACF options */
-	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-options.php' );
+	/** ACF groups options */
+	require_once( SCM_DIR_LIBRARY . 'scm-acf-groups-options.php' );
 
 // INSTALL
 
@@ -335,4 +336,3 @@ require_once( SCM_DIR_LIBRARY . 'scm-content-front.php' );
 
 /** SCM content utilities. */
 require_once( SCM_DIR_LIBRARY . 'scm-content-utils.php' );
-
