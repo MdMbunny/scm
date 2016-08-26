@@ -275,6 +275,7 @@ function scm_hook_acf_option_subpages_install(){
         reset($SCM_types);
 
         foreach ($SCM_types['public'] as $slug => $title) {
+            if( $slug == 'slides' ) continue;
             acf_add_options_sub_page( array(
                 'page_title'    => 'SCM ' . $title . ' Template',
                 'menu_title'    => $title,
@@ -440,7 +441,7 @@ function scm_acf_install_posts_fields() {
         if($slug=='slides'){
             $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
             $group['location'][] = scm_acf_group_location( 'page' );
-            $group['fields'] = scm_acf_options_slider();
+            $group['fields'] = scm_acf_options_slider( 1 );
             $groups[] = $group;
         }
 
@@ -459,6 +460,8 @@ function scm_acf_install_posts_fields() {
 
     // + TEMPLATES
     foreach ($SCM_types['public'] as $slug => $title) {
+
+        if( $slug == 'slides' ) continue;
 
         $template = scm_acf_group( __( 'Elenco Modelli', SCM_THEME ), 'template-' . $slug );
         $template['location'][] = scm_acf_group_location( 'scm-templates-' . $slug, 'options_page' );

@@ -113,10 +113,12 @@ function wpdbInsertPost( $post = NULL ){
                     $name = $terms[$i];
                     if( is_string( $terms[$i] ) ){
                         $term = term_exists( sanitize_title($name), $tax );
-                        if( $term )
+                        if( $term ){
                             $post['tax_input'][$tax][$i] = $term;
-                        elseif( $name )
-                            $post['tax_input'][$tax][$i] = wp_insert_term( $name, $tax )['term_id'];
+                        }elseif( $name ){
+                            $temp = wp_insert_term( $name, $tax );
+                            $post['tax_input'][$tax][$i] = $temp['term_id'];
+                        }
                     }
                     if( $post['meta_input'] ){
                         foreach ($post['meta_input'] as $field => $value) {
@@ -1898,7 +1900,7 @@ function getAllByPrefix( $arr, $prefix, $key = false ){
 }
 
 /**
- * [GET] Array or object by value and key
+ * [GET] Array by value and key
 *
  * Example usage:
  *

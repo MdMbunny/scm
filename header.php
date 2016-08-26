@@ -100,6 +100,11 @@ $page_class .= scm_field( 'page-selectors-class', '', SCM_PAGE_ID, 1, ' ' );
     
 $page_slider = scm_field( 'main-slider-active', '', SCM_PAGE_ID );
 $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
+$page_slider_field = scm_field( 'main-slider-field', '', SCM_PAGE_ID );
+$page_slider_field = ( $page_slider_field ? scm_field( $page_slider_field, '' ) : '' );
+$page_slider_terms = ( $page_slider_field ?: $page_slider_terms );
+
+$gmap = scm_field( 'opt-tools-map-api', '', 'option' );
 
 ?>
 
@@ -117,7 +122,8 @@ $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
     data-smooth-new="<?php echo $smooth_new; ?>"
     data-smooth-page="<?php echo $smooth_page; ?>" 
     data-tofull="<?php echo $tofull; ?>" 
-    data-tocolumn="<?php echo $tocolumn; ?>"
+    data-tocolumn="<?php echo $tocolumn; ?>" 
+    data-gmap="<?php echo $gmap; ?>"
 >
 
 <?php
@@ -192,13 +198,15 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
                 $SCM_indent += 1;
                 indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
                     $SCM_indent += 1;
-                    
+
+                    do_action( 'scm_action_before_slider' );
+
                     // Page Header
-                    if( $page_slider ){
+                    if( $page_slider && $page_slider_terms ){
 
                         indent( $SCM_indent, '<header class="header scm-header full ' . SCM_SITE_ALIGN . '">', 2 );
 
-                            indent( $SCM_indent + 1, '<div class="row scm-row object scm-object responsive ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
+                            indent( $SCM_indent + 1, '<div class="row scm-row object scm-object ' . scm_field( 'layout-content', 'full', 'option' ) . '">', 2 );
 
                                 scm_contents( array( 'acf_fc_layout' => 'layout-slider', 'slider' => $page_slider_terms, 'type' => $page_slider ) );
 

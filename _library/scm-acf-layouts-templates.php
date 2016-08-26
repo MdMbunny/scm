@@ -123,24 +123,22 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 		$layout_taxes = array();
 		$taxes = get_object_taxonomies( $slug, 'objects' );
 		reset( $taxes );
-		if( sizeof( $taxes ) ){
-			foreach ($taxes as $key => $value) {
-				if( $key != 'language' && $key != 'post_translations' ){
-					$layout_tax = array();
-					$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
+		
+		foreach ($taxes as $key => $value) {
+			if( $key != 'language' && $key != 'post_translations' ){
+				$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
 
-						$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
-						$layout_tax['sub_fields'][] = scm_acf_field_select( 'tag', array( 
-							'type'=>'headings_low',
-							'default'=>'span',
-						), 25 );
-						$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), __( 'Separatore', SCM_THEME ) ), __( 'Separatore', SCM_THEME ), 25 );
-						$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
+					$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
+					$layout_tax['sub_fields'][] = scm_acf_field_select( 'tag', array( 
+						'type'=>'headings_low',
+						'default'=>'span',
+					), 25 );
+					$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), __( 'Separatore', SCM_THEME ) ), __( 'Separatore', SCM_THEME ), 25 );
+					$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
 
-	// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
-						//$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $type, $layout_tax, $value->name );
-						//$layout_taxes[] = apply_filters( 'scm_filter_layout_tax', $layout_tax, $value->name, $slug );
-				}
+// SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
+					$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $type, $layout_tax, $value->name ); // Perché era commentato?
+					$layout_taxes[] = apply_filters( 'scm_filter_layout_tax', $layout_tax, $value->name, $slug ); // Se lo commenti ricorda di inserire $layout_taxes[ $layout_tax ]
 			}
 		}
 

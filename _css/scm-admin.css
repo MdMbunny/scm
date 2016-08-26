@@ -435,6 +435,26 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	margin: 0;
 }
 
+.edit-tags-php .acf-field{
+	margin-bottom: 0 !important;
+	padding-top: 15px !important;
+	padding-bottom: 15px !important;
+}
+
+.edit-tags-php .acf-field-true-false{
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+}
+
+.edit-tags-php .acf-field-true-false > .acf-label{
+	display: inline-block !important;
+}
+.edit-tags-php .acf-field-true-false > .acf-label label{
+	font-size: inherit !important;
+	font-weight: bold !important;
+	line-height: 2.6em;
+}
+
 
 /*** Main Metaboxes ***/
 

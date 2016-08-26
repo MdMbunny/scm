@@ -174,16 +174,16 @@ function scm_acf_options_taxonomies() {
 * 
 * @return {array} Slider fields.
 */
-function scm_acf_options_slider() {
+function scm_acf_options_slider( $default = '' ) {
 	
 	$fields = array();
 	
 	$fields[] = scm_acf_field_select( 'main-slider-active', array( 
-		'type'=>'slider_model',
-		'choices'=>array( 'no' => __( 'Disattiva', SCM_THEME ) ),
+		'type'=>'slider_model-no' . ( $default ? '-default' : '' ),
 	), 100, 0, 0, __( 'Attiva Slider', SCM_THEME ) );
 
         $slider_enabled = array( array( 'field' => 'main-slider-active', 'operator' => '!=', 'value' => 'no' ), array( 'field' => 'main-slider-active', 'operator' => '!=', 'value' => 'default' ) );
+            $fields[] = scm_acf_field_text( 'main-slider-field', array( 'placeholder'=>'[field name]' ), __( 'Slider', SCM_THEME ), $slider_enabled, 0, 0, 100 );
             $fields = array_merge( $fields, scm_acf_preset_term( 'main-slider', 'sliders', __( 'Slider', SCM_THEME ), $slider_enabled, 0, 0, 100 ) );
 
     return $fields;
@@ -369,6 +369,7 @@ function scm_acf_options_nav_branding() {
 	$fields = array();
 	
 	$fields[] = scm_acf_field_select( 'brand-alignment', 'alignment' );
+	$fields[] = scm_acf_field_text( 'brand-field', array('placeholder'=> '[field name]' ) );
 	// conditional
 	$fields[] = scm_acf_field_select( 'brand-head', 'branding_header' );
 	$tipo = array(
@@ -380,8 +381,8 @@ function scm_acf_options_nav_branding() {
 		$fields[] = scm_acf_field_image_url( 'brand-logo', 0, 100, $tipo );
 		$fields = array_merge( $fields, scm_acf_preset_size( 'brand-height', '', '40', 'px', __( 'Altezza Massima', SCM_THEME ), 100, $tipo ) );
 
-	$fields[] = scm_acf_field_true( 'brand-link', array('label'=> __( 'Attiva Link', SCM_THEME ) ) );
-	$fields[] = scm_acf_field_true( 'brand-slogan', array('label'=> __( 'Attiva Slogan', SCM_THEME ) ) );
+	$fields[] = scm_acf_field_true( 'brand-link', array('label'=> __( 'Attiva Link', SCM_THEME ) ), 50 );
+	$fields[] = scm_acf_field_true( 'brand-slogan', array('label'=> __( 'Attiva Slogan', SCM_THEME ) ), 50 );
 
 	return $fields;
 }
@@ -594,6 +595,7 @@ function scm_acf_options_tools() {
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-cursor', array( 'label'=>'Cursor' ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-cursor', 0, 20, 0, 0, __( 'Cursor', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-gmaps', array( 'label'=>'Google Maps' ) );
+		$fields[] = scm_acf_field_text( 'opt-tools-map-api', 0, 100, 0, 0, __( 'Google Maps API Key', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-toppage', array( 'label'=>'Top Of Page' ) );
 		$fields[] = scm_acf_field_icon( 'opt-tools-topofpage-icon', array('default'=>'angle-up') );

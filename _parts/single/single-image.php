@@ -51,7 +51,8 @@ if ( $layout == 'layout-thumbs' ) {
     
     $thumb = ( $image ? intval( $image ) : 0 );
 
-    $images = ( $images ?: scm_field( 'galleria-images', array(), $post_id ) );
+    if( !$images )
+        $images = ( $images ?: scm_field( 'galleria-images', array(), $post_id ) );
 
     if( $thumb >= 0 )
         $image = ( isset( $images[$thumb] ) ? $images[$thumb] : array() );

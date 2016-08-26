@@ -109,8 +109,10 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 			default:
 				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 50 ) );
 				$fields[] = scm_acf_field_select( $second . 'selectors', '2-selectors', 50 );
-				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 40 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
+
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ), 'scm-options hidden' ) ); // deprecated, sistema tutti i siti quando puoi ed elimina
+				$fields[] = scm_field_add_class( scm_acf_field( $second . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', 20 ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				break;
 		}
 	
@@ -368,7 +370,7 @@ function scm_acf_preset_text_set( $name = '', $w1 = 100, $w2 = 100, $w3 = 100, $
 
 	$fields[] = scm_acf_field_select( $name . '-alignment', 'txt_alignment', $w1, $logic, $required, __( 'Allineamento', SCM_THEME ) );
 	$fields[] = scm_acf_field_select( $name . '-weight', 'font_weight', $w2, $logic, $required, __( 'Spessore', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . '-size', 'txt_size', $w3, $logic, $required, __( 'Dimensione', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-size', 'txt_font_size', $w3, $logic, $required, __( 'Dimensione', SCM_THEME ) );
 	$fields[] = scm_acf_field_select( $name . '-line-height', 'line_height', $w4, $logic, $required, __( 'Interlinea', SCM_THEME ) );
 
 	return $fields;
@@ -1086,7 +1088,14 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 
 				//$template['sub_fields'][] = scm_acf_field_select( 'layout', 'main_layout-default', 20 );
 				//$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_selectors( '', 20, 20, 40 ) );
-				$template['sub_fields'][] = scm_acf_field_text( 'archive', array( 'placeholder'=>'type[:field[=value]', 'prepend'=>__( 'Archivio', SCM_THEME ) ) );
+				$template['sub_fields'][] = scm_acf_field_text( 'archive', array( 'placeholder'=>'type[:field[=value]', 'prepend'=>__( 'Archivio', SCM_THEME ) ), 50 );
+				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_column_width( 'post', 50 ) );
+				$template['sub_fields'][] = scm_acf_field_text( 'relation', array( 'default'=>'AND', 'prepend'=>__( 'Relation', SCM_THEME ) ) );
+				$template['sub_fields'][] = scm_acf_field_repeater( 'query', array( 'sub'=>array(
+					scm_acf_field_text( 'key', array( 'placeholder'=>'field name', 'prepend'=>__( 'Key', SCM_THEME ) ), 33 ),
+					scm_acf_field_text( 'compare', array( 'placeholder'=>'=', 'prepend'=>__( 'Compare', SCM_THEME ) ), 33 ),
+					scm_acf_field_text( 'value', array( 'placeholder'=>'field value (default is Post ID)', 'prepend'=>__( 'Value', SCM_THEME ) ), 34 ),
+				) ), 100, 0, 0, __( 'Meta Query', SCM_THEME ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'post', array( 'placeholder'=>__( 'ID or Option Name', SCM_THEME ), 'prepend'=>__( 'Post', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_positive( 'template', array( 'prepend'=>__( 'Template', SCM_THEME ) ) );
 

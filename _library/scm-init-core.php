@@ -272,6 +272,7 @@ function scm_hook_site_register_styles_inline() {
     $css .= '.tofull .responsive, .smart .responsive { width: 100%; }' . lbreak();
 
     $base = (int)str_replace( 'px', '', scm_utils_style_get( 'size', 'option' ) );
+    $base = (int)str_replace( 'px', '', scm_field( 'style-txt-set-size', '16px', 'option' ) );
     $base = ( $base ?: 16 );
 
     $r_desktop = $base + (int)scm_field( 'styles-size-desktop', -1, 'option' );
@@ -309,6 +310,8 @@ function scm_hook_site_register_styles_inline() {
         $css .= '.bg-color-' . $key .' { background-color: ' . hex2rgba( ( $color['color'] ?: '' ), $color['alpha'] ) . ' }' . lbreak();
     }
 
+    $css = apply_filters( 'scm_filter_inline_style', $css );
+
     if( $css )
         wp_add_inline_style( 'global', $css );
 }
@@ -336,6 +339,7 @@ function scm_hook_body_class( $classes = array() ) {
 
     // PAGE
     if ( is_single() ) {
+        $classes[] = "{$post->post_type}-{$post->post_name}";
         foreach ( ( get_the_category( $post->ID ) ) as $category ) {
             $classes[] = 'post-'.$category->category_nicename;
         }

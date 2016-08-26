@@ -776,11 +776,11 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'random' => __( 'Random', SCM_THEME ),
 				'slideInRight' => __( 'Slide In Right', SCM_THEME ),
 				'slideInLeft' => __( 'Slide In Left', SCM_THEME ),
-				'boxRandom' => __( 'Box Random', SCM_THEME ),
+				/*'boxRandom' => __( 'Box Random', SCM_THEME ),
 				'boxRain' => __( 'Box Rain', SCM_THEME ),
 				'boxRainReverse' => __( 'Box Rain Reverse', SCM_THEME ),
 				'boxRainGrow' => __( 'Box Rain Grow', SCM_THEME ),
-				'boxRainGrowReverse' => __( 'Box Rain Grow Reverse', SCM_THEME ),
+				'boxRainGrowReverse' => __( 'Box Rain Grow Reverse', SCM_THEME ),*/
 			);
 		
 		endif;

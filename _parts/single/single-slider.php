@@ -18,24 +18,29 @@ $post_id = $post->ID;
 $args = array(
     'acf_fc_layout' => 'layout-slider',
     'slider' => 0,
+    'slider-terms' => 0,
+    'meta_key' => 0,
+    'meta_value' => '',
     'type' => 'nivo',
-    /*'alignment' => 'top',
+    'slides' => 0,
+    'theme' => 'scm',
+    'alignment' => 'top',
     'height-number' => 300,
     'height-units' => 'px',
-    'theme' => 'scm',
     'effect' => 'sliceDown',
     'slices' => 30,
-    'cols' => 8,
-    'rows' => 8,
+    //'cols' => 8,
+    //'rows' => 8,
     'speed' => 1,
-    'pause' => 'on',
+    'pause' => 3,
     'start' => 0,
-    'manual' => 'off',
-    'direction' => 'on',
-    'control' => 'off',
-    'thumbs' => 'off',
+    'hover' => 'true',
+    'manual' => 'false',
+    'direction' => 'true',
+    'control' => 'false',
+    //'thumbs' => 'off',
     'prev' => 'fa-angle-left',
-    'next' => 'fa-angle-right',*/
+    'next' => 'fa-angle-right',
     'id' => '',
     'class' => '',
     'attributes' => '',
@@ -50,45 +55,65 @@ $class = 'slider scm-slider full mask ' . $args['class'];
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
+$slides = $args['slides'];
+$slider = $args['slider'];
 
-$slider = get_term( ( $args['slider'] ?: $args['slider-terms'] ), 'sliders' );
-// +++ todo:  diventa wp query? che poi chiama single-slide?
-$slides = get_posts( array(
-    'order' => 'ASC',
-    'post_type' => 'slides',
-    'numberposts' => -1,
-    'taxonomy' => 'sliders',
-    'term' => $slider->slug,
-) );
+if( !$slides ){
+    if( $args['meta_key'] && $args['meta_value'] ){
+        $slides = get_posts( array(
+            'order' => 'ASC',
+            'post_type' => 'slides',
+            'posts_per_page' => -1,
+            'meta_query' => array (
+                array (
+                    'key' => $args['meta_key'],
+                    'value' => $args['meta_value'],
+                    'compare' => 'LIKE'
+                )
+            )
+        ) );
+    }else{
+        $slider = get_term( ( $args['slider'] ?: $args['slider-terms'] ), 'sliders' );
+        // +++ todo:  diventa wp query? che poi chiama single-slide?
+        $slides = get_posts( array(
+            'order' => 'ASC',
+            'post_type' => 'slides',
+            'posts_per_page' => -1,
+            'taxonomy' => 'sliders',
+            'term' => $slider->slug,
+        ) );
+    }
+}
 
 $type = $args['type'];
 
-$class .= ' ' . $type . ' ' . scm_field( 'alignment', 'top', $slider );
-$height = scm_field( 'height-number', '', $slider );
-$height = ( $height ? $height . scm_field( 'height-units', '', $slider ) : 'auto' );
+$class .= ' ' . $type . ' ' . scm_field( 'alignment', $args['alignment'], $slider );
+$height = scm_field( 'height-number', $args['height-number'], $slider );
+$height = ( $height ? $height . scm_field( 'height-units', $args['height-units'], $slider ) : 'auto' );
 $style .= ' height:' . $height . ';';
 
-$theme = scm_field( 'theme', 'scm', $slider );
+//$theme = scm_field( 'theme', 'scm', $slider );
+$theme = $args['theme'];
 
-$effect = scm_field( 'effect', 'fold', $slider );
-$slices = scm_field( 'slices', '15', $slider );
-$cols = scm_field( 'cols', '8', $slider );
-$rows = scm_field( 'rows', '4', $slider );
-$speed = (float)scm_field( 'speed', '.5', $slider ) * 1000;
-$time = (float)scm_field( 'pause', '5', $slider ) * 1000;
-$start = scm_field( 'start', '0', $slider );
+$effect = scm_field( 'effect', $args['effect'], $slider );
+$slices = scm_field( 'slices', $args['slices'], $slider );
+/*$cols = scm_field( 'cols', '8', $slider );
+$rows = scm_field( 'rows', '4', $slider );*/
+$speed = (float)scm_field( 'speed', $args['speed'], $slider ) * 1000;
+$time = (float)scm_field( 'pause', $args['pause'], $slider ) * 1000;
+$start = scm_field( 'start', $args['start'], $slider );
 $random = 'false';
 if( $start == -1 ){
 	$start = '0';
 	$random = 'true';
 }
-$hover = scm_field( 'hover', 'true', $slider );
-$manual = scm_field( 'manual', 'false', $slider );
-$direction = scm_field( 'direction', 'true', $slider );
-$control = scm_field( 'control', 'false', $slider );
-$thumbs = scm_field( 'thumbs', 'false', $slider );
-$next = scm_field( 'next', 'fa-angle-right', $slider );
-$prev = scm_field( 'prev', 'fa-angle-left', $slider );
+$hover = scm_field( 'hover', $args['hover'], $slider );
+$manual = scm_field( 'manual', $args['manual'], $slider );
+$direction = scm_field( 'direction', $args['direction'], $slider );
+$control = scm_field( 'control', $args['control'], $slider );
+//$thumbs = scm_field( 'thumbs', $args['thumbs'], $slider );
+$next = scm_field( 'next', $args['next'], $slider );
+$prev = scm_field( 'prev', $args['prev'], $slider );
 
 $indent = $SCM_indent + 1;
 
@@ -97,8 +122,8 @@ $attributes .=  ' ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-theme="' . $theme . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-effect="' . $effect . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-slices="' . $slices . '" ' . lbreak() .
-                indent( $indent + 3 ) . 'data-slider-cols="' . $cols . '" ' . lbreak() .
-                indent( $indent + 3 ) . 'data-slider-rows="' . $rows . '" ' . lbreak() .
+                /*indent( $indent + 3 ) . 'data-slider-cols="' . $cols . '" ' . lbreak() .
+                indent( $indent + 3 ) . 'data-slider-rows="' . $rows . '" ' . lbreak() .*/
                 indent( $indent + 3 ) . 'data-slider-speed="' . $speed . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-time="' . $time . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-start="' . $start . '" ' . lbreak() .
@@ -107,7 +132,7 @@ $attributes .=  ' ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-manual="' . $manual . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-direction="' . $direction . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-control="' . $control . '" ' . lbreak() .
-                indent( $indent + 3 ) . 'data-slider-thumbs="' . $thumbs . '" ' . lbreak() .
+                //indent( $indent + 3 ) . 'data-slider-thumbs="' . $thumbs . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-prev="' . $prev . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-slider-next="' . $next . '" ' . lbreak() .
                 indent( $indent + 3 ) . 'data-max-height="' . $height . '" ' . lbreak() .

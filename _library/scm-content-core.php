@@ -115,6 +115,8 @@ $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $actio
 */
 function scm_containers( $build = array(), $container = 'module', $action = '' ) {
 
+    global $post, $SCM_indent;
+
     $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $action );
     $builder = array();
 
@@ -132,12 +134,13 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
         $odd =  ( isset( $build['odd'] ) ? $build['odd'] : '' );
         $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
         $total =  ( isset( $build['total'] ) ? $build['total'] : sizeof( $build ) );
+        
     }else{
         $total = sizeof( $build );
     }
 
-    global $SCM_indent;
     $SCM_indent++;
+    $original = $post->ID;
 
     if( $total === 0 ){ 
 
@@ -152,6 +155,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
         }
 
     }elseif( $total > 0 ){
+
+        $build = apply_filters( 'scm_filter_containers_' . $container, $build );
 
         foreach ( $build as $content ) {
 
@@ -193,6 +198,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
+            // -- ID
+            $content['id'] = ( startsWith( $content['id'], 'field:' ) ? scm_field( str_replace( 'field:', '', $content['id'] ), '' ) : $content['id'] );
 
             // --------------------------------------------------------------------------
             
@@ -229,7 +236,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             }else{
 
                 // FILTER contents before echo            
-                $content = apply_filters( 'scm_filter_echo_container', $content );
+                $content = apply_filters( 'scm_filter_echo_container', $content, $container, $original );
+                $content = apply_filters( 'scm_filter_echo_container_' . $container, $content, $original );
                 
                 // -- Open Container
                 if( !$content['inherit'] ){
@@ -246,6 +254,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
                     if( function_exists( (string)$action ) )
                         call_user_func( (string)$action, $content );
+
+                do_action( 'scm_action_echo_container_' . $container, $content, $original );
 
                 // -- Close Container
                 if( !$content['inherit'] )
@@ -290,7 +300,7 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
                 }
             }
         }
-
+        $content['post_type'] = $post->post_type;
         $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
         $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: '' );
     }
@@ -345,24 +355,42 @@ function scm_container_template( $content = array() ){
 
     if( isset( $content['template'] ) && $content['acf_fc_layout'] === 'layout-template' ){
 
+        $content['post-width'] = $content['post-column-width'];
+
         if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
+            global $post;
 
             $content['type'] = 'archive';
 
             $temp = explode( ':', $content['archive'] );
-            $archive = $temp[0];
+            $content['acf_fc_layout'] = 'layout-' . $temp[0];
             $field = '';
-            $value = '';
+            $value = $post->ID;
             if( isset( $temp[1] ) ){
                 $filter = explode( '=', $temp[1] );
                 $field = $filter[0];
                 if( isset( $filter[1] ) )
                     $value = $filter[1];
+                
+                $content['archive-field'] = $field;
+                $content['archive-value'] = $value;
+            }
+            if( isset( $content['query'] ) && !empty( $content['query'] ) ){
+                $query = array(
+                    'relation' => ( $content['relation'] ?: 'AND' ),
+                );
+                foreach( $content['query'] as $meta ){
+                    if( isset( $meta['key'] ) && $meta['key'] ){
+                        $query[] = array(
+                            'key'=> $meta['key'],
+                            'value'=> ( $meta['value'] ?: $post->ID ),
+                            'compare'=> ( $meta['compare'] ?: '=' )
+                        );
+                    }
+                }
+                $content['meta_query'] = $query;
             }
 
-            $content['acf_fc_layout'] = 'layout-' . $archive;
-            $content['archive-field'] = $field;
-            $content['archive-value'] = $value;
 
         }elseif( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
 
@@ -511,6 +539,8 @@ function scm_container_link( $content = array() ){
             }
         }
 
+        $content['link'] = '';
+
         $content['attributes'] .= ( $href ? $href . $target : '' );
     }
     return $content;
@@ -626,7 +656,7 @@ function scm_contents( $content = NULL ) {
     if( $content['acf_fc_layout'] ) $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );                
 
     $content = toArray( $content, true, true );
-    if( ! $content ) return;
+    if( !$content ) return;
 
     global $post, $SCM_indent, $SCM_forms;
 
@@ -637,7 +667,7 @@ function scm_contents( $content = NULL ) {
     foreach ( $content as $args ) {
 
         $args = scm_contents_single( $args );
-        $field = $args['field'];
+        $field = ex_attr( $args, 'field', str_replace('layout-', '', $args['acf_fc_layout']) );
 
         do_action( 'scm_action_echo_content', $args, $SCM_indent );
         do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
@@ -931,7 +961,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $SCM_archives[ $content['archive-paginated'] ] = $content;
     }
     
-    $width = ( isset( $content['width'] ) ? $content['width'] : 'auto' );
+    $width = ( isset( $content['post-width'] ) ? $content['post-width'] : ( isset( $content['width'] ) ? $content['width'] : 'auto' ) );
     $query = array();
     $loop = array( $post->ID );
 
@@ -1067,6 +1097,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $post = get_post( $id );
     setup_postdata( $post );
+    echo '<!-- RESET POST -->';
 }
 
 ?>

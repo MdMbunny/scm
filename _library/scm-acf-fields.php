@@ -1101,11 +1101,11 @@ function scm_acf_field_select( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_object( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-		$type = 'object';
+	$type = 'object';
 	if( is_string( $field ) ){
 		$type = $type . $field;
 		$field = 0;
-	}elseif( is_array( $field ) && $field['type'] ){
+	}elseif( is_array( $field ) && isset( $field['type'] ) ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
@@ -1131,11 +1131,11 @@ function scm_acf_field_object( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_objects( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-		$type = 'objects';
+	$type = 'objects';
 	if( is_string( $field ) ){
 		$type = $type . $field;
 		$field = 0;
-	}elseif( is_array( $field ) && $field['type'] ){
+	}elseif( is_array( $field ) && isset( $field['type'] ) ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );

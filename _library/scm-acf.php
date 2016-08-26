@@ -772,7 +772,7 @@ function scm_field_move( $group = array(), $name = '', $index = 0 ) {
 *
 * @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
 * @param {array=} new Single field or list of fields (default is empty array).
-* @param {int=} index Index where new fileds are insered (default is 0, first array index).
+* @param {string|int=} index Index where new fileds are insered (default is 0, first array index).
 * @return {array} Modified Field Group.
 */
 function scm_fields_insert( $group = array(), $new = array(), $index = 0 ) {
