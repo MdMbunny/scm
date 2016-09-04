@@ -199,6 +199,8 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
                 indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
                     $SCM_indent += 1;
 
+                    do_action( 'scm_action_before_slider' );
+
                     // Page Header
                     if( $page_slider && $page_slider_terms && wp_script_is( $page_slider ) ){
 
