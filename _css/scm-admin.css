@@ -957,13 +957,6 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 
 /*** 1.0 GENERAL ***/
 
-/* Advanced Options */
-
-.scm-options.hidden,
-.scm-advanced-options.hidden{
-	display: none !important;
-}
-
 /* Acf Field */
 
 .acf-taxonomy-field .acf-icon{
@@ -2105,6 +2098,19 @@ input.acf-is-prepended {
 	}
 }
 
+
+/* Advanced Options */
+
+.scm-options.hidden,
+.scm-advanced-options.hidden{
+	display: none !important;
+}
+
+.scm-advanced-options,
+.acf-field-repeater tr .acf-fields > .scm-advanced-options,
+.acf-field-repeater tr:nth-child(odd) .acf-fields > .scm-advanced-options {
+    background-color: #fff7ef !important;
+}
 
 
 

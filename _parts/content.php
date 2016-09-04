@@ -12,15 +12,31 @@
  * @since 1.0.0
  */
 
-// CHECK PAGE TYPE ------------------------------------------------------------------------
-
 global $SCM_indent, $SCM_types, $SCM_agent, $post;
 
-// If no page supplied (index.php) - Load Home Page
+// REDIRECT OLD BROWSER ------------------------------------------------------------------------
+
+$ver = ( $SCM_agent['browser']['ver'] && $SCM_agent['browser']['ver'] != 'unknown' ?: 1000 );
+$slug = $SCM_agent['browser']['slug'];
+
+if( ( $slug == 'ie' && $ver < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+    ( $slug == 'safari' && $ver < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+    ( $slug == 'firefox' && $ver < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+    ( $slug == 'chrome' && $ver < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+    ( $slug == 'opera' && $ver < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
+
+    get_template_part( SCM_DIR_PARTS, 'old' );
+    die();
+}
+
+// REDIRECT index.php ------------------------------------------------------------------------
+
 if( is_null( $post ) ){
 	$post = get_post( get_option('page_on_front') );
 	setup_postdata( $post );
 }
+
+// INIT ------------------------------------------------------------------------
 
 $template = 'page';
 $type = get_post_type();
@@ -29,7 +45,8 @@ $archive = is_archive();
 $page = 0;
 $part = '';
 
-// Is Single or Archive
+// INIT SINGLE or ARCHIVE ------------------------------------------------------------------------
+
 if( $single || $archive ){
 	// IF Post Type not public - Load Home Page
 	if( is_null( getByKey( $SCM_types['public'], $type ) ) ){
@@ -60,23 +77,7 @@ if( $single || $archive ){
 	}
 }
 
-// REDIRECT OLD BROWSER ------------------------------------------------------------------------
-
-$ver = ( $SCM_agent['browser']['ver'] && $SCM_agent['browser']['ver'] != 'unknown' ?: 1000 );
-$slug = $SCM_agent['browser']['slug'];
-
-if( ( $slug == 'ie' && $ver < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
-    ( $slug == 'safari' && $ver < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
-    ( $slug == 'firefox' && $ver < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
-    ( $slug == 'chrome' && $ver < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
-    ( $slug == 'opera' && $ver < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
-
-    get_template_part( SCM_DIR_PARTS, 'old' );
-    die();
-}
-
-// CONSTANTS ------------------------------------------------------------
-
+// INIT CONSTANTS ------------------------------------------------------------
 
 define( 'SCM_PAGE_ID',			    ( $page ? $page->ID : get_the_ID() ) );
 define( 'SCM_PAGE_EDIT',			( scm_field( 'page-form', false ) ? ( is_user_logged_in() && SCM_LEVEL_EDIT ? ( get_query_var( 'action' ) != 'view' ? get_query_var( 'action' ) == 'edit' || get_option( 'scm-settings-edit-' . SCM_ID ) : 0 ) : 0 ) : 0 ) );
@@ -87,9 +88,7 @@ if( SCM_PAGE_EDIT )
 else
 	scm_hook_admin_ui_view_mode();
 
-
-// Build Contents ---------------------------------------------------------------------------------------------
-
+// BUILD ---------------------------------------------------------------------------------------------
 
 // Header
 get_header();

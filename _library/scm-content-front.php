@@ -252,6 +252,8 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
     $menu = ( $menu != 'default' ? $menu : scm_field( 'menu-wp', 'primary', 'option' ) );
     if( !$menu ) return;
 
+    $numbers = scm_field( 'menu-numbers', false, 'option' );
+
     $out = scm_field( 'menu-sticky-out', '', 'option' );
     $sticky = scm_field( 'menu-sticky', '', 'option' );
     $offset = ( $sticky === 'self' ? 0 : (int)scm_field( 'menu-sticky-offset', 0, 'option' ) );
@@ -270,6 +272,8 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
         $menu_class = 'navigation ';
         $menu_class .= ( scm_field( 'menu-overlay', 0, 'option' ) ? 'overlay absolute ' : 'relative ' );
         $menu_side = scm_field( 'side-enabled', '', 'option' );
+        $menu_side_numbers = scm_field( 'side-numbers', '', 'option' );
+        $menu_side_names = scm_field( 'side-names', '', 'option' );
 
         $menu_layout = scm_field( 'layout-page', 'full', 'option' );
         $row_layout = scm_field( 'layout-menu', 'full', 'option' );
@@ -297,6 +301,9 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
             'image_active' => $menu_data_image,
             'menu' => $menu,
             'side' => $menu_side,
+            'side_numbers' => $menu_side_numbers,
+            'side_names' => $menu_side_names,
+            'numbers' => $numbers,
         ));
 
         if ( !$sticky ) {
@@ -340,6 +347,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
             'offset' => $offset,
             'attach' => $attach,
             'anim' => $anim,
+            'numbers' => $numbers,
         ));
 
         return 0;
@@ -367,7 +375,7 @@ function scm_main_menu( $align = 'right', $position = 'inline', $just = false ) 
 * @param {string=} attach (default is 'nav-top' ).
 * @param {string=} anim (default is 'top' ).
 */
-function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 0, $image_active = 'no', $menu = 'primary', $sticky = '', $side = false, $type = 'self', $offset = 0, $attach = 'nav-top' ) {
+function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $row_class = 'full' , $toggle_active = 'smart', $home_active = 0, $image_active = 'no', $menu = 'primary', $sticky = '', $side = false, $side_numbers = false, $side_names = false, $type = 'self', $offset = 0, $attach = 'nav-top', $numbers = false ) {
 
     global $SCM_indent;
 
@@ -381,10 +389,13 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         'menu'             => 'primary',
         'sticky'           => '',
         'side'             => false,
+        'side_numbers'     => false,
+        'side_names'       => false,
         'type'             => 'self',
         'offset'           => 0,
         'attach'           => 'nav-top',
-        'anim'           => 'top',
+        'anim'             => 'top',
+        'numbers'          => false,
     );
 
     if( is_array( $id ) )
@@ -401,7 +412,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
 
     $in = $SCM_indent + 1;
 
-    $content = ( $menu == 'auto' ? scm_auto_menu() : ( $menu == 'mono' ? scm_mono_menu() : ( $menu == 'mini' ? scm_mini_menu() : '%3$s' ) ) );
+    $content = ( $menu == 'auto' ? scm_auto_menu( $numbers ) : ( $menu == 'mono' ? scm_mono_menu( $numbers ) : ( $menu == 'mini' ? scm_mini_menu( $numbers ) : '%3$s' ) ) );
 
     $wrap = indent( $in ) . '<nav id="' . $id . '" class="' . $class . '" 
                 data-toggle="true" 
@@ -458,7 +469,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
         $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
         if( $side ){
-            $wrap .= scm_side_menu();
+            $wrap .= scm_side_menu( $side_numbers, $side_names );
         }
 
     $wrap .= indent( $in ) . '</nav><!-- #' . $id . ' -->' . lbreak( 2 );
@@ -487,12 +498,70 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
 // ------------------------------------------------------
 
 /**
+* [GET] Menu Auto + Span
+*
+* @param {string=} ret (default is '').
+* @return {string} HTML tag.
+*/
+function scm_auto_menu_item( $icon = '', $link = '', $sub = '' ) {
+    $ret = '';
+    if( is_numeric( $icon ) )
+        $ret .= scm_auto_menu_item_number( $icon );
+    else
+        $ret .= scm_auto_menu_item_icon( $icon );
+    $ret .= $link;
+    $ret .= scm_auto_menu_item_span( $sub );
+    return $ret;
+}
+
+/**
+* [GET] Menu Auto + Span
+*
+* @param {string=} ret (default is '').
+* @return {string} HTML tag.
+*/
+function scm_auto_menu_item_span( $ret = '' ) {
+    if( $ret )
+        $ret = '<span class="sub">' . $ret . '</span>';
+    return $ret;
+}
+
+/**
+* [GET] Menu Auto + Icon
+*
+* @param {string=} ret (default is '').
+* @return {string} HTML tag.
+*/
+function scm_auto_menu_item_icon( $ret = '' ) {
+    if( $ret && $ret != 'fa-no' && $ret != 'no' )
+        return '<span class="icon"><i class="fa ' . $ret . '"></i></span>';
+    return '';
+}
+
+/**
+* [GET] Menu Auto + Number
+*
+* @param {string=} ret (default is '').
+* @return {string} HTML tag.
+*/
+function scm_auto_menu_item_number( $ret = '' ) {
+    if( $ret ){
+        $icon = $ret;
+        $ret = '<span class="icon stack fa-stack fa-3x">';
+        $ret .= '<i class="fa fa-circle fa-stack-2x"></i>';
+        $ret .= '<strong class="fa-stack-1x fa-stack-text fa-inverse">' . $icon . '</strong>';
+        $ret .= '</span>';
+    }
+    return $ret;
+}
+
+/**
 * [GET] Menu Auto
 *
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu() {
+function scm_auto_menu( $numbers = false ) {
     global $post;
     $ret = '';
     $pages = subObject( get_pages( array( 'sort_column'=>'menu_order' ) ), 'menu_order', 0, true );
@@ -505,11 +574,14 @@ function scm_auto_menu() {
         $id = $page->ID;
         $depth = 0;
         $url = getURL( 'page:' . $page->post_name );
-        $content = scm_field( 'page-id', $page->post_title, $id, true );
+        $link = scm_field( 'page-id', $page->post_title, $id, true );
+        $icon = scm_field( 'page-icon', '', $id, true );
+        $sub = scm_field( 'page-sub', '', $id, true );
+        $content = scm_auto_menu_item( $icon, $link, $sub );
         $current = $id == $post->ID;
 
         $children = scm_field( 'sections', array(), $id, true );
-        $has = scm_auto_menu_sub( $children, $depth + 1 );
+        $has = scm_auto_menu_sub( $children, $depth + 1, 'auto', $numbers );
         $has_children = sizeof( $children ) && $has;
 
         $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current, '', $i, 'auto' );
@@ -530,13 +602,13 @@ function scm_auto_menu() {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main' ) {
+function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main', $numbers = false, $names = false ) {
     $ret = '';
     $i = 0;
 
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_item( $child, $depth, $i, 'mini' );
+        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, 'mini', $numbers, $names );
     }
     return $ret;
 }
@@ -548,19 +620,21 @@ function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main' ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main' ) {
+function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main', $numbers = false, $names = false ) {
     $ret = '';
     $i = $j = 0;
+
+    //consoleLog( $menu . ' = numbers > ' . $numbers . ' & names > ' . $names );
     
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_item( $child, $depth, $i, $menu );
+        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, $menu, $numbers, $names );
         $sections = ( $child['rows'] ?: array() );
 
         $sections = apply_filters( 'scm_filter_menu_sub_auto', $sections );
         foreach ( $sections as $section ){
             $j++;
-            $ret .= scm_auto_menu_item( $section, $depth + 1, $j, $menu );
+            $ret .= scm_auto_menu_sub_item( $section, $depth + 1, $j, $menu, $numbers, $names );
         }
     }
     return $ret;
@@ -573,15 +647,19 @@ function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main' ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_item( &$item, $depth = 0, $count = 0, $menu = 'main' ) {
+function scm_auto_menu_sub_item( &$item, $depth = 0, $count = 0, $menu = 'main', $numbers = false, $names = false ) {
     if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) ) return '';
     $id = $item['id'];
+    $icon = ex_attr( $item, 'icon', '' );
+    $sub = ex_attr( $item, 'sub', '' );
+    $content = '';
     if( startsWith( $id, 'field:' ) )
         $id = $item['id'] = scm_field( str_replace( 'field:', '', $id), '' );
     if( $id ){
-        return scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $id, false, false, '', $count, $menu ) . scm_get_menu_item_close( $depth );
+        $content = scm_auto_menu_item( ( $numbers ? $count : $icon ), ( $names ? '' : $id ), $sub );
+        $content = scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $content, false, false, '', $count, $menu ) . scm_get_menu_item_close( $depth );
     }
-    return '';
+    return $content;
 }
 
 // ------------------------------------------------------
@@ -593,7 +671,7 @@ function scm_auto_menu_item( &$item, $depth = 0, $count = 0, $menu = 'main' ) {
 *
 * @return {string} HTML tag.
 */
-function scm_mono_menu() {
+function scm_mono_menu( $numbers = false ) {
     $ret = '';
     $id = SCM_PAGE_ID;
 
@@ -603,7 +681,7 @@ function scm_mono_menu() {
     $children = apply_filters( 'scm_filter_menu_mono', $children );
 
     if( $has_children ){
-        $ret .= scm_auto_menu_sub( $children, 0, 'mono' );
+        $ret .= scm_auto_menu_sub( $children, 0, 'mono', $numbers );
     }
         
     return $ret;
@@ -618,7 +696,7 @@ function scm_mono_menu() {
 *
 * @return {string} HTML tag.
 */
-function scm_mini_menu() {
+function scm_mini_menu( $numbers = false ) {
     $ret = '';
     $id = SCM_PAGE_ID;
 
@@ -628,7 +706,7 @@ function scm_mini_menu() {
     $children = apply_filters( 'scm_filter_menu_mini', $children );
 
     if( $has_children ){
-        $ret .= scm_auto_menu_sub_mini( $children, 0, 'mini' );
+        $ret .= scm_auto_menu_sub_mini( $children, 0, 'mini', $numbers );
     }
         
     return $ret;
@@ -643,12 +721,12 @@ function scm_mini_menu() {
 *
 * @return {string} HTML tag.
 */
-function scm_side_menu() {
+function scm_side_menu( $numbers = false, $names = false ) {
     global $SCM_indent;
     $children = scm_field( 'sections', array(), SCM_PAGE_ID, true );
-    $ret = lbreak() . indent( $SCM_indent + 2 ) . '<div id="side-menu">' . lbreak();
+    $ret = lbreak() . indent( $SCM_indent + 2 ) . '<div id="side-menu" class="' . ( $names ? 'no-name' : 'name' ) . '">' . lbreak();
         $ret .= lbreak() . indent( $SCM_indent + 3 ) . '<ul class="side-menu">' . lbreak();
-            $ret .= scm_auto_menu_sub( $children, 0, 'side' );
+            $ret .= scm_auto_menu_sub( $children, 0, 'side', $numbers, $names );
         $ret .= indent( $SCM_indent + 3 ) . '</ul>' . lbreak(2);
     $ret .= indent( $SCM_indent + 2 ) . '</div><!-- Side Menu -->' . lbreak(2);
         

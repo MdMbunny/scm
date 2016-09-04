@@ -36,6 +36,7 @@ wp_reset_postdata();
     $foot_piva = scm_field( 'opt-credits-piva', '', 'option' );
     $foot_policy = scm_field( 'opt-credits-policy', 0, 'option' );
     $foot_policy_link = scm_field( 'opt-credits-policy-link', '', 'option' );
+    $foot_cookies_link = scm_field( 'opt-credits-cookies-link', '', 'option' );
     
     $foot_designed = scm_field( 'opt-credits-designed', '', 'option' );
     $foot_designed_link = scm_field( 'opt-credits-designed-link', '', 'option' );   
@@ -101,6 +102,13 @@ wp_reset_postdata();
                                 }else{
                                     $foot_policy = 0;
                                 }
+                            }
+
+                            if( $foot_cookies_link ){
+                                if( $foot_separator && ( $foot_policy || ( $foot_credits || $foot_piva ) ) )
+                                    $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
+                                
+                                $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>__( 'Cookies Policy', SCM_THEME ), 'attributes'=>' data-href="' . $foot_cookies_link . '" data-target="_self"', 'tag'=>'span', 'inherit'=>1 );
                             }
 
                             if( $foot_designed ){

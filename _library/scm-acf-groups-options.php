@@ -245,8 +245,9 @@ function scm_acf_options_general() {
 		$fields[] = scm_acf_field_text( 'opt-credits-credits', array( 'prepend'=>__( 'Copyright', SCM_THEME ), 'default'=>'(C) (Y) TITLE', 'placeholder'=>'(C) (Y) TITLE' ), 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-separator', array( 'prepend'=>__( 'Separatore', SCM_THEME ), 'default'=>'|', 'placeholder'=>'|' ), 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-piva', array( 'prepend'=>__( 'P.IVA', SCM_THEME ), 'placeholder'=>'0123456789101112' ), 60 );
-		$fields[] = scm_acf_field_false( 'opt-credits-policy', array('label'=> __( 'Privacy Policy Link', SCM_THEME ) ), 60 );
+		$fields[] = scm_acf_field_false( 'opt-credits-policy', array('label'=> __( 'Attiva Policy', SCM_THEME ) ), 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-policy-link', array( 'prepend'=>__( 'Policy Link', SCM_THEME ), 'placeholder'=>'Default is Iubenda Policy link (see Policies options)' ), 60 );
+		$fields[] = scm_acf_field_text( 'opt-credits-cookies-link', array( 'prepend'=>__( 'Cookies Link', SCM_THEME ) ), 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-designed', array( 'prepend'=>__( 'Designed by', SCM_THEME ), 'placeholder'=>'SCM' ), 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-designed-link', array( 'prepend'=>__( 'Designed Link', SCM_THEME ), 'placeholder'=>'info@website.com' ), 60 );
 
@@ -399,8 +400,8 @@ function scm_acf_options_nav_menu() {
 	$fields = array();
 	
 	$fields[] = scm_acf_field_select( 'menu-wp', 'wp_menu', 50 );
-	
-	$fields[] = scm_acf_field_false( 'menu-overlay', array('label'=> __( 'Attiva Overlay', SCM_THEME ) ), 50 );
+	$fields[] = scm_acf_field_false( 'menu-numbers', array('label'=> __( 'Attiva Sub Numbers', SCM_THEME ) ), 25 );
+	$fields[] = scm_acf_field_false( 'menu-overlay', array('label'=> __( 'Attiva Overlay', SCM_THEME ) ), 25 );
 	$fields[] = scm_acf_field_select( 'menu-position', 'position_menu', 50 );
 	$fields[] = scm_acf_field_select( 'menu-alignment', 'alignment', 50 );
 	
@@ -494,8 +495,10 @@ function scm_acf_options_nav_side() {
 	$fields = array();
 	
 	// conditional
-	$fields[] = scm_acf_field_false( 'side-enabled', array('label'=> __( 'Attiva Side Menu', SCM_THEME ) ) );
-	//$side = array( 'field' => 'side-enabled', 'operator' => '==', 'value' => 1 );
+	$fields[] = scm_acf_field_false( 'side-enabled', array('label'=> __( 'Attiva Side Menu', SCM_THEME ) ), 50 );
+	$side = array( 'field' => 'side-enabled', 'operator' => '==', 'value' => 1 );
+	$fields[] = scm_acf_field_false( 'side-numbers', array('label'=> __( 'Attiva Sub Numbers', SCM_THEME ) ), 25, $side );
+	$fields[] = scm_acf_field_false( 'side-names', array('label'=> __( 'Nascondi Nomi', SCM_THEME ) ), 25, $side );
 
 	return $fields;
 

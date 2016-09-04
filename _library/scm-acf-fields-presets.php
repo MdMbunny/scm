@@ -68,17 +68,21 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 		switch ( $opt ) {
 			case 6:
 			case 'page':
-				$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 30, 0, 0 ) );
-				$fields[] = scm_acf_field_select( $second . 'layout', array( 'type'=>'main_layout', 'default'=>array( 'default'=>'Default Layout' ) ), 35 );
-				$fields[] = scm_acf_field_select( $second . 'menu', array( 'type'=>'wp_menu', 'default'=>array( 'default'=>'Default Menu' ) ), 35 );
+				$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 0, 0 ) );
+				$fields[] = scm_acf_field_text( $second . 'sub', array( 'prepend'=>'Sub' ), 20 );
+				$fields[] = scm_acf_field_icon_no( $second . 'icon', 0, 20 );
+				$fields[] = scm_acf_field_select( $second . 'layout', array( 'type'=>'main_layout', 'default'=>array( 'default'=>'Default Layout' ) ), 20 );
+				$fields[] = scm_acf_field_select( $second . 'menu', array( 'type'=>'wp_menu', 'default'=>array( 'default'=>'Default Menu' ) ), 20 );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 30, 70 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', '2-selectors', 60 ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'form', 0, 40, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				break;
 			case 5:
 			case 'section':
-				$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 25, 0, 0 ) );
-				$fields[] = scm_acf_field_select( $second . 'selectors', '2-selectors', 75 );
+				$fields = array_merge( $fields, scm_acf_preset_selectors( $name, 20, 0, 0 ) );
+				$fields[] = scm_acf_field_text( $second . 'sub', array( 'prepend'=>'Sub' ), 20 );
+				$fields[] = scm_acf_field_icon_no( $second . 'icon', 0, 20 );
+				$fields[] = scm_acf_field_select( $second . 'selectors', '2-selectors', 40 );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 30, 70 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 				break;
 			case 4:

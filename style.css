@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.4.4
+Version:			v3.4.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -298,6 +298,18 @@ sup {
 
 .fa:before{
 	line-height: 1em;
+}
+
+.fa-stack{
+	font-size: 1em;
+}
+
+.fa-stack-2x{
+	font-size: 2em;
+}
+
+.fa-stack-3x{
+	font-size: 3em;
 }
 
 /*--------------------------------------------------------------
@@ -1724,6 +1736,35 @@ body:not(.ready) .navigation {
 	display: none !important;
 }
 
+/* Extra Menu */
+
+.navigation li.current > .toggle-button > a, .navigation li.current > .toggle-button > a * {
+    cursor: default;
+}
+
+.navigation .toggle-button > a > span{
+	text-transform: initial;
+}
+
+.navigation .toggle-button > a > .icon{
+	display: block;
+    margin-bottom: .3em;
+}
+
+.navigation .sub-menu a > .icon,
+.navigation .side-menu a > .icon{
+	margin-right: .5em;
+	font-size: .8em;
+}
+
+.navigation a > .sub {
+    display: block;
+    font-size: .8em;
+    font-style: italic;
+    font-weight: 400;
+}
+
+
 /* Side Menu */
 
 #side-menu{
@@ -1731,20 +1772,61 @@ body:not(.ready) .navigation {
 	z-index: 8000;
 	right: 0;
 	top: 25%;
+	right: 1em;
+    top: inherit;
+    bottom: 6em;
+    -webkit-transition: none;
+    transition: none;
 }
 
-.tofull #side-menu,
-.smart #side-menu{
-	display: none;
+.smartmicro #side-menu{
+	display: none !important;
 }
 
-#side-menu .side-menu{
+.side-menu{
+	opacity: 0;
+	-webkit-transition: opacity .5s;
+    transition: opacity .5s;
 }
 
-#side-menu .side-menu li{
+.navigation.sticky.affix .side-menu,
+#site-header.sticked #site-navigation .side-menu {
+    opacity: 1;
+}
+
+#side-menu li {
 	display: block;
 	overflow: hidden;
+    padding: 1em;
+    background-color: transparent;
 }
+
+#side-menu.no-name a {
+    width: auto;
+}
+
+#side-menu a {
+    text-align: left;
+    padding: 0em !important;
+    pointer-events: none;
+}
+
+#side-menu.no-name a > .icon{
+    margin-right: 0em;
+}
+
+.navigation.sticky.affix #side-menu a,
+#site-header.sticked #site-navigation #side-menu a {
+    pointer-events: all;
+}
+
+.tofull #side-menu, .smart #side-menu{
+	display: block;
+	right: .7em;
+    bottom: 4em;
+}
+
+
 
 /*--------------------------------------------------------------
 3.4 Elements Contacts
