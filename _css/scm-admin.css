@@ -384,6 +384,11 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 
 /*** Taxonomies Metaboxes ***/
 
+.edit-tags-php #col-left,
+.edit-tags-php #col-right{
+	width: 50%;
+}
+
 .edit-tags-php col-container,
 .edit-tags-php col-container > div{
 	overflow: visible;
@@ -409,8 +414,11 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 .edit-tags-php .term-parent-wrap,
 .edit-tags-php .form-field.term-slug-wrap,
 .edit-tags-php .form-field.term-description-wrap,
-/*.edit-tags-php .form-field.term-description-wrap p,*/
-.edit-tags-php .form-field.term-name-wrap p{
+.edit-tags-php .form-field > p,
+.term-php .form-field.term-parent-wrap,
+.term-php .form-field.term-description-wrap,
+.term-php .form-field.term-slug-wrap,
+.term-php .form-field td > p{
 	display: none;
 }
 
@@ -453,6 +461,55 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	font-size: inherit !important;
 	font-weight: bold !important;
 	line-height: 2.6em;
+}
+
+
+.term-php .form-table > tbody > .acf-field > .acf-label,
+.term-php .form-table > tbody > .acf-field > .acf-input{
+	width: 100%;
+	display: block;
+	padding: 0 !important;
+}
+
+.term-php .form-table > tbody > .acf-field > .acf-label{
+    float: none;
+}
+
+.term-php .acf-field{
+	margin: 0;
+}
+
+.term-php .form-table > tbody > .acf-field{
+	padding: 0 0 17px !important;
+}
+
+.term-php .acf-field-true-false{
+	margin: 15px 0 !important;
+}
+
+.term-php .acf-field-true-false > .acf-label{
+	/*float: none;*/
+	position: absolute;
+}
+
+.term-php .acf-field-true-false > .acf-label label{
+	/*margin: 0 !important;*/
+}
+
+.term-php .acf-field-true-false ul.acf-checkbox-list li input{
+	/*width: 2em !important;
+	height: 2em !important;*/
+}
+
+.term-php .acf-field-true-false ul.acf-checkbox-list li input:checked:before{
+	/*margin: 0;
+	float: left;*/
+}
+
+.term-php .acf-field-true-false > .acf-label,
+.term-php .acf-field-true-false > .acf-input{
+	display: inline-block !important;
+	/*width: auto !important;*/
 }
 
 

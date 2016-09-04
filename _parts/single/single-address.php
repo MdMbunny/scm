@@ -14,6 +14,7 @@
 
 global $post, $SCM_indent;
 $post_id = $post->ID;
+$post_type = $post->post_type;
 
 $args = array(
 	'element' => 0,
@@ -33,12 +34,12 @@ if( isset( $this ) )
 $element = ( $args['element'] ?: scm_field( 'luoghi', 0, $post_id ) );
 if( !$element ){
 
-	if( $post->post_type === 'luoghi' )
+	if( $post_type === 'luoghi' )
 		$element = array( $post_id );
-	else if( $post->post_type === 'soggetti' )
+	else if( $post_type === 'soggetti' )
 		$element = scm_field( 'soggetto-luoghi', array(), $post_id );
 	else
-		return;
+		$element = scm_field( 'luoghi', array(), $post_id );
 
 }else if( !is_array( $element ) ){
 	if( is_numeric( $element ) )
@@ -81,8 +82,6 @@ if( is( $element ) ){
 		$city = ( ( $city && $province ) ? $city . ' ' : $city );
 		$region = ( ( $region && $country ) ? $region . ', ' : $region );
 		$country = ( $country ? $country : '' );
-
-		$complete_address = $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $country;
 		
 		$inline_address = ( $name ? '<strong class="name">' . $name . '</strong><br>' : '' );
 		
@@ -107,8 +106,10 @@ if( is( $element ) ){
 		$i_class = 'bullet ' . ( $icon == 'inside' ? ' float-' . $align : '' );
 		
 
-		if( $googlemaps )
-			$li_attr = ' data-href="https://maps.google.com/?q=' . $complete_address . '"';
+		if( $googlemaps ){
+			$google_address = str_replace(' ', '+', doublesp( $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $country ) );
+			$li_attr = ' data-href="https://maps.google.com/?q=' . $google_address . '"';
+		}
 
 		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', $li_attr ), 1 );
 

@@ -400,24 +400,26 @@ $groups = apply_filters( 'scm_filter_register', $groups );
 */
 function scm_acf_install_posts_fields() {
 
+    global $SCM_types;
+
     $groups = array();
 
     // SCM Filter BEFORE
     $groups = apply_filters( 'scm_filter_register_before', $groups );
 
-    // + TAXONOMIES LUOGHI
-    $tax_luoghi = scm_acf_group( __( 'Icona Mappe', SCM_THEME ), 'map-icon-options' );
-    $tax_luoghi['location'][] = scm_acf_group_location( 'luoghi-tip', 'taxonomy' );
-    $msg = __( 'Verrà utilizzata sulle mappe per indicare i <strong>Luoghi</strong> assegnati a questa <strong>Categoria</strong>. Comparirà anche nella legenda, se sulla mappa sono presenti più <strong>Luoghi</strong>.
-    Selezionando l\'opzione <em>Default</em> dal menu a tendina <strong>Icona Mappa</strong>, verrà utilizzata un\'icona standard. Viene sostituita nei <strong>Luoghi</strong> ai quali è stata assegnata un\'icona specifica.', SCM_THEME );
-    $tax_luoghi['fields'] = scm_acf_preset_map_icon( 'luogo-tip', 100, 0, 0, $msg );
-    $groups[] = $tax_luoghi;
-
-    // + TAXONOMIES SLIDERS
-    $tax_sliders = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-options' );
-    $tax_sliders['location'][] = scm_acf_group_location( 'sliders', 'taxonomy' );
-    $tax_sliders['fields'] = scm_acf_fields_sliders();
-    $groups[] = $tax_sliders;
+    // + CUSTOM TAXONOMIES
+    foreach ($SCM_types['taxonomies'] as $slug => $tax) {
+        $fun = 'scm_acf_fields_' . str_replace( '-', '_', $slug );
+        if( function_exists( $fun ) ){
+            $group = scm_acf_group( __( 'Opzioni '. $tax->singular, SCM_THEME ), $slug . '-single' );
+            $group['location'][] = scm_acf_group_location( $slug, 'taxonomy' );
+            $group['fields'] = call_user_func( $fun );
+            
+            // SCM Filter TAXONOMY
+            $group = apply_filters( 'scm_filter_register_' . str_replace( '_', '-', $slug ), $group );
+            $groups[] = $group;
+        }
+    }
 
     // + PAGE
     $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
@@ -436,7 +438,6 @@ function scm_acf_install_posts_fields() {
     $groups[] = $page_footer;
 
     // + CUSTOM TYPES
-    global $SCM_types;
     foreach ($SCM_types['custom'] as $slug => $title) {
         if($slug=='slides'){
             $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );

@@ -36,7 +36,8 @@ if( !$element ){
 		$element = array( $post_id );
 	else if( $post->post_type === 'soggetti' )
 		$element = scm_field( 'soggetto-luoghi', array(), $post_id );
-	
+	else
+		$element = scm_field( 'luoghi', array(), $post_id );
 
 	if( post_type_exists('luoghi') ){
 		if( empty($cat) ) {

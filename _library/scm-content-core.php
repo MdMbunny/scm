@@ -171,6 +171,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 'inherit' => false,
 
                 'id' => '',
+                'original-id' => '',
                 'selectors' => array(),
                 'class' => '',
                 'attributes' => '',
@@ -191,6 +192,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
         // Post PRE
             $content = scm_container_post_pre( $content, $builder, $container );
 
+            $content = apply_filters( 'scm_filter_echo_container_before_' . $container, $content, $original );
+
             // --------------------------------------------------------------------------
 
             // Merge defaults with arguments
@@ -199,7 +202,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
             // -- ID
-            $content['id'] = ( startsWith( $content['id'], 'field:' ) ? scm_field( str_replace( 'field:', '', $content['id'] ), '' ) : $content['id'] );
+            $content['original-id'] = $content['id'];
+            $content['id'] = ( startsWith( $content['id'], 'field:' ) ? ( $content['id'] == 'field:slug' ? basename( get_permalink() ) : scm_field( str_replace( 'field:', '', $content['id'] ), '' ) ) : $content['id'] );
 
             // --------------------------------------------------------------------------
             
@@ -248,6 +252,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
                     $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
                 }
+
+                do_action( 'scm_action_echo_container_before_' . $container, $content, $original );
 
                     // -- Content
                     scm_content( $content );
@@ -653,7 +659,7 @@ function scm_contents( $content = NULL ) {
 
     if( is_null( $content ) || !$content ) return;
 
-    if( $content['acf_fc_layout'] ) $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );                
+    if( $content['acf_fc_layout'] ) $content = apply_filters( 'scm_filter_echo_content_' . $content['acf_fc_layout'], $content );
 
     $content = toArray( $content, true, true );
     if( !$content ) return;
@@ -1018,7 +1024,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $orderby = ( isset( $content['archive-orderby'] ) ? $content['archive-orderby'] : 'date' );
         $ordertype = ( isset( $content['archive-ordertype'] ) ? $content['archive-ordertype'] : 'DESC' );
         $field = ( isset( $content['archive-field'] ) && $content['archive-field'] ? $content['archive-field'] : ( ( $orderby == 'meta_value' && isset( $content['archive-order'] ) ) ? $content['archive-order'] : '' ) );
-        $meta = ( isset( $content['meta_query'] ) ? $content['meta_query'] : '' );
+        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ( isset( $content['meta_query'] ) ? $content['meta_query'] : array() ) );
         $value = ( isset( $content['archive-value'] ) && $content['archive-value'] ? $content['archive-value'] : ( isset( $content['archive-field'] ) && $content['archive-field'] ? $post->ID : '') );
 
         $query = array(

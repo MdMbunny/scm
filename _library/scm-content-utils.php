@@ -73,13 +73,8 @@ function scm_utils_class_count( $current = 0, $total = 0 ) {
 }
 
 // ------------------------------------------------------
-// 5.0 LINK
+// 3.0 LINK
 // ------------------------------------------------------
-
-// ------------------------------------------------------
-// 2.2 POST LINK
-// ------------------------------------------------------
-
 
 /**
 * [GET] Post link function
@@ -805,6 +800,31 @@ function scm_utils_styles( $target = 'option', $add = false, $type = '' ) {
 // ------------------------------------------------------
 
 /**
+* [GET] Date (from preset)
+*
+* @return {array} Array containing date attributes.
+*/
+function scm_utils_preset_date( $start = '', $end = '', $lang = '' ) {
+
+    if( !$start ) return false;
+    $date = array();
+    $current = (int)date("Ymd");
+    $date['start'] = date( 'Ymd', strtotime( $start ) );
+    $date['end'] = ( $end ? date( 'Ymd', strtotime( $end ) ) : $start );
+    $lang = ( $lang ?: ( function_exists( 'pll_current_language' ) ? pll_current_language($locale) : str_replace( '-', '_', substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 ) ) ) );
+    setlocale( LC_ALL, $lang );
+    $date['same'] = $date['start'] == $date['end'];
+    $date['current'] = (int)$date['start'] < $current && (int)$date['end'] >= $current;
+    $date['old'] = (int)$date['end'] < $current;
+    $date['after_date'] = strftime( '%d %B %Y', strtotime('+1 day', strtotime( $date['end'] ) ) );
+    $date['before_date'] = strftime( '%d %B %Y', strtotime('-1 day', strtotime( $date['start'] ) ) );
+    $date['start_date'] = strftime( '%d %B %Y', strtotime( $date['start'] ) );
+    $date['end_date'] = strftime( '%d %B %Y', strtotime( $date['end'] ) );
+
+    return $date;
+}
+
+/**
 * [GET] Policies from preset
 *
 * @return {array} Array containing policy ID and LANG.
@@ -863,10 +883,23 @@ function scm_utils_preset_size( $size, $units, $fall = '', $fall2 = 'px' ) {
 * @param {float=} fallback Alpha fallback (default is 1).
 * @return {string} Color value in RGBA form.
 */
-function scm_utils_preset_rgba( $color, $alpha, $fall = '', $fall2 = 1 ) {
+function scm_utils_preset_rgba( $color = '', $alpha = '', $fall = '', $fall2 = 1 ) {
 
-    $alpha = isNumber( $alpha, $fall2 );
-    $color = is( $color, $fall );
+    if( is_array($color) ){
+        global $SCM_libraries;
+        $lib = $color[ $alpha . '-rgba-library' ];
+        if( $lib && ex_attr( $SCM_libraries['colors'], $lib ) ){
+            $alpha = $SCM_libraries['colors'][$lib]['alpha'];
+            $color = $SCM_libraries['colors'][$lib]['color'];
+            
+        }else{
+            $alpha = $color[ $alpha . '-rgba-alpha' ];
+            $color = $color[ $alpha . '-rgba-color' ];
+        }
+    }else{
+        $alpha = isNumber( $alpha, $fall2 );
+        $color = is( $color, $fall );
+    }
     $color = ifequal( $color, array( '', 'transparent', 'initial', 'inherit', 'none' ), hex2rgba( $color, $alpha ) );
 
     return $color;
@@ -891,7 +924,8 @@ function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark
     switch ( $marker ) {
         case 'icon':
             $fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker' );
-            $color = scm_utils_preset_rgba( is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
+            //$color = scm_utils_preset_rgba( is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
+            $color = scm_utils_preset_rgba( $fields, 'luogo-map', '#e3695f', 1 );
             $icon = array( 'icon' => $fa, 'data' => $color );
             $marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
         break;

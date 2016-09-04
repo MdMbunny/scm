@@ -512,7 +512,7 @@ function scm_auto_menu() {
         $has = scm_auto_menu_sub( $children, $depth + 1 );
         $has_children = sizeof( $children ) && $has;
 
-        $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current, '', $i );
+        $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current, '', $i, 'auto' );
 
             if( $has_children )
                 $ret .= scm_get_submenu_open( $depth + 1 ) . $has . scm_get_submenu_close( $depth + 1 );
@@ -530,13 +530,13 @@ function scm_auto_menu() {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub_mini( $children, $depth = 0 ) {
+function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main' ) {
     $ret = '';
     $i = 0;
 
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_item( $child, $depth, $i );
+        $ret .= scm_auto_menu_item( $child, $depth, $i, 'mini' );
     }
     return $ret;
 }
@@ -548,20 +548,19 @@ function scm_auto_menu_sub_mini( $children, $depth = 0 ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub( $children, $depth = 0 ) {
+function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main' ) {
     $ret = '';
     $i = $j = 0;
     
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_item( $child, $depth, $i );
-        $sections = $child['rows'];
+        $ret .= scm_auto_menu_item( $child, $depth, $i, $menu );
+        $sections = ( $child['rows'] ?: array() );
 
         $sections = apply_filters( 'scm_filter_menu_sub_auto', $sections );
-
         foreach ( $sections as $section ){
             $j++;
-            $ret .= scm_auto_menu_item( $section, $depth + 1, $j );
+            $ret .= scm_auto_menu_item( $section, $depth + 1, $j, $menu );
         }
     }
     return $ret;
@@ -574,13 +573,13 @@ function scm_auto_menu_sub( $children, $depth = 0 ) {
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_item( &$item, $depth = 0, $count = 0 ) {
+function scm_auto_menu_item( &$item, $depth = 0, $count = 0, $menu = 'main' ) {
     if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) ) return '';
     $id = $item['id'];
     if( startsWith( $id, 'field:' ) )
         $id = $item['id'] = scm_field( str_replace( 'field:', '', $id), '' );
     if( $id ){
-        return scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $id, false, false, '', $count ) . scm_get_menu_item_close( $depth );
+        return scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $id, false, false, '', $count, $menu ) . scm_get_menu_item_close( $depth );
     }
     return '';
 }
@@ -604,7 +603,7 @@ function scm_mono_menu() {
     $children = apply_filters( 'scm_filter_menu_mono', $children );
 
     if( $has_children ){
-        $ret .= scm_auto_menu_sub( $children, 0 );
+        $ret .= scm_auto_menu_sub( $children, 0, 'mono' );
     }
         
     return $ret;
@@ -629,7 +628,7 @@ function scm_mini_menu() {
     $children = apply_filters( 'scm_filter_menu_mini', $children );
 
     if( $has_children ){
-        $ret .= scm_auto_menu_sub_mini( $children, 0 );
+        $ret .= scm_auto_menu_sub_mini( $children, 0, 'mini' );
     }
         
     return $ret;
@@ -649,7 +648,7 @@ function scm_side_menu() {
     $children = scm_field( 'sections', array(), SCM_PAGE_ID, true );
     $ret = lbreak() . indent( $SCM_indent + 2 ) . '<div id="side-menu">' . lbreak();
         $ret .= lbreak() . indent( $SCM_indent + 3 ) . '<ul class="side-menu">' . lbreak();
-            $ret .= scm_auto_menu_sub( $children, 0 );
+            $ret .= scm_auto_menu_sub( $children, 0, 'side' );
         $ret .= indent( $SCM_indent + 3 ) . '</ul>' . lbreak(2);
     $ret .= indent( $SCM_indent + 2 ) . '</div><!-- Side Menu -->' . lbreak(2);
         
@@ -706,7 +705,7 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
 * @param {string=} class (default is '').
 * @return {string} HTML tag.
 */
-function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_children = false, $current = false, $class = '', $count = 0 ) {
+function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_children = false, $current = false, $class = '', $count = 0, $menu = 'main' ) {
 
     global $SCM_indent;
     $ind = $SCM_indent + 4 + $depth;
@@ -723,9 +722,9 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
 
     
     $link = '<a href="' . $url . '">';
-    $link = apply_filters( 'scm_filter_menu_item_before', $link, $depth, $count, $content, $has_children );
-    $link .= $content;
-    $link = apply_filters( 'scm_filter_menu_item', $link, $depth, $count, $content, $has_children );
+    $link_cont = apply_filters( 'scm_filter_menu_item_before', $depth, $count, $content, $has_children, $menu );
+    $link_cont .= $content;
+    $link .= apply_filters( 'scm_filter_menu_item', $link_cont, $depth, $count, $content, $has_children, $menu );
     $link .= '</a>';
     
     if( $has_children ){

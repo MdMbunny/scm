@@ -94,6 +94,7 @@ function scm_acf_options_types() {
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-archive', array('label'=> __( 'Archivi', SCM_THEME ) ) );
 			$types['sub_fields'][] = scm_acf_field_select( 'orderby', 'orderby', 50, 0, 0, __( 'Ordina per', SCM_THEME ) );
 			$types['sub_fields'][] = scm_acf_field_select( 'ordertype', 'ordertype', 50, 0, 0, __( 'Ordinamento', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_text( 'orderkey', array( 'placeholder'=>'orderby must be set to Custom Field', 'prepend'=>__( 'Custom Field', SCM_THEME ) ), 100, 0 );
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-menu', array('label'=> __( 'Menu', SCM_THEME ) ) );
 			$types['sub_fields'][] = scm_acf_field_text( 'icon', array( 'default'=>'admin-site', 'placeholder'=>'admin-site (see below)', 'prepend'=>__( 'Icona', SCM_THEME ) ), 100, 0 );
@@ -238,6 +239,7 @@ function scm_acf_options_general() {
 		$fields = array_merge( $fields, scm_acf_preset_flexible_sections( 'footer' ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-opt-credits', array( 'label'=> __( 'Credits', SCM_THEME ) ) );
 		$fields[] = scm_acf_field_false( 'opt-credits-login', array('label'=> __( 'Attiva Footer Login', SCM_THEME ) ), 60 );
+		$fields[] = scm_acf_field_select( 'opt-credits-selectors', '2-selectors', 60 );
 		$fields[] = scm_acf_field_id( 'opt-credits-id', 0, 60 );
 		$fields[] = scm_acf_field_class( 'opt-credits-class', 0, 60 );
 		$fields[] = scm_acf_field_text( 'opt-credits-credits', array( 'prepend'=>__( 'Copyright', SCM_THEME ), 'default'=>'(C) (Y) TITLE', 'placeholder'=>'(C) (Y) TITLE' ), 60 );

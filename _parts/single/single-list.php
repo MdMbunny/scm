@@ -121,7 +121,8 @@ if( is( $list ) ){
     foreach ($list as $button) {
         
         $odd = ( $odd ? '' : 'odd' );
-        $name = ( (string)$button['name'] ?: (string)$button['link'] );
+        $name = ( (string)$button['name'] ?: '' );
+        //$name = ( (string)$button['name'] ?: (string)$button['link'] );
         $pos = ( !$name ? 'inside' : $pos );
         
         if( isset( $button['icon'] ) )

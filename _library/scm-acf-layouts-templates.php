@@ -346,10 +346,31 @@ function scm_acf_layout_articoli( $layouts = array() ) {
 * @param {misc} default
 * @return {array} Layouts
 */
+function scm_acf_layout_eventi( $layouts = array(), $default = 0 ) {
+
+	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
+	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'Contenuto', SCM_THEME ) );
+	$layout_dat = scm_acf_layout( 'dates', 'block', __( 'Date Evento', SCM_THEME ) );
+	$layout_map = scm_acf_layout( 'map', 'block', __( 'Mappa', SCM_THEME ), '', 1 );
+		$layout_map['sub_fields'] = scm_acf_object_map( $default, 1 );
+	$layout_address = scm_acf_layout( 'indirizzo', 'block', __( 'Indirizzo', SCM_THEME ) );
+		$layout_address['sub_fields'] = scm_acf_object_indirizzo( $default, 1 );
+	$layouts = array_merge( $layouts, array( $layout_img, $layout_mod, $layout_dat, $layout_map, $layout_address ) );
+
+	return $layouts;
+}
+
+/**
+* [GET] Layout news
+*
+* @param {array} layouts
+* @param {misc} default
+* @return {array} Layouts
+*/
 function scm_acf_layout_news( $layouts = array(), $default = 0 ) {
 
 	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
-	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'News', SCM_THEME ) );
+	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'Contenuto', SCM_THEME ) );
 	$layouts = array_merge( $layouts, array( $layout_img, $layout_mod ) );
 
 	return $layouts;

@@ -14,7 +14,7 @@
 
 // CHECK PAGE TYPE ------------------------------------------------------------------------
 
-global $SCM_indent, $SCM_types, $post;
+global $SCM_indent, $SCM_types, $SCM_agent, $post;
 
 // If no page supplied (index.php) - Load Home Page
 if( is_null( $post ) ){
@@ -62,19 +62,17 @@ if( $single || $archive ){
 
 // REDIRECT OLD BROWSER ------------------------------------------------------------------------
 
-if( function_exists( 'get_browser_version' ) ){
+$ver = ( $SCM_agent['browser']['ver'] && $SCM_agent['browser']['ver'] != 'unknown' ?: 1000 );
+$slug = $SCM_agent['browser']['slug'];
 
-    $version = ( (int)get_browser_version() ?: 1000 );
+if( ( $slug == 'ie' && $ver < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
+    ( $slug == 'safari' && $ver < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
+    ( $slug == 'firefox' && $ver < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
+    ( $slug == 'chrome' && $ver < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
+    ( $slug == 'opera' && $ver < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
 
-    if( (is_ie() && $version < (int)scm_field( 'opt-ie-version', '10', 'option' )) ||
-        (is_safari() && $version < (int)scm_field( 'opt-safari-version', '7', 'option' )) ||
-        (is_firefox() && $version < (int)scm_field( 'opt-firefox-version', '38', 'option' )) ||
-        (is_chrome() && $version < (int)scm_field( 'opt-chrome-version', '43', 'option' )) ||
-        (is_opera() && $version < (int)scm_field( 'opt-opera-version', '23', 'option' )) ) {
-
-        get_template_part( SCM_DIR_PARTS, 'old' );
-        die();
-    }
+    get_template_part( SCM_DIR_PARTS, 'old' );
+    die();
 }
 
 // CONSTANTS ------------------------------------------------------------

@@ -930,6 +930,59 @@ function scm_acf_field_image_url( $name = '', $field = 0, $width = 100, $logic =
 	return scm_acf_helper( $name, $field, array('type' => 'image-url','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
 }
 
+/**
+* [GET] IMAGE field builder
+*
+* Specific field attributes:
+```php
+'type' => 'image-all'
+'library' => 'all'
+'preview' => 'thumbnail'
+'minwidth' => 0
+'maxwidth' => 0
+'minheight' => 0
+'maxheight' => 0
+'minsize' => 0
+'maxsize' => 0
+'mime' => ''
+'return' => 'array'
+```
+*
+* @param {array|string=} name Field name or field general attributes (default is '').
+* @param {array|string|0=} field Field specific attributes or field default attribute (default is 0).
+* @param {int|0=} width Field width (default is 100).
+* @param {array|0=} logic Field conditional logics (default is 0).
+* @param {bool=} required Field conditional logics (default is false).
+* @param {string=} label Field label (default is '').
+* @return {array} Field.
+*/
+function scm_acf_field_image_all( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+	return scm_acf_helper( $name, $field, array('type' => 'image-all','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
+}
+
+/**
+* [GET] IMAGE URL field builder
+*
+* Specific field attributes:
+```php
+'type' => 'image-all-url'
+'return' => 'url'
+```
+*
+* @see scm_acf_field_image()
+*
+* @param {array|string=} name Field name or field general attributes (default is '').
+* @param {array|string|0=} field Field specific attributes or field default attribute (default is 0).
+* @param {int|0=} width Field width (default is 100).
+* @param {array|0=} logic Field conditional logics (default is 0).
+* @param {bool=} required Field conditional logics (default is false).
+* @param {string=} label Field label (default is '').
+* @return {array} Field.
+*/
+function scm_acf_field_image_all_url( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+	return scm_acf_helper( $name, $field, array('type' => 'image-all-url','label'=>($label ?: __( 'Seleziona un\'immagine', SCM_THEME ))), $width, $logic, $required );
+}
+
 // ------------------------------------------------------
 // 2.11 FILE
 // ------------------------------------------------------

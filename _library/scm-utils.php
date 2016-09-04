@@ -529,12 +529,12 @@ function checkTaxes( $type, $taxes = array( 'language', 'post_translations' ) ) 
  * @return {array} List of IDs.
  */
 function getTermsId( $tax = '' ) {
-    $terms_tag_soggetti = get_terms( array(
+    $terms = get_terms( array(
         'taxonomy' => $tax,
         'hide_empty' => false,
     ) );
     $arr = array();
-    foreach ($terms_tag_soggetti as $value) {
+    foreach ($terms as $value) {
         $arr[ $value->slug ] = $value->term_id;
     }
     return $arr;
@@ -603,6 +603,10 @@ function getURL( $url ){
             $add = $url;
             $url = str_replace( '#', '', $url);
             $url = substr( $url, 0, rstrpos( $url, '-' ) );
+        }elseif( strpos( $url, '#' ) > 0 ){
+            $add = explode( '#', $url );
+            $url = $add[0];
+            $add = '#' . $add[1];
         }
 
         if( !is_numeric( $url ) ){
@@ -632,18 +636,11 @@ function getURL( $url ){
     if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )
         return encodeEmail( $url );
 
-    if( strpos( $url, '@' ) !== false )
-
+    if( filter_var( $url, FILTER_VALIDATE_EMAIL ) )
         return 'mailto:' . encodeEmail( $url );
 
-    if ( is_numeric( $url ) ){
-
-        if( !startsWith( $url, '+' ) )
-            return 'tel:+' . $url;
-
-        return 'tel:' . $url;
-
-    }
+    if ( is_numeric( $url ) )
+        return 'tel:' . ( startsWith( $url, '+' ) ? '' : '+' ) . $url;
 
     str_replace( array( 'http://#', 'https://#' ), '#', $url);
 
@@ -651,6 +648,98 @@ function getURL( $url ){
         return addHTTP( $url );
 
     return $url;
+}
+
+/**
+ * [GET] Get link data
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {array|string} link Array containing 'url' attribute, or link url as string.
+ * @param {string=} name New name (default is '').
+ * @return {array} Empty array if fail, otherwise it returns a list of link data: url,link,name,icon,type.
+ */
+function linkExtend( $link, $name = '' ){
+    
+    if( !$link )
+        return array();
+
+    if( is_string( $link ) )
+        $link = array( 'url' => $link );
+
+    if( !is_array( $link ) )
+        return array();
+
+    if( !ex_attr($link, 'url', '') )
+        return array();
+
+    $link['link'] = getURL( $link['url'] );
+    $link['name'] = ( $name ?: $link['url'] );
+    $link['icon'] = 'globe';
+    $link['type'] = 'external';
+    
+    if( startsWith( $link['link'], 'mailto:' ) ){
+        $link['icon'] = 'envelope';
+        $link['type'] = 'mail';
+    }elseif( startsWith( $link['link'], 'tel:' ) ){
+        $link['icon'] = 'phone';
+        $link['type'] = 'phone';
+    }elseif( startsWith( $link['link'], '#' ) ){
+        $link['icon'] = 'hashtag';
+        $link['type'] = 'page';
+    }elseif( startsWith( $link['link'], SCM_SITE ) ){
+        $link['icon'] = 'link';
+        $link['type'] = 'site';
+    }else{
+        $parse = urlExtend( $link['link'] );
+        if( $parse['sub'] == 'plus' && $parse['domain'] == 'google' )
+            $link['icon'] = $link['type'] = 'google-plus';
+        elseif( scm_fa_exists( 'social', $parse['domain'] ) )
+            $link['icon'] = $link['type'] = $parse['domain'];
+    }
+
+    return $link;
+}
+
+/**
+ * [GET] Get url data
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL as string.
+ * @param {string=} name New name (default is '').
+ * @return {array} Empty array if fail, otherwise it returns a list of link data: url,link,name,icon,type.
+ */
+function urlExtend( $url = '', $name = '' ){
+
+    $parse = parse_url( $url );
+    $parse['name'] = $name;
+    $domain = strtolower( $parse['host'] );
+    if( $domain == '' ) $domain = $url;
+    $points = substr_count( $domain, '.' );
+
+    if( $points > 0 ){
+
+        //preg_match( '/^.+\.([a-z0-9\.\-]+\.[a-z]{2,4})$/', $domain, $domain );
+
+        $domain = explode( '.', $domain );
+
+        if( $points > 1 )
+            $parse['sub'] = $domain[0];
+
+        $parse['domain'] = $domain[$points-1];
+        $parse['ext'] = $domain[$points];
+
+        /*if( startsWith( $parse['domain'], 'www.' ) ){
+            $parse['sub'] = 'www';
+            $parse['domain'] = str_replace( 'www.', '', $parse['domain'] );
+        }*/
+
+        if( !$name )
+            $parse['name'] = $parse['domain'];
+    }
+
+    return $parse;
 }
 
 /**

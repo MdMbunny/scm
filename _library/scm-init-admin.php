@@ -14,6 +14,7 @@
 * @global {array} SCM_admin_menu Stores admin menu elements
 */
 $SCM_admin_menu = array();
+$SCM_agent = array();
 
 // ------------------------------------------------------
 //
@@ -96,6 +97,8 @@ add_action( 'manage_media_custom_column', 'scm_hook_admin_upload_custom_column',
 add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
 
 // PLUGINS
+add_filter( 'scm_assets_filter_block_touch', 'scm_hook_admin_plugins_scm_assets_touch_block' );
+add_action( 'after_setup_theme', 'scm_hook_admin_plugins_scm_agent', 1 );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_duplicate_post' );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_backup_restore_options' );
 add_action( 'tgmpa_register', 'scm_hook_admin_plugins_tgm_plugin_activation' );
@@ -752,9 +755,108 @@ function scm_hook_admin_upload_custom_column( $column_name = NULL, $id = NULL ) 
 // ------------------------------------------------------
 
 /**
+* [SET] SCM Assets setting
+*
+* Hooked by 'scm_assets_filter_block_touch'
+* @subpackage 4-Init/Admin/7-PLUGINS
+*/
+function scm_hook_admin_plugins_scm_assets_touch_block() {   
+    global $SCM_agent;
+    return $SCM_agent['device']['desktop'];
+}
+
+/**
+* [SET] SCM Agent setting
+*
+* Hooked by 'after_setup_theme'
+* @subpackage 4-Init/Admin/7-PLUGINS
+*/
+function scm_hook_admin_plugins_scm_agent() {
+
+    global $SCM_agent;
+    $SCM_agent = array(
+        'browser' => array(
+            'name' => '',
+            'slug' => '',
+            'version' => '',
+            'ver' => '',
+        ),
+        'platform' => array(
+            'name' => '',
+            'slug' => '',
+            'version' => '',
+        ),
+        'device' => array(
+            'desktop' => true,
+            'mobile' => false,
+            'tablet' => false,
+            'phone' => false,
+        ),
+        'lang' => array(
+            'name' => '',
+            'locale' => '',
+            'slug' => '',
+        ),
+    );
+
+    // LANGUAGES
+    if( function_exists( 'pll_current_language' ) ){
+        $SCM_agent['lang']['name'] = pll_current_language( 'name' );
+        $SCM_agent['lang']['locale'] = pll_current_language( 'locale' );
+        $SCM_agent['lang']['slug'] = pll_current_language( 'slug' );
+    }else{
+        $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
+        $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
+    }
+
+    // BROWSER, PLATFORM and DEVICE
+    if( function_exists( 'scm_agent' ) ){
+
+        $SCM_agent['browser'] = array(
+            'name' => scm_agent('name'),
+            'slug' => scm_agent('slug'),
+            'version' => scm_agent('version'),
+            'ver' => scm_agent('ver'),
+        );
+        $SCM_agent['platform'] = array(
+            'name' => scm_agent('platform'),
+            'slug' => scm_agent('platform slug'),
+            'version' => scm_agent('platform version'),
+        );
+        $SCM_agent['device'] = array(
+            'desktop' => scm_agent('desktop'),
+            'mobile' => scm_agent('mobile'),
+            'tablet' => scm_agent('tablet'),
+            'phone' => scm_agent('phone'),
+        );
+
+    }else{
+
+        global $is_gecko, $is_chrome, $is_opera, $is_IE, $is_iphone;
+        $browser = 'Safari';
+        if ( $is_gecko ) $browser = 'Firefox';
+        elseif ( $is_chrome ) $browser = 'Chrome';
+        elseif ( $is_opera ) $browser = 'Opera';
+        elseif ( $is_IE ) $browser = 'IE';
+        $SCM_agent['browser']['name'] = $browser;
+        $SCM_agent['browser']['slug'] = sanitize_title( $browser );
+
+        if ( wp_is_mobile() ){
+            $SCM_agent['device']['desktop'] = false;
+            $SCM_agent['device']['mobile'] = true;
+            if( $is_iphone )
+                $SCM_agent['device']['phone'] = true;
+            else
+                $SCM_agent['device']['tablet'] = true;
+        }
+    }
+}
+
+
+/**
 * [SET] Duplicate Post init
 *
-* Hooked by 'plugins_loaded'
+* Hooked by 'after_setup_theme'
 * @subpackage 4-Init/Admin/7-PLUGINS
 */
 function scm_hook_admin_plugins_duplicate_post() {
@@ -764,7 +866,7 @@ function scm_hook_admin_plugins_duplicate_post() {
 /**
 * [SET] Backup Restore Options init
 *
-* Hooked by 'plugins_loaded'
+* Hooked by 'after_setup_theme'
 * @subpackage 4-Init/Admin/7-PLUGINS
 */
 function scm_hook_admin_plugins_backup_restore_options() {
@@ -789,6 +891,15 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'required'           => true, // If false, the plugin is only 'recommended' instead of required.
             'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
             'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+        ),
+
+        array(
+            'name'               => 'SCM Agent',
+            'slug'               => 'scm-agent',
+            'source'             => 'scm-agent.zip',
+            'required'           => true,
+            'force_activation'   => true,
+            'force_deactivation' => true,
         ),
 
         array(
@@ -880,14 +991,6 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
         array(
             'name'               => 'Replace Media',
             'slug'               => 'enable-media-replace',
-            'required'           => false,
-            'force_activation'   => false,
-            'force_deactivation' => false,
-        ),
-
-        array(
-            'name'               => 'Browser Detection',
-            'slug'               => 'php-browser-detection',
             'required'           => false,
             'force_activation'   => false,
             'force_deactivation' => false,

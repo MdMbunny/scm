@@ -331,20 +331,22 @@ function scm_hook_site_register_styles_inline() {
 */
 function scm_hook_body_class( $classes = array() ) {
 
-    global $SCM_styles;
+    global $post, $SCM_agent;
 
-    global $post;
-
+    // THEME
     $classes[] = SCM_THEME;
 
-    // PAGE
-    if ( is_single() ) {
+    // POST
+    $classes[] = $post->post_status;
+    if( is_single() ){
         $classes[] = "{$post->post_type}-{$post->post_name}";
         foreach ( ( get_the_category( $post->ID ) ) as $category ) {
             $classes[] = 'post-'.$category->category_nicename;
         }
     }
-    if ( is_page() ) {
+
+    // PAGE
+    if( is_page() ){
         if ( $parents = get_post_ancestors( $post->ID ) ) {
             foreach ( (array)$parents as $parent ) {
                 if ( $page = get_page( $parent ) ) {
@@ -356,41 +358,30 @@ function scm_hook_body_class( $classes = array() ) {
     }
 
     // BROWSER
-    if( function_exists( 'get_browser_name' ) ){
+    $classes[] = $SCM_agent['browser']['slug'];
+    $classes[] = $SCM_agent['browser']['slug'] . (string)$SCM_agent['browser']['ver'];
 
-        $browser = strtolower( get_browser_name() );
+    // DEVICE
+    if( $SCM_agent['device']['desktop'] )
+        $classes[] = 'is-desktop';
+    if( $SCM_agent['device']['mobile'] )
+        $classes[] = 'is-mobile';
+    if( $SCM_agent['device']['tablet'] )
+        $classes[] = 'is-tablet';
+    if( $SCM_agent['device']['phone'] )
+        $classes[] = 'is-phone';
 
-        $classes[] = $browser;
-        if( $browser == 'ie' )
-            $classes[] = $browser . (int)get_browser_version();
+    // TOUCH
+    if( wp_script_is( 'jquery-touch-swipe' ) )
+        $classes[] = 'touch';
+    else
+        $classes[] = 'mouse';
 
-        if( is_desktop() ) $classes[] = 'is-desktop';
-        if( is_tablet() ) $classes[] = 'is-tablet';
-        if( is_iphone() ) $classes[] = 'is-iphone';
-        if( is_ipad() ) $classes[] = 'is-ipad';
-        if( is_ipod() ) $classes[] = 'is-ipod';
-        if( is_mobile() ) $classes[] = 'is-mobile';
+    // PLATFORM
+    $classes[] = $SCM_agent['platform']['slug'];
 
-    }else{
-
-        global $is_gecko, $is_chrome, $is_opera, $is_IE, $is_iphone;
-
-        if ( $is_iphone ) $classes[] = 'safari is-iphone';
-        elseif ( $is_gecko ) $classes[] = 'firefox';
-        elseif ( $is_chrome ) $classes[] = 'chrome';
-        elseif ( $is_opera ) $classes[] = 'opera';
-        elseif ( $is_IE ) $classes[] = 'ie';
-        else $classes[] = 'safari';
-
-    }
-
-    if ( wp_is_mobile() ) $classes[] = 'is-mobile';
-
-    $classes[] = $post->post_status;
-
-    // LANGUAGE - NEEDS PolyLang Plugin
-    if( function_exists('pll_current_language') )
-        $classes[] = 'lang-' . ( pll_current_language() ?: language_attributes() );
+    // LANGUAGE
+    $classes[] = 'lang-' . $SCM_agent['lang']['slug'];
 
     return $classes;
 }

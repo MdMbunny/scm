@@ -110,7 +110,7 @@ if ( $layout == 'layout-thumbs' ) {
         if( !$id )
             return;
         
-        $image = SCM_PROTOCOL . 'img.youtube.com/vi/' . $id . '/1.jpg';
+        $image = SCM_PROTOCOL . 'img.youtube.com/vi/' . $id . '/hqdefault.jpg';
 
     }else{
         return;

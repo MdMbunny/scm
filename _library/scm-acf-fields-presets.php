@@ -850,6 +850,95 @@ function scm_acf_preset_tags( $name = 'tags', $type = 'post_tag', $save = 1, $lo
 }
 
 /**
+* [GET] Preset repeater query
+*
+* @param {string} name
+* @param {array} elements
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @param {string} class
+* @return {array} Fields.
+*/
+function scm_acf_preset_repeater_query( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '' ) {
+
+	$name = ( $name ? $name . '-query' : 'query');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Query', SCM_THEME ) );
+
+	$fields[] = scm_acf_field_repeater( $name, array( 'sub'=>array(
+		scm_acf_field_text( 'key', array( 'placeholder'=>'field name', 'prepend'=>__( 'Key', SCM_THEME ) ), 33 ),
+		scm_acf_field_text( 'compare', array( 'placeholder'=>'=', 'prepend'=>__( 'Compare', SCM_THEME ) ), 33 ),
+		scm_acf_field_text( 'value', array( 'placeholder'=>'field value (default is Post ID)', 'prepend'=>__( 'Value', SCM_THEME ) ), 34 ),
+	) ), 100, $logic, $required, __( 'Meta Query', SCM_THEME ) );
+
+	return $fields;
+}
+
+/**
+* [GET] Preset repeater files
+*
+* @param {string} name
+* @param {array} elements
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @param {string} class
+* @return {array} Fields.
+*/
+function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '' ) {
+
+	$name = ( $name ? $name . '-files' : 'files');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Allegati', SCM_THEME ) );
+	
+	$files = scm_acf_field_repeater( $name, array( 
+		'button'=>__( '+ Allegato', SCM_THEME ),
+		'label'=>'',
+		'class'=>$class,
+	), 100, $logic, $required );
+
+		$files['sub_fields'][] = scm_acf_field_text( 'name', 0, 30, 0, 0, __( 'Nome Pulsante', SCM_THEME) );
+		$files['sub_fields'][] = scm_acf_field_file( 'file', array( 'type'=>'file-all' ), 70, 0, 0, __( 'Seleziona un file', SCM_THEME) );
+		
+		
+		
+	$fields[] = $files;
+	
+	return $fields;
+}
+
+/**
+* [GET] Preset repeater links
+*
+* @param {string} name
+* @param {array} elements
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @param {string} class
+* @return {array} Fields.
+*/
+function scm_acf_preset_repeater_links( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '' ) {
+
+	$name = ( $name ? $name . '-links' : 'links');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Link', SCM_THEME ) );
+	
+	$files = scm_acf_field_repeater( $name, array( 
+		'button'=>__( '+ Link', SCM_THEME ),
+		'label'=>'',
+		'class'=>$class,
+	), 100, $logic, $required );
+
+		$files['sub_fields'][] = scm_acf_field_text( 'name', 0, 30, 0, 0, __( 'Nome Pulsante', SCM_THEME) );
+		$files['sub_fields'][] = scm_acf_field_link( 'link', 0, 70, 0, 0, __( 'Inserisci un link', SCM_THEME) );		
+		
+		
+		
+	$fields[] = $files;
+	
+	return $fields;
+}
+
+/**
 * [GET] Preset repeater columns
 *
 * @param {string} name
@@ -1091,11 +1180,12 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 				$template['sub_fields'][] = scm_acf_field_text( 'archive', array( 'placeholder'=>'type[:field[=value]', 'prepend'=>__( 'Archivio', SCM_THEME ) ), 50 );
 				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_column_width( 'post', 50 ) );
 				$template['sub_fields'][] = scm_acf_field_text( 'relation', array( 'default'=>'AND', 'prepend'=>__( 'Relation', SCM_THEME ) ) );
-				$template['sub_fields'][] = scm_acf_field_repeater( 'query', array( 'sub'=>array(
+				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_repeater_query() );
+				/*$template['sub_fields'][] = scm_acf_field_repeater( 'query', array( 'sub'=>array(
 					scm_acf_field_text( 'key', array( 'placeholder'=>'field name', 'prepend'=>__( 'Key', SCM_THEME ) ), 33 ),
 					scm_acf_field_text( 'compare', array( 'placeholder'=>'=', 'prepend'=>__( 'Compare', SCM_THEME ) ), 33 ),
 					scm_acf_field_text( 'value', array( 'placeholder'=>'field value (default is Post ID)', 'prepend'=>__( 'Value', SCM_THEME ) ), 34 ),
-				) ), 100, 0, 0, __( 'Meta Query', SCM_THEME ) );
+				) ), 100, 0, 0, __( 'Meta Query', SCM_THEME ) );*/
 				$template['sub_fields'][] = scm_acf_field_text( 'post', array( 'placeholder'=>__( 'ID or Option Name', SCM_THEME ), 'prepend'=>__( 'Post', SCM_THEME ) ) );
 				$template['sub_fields'][] = scm_acf_field_positive( 'template', array( 'prepend'=>__( 'Template', SCM_THEME ) ) );
 
@@ -1176,7 +1266,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 	$objects[] = array( 'scm_acf_object_slider', __( 'Slider', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_section', __( 'Section', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_module', __( 'Module', SCM_THEME ) );
-    $objects[] = array( 'scm_acf_object_form', __( 'Form', SCM_THEME ) );
+    $objects[] = array( 'scm_acf_object_form', __( 'Contact Form', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_indirizzo', __( 'Indirizzo', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_map', __( 'Map', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_separatore', __( 'Separatore', SCM_THEME ) );
@@ -1186,7 +1276,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
     $objects[] = array( 'scm_acf_object_quote', __( 'Quote', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_data', __( 'Data', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_testo', __( 'Testo', SCM_THEME ) );
-    $objects[] = array( 'scm_acf_object_elenco_puntato', __( 'Elenco puntato', SCM_THEME ) );
+    $objects[] = array( 'scm_acf_object_elenco_puntato', __( 'Elenco', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_contatti', __( 'Contatti', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_social_follow', __( 'Social follow', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_social_share', __( 'Social share', SCM_THEME ) );

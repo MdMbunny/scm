@@ -39,7 +39,7 @@ if( SCM_PAGE_EDIT )
 
 // END HEAD
 
-global $SCM_indent, $post;
+global $SCM_indent, $SCM_agent, $post;
 
 $txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
@@ -140,7 +140,7 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
     $SCM_indent += 1;
     
     // Head
-    indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '" role="banner">', 2 );
+    indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '">', 2 );
 
     $just = 0;
 
@@ -192,17 +192,15 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
 
             $SCM_indent += 1;
             
-            indent( $SCM_indent, '<main id="main" class="site-main full" role="main">', 2 );
+            indent( $SCM_indent, '<main id="main" class="site-main full">', 2 );
 
                 // Page Content
                 $SCM_indent += 1;
                 indent( $SCM_indent, '<article' . $page_id . ' class="' . $page_class . '">', 2 );
                     $SCM_indent += 1;
 
-                    do_action( 'scm_action_before_slider' );
-
                     // Page Header
-                    if( $page_slider && $page_slider_terms ){
+                    if( $page_slider && $page_slider_terms && wp_script_is( $page_slider ) ){
 
                         indent( $SCM_indent, '<header class="header scm-header full ' . SCM_SITE_ALIGN . '">', 2 );
 

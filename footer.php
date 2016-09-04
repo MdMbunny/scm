@@ -27,7 +27,8 @@ wp_reset_postdata();
 
     $foot_login = scm_field( 'opt-credits-login', 0, 'option' );
 
-    $foot_credits_id = scm_field( 'opt-credits-id', '', 'option' );
+    $foot_credits_sel = scm_field( 'opt-credits-selectors', array(), 'option' );
+    $foot_credits_id = scm_field( 'opt-credits-id', 'site-credits', 'option' );
     $foot_credits_class = scm_field( 'opt-credits-class', '', 'option' );
 
     $foot_credits = scm_field( 'opt-credits-credits', '', 'option' );
@@ -55,7 +56,7 @@ wp_reset_postdata();
                
         indent( $SCM_indent+1, '</div><!-- content -->', 2 );
 
-        indent( $SCM_indent+1, '<footer id="' . $foot_id . '" class="' . $foot_class . '" role="contentinfo">', 2 );
+        indent( $SCM_indent+1, '<footer id="' . $foot_id . '" class="' . $foot_class . '">', 2 );
 
                 $SCM_indent += 2;
         
@@ -68,7 +69,7 @@ wp_reset_postdata();
 
                     scm_content( array( 'sections' => $repeater ) );
                         
-                    indent( $SCM_indent+1, '<div id="' . ( $foot_credits_id ?: 'site-credits' ) . '" class="site-credits' . ( $foot_credits_class ? ' ' . $foot_credits_class : '' ) . '">', 1 );
+                    indent( $SCM_indent+1, '<div id="' . $foot_credits_id . '" class="site-credits ' . $foot_credits_class . ' ' . implode( ' ', $foot_credits_sel ) . '">', 1 );
                         
                         $fields = array();
                         
