@@ -722,7 +722,7 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
 
     
     $link = '<a href="' . $url . '">';
-    $link_cont = apply_filters( 'scm_filter_menu_item_before', $depth, $count, $content, $has_children, $menu );
+    $link_cont = apply_filters( 'scm_filter_menu_item_before', '', $depth, $count, $content, $has_children, $menu );
     $link_cont .= $content;
     $link .= apply_filters( 'scm_filter_menu_item', $link_cont, $depth, $count, $content, $has_children, $menu );
     $link .= '</a>';

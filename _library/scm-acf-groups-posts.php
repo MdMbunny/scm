@@ -523,7 +523,7 @@ function scm_acf_fields_luoghi_tip( $name = '' ) {
 	$fields = apply_filters( 'scm_filter_fields_luoghi_tip_before', $fields );
 	$msg = __( 'Verrà utilizzata sulle mappe per indicare i <strong>Luoghi</strong> assegnati a questa <strong>Categoria</strong>. Comparirà anche nella legenda, se sulla mappa sono presenti più <strong>Luoghi</strong>.
     Selezionando l\'opzione <em>Default</em> dal menu a tendina <strong>Icona Mappa</strong>, verrà utilizzata un\'icona standard. Viene sostituita nei <strong>Luoghi</strong> ai quali è stata assegnata un\'icona specifica.', SCM_THEME );
-	$fields[] = scm_acf_preset_map_icon( 'luogo-tip', 100, 0, 0, $msg );
+	$fields = array_merge( $fields, scm_acf_preset_map_icon( 'luogo-tip', 100, 0, 0, $msg ) );
 	$fields = apply_filters( 'scm_filter_fields_luoghi_tip', $fields );
 
 	return $fields;

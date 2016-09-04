@@ -885,7 +885,7 @@ function scm_acf_preset_repeater_query( $name = '', $elements = '', $logic = 0, 
 * @param {string} class
 * @return {array} Fields.
 */
-function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '' ) {
+function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '', $class = '' ) {
 
 	$name = ( $name ? $name . '-files' : 'files');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Allegati', SCM_THEME ) );
@@ -917,7 +917,7 @@ function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, 
 * @param {string} class
 * @return {array} Fields.
 */
-function scm_acf_preset_repeater_links( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '' ) {
+function scm_acf_preset_repeater_links( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '', $class = '' ) {
 
 	$name = ( $name ? $name . '-links' : 'links');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Link', SCM_THEME ) );
