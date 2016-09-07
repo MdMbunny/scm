@@ -684,9 +684,10 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 			else:
 				$choices = array('no' => 'No Adobe font');
-				foreach ( $fonts as $slug => $font)
+				foreach ( $fonts as $slug => $font){
 					if( $font['type'] == 'adobe' )
 						$choices[ $slug ] = $font['family'];
+				}
 			endif;
 
 		elseif( strpos( $list, 'webfonts_google' ) !== false ):
@@ -736,9 +737,9 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	elseif( strpos( $list, 'font_weight' ) !== false ):
 		$choices = array(
-			'lighter' => 'Light',
-			'normal' => 'Normal',
-			'bold' => 'Bold',
+			'w300' => 'Light',
+			'w400' => 'Normal',
+			'w700' => 'Bold',
 		);
 
 	elseif( strpos( $list, 'line_height' ) !== false ):

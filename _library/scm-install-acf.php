@@ -29,6 +29,8 @@
 // ------------------------------------------------------
 
 add_action( 'acf/init', 'scm_hook_acf_libraries' );
+add_action( 'admin_head', 'scm_hook_acf_libraries_fonts' );
+add_action( 'wp_head', 'scm_hook_acf_libraries_fonts' );
 
 add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install', 10 );
 add_action( 'acf/include_fields', 'scm_hook_acf_option_subpages_install', 10 );
@@ -56,7 +58,7 @@ add_filter( 'acf/format_value/type=wysiwyg', 'scm_hook_acf_formatvalue_hook_edit
 // ------------------------------------------------------
 
 /**
-* [SET] Set ACF Libraries
+* [SET] Set ACF Libraries Colors
 *
 * Hooked by 'acf/init'
 *
@@ -64,11 +66,10 @@ add_filter( 'acf/format_value/type=wysiwyg', 'scm_hook_acf_formatvalue_hook_edit
 */
 function scm_hook_acf_libraries(){
 
-    global $SCM_libraries, $SCM_typekit;
+    global $SCM_libraries;
     
     $SCM_libraries = array(
         'colors' => array(),
-        'fonts' => array(),
         'selectors' => array(),
     );
 
@@ -93,6 +94,21 @@ function scm_hook_acf_libraries(){
         $SCM_libraries['selectors']['colors'][] = 'color-' . $slug;
         $SCM_libraries['selectors']['colors'][] = 'bg-color-' . $slug;
     }
+}
+
+/**
+* [SET] Set ACF Libraries
+*
+* Hooked by 'wp_head'
+* Hooked by 'admin_head'
+*
+* @subpackage 3-Install/ACF/HOOKS
+*/
+function scm_hook_acf_libraries_fonts(){
+
+    global $SCM_libraries, $SCM_typekit;
+    
+    $SCM_libraries['fonts'] = array();
 
     $g_fonts = scm_field( 'styles-google', array(), 'option' );
     foreach ( $g_fonts as $g_font ) {
@@ -102,16 +118,16 @@ function scm_hook_acf_libraries(){
             'type' => 'google'
         );
     }
-
     $a_fonts = scm_field( 'styles-adobe', array(), 'option' );
     if( $SCM_typekit ){
         foreach ( $a_fonts as $a_font ) {
+
             $kit = $SCM_typekit->get( $a_font['id'] );
             if( !$kit || !$kit['kit'] ) continue;
             foreach( $kit['kit']['families'] as $family){
                 $choices[$family['slug']] = $family['name'];
                 $SCM_libraries['fonts'][ $family['slug'] ] = array(
-                    'family' => $family['family'],
+                    'family' => $family['name'],
                     'style' => $family['style'],
                     'type' => 'adobe'
                 );

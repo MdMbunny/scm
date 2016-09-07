@@ -464,7 +464,7 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
 
             // MENU
 
-            $wrap .= indent( $in + 2 ) . '<ul class="toggle-content menu">' . lbreak(2) . $content . lbreak() . indent( $in + 2 ) . '</ul>' . lbreak(2);
+            $wrap .= indent( $in + 2 ) . '<ul class="toggle-content menu ' . $menu . '">' . lbreak(2) . $content . lbreak() . indent( $in + 2 ) . '</ul>' . lbreak(2);
 
         $wrap .= indent( $in + 1 ) . '</div>' . lbreak(2);
 
@@ -566,8 +566,10 @@ function scm_auto_menu( $numbers = false ) {
     $ret = '';
     $pages = subObject( get_pages( array( 'sort_column'=>'menu_order' ) ), 'menu_order', 0, true );
     $i = 0;
-    
+
     $pages = apply_filters( 'scm_filter_menu_auto', $pages );
+
+    $tot = sizeof( $pages );
     
     foreach ( $pages as $page ) {
         $i++;
@@ -584,7 +586,7 @@ function scm_auto_menu( $numbers = false ) {
         $has = scm_auto_menu_sub( $children, $depth + 1, 'auto', $numbers );
         $has_children = sizeof( $children ) && $has;
 
-        $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current, '', $i, 'auto' );
+        $ret .= scm_get_menu_item_open( $depth, $url, $content, $has_children, $current, '', $i, $tot, 'auto' );
 
             if( $has_children )
                 $ret .= scm_get_submenu_open( $depth + 1 ) . $has . scm_get_submenu_close( $depth + 1 );
@@ -605,10 +607,11 @@ function scm_auto_menu( $numbers = false ) {
 function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main', $numbers = false, $names = false ) {
     $ret = '';
     $i = 0;
+    $tot = sizeof( $children );
 
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, 'mini', $numbers, $names );
+        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, $tot, 'mini', $numbers, $names );
     }
     return $ret;
 }
@@ -623,18 +626,21 @@ function scm_auto_menu_sub_mini( $children, $depth = 0, $menu = 'main', $numbers
 function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main', $numbers = false, $names = false ) {
     $ret = '';
     $i = $j = 0;
+    $toti = sizeof( $children );
+    
 
     //consoleLog( $menu . ' = numbers > ' . $numbers . ' & names > ' . $names );
     
     foreach ($children as $child ) {
         $i++;
-        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, $menu, $numbers, $names );
+        $ret .= scm_auto_menu_sub_item( $child, $depth, $i, $toti, $menu, $numbers, $names );
         $sections = ( $child['rows'] ?: array() );
 
         $sections = apply_filters( 'scm_filter_menu_sub_auto', $sections );
+        $totj = sizeof( $sections );
         foreach ( $sections as $section ){
             $j++;
-            $ret .= scm_auto_menu_sub_item( $section, $depth + 1, $j, $menu, $numbers, $names );
+            $ret .= scm_auto_menu_sub_item( $section, $depth + 1, $j, $totj, $menu, $numbers, $names );
         }
     }
     return $ret;
@@ -647,7 +653,7 @@ function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main', $numbers = fa
 * @param {int=} depth (default is 0).
 * @return {string} HTML tag.
 */
-function scm_auto_menu_sub_item( &$item, $depth = 0, $count = 0, $menu = 'main', $numbers = false, $names = false ) {
+function scm_auto_menu_sub_item( &$item, $depth = 0, $count = 0, $tot = 0, $menu = 'main', $numbers = false, $names = false ) {
     if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) ) return '';
     $id = $item['id'];
     $icon = ex_attr( $item, 'icon', '' );
@@ -657,7 +663,7 @@ function scm_auto_menu_sub_item( &$item, $depth = 0, $count = 0, $menu = 'main',
         $id = $item['id'] = scm_field( str_replace( 'field:', '', $id), '' );
     if( $id ){
         $content = scm_auto_menu_item( ( $numbers ? $count : $icon ), ( $names ? '' : $id ), $sub );
-        $content = scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $content, false, false, '', $count, $menu ) . scm_get_menu_item_close( $depth );
+        $content = scm_get_menu_item_open( $depth, '#' . sanitize_title( $id ), $content, false, false, '', $count, $tot, $menu ) . scm_get_menu_item_close( $depth );
     }
     return $content;
 }
@@ -783,7 +789,7 @@ if ( ! class_exists( 'Sublevel_Walker' ) ) {
 * @param {string=} class (default is '').
 * @return {string} HTML tag.
 */
-function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_children = false, $current = false, $class = '', $count = 0, $menu = 'main' ) {
+function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_children = false, $current = false, $class = '', $count = 0, $tot = 0, $menu = 'main' ) {
 
     global $SCM_indent;
     $ind = $SCM_indent + 4 + $depth;
@@ -811,7 +817,7 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
         $link = lbreak() . indent( $ind + $depth + 1 ) . '<div class="toggle-button">' . $link . '</div>';
     }
     
-    $ret = indent( $ind + $depth ) . '<li class="' . ( $count ? 'item-' . $count . ' ' : '' ) . sanitize_title( $link ) . ' menu-item link-' . $type . $class . ' depth-' . $depth . '"' . ( $data ? ' ' . $data : '' ) . '>' . $link;
+    $ret = indent( $ind + $depth ) . '<li class="' . ( $count ? 'item-' . $count . ' ' : '' ) . sanitize_title( $link ) . ' menu-item link-' . $type . $class . ' depth-' . $depth . '"' . ( $data ? ' ' . $data : '' ) . ' data-menu-item-width="1' . $tot . '">' . $link;
     return $ret;
 
 }

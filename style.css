@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.4.7
+Version:			v3.4.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -788,10 +788,17 @@ blockquote .append{
 	padding: 0;
 }
 
-.scm-module + .scm-module:not([data-column]),
+/*.scm-module + .scm-module:not([data-column]),
 .scm-module > p.intro + .scm-list,
 .scm-content p + p,
 .scm-module p + p{
+	margin-top: 1em;
+}*/
+
+.scm-module + .scm-module:not([data-column]),
+.scm-module > p.intro + .scm-list,
+.scm-content p + p,
+.scm-module.testo > * + *{
 	margin-top: 1em;
 }
 
@@ -1463,6 +1470,10 @@ input[type="submit"]:active {
 	font-size: .7em;
 }
 
+.navigation.float-right{
+	text-align: right;
+}
+
 .toggle.navigation{
 	font-size: 1em;
 }
@@ -1746,6 +1757,8 @@ body:not(.ready) .navigation {
 	text-transform: initial;
 }
 
+.navigation .menu.mono a > .icon,
+.navigation .menu.mini a > .icon,
 .navigation .toggle-button > a > .icon{
 	display: block;
     margin-bottom: .3em;

@@ -404,7 +404,7 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 		$fields = array_merge( $fields, $imagew, $imageh, $imagef, $imageq );
 	
 	if( !$obj )
-		$fields[] = scm_acf_field_image_url( 'image', 0, $width, $logic );
+		$fields[] = scm_acf_field_image_all_url( 'image', 0, $width, $logic );
 	
 	return $fields;
 }

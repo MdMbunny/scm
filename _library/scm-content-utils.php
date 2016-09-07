@@ -546,7 +546,9 @@ function scm_utils_style_get_line_height( $type = '', $target = 'option', $add =
 * @return {misc|string} Result or result wrapped in style property if add is true.
 */
 function scm_utils_style_get_weight( $type = '', $target = 'option', $add = false ) {
+
 	$weight = scm_field( is( $type, 'style-txt-' ) .  'set-weight', '', $target, 1 );
+    $weight = startsWith( $weight, 'w' ) ? str_replace( 'w', '', $weight) : $weight;
 
 	if( !$weight && ( $type || $target != 'option' ) )
 		return '';

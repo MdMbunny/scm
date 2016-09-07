@@ -28,6 +28,8 @@
 add_action( 'wp_head', 'scm_hook_site_policies' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
+add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
+add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles' );
 //add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
 
