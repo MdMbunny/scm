@@ -31,6 +31,8 @@ add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
 add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles' );
+add_action( 'wp_enqueue_scripts', 'scm_hook_site_libraries' );
+add_action( 'admin_enqueue_scripts', 'scm_hook_site_libraries' );
 //add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
 
 // INLINE
@@ -121,6 +123,8 @@ function scm_hook_site_register_webfonts_adobe() {
 * [SET] Register and enqueue Google Webfonts style
 *
 * Hooked by 'wp_enqueue_scripts'
+* Hooked by 'admin_enqueue_scripts'
+*
 * @subpackage 4-Init/Core/1-ENQUEUE
 */
 function scm_hook_site_register_webfonts_google() {
@@ -146,6 +150,8 @@ function scm_hook_site_register_webfonts_google() {
 * [SET] Register and enqueue styles
 *
 * Hooked by 'wp_enqueue_scripts'
+* Hooked by 'admin_enqueue_scripts'
+*
 * @subpackage 4-Init/Core/1-ENQUEUE
 */
 function scm_hook_site_register_styles() {
@@ -163,6 +169,74 @@ function scm_hook_site_register_styles() {
     wp_enqueue_style( 'child' );
 
 }
+
+/**
+* [SET] Set Colors and Fonts Library
+*
+* Hooked by 'wp_enqueue_scripts'
+* Hooked by 'admin_enqueue_scripts'
+*
+* @subpackage 4-Init/Core/1-ENQUEUE
+*/
+function scm_hook_site_libraries(){
+
+    global $SCM_libraries, $SCM_typekit;
+    
+    $SCM_libraries = array(
+        'colors' => array(),
+        'selectors' => array(),
+        'fonts' => array(),
+    );
+
+    $SCM_libraries['selectors']['colors'] = array( 'color-white', 'color-black', 'bg-color-white', 'bg-color-black' );
+    $SCM_libraries['selectors']['text'] = array( 'text-min', 'text-minion', 'text-half', 'text-small', 'text-normal', 'text-medium', 'text-big', 'text-huge', 'text-max', 'text-double', 'text-triple', 'text-quadruple' );
+    $SCM_libraries['selectors']['alignment'] = array( 'text-left', 'text-right', 'text-center', 'text-justify', 'align-left', 'align-right', 'align-center', 'align-none', 'clear-none', 'clearfix' );
+    $SCM_libraries['selectors']['pointer'] = array( 'pointer', 'no-pointer' );
+    $SCM_libraries['selectors']['layout'] = array( 'responsive', 'full-width', 'full-height', 'prepend', 'append', 'tocolumn', 'scm-object' );
+    $SCM_libraries['selectors']['display'] = array( 'display-none', 'display-block', 'display-inline-block', 'display-inline', 'mask' );
+    $SCM_libraries['selectors']['position'] = array( 'position-fixed', 'position-absolute', 'position-relative', 'fixed-top', 'absolute-top', 'relative-top', 'fixed-bottom', 'absolute-bottom', 'relative-bottom', 'fixed-left', 'absolute-left', 'relative-left', 'fixed-right', 'absolute-right', 'relative-right', 'middle', 'overlay', 'underlay' );
+    $SCM_libraries['selectors']['shape'] = array( 'square', 'rounded', 'rounded-min', 'rounded-small', 'rounded-medium', 'rounded-big', 'rounded-max', 'circle', 'circle-min', 'circle-small', 'circle-medium', 'circle-big', 'circle-max', 'round-top', 'round-bottom', 'round-left', 'round-right', 'round-head', 'round-head-left', 'round-head-right', 'round-foot', 'round-foot-left', 'round-foot-right', 'round-leaf', 'round-leaf-left', 'round-leaf-right', 'round-petal', 'round-petal-left', 'round-petal-right', 'round-drop', 'round-drop-left', 'round-drop-right' );
+    $SCM_libraries['selectors']['link'] = array( 'disabled', 'enabled', 'button', );
+
+    $colors = scm_field( 'styles-colors', array(), 'option' );
+    foreach ( $colors as $color ) {
+        $slug = sanitize_title( $color['name'] );
+        $SCM_libraries['colors'][ $slug ] = array(
+            'name' => $color['name'],
+            'color' => $color['rgba-color'],
+            'alpha' => $color['rgba-alpha'],
+        );
+        $SCM_libraries['selectors']['colors'][] = 'color-' . $slug;
+        $SCM_libraries['selectors']['colors'][] = 'bg-color-' . $slug;
+    }
+
+    $g_fonts = scm_field( 'styles-google', array(), 'option' );
+    foreach ( $g_fonts as $g_font ) {
+        $SCM_libraries['fonts'][ sanitize_title( $g_font['family'] ) ] = array(
+            'family' => $g_font['family'],
+            'style' => $g_font['style'],
+            'type' => 'google'
+        );
+    }
+
+    $a_fonts = scm_field( 'styles-adobe', array(), 'option' );
+    if( sizeof( $a_fonts ) > 0 ){
+
+        foreach ( $a_fonts as $a_font ) {
+            $kit = $SCM_typekit->get( $a_font['id'] );
+            if( !$kit || !$kit['kit'] ) continue;
+            foreach( $kit['kit']['families'] as $family){
+                $choices[$family['slug']] = $family['name'];
+                $SCM_libraries['fonts'][ $family['slug'] ] = array(
+                    'family' => $family['name'],
+                    'style' => $family['style'],
+                    'type' => 'adobe'
+                );
+            }
+        }
+    }
+}
+
 
 // ------------------------------------------------------
 // 2-INLINE

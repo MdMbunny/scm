@@ -13,9 +13,9 @@
 // ------------------------------------------------------
 //
 // ACTIONS AND FILTERS
-//      0.2 ACF Option Pages
-//      0.3 ACF Fields
-//      0.4 ACF Admin Menu
+//      0.1 ACF Option Pages
+//      0.2 ACF Fields
+//      0.3 ACF Admin Menu
 // FILTERS
 //      1.1 ACF / Load Field
 //      1.2 ACF / Save Post
@@ -27,10 +27,6 @@
 // ------------------------------------------------------
 // ACTIONS AND FILTERS
 // ------------------------------------------------------
-
-add_action( 'acf/init', 'scm_hook_acf_libraries' );
-add_action( 'admin_head', 'scm_hook_acf_libraries_fonts' );
-add_action( 'wp_head', 'scm_hook_acf_libraries_fonts' );
 
 add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install', 10 );
 add_action( 'acf/include_fields', 'scm_hook_acf_option_subpages_install', 10 );
@@ -54,90 +50,7 @@ add_filter( 'acf/format_value/type=limiter', 'scm_hook_acf_formatvalue_hook_edit
 add_filter( 'acf/format_value/type=wysiwyg', 'scm_hook_acf_formatvalue_hook_editor', 10, 3 );
 
 // ------------------------------------------------------
-// 0.1 ACF LIBRARIES
-// ------------------------------------------------------
-
-/**
-* [SET] Set ACF Libraries Colors
-*
-* Hooked by 'acf/init'
-*
-* @subpackage 3-Install/ACF/HOOKS
-*/
-function scm_hook_acf_libraries(){
-
-    global $SCM_libraries;
-    
-    $SCM_libraries = array(
-        'colors' => array(),
-        'selectors' => array(),
-    );
-
-    $SCM_libraries['selectors']['colors'] = array( 'color-white', 'color-black', 'bg-color-white', 'bg-color-black' );
-    $SCM_libraries['selectors']['text'] = array( 'text-min', 'text-minion', 'text-half', 'text-small', 'text-normal', 'text-medium', 'text-big', 'text-huge', 'text-max', 'text-double', 'text-triple', 'text-quadruple' );
-    $SCM_libraries['selectors']['alignment'] = array( 'text-left', 'text-right', 'text-center', 'text-justify', 'align-left', 'align-right', 'align-center', 'align-none', 'clear-none', 'clearfix' );
-    $SCM_libraries['selectors']['pointer'] = array( 'pointer', 'no-pointer' );
-    $SCM_libraries['selectors']['layout'] = array( 'responsive', 'full-width', 'full-height', 'prepend', 'append', 'tocolumn', 'scm-object' );
-    $SCM_libraries['selectors']['display'] = array( 'display-none', 'display-block', 'display-inline-block', 'display-inline', 'mask' );
-    $SCM_libraries['selectors']['position'] = array( 'position-fixed', 'position-absolute', 'position-relative', 'fixed-top', 'absolute-top', 'relative-top', 'fixed-bottom', 'absolute-bottom', 'relative-bottom', 'fixed-left', 'absolute-left', 'relative-left', 'fixed-right', 'absolute-right', 'relative-right', 'middle', 'overlay', 'underlay' );
-    $SCM_libraries['selectors']['shape'] = array( 'square', 'rounded', 'rounded-min', 'rounded-small', 'rounded-medium', 'rounded-big', 'rounded-max', 'circle', 'circle-min', 'circle-small', 'circle-medium', 'circle-big', 'circle-max', 'round-top', 'round-bottom', 'round-left', 'round-right', 'round-head', 'round-head-left', 'round-head-right', 'round-foot', 'round-foot-left', 'round-foot-right', 'round-leaf', 'round-leaf-left', 'round-leaf-right', 'round-petal', 'round-petal-left', 'round-petal-right', 'round-drop', 'round-drop-left', 'round-drop-right' );
-    $SCM_libraries['selectors']['link'] = array( 'disabled', 'enabled', 'button', );
-
-    $colors = scm_field( 'styles-colors', array(), 'option' );
-    foreach ( $colors as $color ) {
-        $slug = sanitize_title( $color['name'] );
-        $SCM_libraries['colors'][ $slug ] = array(
-            'name' => $color['name'],
-            'color' => $color['rgba-color'],
-            'alpha' => $color['rgba-alpha'],
-        );
-        $SCM_libraries['selectors']['colors'][] = 'color-' . $slug;
-        $SCM_libraries['selectors']['colors'][] = 'bg-color-' . $slug;
-    }
-}
-
-/**
-* [SET] Set ACF Libraries
-*
-* Hooked by 'wp_head'
-* Hooked by 'admin_head'
-*
-* @subpackage 3-Install/ACF/HOOKS
-*/
-function scm_hook_acf_libraries_fonts(){
-
-    global $SCM_libraries, $SCM_typekit;
-    
-    $SCM_libraries['fonts'] = array();
-
-    $g_fonts = scm_field( 'styles-google', array(), 'option' );
-    foreach ( $g_fonts as $g_font ) {
-        $SCM_libraries['fonts'][ sanitize_title( $g_font['family'] ) ] = array(
-            'family' => $g_font['family'],
-            'style' => $g_font['style'],
-            'type' => 'google'
-        );
-    }
-    $a_fonts = scm_field( 'styles-adobe', array(), 'option' );
-    if( $SCM_typekit ){
-        foreach ( $a_fonts as $a_font ) {
-
-            $kit = $SCM_typekit->get( $a_font['id'] );
-            if( !$kit || !$kit['kit'] ) continue;
-            foreach( $kit['kit']['families'] as $family){
-                $choices[$family['slug']] = $family['name'];
-                $SCM_libraries['fonts'][ $family['slug'] ] = array(
-                    'family' => $family['name'],
-                    'style' => $family['style'],
-                    'type' => 'adobe'
-                );
-            }
-        }
-    }
-}
-
-// ------------------------------------------------------
-// 0.2 ACF OPTION PAGES
+// 0.1 ACF OPTION PAGES
 // ------------------------------------------------------
 
 /**
@@ -306,7 +219,7 @@ function scm_hook_acf_option_subpages_install(){
 }
 
 // ------------------------------------------------------
-// 0.3 ACF FIELDS
+// 0.2 ACF FIELDS
 // ------------------------------------------------------
 
 /**
@@ -506,7 +419,7 @@ function scm_acf_install_posts_fields() {
 }
 
 // ------------------------------------------------------
-// 0.4 ACF ADMIN MENU
+// 0.3 ACF ADMIN MENU
 // ------------------------------------------------------
 
 /**
