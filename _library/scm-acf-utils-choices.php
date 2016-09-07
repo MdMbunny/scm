@@ -651,7 +651,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	elseif( strpos( $list, 'colors_library' ) !== false ):
 		global $SCM_libraries;
-		$colors = $SCM_libraries['colors'];
+		$colors = ex_attr( $SCM_libraries, 'colors', array() );
 
 		$choices = array('no' => 'No color');
 		foreach ( $colors as $slug => $color ) {
@@ -661,7 +661,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 	elseif( strpos( $list, 'webfonts' ) !== false ):
 	
 		global $SCM_libraries;
-		$fonts = $SCM_libraries['fonts'];
+		$fonts = ex_attr( $SCM_libraries, 'fonts', array() );
 
 		if( strpos( $list, 'webfonts_adobe' ) !== false ):
 			if( strpos( $list, 'webfonts_adobe_styles' ) !== false ):
