@@ -337,7 +337,7 @@ function scm_acf_install_posts_fields() {
     $groups = apply_filters( 'scm_filter_register_before', $groups );
 
     // + CUSTOM TAXONOMIES
-    foreach ($SCM_types['taxonomies'] as $slug => $tax) {
+    foreach ( ex_attr( $SCM_types, 'taxonomies', array() ) as $slug => $tax) {
         $fun = 'scm_acf_fields_' . str_replace( '-', '_', $slug );
         if( function_exists( $fun ) ){
             $group = scm_acf_group( __( 'Opzioni '. $tax->singular, SCM_THEME ), $slug . '-single' );
@@ -367,7 +367,7 @@ function scm_acf_install_posts_fields() {
     $groups[] = $page_footer;
 
     // + CUSTOM TYPES
-    foreach ($SCM_types['custom'] as $slug => $title) {
+    foreach ( ex_attr( $SCM_types, 'custom', array() ) as $slug => $title) {
         if($slug=='slides'){
             $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
             $group['location'][] = scm_acf_group_location( 'page' );
@@ -389,7 +389,7 @@ function scm_acf_install_posts_fields() {
     }
 
     // + TEMPLATES
-    foreach ($SCM_types['public'] as $slug => $title) {
+    foreach ( ex_attr( $SCM_types, 'public', array() ) as $slug => $title) {
 
         if( $slug == 'slides' ) continue;
 
