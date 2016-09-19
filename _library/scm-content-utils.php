@@ -926,8 +926,8 @@ function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark
     switch ( $marker ) {
         case 'icon':
             $fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker' );
-            //$color = scm_utils_preset_rgba( is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
-            $color = scm_utils_preset_rgba( $fields, 'luogo-map', '#e3695f', 1 );
+            $color = scm_utils_preset_rgba( is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
+            //$color = scm_utils_preset_rgba( $fields, 'luogo-map', '#e3695f', 1 );
             $icon = array( 'icon' => $fa, 'data' => $color );
             $marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
         break;

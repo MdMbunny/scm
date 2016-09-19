@@ -1031,6 +1031,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             'post_type' => $type,
             'tax_query' => $tax,
             'posts_per_page' => $perpage,
+            'post_status' => array( 'publish', 'private' ),
             'order' => $ordertype,
             'orderby' => $orderby,
             'paged' => $current,
