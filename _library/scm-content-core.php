@@ -535,17 +535,19 @@ function scm_container_link( $content = array() ){
                 case 'template':
                     $target = ' data-target="_self"';
                     $href = ' data-href="' . get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) . '"';
+                    $content['link'] = '';
                 break;
 
                 case 'link':
                     $href = ( $content['url'] ? ' data-href="' . $content['url'] . '"' : '' );
+                    $content['link'] = '';
                 break;
 
                 default: break;
             }
         }
 
-        $content['link'] = '';
+        //$content['link'] = '';
 
         $content['attributes'] .= ( $href ? $href . $target : '' );
     }
