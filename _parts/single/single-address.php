@@ -106,10 +106,8 @@ if( is( $element ) ){
 		$i_class = 'bullet ' . ( $icon == 'inside' ? ' float-' . $align : '' );
 		
 
-		if( $googlemaps ){
-			$google_address = str_replace(' ', '+', doublesp( $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $country ) );
-			$li_attr = ' data-href="https://maps.google.com/?q=' . $google_address . '"';
-		}
+		if( $googlemaps )
+			$li_attr = ' data-href="' . googleMapsLink( $address . ' ' . $town . ' ' . $code . ' ' . $city . ' ' . $country ) . '"';
 
 		indent( $SCM_indent, openTag( 'li', '', ( $icon == 'inside' ? $li_class : '' ), '', $li_attr ), 1 );
 

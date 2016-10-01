@@ -595,7 +595,7 @@ function scm_acf_get_field( $elem ) {
     			case 'id':				$prepend = '#';								$place = __( 'id', SCM_THEME );															break;
     			case 'class':			$prepend = '.';								$place = __( 'class', SCM_THEME ); 														break;
     			case 'attributes': 		$prepend = __( 'Data', SCM_THEME );			$place = 'data-href="www.website.com" data-target="_blank"';							break;
-    			case 'name':			$prepend = __( 'Nome', SCM_THEME );			$place = __( 'senza nome', SCM_THEME ); 			$maxl = 30;							break;
+    			case 'name':			$prepend = __( 'Nome', SCM_THEME );			$place = __( 'senza nome', SCM_THEME ); 												break;
     			case 'link': 			$prepend = __( 'URL', SCM_THEME ); 			$place = 'http://www.website.com';														break;
     			case 'email': 			$prepend = __( 'Email', SCM_THEME ); 		$place = 'info@website.com';															break;
     			case 'user': 			$prepend = __( 'Utente', SCM_THEME ); 		$place = __( 'nome utente', SCM_THEME );												break;

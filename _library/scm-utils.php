@@ -633,6 +633,9 @@ function getURL( $url ){
         return wp_logout_url( $url );
     }
 
+    if( startsWith( $url, 'map:' ) !== false )
+        return googleMapsLink( $url );
+
     if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )
         return encodeEmail( $url );
 
@@ -2288,6 +2291,18 @@ function closeTag( $tag = 'div', $app = '' ){
  * @param {string=} email Email address to be encoded (default is '').
  * @return {string} Encoded email address.
  */
+function googleMapsLink( $address = '' ){
+    return 'https://maps.google.com/?q=' . str_replace( ' ', '+', str_replace( ' - ', '+', str_replace( 'map:', '', doublesp( $address ) ) ) ) ;
+}
+
+/**
+ * [GET] Encode email address
+ *
+ * @subpackage 1-Utilities/HTML
+ *
+ * @param {string=} email Email address to be encoded (default is '').
+ * @return {string} Encoded email address.
+ */
 function encodeEmail( $email = '' ){
     return str_replace( '@', '()', str_replace( '.', ',', $email ) );
 }
@@ -2358,6 +2373,10 @@ function getHREF( $type = 'web', $link, $data = false ){
 
         case 'web':
             return ' ' . $data . 'href="' . getURL( $link ) . '" ' . $data . 'target="_blank"';
+        break;
+
+        case 'map':
+            return ' ' . $data . 'href="' . googleMapsLink( $link ) . '" ' . $data . 'target="_blank"';
         break;
 
         default:
