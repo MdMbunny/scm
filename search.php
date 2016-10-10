@@ -12,12 +12,12 @@
  * @since 1.0.0
  */
 
-	if ( have_posts() ) {
+	/*if ( have_posts() ) {
 
 		get_header();
 
 		echo '<header class="page-header">';
-			echo '<h1 class="page-title">' . printf( __( "Search Results for: %s", SCM_THEME ), "<span><?php get_search_query() ?></span>" ); . '</h1>';
+			echo '<h1 class="page-title">' . printf( __( "Search Results for: %s", SCM_THEME ), "<span><?php get_search_query() ?></span>" ) . '</h1>';
 		echo '</header><!-- .page-header -->';
 
 		while ( have_posts() ) : the_post();
@@ -28,9 +28,9 @@
 
 		get_footer();
 
-	} else {
+	} else {*/
 
-		<?php get_template_part( SCM_DIR_PARTS, 'none' );
+		get_template_part( SCM_DIR_PARTS, 'none' );
 	
-	}
+	//}
 ?>

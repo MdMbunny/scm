@@ -362,6 +362,17 @@ function scm_acf_get_field( $elem ) {
 
     	break;
 
+    	case 'users':
+
+    		$field = array (
+				'type' => 'user',
+				'role' => scm_acf_get_field_to3( $arg, 1, 'role', array() ),
+				'allow_null' => scm_acf_get_field_to3( $arg, 2, 'null', ( strpos( $extra , '-null' ) !== false ? 1 : 0 ) ),
+				'multiple' => scm_acf_get_field_to3( $arg, 3, 'multiple', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) ),
+			);
+
+    	break;
+
     	case 'object':
     	case 'objects':
 
@@ -595,7 +606,7 @@ function scm_acf_get_field( $elem ) {
     			case 'id':				$prepend = '#';								$place = __( 'id', SCM_THEME );															break;
     			case 'class':			$prepend = '.';								$place = __( 'class', SCM_THEME ); 														break;
     			case 'attributes': 		$prepend = __( 'Data', SCM_THEME );			$place = 'data-href="www.website.com" data-target="_blank"';							break;
-    			case 'name':			$prepend = __( 'Nome', SCM_THEME );			$place = __( 'senza nome', SCM_THEME ); 												break;
+    			case 'name':			$prepend = __( 'Nome', SCM_THEME );			$place = __( 'senza nome', SCM_THEME ); 			$maxl = 30;							break;
     			case 'link': 			$prepend = __( 'URL', SCM_THEME ); 			$place = 'http://www.website.com';														break;
     			case 'email': 			$prepend = __( 'Email', SCM_THEME ); 		$place = 'info@website.com';															break;
     			case 'user': 			$prepend = __( 'Utente', SCM_THEME ); 		$place = __( 'nome utente', SCM_THEME );												break;

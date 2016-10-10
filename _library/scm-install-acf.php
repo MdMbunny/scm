@@ -319,7 +319,7 @@ function scm_acf_install_options_fields() {
 $groups = apply_filters( 'scm_filter_register_before', array() );
 
 // Filters fields list after single type fields are initialized
-$group = apply_filters( 'scm_filter_register_{post_type}, $group );
+$group = apply_filters( 'scm_filter_register_{post_type}', $group );
 
 // Filters fields list after initialized
 $groups = apply_filters( 'scm_filter_register', $groups );

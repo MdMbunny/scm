@@ -22,6 +22,7 @@
 // 6.0 STYLE
 // 7.0 FILE
 // 8.0 SVG
+// 9.0 DATE and TIME
 //
 // ------------------------------------------------------
 
@@ -1238,6 +1239,21 @@ function endsWith($str, $needle = '') {
 // ------------------------------------------------------
 
 /**
+ * [GET] Average between values
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array or Object to check.
+ * @return {number} Average
+ */
+function array_average( $arr ) {
+    $tot = count( $arr );
+    if (!$tot)
+        return 0;
+    return array_sum( $arr ) / $tot;
+}
+
+/**
  * [GET] Is array or object
  *
  * @subpackage 1-Utilities/ARRAY
@@ -2122,7 +2138,7 @@ print( $html )
  * @param {array=} cont Array containing tag settings (default is empty array).
  * @return {string} Array in form of formatted HTML.
  */
-function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array() ){
+function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array(), $sort = -1 ){
 
     if( !$arr )
         return '';
@@ -2133,6 +2149,8 @@ function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array() ){
         'key' => 'strong',
         'value' => 'span',
     ), $cont );
+    
+    if( $sort === 0 && is_asso( $arr ) ) arsort( $arr );
 
     $html = '<' . $att['container'] . '>' . lbreak();
 
@@ -2145,14 +2163,14 @@ function arrayToHTML( $arr, $indent = 1, $block = 1, $cont = array() ){
 
                 if( is_array( $value ) && $block > 0 ){
                     $sub = array(
-                        'container' => $att['container'] . ' class="sub" style="padding-left:2em;"',
+                        'container' => $att['container'] . ' class="sub" style="padding-left:' . $block . 'em;"',
                         'element' => $att['element'],
                         'key' => $att['key'],
                         'value' => $att['value'],
                     );
 
                     $html .= lbreak();
-                    $html .= arrayToHTML( $value, $indent + 1, $block - 1, $sub );
+                    $html .= arrayToHTML( $value, $indent + 1, $block - 1, $sub, $sort - 1 );
 
                 }else{
                     $html .= indent( $indent + 1 ) . '<' . $att['value'] . ' style="font-weight: normal;">';
@@ -2865,6 +2883,33 @@ function svgLine( $attr = array(), $type = 'solid', $indent = 0 ) {
     else
         indent( $indent + 2, '<line x1="' . $attr['x1'] . '" x2="' . $attr['x2'] . '" y1="' . $attr['y1'] . '" y2="' . $attr['y2'] . '" stroke="' . $attr['color'] . '" stroke-width="' . $attr['stroke'] . '" stroke-linecap="' . $attr['cap'] . '" stroke-dasharray="' . $attr['dash'] . ', ' . $attr['space'] . '"></line>', 1 );
     indent( $indent + 1, '</svg>', 2 );
+}
+
+// ------------------------------------------------------
+// 9.0 DATE and TIME
+// ------------------------------------------------------
+
+function dayDiff( $old, $new, $ext = false ) {
+    if( $ext ){
+        $datetime1 = new DateTime( date( 'm/d/Y', $old ) );
+        $datetime2 = new DateTime( date( 'm/d/Y', $new ) );
+        $diff = $datetime1->diff($datetime2);
+        $y = $diff->y;
+        $m = $diff->m;
+        $d = $diff->d;
+        $yy = ( $y === 1 ? 'year' : 'years' );
+        $mm = ( $m === 1 ? 'month' : 'months' );
+        $dd = ( $d === 1 ? 'day' : 'days' );
+        return ( $y ? $y . ' ' . $yy . ( $m || $d ? ', ' : '' ) : '' ) . ( $m ? $m . ' ' . $mm . ( $d ? ', ' : '' ) : '' ) . ( $d ? $d . ' ' . $dd : '' );
+        
+    }
+    return floor( $new - $old / (60 * 60 * 24) );
+}
+
+function timeToSec($time) {
+    $sec = 0;
+    foreach (array_reverse(explode(':', $time)) as $k => $v) $sec += pow(60, $k) * $v;
+    return $sec;
 }
 
 ?>
