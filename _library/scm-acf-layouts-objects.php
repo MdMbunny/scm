@@ -193,7 +193,7 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
 	
 	$fields[] = scm_acf_field_select( 'login-type', array( 
 		'type'=>'links_type', 
-		'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ) ), 
+		'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ), 'self' => __( 'Self', SCM_THEME ) ), 
 		'label'=>__( 'Redirect', SCM_THEME ),
 	), 100 );
 
@@ -223,7 +223,7 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
 		$buttons['sub_fields'][] = scm_acf_field_text( 'label', array( 'placeholder'=>__( 'Override default Label', SCM_THEME), 'prepend'=>__( 'Label', SCM_THEME ) ) );
 		$buttons['sub_fields'][] = scm_acf_field_select( 'login', array( 
 			'type'=>'links_type', 
-			'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ) ), 
+			'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ), 'self' => __( 'Self', SCM_THEME ) ), 
 			'label'=>__( 'Redirect', SCM_THEME ),
 		), 100 );
 

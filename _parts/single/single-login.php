@@ -56,7 +56,7 @@ if ( is_user_logged_in() ) {
 
     // LOGGED IN BUTTONS
 
-    $buttons = $args['login-buttons'];
+    $buttons = ex_attr( $args, 'login-buttons', 0 ) ?: array();
 
     foreach ( $buttons as $button ) {
         $b_type = ( isset( $button['type'] ) ? $button['type'] : 'logout' );

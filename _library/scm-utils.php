@@ -570,12 +570,23 @@ function updatePostMeta( $id, $meta, $value = NULL ){
  * @return {string} Filtered URL.
  */
 function loginRedirect( $type = 'page', $link = '' ){
-    if( $type == 'page' )
-        return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) || ( (int)$link > 1 ) ? getURL( 'page:' . $link ) : $link ) );
-    elseif( $type == 'admin' )
-        return ( $link ? site_url( '/wp-admin/' . $link ) : site_url('/wp-admin/users.php') );
-    else
-        return ( $link ?: site_url( '/wp-admin/users.php' ) );
+    switch( $type ){
+        case 'page':
+            return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) || ( (int)$link > 1 ) ? getURL( 'page:' . $link ) : $link ) );
+        break;
+
+        case 'admin':
+            return ( $link ? site_url( '/wp-admin/' . $link ) : site_url('/wp-admin/users.php') );
+        break;
+
+        case 'self':
+            return get_permalink();
+        break;
+        
+        default:
+            return ( $link ?: site_url( '/wp-admin/users.php' ) );
+        break;
+    }        
 }
 
 

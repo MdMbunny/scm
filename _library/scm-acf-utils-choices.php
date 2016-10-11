@@ -117,7 +117,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	elseif( strpos( $list, 'selectors' ) !== false ):
 		global $SCM_libraries;
-		$selectors = $SCM_libraries['selectors'];
+		$selectors = ex_attr( $SCM_libraries, 'selectors', 0);
 		if( !$selectors || !is_array( $selectors ) ) return $choices;
 		$choices = call_user_func_array('array_merge', $selectors );
 
