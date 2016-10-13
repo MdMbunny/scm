@@ -317,6 +317,9 @@ require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
 
 // CORE
 
+/** SCM init front. */
+require_once( SCM_DIR_LIBRARY . 'scm-init-front.php' );
+
 /** SCM init core. */
 require_once( SCM_DIR_LIBRARY . 'scm-init-core.php' );
 

@@ -603,7 +603,11 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	color: #AAA;
 }
 
-#pageparentdiv, #postimagediv{
+/*#pageparentdiv{
+	display: none !important;
+}*/
+
+#postimagediv{
 	display: none !important;
 }
 

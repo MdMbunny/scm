@@ -13,7 +13,7 @@
  */
 
 global $SCM_indent, $SCM_types, $SCM_agent, $post;
-
+/*
 // REDIRECT OLD BROWSER ------------------------------------------------------------------------
 
 $ver = ( $SCM_agent['browser']['ver'] && $SCM_agent['browser']['ver'] != 'unknown' ?: 1000 );
@@ -86,14 +86,16 @@ define( 'SCM_SITE_ALIGN',			scm_field( 'layout-alignment', 'center', 'option' ) 
 if( SCM_PAGE_EDIT )
 	scm_hook_admin_ui_edit_mode();
 else
-	scm_hook_admin_ui_view_mode();
+	scm_hook_admin_ui_view_mode();*/
 
 // BUILD ---------------------------------------------------------------------------------------------
+
+$scm = scm_front_init();
 
 // Header
 get_header();
 
-switch ($template) {
+switch ($scm['template']) {
 
 // Content from Page, _Single Page or _Archive Page
 	case 'page':
@@ -102,7 +104,7 @@ switch ($template) {
 
 // Content from Single Part or Archive Part
 	case 'part':
-		get_template_part( $part, $type );
+		get_template_part( $scm['part'], $scm['type'] );
 		break;
 
 // Content from Template
@@ -110,7 +112,7 @@ switch ($template) {
 		indent( $SCM_indent + 1, '<div id="post-' . SCM_PAGE_ID . '" class="section scm-section object scm-object single-post full ' . SCM_SITE_ALIGN . '">', 2 );
 			indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_utils_style_get( 'align', 'option', 0 ) . '">', 2 );
 				$SCM_indent += 3;
-				scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $type ), 'template' => $template, 'type' => 'single', 'single' => array( SCM_PAGE_ID ) ) );
+				scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $scm['type'] ), 'template' => $scm['template'], 'type' => 'single', 'single' => array( SCM_PAGE_ID ) ) );
 				$SCM_indent -= 3;
 			indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
 		indent( $SCM_indent + 1, '</div><!-- section -->', 2 );
