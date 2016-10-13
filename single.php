@@ -12,7 +12,7 @@
  * @since 1.0.0
  */
 
-do_action( 'scm_action_content_single', $_SERVER['REQUEST_URI'] );
+do_action( 'scm_action_single', $_SERVER['REQUEST_URI'] );
 
 get_template_part( SCM_DIR_PARTS );
 

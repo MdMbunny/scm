@@ -12,6 +12,11 @@
  * @since 1.0.0
  */
 
+do_action( 'scm_action_content_old', $_SERVER['REQUEST_URI'] );
+
+$logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'opt-staff-logo', scm_field( 'brand-logo', SCM_URI_IMAGES . 'logo.png', 'option' ), 'option' ), 'option' ) );
+$html = scm_utils_style_get( 'bg_color', 'loading-style-bg', 1 );
+
 ?>
 
 <!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -19,13 +24,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Browser da aggiornare</title>-->
-
-<?php
-
-    $logo_image = esc_url( scm_field( 'opt-fallback-logo', scm_field( 'opt-staff-logo', scm_field( 'brand-logo', SCM_URI_IMAGES . 'logo.png', 'option' ), 'option' ), 'option' ) );
-    $html = scm_utils_style_get( 'bg_color', 'loading-style-bg', 1 );
-
-?>
 
 <style>
 
