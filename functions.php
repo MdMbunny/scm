@@ -271,6 +271,8 @@ require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
 /** SCM Utilities. */
 require_once( SCM_DIR_LIBRARY . 'scm-utils.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-utils-wp.php' );
+require_once( SCM_DIR_LIBRARY . 'scm-utils-wpdb.php' );
 
 /** SCM ACF utilities. */
 require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );

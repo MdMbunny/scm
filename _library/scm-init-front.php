@@ -16,16 +16,9 @@
 
 
 /**
-* [GET] Add custom query vars
+* [SET] Init Front End
 *
-* template = template id for dynamic content<br />
-* action = edit|view
-*
-* Hooked by 'query_vars'
-* @subpackage 4-Init/Core/4-QUERY
-*
-* @param {array=} public_query_vars List of query vars (default is empty array).
-* @return {array} Modified list of query vars.
+* @subpackage 4-Init/Front
 */
 function scm_front_init() {
 
@@ -74,7 +67,6 @@ function scm_front_init() {
                 $page = get_page_by_path( '_single-' . $type );
                 $part = SCM_DIR_PARTS_SINGLE;
             }elseif( $archive ){
-                consoleLog(get_page_by_path( '_archive-' . $type ));
                 $page = get_page_by_path( '_archive-' . $type );
                 $part = SCM_DIR_PARTS_ARCHIVE;
             }
