@@ -21,6 +21,7 @@
 // 7.0 FILE
 // 8.0 SVG
 // 9.0 DATE and TIME
+//10.0 CSV
 //
 // ------------------------------------------------------
 
@@ -115,6 +116,24 @@ function exists( $var = '' ){
 function ifexists( $var = NULL, $fall = '', $pre = '', $app = '' ){
     if( !exists( $var ) ) return $fall;
     return ( is_string( $var ) ? $pre . $var . $app : ( is_numeric( $var ) ? (int)$pre + $var - (int)$app : $var ) );
+}
+
+/**
+* [SET] Value/s is/are NULL
+*
+* @subpackage 1-Utilities/MISC
+*
+* @param {array=} $arr An array containing elements to check (default is empty array).
+* @param {bool} $all If true it checks if every element is NULL, otherwise it checks if at least one element is NULL.
+* @return {bool} Element/s is/are NULL.
+*
+*/
+function are_null( $arr = array(), $all = false ){
+    foreach ($arr as $value) {
+        if( is_null( $value ) && !$all ) return true;
+        if( !is_null( $value ) && $all ) return false;
+    }
+    return $all;
 }
 
 /**
@@ -698,6 +717,61 @@ function arr_unshift( $arr = array(), $value = NULL ){
 function arr_push( $arr = array(), $value = NULL ){
     if( is_null( $value ) ) return $arr;
     return array_merge( $arr, array( $value ) );
+}
+
+/**
+* [SET] Swap two array values
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array where to swap values (default is empty array).
+* @param {int} $a The first index.
+* @param {int} $b The second index.
+* @return {array} The new array.
+*
+*/
+function arr_swap( $arr = array(), $a = NULL, $b = NULL ){
+    if( are_null( array( $a, $b ) ) ) return $arr;
+    $temp = $arr[$a];
+    $arr[$a] = $arr[$b];
+    $arr[$b] = $temp;
+    return $arr;
+}
+
+/**
+* [SET] Swap two array values for each array received
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array containing arrays where to swap values (default is empty array).
+* @param {int} $a The first index.
+* @param {int} $b The second index.
+* @return {array} The new array.
+*
+*/
+function arrs_swap( $arr = array(), $a = NULL, $b = NULL ){
+    if( are_null( array( $a, $b ) ) ) return $arr;
+    foreach ($arr as &$value) {
+        if( !is_arr( $value ) || empty( $value ) ) continue;
+        $value = arr_swap( $value, $a, $b );
+    }
+    return $arr;
+}
+
+/**
+* [SET] Move an array value from $a to $b
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array where to move the value (default is empty array).
+* @param {int} $from From index.
+* @param {int} $to To index.
+* @return WARNING: this function does not return a new array. The original array is altered.
+*
+*/
+function arr_move( &$arr, $from, $to ) {
+    $out = array_splice($arr, $from, 1);
+    array_splice($arr, $to, 0, $out);
 }
 
 /**
@@ -1990,6 +2064,47 @@ function timeToSec($time) {
     $sec = 0;
     foreach (array_reverse(explode(':', $time)) as $k => $v) $sec += pow(60, $k) * $v;
     return $sec;
+}
+
+// ------------------------------------------------------
+// 10.0 CSV
+// ------------------------------------------------------
+
+function csv_get_columns( $csv, $head = array() ){
+    $arr = array();
+    foreach( $head as $value ){
+        $arr[ $value ] = csv_get_column( $csv, $value );
+    }
+    return $arr;
+}
+
+function csv_get_column( $csv, $head = 0 ){
+    if( is_string( $head ) ) $head = csv_get_column_index( $csv, $head );
+    $arr = array();
+    for( $i=1; $i < sizeof( $csv ); $i++ )
+        $arr[] = $csv[$i][$head];
+    return $arr;
+}
+
+function csv_get_column_index( $csv, $head = '' ){
+    return getByValue( $csv[0], $head );
+}
+
+function csv_move_column( &$csv, $from, $to ){
+    if( is_string( $from ) ) $from = csv_get_column_index( $csv, $from );
+    if( is_string( $to ) ) $to = csv_get_column_index( $csv, $to );
+    for( $i = 0; $i < sizeof($csv); $i++){
+        arr_move( $csv[$i], $from, $to );
+    }
+}
+
+function csv_insert_column( &$csv, $index, $head = '' ){
+    for( $i = 0; $i < sizeof($csv); $i++ ){
+        $value = $head;
+        if( is_list( $head ) ) $value = ex_attr( $head, $i, '' );
+        array_splice( $csv[$i], $index, 0, $head );
+        if(!$i && !is_list( $head ) ) $head = '';
+    }
 }
 
 ?>
