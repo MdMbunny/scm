@@ -468,6 +468,30 @@ function ex_attr( $var, $attr = '', $fall = '', $pre = '', $app = '' ){
 }
 
 /**
+ * [GET] Associative array attribute exists, or fallback
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} var Array to check.
+ * @param {string} attr Attribute to look for.
+ * @param {string=} fall Fallback (default is '').
+ * @param {string=} pre Prepend (default is '').
+ * @param {string=} app Append (default is '').
+ * @return {string} Array attribute if exists, fallback if not.
+ */
+function ex_index( $var, $ind = -1, $fall = '', $pre = '', $app = '' ){
+    $ret = '';
+    if( !isset( $var ) || !is_arr( $var ) || !is_int( $ind ) || $ind < 0 || !isset( $var[$ind] ) )
+        $ret = $fall;
+    else
+        $ret = $var[$ind];
+    if( $ret && ( $pre || $app ) )
+        $ret = $pre . (string)$ret . $app;
+
+    return $ret;
+}
+
+/**
  * [GET] Associative array attribute is, or fallback
  *
  * @subpackage 1-Utilities/ARRAY
