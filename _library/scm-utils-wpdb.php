@@ -58,22 +58,21 @@ function setWPDB( $db = NULL ){
     $wpdb = $db;
 }
 
-function wpdbInsertLangs( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false, $option = '' ){
+function wpdbInsertLangs( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false ){
 
     $new_posts = array();
-    $options = get_option( $option, array() );
     $def = key( $language );
     $langs = current( $language );
 
     $defs = getAllByValueKey( $posts, $def, 'lang_input', true );
-    $new_posts = wpdbInsertPosts( $defs, array(), $update, $specific, $debug, $option );
+    $new_posts = wpdbInsertPosts( $defs, array(), $update, $specific, $debug );
 
     if( $debug ) consoleLog( $def . ' (default)' );
 
     foreach ($langs as $lang) {
         if( $lang === $def ) continue;
         $trans = getAllByValueKey( $posts, $lang, 'lang_input', true );
-        $lang_posts = wpdbInsertPosts( $trans, $new_posts, $update, $specific, $debug, $option );
+        $lang_posts = wpdbInsertPosts( $trans, $new_posts, $update, $specific, $debug );
         if( $debug ) consoleLog( $lang );
         $new_posts = array_merge( $new_posts, $lang_posts );
     }
@@ -83,10 +82,9 @@ function wpdbInsertLangs( $posts = array(), $language = array(), $update = false
     return $new_posts;
 }
 
-function wpdbInsertPosts( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false, $option = '' ){
+function wpdbInsertPosts( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false ){
 
     $new_posts = array();
-    $options = get_option( $option, array() );
 
     if( !$specific || is_array( $specific ) ){
         $specific = ( $specific ?: array() );
@@ -104,8 +102,6 @@ function wpdbInsertPosts( $posts = array(), $language = array(), $update = false
         if( $new_post )
             $new_posts[$specific] = $new_post;
     }
-
-    if( $option ) update_option( $option, $options + $new_posts );
 
     if( $debug ) consoleLog( 'POSTS: ' . sizeof( $new_posts ) );
 
