@@ -296,10 +296,8 @@ function scm_acf_fields_eventi( $name = '' ) {
 		$fields = array_merge( $fields, scm_acf_fields_modules( $name ) );
 
 	$fields[] = scm_acf_field_tab_left( $name . 'tab-media-evento', array('label'=>__( 'Media', SCM_THEME ) ) );
-		$fields = array_merge( $fields, scm_acf_preset_repeater_files() );
-		$fields = array_merge( $fields, scm_acf_preset_repeater_links() );
-		$fields[] = scm_acf_field_objects( 'media', array( 'type'=>'rel-id', 'types'=>array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), 'label'=>'Seleziona Media' ) );
-
+		$fields = array_merge( $fields, scm_acf_preset_attachments() );
+		
 	$hastaxes = checkTaxes( 'eventi' );	
 	if( $hastaxes ){
 		$fields[] = scm_acf_field_tab_left( $name . 'tab-tax-evento', array('label'=>__( 'Categorie', SCM_THEME ) ) );

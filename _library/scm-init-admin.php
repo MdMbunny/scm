@@ -686,10 +686,10 @@ function scm_hook_admin_upload_max_size( $params = array() ){
 * @return {array} Modified image array.
 */
 function scm_hook_admin_upload_dir( $img = array() ){
-    //consoleLog('pippo');
+    
     $type = thePost('type');
     $dir = '';
-
+    
     if( $type )
         $dir .= '/' . $type;
     else

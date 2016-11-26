@@ -1241,11 +1241,16 @@ print( $res ) // [ [ 'name'=>'Jack', 'sur'=>'Black' ], [ 'name'=>'John', 'sur'=>
  * @param {string=} key Key to look for (default is 'name').
  * @return {array} Empty array if the value is not found, otherwise it returns the found elements.
  */
-function getAllByValueKey( $arr, $value, $key = 'name' ){
+function getAllByValueKey( $arr, $value, $key = 'name', $keep = false ){
     $new = array();
     if( !isset( $arr ) || !is_array( $arr ) ) return $new;
     foreach ($arr as $index => $elem) {
-        if( is_array($elem) && isset( $elem[$key] ) && $elem[$key] == $value ) $new[] = $elem;
+        if( is_array($elem) && isset( $elem[$key] ) && $elem[$key] == $value ){
+            if( !$keep )
+                $new[] = $elem;
+            else
+                $new[$index] = $elem;
+        }
     }
     return $new;
 }

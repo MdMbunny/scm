@@ -346,7 +346,7 @@ function scm_acf_get_field( $elem ) {
     	case 'radio':
 
     		$default = scm_acf_get_field_to3( $arg, 1, 'default', '' );
-    		$layout = scm_acf_get_field_to3( $arg, 1, '' );
+    		$layout = scm_acf_get_field_to3( $arg, 1, 'layout', 'vertical' );
     		$choices = scm_acf_field_choices( $default, $choices );
     		$more = scm_acf_get_field_to3( $arg, 3, 'more', ( strpos( $extra , '-multi' ) !== false ? 1 : 0 ) );
     		

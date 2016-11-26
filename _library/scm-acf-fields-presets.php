@@ -1141,6 +1141,32 @@ function scm_acf_preset_button_shape( $name = 'but-style', $width = 100, $logic 
 }
 
 /**
+* [GET] Preset attachments
+*
+* @param {string} name
+* @param {array} types
+* @param {int} width
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @return {array} Fields.
+*/
+function scm_acf_preset_attachments( $name = '', $types = array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), $width = 100, $logic = 0, $required = 0, $instructions = '' ) {
+
+	$fields = array();
+
+	$original = $name;
+	$name = ( $name ? $name . '-' : '');
+
+	$fields = array_merge( $fields, scm_acf_preset_repeater_files( $original ) );
+	$fields = array_merge( $fields, scm_acf_preset_repeater_links( $original ) );
+	$fields[] = scm_acf_field_objects( $name . 'media', array( 'type'=>'rel-id', 'types'=>$types, 'label'=>'Seleziona Media' ) );
+
+	return $fields;
+	
+}
+
+/**
 * [GET] Preset flexible sections
 *
 * @param {string} name

@@ -941,4 +941,28 @@ function scm_fields_remove_messages( $group = array() ) {
 	return scm_fields_remove_by_prefix( $group, 'msg-' );
 }
 
+/**
+* [SET] Remove layout
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of layouts or Layout Group containing a 'layouts' attribute containing a list of layouts (default is empty array).
+* @param {array=} names Single layout name or list of names (default is empty array).
+* @return {array} Modified List of  Group.
+*/
+function scm_layouts_remove( $group = array(), $names = array(), $prefix = 'layout-' ) {
+	$names = toArray( $names );
+	$layouts = ( isset( $group['layouts'] ) ? $group['layouts'] : $group );
+	if( !is_array( $layouts ) || empty( $layouts ) ) return $group;
+	foreach ( $names as $name) {
+		$ind = getByValueKey( $layouts, $prefix . $name );
+		if( !is_null( $ind ) ) array_splice( $layouts, $ind, 1 );
+	}
+	if( !isset( $group['layouts'] ) )
+		return $layouts;
+
+	$group['layouts'] = $layouts;
+	return $group;
+}
+
 ?>

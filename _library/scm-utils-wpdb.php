@@ -58,43 +58,102 @@ function setWPDB( $db = NULL ){
     $wpdb = $db;
 }
 
-function wpdbInsertPosts( $posts = array(), $option = '', $debug = -1 ){
+function wpdbInsertLangs( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false, $option = '' ){
+
+    $new_posts = array();
+    $options = get_option( $option, array() );
+    $def = key( $language );
+    $langs = current( $language );
+
+    $defs = getAllByValueKey( $posts, $def, 'lang_input', true );
+    $new_posts = wpdbInsertPosts( $defs, array(), $update, $specific, $debug, $option );
+
+    if( $debug ) consoleLog( $def . ' (default)' );
+
+    foreach ($langs as $lang) {
+        if( $lang === $def ) continue;
+        $trans = getAllByValueKey( $posts, $lang, 'lang_input', true );
+        $lang_posts = wpdbInsertPosts( $trans, $new_posts, $update, $specific, $debug, $option );
+        if( $debug ) consoleLog( $lang );
+        $new_posts = array_merge( $new_posts, $lang_posts );
+    }
+
+    if( $debug ) consoleLog( 'TOTAL POSTS: ' . sizeof( $new_posts ) );
+
+    return $new_posts;
+}
+
+function wpdbInsertPosts( $posts = array(), $language = array(), $update = false, $specific = array(), $debug = false, $option = '' ){
 
     $new_posts = array();
     $options = get_option( $option, array() );
 
-    if( $debug == -1 ){
+    if( !$specific || is_array( $specific ) ){
+        $specific = ( $specific ?: array() );
+        $from = ( !ex_index( $specific, 1, 0 ) ? 0 : ex_index( $specific, 0, 0 ) );
+        $to = ex_index( $specific, 1, sizeof( $posts ) );
+        $posts = array_slice( $posts, $from, $to, true );
 
         foreach ( $posts as $id => $post ) {
-
-            $new_post = wpdbInsertPost( $post );
+            $new_post = wpdbInsertPost( $post, $language, $update, $debug );
             if( $new_post )
                 $new_posts[$id] = $new_post;
         }
     }else{
-        $new_post = wpdbInsertPost( $posts[$debug] );
+        $new_post = wpdbInsertPost( $posts[$specific], $language, $update, $debug );
         if( $new_post )
-            $new_posts[$debug] = $new_post;
+            $new_posts[$specific] = $new_post;
     }
 
-    update_option( $option, $options + $new_posts );
+    if( $option ) update_option( $option, $options + $new_posts );
+
+    if( $debug ) consoleLog( 'POSTS: ' . sizeof( $new_posts ) );
+
     return $new_posts;
 }
 
-function wpdbInsertPost( $post = NULL ){
+function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $debug = 0 ){
 
     if( is_null( $post ) ) return;
 
+    $old = postBySlug( $post['post_name'], $post['post_type'] );
 
-    if( !postExists( $post['post_name'], $post['post_type'] ) ){
+    $new_post = 0;
+    $skip = $old && !$update;
+    $update = $old && $update;
+    $new = !$old;
+
+    $save = !$skip && !$debug;
+    
+    $debug = max( 0, (int)$debug );
+
+    if( $old ) $post['ID'] = $old->ID;
+    else $post['ID'] = 0;
+
+    consoleLog($post['ID']);
+
+    if( $debug > 1 || $new ) consoleLog( $post['post_title'] );
+
+    if( $update ) consoleLog( '--> [ UPDATING ] - ' . $post['post_status'] );
+    elseif( $new ) consoleLog( '--> [ CREATING ] - ' . $post['post_status'] );
+    elseif( $skip && $debug > 1 ) consoleLog( '--> [ ALREADY EXISTS ] - ' . $post['post_status'] );
+
+    if( $debug || $save ){
+
         $att_post = array();
         $tax_post = array();
+        $rep_post = array();
+        $fld_post = array();
         if( $post['meta_input'] ){
             foreach ($post['meta_input'] as $k => $v) {
-                if( ($v instanceof WP_Post && $v->post_type == 'attachment') || (is_array( $v ) && $v[0] instanceof WP_Post && $v[0]->post_type == 'attachment') ){
+                if( wpdbIsAttachment( $v ) ){
                     $att_post[ $k ] = $v;
-                    $post['meta_input'][$k] = '';
+                }elseif( is_list( $v ) ){
+                    $rep_post[ $k ] = $v;
+                }else{
+                    $fld_post[ $k ] = $v;
                 }
+                unset($post['meta_input'][$k]);
             }
         }
 
@@ -124,86 +183,133 @@ function wpdbInsertPost( $post = NULL ){
             }
         }
 
-        $new_post = wp_insert_post( $post );
+        if( $save )
+            $new_post = ( $update ? wp_update_post( $post ) : wp_insert_post( $post ) );
+        else
+            $new_post = $post['ID'];
+
+        if( sizeof( $fld_post ) ){
+            foreach( $fld_post as $fld => $val ){
+                if( $save ) update_field( $fld, $val, $new_post );
+            }
+        }
+
+        if( sizeof( $rep_post ) ){
+
+            foreach( $rep_post as $rep => $rows ){
+                
+                if( $debug > 2 ) consoleLog( '- Updating Repeater' );
+
+                $nrows = array();
+                if( $save ) update_field( $rep, $nrows, $new_post );
+                
+                foreach( $rows as $row => $fields ){
+                    
+                    if( $debug > 3 ) consoleLog( '-- Row ' . $row );
+
+                    $nfields = array();
+                    
+                    foreach( $fields as $key => $value ){
+
+                        if( wpdbIsAttachment( $value ) )
+                            $value = wpdbUpdateAttachments( $key, $value, $new_post, $debug );
+                        
+                        if( $debug > 3 ) consoleLog( array( $key, $value ) );
+                        $nfields[$key] = $value;
+                    }
+
+                    $nrows[] = $nfields;
+                }
+                
+                if( $save ) update_field( $rep, $nrows, $new_post );
+            }
+        }
 
         if( sizeof( $att_post ) ){
             
-            foreach ($att_post as $key => $value) {
-                if( !is_array($value) ){
-                    update_field( $key, attachmentFromURL( $value->guid, $new_post, true ), $new_post );
-                }else{
-                    $arr = array();
-                    foreach ($value as $att)
-                        $arr[] = attachmentFromURL( $att->guid, $new_post, true );
-                    
-                    update_field( $key, $arr, $new_post );
-                }
-            }                    
+            foreach( $att_post as $key => $value ){
+                
+                $value = wpdbUpdateAttachments( $key, $value, $new_post, $debug );
+
+                if( $debug > 2 ) consoleLog( '- Updating Attachment: ' . $value );
+                if( $save ) update_field( $key, $value, $new_post );
+            }
         }
 
-        return $new_post;
+        if( $post['lang_input'] ){
 
-    }else{
-
-        consoleLog( $post['post_name'] . ' -> already exists in [' . $post['post_type'] . ']' );
-        return;
-    }    
-}
-
-/**
- * [GET] Get Custom Posts from $wpdb
- *
- * @subpackage 1-Utilities/WPDB
- *
- * @param {string=} type Custom Post Type (default is '').
- * @return {array} Query posts list.
- */
-function wpdbCustomPosts( $type = '' ){
-    if( !$type ) return $array();
+            if( $debug > 2 ) consoleLog( '- Updating Language: ' . $post['lang_input'] );
+            if( $save ) pll_set_post_language( $new_post, $post['lang_input'] );
+            
+            if( $post['trans_input'] ){
+                
+                if( $debug > 2 ) consoleLog( '- Updating Translation: ' . $post['trans_input'] );
+                if( $save ) {
+                    if( !empty( $language ) ){
+ 
+                        $def = ex_index( $language, $post['trans_input'] );
+                        if( $def ){
+                            $lang = array();
+                            $lang[ pll_get_post_language( $def ) ] = $def;
+                            $lang[ $post['lang_input'] ] = $new_post;
+                            consoleLog( $lang );
+                            pll_save_post_translations( $lang );
+                        }else{
+                            consoleLog( $post['trans_input'] . ' not in $language' );
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    $args = array(
-        'post_type' => $type,
-        'posts_per_page' => -1,
-    );
-    $posts = new WP_Query( $args );
-    return $posts->posts;
+    if( !$skip || $debug > 1 ) consoleLog( '---------' );
+    
+    if( $debug ) return 1;
+    return $new_post;
+
 }
 
-/**
- * [GET] Get Attachments from $wpdb
- *
- * @subpackage 1-Utilities/WPDB
- *
- * @return {array} Query posts list.
- */
 function wpdbAttachments(){
     $arr = array();
-    $args = array(
-        'post_status' => 'any',
-        'post_type' => 'attachment',
-        'posts_per_page' => -1,
-    );
-    $posts = new WP_Query( $args );
-    foreach( $posts->posts as $post ){
+    $posts = getPosts( 'attachment' );
+    foreach( $posts as $post ){
         $arr[ $post->ID ] = $post;
     }
     return $arr;
 }
 
-function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fields = array(), $taxes = array() ){
+function wpdbIsAttachment( $value = '' ){
+    return ( $value instanceof WP_Post && $value->post_type == 'attachment' ) || ( is_list( $value ) && isset( $value[0] ) && $value[0] instanceof WP_Post && $value[0]->post_type == 'attachment' );
+}
+
+function wpdbUpdateAttachments( $key = '', $value = '', $new_post = 0, $debug = false ){
+
+    if( !is_array($value) ){
+        return attachmentFromURL( $value->guid, $new_post, false, $debug );
+    }else{
+        $arr = array();
+        foreach ($value as $ind => $att)
+            $arr[] = attachmentFromURL( $att->guid, $new_post, false, $debug );
+        
+        return $arr;
+    }
+}
+
+function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fields = array(), $taxes = array(), $language = array(), $keepslug = false ){
 
     $new_posts = array();
 
     if( !$old || !$new ) return $new_posts;
 
-    $old_posts = wpdbCustomPosts( $old );
+    $old_posts = getPosts( $old, 'publish' );
     foreach ( $old_posts as $post) {
 
         $new_post = array(
             'post_type' => $new,
             'post_status' => $post->post_status,
             'post_title' => $post->post_title,
-            'post_name' => sanitize_title( $post->post_title ),
+            'post_name' => ( !$keepslug ? sanitize_title( $post->post_title ) : $post->post_name ),
             'post_date' => $post->post_date,
             'post_date_gmt' => $post->post_date_gmt,
             'post_modified' => $post->post_modified,
@@ -220,6 +326,9 @@ function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fiel
             'pinged' => $post->pinged,
             'to_ping' => $post->post_content,
             'tax_input' => array(),
+            'lang_input' => '',
+            'trans_input' => '',
+            'old_id' => $post->ID,
         );
 
         if( $taxes && is_array($taxes) && !empty($taxes) ){
@@ -231,74 +340,104 @@ function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fiel
             }
         }
 
-        $new_post['meta_input'] = array();
-        if( $fields && !empty( $fields ) ){
-            foreach ($fields as $key => $value) {
-                
-                $fld = $opt = $temp = '';
-                if( is_array( $value ) && isset( $value[1] ) && is_string( $value[1] ) ){
-
-                    $fld = $value[0];
-                    $opt = $value[1];
-
-                    if( startsWith( $opt, '_import-' ) ){
-                        
-                        switch ($opt) {
-                            case '_import-date':
-                                $temp = strtolower( get_post_meta( $post->ID, $fld, true ) );
-                                if( $temp && !is_numeric( substr( $temp, 1 ) ) )
-                                    $temp = '01 ' . $temp;
-                            break;
-                            case '_import-tolow':
-                                $temp = strtolower( get_post_meta( $post->ID, $fld, true ) );
-                            break;
-
-                            case '_import-terms':
-                                if( ex_attr( $new_post['tax_input'], $fld ) )
-                                    $temp = $new_post['tax_input'][$fld];
-                            break;
-
-                            case '_import-gallery':
-                                $temp = get_post_meta( $post->ID, $fld, true );
-                                //$temp = get_field( $fld, $post->ID );
-                                
-                                if( $attachments && !empty($attachments) ){
-                                    $atts = array();
-                                    foreach ( $temp as $v ) {
-                                     if( (int)$v )
-                                        $atts[] = $attachments[(int)$v];
-                                    }
-                                    $temp = $atts;
-                                }
-                            break;
-                            
-                            case '_import-attachment':
-                            default:
-                                $temp = get_post_meta( $post->ID, $fld, true );
-                                //$temp = get_field( $fld, $post->ID );
-                                if( $attachments && !empty($attachments) && (int)$temp )
-                                    $temp = $attachments[(int)$temp];
-                            break;
-                        }
-                    }elseif( startsWith( $opt, '_set' ) ){
-                        $temp = $fld;
-                        if( startsWith( $opt, '_set-' ) )
-                            $new_post['tax_input'][ str_replace( '_set-', '', $opt) ] = $fld;
-                    }
-
-                }elseif( $value ){
-                    $temp = get_post_meta( $post->ID, $value, true );
-                    //$temp = get_field( $value, $post->ID );
-                }                
-
-                $new_post['meta_input'][$key] = $temp;                
-            }  
+        if( !empty( $language ) ){
+            $def = key( $language );
+            $langs = current( $language );
+            $lang = pll_get_post_language( $post->ID ) ?: $def;
+            
+            $new_post['lang_input'] = $def;
+            $new_post['trans_input'] = 0;
+            if( $lang != $def ){
+                $new_post['lang_input'] = $lang;
+                $trans = pll_get_post( $post->ID, $def );
+                if( $trans ){
+                    $new_post['trans_input'] = $trans;
+                }
+            }
         }
 
+        $new_post['meta_input'] = wpdbGetFields( $new_post, $post->ID, $fields, $attachments, '', $new_post['tax_input'] );
+        
         $new_posts[$post->ID] = $new_post;
     }
 
     return $new_posts;
+}
+
+function wpdbGetFields( $new_post = array(), $id = 0, $fields = array(), $attachments = array(), $prepend = '', &$tax = '' ){
+
+    $arr = array();
+    $tax_input = ex_attr( $new_post, 'tax_input', array() );
+    if( $fields && !empty( $fields ) ){
+        foreach ($fields as $key => $value) {
+            
+            $fld = $opt = $temp = '';
+            if( is_array( $value ) && isset( $value[1] ) && is_string( $value[1] ) ){
+
+                $fld = $prepend . ( ex_index( $value, 0, '' ) ?: '' );
+                $opt = ex_index( $value, 1, '' );
+                $rep = ( ex_index( $value, 2, '' ) ?: array() );
+
+                if( startsWith( $opt, '_import-' ) ){
+                    
+                    switch ($opt) {
+                        case '_import-date':
+                            $temp = strtolower( get_post_meta( $id, $fld, true ) );
+                            if( $temp && !is_numeric( substr( $temp, 1 ) ) )
+                                $temp = '01 ' . $temp;
+                        break;
+                        case '_import-tolow':
+                            $temp = strtolower( get_post_meta( $id, $fld, true ) );
+                        break;
+
+                        case '_import-terms':
+                            if( ex_attr( $tax_input, $fld ) )
+                                $temp = $tax_input[$fld];
+                        break;
+
+                        case '_import-gallery':
+                            $temp = get_post_meta( $id, $fld, true );
+                            
+                            if( $attachments && !empty($attachments) ){
+                                $atts = array();
+                                foreach ( $temp as $v ) {
+                                 if( (int)$v )
+                                    $atts[] = $attachments[(int)$v];
+                                }
+                                $temp = $atts;
+                            }
+                        break;
+
+                        case '_import-repeater':                                            
+                            $temp = array();
+                            for ($i=0; $i < (int)get_post_meta( $id, $fld, true ); $i++) {
+                                $temp[] = wpdbGetFields( $new_post, $id, $rep, $attachments, $fld . '_' . $i . '_' );
+                            }                            
+                        break;
+                        
+                        case '_import-attachment':
+                        default:
+                            $temp = get_post_meta( $id, $fld, true );
+                            if( $attachments && !empty($attachments) && (int)$temp )
+                                $temp = $attachments[(int)$temp];
+                        break;
+                    }
+                }elseif( startsWith( $opt, '_set' ) ){
+                    $temp = $fld;
+                    if( $tax && startsWith( $opt, '_set-' ) )
+                        $tax[ str_replace( '_set-', '', $opt) ] = $fld;
+                }
+
+            }elseif( $value ){
+                $temp = get_post_meta( $id, $prepend . $value, true );
+            }                
+
+            $arr[$key] = $temp;                
+        }  
+    }
+
+    return $arr;
+
 }
 
 function wpdbTaxonomy( $post, $args = array(), $old = '', $new_tax = '', $terms = array() ){
@@ -339,69 +478,5 @@ function wpdbTaxonomy( $post, $args = array(), $old = '', $new_tax = '', $terms 
     return $args;
 } 
 
-/**
- * [SET] Imports file from URL as new Attachment. Optionally attaches it to an existent Post
- *
- * @subpackage 1-Utilities/WP
- *
- * @param {string=} path Path to File (default is '').
- * @param {int=} postid Optional Post ID to link to the new Attachment (default is 0).
- * @param {bool=} echo Echo File and Attachment data (default is false).
- * @return {int} New Attachment ID or 0.
- */
-function attachmentFromURL( $path = '', $postid = 0, $echo = false ) {
-
-    $attachment_id = 0;
-    
-    if( !$path ) return $attachment_id;
-
-    $new_post = get_post( $postid );
-    
-    if( !empty( $new_post ) ){
-        global $post;
-        $post = $new_post;
-        setup_postdata( $post );
-    }
-
-    $filename = basename($path);
-
-    if( $echo ) echo 'File Name: ' . $filename;
-
-    $upload_file = wp_upload_bits($filename, null, file_get_contents($path));
-    if (!$upload_file['error']) {
-        $wp_filetype = wp_check_filetype($filename, null );
-        
-        if( $echo ) echo ' > File Type: ' . $wp_filetype['type'] . lbreak();
-        
-        $attachment = array(
-            'post_mime_type' => $wp_filetype['type'],
-            'post_parent' => $postid,
-            'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
-        
-        if( $echo ) echo ' > Attachment Path: ' . $upload_file['file'] . lbreak();
-        
-        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $postid );
-        
-        if( $echo ) echo ' > Attachment ID: ' . $attachment_id . lbreak();
-        
-        if ( !is_wp_error( $attachment_id ) ) {
-            require_once( ABSPATH . 'wp-admin/includes/image.php' );
-            $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-            wp_update_attachment_metadata( $attachment_id, $attachment_data );
-        }else{
-            $attachment_id = 0;
-        }
-    }
-
-    if( $echo ) echo '<br>';
-
-    wp_reset_postdata();
-
-    return $attachment_id;
-
-}
 
 ?>

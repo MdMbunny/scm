@@ -20,32 +20,6 @@
 // 0.0
 // ------------------------------------------------------
 
-/**
-* Determine if a post exists based on post_name and post_type
-*
-* @param {string=} post_name Unique post name (defaults is ''). 
-* @param {string=} post_type Post type (defaults is '').
-*/
-function postExists( $post_name = '', $post_type = '' ) {
-    global $wpdb;
-
-    $query = "SELECT ID FROM $wpdb->posts WHERE 1=1";
-    $args = array();
-
-    if ( $post_name ) {
-         $query .= " AND post_name LIKE '%s' ";
-         $args[] = $post_name;
-    }
-    if ( $post_type ) {
-         $query .= " AND post_type = '%s' ";
-         $args[] = $post_type;
-    }
-
-    if ( !empty ( $args ) )
-         return $wpdb->get_var( $wpdb->prepare($query, $args) );
-
-    return 0;
-}
 
 /**
  * [SET] Print javascript console messages
@@ -78,6 +52,8 @@ function multiText( $var, $sep = ' ', $theme = SCM_THEME ){
     return trim( $txt, $sep );
 }
 
+// ------------------------------------------------------
+
 /**
 * [GET] Post data from $_REQUEST or current post
 *
@@ -107,6 +83,221 @@ function thePost( $key = NULL ){
     }
 
     return NULL;
+}
+
+function getPosts( $type = 'post', $status = 'any', $lang = '' ){
+    $posts = get_posts(array(
+        'post_type' => $type,
+        'posts_per_page' => -1,
+        'post_status' => $status,
+        'lang' => $lang,
+    ));
+
+    if( empty($posts) ) return 0;
+    return $posts;
+}
+
+function getPost( $slug = '', $type = 'post', $status = 'any', $lang = '' ){
+
+    $posts = get_posts( array(
+        'post_type' => $type,
+        'name' => $slug,
+        'posts_per_page' => 1,
+        'post_status' => $status,
+        'lang' => $lang,
+    ));
+
+    if( empty($posts) ) return 0;
+    return $posts[0];
+}
+
+/**
+* Determine if a post exists based on post_name and post_type
+*
+* @param {string=} post_name Unique post name (defaults is ''). 
+* @param {string=} post_type Post type (defaults is '').
+*/
+/*function postExists( $post_name = '', $post_type = '' ) {
+    global $wpdb;
+
+    $query = "SELECT ID FROM $wpdb->posts WHERE 1=1";
+    $args = array();
+
+    if ( $post_name ) {
+         $query .= " AND post_name LIKE '%s' ";
+         $args[] = $post_name;
+    }
+    if ( $post_type ) {
+         $query .= " AND post_type = '%s' ";
+         $args[] = $post_type;
+    }
+
+    if ( !empty ( $args ) )
+         return $wpdb->get_var( $wpdb->prepare($query, $args) );
+
+    return 0;
+}*/
+
+
+/**
+ * [GET] Get Custom Posts from $wpdb
+ *
+ * @subpackage 1-Utilities/WPDB
+ *
+ * @param {string=} type Custom Post Type (default is '').
+ * @return {array} Query posts list.
+ */
+/*function customPosts( $type = '', $status = 'any', $lang = '' ){
+    if( !$type ) return $array();
+    
+    $args = array(
+        'post_type' => $type,
+        'posts_per_page' => -1,
+        'post_status' => 'any',
+        'lang' => '',
+    );
+    $posts = new WP_Query( $args );
+    return $posts->posts;
+}*/
+
+// ------------------------------------------------------
+
+function attachmentBySlug( $slug = '' ) {
+    if( !$slug ) return 0;
+    return getPost( trim( $slug ), 'attachment' );
+}
+
+function attachmentByFilename( $filename = '' ) {
+    if( !$filename ) return 0;
+    global $wpdb;
+    $slug = sanitize_title( preg_replace( '/\.[^.]+$/', '', $filename ) );
+    $posts = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE post_name = '$slug' AND post_type = 'attachment' ", OBJECT );
+    return ex_index( $posts, 0, 0);
+    //return getPost( sanitize_title( preg_replace( '/\.[^.]+$/', '', $filename ) ), 'attachment' );
+}
+
+/**
+ * [SET] Imports file from URL as new Attachment. Optionally attaches it to an existent Post
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string=} path Path to File (default is '').
+ * @param {int=} postid Optional Post ID to link to the new Attachment (default is 0).
+ * @param {bool=} echo Echo File and Attachment data (default is false).
+ * @return {int} New Attachment ID or 0.
+ */
+function attachmentFromURL( $path = '', $postid = 0, $echo = false, $debug = 0 ) {
+
+    $attachment_id = 0;
+    
+    if( !$path ) return $attachment_id;
+
+    $filename = basename($path);
+    $exist = attachmentByFilename( $filename );
+    $debug = (int)$debug;
+
+    if( $exist ){
+
+        if( $echo ) echo 'File Name Already Exists: ' . $filename;
+        if( $debug > 1 ) consoleLog( $filename . ' EXISTS' );
+        $attachment_id = $exist->ID;
+        if( !$exist->post_parent ){
+            consoleLog( $filename . ' LINKED TO PARENT ' . $postid );
+            if( !$debug ){
+                $attachment = array(
+                    'ID' => $attachment_id,
+                    'post_parent' => $postid,
+                );
+                $attachment_id = wp_update_post( $attachment );
+            }
+        }
+
+    }else{
+
+        if( $echo ) echo 'File Name: ' . $filename;
+
+        consoleLog( $filename . ' NOT EXISTS' );
+
+        if( !$debug ){
+
+            $new_post = ( $postid ? get_post( $postid ) : array() );
+            
+            if( !empty( $new_post ) ){
+                global $post;
+                $post = $new_post;
+                setup_postdata( $post );
+            }
+
+            $upload_file = wp_upload_bits($filename, null, file_get_contents($path));
+            if (!$upload_file['error']) {
+                $wp_filetype = wp_check_filetype($filename, null );
+                
+                if( $echo ) echo ' > File Type: ' . $wp_filetype['type'] . lbreak();
+                
+                $attachment = array(
+                    'post_mime_type' => $wp_filetype['type'],
+                    'post_parent' => $postid,
+                    'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
+                    'post_content' => '',
+                    'post_status' => 'inherit'
+                );
+                
+                if( $echo ) echo ' > Attachment Path: ' . $upload_file['file'] . lbreak();
+                
+                $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $postid );
+                
+                if( $echo ) echo ' > Attachment ID: ' . $attachment_id . lbreak();
+                
+                if ( !is_wp_error( $attachment_id ) ) {
+                    require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                    $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+                    wp_update_attachment_metadata( $attachment_id, $attachment_data );
+                }else{
+                    $attachment_id = 0;
+                }
+            }
+
+            if( !empty( $new_post ) ) wp_reset_postdata();
+        }
+
+        
+    }
+    
+    if( $echo ) echo '<br>';
+
+    return $attachment_id;
+
+}
+
+// ------------------------------------------------------
+
+function postBySlug( $slug = '', $type = 'post', $status = 'any', $lang = '' ){
+    if( !$slug ) return 0;
+    return getPost( $slug, $type, $status, $lang );
+}
+
+function resetSlugs( $type = 'post', $status = 'any', $lang = '' ){
+
+    $posts = getPosts( $type, $status, $lang );
+    if( !$posts ) return;
+
+    foreach ($posts as $value) {
+        resetSlug( $value );
+    }
+}
+
+function resetSlug( $post = 0 ){
+
+    if( !$post ) return;
+
+    $slug = $post->post_name;
+    $new_slug = sanitize_title( $post->post_title );
+    if( $slug != $new_slug ){
+        wp_update_post( array(
+            'ID' => $post->ID,
+            'post_name' => ''
+        ));
+    }
 }
 
 /**
