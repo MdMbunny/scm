@@ -61,9 +61,9 @@ add_action( 'manage_page_posts_custom_column', 'scm_hook_admin_ui_columns_manage
 // UI - MENU
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_remove' );
 add_action( 'admin_menu', 'scm_hook_admin_ui_menu_add' );
-add_filter( 'custom_menu_order', 'scm_hook_admin_ui_menu_order' );
-add_filter( 'menu_order', 'scm_hook_admin_ui_menu_order' );
-add_action( 'admin_init', 'scm_hook_admin_ui_menu_classes' );
+add_filter( 'custom_menu_order', 'scm_hook_admin_ui_menu_order', 999 );
+add_filter( 'menu_order', 'scm_hook_admin_ui_menu_order', 999 );
+add_action( 'admin_init', 'scm_hook_admin_ui_menu_classes', 999 );
 
 // UI - HIDE
 add_action( 'wp_dashboard_setup', 'scm_hook_admin_ui_hide_dashboard_widgets' );

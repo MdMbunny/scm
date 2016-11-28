@@ -97,7 +97,7 @@ body:not(.loaded) .acf-field{
 #collapse-menu:hover,
 #collapse-menu:hover #collapse-button div:after,
 input[type=checkbox]:checked:before,
-.acf-field-true-false ul.acf-checkbox-list li input:checked{
+.acf-field-true-false .acf-input label input:checked{
 	color: #e14d43 !important;
 }
 
@@ -382,6 +382,64 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	box-shadow: 4px 4px 0px 0px rgba(0,0,0,.1);
 }
 
+
+.acf-field-true-false > .acf-label{
+	float: left;
+	margin-right: 1em;
+	margin-bottom: 0;
+}
+
+.acf-field-true-false > .acf-label label{
+	line-height: 2em;
+	margin: 0 0 0 .5em;
+	padding: 0;
+}
+
+.acf-field-true-false .acf-input {
+    padding: 0;
+    line-height: 1.5em;
+}
+
+.acf-field-true-false .acf-input .acf-true-false{
+	position: relative;
+}
+
+.acf-field-true-false .acf-input label{
+	display: block;
+    line-height: 0;
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background: transparent;
+    height: auto;
+}
+
+.acf-field-true-false .acf-input label input{
+	margin: -1px 0 0 0 !important;
+    padding: 2px !important;
+    background: transparent;
+    height: 2em;
+    text-align: right;
+    box-shadow: none;
+    border-color: #eee;
+    width: 100%;
+}
+
+.acf-field-true-false .acf-input label input:hover{
+	border-color: #aaa;
+}
+
+.acf-field-true-false .acf-input label input:checked{
+	border-color: #e14d43;
+}
+
+.acf-field-true-false .acf-input label input:checked:before{
+	float: right;
+	margin: 0px .5em 0 0px;
+}
+
 /*** Taxonomies Metaboxes ***/
 
 .edit-tags-php #col-left,
@@ -444,25 +502,10 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 }
 
 .edit-tags-php .acf-field{
-	margin-bottom: 0 !important;
+	/*margin-bottom: 0 !important;*/
 	padding-top: 15px !important;
 	padding-bottom: 15px !important;
 }
-
-.edit-tags-php .acf-field-true-false{
-	padding-top: 10px !important;
-	padding-bottom: 10px !important;
-}
-
-.edit-tags-php .acf-field-true-false > .acf-label{
-	display: inline-block !important;
-}
-.edit-tags-php .acf-field-true-false > .acf-label label{
-	font-size: inherit !important;
-	font-weight: bold !important;
-	line-height: 2.6em;
-}
-
 
 .term-php .form-table > tbody > .acf-field > .acf-label,
 .term-php .form-table > tbody > .acf-field > .acf-input{
@@ -483,35 +526,33 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	padding: 0 0 17px !important;
 }
 
+
+.edit-tags-php .acf-field-true-false{
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+}
+
+.edit-tags-php .acf-field-true-false > .acf-label{
+	display: inline-block !important;
+}
+.edit-tags-php .acf-field-true-false > .acf-label label{
+	font-size: inherit !important;
+	font-weight: bold !important;
+	line-height: 2.6em;
+}
+
 .term-php .acf-field-true-false{
 	margin: 15px 0 !important;
 }
 
 .term-php .acf-field-true-false > .acf-label{
-	/*float: none;*/
 	position: absolute;
-}
-
-.term-php .acf-field-true-false > .acf-label label{
-	/*margin: 0 !important;*/
-}
-
-.term-php .acf-field-true-false ul.acf-checkbox-list li input{
-	/*width: 2em !important;
-	height: 2em !important;*/
-}
-
-.term-php .acf-field-true-false ul.acf-checkbox-list li input:checked:before{
-	/*margin: 0;
-	float: left;*/
 }
 
 .term-php .acf-field-true-false > .acf-label,
 .term-php .acf-field-true-false > .acf-input{
 	display: inline-block !important;
-	/*width: auto !important;*/
 }
-
 
 /*** Main Metaboxes ***/
 
@@ -1000,7 +1041,8 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 }
 
 .acf-field:not([data-width]) {
-    display: block;
+    display: inline-block;
+    width: 100%;
 }
 
 .ie7 .acf-field[data-width] {
@@ -1348,57 +1390,6 @@ input.acf-is-prepended {
 .acf-field-repeater:not(.repeater-labels) > .acf-label > label,
 .acf-field-repeater:not(.repeater-labels) .acf-field:not(.acf-field-true-false) > .acf-label*/ {
 	display: none !important;
-}
-
-.acf-field-true-false > .acf-label{
-	float: left;
-	margin-right: 1em;
-	margin-bottom: 0;
-}
-
-.acf-field-true-false > .acf-label label{
-	line-height: 2em;
-	margin: 0 0 0 .5em;
-	padding: 0;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li {
-    padding: 0;
-    line-height: 1.5em;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li label{
-	display: inline;
-    margin: 0;
-    line-height: 0;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    z-index: 0;
-    background: transparent;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li input{
-	margin: -1px 0 0 0 !important;
-    padding: 2px !important;
-    background: transparent;
-    height: 2em;
-    text-align: right;
-    box-shadow: none;
-    border-color: #eee;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li input:hover{
-	border-color: #aaa;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li input:checked{
-	border-color: #e14d43;
-}
-
-.acf-field-true-false ul.acf-checkbox-list li input:checked:before{
-	float: right;
-	margin: 0px .5em 0 0px;
 }
 
 

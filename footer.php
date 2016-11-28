@@ -65,7 +65,7 @@ wp_reset_postdata();
 
                     foreach ($foot_page as $row) {
 
-                        array_unshift( $repeater, array( 'rows' => array( array( 'acf_fc_layout' => 'layout-row', 'row' => $row ) ) ) );
+                        array_unshift( $repeater, array( 'rows' => array( array( 'acf_fc_layout' => 'layout-row', 'row' => $row , 'layout' => 'default') ) ) );
                     }
 
                     scm_content( array( 'sections' => $repeater ) );

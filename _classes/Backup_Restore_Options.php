@@ -27,11 +27,11 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
          */
 		function Backup_Restore_Options( $lang = '' ) {
 
-			$this->lang = ( $lang ?: sanitize_title( get_bloginfo() ) );
+			$this->lang = ( $lang ?: substr( get_locale(), 0, 2 ) );
 			$this->slug = sanitize_title( get_bloginfo() );
 			$this->theme = sanitize_title( get_template() );
 
-			add_action('admin_menu', array(&$this, 'admin_menu'));
+			add_action('admin_menu', array(&$this, 'admin_submenu'));
 		}
 
 // ------------------------------------------------------
@@ -70,7 +70,7 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
 		*
 		* Hooked by 'admin_menu'
 		*/
-		function admin_menu() {
+		function admin_submenu() {
 			$page = add_submenu_page( 'tools.php', __( 'Backup Options', $this->lang ), __( 'Backup Options', $this->lang ), 'manage_options', 'backup-options', array( &$this, 'options_page' ) );
 			add_action( 'load-{$page}', array( &$this, 'import_export' ) );
 		}
@@ -78,11 +78,12 @@ if ( ! class_exists( 'Backup_Restore_Options' ) ) {
 		/**
 		* Import export actions
 		*
-		* Hooked by 'admin_menu'
+		* Hooked by 'load-{$page}'
 		*/
 		function import_export() {
 
 			if( isset( $_GET['action'] ) && ( $_GET['action'] == 'download' ) ) {
+
 				header( 'Cache-Control: public, must-revalidate' );
 				header( 'Pragma: hack' );
 				header( 'Content-Type: text/plain' );

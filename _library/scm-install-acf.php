@@ -361,7 +361,7 @@ function scm_acf_install_posts_fields() {
     $page_footer['location'][] = scm_acf_group_location( 'page' );
     $page_footer['fields'][] = scm_acf_field_objects( 'page-footer', array( 
         'type'=>'rel-id', 
-        'types'=>'sections',
+        'types'=>array('sections','modules'),
         'label'=>__( 'Seleziona Sections', SCM_THEME ),
     ) );
     $groups[] = $page_footer;
