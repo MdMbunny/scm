@@ -28,10 +28,10 @@
 // ACTIONS AND FILTERS
 // ------------------------------------------------------
 
-add_action( 'acf/include_fields', 'scm_hook_acf_option_pages_install', 10 );
-add_action( 'acf/include_fields', 'scm_hook_acf_option_subpages_install', 10 );
+add_action( 'acf/init', 'scm_hook_acf_option_pages_install', 10 );
+add_action( 'acf/init', 'scm_hook_acf_option_subpages_install', 10 );
 
-add_action( 'acf/include_fields', 'scm_hook_acf_install', 10 );
+add_action( 'acf/init', 'scm_hook_acf_install', 10 );
 
 add_filter( 'scm_filter_admin_ui_menu_order', 'scm_hook_acf_option_menu_order' );
 add_filter( 'acf/settings/show_admin', 'scm_hook_acf_admin_hide' );
@@ -56,7 +56,7 @@ add_filter( 'acf/format_value/type=wysiwyg', 'scm_hook_acf_formatvalue_hook_edit
 /**
 * [SET] Install ACF option pages
 *
-* Hooked by 'acf/include_fields'
+* Hooked by 'acf/init'
 *
 * Hooks:
 ```php
@@ -105,7 +105,7 @@ function scm_hook_acf_option_pages_install(){
 /**
 * [SET] Install ACF option sub pages
 *
-* Hooked by 'acf/include_fields'
+* Hooked by 'acf/init'
 *
 * Hooks:
 ```php
@@ -237,7 +237,7 @@ function scm_hook_acf_install_helper( $group, $menu ) {
 /**
 * [SET] Install ACF groups and fields
 *
-* Hooked by 'acf/include_fields'
+* Hooked by 'acf/init'
 *
 * @subpackage 3-Install/ACF/HOOKS
 */
@@ -383,7 +383,7 @@ function scm_acf_install_posts_fields() {
             $group['fields'] = call_user_func( $fun );
             
             // SCM Filter TYPE
-            $group = apply_filters( 'scm_filter_register_' . str_replace( '_', '-', $slug ), $group );
+            $group = apply_filters( 'scm_filter_register_' . str_replace( '-', '_', $slug ), $group );
             $groups[] = $group;
         }
     }
@@ -706,6 +706,20 @@ function scm_hook_acf_savedpost_hook( $post_id ) {
                     $_POST['acf'] = array();
                 }
             }
+        }
+    }else{
+        $type = get_post_type( $post_id );
+        if( $type == 'luoghi' ){
+            
+            $address = str_replace( array( ',', '-', '/' ), '', scm_field( 'luogo-indirizzo', '', $post_id ) . scm_field( 'luogo-cap', '', $post_id, true, ' ' ) . scm_field( 'luogo-paese', '', $post_id, true, ' ' ) . scm_field( 'luogo-citta', '', $post_id, true, ' ' ) . scm_field( 'luogo-provincia', '', $post_id, true, ' ' ) );
+            add_post_meta( $post_id, 'inlineaddress', $address, true ) or
+            update_post_meta( $post_id, 'inlineaddress', $address );
+            $latlng = getGoogleMapsLatLng( $address );
+            add_post_meta( $post_id, 'latitude', $latlng['lat'], true ) or
+            update_post_meta( $post_id, 'latitude', $latlng['lat'] );
+            add_post_meta( $post_id, 'longitude', $latlng['lng'], true ) or
+            update_post_meta( $post_id, 'longitude', $latlng['lng'] );
+
         }
     }
 }

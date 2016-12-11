@@ -103,10 +103,16 @@ function scm_acf_options_types() {
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-labels', array('label'=> __( 'Labels', SCM_THEME ) ) );
 			
-			$types['sub_fields'][] = scm_acf_field_name( 'singular', array( 'placeholder'=>__( 'Produzione', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ), 'max'=>18 ), 50, 0 );
-			$types['sub_fields'][] = scm_acf_field_name( 'slug', array( 'placeholder'=>__( 'produzioni', SCM_THEME ), 'prepend'=>__( 'Slug', SCM_THEME ), 'max'=>18 ), 50, 0 );
+			$types['sub_fields'][] = scm_acf_field_name( 'singular', array( 'placeholder'=>__( 'Produzione', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ), 'max'=>40 ), 50, 0 );
+			$types['sub_fields'][] = scm_acf_field_name( 'slug', array( 'placeholder'=>__( 'produzioni', SCM_THEME ), 'prepend'=>__( 'Slug', SCM_THEME ), 'max'=>40 ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'short-singular', array( 'placeholder'=>__( 'Prod.', SCM_THEME ), 'prepend'=>__( 'Singolare Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'short-plural', array( 'placeholder'=>__( 'Prods.', SCM_THEME ), 'prepend'=>__( 'Plurale Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
+
+		$types['sub_fields'][] = scm_acf_field_tab( 'tab-link', array('label'=> __( 'Object Link', SCM_THEME ) ) );
+
+			$types['sub_fields'][] = scm_acf_field_name( 'link', array( 'placeholder'=>__( 'link', SCM_THEME ), 'prepend'=>__( 'Link Type', SCM_THEME ) ), 50, 0 );
+			$types['sub_fields'][] = scm_acf_field_name( 'link-field', array( 'placeholder'=>__( 'post-link', SCM_THEME ), 'prepend'=>__( 'Link Field', SCM_THEME ) ), 50, 0 );
+
 	
 	$fields[] = $types;
 

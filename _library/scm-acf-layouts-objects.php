@@ -329,6 +329,13 @@ function scm_acf_object_map( $default = '', $obj = 0, $opt = '', $width = 100, $
 	}
 
 	$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
+	$fields[] = scm_acf_field_positive( 'infowidth', array( 'default'=>500, 'label'=>__( 'Infowindow width', SCM_THEME ), 'append'=> 'px' ), $width, $logic );
+	$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name' ) );
+	$fields[] = scm_acf_field_object( 'template', array( 
+            'type'=>'id', 
+            'types'=>'luoghi' . SCM_TEMPLATE_APP,
+            'label'=>'Modello'
+        ), 100 );
 
 	return $fields;
 }
@@ -391,10 +398,12 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 	$fields = array();
 
 	// conditional
-	$fields[] = scm_acf_field_select( 'format', 'image_format', $width, $logic, $req, __( 'Seleziona Formato', SCM_THEME ) );
-	$norm = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'norm' ) );
-	$quad = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'quad' ) );
-	$full = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'full' ) );
+
+	if( $default !== 'banner' ){
+		$fields[] = scm_acf_field_select( 'format', 'image_format', $width, $logic, $req, __( 'Seleziona Formato', SCM_THEME ) );
+		$norm = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'norm' ) );
+		$quad = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'quad' ) );
+		$full = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'full' ) );
 
 		$imagew = scm_acf_preset_size( 'width', '', 'auto', '%', __( 'Larghezza', SCM_THEME ), $width, $norm );
 		$imageh = scm_acf_preset_size( 'height', '', 'auto', '%', __( 'Altezza', SCM_THEME ), $width, $norm );
@@ -402,6 +411,14 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 		$imageq = scm_acf_preset_size( 'size', '', 'auto', 'px', __( 'Dimensione', SCM_THEME ), $width, $quad );
 
 		$fields = array_merge( $fields, $imagew, $imageh, $imagef, $imageq );
+	}else{
+		$fields = array_merge( $fields, scm_acf_preset_column_width( '', 100 ) );
+		/*$fields = array_merge( $fields,  scm_acf_preset_size( 'width', '', 100, '%', __( 'Larghezza', SCM_THEME ) ) );*/
+		$fields[] = scm_acf_field_text( 'title' );
+		$fields[] = scm_acf_field_link( 'link' );
+	}
+
+		
 	
 	if( !$obj )
 		$fields[] = scm_acf_field_image_all_url( 'image', 0, $width, $logic );
@@ -447,6 +464,8 @@ function scm_acf_object_icona( $default = '', $obj = 0, $opt = '', $width = 100,
 function scm_acf_object_titolo( $default = 0, $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) { // $opt = 1 || low, -1 || min, 2 || max
 
 	$fields = array();
+
+	$fields[] = scm_acf_field_icon_no( 'icon' );
 
 	if ( !$obj )
 		$fields[] = scm_acf_field_textarea( 'title', $default, $width, $logic, $req );

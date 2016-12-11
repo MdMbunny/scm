@@ -19,7 +19,7 @@ $args = array(
 	'acf_fc_layout' => 'layout-immagine',
 	'image' => '',
     'images' => '',
-	'format' => 'norm',
+	'format' => '',
 	'full-number' => '',
 	'full-units' => '',
 	'size-number' => '',
@@ -35,7 +35,8 @@ $args = array(
     'negative' => 'off',
     'thumb' => '',
     'thumb-size' => 'thumbnail',
-    'link' => ''
+    'link' => '',
+    'title' => '',
 );
 
 if( isset( $this ) )
@@ -125,6 +126,7 @@ $class = 'image scm-image scm-object object ' . $args['class'];
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
+$title = '';
 
 switch ( $args[ 'format' ] ) {
     case 'full':
@@ -137,14 +139,28 @@ switch ( $args[ 'format' ] ) {
         $image_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
         $style .= ' width:' . $image_size . '; height:' . $image_size . ';';
     break;
-    
-    default:
+
+    case 'norm':
         $image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
         $image_height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
 
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
     break;
+    
+    default:
+        $class .= ' image-banner';
+        //$image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
+        //$image_height = 'auto';
+        if( $args['title'] )
+            $title = '<span>' . $args['title'] . '</span>';
+        if( $args['link'] && $args['link'] != 'no' )
+            $attributes .= ' data-href="' . $args['link'] . '"';
+
+        $style .= ' width:auto; height:auto;';
+    break;
 }
+
+
 
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
@@ -176,6 +192,8 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
     indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $att ), 1 );
 
         indent( $SCM_indent + 2, $value, 1 );
+        if( $title )
+            indent( $SCM_indent + 2, $title, 1 );
 
     indent( $SCM_indent + 1, '</div><!-- image -->', 2 );
 

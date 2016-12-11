@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.6.5
+Version:			v3.6.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -213,6 +213,27 @@ img {
 	max-height:100%;
 }
 
+.scm-image.image-banner,
+.scm-image.image-banner img{
+	position: relative;
+}
+.scm-image.image-banner span{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0,0,0,.9);
+	color: #FFF;
+	padding: 1em;
+	text-align: left;
+	vertical-align: middle;
+	width: 100%;
+	height: 100%;
+	display: inline-flex;
+  	align-items: center;
+}
+
 embed, iframe, object {
 	max-width: 100%;
 }
@@ -294,6 +315,7 @@ sup {
 	display: inline-block;
 	line-height: 0;
   	vertical-align: initial;
+  	font-family: FontAwesome !important;
 }
 
 .fa:before{
@@ -1393,10 +1415,19 @@ input[type="submit"]:active {
 	background-clip: content-box;
 }
 
-.scm-loading.loding-icon .fa{
-	font-size: .6em;
+.scm-loading.loading-icon .fa{
+	font-size: 1em;
 	width: 1em;
 	height: 1em;
+	color: #AAA;
+}
+
+.scm-loading.loading-icon.middle .fa{
+	position: absolute;
+    margin: auto;
+    top: 50%;
+    margin-top: -.5em;
+    margin-left: -.5em;
 }
 
 .scm-loading.loading-circle:before{
@@ -1417,45 +1448,90 @@ input[type="submit"]:active {
 /* Scroll To Top */
 
 .topofpage {
-	background: #666;
 	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	text-align: center;
-	border-radius: 4px;
-	z-index: 8000;
+	bottom: 1em;
+	right: 1em;
+	z-index: 8000;	
+}
+
+.topofpage a{
 	opacity: 0;
+	border-radius: .5em;
 	-webkit-transition: opacity 0.5s;
 	transition: opacity 0.5s;
-	/*visibility: hidden;*/
 	pointer-events: none;
 }
-
-.topofpage.affix {
-	/*visibility: visible;*/
-	opacity: 0.5;
+.topofpage.affix a{
+	text-align: center;
+	opacity: 1;
 	pointer-events: inherit;
 }
-
-.topofpage:hover {
-	opacity: 1;
-}
-
-.topofpage a {
-	background-color: transparent;
-	-webkit-transition: none;
-	opacity: 1;
-	transition: none;
-	/*display: inline-block;
-	line-height: 40px;
-	width: 40px;
-	height: 40px;
-	text-decoration: none;*/
+.topofpage a:hover{
+	opacity: .5;
 }
 
 .topofpage a i{
 	color: #fff;
 	vertical-align: initial;
+}
+
+/* Attachments */
+
+.attachments{
+	font-size: 1em;
+}
+
+.attachment {
+    padding: 1em 1em 0;
+    margin-top: 1em;
+    display: inline-block;
+    line-height: 1em;
+    border-top: 1px solid #eee;
+    max-width: 50%;
+}
+
+.tocolumn .attachment {
+	max-width: 100%;
+}
+
+.attachment > * {
+    display: inline-block;
+    text-align: left;
+}
+
+.attachment {
+    font-size: 1em;
+}
+
+.attachment .icons {
+	overflow: hidden;
+    margin-right: .3em;
+    text-align: center;
+    font-size: 1em;
+    height: 1.1em;
+    width: 1.5em;
+}
+
+.attachment span{
+    line-height: 1.2em;
+    font-weight: normal;
+    display: inline;
+}
+
+.attachment .fa{
+    display: block;
+}
+
+.attachment .plus{
+    /*margin-bottom: .1em;*/
+    margin-top: -1em;
+    -webkit-transition: margin-top .3s;
+    transition: margin-top .3s;
+}
+
+.attachment.visited .plus,
+.attachment:hover .plus{
+    margin-top: .1em;
 }
 
 /*--------------------------------------------------------------
@@ -1790,6 +1866,7 @@ body:not(.ready) .navigation {
     bottom: 6em;
     -webkit-transition: none;
     transition: none;
+    text-align: right;
 }
 
 .smartmicro #side-menu{
@@ -1800,6 +1877,7 @@ body:not(.ready) .navigation {
 	opacity: 0;
 	-webkit-transition: opacity .5s;
     transition: opacity .5s;
+    text-align: right;
 }
 
 .navigation.sticky.affix .side-menu,
@@ -1810,18 +1888,28 @@ body:not(.ready) .navigation {
 #side-menu li {
 	display: block;
 	overflow: hidden;
-    padding: 1em;
+    padding: .75em;
     background-color: transparent;
+    text-align: right;
 }
 
-#side-menu.no-name a {
-    width: auto;
-}
 
 #side-menu a {
+	overflow: hidden;
+	width: 1.5em;
     text-align: left;
     padding: 0em !important;
     pointer-events: none;
+    white-space: nowrap;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    background: #FFF;
+    border-radius: 1em;
+}
+
+#side-menu.name a:hover{
+	width: auto;
+	padding-right: .5em !important;
 }
 
 #side-menu.no-name a > .icon{
@@ -1835,8 +1923,7 @@ body:not(.ready) .navigation {
 
 .tofull #side-menu, .smart #side-menu{
 	display: block;
-	right: .7em;
-    bottom: 4em;
+    bottom: 5em;
 }
 
 
@@ -2162,6 +2249,10 @@ body:not(.ready) .navigation {
 /*--------------------------------------------------------------
 4.1 Plugins Google Map
 --------------------------------------------------------------*/
+.scm-marker{
+	display: none;
+}
+
 .scm-map{
 	height: 400px;
 }
@@ -2178,6 +2269,10 @@ body:not(.ready) .navigation {
 	display: none;
 }*/
 
+.scm-map .gm-style > div:first-child > div:last-child > div > div{
+	/*background-color: #000 !important;*/
+}
+
 .scm-map .gm-style-iw > div{
 	width: auto !important;
 	color: #555;
@@ -2185,6 +2280,53 @@ body:not(.ready) .navigation {
 
 .scm-map .gm-style-iw {
 	line-height: 1.5em;
+	text-align: center;
+}
+
+.scm-map .gm-style-iw  > div strong{
+	padding: 1em;
+	display: block;
+	border-top: 1px dashed #ddd;
+	font-size: 1.2em;
+}
+
+.scm-map .gm-style-iw  > div strong:first-child{
+	border-top: 0;
+}
+
+.scm-map .gm-style-iw  > div strong > i{
+	font-weight: normal;
+	display: block;
+	
+	font-size: .8em;
+}
+
+.scm-map .gm-style-iw  > div strong + span{
+	border-top: 1px solid #ddd;
+	padding-top: 1em;
+}
+
+.scm-map .gm-style-iw  > div span{
+	display: block;
+	
+}
+
+.scm-map .gm-style-iw  > div span:last-child{
+	padding-bottom: 1em;
+}
+
+.scm-map .gm-style-iw + div {
+    width: 21px !important;
+    height: 21px !important;
+    right: -21px !important;
+    top: 7px !important;
+    /*border-radius: 0% 50% 50% 0px;*/
+    border: 4px solid rgb(255, 255, 255);
+    opacity: 1 !important;
+}
+
+.scm-map .gm-style-iw + div:hover{
+	opacity: .7 !important;
 }
 
 .scm-map .labels{
@@ -2340,6 +2482,32 @@ body:not(.ready) .navigation {
 /* img */
 
 .fancybox-image > img{
+}
+
+/* Dynamic Content */
+
+.fancybox-overlay .dynamic{
+	width: 800px;
+	max-width: 80%;
+	height: 80%;
+	overflow-y: overlay;
+	overflow-x: hidden;
+	/*overflow: hidden;*/
+	position: fixed;
+	background-color: #FFF;
+	padding: 0 3em;
+	top: 10%;
+	/*left: 10%;*/
+	border-radius: 1em;
+}
+
+.tofull .fancybox-overlay .dynamic{
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 0;
 }
 
 /******************************************************************************************/

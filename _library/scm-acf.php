@@ -95,7 +95,8 @@ function scm_acf_group_register( $group ) {
 	$group['fields'] = scm_acf_key_and_condition( $group['key'], $group['fields'] );
 	$group['key'] = scm_acf_get_key( $group['key'], 'group_' );
 
-	register_field_group( $group );
+	//register_field_group( $group );
+	acf_add_local_field_group( $group );
 
 }
 

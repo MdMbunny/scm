@@ -322,12 +322,25 @@ function checkTaxes( $type, $taxes = array( 'language', 'post_translations' ) ) 
  * @param {string} tax Taxonomy slug.
  * @return {array} List of IDs.
  */
-function getTermsId( $tax = '' ) {
-    $terms = get_terms( array(
-        'taxonomy' => $tax,
-        'hide_empty' => false,
-    ) );
+function getTermsId( $tax = '', $langs = array() ) {
     $arr = array();
+    $terms = array();
+
+    if( empty( $langs ) || !is_array( current( $langs ) ) ){
+        $terms = get_terms( array(
+            'taxonomy' => $tax,
+            'hide_empty' => false,
+        ) );
+    }else{
+        foreach( current( $langs ) as $lang){
+            $terms = array_merge( $terms, get_terms( array(
+                'taxonomy' => $tax,
+                'hide_empty' => false,
+                'lang' => $lang,
+            ) ) );
+        }
+    }
+    
     foreach ($terms as $value) {
         $arr[ $value->slug ] = $value->term_id;
     }
@@ -520,6 +533,7 @@ function linkExtend( $link, $name = '' ){
  */
 function urlExtend( $url = '', $name = '' ){
 
+    if( !$url ) return '';
     $parse = parse_url( $url );
     $parse['name'] = $name;
     $domain = strtolower( $parse['host'] );
@@ -590,21 +604,29 @@ function getGoogleMapsLatLng( $address = '', $country = '' ){
 
     if( str_replace( ' ', '', $address ) === '' ){
         $address = 'Roma';
-        $country = ( $country ?: 'Italy' );
     }
+    $country = ( $country ?: 'Italy' );
 
-    $google_address = str_replace(' ', '+', doublesp( $google_address ) );
+    $google_address = str_replace(' ', '+', doublesp( $address ) );
+    $latlng = array(
+        'lat'   => 0,
+        'lng'   => 0,
+    );
 
-    $json = wp_remote_fopen( 'http://maps.google.com/maps/api/geocode/json?key=AIzaSyBZEApCxfzuavDWXdJ2DAVAftxbMjZWrVY?address=$google_address&sensor=false&region=$country' );
+    //consoleLog( 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDdHFl9264Pzyfjcx4rQpmMxAXMLY9rM_Q&address=' . $google_address . '&sensor=false' . ( $country ? '&region=' . $country . '' : '' ) );
+
+    $json = wp_remote_fopen( 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDdHFl9264Pzyfjcx4rQpmMxAXMLY9rM_Q&address=' . $google_address . '&sensor=false' . ( $country ? '&region=' . $country . '' : '' ) );
     $json = json_decode( $json );
-    consoleLog( $json );
 
-    $ret = array(
+    if( is_wp_error( $json ) || $json->status == 'ZERO_RESULTS' )
+        return $latlng;   
+    
+    $latlng = array(
         'lat'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'},
         'lng'   => $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'},
     );
 
-    return $ret;
+    return $latlng;
 }
 
 /**

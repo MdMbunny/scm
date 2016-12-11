@@ -93,7 +93,7 @@ $link = apply_filters( 'scm_filter_object_after_link_{$type}', $link, $content, 
 */
 function scm_utils_link_post( $content = array(), $id = 0 ) {
 
-    global $post;
+    global $post, $SCM_types;
 
     if( $id )
         $post = ( is_numeric( $id ) ? get_post( $id ) : $id );
@@ -105,42 +105,69 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
 
-    switch ( $type ) {
-        case 'soggetti':
-            $link = ' data-href="' . scm_field( 'soggetto-link', '#', $id ) . '"';
+    $set = ex_attr( $SCM_types['settings'], $type, array( 'link'=>'self', 'link-field'=>'' ) );
+    $link_type = ex_attr( $content, 'link-type', $set['link'] );
+    $link_field = ex_attr( $content, 'link-field', $set['link-field'] );
+    $template = ex_attr( $content, 'template', '' );
+    
+    if( !$template ){
+        
+        $temp = ex_attr( $SCM_types['objects'], $type . SCM_TEMPLATE_APP, 0 );
+        if( $temp ){
+            $t = get_posts(array(
+                'post_type' => $type . SCM_TEMPLATE_APP,
+                'posts_per_page' => 1,
+                'post_status' => array( 'publish', 'private' ),
+                'order' => 'DESC',
+                'orderby' => 'date',
+            ));
+            $template = $t[0]->ID;
+            $content = array_merge( get_fields( $template ), ( $content ?: array() ) );
+        }
+    }
+
+    if( is_asso( $link_field ) ){
+        foreach ($link_field as $typ => $choices) {
+            foreach ($choices as $choice => $field) {
+                if( scm_field( $typ, '', $id ) === $choice )
+                    $link_field = $field;
+                    break 2;
+            }
+        }
+    }
+
+    switch ( $link_type ) {
+        case 'self':
+            $link = ' data-href="' . get_permalink( $id ) . '"';
+        break;
+        case 'attachment':
+            $file = scm_field( $link_field, 0, $id );
+            $file = ( (int)$file ? wp_get_attachment_url( scm_field( $link_field, 0, $id ) ) : $file );
+            $link = ' data-href="' . $file . '"';
+        break;
+        case 'link':
+            $link = ' data-href="' . scm_field( $link_field, '#', $id ) . '"';
         break;
 
-        case 'luoghi':
+        case 'map':
             $link = ' data-open-marker="click"';
         break;
 
-        case 'documenti':
-            $link = ' data-href="' . scm_field( 'documento-file', '#', $id ) . '"';
-        break;
-
-        case 'rassegne-stampa':
-            $typ = scm_field( 'rassegna-type', 'file', $id );
-            $link = ' data-href="' . ( $typ == 'file' ? scm_field( 'rassegna-file', '#', $id ) : scm_field( 'rassegna-link', '#', $id ) ) . '"';
-        break;
-
-        case 'gallerie':
-            $link = scm_utils_link_gallery( $content, 'galleria-images', $id );
-
+        case 'gallery':
+            $link = scm_utils_link_gallery( $content, $link_field, $id );
         break;
 
         case 'video':
-            $video = scm_field( 'video-url', '', $id );
+            $video = scm_field( $link_field, '', $id );
             $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
             $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
             $link .= ' data-popup-type="video"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
-
         break;
 
-        case 'articoli':
-        case 'news':
-            $link = ' data-popup="' . htmlentities( json_encode( array( get_permalink() . ( $content['template'] ? '?template=' . $content['template'] : '' ) ) ) ) . '"';
-            $link .= ' data-popup-content="' . ( $id ? '#post-' . $id : '' ) . '"';
+        case 'popup':
+            $link = ' data-popup="' . htmlentities( json_encode( array( ( $id ? array( $id ) : '' ) ) ) ) . '"';
+            $link .= ' data-popup-template="' . $template . '"';
             $link .= ' data-popup-type="load"';
         break;
 
@@ -964,7 +991,10 @@ function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark
                     switch ( $marker ) {
                         case 'icon':
                             $fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker', 'option' );
-                            $color = scm_utils_preset_rgba( scm_field( 'opt-tools-map-rgba-color', '#e3695f', 'option' ), scm_field( 'opt-tools-map-rgba-alpha', 1, 'option' ) );
+
+                            $color = scm_utils_style_get_color( 'opt-tools-map-', 'option' );
+
+                            //$color = scm_utils_preset_rgba( scm_field( 'opt-tools-map-rgba-color', '#e3695f', 'option' ), scm_field( 'opt-tools-map-rgba-alpha', 1, 'option' ) );
                             $icon = array( 'icon' => $fa, 'data' => $color );
                             $marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
                         break;

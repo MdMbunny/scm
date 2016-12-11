@@ -317,7 +317,7 @@ function scm_hook_site_register_styles_inline() {
     $css .= '.scm-row { ' . $align . ' }' . lbreak();
     $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
     $css .= '.navigation ul li a { ' . $menu_font . ' }' . lbreak();
-    $css .= '.topofpage { ' . $top_bg . ' }' . lbreak();
+    $css .= '.topofpage a { ' . $top_bg . ' }' . lbreak();
     $css .= '.topofpage a i { ' . $top_icon . ' }' . lbreak();
 
     // Responsive
@@ -500,6 +500,13 @@ function scm_hook_load_content() {
     $archive = $_POST['archive'];
     if( !is_null( $archive ) )
         scm_post( $archive );
+
+    // SINGLE
+    $single = $_POST['single'];
+    $template = $_POST['template'];
+
+    if( !is_null( $single ) )
+        scm_post( (int)$single, (int)$template );
     
     die;
 }

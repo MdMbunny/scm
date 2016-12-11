@@ -161,8 +161,10 @@ $type = new Custom_Type( $args );
             add_filter( 'scm_filter_admin_ui_menu_order', array( &$this, 'admin_menu_order' ) );
             add_filter( 'manage_edit-' . $this->slug . '_columns', array( &$this, 'admin_columns' ) ) ;
             add_action( 'manage_' . $this->slug . '_posts_custom_column', array( &$this, 'manage_admin_columns' ), 10, 2 );
-            add_action( 'load-edit.php', array( &$this, 'admin_edit_page_load' ) );
-
+            
+            // WARNING: breaks WP 4.7
+            //add_action( 'load-edit.php', array( &$this, 'admin_edit_page_load' ) );
+            
             add_action( 'admin_head', array( &$this, 'admin_elems_hide' ) );
             add_action( 'admin_bar_menu', array( &$this, 'admin_bar_hide' ), 999 );
             add_action( 'admin_menu', array( &$this, 'admin_menu_hide' ) );

@@ -437,7 +437,7 @@ function scm_acf_get_field( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'file',
-				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'library' 					=> scm_acf_get_field_to3( $arg, 1, 'library', 'all' ),//( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 				'min_size' 					=> scm_acf_get_field_to3( $arg, 2, 'minsize', '' ),
 				'max_size' 					=> scm_acf_get_field_to3( $arg, 3, 'maxsize', '' ),
 				'return_format' 			=> scm_acf_get_field_to3( $arg, 5, 'return', ( strpos( $extra , '-id' ) !== false ? 'id' : ( strpos( $extra , '-url' ) !== false ? 'url' : 'array' ) ) ),
@@ -449,7 +449,7 @@ function scm_acf_get_field( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'gallery',
-				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'library' 					=> scm_acf_get_field_to3( $arg, 1, 'library', 'all' ),// ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 				'preview_size' 				=> scm_acf_get_field_to3( $arg, 2, 'preview', 'thumbnail' ),
 				'min' 						=> scm_acf_get_field_to3( $arg, 3, 'min', 0 ),
 				'max' 						=> scm_acf_get_field_to3( $arg, 4, 'max', 0 ),
@@ -468,7 +468,7 @@ function scm_acf_get_field( $elem ) {
     		
     		$field = array(
 				'type' 						=> 'image',
-				'library' 					=> ( scm_acf_get_field_to3( $arg, 1, 'library', ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
+				'library' 					=> scm_acf_get_field_to3( $arg, 1, 'library', 'all' ),// ( strpos( $extra , '-all' ) !== false ? 'all' : 'uploadedTo' ) ) !== 'all' ? 'uploadedTo' : 'all' ),
 				'preview_size' 				=> scm_acf_get_field_to3( $arg, 2, 'preview', 'thumbnail' ),
 				'min_width' 				=> scm_acf_get_field_to3( $arg, 3, 'minwidth', 0 ),
 				'max_width' 				=> scm_acf_get_field_to3( $arg, 4, 'maxwidth', 0 ),

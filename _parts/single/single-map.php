@@ -18,6 +18,8 @@ $post_id = $post->ID;
 $args = array(
 	'element' => 0,
 	'zoom' => 10,
+	'both' => false,
+	'template' => '',
 	'id' => '',
     'class' => '',
     'attributes' => '',
@@ -64,38 +66,93 @@ if( !$element ){
 
 $class = 'map scm-map scm-object object full' . $args['class'];
 
-$attributes = ' data-zoom="' . ifexists( $args[ 'zoom' ], 10 ) . '"' . $args['attributes'];
+$fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker', 'option' );
+$color = scm_utils_style_get_color( 'opt-tools-map-', 'option' );
+$icon = array( 'icon' => $fa, 'data' => $color );
+$marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '" ';
+
+$attributes = ' data-zoom="' . ifexists( $args[ 'zoom' ], 10 ) . '" data-infowidth="' . ifexists( $args[ 'infowidth' ], 500 ) . '" ' . $marker . $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
+$latlng = array();
+$luoghi = array();
 
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 2 );
 
 if( is( $element ) ){
 
-	foreach( $element as $luogo ){
+	foreach( $element as $luogo_id ){
 
-		$luogo = ( is_numeric( $luogo ) ? $luogo : $luogo->ID );
+		$luogo = array();
+		$luogo['strongs'] = array();
+		$luogo['strings'] = array();
 
-		$fields = get_fields( $luogo );
+		$luogo_id = ( is_numeric( $luogo_id ) ? $luogo_id : $luogo_id->ID );
 
-		$lat = ( isset( $fields['luogo-lat'] ) ? $fields['luogo-lat'] : 0 );
-		$lng = ( isset( $fields['luogo-lng'] ) ? $fields['luogo-lng'] : 0 );
+		$fields = get_fields( $luogo_id );
+
+		$lat = get_post_meta( $luogo_id, 'latitude', true );//( isset( $fields['luogo-lat'] ) ? $fields['luogo-lat'] : 0 );
+		$lng = get_post_meta( $luogo_id, 'longitude', true );//( isset( $fields['luogo-lng'] ) ? $fields['luogo-lng'] : 0 );
 		$indirizzo = ( isset( $fields['luogo-indirizzo'] ) ? $fields['luogo-indirizzo'] : '' );
-		$citta = ( isset( $fields['luogo-citta'] ) ? $fields['luogo-citta'] : '' ) . ( $fields['luogo-paese'] ? ' (' . $fields['luogo-paese'] . ')' : '' );
-		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
+		$citta = ( isset( $fields['luogo-citta'] ) ? $fields['luogo-citta'] : '' ) . ( isset($fields['luogo-paese']) ? ' (' . $fields['luogo-paese'] . ')' : '' );
+		$title = get_the_title( $luogo_id );
+		$name = ex_attr( $fields, 'luogo-nome', '' );
+		
 		$attr = '';
 
-		$marker = scm_utils_preset_map_marker( $luogo, $fields, 1 );
+		$template = $args['template'];
+		$link = '';
+		if( $template )
+			$link = ' ' . scm_utils_link_post( array( 'link-type'=>'popup', 'template'=>$template ), $luogo_id );
 
-		if( $lat && $lng )
-			$attr = ' data-lat="' . $lat . '" data-lng="' . $lng . ' "';
-		else
-			$attr = ' data-address="' . $indirizzo . ( $citta ? ', ' . $citta : '') . '" ';
+		$strong = '<strong' . $link . '>' . ( $args['both'] ? $title . ( $name ? ' <i>' . $name . '</i>' : '' ) : ( $name ?: $title ) ) . '</strong>';
+		
+		if( $lat && $lng ){
+			$ind = getByValueKey( $latlng, $lat, 'lat' );
+			if( !is_null( $ind ) ){
+				if( $latlng[$ind]['lng'] == $lng ){
+					$luoghi[$ind]['strongs'][] = $strong;
+					continue;
+				}
+			}
+			$luogo['lat'] = $lat;
+			$luogo['lng'] = $lng;
+			$latlng[$luogo_id] = array( 'lat'=>$lat, 'lng'=>$lng );
+			$attr = ' data-lat="' . $lat . '" data-lng="' . $lng . '"';
+		}else{
+			$luogo['address'] = str_replace( array( ',', '-' ), '', $indirizzo ) . ( $citta ? ' ' . $citta : '' );
+		}
+		
+		$luogo['strongs'][] = $strong;
+		$luogo['strings'][] = '<span>' . $indirizzo . '</span>';
+		$luogo['strings'][] = '<span>' . $citta . '</span>';
+		
+		$luoghi[$luogo_id] = $luogo;
+	}
+	foreach( $luoghi as $luogo ){
 
-		indent( $SCM_indent+1, '<div class="scm-marker marker marker-' . $luogo . '"' . $attr . $marker . '>' );
-				indent( $SCM_indent+2, '<strong>' . ( isset( $fields['luogo-nome'] ) ? $fields['luogo-nome'] : get_the_title( $luogo ) ) . '</strong><br>' );
-				indent( $SCM_indent+2, '<span>' . $indirizzo . '</span><br>' );
-				indent( $SCM_indent+2, '<span>' . $citta . '</span>' );
+		$fields = get_fields( $luogo_id );
+
+		//$luogo_id = $luogo['id'];
+
+		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
+		$marker = scm_utils_preset_map_marker( $luogo_id, $fields, 1 );
+
+		if( isset( $luogo['lat'] ) && isset( $luogo['lng'] ) ){
+			$attr = ' data-lat="' . $luogo['lat'] . '" data-lng="' . $luogo['lng'] . '" ';
+		}elseif( isset( $luogo['address'] ) ){
+			$attr = ' data-address="' . $luogo['address'] . '" ';
+		}
+
+		indent( $SCM_indent+1, '<div class="scm-marker marker marker-' . $luogo_id . '"' . $attr . $marker . '>' );
+				
+				foreach ($luogo['strongs'] as $value) {
+					indent( $SCM_indent+2, $value );
+				}
+				foreach ($luogo['strings'] as $value) {
+					indent( $SCM_indent+2, $value );
+				}
+				
 				if( !empty( $contatti ) ){
 					indent( $SCM_indent+2, '<div class="map-contacts">' );
 					foreach ($contatti as $contatto) {
@@ -107,7 +164,6 @@ if( is( $element ) ){
 					indent( $SCM_indent+2, '</div>' );
 				}
 		indent( $SCM_indent+1, '</div>' );
-		
 	}
 }
 

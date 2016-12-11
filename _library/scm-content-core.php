@@ -181,6 +181,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 'float' => '',
                 'overlay' => '',
 
+                'link-type' => '',
+                'link-field' => '',
                 'link' => 'no',
                 'template' => 0,
                 'url' => '#',
@@ -515,8 +517,14 @@ function scm_container_row( $content = array() ){
 * @return {array} Modified content array.
 */
 function scm_container_link( $content = array() ){
+    global $SCM_types;
 
-    $link = ( isset( $content['link'] ) && $content['link'] ? $content['link'] : 'no' );
+    $link = ex_attr( $content, 'link', 'no' );
+    
+    if( ex_attr( $content, 'post_type', '' ) ){
+        $content['link-type'] = $SCM_types['settings'][$content['post_type']]['link'];
+        $content['link-field'] = $SCM_types['settings'][$content['post_type']]['link-field'];
+    }
 
     if( $link && $link != 'no' ){
 
@@ -525,6 +533,7 @@ function scm_container_link( $content = array() ){
 
         if( $content['container'] != 'post' ){
             $href = scm_utils_link_post( $content );
+
         }else{
             switch ( $link ) {
                 case 'self':
@@ -657,7 +666,13 @@ function scm_contents( $content = NULL ) {
 
     if( is_null( $content ) ) return;
 
+    global $post, $SCM_indent, $SCM_forms;
+
+    $id = $post->ID;
+    $type = $post->post_type;
+    
     $content = apply_filters( 'scm_filter_echo_content', $content );
+    $content = apply_filters( 'scm_filter_echo_content_' . $type, $content );
 
     if( is_null( $content ) || !$content ) return;
 
@@ -666,10 +681,6 @@ function scm_contents( $content = NULL ) {
     $content = toArray( $content, true, true );
     if( !$content ) return;
 
-    global $post, $SCM_indent, $SCM_forms;
-
-    $id = $post->ID;
-    $type = $post->post_type;
     $SCM_indent++;
 
     foreach ( $content as $args ) {
@@ -733,6 +744,15 @@ function scm_contents_single( $args = array() ) {
         case 'layout-indirizzo':
 
             Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-address.php', array(
+                'cont' => $args,
+            ));
+
+        break;
+
+        case 'layout-attachments':
+        case 'layout-allegati':
+
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-attachments.php', array(
                 'cont' => $args,
             ));
 
@@ -841,6 +861,7 @@ function scm_contents_single( $args = array() ) {
 
         case 'layout-logo-icona':
         case 'layout-logo':
+        case 'layout-bannerimage':
         case 'layout-immagine':
         case 'layout-image':
         case 'layout-thumbs':
@@ -873,7 +894,7 @@ function scm_contents_single( $args = array() ) {
             $date_format = implode( $args[ 'separator' ], str_split( $args[ 'format' ] ) );
             $args['title'] = ( isset( $args[ 'date' ] ) ? date_i18n( $date_format, strtotime( $args[ 'date' ] ) ) : ( get_the_date( $date_format ) ?: '' ) );
 
-            $args['class'] = 'scm-date date' . is( $class );
+            $args['class'] = 'scm-date date ' . is( $class );
 
             Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
                 'cont' => $args
@@ -953,10 +974,16 @@ $before = apply_filters( 'scm_filter_archive_before_{post_type}}', $content, $po
 function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     global $post, $SCM_types, $SCM_indent, $SCM_archives;
-    
-    $element = ( isset( $content[ 'acf_fc_layout' ] ) ? $content[ 'acf_fc_layout' ] : '' );
 
-    $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
+    $type = '';
+
+    if( is_int( $content ) ){
+        $type = get_post_type( $content );
+        $content = array( 'single' => array( $content ), 'template' => $page );
+    }else{
+        $element = ( isset( $content[ 'acf_fc_layout' ] ) ? $content[ 'acf_fc_layout' ] : '' );
+        $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
+    }
 
     if ( is_null( getByKey( $SCM_types['public'], $type ) ) )
         return;
@@ -964,8 +991,9 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $archive = ( isset( $content['type'] ) ? $content['type'] === 'archive' : 0 );
     if( $archive && isset( $content['archive-paginated'] ) ){
         if( isset( $SCM_archives[ $content['archive-paginated'] ] ) )
-            $content['archive-paginated'] .= '_n';
+            $content['archive-paginated'] .= '_' . sizeof($SCM_archives);
 
+        $content['id'] = $content['archive-paginated'];
         $SCM_archives[ $content['archive-paginated'] ] = $content;
     }
     
@@ -1028,7 +1056,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $field = ( isset( $content['archive-field'] ) && $content['archive-field'] ? $content['archive-field'] : ( ( $orderby == 'meta_value' && isset( $content['archive-order'] ) ) ? $content['archive-order'] : '' ) );
         $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ( isset( $content['meta_query'] ) ? $content['meta_query'] : array() ) );
         $value = ( isset( $content['archive-value'] ) && $content['archive-value'] ? $content['archive-value'] : ( isset( $content['archive-field'] ) && $content['archive-field'] ? $post->ID : '') );
-
+        
         $query = array(
             'post_type' => $type,
             'tax_query' => $tax,

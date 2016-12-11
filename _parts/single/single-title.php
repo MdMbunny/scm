@@ -18,6 +18,7 @@ $post_id = $post->ID;
 $args = array(
     'acf_fc_layout' => 'layout-titolo',
     'title' => '',
+    'icon' => '',
     'tag' => 'h1',
     'prepend' => 'no',
     'append' => 'no',
@@ -35,6 +36,7 @@ $class = 'title scm-title scm-object object ' . $args['class'];
 $attributes = $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
+$icon = ( $args['icon'] && $args['icon'] !== 'no' && $args['icon'] !== 'fa-no' ? $args['icon'] : '' );
 
 $layout = $args['acf_fc_layout'];
 
@@ -125,6 +127,9 @@ $replaceArray = array(
 );
 
 $text = strtr( $text, $replaceArray );
+
+if( $icon )
+    $text = '<i class="fa ' . $icon . '"></i>' . $text;
 
 indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$text . '</' . $tag . '><!-- title -->', 1 );
 

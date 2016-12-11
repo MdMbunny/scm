@@ -921,22 +921,50 @@ function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, 
 * @param {string} class
 * @return {array} Fields.
 */
-function scm_acf_preset_repeater_links( $name = '', $elements = '', $logic = 0, $required = 0, $instructions = '', $class = '' ) {
+function scm_acf_preset_repeater_links( $name = '', $opt = '', $logic = 0, $required = 0, $instructions = '', $class = '' ) {
 
 	$name = ( $name ? $name . '-links' : 'links');
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Link', SCM_THEME ) );
 	
 	$files = scm_acf_field_repeater( $name, array( 
-		'button'=>__( '+ Link', SCM_THEME ),
+		'button'=>__( '+ Link Esterno', SCM_THEME ),
 		'label'=>'',
 		'class'=>$class,
 	), 100, $logic, $required );
 
 		$files['sub_fields'][] = scm_acf_field_text( 'name', 0, 30, 0, 0, __( 'Nome Pulsante', SCM_THEME) );
-		$files['sub_fields'][] = scm_acf_field_link( 'link', 0, 70, 0, 0, __( 'Inserisci un link', SCM_THEME) );		
-		
-		
-		
+		$files['sub_fields'][] = scm_acf_field_link( 'link', 0, 70, 0, 0, __( 'Inserisci un link', SCM_THEME) );
+
+	$fields[] = $files;
+	
+	return $fields;
+}
+
+/**
+* [GET] Preset repeater links
+*
+* @param {string} name
+* @param {array} elements
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @param {string} class
+* @return {array} Fields.
+*/
+function scm_acf_preset_repeater_objects( $name = '', $types = array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), $logic = 0, $required = 0, $instructions = '', $class = '' ) {
+
+	$name = ( $name ? $name . '-objects' : 'objects');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Object', SCM_THEME ) );
+	
+	$files = scm_acf_field_repeater( $name, array( 
+		'button'=>__( '+ Link Interno', SCM_THEME ),
+		'label'=>'',
+		'class'=>$class,
+	), 100, $logic, $required );
+
+		$files['sub_fields'][] = scm_acf_field_text( 'name', 0, 30, 0, 0, __( 'Nome Pulsante', SCM_THEME) );
+		$files['sub_fields'][] = scm_acf_field_object( 'object', array( 'type'=>'id', 'types'=>$types ), 70, 0, 0, __( 'Seleziona un elemento', SCM_THEME) );
+
 	$fields[] = $files;
 	
 	return $fields;
@@ -1160,7 +1188,9 @@ function scm_acf_preset_attachments( $name = '', $types = array( 'rassegne-stamp
 
 	$fields = array_merge( $fields, scm_acf_preset_repeater_files( $original ) );
 	$fields = array_merge( $fields, scm_acf_preset_repeater_links( $original ) );
-	$fields[] = scm_acf_field_objects( $name . 'media', array( 'type'=>'rel-id', 'types'=>$types, 'label'=>'Seleziona Media' ) );
+	$fields = array_merge( $fields, scm_acf_preset_repeater_objects( $original, $types ) );
+	
+	//$fields[] = scm_acf_field_objects( $name . 'media', array( 'type'=>'rel-id-search', 'types'=>$types, 'label'=>'Seleziona Elementi' ) );
 
 	return $fields;
 	

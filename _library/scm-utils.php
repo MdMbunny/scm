@@ -1505,7 +1505,7 @@ function googleMapsLink( $address = '' ){
  * @return {string} Encoded email address.
  */
 function encodeEmail( $email = '' ){
-    return str_replace( '@', '()', str_replace( '.', ',', $email ) );
+    return str_replace( '.', ',', str_replace( '@', '()', $email ) );
 }
 
 /**

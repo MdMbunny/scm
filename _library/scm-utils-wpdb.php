@@ -67,17 +67,18 @@ function wpdbInsertLangs( $posts = array(), $language = array(), $update = false
     $defs = getAllByValueKey( $posts, $def, 'lang_input', true );
     $new_posts = wpdbInsertPosts( $defs, array(), $update, $specific, $debug );
 
-    if( $debug ) consoleLog( $def . ' (default)' );
+    consoleLog( $def . ' (default)' );
 
     foreach ($langs as $lang) {
         if( $lang === $def ) continue;
         $trans = getAllByValueKey( $posts, $lang, 'lang_input', true );
+        consoleLog($trans);
         $lang_posts = wpdbInsertPosts( $trans, $new_posts, $update, $specific, $debug );
         if( $debug ) consoleLog( $lang );
         $new_posts = array_merge( $new_posts, $lang_posts );
     }
 
-    if( $debug ) consoleLog( 'TOTAL POSTS: ' . sizeof( $new_posts ) );
+    consoleLog( 'TOTAL POSTS: ' . sizeof( $new_posts ) );
 
     return $new_posts;
 }
@@ -140,9 +141,13 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
         $tax_post = array();
         $rep_post = array();
         $fld_post = array();
+        $trm_post = array();
         if( $post['meta_input'] ){
             foreach ($post['meta_input'] as $k => $v) {
-                if( wpdbIsAttachment( $v ) ){
+
+                if( endsWith( $k, '-terms' ) ){
+                    $trm_post[ $k ] = $v;
+                }elseif( wpdbIsAttachment( $v ) ){
                     $att_post[ $k ] = $v;
                 }elseif( is_list( $v ) ){
                     $rep_post[ $k ] = $v;
@@ -166,17 +171,18 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
                             $post['tax_input'][$tax][$i] = $temp['term_id'];
                         }
                     }
-                    if( $post['meta_input'] ){
-                        foreach ($post['meta_input'] as $field => $value) {
-                            if( endsWith( $field, $tax . '-terms' ) ){
-                                $ind = getByValue( $value, $name );
-                                if( !is_null($ind) )
-                                    $post['meta_input'][$field][$ind] = $post['tax_input'][$tax][$i];
-                            }
+                    
+                    foreach( $trm_post as $field => $value) {
+                        if( endsWith( $field, $tax . '-terms' ) ){
+                            $ind = getByValue( $value, $name );
+                            if( !is_null($ind) )
+                                $post['meta_input'][$field][$ind] = $post['tax_input'][$tax][$i];
                         }
-                    }
+                    }                    
                 }
+
             }
+            if( $debug ) consoleLog( $post['meta_input'] );
         }
 
         if( $save )
@@ -236,7 +242,7 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
 
             if( $debug > 2 ) consoleLog( '- Updating Language: ' . $post['lang_input'] );
             if( $save ) pll_set_post_language( $new_post, $post['lang_input'] );
-            
+
             if( $post['trans_input'] ){
                 
                 if( $debug > 2 ) consoleLog( '- Updating Translation: ' . $post['trans_input'] );
@@ -261,7 +267,7 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
     
     if( !$skip || $debug > 1 ) consoleLog( '---------' );
     
-    if( $debug ) return 1;
+    if( $skip ) return 1;
     return $new_post;
 
 }
@@ -302,6 +308,7 @@ function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fiel
     foreach ( $old_posts as $post) {
 
         $new_post = array(
+            'featured' => get_post_thumbnail_id( $post->ID ),
             'post_type' => $new,
             'post_status' => $post->post_status,
             'post_title' => $post->post_title,
@@ -332,8 +339,9 @@ function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fiel
             foreach( $taxes as $key => $value ){
                 if( !is_list( $value ) || !sizeof( $value ) > 1 || !is_string($value[0]) || !is_array( $value[1] ) )
                     continue;
-                $new_post = wpdbTaxonomy( $post, $new_post, $key, $value[0], $value[1] );
+                $new_post = wpdbTaxonomy( $post->ID, $new_post, $key, $value[0], $value[1] );
             }
+
         }
 
         if( !empty( $language ) ){
@@ -377,6 +385,7 @@ function wpdbGetFields( $new_post = array(), $id = 0, $fields = array(), $attach
                 if( startsWith( $opt, '_import-' ) ){
                     
                     switch ($opt) {
+
                         case '_import-date':
                             $temp = strtolower( get_post_meta( $id, $fld, true ) );
                             if( $temp && !is_numeric( substr( $temp, 1 ) ) )
@@ -408,12 +417,15 @@ function wpdbGetFields( $new_post = array(), $id = 0, $fields = array(), $attach
                             $temp = array();
                             for ($i=0; $i < (int)get_post_meta( $id, $fld, true ); $i++) {
                                 $temp[] = wpdbGetFields( $new_post, $id, $rep, $attachments, $fld . '_' . $i . '_' );
-                            }                            
+                            }            
                         break;
                         
                         case '_import-attachment':
                         default:
-                            $temp = get_post_meta( $id, $fld, true );
+                            if( $fld === '_featured' )
+                                $temp = $new_post['featured'];
+                            else
+                                $temp = get_post_meta( $id, $fld, true );
                             if( $attachments && !empty($attachments) && (int)$temp )
                                 $temp = $attachments[(int)$temp];
                         break;
@@ -424,6 +436,8 @@ function wpdbGetFields( $new_post = array(), $id = 0, $fields = array(), $attach
                         $tax[ str_replace( '_set-', '', $opt) ] = $fld;
                 }
 
+            }elseif( $value === '_content' ){
+                $temp = $new_post['post_content'];
             }elseif( $value ){
                 $temp = get_post_meta( $id, $prepend . $value, true );
             }                
@@ -433,7 +447,6 @@ function wpdbGetFields( $new_post = array(), $id = 0, $fields = array(), $attach
     }
 
     return $arr;
-
 }
 
 function wpdbTaxonomy( $post, $args = array(), $old = '', $new_tax = '', $terms = array() ){
@@ -442,24 +455,21 @@ function wpdbTaxonomy( $post, $args = array(), $old = '', $new_tax = '', $terms 
     $new_terms = array();
     if( $new_tax && $old && $terms && !empty( $terms ) ){
         
-        $old_terms = get_post_meta( $post->ID, $old, true );
-
-        $old_terms = ( $old_terms && is_array( $old_terms ) ? $old_terms : array( $old_terms ) );
+        global $wpdb;
+        $querystr = "
+            SELECT * FROM $wpdb->terms
+            LEFT JOIN $wpdb->term_taxonomy
+                ON( $wpdb->terms.term_id = $wpdb->term_taxonomy.term_id )
+            LEFT JOIN $wpdb->term_relationships ON($wpdb->term_taxonomy.term_taxonomy_id = $wpdb->term_relationships.term_taxonomy_id)
+            WHERE $wpdb->term_relationships.object_id = " . $post . "
+            
+        ";
+        $old_terms = $wpdb->get_results($querystr, OBJECT);
         foreach( $terms as $key => $value ) {
             foreach ($old_terms as $t) {
-                if( !$t ) continue(1);
-                $t = ( is_numeric($t) ? (int)$t : $t );
-                if( is_string( $t ) ){
-                    $term = ex_attr( $value, sanitize_title( $t ) );
-                    if( $term ){
-                        $new_terms[] = $term;
-                        continue(1);
-                    }else{
-                        $new_terms[] = $t;
-                        continue(1);
-                    }
-                }
-                if( $key === (int)$t ){
+                if( !$t || empty($t) || $t->taxonomy != $old ) continue(1);
+
+                if( $key === $t->slug ){
                     $new_terms[] = $value;
                     continue(1);
                 }
@@ -471,6 +481,7 @@ function wpdbTaxonomy( $post, $args = array(), $old = '', $new_tax = '', $terms 
         $args['tax_input'] = array();
 
     $args['tax_input'][$new_tax] = $new_terms;
+
     return $args;
 } 
 
