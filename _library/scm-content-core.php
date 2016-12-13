@@ -1001,11 +1001,20 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $query = array();
     $loop = array( $post->ID );
 
-    $template_id = ( isset( $content['template'] ) && $content['template'] ? $content['template'] : 0 );
+    $template_id = is_attr( $content, 'template', 0 );
 
     // ++todo 1
-    if( !$template_id )
-        return;
+    if( !$template_id ){
+
+        $template_id = scm_field( $type . '-templates', '', 'option' );
+                    
+        if( !empty( $template_id ) )
+            $template_id = (int)$template_id[0]['id'];
+
+        if( empty( $template_id ) )
+            return;
+    }
+        
 
     $template = get_fields( $template_id );
     $template_post = get_post( $template_id );

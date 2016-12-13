@@ -76,11 +76,18 @@ function scm_front_init() {
             // If query arg ?template=XXX exists
             }elseif( !$page ){
                 $template = get_query_var( 'template', 0 );
-                // IF Template not exists - Load Home Page
-                // ++todo:  se non esiste il template dovresti aver pronte delle parts per i type di default
-                //          e per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto
+                
+                // IF {$type}-templates exists - Pick up the first template from the list
                 if( !$template ){
-                    get_template_part( SCM_DIR_PARTS, 'none' );
+
+                    $template = scm_field( $type . '-templates', '', 'option' );
+                    
+                    if( !empty( $template ) )
+                        $template = (int)$template[0]['id'];
+                    
+                    // IF Template not exists - Load Home Page
+                    if( empty( $template ) )
+                        get_template_part( SCM_DIR_PARTS, 'none' );
                 }
             }
         }

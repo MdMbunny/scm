@@ -110,7 +110,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     $link_field = ex_attr( $content, 'link-field', $set['link-field'] );
     $template = ex_attr( $content, 'template', '' );
     
-    if( !$template ){
+    /*if( !$template ){
         
         $temp = ex_attr( $SCM_types['objects'], $type . SCM_TEMPLATE_APP, 0 );
         if( $temp ){
@@ -124,7 +124,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
             $template = $t[0]->ID;
             $content = array_merge( get_fields( $template ), ( $content ?: array() ) );
         }
-    }
+    }*/
 
     if( is_asso( $link_field ) ){
         foreach ($link_field as $typ => $choices) {
