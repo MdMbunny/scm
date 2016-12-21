@@ -261,7 +261,7 @@ require_once( SCM_DIR_CLASSES . 'TGM_Plugin_Activation.php' );
 require_once( SCM_DIR_CLASSES . 'Duplicate_Post.php' );
 
 /** Backup_Restore_Options Class, add tool for theme options backup. */
-require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
+//require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
 // ------------------------------------------------------
 // R.1 REQUIRE MODULES
@@ -269,75 +269,75 @@ require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
 
 // UTILITIES
 
-/** SCM Utilities. */
+// SCM Utilities.
 require_once( SCM_DIR_LIBRARY . 'scm-utils.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-utils-wp.php' );
 require_once( SCM_DIR_LIBRARY . 'scm-utils-wpdb.php' );
 
-/** SCM ACF utilities. */
+// SCM ACF utilities.
 require_once( SCM_DIR_LIBRARY . 'scm-acf.php' );
 
-	/** ACF Font Awesome icons subsets. */
+	// ACF Font Awesome icons subsets.
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils-fa.php' );
 
-	/** ACF select choices subsets. */
+	// ACF select choices subsets.
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils-choices.php' );
 
-	/** ACF field utilities. */
+	// ACF field utilities.
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-utils.php' );
 
 	// ------------------------------------------------------
 
-	/** ACF fields singles */
+	// ACF fields singles
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields.php' );
 
-	/** ACF fields presets */
+	// ACF fields presets
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-fields-presets.php' );
 
-	/** ACF layouts objects */
+	// ACF layouts objects
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts-objects.php' );
 
-	/** ACF layouts templates */
+	// ACF layouts templates
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-layouts-templates.php' );
 
-	/** ACF groups posts */
+	// ACF groups posts
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-groups-posts.php' );
 
-	/** ACF groups options */
+	// ACF groups options
 	require_once( SCM_DIR_LIBRARY . 'scm-acf-groups-options.php' );
 
 // INSTALL
 
-/** SCM install roles. */
+// SCM install roles.
 require_once( SCM_DIR_LIBRARY . 'scm-install-roles.php' );
 
-/** SCM install types. */
+// SCM install types.
 require_once( SCM_DIR_LIBRARY . 'scm-install-types.php' );
 
-/** SCM install ACF. */
+// SCM install ACF.
 require_once( SCM_DIR_LIBRARY . 'scm-install-acf.php' );
 
 // CORE
 
-/** SCM init front. */
+// SCM init front.
 require_once( SCM_DIR_LIBRARY . 'scm-init-front.php' );
 
-/** SCM init core. */
+// SCM init core.
 require_once( SCM_DIR_LIBRARY . 'scm-init-core.php' );
 
-/** SCM init admin. */
+// SCM init admin.
 require_once( SCM_DIR_LIBRARY . 'scm-init-admin.php' );
 
-/** SCM init feed. */
+// SCM init feed.
 //require_once( SCM_DIR_LIBRARY . 'scm-init-feed.php' );
 
 // CONTENT
 
-/** SCM content core. */
+// SCM content core.
 require_once( SCM_DIR_LIBRARY . 'scm-content-core.php' );
 
-/** SCM content front. */
+// SCM content front.
 require_once( SCM_DIR_LIBRARY . 'scm-content-front.php' );
 
-/** SCM content utilities. */
+// SCM content utilities.
 require_once( SCM_DIR_LIBRARY . 'scm-content-utils.php' );

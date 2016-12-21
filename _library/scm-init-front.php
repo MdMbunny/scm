@@ -88,6 +88,8 @@ function scm_front_init() {
                     // IF Template not exists - Load Home Page
                     if( empty( $template ) )
                         get_template_part( SCM_DIR_PARTS, 'none' );
+
+                    // Possibilmente se non ci sono Template, tira fuori Titolo e se esiste content/editor
                 }
             }
         }

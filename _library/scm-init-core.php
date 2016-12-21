@@ -370,7 +370,8 @@ function scm_hook_site_register_styles_inline() {
 
     $cont_fade = scm_field( 'opt-tools-fadecontent', '', 'option' );
     if( $cont_fade )
-        $css .= '.content-fade ' . $cont_fade . '{ opacity: 0; top: 3em; transition: opacity .5s, top .5s; }' . lbreak();
+        $css .= '.content-fade ' . $cont_fade . '{ opacity: 0; transition: opacity .5s; }' . lbreak();
+    //$css .= '.content-fade ' . $cont_fade . '{ opacity: 0; top: 3em; transition: opacity .5s, top .5s; }' . lbreak();
 
     global $SCM_libraries;
 

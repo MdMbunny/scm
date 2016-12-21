@@ -100,7 +100,7 @@ add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
 add_filter( 'scm_assets_filter_block_touch', 'scm_hook_admin_plugins_scm_assets_touch_block' );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_scm_agent', 1 );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_duplicate_post' );
-add_action( 'after_setup_theme', 'scm_hook_admin_plugins_backup_restore_options' );
+//add_action( 'after_setup_theme', 'scm_hook_admin_plugins_backup_restore_options' );
 add_action( 'tgmpa_register', 'scm_hook_admin_plugins_tgm_plugin_activation' );
 
 // DEBUG
@@ -890,7 +890,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'source'             => 'advanced-custom-fields-pro.zip', // The plugin source.
             'required'           => true, // If false, the plugin is only 'recommended' instead of required.
             'force_activation'   => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-            'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+            'force_deactivation' => true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
         ),
 
         array(
@@ -926,7 +926,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'source'             => 'github-updater.zip',
             'required'           => true,
             'force_activation'   => true,
-            'force_deactivation' => false,
+            'force_deactivation' => true,
         ),
 
         array(
@@ -934,7 +934,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'slug'               => 'advanced-custom-fields-font-awesome',
             'required'           => true,
             'force_activation'   => true,
-            'force_deactivation' => false,
+            'force_deactivation' => true,
         ),
 
         array(
@@ -942,7 +942,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
             'slug'               => 'advanced-custom-fields-limiter-field',
             'required'           => true,
             'force_activation'   => true,
-            'force_deactivation' => false,
+            'force_deactivation' => true,
         ),
 
 // ADMIN

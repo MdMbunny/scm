@@ -605,6 +605,8 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_false( 'opt-tools-tooltip', 0, 20, 0, 0, __( 'Tooltip', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-cursor', array( 'label'=>'Cursor' ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-cursor', 0, 20, 0, 0, __( 'Cursor', SCM_THEME ) );
+	$fields[] = scm_acf_field_tab_left( 'tab-tools-tables', array( 'label'=>'Tables' ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-tables', 0, 20, 0, 0, __( 'Tables', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-gmaps', array( 'label'=>'Google Maps' ) );
 		$fields[] = scm_acf_field_text( 'opt-tools-map-api', 0, 100, 0, 0, __( 'Google Maps API Key', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
