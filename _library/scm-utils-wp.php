@@ -411,7 +411,7 @@ function getURL( $url ){
     $add = '';
 
     if( $url == 'localhost' )
-        return 'http://localhost:8888/_scm';
+        return 'http://localhost:8888/_scm/';
 
     if( startsWith( $url, array( 'page:' ) ) !== false || startsWith( $url, array( 'page/' ) ) !== false || startsWith( $url, array( 'http://page/', 'https://page/' ) ) !== false ){
 
@@ -437,7 +437,7 @@ function getURL( $url ){
 
         $slug = $page->post_name;
         //$link = get_page_link( $id );
-        $link = SCM_SITE . '/' . $slug;
+        $link = SCM_SITE . '/' . $slug . '/';
 
         if( $link === get_the_permalink() && $add ) // toccato
             return $add;
