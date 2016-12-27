@@ -91,13 +91,13 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	$choices = array();
         				
-	if( strpos( $list, 'languages' ) !== false ):
+	if( strpos( $list, 'languages' ) !== false ){
 	    
-	    if( function_exists( 'pll_languages_list' ) ):
+	    if( function_exists( 'pll_languages_list' ) ){
 			$choices = array_to_asso( pll_languages_list() );
-			endif;
+		}
 
-	elseif( strpos( $list, 'types_' ) !== false ):
+	}elseif( strpos( $list, 'types_' ) !== false ){
 		global $SCM_types;
 		if( strpos( $list, '_complete') !== false )
 			$choices = $SCM_types['complete'];
@@ -108,14 +108,14 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 		else
 			$choices = $SCM_types['all'];
 
-	elseif( strpos( $list, 'templates_' ) !== false ):
+	}elseif( strpos( $list, 'templates_' ) !== false ){
 		$pos = strpos( $list, 'templates_' ) + strlen( 'templates_' );
 		$type = substr( $list, $pos ) . SCM_TEMPLATE_APP;
 		$temps = get_posts( array( 'post_type' => $type, 'orderby' => 'menu_order date', 'posts_per_page' => -1 ) );
 		foreach ( $temps as $temp)
 			$choices[$temp->post_name] = $temp->post_title;
 
-	elseif( strpos( $list, 'selectors' ) !== false ):
+	}elseif( strpos( $list, 'selectors' ) !== false ){
 		global $SCM_libraries;
 		$selectors = ex_attr( $SCM_libraries, 'selectors', 0);
 		if( !$selectors || !is_array( $selectors ) ) return $choices;
@@ -126,7 +126,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 		$choices = array_to_asso( $choices );
 
-	elseif( strpos( $list, 'wp_menu' ) !== false ):
+	}elseif( strpos( $list, 'wp_menu' ) !== false ){
 		$menus = get_registered_nav_menus();
 		foreach ( $menus as $location => $description )
 			$choices[$location] = $description;
@@ -136,8 +136,8 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 		$choices['mini'] = __( 'Menu Mini', SCM_THEME );
 		$choices['no'] = __( 'Nessun Menu', SCM_THEME );
 	
-	elseif( strpos( $list, 'side_position' ) !== false ):
-		if( strpos( $list, 'side_position_no' ) !== false ):
+	}elseif( strpos( $list, 'side_position' ) !== false ){
+		if( strpos( $list, 'side_position_no' ) !== false ){
 			$str = str_replace( '_', '', str_replace( 'side_position_no', '', substr( $list, strpos( $list, 'side_position_no'))));
 			$str = ( $str ?: __( 'Elemento', SCM_THEME ) );
 			$choices = array(
@@ -147,7 +147,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'bottom' => $str . ' ' . __( 'Sotto', SCM_THEME ),
 				'left' => $str . ' ' . __( 'Sinistra', SCM_THEME ),
 			);
-		else:
+		}else{
 			$str = str_replace( '_', '', str_replace( 'side_position', '', substr( $list, strpos( $list, 'side_position'))));
 			$str = ( $str ?: __( 'Elemento', SCM_THEME ) );
 			$choices = array(
@@ -156,29 +156,29 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'bottom' => $str . ' ' . __( 'Sotto', SCM_THEME ),
 				'left' => $str . ' ' . __( 'Sinistra', SCM_THEME ),
 			);
-		endif;
+		}
 			
-	elseif( strpos( $list, 'position_menu' ) !== false ):
+	}elseif( strpos( $list, 'position_menu' ) !== false ){
 		$choices = array(
 			'top' => __( 'Menu sopra al logo', SCM_THEME ),
 			'inline' => __( 'Menu affianco al logo', SCM_THEME ),
 			'bottom' => __( 'Menu sotto al logo', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'sticky_active' ) !== false ):
+	}elseif( strpos( $list, 'sticky_active' ) !== false ){
 		$choices = array(
 			'self' => __( 'Sticky Self', SCM_THEME ),
 			'plus' => __( 'Sticky Plus', SCM_THEME ),
 			'head' => __( 'Sticky Head', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'sticky_attach' ) !== false ):
+	}elseif( strpos( $list, 'sticky_attach' ) !== false ){
 		$choices = array(
 			'nav-top' => __( 'Attach to main navigation TOP', SCM_THEME ),
 			'nav-bottom' => __( 'Attach to main navigation BOTTOM', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'sticky_anim' ) !== false ):
+	}elseif( strpos( $list, 'sticky_anim' ) !== false ){
 		$choices = array(
 			'top' => __( 'Top', SCM_THEME ),
 			'left' => __( 'Left', SCM_THEME ),
@@ -186,39 +186,39 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'opacity' => __( 'Opacity', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'home_active' ) !== false ):
+	}elseif( strpos( $list, 'home_active' ) !== false ){
 		$choices = array(
 			'both' => __( 'Menu + Sticky', SCM_THEME ),
 			'sticky' => __( 'Solo Sticky', SCM_THEME ),
 			'menu' => __( 'Solo Menu', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'branding_header' ) !== false ):
+	}elseif( strpos( $list, 'branding_header' ) !== false ){
 		$choices = array(
 			'text' => __( 'Usa il nome del sito', SCM_THEME ),
 			'img' => __( 'Usa un\'immagine', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'head_position' ) !== false ):
+	}elseif( strpos( $list, 'head_position' ) !== false ){
 		$choices = array(
 			'menu_down'			=> __( 'Menu sotto a Logo', SCM_THEME ),
 			'menu_right'		=> __( 'Menu alla destra del Logo', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'head_social_position' ) !== false ):
+	}elseif( strpos( $list, 'head_social_position' ) !== false ){
 		$choices = array(
 			'top' => __( 'Sopra al menu (se menu inline)', SCM_THEME ),
 			'bottom' => __( 'Sotto al menu (se menu inline)', SCM_THEME ),
 		);
 			
-	elseif( strpos( $list, 'image_format' ) !== false ):
+	}elseif( strpos( $list, 'image_format' ) !== false ){
 		$choices = array(
 			'norm' => __( 'Normale', SCM_THEME ),
 			'quad' => __( 'Quadrata', SCM_THEME ),
 			'full' => __( 'Full Width', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'size_icon' ) !== false ):
+	}elseif( strpos( $list, 'size_icon' ) !== false ){
 		$choices = array(
 			'16x16' => '16x16',
 			'32x32' => '32x32',
@@ -227,19 +227,19 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'256x256' => '256x256',
 		);
 
-	elseif( strpos( $list, 'archive_mode' ) !== false ):
+	}elseif( strpos( $list, 'archive_mode' ) !== false ){
 		$choices = array(
 			'single' => __( 'Singoli', SCM_THEME ),
 			'archive' => __( 'Archivio', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'archive_complete' ) !== false ):
+	}elseif( strpos( $list, 'archive_complete' ) !== false ){
 		$choices = array(
 			'partial' => __( 'Archivio parziale', SCM_THEME ),
 			'complete' => __( 'Archivio completo', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'archive_pagination' ) !== false ):
+	}elseif( strpos( $list, 'archive_pagination' ) !== false ){
 		$choices = array(
 			'yes' => __( 'Paginazione', SCM_THEME ),
 			'all' => __( 'Pulsante ALL', SCM_THEME ),
@@ -247,7 +247,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'no' => __( 'No paginazione', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'gallerie_button' ) !== false ):
+	}elseif( strpos( $list, 'gallerie_button' ) !== false ){
 		$choices = array(
 			'img' => __( 'Thumb', SCM_THEME ),
 			'txt' => __( 'Testo', SCM_THEME ),
@@ -256,8 +256,8 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 
 	// +++ todo: non più 2, con _complete, ma spostati in alto, dove c'è template_ e lo fai simile
 	// chiami tamplate_link{type}, recuperi type, in qualche modo risali alle fields di quel type, becchi la field link/url/file e aggiungi la choice Link Oggetto
-	elseif( strpos( $list, 'template_link' ) !== false ):
-		if( strpos( $list, '_complete' ) !== false ):
+	}elseif( strpos( $list, 'template_link' ) !== false ){
+		if( strpos( $list, '_complete' ) !== false ){
 			$choices = array(
 				'template' => __( 'Link Template (tutto)', SCM_THEME ),
 				'template-single' => __( 'Link Template (singoli elementi)', SCM_THEME ),
@@ -265,16 +265,16 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'link-single' => __( 'Inserisci Link (singoli elementi)', SCM_THEME ),
 			);
 
-		else:
+		}else{
 			$choices = array(
 				'self' => __( 'Link Oggetto', SCM_THEME ),
 				'template' => __( 'Link Template', SCM_THEME ),
 				'link' => __( 'Link Inserito', SCM_THEME ),
 			);
 
-		endif;
+		}
 	
-	elseif( strpos( $list, 'luogo_data' ) !== false ):
+	}elseif( strpos( $list, 'luogo_data' ) !== false ){
 		$choices = array(
 			'name' => __( 'Nome', SCM_THEME ),
 			'address' => __( 'Indirizzo', SCM_THEME ),
@@ -283,37 +283,37 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'link' => __( 'Link', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'contact_link' ) !== false ):
+	}elseif( strpos( $list, 'contact_link' ) !== false ){
 		$choices = array(
 			'web:' => __( 'web:', SCM_THEME ),
 			'support:' => __( 'support:', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'contact_email' ) !== false ):
+	}elseif( strpos( $list, 'contact_email' ) !== false ){
 		$choices = array(
 			'e-mail:' => __( 'e-mail:', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'contact_num' ) !== false ):
+	}elseif( strpos( $list, 'contact_num' ) !== false ){
 		$choices = array(
 			'Tel.' => __( 'Tel.', SCM_THEME ),
 			'Mobile' => __( 'Mobile', SCM_THEME ),
 			'Fax' => __( 'Fax', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'rassegne_type' ) !== false ):
+	}elseif( strpos( $list, 'rassegne_type' ) !== false ){
 		$choices = array(
 			'file' => __( 'File', SCM_THEME ),
 			'link' => __( 'Link', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'links_type' ) !== false ):
+	}elseif( strpos( $list, 'links_type' ) !== false ){
 		$choices = array(
 			'page' 	=> __( 'Pagina', SCM_THEME ),
 			'link' 	=> __( 'Link', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'waitfor' ) !== false ):
+	}elseif( strpos( $list, 'waitfor' ) !== false ){
 		$choices = array(
 			'images' => 'Images - ALL',
 			'nobg' => 'Images - NO Background Images',
@@ -321,53 +321,53 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'maps' => 'Maps',
 		);
 
-	elseif( strpos( $list, 'positive_negative' ) !== false ):
+	}elseif( strpos( $list, 'positive_negative' ) !== false ){
     	$choices = array(
 			'off' => __( 'Versione positiva', SCM_THEME ),
 			'on' => __( 'Versione negativa', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'show' ) !== false ):
-    	if( strpos( $list, 'options_show' ) !== false ):
+    }elseif( strpos( $list, 'show' ) !== false ){
+    	if( strpos( $list, 'options_show' ) !== false ){
 			$choices = array(
 				'hide' 		=> __( 'Nascondi Opzioni', SCM_THEME ),
 				'options' 	=> __( 'Opzioni', SCM_THEME ),
 				'advanced' 	=> __( 'Opzioni avanzate', SCM_THEME ),
 			);
 
-		else:
+		}else{
         	$choices = array(
 				'on' => __( 'Mostra', SCM_THEME ),
 				'off' => __( 'Nascondi', SCM_THEME ),
 			);
 
-        endif;
+        }
 
-    elseif( strpos( $list, 'hide' ) !== false ):
+    }elseif( strpos( $list, 'hide' ) !== false ){
     	$choices = array(
     		'off' => __( 'Nascondi', SCM_THEME ),
 			'on' => __( 'Mostra', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'enable' ) !== false ):
+	}elseif( strpos( $list, 'enable' ) !== false ){
     	$choices = array(
 			'on' => __( 'Abilita', SCM_THEME ),
 			'off' => __( 'Disabilita', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'disable' ) !== false ):
+    }elseif( strpos( $list, 'disable' ) !== false ){
     	$choices = array(
     		'off' => __( 'Disabilita', SCM_THEME ),
 			'on' => __( 'Abilita', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'ordertype' ) !== false ):
+	}elseif( strpos( $list, 'ordertype' ) !== false ){
     	$choices = array(
     		'DESC' => __( 'Discendente', SCM_THEME ),
     		'ASC' => __( 'Ascendente', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'orderby' ) !== false ):
+    }elseif( strpos( $list, 'orderby' ) !== false ){
     	$choices = array(
     		'date' => __( 'Data', SCM_THEME ),
 			'title' => __( 'Titolo', SCM_THEME ),
@@ -378,21 +378,21 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'meta_value' => __( 'Custom Field', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'line_style' ) !== false ):
+    }elseif( strpos( $list, 'line_style' ) !== false ){
     	$choices = array(
     		'no' => __( 'Vuoto', SCM_THEME ),
     		'line' => __( 'Linea', SCM_THEME ),
     		'dashed' => __( 'Tratteggiato', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'line_cap' ) !== false ):
+    }elseif( strpos( $list, 'line_cap' ) !== false ){
     	$choices = array(
     		'round' => __( 'Tondeggiato', SCM_THEME ),
     		'square' => __( 'Squadrato', SCM_THEME ),
     		'butt' => __( 'Squadrato a filo', SCM_THEME ),
 		);
 	
-	elseif( strpos( $list, 'list_type' ) !== false ):
+	}elseif( strpos( $list, 'list_type' ) !== false ){
     	$choices = array(
     		'none' => __( 'Non puntato', SCM_THEME ),
     		'disc' => __( 'Cerchio', SCM_THEME ),
@@ -406,16 +406,16 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'upper-roman' => __( 'Roman maiuscolo', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'alignment' ) !== false ):
+    }elseif( strpos( $list, 'alignment' ) !== false ){
 
-    	if( strpos( $list, 'vertical_alignment' ) !== false ):
+    	if( strpos( $list, 'vertical_alignment' ) !== false ){
         	$choices = array(
 				'top' => __( 'Alto', SCM_THEME ),
 				'middle' => __( 'Centro', SCM_THEME ),
 				'bottom' => __( 'Basso', SCM_THEME ),
 			);
 
-		elseif( strpos( $list, 'txt_alignment' ) !== false ):
+		}elseif( strpos( $list, 'txt_alignment' ) !== false ){
         	$choices = array(
 				'left' => __( 'Sinistra', SCM_THEME ),
 				'right' => __( 'Destra', SCM_THEME ),
@@ -423,16 +423,16 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'justify' => __( 'Giustificato', SCM_THEME ),
 			);
 
-		else:
+		}else{
         	$choices = array(
 				'left' => __( 'Sinistra', SCM_THEME ),
 				'right' => __( 'Destra', SCM_THEME ),
 				'center' => __( 'Centrato', SCM_THEME ),
 			);
 
-        endif;
+        }
 
-	elseif( strpos( $list, 'float' ) !== false ):
+	}elseif( strpos( $list, 'float' ) !== false ){
     	$choices = array(
     		'float-none' => __( 'No Float', SCM_THEME ),
 			'float-left' => __( 'Float Sinistra', SCM_THEME ),
@@ -440,21 +440,21 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'float-center' => __( 'Float Centrato', SCM_THEME ),
 		);
 
-    elseif( strpos( $list, 'overlay' ) !== false ):
+    }elseif( strpos( $list, 'overlay' ) !== false ){
     	$choices = array(
 			'no-overlay' => __( 'No Overlay', SCM_THEME ),
 			'overlay' => __( 'Overlay', SCM_THEME ),
 			'underlay' => __( 'Underlay', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'units' ) !== false ):
+	}elseif( strpos( $list, 'units' ) !== false ){
     	$choices = array(
     		'px' => 'px',
     		'%' => '%',
 			'em' => 'em',
 		);
 
-    elseif( strpos( $list, 'headings' ) !== false ):
+    }elseif( strpos( $list, 'headings' ) !== false ){
 
     	$max = array(
 			'h2' => __( 'Primario', SCM_THEME ),
@@ -506,7 +506,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			$choices = $max;
 		};
 
-	elseif( strpos( $list, 'columns_width' ) !== false ):
+	}elseif( strpos( $list, 'columns_width' ) !== false ){
 		$choices = array(
 			'1/1' => '1/1',
 			'1/2' => '1/2',
@@ -522,7 +522,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'5/6' => '5/6',
 		);
 
-	elseif( strpos( $list, 'txt_size' ) !== false ):
+	}elseif( strpos( $list, 'txt_size' ) !== false ){
 		$choices = array(
 			'100%' => 'Normal',
 			'60%' => 'XXX-Small',
@@ -542,7 +542,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'200%' => 'Huge',
 		);
 
-	elseif( strpos( $list, 'txt_font_size' ) !== false ):
+	}elseif( strpos( $list, 'txt_font_size' ) !== false ){
 		$choices = array(
 			'16px' => 'Normal',
 			'10px' => 'XXX-Small',
@@ -562,15 +562,15 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'26px' => 'Huge',
 		);
 	
-	elseif( strpos( $list, 'main_layout' ) !== false ):
+	}elseif( strpos( $list, 'main_layout' ) !== false ){
 		$choices = array(
 			'responsive'		=> 'Responsive',
 			'full'				=> 'Full Width',
 		);
 	
-	elseif( strpos( $list, 'responsive_events' ) !== false ):
+	}elseif( strpos( $list, 'responsive_events' ) !== false ){
 
-		if( strpos( $list, '_width' ) !== false ):
+		if( strpos( $list, '_width' ) !== false ){
 			$choices = array(
 				'500px'			=> 'Mobile Min',
 				'600px'			=> 'Mobile Mid',
@@ -581,7 +581,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'1120px'		=> 'Desktop',
 			);
 		
-		else:
+		}else{
 			$choices = array(
 				'smartmin'		=> 'Mobile Min',
 				'smartmid'		=> 'Mobile Mid',
@@ -592,9 +592,9 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'desktop'		=> 'Desktop',
 			);
 
-		endif;
+		}
 
-	elseif( strpos( $list, 'responsive_up' ) !== false ):
+	}elseif( strpos( $list, 'responsive_up' ) !== false ){
 		$choices = array(
 			'smartmin'																=> 'Mobile Min',
 			'smartmin smartmid'														=> 'Mobile Mid',
@@ -606,7 +606,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'smartmin smartmid smart portrait notebook landscape desktop wide'		=> 'Wide',
 		);
 
-	elseif( strpos( $list, 'responsive_down' ) !== false ):
+	}elseif( strpos( $list, 'responsive_down' ) !== false ){
 		$choices = array(
 			'wide desktop landscape notebook portrait smart smartmid smartmin'		=> 'Mobile Min',
 			'wide desktop landscape notebook portrait smart smartmid'				=> 'Mobile Mid',
@@ -618,7 +618,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'wide'																	=> 'Wide',
 		);
 
-	elseif( strpos( $list, 'responsive_layouts' ) !== false ):
+	}elseif( strpos( $list, 'responsive_layouts' ) !== false ){
 		$choices = array(
 			'1400px'			=> '1250px',
 			'1120px'			=> '1120px',
@@ -629,7 +629,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'600px'				=> '600px',
 		);
 	
-	elseif( strpos( $list, 'bg_repeat' ) !== false ):
+	}elseif( strpos( $list, 'bg_repeat' ) !== false ){
 		$choices = array(
 			'no-repeat'			=> 'No repeat',
 			'repeat'			=> 'Repeat',
@@ -637,7 +637,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'repeat-y'			=> 'Repeat y',
 		);
 	
-	elseif( strpos( $list, 'bg_position' ) !== false ):
+	}elseif( strpos( $list, 'bg_position' ) !== false ){
 		$choices = array(
 			'center center'			=> 'center center',
 			'center top'			=> 'center top',
@@ -650,7 +650,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'right bottom'			=> 'right bottom',
 		);
 
-	elseif( strpos( $list, 'colors_library' ) !== false ):
+	}elseif( strpos( $list, 'colors_library' ) !== false ){
 		global $SCM_libraries;
 		$colors = ex_attr( $SCM_libraries, 'colors', array() );
 
@@ -659,13 +659,13 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			$choices[ $slug ] = $color['name']; 
 		}
 		
-	elseif( strpos( $list, 'webfonts' ) !== false ):
+	}elseif( strpos( $list, 'webfonts' ) !== false ){
 	
 		global $SCM_libraries;
 		$fonts = ex_attr( $SCM_libraries, 'fonts', array() );
 
-		if( strpos( $list, 'webfonts_adobe' ) !== false ):
-			if( strpos( $list, 'webfonts_adobe_styles' ) !== false ):
+		if( strpos( $list, 'webfonts_adobe' ) !== false ){
+			if( strpos( $list, 'webfonts_adobe_styles' ) !== false ){
 				$choices = array(
 					'n1' => 'Thin',
 					'i1' => 'Thin Italic',
@@ -683,16 +683,16 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 					'i9' => 'Ultra Bold Italic',
 				);
 
-			else:
+			}else{
 				$choices = array('no' => 'No Adobe font');
 				foreach ( $fonts as $slug => $font){
 					if( $font['type'] == 'adobe' )
 						$choices[ $slug ] = $font['family'];
 				}
-			endif;
+			}
 
-		elseif( strpos( $list, 'webfonts_google' ) !== false ):
-			if( strpos( $list, 'webfonts_google_styles' ) !== false ):
+		}elseif( strpos( $list, 'webfonts_google' ) !== false ){
+			if( strpos( $list, 'webfonts_google_styles' ) !== false ){
 				$choices = array(
 					'100,' => 'Thin',
 					'100italic,' => 'Thin Italic',
@@ -710,14 +710,14 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 					'900italic,' => 'Ultra Bold Italic',
 				);
 
-			else:
+			}else{
 				$choices = array('no' => 'No Google font');
 				foreach ( $fonts as $slug => $font)
 					if( $font['type'] == 'google' )
 						$choices[ $slug ] = $font['family'];
-			endif;
+			}
 
-		elseif( strpos( $list, 'webfonts_fallback' ) !== false ):
+		}elseif( strpos( $list, 'webfonts_fallback' ) !== false ){
 			$choices = array(
 				'Helvetica_Arial_sans-serif'						=> 'Helvetica, Arial, sans-serif',
 				'Lucida Sans Unicode_Lucida Grande_sans-serif'		=> 'Lucida Sans Unicode, Lucida Grande, sans-serif',
@@ -730,20 +730,20 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'Courier New_Courier_monospace'						=> 'Courier New, Courier, monospace',
 				'Lucida Console_Monaco_monospace'					=> 'Lucida Console, Monaco, monospace',
 			);
-		else:
+		}else{
 			$choices = array('no' => 'No Font');
 			foreach ( $fonts as $slug => $font)
 				$choices[ $slug ] = $font['family'] . ' (' . $font['type'] . ')';
-		endif;
+		}
 
-	elseif( strpos( $list, 'font_weight' ) !== false ):
+	}elseif( strpos( $list, 'font_weight' ) !== false ){
 		$choices = array(
 			'w300' => 'Light',
 			'w400' => 'Normal',
 			'w700' => 'Bold',
 		);
 
-	elseif( strpos( $list, 'line_height' ) !== false ):
+	}elseif( strpos( $list, 'line_height' ) !== false ){
 		$choices = array(
 			'0-0' => __( 'Nessuno spazio', SCM_THEME ),
 			'0-25' => __( '1 quarto di linea', SCM_THEME ),
@@ -758,14 +758,14 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'4-0' => __( 'Quadrupla linea', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'slider_model' ) !== false ):
+	}elseif( strpos( $list, 'slider_model' ) !== false ){
 		$choices = array(
 			'nivo' => 'Nivo Slider',
 			'bx' => 'BX Slider',
 		);
 
-	elseif( strpos( $list, 'effect' ) !== false ):
-		if( strpos( $list, '_nivo' ) !== false ):
+	}elseif( strpos( $list, 'effect' ) !== false ){
+		if( strpos( $list, '_nivo' ) !== false ){
 			$choices = array(
 				'sliceDown' => __( 'Slice Down', SCM_THEME ),
 				'sliceDownLeft' => __( 'Slice Down Left', SCM_THEME ),
@@ -785,21 +785,21 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 				'boxRainGrowReverse' => __( 'Box Rain Grow Reverse', SCM_THEME ),*/
 			);
 		
-		endif;
+		}
 
-	elseif( strpos( $list, 'themes_nivo' ) !== false ):
+	}elseif( strpos( $list, 'themes_nivo' ) !== false ){
 		$choices = array(
 			'scm' 		=> 'SCM',
 		);
 
-	elseif( strpos( $list, 'box_shape' ) !== false ):
+	}elseif( strpos( $list, 'box_shape' ) !== false ){
 		$choices = array(
 			'square' 		=> __( 'Quadrato', SCM_THEME ),
 			'circle' 		=> __( 'Cerchio', SCM_THEME ),
 			'rounded' 		=> __( 'Arrotondato', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'simple_size' ) !== false ):
+	}elseif( strpos( $list, 'simple_size' ) !== false ){
 		$choices = array(
 			'normal' 	=> __( 'Normale', SCM_THEME ),
 			'min' 		=> __( 'Minimo', SCM_THEME ),
@@ -809,7 +809,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'max' 		=> __( 'Massimo', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'date_format' ) !== false ):
+	}elseif( strpos( $list, 'date_format' ) !== false ){
 		$choices = array(
 			'dmy' 		=> '31 12 15',
 			'dmY' 		=> '31 12 2015',
@@ -819,7 +819,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'Ymd' 		=> '2015 12 31',
 		);
 	
-	elseif( strpos( $list, 'box_angle_type' ) !== false ):
+	}elseif( strpos( $list, 'box_angle_type' ) !== false ){
 		$choices = array(
 			'all' 					=> __( 'Tutti', SCM_THEME ),
 			'round-top' 			=> __( 'Sopra', SCM_THEME ),
@@ -838,7 +838,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'round-foot-right' 		=> __( 'Singolo D', SCM_THEME ),
 		);
 
-	elseif( strpos( $list, 'ease' ) !== false ):
+	}elseif( strpos( $list, 'ease' ) !== false ){
 		$choices = array(
 			'swing' 			=> 'Swing',
 			'linear' 			=> 'Linear',
@@ -874,10 +874,10 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'easeInOutBounce' 	=> 'Bounce InOut',
 		);
 
-	elseif( strpos( $list, 'roles' ) !== false ):
+	}elseif( strpos( $list, 'roles' ) !== false ){
 		$choices = getRoles();
 	
-	endif;
+	}
 
 	if( $get )
 		return ( isset( $choices[$get] ) ? $choices[$get] : '' );

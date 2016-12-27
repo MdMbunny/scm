@@ -73,7 +73,7 @@ add_action( 'admin_bar_menu', 'scm_hook_admin_ui_hide_tools', 999 );
 add_filter('show_admin_bar', '__return_false');
 
 // UI - EDIT MODE
-add_action('clear_auth_cookie', 'scm_hook_admin_ui_view_mode', 1 );
+//add_action('clear_auth_cookie', 'scm_hook_admin_ui_view_mode', 1 );
 //add_action('clear_auth_cookie', 'scm_hook_admin_ui_edit_mode', 1 );
 
 // EMAIL
@@ -99,8 +99,8 @@ add_filter( 'option_uploads_use_yearmonth_folders', '__return_false', 100 );
 // PLUGINS
 add_filter( 'scm_assets_filter_block_touch', 'scm_hook_admin_plugins_scm_assets_touch_block' );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_scm_agent', 1 );
+add_action( 'pll_language_defined', 'scm_hook_admin_plugins_pll', 1 );
 add_action( 'after_setup_theme', 'scm_hook_admin_plugins_duplicate_post' );
-//add_action( 'after_setup_theme', 'scm_hook_admin_plugins_backup_restore_options' );
 add_action( 'tgmpa_register', 'scm_hook_admin_plugins_tgm_plugin_activation' );
 
 // DEBUG
@@ -226,14 +226,15 @@ function scm_hook_admin_theme_register_menus() {
 * @subpackage 4-Init/Admin/2-THEME
 */
 function scm_hook_admin_theme_activate() {
-    $current_user = wp_get_current_user();
+    // ???
+    /*$current_user = wp_get_current_user();
     if ( $current_user && md5( $current_user->user_email ) != '85f0a70841ed3570c2bcecfb38025ef4' ){
         alert( 'Software under license.' );
         die;
-    }else{
+    }else{*/
         update_option( 'scm-settings-installed', 1 );
-        update_option( 'scm-settings-edit-' . SCM_ID, 0 );
-    }
+        /*update_option( 'scm-settings-edit-' . SCM_ID, 0 );
+    }*/
 }
 
 /**
@@ -244,7 +245,7 @@ function scm_hook_admin_theme_activate() {
 */
 function scm_hook_admin_theme_deactivate() {
     update_option( 'scm-settings-installed', 0 );
-    update_option( 'scm-settings-edit-' . SCM_ID, 0 );
+    //update_option( 'scm-settings-edit-' . SCM_ID, 0 ); // ???
 }
 
 /**
@@ -799,15 +800,18 @@ function scm_hook_admin_plugins_scm_agent() {
         ),
     );
 
-    // LANGUAGES
+/*    // LANGUAGES
     if( function_exists( 'pll_current_language' ) ){
+        consoleLog( pll_current_language() );
         $SCM_agent['lang']['name'] = pll_current_language( 'name' );
         $SCM_agent['lang']['locale'] = pll_current_language( 'locale' );
         $SCM_agent['lang']['slug'] = pll_current_language( 'slug' );
     }else{
         $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
         $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
-    }
+    }*/
+    $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
+    $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
 
     // BROWSER, PLATFORM and DEVICE
     if( function_exists( 'scm_agent' ) ){
@@ -851,7 +855,18 @@ function scm_hook_admin_plugins_scm_agent() {
         }
     }
 }
-
+function scm_hook_admin_plugins_pll() {
+    global $SCM_agent;
+    // LANGUAGES
+    if( function_exists( 'pll_current_language' ) ){
+        $SCM_agent['lang']['name'] = pll_current_language( 'name' );
+        $SCM_agent['lang']['locale'] = pll_current_language( 'locale' );
+        $SCM_agent['lang']['slug'] = pll_current_language( 'slug' );
+    }/*else{
+        $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
+        $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
+    }*/
+}
 
 /**
 * [SET] Duplicate Post init
@@ -861,16 +876,6 @@ function scm_hook_admin_plugins_scm_agent() {
 */
 function scm_hook_admin_plugins_duplicate_post() {
     new Duplicate_Post( SCM_THEME );    
-}
-
-/**
-* [SET] Backup Restore Options init
-*
-* Hooked by 'after_setup_theme'
-* @subpackage 4-Init/Admin/7-PLUGINS
-*/
-function scm_hook_admin_plugins_backup_restore_options() {
-    new Backup_Restore_Options( SCM_THEME );
 }
 
 /**

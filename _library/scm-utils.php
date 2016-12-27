@@ -1716,7 +1716,7 @@ function fontSizeLimiter( $txt, $char, $size ){
  * @param {string} uri File URI
  * @return {string} File date
  */
-function filemtimeRemote( $uri ){
+function filemtimeRemote( $uri ){ // filemtime( $uri );
     $uri = parse_url( $uri );
     $handle = @fsockopen( $uri['host'], 80 );
     if(!$handle)
@@ -1771,22 +1771,29 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
     $file['URL'] = str_replace( ' ', '%20', $file['link'] );
     $file['filename'] = basename( $file['link'] );
     $file['name'] = ( $name ?: $file['filename'] );
+    
+    //
 
-    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtimeRemote( $file['URL'] ) ) );
-    $file['date'] = ex_attr($file, 'date', $file['modified']);
-
+    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0 ) );
+    
+    /*$file['modified'] = ex_attr($file, 'modified', date( $date, filemtimeRemote( $file['URL'] ) ) );
     $ch = curl_init( $file['URL'] );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, TRUE);
     curl_setopt($ch, CURLOPT_NOBODY, TRUE);
     $data = curl_exec($ch);
+    $file['bytes'] = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);*/
 
-    $file['bytes'] = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+    $file['date'] = ex_attr($file, 'date', $file['modified']);
+    $file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0;
+    
+    //
+    
     $file['SIZE'] = fileSizeConvert( $file['bytes'] );
     $file['extension'] = pathinfo( $file['filename'], PATHINFO_EXTENSION );
     $file['TYPE'] = fileExtensionConvert( $file['extension'] );
 
-    curl_close($ch);
+    //curl_close($ch);
 
     $file['size'] = $file['SIZE'] . ' (' . $file['bytes'] . ' bytes)';
     $file['type'] = $file['TYPE'] . ' (' . $file['extension'] . ')';
@@ -1805,6 +1812,7 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
  * @return {string} Human readable file size (2,87 МB).
  */ 
 function fileSizeConvert($bytes, $dec = 0){
+    $result = 0;
     $bytes = floatval( $bytes );
         $arBytes = array(
             0 => array(

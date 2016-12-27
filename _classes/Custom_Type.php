@@ -46,7 +46,7 @@ $type = new Custom_Type( $args );
         * @param {string=} lang Theme slug for translations (default is theme slug).
         * @return {Object} Custom type object.
         */
-        function Custom_Type( $build, $lang = '' ) {
+        public function __construct( $build, $lang = '' ) {
 
             if( !$build ) return;
 
@@ -147,6 +147,9 @@ $type = new Custom_Type( $args );
                 'publicly_queryable'  => true,
                 //'rewrite'             => array( 'slug'=>$this->slug, 'with_front'=>FALSE ),
             );
+        }
+        public function Custom_Type( $build, $lang = '' ) {
+            self::__construct( $build, $lang );
         }
 
 // ------------------------------------------------------

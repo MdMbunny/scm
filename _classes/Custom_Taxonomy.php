@@ -37,7 +37,7 @@ $tax = new Custom_Taxonomy( $args );
         * @param {string=} lang Theme slug for translations (default is theme slug).
         * @return {Object} Custom taxonomy object.
         */
-        function Custom_Taxonomy( $build, $lang = '' ) {
+        public function __construct( $build, $lang = '' ) {
 
         	if( !$build ) return;
 
@@ -101,6 +101,9 @@ $tax = new Custom_Taxonomy( $args );
                     'manage_terms' => $this->add_cap,
                 ),
             );
+        }
+        public function Custom_Taxonomy( $build, $lang = '' ) {
+            self::__construct( $build, $lang );
         }
 
 // ------------------------------------------------------

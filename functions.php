@@ -11,10 +11,11 @@
  * @since 1.0.0
  */
 
-if ( get_option( 'scm-hacked' ) ) {
+// ???
+/*if ( get_option( 'scm-hacked' ) ) {
 	alert( 'Software under license.' );
 	die;
-}
+}*/
 
 // ------------------------------------------------------
 //
@@ -32,8 +33,9 @@ if ( get_option( 'scm-hacked' ) ) {
 $SCM_indent         = 1;
 $SCM_types 			= array();
 $SCM_libraries 		= array();
-$SCM_forms 			= array();
+//$SCM_forms 			= array(); // ???
 $SCM_archives		= array();
+
 
 // ------------------------------------------------------
 // C.0 CONSTANTS
@@ -260,9 +262,6 @@ require_once( SCM_DIR_CLASSES . 'TGM_Plugin_Activation.php' );
 /** Duplicate_Post Class, add duplicate functionality to any post. */
 require_once( SCM_DIR_CLASSES . 'Duplicate_Post.php' );
 
-/** Backup_Restore_Options Class, add tool for theme options backup. */
-//require_once( SCM_DIR_CLASSES . 'Backup_Restore_Options.php' );
-
 // ------------------------------------------------------
 // R.1 REQUIRE MODULES
 // ------------------------------------------------------
@@ -341,3 +340,4 @@ require_once( SCM_DIR_LIBRARY . 'scm-content-front.php' );
 
 // SCM content utilities.
 require_once( SCM_DIR_LIBRARY . 'scm-content-utils.php' );
+

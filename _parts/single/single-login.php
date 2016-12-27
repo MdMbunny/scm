@@ -64,8 +64,9 @@ if ( is_user_logged_in() ) {
         $b_login = ( isset( $button['login'] ) ? $button['login'] : 'page' );
         $b_link = loginRedirect( $b_login, ( isset( $button['redirect'] ) ? $button['redirect'] : '' ) );
         if( $b_type == 'edit' ){
-            $b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
-            $b_label = ( SCM_PAGE_EDIT ? __( 'View', SCM_THEME ) : ( $b_label ?: __( 'Edit', SCM_THEME ) ) );
+            // ???
+            //$b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
+            //$b_label = ( SCM_PAGE_EDIT ? __( 'View', SCM_THEME ) : ( $b_label ?: __( 'Edit', SCM_THEME ) ) );
         }elseif( $b_type == 'enter' ){
             $b_label = ( $b_label ?: __( 'Enter', SCM_THEME ) );
         }elseif( $b_type == 'logout' ){

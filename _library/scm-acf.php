@@ -551,6 +551,7 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
 
 	if( !$no_option ){
 
+
         $field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
 
     	if( $field === 'no' )

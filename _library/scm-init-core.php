@@ -33,7 +33,6 @@ add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_libraries' );
 add_action( 'admin_enqueue_scripts', 'scm_hook_site_libraries' );
-//add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
 
 // INLINE
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_styles_inline' );
@@ -62,13 +61,42 @@ remove_action( 'wp_head', 'wp_generator' );
 // 1-ENQUEUE
 // ------------------------------------------------------
 
-// ASYND AND DEFER JS
+// ASYNC AND DEFER JS
 /*function scm_hook_site_register_asyncdefer( $url ) {
     if( is_admin() ) return $url;
     if ( FALSE === strpos( $url, '.js' ) ) return $url;
     if ( strpos( $url, 'jquery.js' ) ) return $url;
+    consoleLog( $url );
     return "$url' async='async' defer='defer";
 }*/
+//add_filter( 'clean_url', 'scm_hook_site_register_asyncdefer', 11, 1 );
+/*add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+    if ( strpos($handle, 'scroll-magic') === false && strpos($handle, 'jquery-scm') === false && strpos($handle, 'fancybox') === false && strpos($handle, 'nivo') === false && 'contact-form-7' !== $handle )
+        return $tag;
+
+    return str_replace( ' src', ' defer="defer" src', $tag );
+}, 10, 2 );*/
+
+if( !is_admin() ){
+    /* Add defer attr to scripts to Static Resources */
+    function defer_parsing_of_js ( $url ) {
+        if ( FALSE === strpos( $url, '.js' ) ) return $url;
+        if ( strpos( $url, 'jquery.js' ) ) return $url;
+        return "$url' defer onload='";
+    }
+    add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
+
+    /* Remove Query String from Static Resources */
+    function remove_cssjs_ver( $src ) {
+        
+        if( strpos( $src, '?ver=' ) )
+        $src = remove_query_arg( 'ver', $src );
+        return $src;
+    }
+    add_filter( 'style_loader_src', 'remove_cssjs_ver', 10, 2 );
+    add_filter( 'script_loader_src', 'remove_cssjs_ver', 10, 2 );
+}
+
 
 /**
 * [SET] Iubenda Policies Script
@@ -459,6 +487,10 @@ function scm_hook_body_class( $classes = array() ) {
 
     // LANGUAGE
     $classes[] = 'lang-' . $SCM_agent['lang']['slug'];
+
+    $classes[] = 'r' . (int)scm_field( 'layout-max', '1400', 'option' );
+
+    $classes[] = ( $SCM_agent['device']['tablet'] ? 'landscape' : ( $SCM_agent['device']['mobile'] ? 'smart' : 'desktop' ) );
 
     return $classes;
 }

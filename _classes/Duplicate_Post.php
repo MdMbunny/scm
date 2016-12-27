@@ -26,7 +26,7 @@ if ( ! class_exists( 'Duplicate_Post' ) ) {
          *
          * @param {string=} lang Theme slug for translations (default is theme slug).
          */
-    	function Duplicate_Post( $lang = '' ) {
+    	public function __construct( $lang = '' ) {
 
     		$this->lang = ( $lang ?: sanitize_title( get_bloginfo() ) );
 
@@ -34,6 +34,10 @@ if ( ! class_exists( 'Duplicate_Post' ) ) {
         	add_filter( 'page_row_actions', array(&$this, 'add_link' ), 10, 2 );
         	add_filter( 'post_row_actions', array(&$this, 'add_link' ), 10, 2 );
     	}
+        public function Duplicate_Post( $lang = '' ) {
+            self::__construct( $lang );
+        }
+
 
 // ------------------------------------------------------
 // ADMIN HOOKS

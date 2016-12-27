@@ -231,15 +231,17 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             
             // --------------------------------------------------------------------------
 
+            // ???
+
             // -- Form
-            if( SCM_PAGE_EDIT && isset( $content['acf-form'] ) ){
+            /*if( SCM_PAGE_EDIT && isset( $content['acf-form'] ) ){
 
                 $content['acf-form']['form_attributes']['class'] .= multisp( ' ' . $content['container'] . ' scm-' . $content['container'] . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'] );
-                acf_form( $content['acf-form'] );
+                acf_form( $content['acf-form'] );*/
 
             // --------------------------------------------------------------------------
             
-            }else{
+            //}else{
 
                 // FILTER contents before echo            
                 $content = apply_filters( 'scm_filter_echo_container', $content, $container, $original );
@@ -268,7 +270,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 // -- Close Container
                 if( !$content['inherit'] )
                     indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
-            }
+            //}
         }
     }
 
@@ -488,7 +490,8 @@ function scm_container_row( $content = array() ){
             // ---------
             // ACF FROM
             // ---------
-            if( SCM_PAGE_EDIT && is_numeric( $mod_post_id ) ){
+            // ???
+            /*if( SCM_PAGE_EDIT && is_numeric( $mod_post_id ) ){
 
                 $content['acf-form'] = array(
                     'id'=> $mod_post_id,
@@ -500,7 +503,7 @@ function scm_container_row( $content = array() ){
                     'submit_value' => __( 'Salva', SCM_THEME ),
                 );
 
-            }
+            }*/
 
         }
 
@@ -666,7 +669,8 @@ function scm_contents( $content = NULL ) {
 
     if( is_null( $content ) ) return;
 
-    global $post, $SCM_indent, $SCM_forms;
+    //global $post, $SCM_indent, $SCM_forms; // ???
+    global $post, $SCM_indent;
 
     $id = $post->ID;
     $type = $post->post_type;
@@ -691,9 +695,9 @@ function scm_contents( $content = NULL ) {
         do_action( 'scm_action_echo_content', $args, $SCM_indent );
         do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
 
-        $SCM_forms = apply_filters( 'scm_filter_content_form', $SCM_forms, $args, $field, $type, $id, $SCM_indent );
-        $SCM_forms = apply_filters( 'scm_filter_content_form_' . $field, $SCM_forms, $args, $type, $id, $SCM_indent );
-        $SCM_forms = apply_filters( 'scm_filter_content_form_' . $type, $SCM_forms, $args, $id, $SCM_indent );
+        //$SCM_forms = apply_filters( 'scm_filter_content_form', $SCM_forms, $args, $field, $type, $id, $SCM_indent );
+        //$SCM_forms = apply_filters( 'scm_filter_content_form_' . $field, $SCM_forms, $args, $type, $id, $SCM_indent );
+        //$SCM_forms = apply_filters( 'scm_filter_content_form_' . $type, $SCM_forms, $args, $id, $SCM_indent );
 
         $SCM_indent--;
     }

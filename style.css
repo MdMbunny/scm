@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.6.9
+Version:			v3.7.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -124,8 +124,8 @@ body {
 	background: #FFF; /* Fallback for when there is no custom background color defined. */
 	overflow: hidden;
 	min-height: 100%;
-	opacity: 0;
-	pointer-events: none;
+	/*opacity: 0;
+	pointer-events: none;*/
 }
 
 /*.no-js body{
@@ -1488,7 +1488,8 @@ input[type="submit"]:active {
     display: inline-block;
     line-height: 1em;
     border-top: 1px solid #eee;
-    max-width: 50%;
+    /*max-width: 50%;*/
+    max-width: 100%;
 }
 
 .tocolumn .attachment {
@@ -1683,9 +1684,9 @@ body.mouse .sub-menu li:hover > ul {
 	visibility: hidden;
 }
 
-body:not(.ready) .navigation {
+/*body:not(.ready) .navigation {
 	display: none;
-}
+}*/
 
 .navigation.sticky {
 	position: fixed;

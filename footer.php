@@ -13,7 +13,8 @@
  * @since 1.0.0
  */
 
-global $SCM_indent, $SCM_forms;
+global $SCM_indent;
+//global $SCM_indent, $SCM_forms; // ???
 
 wp_reset_postdata();
 
@@ -141,8 +142,9 @@ wp_reset_postdata();
     wp_reset_postdata();
 
     // ACF Forms
-    $SCM_forms = apply_filters( 'scm_filter_page_form', $SCM_forms, SCM_PAGE_ID );
-    if( SCM_PAGE_EDIT && !empty( $SCM_forms ) ){
+    // ???
+    //$SCM_forms = apply_filters( 'scm_filter_page_form', $SCM_forms, SCM_PAGE_ID );
+    /*if( SCM_PAGE_EDIT && !empty( $SCM_forms ) ){
 
         indent( $SCM_indent + 1, '<div id="scm-forms">', 2 );
             indent( $SCM_indent + 1, '<div id="scm-close-forms">', 2 );
@@ -151,7 +153,7 @@ wp_reset_postdata();
             foreach ( $SCM_forms as $form) 
                 acf_form( $form );
         indent( $SCM_indent + 1, '</div><!-- scm-forms -->', 2 );
-    }
+    }*/
     // ---
 
 

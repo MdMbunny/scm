@@ -13,12 +13,14 @@
  */
 
 // ACF Form
-if( SCM_PAGE_EDIT )
-    acf_form_head();
+// ???
+/*if( SCM_PAGE_EDIT )
+    acf_form_head();*/
 
 ?><!DOCTYPE html>
 
-<html class="scm-<?php echo SCM_VERSION; echo ( SCM_PAGE_EDIT ? ' edit' : '' ); ?> no-js" <?php language_attributes(); ?>>
+<!--<html class="scm-<?php //echo SCM_VERSION; echo ( SCM_PAGE_EDIT ? ' edit' : '' ); ?> no-js" <?php language_attributes(); ?>> // ??? -->
+<html class="scm-<?php echo SCM_VERSION; ?> no-js" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
