@@ -25,6 +25,25 @@
 // ------------------------------------------------------
 
 // ------------------------------------------------------
+// 0.0 OPTIONS
+// ------------------------------------------------------
+
+/**
+* [GET] Option
+*
+* @param {string=} opt Option name (default is '').
+* @param {string=} field Field key (default is '').
+* @param {misc=} fall Fallback (default is '').
+* @return {array} Option from autoloaded, or from field key, or fallback.
+*/
+function scm_utils_option( $opt = '', $field = '', $fall = '' ) {
+    global $SCM_options;
+    $var = ex_attr( $SCM_options, $opt, NULL );
+    if( is_null( $var ) ) scm_field( $field, $fall, 'option' );
+    return $var;
+}
+
+// ------------------------------------------------------
 // 1.0 DATA
 // ------------------------------------------------------
 

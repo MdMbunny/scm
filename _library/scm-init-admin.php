@@ -543,6 +543,7 @@ function scm_hook_admin_mail_from_name( $original ) {
 * @return {string} Email from opt-staff-email option
 */
 function scm_hook_admin_mail_from( $original ) {
+    //$email = scm_field( 'field_938343e432ee849adda74b3e0fee65fbe2163247', '', 'option' );
     $email = scm_field( 'opt-staff-email', '', 'option' );
     $email = is_email($email);
     return ( $email ?: $original );

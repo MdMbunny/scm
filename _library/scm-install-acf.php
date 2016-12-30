@@ -381,6 +381,7 @@ function scm_acf_install_posts_fields() {
 
     // + CUSTOM TYPES
     foreach ( ex_attr( $SCM_types, 'custom', array() ) as $slug => $title) {
+
         if($slug=='slides'){
             $group = scm_acf_group( __( 'Opzioni Slider', SCM_THEME ), 'slider-single' );
             $group['location'][] = scm_acf_group_location( 'page' );

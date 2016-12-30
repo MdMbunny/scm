@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.7.0
+Version:			v3.7.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -124,8 +124,8 @@ body {
 	background: #FFF; /* Fallback for when there is no custom background color defined. */
 	overflow: hidden;
 	min-height: 100%;
-	/*opacity: 0;
-	pointer-events: none;*/
+	opacity: 0;
+	pointer-events: none;
 }
 
 /*.no-js body{
@@ -1217,7 +1217,7 @@ button,
 .page-numbers,
 blockquote,
 .topofpage a,
-.theme-scm .nivo-directionNav a {
+.nivo-directionNav a {
 	text-align: center;
 	display: inline-block;
 }
@@ -1231,7 +1231,7 @@ button,
 .page-numbers,
 blockquote,
 .topofpage a,
-.theme-scm .nivo-directionNav a {
+.nivo-directionNav a {
 	background: #444;
 	background-image: none;
 	border: 0;
@@ -1805,6 +1805,11 @@ body.mouse .sub-menu li:hover > ul {
 	color: #FFF;
 }
 
+body:not(.enabled) .navigation > .row > div.toggle-button{
+	display: none;
+}
+
+
 .navigation > .row > div.toggle-button > * {
 	cursor: pointer;
 	padding: .5em;
@@ -2008,6 +2013,115 @@ body.mouse .sub-menu li:hover > ul {
 .slider .box > *{
 	padding: 1em 2em;
 }*/
+
+
+.slider.nivo {
+	background:#fff url(loading.gif) no-repeat 50% 50%;
+}
+
+/*** IMAGES ***/
+
+.slider img{
+	position: static;
+}
+
+.slider .slide-image{
+	position: absolute;
+}
+
+/*** CONTROL NAV ***/
+
+.nivo-controlNav {
+	text-align: center;
+	padding: 2em 0;
+	position: relative;
+	z-index: 7900;
+}
+
+.nivo-controlNav a {
+	display:inline-block;
+	width:1.5em;
+	height:1.5em;
+	background-image: none;
+	text-indent:-9999px;
+	border:0;
+	margin: 0 .5em;
+	border-radius: 50%;
+	background-color: #ddd;
+	-webkit-transition: background-color .5s;
+	transition: background-color .5s;
+}
+
+.touch .nivo-controlNav a {
+	display:inline-block;
+	width:2em;
+	height:2em;
+}
+
+.nivo-controlNav a.active {
+	background-color: #000;
+}
+
+/*** THUMB NAV ***/
+
+.nivo-controlNav.nivo-thumbs-enabled {
+	width: 100%;
+}
+
+.nivo-controlNav.nivo-thumbs-enabled a {
+	width: auto;
+	height: auto;
+	background: none;
+	margin-bottom: 5px;
+}
+.nivo-controlNav.nivo-thumbs-enabled img {
+	display: block;
+	width: 120px;
+	height: auto;
+}
+
+/*** DIRECTION NAV ***/
+
+.nivo-directionNav a {
+	display: block;
+	opacity: 1;
+	-webkit-transition: opacity .3s, background-color .3s;
+	transition: opacity .3s, background-color .3s;
+}
+/*
+.slider.nivo:hover a.nivo-nextNav,
+.slider.nivo a.nivo-nextNav {
+	right:0;
+}
+
+.slider.nivo:hover a.nivo-prevNav,
+.slider.nivo a.nivo-prevNav {
+	left:0;
+}*/
+
+/*** CAPTION ***/
+
+.slider .caption img {
+	max-width: 100%;
+}
+
+.slider .caption a {
+    pointer-events: all;
+    border:none;
+    text-decoration: underline;
+}
+
+.slider .caption a:hover {
+    color:#fff;
+    text-decoration: none;
+}
+
+.nivo-caption:not(.box){
+	display: none !important;
+}
+
+
+
 
 /*--------------------------------------------------------------
 3.6 Elements Parallax

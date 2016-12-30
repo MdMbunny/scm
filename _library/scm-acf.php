@@ -531,10 +531,12 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
 
     	$field = ( $field !== 'default' ? $field : '' );
 
-    	if( is_array( $fallback ) ){
-    		if( is_array( $field ) )
-    			$field = ( sizeof( $field ) > 0 ? $field : '' );
-    	}
+    	if( is_array( $fallback ) && is_array( $field ) )
+    		$field = ( sizeof( $field ) > 0 ? $field : '' );
+
+    	/*if( !$field && $field !== 0 && is_numeric( $fallback ) ){
+    		$field = '';
+    	}*/
 		
     	if( $field !== '' ){
     		if( $before )
@@ -551,8 +553,14 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
 
 	if( !$no_option ){
 
+		/*global $SCM_options;
 
-        $field = ( !is_null( get_field( $name, 'option' ) ) ? get_field( $name, 'option' ) : '' );
+		if( !is_array( $fallback ) && isset( $SCM_options[$name] ) )
+			$opt = $SCM_options[$name];
+		else*/
+			$opt = get_field( $name, 'option' );
+
+        $field = ( !is_null( $opt ) ? $opt : '' );
 
     	if( $field === 'no' )
     		return '';
@@ -570,6 +578,10 @@ function scm_field( $name, $fallback = '', $target = '', $no_option = false, $be
     			$field = array();
     		$field = ( sizeof( $field ) > 0 ? $field : array() );
     	}
+
+    	/*if( !$field && $field !== 0 && is_numeric( $fallback ) ){
+    		$field = '';
+    	}*/
 
         $field = ( $field !== '' ? $field : $fallback );
 

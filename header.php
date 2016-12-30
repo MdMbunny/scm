@@ -43,7 +43,7 @@
 
 global $SCM_indent, $SCM_agent, $post;
 
-$txt_align = scm_utils_style_get( 'align', 'option', 0 );
+//$txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
 $wrap_id = 'site-page';
 $wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), SCM_PAGE_ID );
@@ -57,14 +57,14 @@ $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
 $fade_opacity = scm_field( 'opt-tools-fade-opacity', 0, 'option' );
 $fade_wait = scm_field( 'opt-tools-fade-waitfor', 'no', 'option' );
 
-$smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 0, 'option' );
+$smooth_duration = scm_field( 'opt-tools-smoothscroll-duration', 1, 'option' );
 $smooth_offset = scm_field( 'opt-tools-smoothscroll-offset-number', 0, 'option' );
 $smooth_units = scm_field( 'opt-tools-smoothscroll-offset-units', 0, 'option' );
 $smooth_head = scm_field( 'opt-tools-smoothscroll-head', 0, 'option' );
 $smooth_ease = scm_field( 'opt-tools-smoothscroll-ease', 'swing', 'option' );
-$smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0, 'option' );
-$smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0, 'option' );
-$smooth_page = scm_field( 'opt-tools-smoothscroll-page', 1, 'option' );
+$smooth_delay = scm_field( 'opt-tools-smoothscroll-delay', 0.1, 'option' );
+$smooth_new = scm_field( 'opt-tools-smoothscroll-delay-new', 0.3, 'option' );
+$smooth_page = scm_field( 'opt-tools-smoothscroll-page', 0, 'option' );
 
 $single_class = scm_field( 'opt-tools-singlepagenav-activeclass', 'active', 'option' );
 $single_interval = scm_field( 'opt-tools-singlepagenav-interval', 1, 'option' );

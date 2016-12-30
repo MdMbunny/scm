@@ -78,13 +78,13 @@ remove_action( 'wp_head', 'wp_generator' );
 }, 10, 2 );*/
 
 if( !is_admin() ){
-    /* Add defer attr to scripts to Static Resources */
-    function defer_parsing_of_js ( $url ) {
+    /* Add defer attr to scripts to Static Resources */ // DUBBI, VERIFICA
+    /*function defer_parsing_of_js ( $url ) {
         if ( FALSE === strpos( $url, '.js' ) ) return $url;
         if ( strpos( $url, 'jquery.js' ) ) return $url;
         return "$url' defer onload='";
     }
-    add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
+    add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );*/
 
     /* Remove Query String from Static Resources */
     function remove_cssjs_ver( $src ) {
@@ -189,8 +189,8 @@ function scm_hook_site_register_styles() {
     wp_enqueue_style( 'global' );
 
     // ACF
-    wp_register_style( 'scm-acf', SCM_URI_CSS . 'scm-acf.css', false, NULL );
-    wp_enqueue_style('scm-acf');
+    //wp_register_style( 'scm-acf', SCM_URI_CSS . 'scm-acf.css', false, NULL );
+    //wp_enqueue_style('scm-acf');
 
     // SCM Child
     wp_register_style( 'child', SCM_URI_CHILD . 'style.css', false, NULL );

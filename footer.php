@@ -40,7 +40,8 @@ wp_reset_postdata();
     $foot_cookies_link = scm_field( 'opt-credits-cookies-link', '', 'option' );
     
     $foot_designed = scm_field( 'opt-credits-designed', '', 'option' );
-    $foot_designed_link = scm_field( 'opt-credits-designed-link', '', 'option' );   
+    $foot_designed_link = scm_field( 'opt-credits-designed-link', '', 'option' );
+    //$foot_designed_link = scm_field( 'field_259aa0a35e589e3f421f9609c99eeef32f2a4163', '', 'option' ); // opt-credits-designed-link
 
     $indent = $SCM_indent + 1;
 
@@ -144,16 +145,15 @@ wp_reset_postdata();
     // ACF Forms
     // ???
     //$SCM_forms = apply_filters( 'scm_filter_page_form', $SCM_forms, SCM_PAGE_ID );
-    /*if( SCM_PAGE_EDIT && !empty( $SCM_forms ) ){
-
-        indent( $SCM_indent + 1, '<div id="scm-forms">', 2 );
-            indent( $SCM_indent + 1, '<div id="scm-close-forms">', 2 );
-                indent( $SCM_indent + 1, '<span class="acf-button">' . __( 'Chiudi senza salvare' ) . '</span>', 2 );
-            indent( $SCM_indent + 1, '</div>', 2 );
-            foreach ( $SCM_forms as $form) 
-                acf_form( $form );
-        indent( $SCM_indent + 1, '</div><!-- scm-forms -->', 2 );
-    }*/
+    //if( SCM_PAGE_EDIT && !empty( $SCM_forms ) ){
+    //    indent( $SCM_indent + 1, '<div id="scm-forms">', 2 );
+    //        indent( $SCM_indent + 1, '<div id="scm-close-forms">', 2 );
+    //            indent( $SCM_indent + 1, '<span class="acf-button">' . __( 'Chiudi senza salvare' ) . '</span>', 2 );
+    //        indent( $SCM_indent + 1, '</div>', 2 );
+    //        foreach ( $SCM_forms as $form) 
+    //            acf_form( $form );
+    //    indent( $SCM_indent + 1, '</div><!-- scm-forms -->', 2 );
+    //}
     // ---
 
 
