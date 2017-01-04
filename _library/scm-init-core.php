@@ -25,7 +25,7 @@
 // ------------------------------------------------------
 
 // ENQUEUE
-add_action( 'wp_head', 'scm_hook_site_policies' );
+//add_action( 'wp_head', 'scm_hook_site_policies' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_google' );
 add_action( 'admin_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );

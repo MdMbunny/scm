@@ -81,9 +81,9 @@ add_filter( 'wp_mail_from', 'scm_hook_admin_mail_from' );
 add_filter( 'wp_mail_from_name', 'scm_hook_admin_mail_from_name' );
 
 // UPLOADS
-add_action( 'admin_footer-post-new.php', 'scm_admin_upload_media_default_tab' );
-add_action( 'admin_footer-post.php', 'scm_admin_upload_media_default_tab' );
-add_action( 'wp_head', 'scm_admin_upload_media_default_tab' );
+//add_action( 'admin_footer-post-new.php', 'scm_admin_upload_media_default_tab' );
+//add_action( 'admin_footer-post.php', 'scm_admin_upload_media_default_tab' );
+//add_action( 'wp_head', 'scm_admin_upload_media_default_tab' );
 add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10, 2 );
 add_filter( 'wp_handle_upload', 'scm_hook_admin_upload_max_size', 3 );
 add_filter( 'intermediate_image_sizes_advanced', 'scm_hook_admin_upload_def_sizes' );
@@ -811,8 +811,10 @@ function scm_hook_admin_plugins_scm_agent() {
         $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
         $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
     }*/
-    $SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 );
-    $SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
+    
+
+    //$SCM_agent['lang']['locale'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 ); // ERROR LOG
+    //$SCM_agent['lang']['slug'] = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ); // ERROR LOG
 
     // BROWSER, PLATFORM and DEVICE
     if( function_exists( 'scm_agent' ) ){
