@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.7.2
+Version:			v3.7.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -211,6 +211,11 @@ img {
 .scm-image img {
 	max-width:100%;
 	max-height:100%;
+}
+.scm-image.full img{
+	min-width: 100%;
+	max-height: initial;
+	height: auto;
 }
 
 .scm-image.image-banner,
@@ -1487,7 +1492,7 @@ input[type="submit"]:active {
     margin-top: 1em;
     display: inline-block;
     line-height: 1em;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #dedede;
     /*max-width: 50%;*/
     max-width: 100%;
 }
@@ -2431,7 +2436,8 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 	padding-bottom: 1em;
 }
 
-.scm-map .gm-style-iw + div {
+/*.scm-map .gm-style-iw + div {*/
+body:not(.touch) .scm-map .gm-style-iw + div{
     width: 21px !important;
     height: 21px !important;
     right: -21px !important;
@@ -2545,9 +2551,9 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 /* Overlay */
 
 .fancybox-overlay{
-    text-align: center;
-    -webkit-transition: background-color .2s;
-    transition: background-color .2s;
+    /*text-align: center;*/
+    -webkit-transition: all .2s;
+    transition: all .2s;
 }
 
 .fancybox-overlay.white{
@@ -2557,6 +2563,7 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 /* Wrap */
 
 .fancybox-wrap{
+	background-color: #0a0a0a;
 }
 
 /* Skin */
@@ -2606,8 +2613,8 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 	width: 800px;
 	max-width: 80%;
 	height: 80%;
-	overflow-y: overlay;
-	overflow-x: hidden;
+	overflow-y: scroll;
+	/*overflow-x: hidden;*/
 	/*overflow: hidden;*/
 	position: fixed;
 	background-color: #FFF;
@@ -2615,8 +2622,16 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 	top: 10%;
 	/*left: 10%;*/
 	border-radius: 1em;
+	z-index: 99999;
+	pointer-events: all;
 }
-
+.fancybox-wrap .dynamic * {
+	pointer-events: all;
+}
+.touch .fancybox-wrap .dynamic{
+	-webkit-overflow-scrolling: touch;
+    -webkit-transform:translateZ(0);
+}
 .tofull .fancybox-wrap .dynamic{
 	width: 100%;
 	max-width: 100%;
@@ -2736,10 +2751,10 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 }
 .r940 .fancybox-overlay .fancybox-name,
 .smart .fancybox-overlay .fancybox-name{
-	padding: .5em 5em;
+	padding: .5em 7em;
 }
 .smartmid .fancybox-overlay .fancybox-name{
-	padding: .5em 4em;
+	padding: .5em 5em;
     font-size: 1.5em;
 }
 
@@ -2796,7 +2811,8 @@ body.touch .fancybox-overlay .fancybox-tools{
 	right: 4em;
 }
 body.touch.r940 .fancybox-overlay .fancybox-tools{
-	right: 2em;
+	/*right: 2em;*/
+	right: 1em;
 }
 body.touch.r700 .fancybox-overlay .fancybox-tools,
 body.touch.smart .fancybox-overlay .fancybox-tools{

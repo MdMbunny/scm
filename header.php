@@ -45,12 +45,14 @@ global $SCM_indent, $SCM_agent, $post;
 
 //$txt_align = scm_utils_style_get( 'align', 'option', 0 );
 
+$sticky_header = scm_field( 'menu-sticky', '', 'option' );
+
 $wrap_id = 'site-page';
 $wrap_layout = scm_field( 'page-layout', scm_field( 'layout-page', 'full', 'option' ), SCM_PAGE_ID );
 $wrap_selectors = scm_field( 'page-selectors', array(), SCM_PAGE_ID );
 $wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
 $wrap_class = scm_field( 'page-class', '', SCM_PAGE_ID, true );
-$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' ) . ' ' . implode( ' ', $wrap_selectors );
+$wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( $sticky_header == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' ) . ' ' . implode( ' ', $wrap_selectors );
 
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
@@ -80,7 +82,7 @@ $head_id = 'site-header';
 $head_layout = scm_field( 'layout-head', 'full', 'option' );
 $head_layout = ( $wrap_layout === 'responsive' ? 'full ' : ( $head_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
-$head_class = 'site-header full ' . SCM_SITE_ALIGN . ( scm_field( 'menu-sticky', '', 'option' ) == 'head' ? ' sticky' : '' );
+$head_class = 'site-header full ' . SCM_SITE_ALIGN . ( $sticky_header == 'head' ? ' sticky' : '' );
 $head_row_class = 'row scm-row object scm-object ' . $head_layout . SCM_SITE_ALIGN;
 
 $menu_position = scm_field( 'menu-position', 'inline', 'option' );

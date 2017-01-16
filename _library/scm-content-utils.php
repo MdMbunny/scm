@@ -157,7 +157,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     switch ( $link_type ) {
         case 'self':
-            $link = ' data-href="' . get_permalink( $id ) . '"';
+            $link = ' data-href="' . get_permalink( $id ) . ( $template ? '?template=' . $template : '' ) . '"';
         break;
         case 'attachment':
             $file = scm_field( $link_field, 0, $id );

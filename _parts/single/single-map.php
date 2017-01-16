@@ -100,12 +100,14 @@ if( is( $element ) ){
 		
 		$attr = '';
 
-		$template = $args['template'];
-		$link = '';
-		if( $template )
-			$link = ' ' . scm_utils_link_post( array( 'link-type'=>'popup', 'template'=>$template ), $luogo_id );
+		$tit = ( $args['both'] ? $title . ( $name ? ' <i>' . $name . '</i>' : '' ) : ( $name ?: $title ) );
 
-		$strong = '<strong' . $link . '>' . ( $args['both'] ? $title . ( $name ? ' <i>' . $name . '</i>' : '' ) : ( $name ?: $title ) ) . '</strong>';
+		$template = $args['template'];
+//$strong = '<a href="' . scm_utils_link_post( array( 'link-type'=>'self', 'template'=>$template ), $luogo_id ) . '">' . $tit . '</a>';
+		if( $template )
+			$strong = '<a href="' . get_permalink( $luogo_id ) . '?template=' . $template . '">' . $tit . '</a>';
+		else
+			$strong = '<strong>' . $tit . '</strong>';	
 		
 		if( $lat && $lng ){
 			$ind = getByValueKey( $latlng, $lat, 'lat' );
