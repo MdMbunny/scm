@@ -12,6 +12,9 @@
  * @since 1.0.0
  */
 
-get_template_part( SCM_DIR_PARTS, 'import' );
+do_action( 'scm_action_content_import', $_SERVER['REQUEST_URI'] );
+
+get_template_part( SCM_DIR_PARTS );
+//get_template_part( SCM_DIR_PARTS, 'import' );
 
 ?>
