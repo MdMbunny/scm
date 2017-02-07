@@ -150,7 +150,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
                 indent( $SCM_indent+1, $builder['fallback'], 1 );
 
-            indent( $SCM_indent, '</div><!-- fallback -->', 2 );
+            //indent( $SCM_indent, '</div><!-- fallback -->', 2 );
+            indent( $SCM_indent, '</div>', 2 );
 
         }
 
@@ -269,7 +270,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
                 // -- Close Container
                 if( !$content['inherit'] )
-                    indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
+                    indent( $SCM_indent, '</div>', 2 );
+                    //indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
             //}
         }
     }
@@ -295,6 +297,10 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
         setup_postdata( $post );
 
         $content = $builder;
+
+        $content['post_type'] = $post->post_type;
+        $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
+        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: '' );
     
         $taxes = get_object_taxonomies( $post );
         if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
@@ -304,15 +310,15 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 
                 $terms = get_the_terms( $post->ID, $tax );
                 if( !is_wp_error( $terms ) && is_array( $terms ) ){
-
-                    foreach( $terms as $key => $term )
+                    foreach( $terms as $key => $term ){
                         $content['class'] .= ' term-' . $term->slug;
+                        $content['class'] .= ' ' . $tax . '-' . $term->slug;
+                        $content['attributes'] .= 'data-' . $term->slug . '="' . $term->name . '"';
+                    }
                 }
             }
         }
-        $content['post_type'] = $post->post_type;
-        $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
-        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: '' );
+        
     }
 
     return $content;
@@ -849,7 +855,8 @@ function scm_contents_single( $args = array() ) {
 
             }else{
 
-                indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ) . '<!-- divider -->', 2 );
+                //indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ) . '<!-- divider -->', 2 );
+                indent( $SCM_indent, openTag( 'hr', $id, $class, $style, $attributes ), 2 );
 
             }
 
