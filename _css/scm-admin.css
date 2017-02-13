@@ -1341,9 +1341,9 @@ input.acf-is-prepended {
 	margin: 0;
 }
 
-.acf-field .acf-label > label:not(.empty){
+/*.acf-field .acf-label > label:not(.empty){
 	margin-bottom: .5em;
-}
+}*/
 
 .acf-field.acf-field-message {
 	background-color: #f4f4f4;
@@ -1376,6 +1376,11 @@ input.acf-is-prepended {
 .acf-field-repeater .acf-label{
 	display: block;
 	margin: 0;
+}
+
+.select2-selectors .acf-label,
+.select-2-columns_width .acf-label{
+	display: none;
 }
 
 .acf-label p.description {

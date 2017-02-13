@@ -177,6 +177,25 @@ function scm_acf_object_module( $default = '', $obj = 0, $opt = '', $width = 100
 }
 
 /**
+* [GET] Object BACK BUTTON
+*
+* @param {misc} default
+* @param {bool} obj
+* @param {misc} opt
+* @param {int} width
+* @param {array} logic
+* @param {bool} req
+* @return {array} Fields.
+*/
+function scm_acf_object_back_button( $default = '', $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) {
+
+	$fields = array();
+	$fields[] = scm_acf_field_text( 'back-label', array( 'placeholder'=>__( '< Back', SCM_THEME ), 'prepend'=>__( 'Back Label', SCM_THEME ) ), 100, 0 );
+	return $fields;
+
+}
+
+/**
 * [GET] Object LOGIN
 *
 * @param {misc} default
@@ -400,6 +419,8 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 	// conditional
 
 	if( $default !== 'banner' ){
+		$fields[] = scm_acf_field_select( 'thumb-size', 'image_sizes', $width, $logic, $req, __( 'Seleziona Dimensioni', SCM_THEME ) );
+		
 		$fields[] = scm_acf_field_select( 'format', 'image_format', $width, $logic, $req, __( 'Seleziona Formato', SCM_THEME ) );
 		$norm = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'norm' ) );
 		$quad = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'quad' ) );
@@ -417,8 +438,6 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 		$fields[] = scm_acf_field_text( 'title' );
 		$fields[] = scm_acf_field_link( 'link' );
 	}
-
-		
 	
 	if( !$obj )
 		$fields[] = scm_acf_field_image_all_url( 'image', 0, $width, $logic );

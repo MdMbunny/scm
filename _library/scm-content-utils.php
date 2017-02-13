@@ -119,7 +119,6 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     $type = $post->post_type;
     $id = $post->ID;
-    $slug = $post->post_name;
     $link = '';
 
     $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
@@ -158,6 +157,9 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     switch ( $link_type ) {
         case 'self':
             $link = ' data-href="' . get_permalink( $id ) . ( $template ? '?template=' . $template : '' ) . '"';
+        break;
+        case 'load':
+            $link = ' data-href="' . get_permalink( $id ) . '" data-load-single="' . $id . '" data-load-template="' . ( $template ?: '' ) . '"';
         break;
         case 'attachment':
             $file = scm_field( $link_field, 0, $id );

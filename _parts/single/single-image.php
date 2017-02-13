@@ -34,7 +34,7 @@ $args = array(
     'style' => '',
     'negative' => 'off',
     'thumb' => '',
-    'thumb-size' => 'thumbnail',
+    'thumb-size' => 'full',
     'link' => '',
     'title' => '',
 );
@@ -136,7 +136,7 @@ switch ( $args[ 'format' ] ) {
     break;
 
     case 'quad':
-        $image_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ] );
+        $image_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 'auto' );
         $style .= ' width:' . $image_size . '; height:' . $image_size . ';';
     break;
 
@@ -183,7 +183,7 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
     }
 
     if( is_array( $value ) )
-        $value = wp_get_attachment_image( $value['ID'], 'full' );
+        $value = wp_get_attachment_image( $value['ID'], $args['thumb-size'] );
     elseif( $value )
         $value = '<img src="' . $value . '" alt="">';
     else

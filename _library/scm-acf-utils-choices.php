@@ -1,7 +1,7 @@
 <?php
 
 /**
-* ACF select choiches utilities.
+* ACF select choices utilities.
 *
 * @link http://www.studiocreativo-m.it
 *
@@ -70,7 +70,7 @@ function scm_acf_field_choices( $default, $choices = array() ){
 // ------------------------------------------------------
 
 /**
-* [GET] Choices preset by name or specific choiches preset value
+* [GET] Choices preset by name or specific choices preset value
 *
 * Example usage:
 ```php
@@ -211,6 +211,13 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'bottom' => __( 'Sotto al menu (se menu inline)', SCM_THEME ),
 		);
 			
+	}elseif( strpos( $list, 'image_sizes' ) !== false ){
+		$choices = array( 'default' => 'default' );
+		$sizes = get_intermediate_image_sizes();
+		foreach ($sizes as $value) {
+			$choices[ $value ] = $value;
+		}
+	
 	}elseif( strpos( $list, 'image_format' ) !== false ){
 		$choices = array(
 			'norm' => __( 'Normale', SCM_THEME ),

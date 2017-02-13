@@ -1342,6 +1342,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
     $objects[] = array( 'scm_acf_object_social_share', __( 'Social share', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_pulsanti', __( 'Pulsanti', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_login', __( 'Login Form', SCM_THEME ) );
+    $objects[] = array( 'scm_acf_object_back_button', __( 'Back Button', SCM_THEME ) );
 
 	$fields = array();
 

@@ -824,6 +824,17 @@ function scm_contents_single( $args = array() ) {
 
         break;
 
+        case 'layout-back-button':
+
+            $args['attributes'] .= ' onclick="window.history.back()"';
+            $args['title'] = ( ex_attr( $args, 'back-label', '' ) ?: '< ' . __( 'Back', SCM_THEME ) );
+            $args['tag'] = 'span';
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
+                'cont' => $args
+            ));
+
+        break;
+
         case 'layout-share':
 
             if( !shortcode_exists('ssba') )
@@ -1109,6 +1120,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $template['posts'] = $loop->posts;
     $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
+    $template['attributes'] = 'data-template="' . $template_id . '"';
     $template = array_merge( $template, ( $more ?: array() ) );
 
     // Filter before

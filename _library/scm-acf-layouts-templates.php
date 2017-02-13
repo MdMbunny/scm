@@ -160,11 +160,15 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
         $layout_share = scm_acf_layout( 'share', 'block', __( 'Social share', SCM_THEME ) );
             $layout_share['sub_fields'] = array_merge( $layout_share['sub_fields'], scm_acf_object_social_share( $default ) );
 
+         $layout_back = scm_acf_layout( 'back-button', 'block', __( 'Back Button', SCM_THEME ) );
+            $layout_back['sub_fields'] = array_merge( $layout_back['sub_fields'], scm_acf_object_back_button( $default ) );
+
         $layout_empty[] = $layout_tit;
         $layout_empty[] = $layout_list;
         $layout_empty[] = $layout_icon;
         $layout_empty[] = $layout_divider;
         $layout_empty[] = $layout_share;
+        $layout_empty[] = $layout_back;
 
 	// SCM Filter: Passing Layouts and Type - Receiving Layouts ( Before Column Width and Column Link )
 			$flexible['layouts'] = apply_filters( 'scm_filter_layout_' . $type, array_merge( array( $layout_name, $layout_date ), $layout_taxes, $layout_empty ) );
