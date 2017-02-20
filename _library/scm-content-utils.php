@@ -147,9 +147,11 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     if( is_asso( $link_field ) ){
         foreach ($link_field as $typ => $choices) {
             foreach ($choices as $choice => $field) {
-                if( scm_field( $typ, '', $id ) === $choice )
+                if( scm_field( $typ, '', $id ) === $choice ){
                     $link_field = $field;
+                    $link_type = $choice;
                     break 2;
+                }
             }
         }
     }
@@ -161,6 +163,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
         case 'load':
             $link = ' data-href="' . get_permalink( $id ) . '" data-load-single="' . $id . '" data-load-template="' . ( $template ?: '' ) . '"';
         break;
+        case 'file':
         case 'attachment':
             $file = scm_field( $link_field, 0, $id );
             $file = ( (int)$file ? wp_get_attachment_url( scm_field( $link_field, 0, $id ) ) : $file );
@@ -179,8 +182,9 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
         break;
 
         case 'video':
-            $video = scm_field( $link_field, '', $id );
-            $video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
+            //$video = scm_field( $link_field, '', $id );
+            $video = getYouTubeURL( scm_field( 'video-url', '', $id ) );
+            //$video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
             $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
             $link .= ' data-popup-type="video"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
@@ -222,45 +226,48 @@ function scm_utils_link_gallery( $content = array(), $field = 'galleria-images',
     $slug = $post->post_name;
     $link = '';
 
-        $init = scm_utils_link_gallery_helper( $content, 'thumb' );
-        if( $init == -1 )
-            return '';
-        $stored = scm_field( $field, array(), $id );
-        if( !$stored )
-            $stored = array();
-        $images = array();
-        $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
 
-        foreach ( $stored as $image )
-            $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'], 'caption' => $image['caption'], 'alt' => $image['alt'], 'date' => $image['date'], 'modified' => $image['modified'], 'filename' => $image['filename'], 'type' => $image['mime_type'] );
 
-        $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
-        $link .= ' data-popup-path="' . $path . '"';
-        $link .= ' data-popup-init="' . $init . '"';
-        $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
+    $init = scm_utils_link_gallery_helper( $content, 'thumb' );
+    if( $init == -1 )
+        return '';
+    $stored = scm_field( $field, array(), $id );
+    if( !$stored )
+        $stored = array();
+    
+    $images = array();
+    $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
 
-        $link .= ' data-popup-arrows="' . scm_utils_link_gallery_helper( $content, 'arrows', 0 ) . '"';
-        $link .= ' data-popup-miniarrows="' . scm_utils_link_gallery_helper( $content, 'miniarrows', 0 ) . '"';
+    foreach ( $stored as $image )
+        $images[] = array( 'url' => str_replace( $path, '', $image['url'] ), 'title' => $image['title'], 'caption' => $image['caption'], 'alt' => $image['alt'], 'date' => $image['date'], 'modified' => $image['modified'], 'filename' => $image['filename'], 'type' => $image['mime_type'] );
 
-        $link .= ' data-popup-list="' . scm_utils_link_gallery_helper( $content, 'list', 0 ) . '"';
-        $link .= ' data-popup-name="' . scm_utils_link_gallery_helper( $content, 'name', 0 ) . '"';
-        $link .= ' data-popup-counter="' . scm_utils_link_gallery_helper( $content, 'counter', 0 ) . '"';
+    $link = ' data-popup="' . htmlentities( json_encode( $images ) ) . '"';
+    $link .= ' data-popup-path="' . $path . '"';
+    $link .= ' data-popup-init="' . $init . '"';
+    $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
 
-        $link .= ' data-popup-info="' . scm_utils_link_gallery_helper( $content, 'info', 0 ) . '"';
-        $link .= ' data-popup-color="' . scm_utils_link_gallery_helper( $content, 'color', 0 ) . '"';
+    $link .= ' data-popup-arrows="' . scm_utils_link_gallery_helper( $content, 'arrows', 0 ) . '"';
+    $link .= ' data-popup-miniarrows="' . scm_utils_link_gallery_helper( $content, 'miniarrows', 0 ) . '"';
 
-        $link .= ' data-popup-data="' . scm_utils_link_gallery_helper( $content, 'data', 'float' ) . '"';
-        $link .= ' data-popup-reverse="' . scm_utils_link_gallery_helper( $content, 'reverse', 0 ) . '"';
+    $link .= ' data-popup-list="' . scm_utils_link_gallery_helper( $content, 'list', 0 ) . '"';
+    $link .= ' data-popup-name="' . scm_utils_link_gallery_helper( $content, 'name', 0 ) . '"';
+    $link .= ' data-popup-counter="' . scm_utils_link_gallery_helper( $content, 'counter', 0 ) . '"';
 
-        $link .= ' data-popup-titles="' . scm_utils_link_gallery_helper( $content, 'titles', 0 ) . '"';
-        $link .= ' data-popup-captions="' . scm_utils_link_gallery_helper( $content, 'captions', 0 ) . '"';
-        $link .= ' data-popup-alternates="' . scm_utils_link_gallery_helper( $content, 'alternates', 0 ) . '"';
-        $link .= ' data-popup-descriptions="' . scm_utils_link_gallery_helper( $content, 'descriptions', 0 ) . '"';
+    $link .= ' data-popup-info="' . scm_utils_link_gallery_helper( $content, 'info', 0 ) . '"';
+    $link .= ' data-popup-color="' . scm_utils_link_gallery_helper( $content, 'color', 0 ) . '"';
 
-        $link .= ' data-popup-dates="' . scm_utils_link_gallery_helper( $content, 'dates', 0 ) . '"';
-        $link .= ' data-popup-modifies="' . scm_utils_link_gallery_helper( $content, 'modifies', 0 ) . '"';
-        $link .= ' data-popup-filenames="' . scm_utils_link_gallery_helper( $content, 'filenames', 0 ) . '"';
-        $link .= ' data-popup-types="' . scm_utils_link_gallery_helper( $content, 'types', 0 ) . '"';        
+    $link .= ' data-popup-data="' . scm_utils_link_gallery_helper( $content, 'data', 'float' ) . '"';
+    $link .= ' data-popup-reverse="' . scm_utils_link_gallery_helper( $content, 'reverse', 0 ) . '"';
+
+    $link .= ' data-popup-titles="' . scm_utils_link_gallery_helper( $content, 'titles', 0 ) . '"';
+    $link .= ' data-popup-captions="' . scm_utils_link_gallery_helper( $content, 'captions', 0 ) . '"';
+    $link .= ' data-popup-alternates="' . scm_utils_link_gallery_helper( $content, 'alternates', 0 ) . '"';
+    $link .= ' data-popup-descriptions="' . scm_utils_link_gallery_helper( $content, 'descriptions', 0 ) . '"';
+
+    $link .= ' data-popup-dates="' . scm_utils_link_gallery_helper( $content, 'dates', 0 ) . '"';
+    $link .= ' data-popup-modifies="' . scm_utils_link_gallery_helper( $content, 'modifies', 0 ) . '"';
+    $link .= ' data-popup-filenames="' . scm_utils_link_gallery_helper( $content, 'filenames', 0 ) . '"';
+    $link .= ' data-popup-types="' . scm_utils_link_gallery_helper( $content, 'types', 0 ) . '"';        
 
     return $link;
 }

@@ -1120,7 +1120,8 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $template['posts'] = $loop->posts;
     $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-    $template['attributes'] = 'data-template="' . $template_id . '"';
+    $template['attributes'] = 'data-template="' . $template_id . '" ';
+    
     $template = array_merge( $template, ( $more ?: array() ) );
 
     // Filter before

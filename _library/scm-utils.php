@@ -1768,13 +1768,17 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
         return array();
 
     $file['link'] = $file['url'];
+    
+    // ???
     $file['URL'] = str_replace( ' ', '%20', $file['link'] );
+    
     $file['filename'] = basename( $file['link'] );
     $file['name'] = ( $name ?: $file['filename'] );
     
     //
 
-    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0 ) );
+    //$file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0 ) );
+    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['url'] ) ) ?: 0 ) );
     
     /*$file['modified'] = ex_attr($file, 'modified', date( $date, filemtimeRemote( $file['URL'] ) ) );
     $ch = curl_init( $file['URL'] );
@@ -1785,7 +1789,8 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
     $file['bytes'] = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);*/
 
     $file['date'] = ex_attr($file, 'date', $file['modified']);
-    $file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0;
+    //$file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0;
+    $file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['url'] ) ) ?: 0;
     
     //
     

@@ -49,6 +49,8 @@ $negative = $args['negative'] === 'on';
 $thumb = -2;
 
 if ( $layout == 'layout-thumbs' ) {
+
+    $args['thumb-size'] = 'medium';
     
     $thumb = ( $image ? intval( $image ) : 0 );
 
@@ -106,12 +108,12 @@ if ( $layout == 'layout-thumbs' ) {
 
     }elseif( $post->post_type === 'video' ){
 
-        $url = scm_field( 'video-url', '', $post_id );
-        $id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
+        $id = getYouTubeID( scm_field( 'video-url', '', $post_id ) );
+        //$id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
         if( !$id )
             return;
         
-        $image = SCM_PROTOCOL . 'img.youtube.com/vi/' . $id . '/hqdefault.jpg';
+        $image = 'https://img.youtube.com/vi/' . $id . '/hqdefault.jpg';
 
     }else{
         return;
@@ -159,8 +161,6 @@ switch ( $args[ 'format' ] ) {
         $style .= ' width:auto; height:auto;';
     break;
 }
-
-
 
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 

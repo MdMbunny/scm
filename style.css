@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.7.6
+Version:			v3.7.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1484,8 +1484,22 @@ input[type="submit"]:active {
 
 /* Attachments */
 
+/*.attachments[data-counter="0"]{
+	display: none;
+}*/
+
+.layout-attachments{
+	padding: 0;
+}
+
 .attachments{
 	font-size: 1em;
+}
+
+ul.attachments{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
 }
 
 .attachment {

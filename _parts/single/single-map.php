@@ -29,7 +29,7 @@ $args = array(
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-$element = $args[ 'element' ];
+$element = ( isset( $args[ 'element' ] ) ? $args[ 'element' ] : 0 );
 $cat = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
 
 if( !$element ){
@@ -39,9 +39,9 @@ if( !$element ){
 	else if( $post->post_type === 'soggetti' )
 		$element = scm_field( 'soggetto-luoghi', array(), $post_id );
 	else
-		$element = scm_field( 'luoghi', array(), $post_id );
+		$element = scm_field( 'luoghi', 0, $post_id );
 
-	if( post_type_exists('luoghi') ){
+	if( !$element && post_type_exists('luoghi') ){
 		if( empty($cat) ) {
 			$element = get_posts( array( 'post_type' => 'luoghi', 'posts_per_page' => -1 ) );
 		}else{

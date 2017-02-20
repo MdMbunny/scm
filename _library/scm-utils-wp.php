@@ -395,6 +395,37 @@ function loginRedirect( $type = 'page', $link = '' ){
     }        
 }
 
+/**
+ * [GET] Get YouTube Video ID
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered ID.
+ */
+function getYouTubeID( $url ){
+
+    preg_match( '/src="([^"]+)"/', $url, $match );
+    $url = ( isset( $match[1] ) ? $match[1] : $url );
+    $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
+    preg_match( $pattern, $url, $matches );
+    return ( isset($matches[1]) ? $matches[1] : '' );
+
+}
+
+/**
+ * [GET] Get YouTube Video URL
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered URL.
+ */
+function getYouTubeURL( $url ){
+
+    return 'https://www.youtube.com/embed/' . getYouTubeID( $url );
+
+}
 
 /**
  * [GET] Filter URL
@@ -562,6 +593,83 @@ function urlExtend( $url = '', $name = '' ){
     }
 
     return $parse;
+}
+
+/**
+ * [GET] Get Link
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing list of files.
+ */
+function getLink( $link, $name = '', $indent = 0, $tag = 'div' ){
+    return getAttachment( 'link', $link, $name, $indent, $tag );
+}
+
+/**
+ * [GET] Get File
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing list of files.
+ */
+function getFile( $file, $name = '', $indent = 0, $tag = 'div' ){
+    return getAttachment( 'file', $file, $name, $indent, $tag );
+}
+
+/**
+ * [GET] Get Attachment
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing list of attachments.
+ */
+function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div' ){
+
+    if( !$att || !$obj ) return '';
+    $ret = '';
+    $ext = array();
+    $type = '';
+    $href = '';
+    $iconA = '';
+    $iconB = '';
+
+    switch ( $att ) {
+        case 'link':
+            $ext = linkExtend( $obj, $name );
+            $type = $ext['type'];
+            $href = ' data-href="' . $ext['link'] . '"';
+            $iconA = 'chevron-circle-right';
+            $iconB = $ext['icon'];
+        break;
+
+        case 'file':
+            $ext = fileExtend( $obj, $name );
+            $type = $ext['icon'];
+            $href = ' data-href="' . $ext['link'] . '"';
+            $iconA = 'chevron-circle-down';
+            $iconB = $ext['icon'];
+        break;
+        
+        default:
+            $type = get_post_type( $obj );
+            $href = scm_utils_link_post( array( 'arrows'=>true,'miniarrows'=>true,'counter'=>true,'color'=>'true','name'=>true,'list'=>true ), $obj );
+            $iconA = 'plus-circle';
+            $iconB = ( $type == 'video' ? 'youtube-play' : ( $type == 'gallerie' ? 'picture-o' : 'link' ) );
+            $name = ( $name ?: get_the_title( $obj ) );
+        break;
+    }
+
+    $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . '"' . $href . '>' . lbreak();
+        $ret .= indent( $indent + 1 ) . '<div class="icons">' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconA . ' plus"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconB . '"></i>' . lbreak();
+        $ret .= indent( $indent + 1 ) . '</div>' . lbreak();
+        $ret .= indent( $indent + 1 ) . '<span>' . $name . '</span>' . lbreak();
+    $ret .= indent( $indent ) . '</' . $tag . '>' . lbreak();
+
+    return $ret;
+
 }
 
 /**
