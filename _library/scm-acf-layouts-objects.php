@@ -349,11 +349,12 @@ function scm_acf_object_map( $default = '', $obj = 0, $opt = '', $width = 100, $
 
 	$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
 	$fields[] = scm_acf_field_positive( 'infowidth', array( 'default'=>500, 'label'=>__( 'Infowindow width', SCM_THEME ), 'append'=> 'px' ), $width, $logic );
-	$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name' ) );
+	$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name in Infowindow' ) );
 	$fields[] = scm_acf_field_object( 'template', array( 
             'type'=>'id', 
             'types'=>'luoghi' . SCM_TEMPLATE_APP,
-            'label'=>'Modello'
+            'label'=>__( 'Link Infowindow', SCM_THEME ),
+            'null'=>1,
         ), 100 );
 
 	return $fields;
@@ -780,6 +781,26 @@ function scm_acf_object_pulsanti( $default = '', $obj = 0, $opt = '', $width = 1
 		$fields = array_merge( $fields, scm_acf_preset_button_shape( '', $width, $logic ) );
 
 	return $fields;
+}
+
+
+/**
+* [GET] Object ATTACHMENTS
+*
+* @param {misc} default
+* @param {bool} obj
+* @param {misc} opt
+* @param {int} width
+* @param {array} logic
+* @param {bool} req
+* @return {array} Fields.
+*/
+function scm_acf_object_allegati( $default = '', $obj = 0, $opt = array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), $width = 100, $logic = 0, $req = 0 ) {
+	
+	$fields = scm_acf_preset_attachments( '', $opt );
+
+	return $fields;
+
 }
 
 ?>

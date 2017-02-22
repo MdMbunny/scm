@@ -86,8 +86,14 @@ function scm_front_init() {
                         $template = (int)$template[0]['id'];
                     
                     // IF Template not exists - Load Home Page
-                    if( empty( $template ) )
-                        get_template_part( SCM_DIR_PARTS, 'none' );
+                    if( empty( $template ) ){
+                        if( function_exists( 'scm_echo_' . $type ) ){
+                            $template = 'function';
+                            $part = 'scm_echo_' . $type;
+                        }else{
+                            get_template_part( SCM_DIR_PARTS, 'none' );
+                        }
+                    }
 
                     // Possibilmente se non ci sono Template, tira fuori Titolo e se esiste content/editor
                 }

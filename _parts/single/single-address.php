@@ -26,6 +26,7 @@ $args = array(
     'class' => '',
     'attributes' => '',
     'style' => '',
+    'title' => 0,
 );
 
 if( isset( $this ) )
@@ -56,6 +57,7 @@ $attributes = $args['attributes'];
 $googlemaps = $args['googlemaps'];
 $style = $args['style'];
 $id = $args['id'];
+$title = $args['title'];
 
 $align = ifnotequal( $args['alignment'], 'default', scm_field( 'style-txt-set-alignment', 'left', 'option' ) );
 
@@ -68,7 +70,7 @@ if( is( $element ) ){
 		$fields = get_fields( $luogo );
 		$marker = scm_utils_preset_map_marker( $luogo, $fields );
 
-		$name = ex_attr( $fields, 'luogo-nome', '' );
+		$name = $title ? get_the_title( $luogo ) : ex_attr( $fields, 'luogo-nome', '' );
 		$country = ex_attr( $fields, 'luogo-paese', '' );
 		$region = ex_attr( $fields, 'luogo-regione', '' );
 		$province = ex_attr( $fields, 'luogo-provincia', '', '(', ')' );
@@ -90,12 +92,12 @@ if( is( $element ) ){
 		}
 
 		if( $town || $city || $code || $province ){
-			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span><span class="town">' : '<span class="float-none town">' );
+			$inline_address .= ( $args['separator'] ? ( $address ? '<span class="separator">' . $args['separator'] . '</span><span class="town">' : '<span class="town">' ) : '<span class="float-none town">' );
 			$inline_address .= $town . $code . $city . $province . '</span>';
 		}
 
 		if( $region || $country ){
-			$inline_address .= ( $args['separator'] ? '<span class="separator">' . $args['separator'] . '</span><span class="country">' : '<span class="float-none country">' );
+			$inline_address .= ( $args['separator'] ? ( $address || $town || $city || $code || $province ? '<span class="separator">' . $args['separator'] . '</span><span class="country">' : '<span class="country">' ) : '<span class="float-none country">' );
 			$inline_address .= $region . $country . '</span>';
 		}
 		

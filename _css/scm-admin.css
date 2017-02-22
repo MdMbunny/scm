@@ -1449,6 +1449,28 @@ input.acf-is-prepended {
 	color: #FFF !important;
 }
 
+.acf-repeater{
+	border: 2px solid #e14d43;
+    overflow: hidden;
+    border-radius: 1em;
+}
+.acf-repeater .acf-table{
+	margin: 0;
+	opacity: .7;
+}
+.acf-repeater:hover .acf-table{
+	opacity: 1;
+}
+.acf-repeater .acf-row-handle .acf-icon.-plus{
+	top: 16px;
+	margin-top: 0;
+}
+.acf-repeater .acf-row-handle .acf-icon.-minus{
+	top: initial;
+	bottom: 16px;
+	margin-top: 0;
+}
+
 .acf-repeater .acf-input-table td.remove .acf-repeater-add-row {
   margin-top: -30px !important;
 }
@@ -1466,12 +1488,19 @@ input.acf-is-prepended {
 .acf-repeater > .acf-actions li .acf-button{
 	width: 100%;
     text-align: center;
-    font-size: 1.5em;
-    line-height: 2em;
+    font-size: 1em;
+    line-height: 3em;
     height: auto;
     border-radius: 0 !important;
     box-shadow: none;
     text-shadow: none;
+    opacity: 1 !important;
+	-webkit-transition: all .2s;
+	transition: all .2s;
+}
+.acf-repeater > .acf-actions li .acf-button:hover{
+	font-size: 1.5em;
+	line-height: 2em;
 }
 
 .acf-repeater.disabled > table > tbody > .acf-row td{
@@ -1486,7 +1515,7 @@ input.acf-is-prepended {
 .acf-field-repeater tr .acf-fields.-sidebar:before,
 .acf-field-repeater tr .acf-fields,
 .acf-field-repeater tr .acf-fields > .acf-field{
-	background-color: #f8f8f8 !important;
+	background-color: #ececec !important;
 }
 
 .acf-field-repeater tr:nth-child(odd) .acf-row-handle,
@@ -1495,7 +1524,7 @@ input.acf-is-prepended {
 .acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-field,
 .acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-tab-wrap.-top .acf-tab-group li a,
 .acf-field-repeater tr:nth-child(odd) .acf-fields > .acf-tab-wrap.-top{
-	background-color: #fff !important;
+	background-color: #f9f9f9 !important;
 }
 
 .acf-field-repeater tr .acf-fields > .acf-tab-wrap.-top{
@@ -1912,11 +1941,13 @@ input.acf-is-prepended {
 .acf-icon.-plus:hover{
 	background-color: #FFF !important;
 	color: #81cc24;
+	border-color: #81cc24;
 }
 
 .acf-icon.-minus:hover{
 	background-color: #FFF !important;
 	color: red;
+	border-color: red;
 }
 
 

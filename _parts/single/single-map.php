@@ -53,9 +53,10 @@ if( !$element ){
 				)
 			);
 		}
-	}else{
-		return;
 	}
+	
+	if( !$element )
+		return;
 
 }else if( !is_array( $element ) ){
 	if( is_numeric( $element ) )

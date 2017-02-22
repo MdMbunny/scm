@@ -895,7 +895,7 @@ function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, 
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Allegati', SCM_THEME ) );
 	
 	$files = scm_acf_field_repeater( $name, array( 
-		'button'=>__( '+ Allegato', SCM_THEME ),
+		'button'=>__( '+ FILE', SCM_THEME ),
 		'label'=>'',
 		'class'=>$class,
 	), 100, $logic, $required );
@@ -927,7 +927,7 @@ function scm_acf_preset_repeater_links( $name = '', $opt = '', $logic = 0, $requ
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Link', SCM_THEME ) );
 	
 	$files = scm_acf_field_repeater( $name, array( 
-		'button'=>__( '+ Link Esterno', SCM_THEME ),
+		'button'=>__( '+ LINK', SCM_THEME ),
 		'label'=>'',
 		'class'=>$class,
 	), 100, $logic, $required );
@@ -957,13 +957,13 @@ function scm_acf_preset_repeater_objects( $name = '', $types = array( 'rassegne-
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Object', SCM_THEME ) );
 	
 	$files = scm_acf_field_repeater( $name, array( 
-		'button'=>__( '+ Link Interno', SCM_THEME ),
+		'button'=>__( '+ CONTENUTO', SCM_THEME ),
 		'label'=>'',
 		'class'=>$class,
 	), 100, $logic, $required );
 
 		$files['sub_fields'][] = scm_acf_field_text( 'name', 0, 30, 0, 0, __( 'Nome Pulsante', SCM_THEME) );
-		$files['sub_fields'][] = scm_acf_field_object( 'object', array( 'type'=>'id', 'types'=>$types ), 70, 0, 0, __( 'Seleziona un elemento', SCM_THEME) );
+		$files['sub_fields'][] = scm_acf_field_object( 'object', array( 'type'=>'id', 'types'=>$types ), 70, 0, 0, __( 'Seleziona un contenuto', SCM_THEME) );
 
 	$fields[] = $files;
 	
@@ -1189,6 +1189,7 @@ function scm_acf_preset_attachments( $name = '', $types = array( 'rassegne-stamp
 	$fields = array_merge( $fields, scm_acf_preset_repeater_files( $original ) );
 	$fields = array_merge( $fields, scm_acf_preset_repeater_links( $original ) );
 	$fields = array_merge( $fields, scm_acf_preset_repeater_objects( $original, $types ) );
+	//$fields[] = scm_acf_field_objects( 'elements', array( 'type'=>'rel', 'null'=>1, 'filters'=>array( 'search', 'post_type' ), 'return'=>'id' ) );
 	
 	//$fields[] = scm_acf_field_objects( $name . 'media', array( 'type'=>'rel-id-search', 'types'=>$types, 'label'=>'Seleziona Elementi' ) );
 

@@ -1549,27 +1549,27 @@ function getHREF( $type = 'web', $link, $data = false ){
         break;
 
         case 'phone':
-            return ' ' . $data . 'href="tel:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="tel:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'fax':
-            return ' ' . $data . 'href="fax:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="fax:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'email':
-            return ' ' . $data . 'href="mailto:' . encodeEmail( $link ) . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="mailto:' . encodeEmail( $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'skype':
-            return ' ' . $data . 'href="skype:' . $link . '?chat" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="skype:' . $link . '?chat" ' . $data . 'target="_self"';
         break;
 
         case 'skype-call':
-            return ' ' . $data . 'href="skype:' . $link . '?call" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="skype:' . $link . '?call" ' . $data . 'target="_self"';
         break;
 
         case 'skype-phone':
-            return ' ' . $data . 'href="callto://+' . $link . '" ' . $data . 'target="_blank"';
+            return ' ' . $data . 'href="callto://+' . $link . '" ' . $data . 'target="_self"';
         break;
 
         case 'web':
@@ -2084,6 +2084,24 @@ function svgLine( $attr = array(), $type = 'solid', $indent = 0 ) {
 // ------------------------------------------------------
 // 9.0 DATE and TIME
 // ------------------------------------------------------
+function dateBetween( $old, $new, $format = 'd/m/Y', $current = '' ) {
+    $old = DateTime::createFromFormat( $format, $old );
+    $new = DateTime::createFromFormat( $format, $new );
+    $current = DateTime::createFromFormat( $format, ( $current ?: date( $format ) ) );
+    $old = strtotime( $old->format('Y-m-d') );
+    $new = strtotime( $new->format('Y-m-d') );
+    $current = strtotime( $current->format('Y-m-d') );
+    
+    return $current >= $old && $current <= $new;
+}
+function datePast( $old, $format = 'd/m/Y', $current = '' ) {
+    $current = DateTime::createFromFormat( $format, ( $current ?: date( $format ) ) );
+    $current = strtotime( $current->format('Y-m-d') );
+    $old = DateTime::createFromFormat( $format, $old );
+    $old = strtotime( $old->format('Y-m-d') );
+    
+    return $current > $old;
+}
 
 function dayDiff( $old, $new, $ext = false ) {
     if( $ext ){

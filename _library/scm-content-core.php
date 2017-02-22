@@ -247,6 +247,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 // FILTER contents before echo            
                 $content = apply_filters( 'scm_filter_echo_container', $content, $container, $original );
                 $content = apply_filters( 'scm_filter_echo_container_' . $container, $content, $original );
+
+                if( is_null( $content ) || !$content ) continue;
                 
                 // -- Open Container
                 if( !$content['inherit'] ){
@@ -1025,28 +1027,6 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $template_id = is_attr( $content, 'template', 0 );
 
-    // ++todo 1
-    if( !$template_id ){
-
-        $template_id = scm_field( $type . '-templates', '', 'option' );
-                    
-        if( !empty( $template_id ) )
-            $template_id = (int)$template_id[0]['id'];
-
-        if( empty( $template_id ) )
-            return;
-    }
-        
-
-    $template = get_fields( $template_id );
-    $template_post = get_post( $template_id );
-    $template_name = $template_post->post_name;
-    $template['column-width'] = $width;
-    $template['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
-
-    if ( empty( $template ) )
-        return;
-
     $pagination = false;
     if( $archive ){
 
@@ -1115,12 +1095,40 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     $id = $post->ID;
 
+    // ++todo 1
+    if( !$template_id ){
+
+        $template_id = scm_field( $type . '-templates', '', 'option' );
+                    
+        if( !empty( $template_id ) )
+            $template_id = (int)$template_id[0]['id'];
+
+        if( empty( $template_id ) )
+            $template_id = 0;
+            //return;
+    }
+        
+    $template = array();
+    if( $template_id ){
+        $template = get_fields( $template_id );
+        if( !empty( $template ) ){
+            $template_post = get_post( $template_id );
+            $template_name = $template_post->post_name;
+            $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
+            $template['attributes'] = 'data-template="' . $template_id . '" ';
+        }
+    }
+    
+    $template['column-width'] = $width;
+    $template['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
+
+    /*if ( empty( $template ) )
+        return;*/
+
     if( !empty( $query ) )
         $loop = new WP_Query( $query );
 
     $template['posts'] = $loop->posts;
-    $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-    $template['attributes'] = 'data-template="' . $template_id . '" ';
     
     $template = array_merge( $template, ( $more ?: array() ) );
 
