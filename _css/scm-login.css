@@ -25,15 +25,15 @@ p > a, label, input[type=radio]:checked:before, input[type=checkbox]:checked:bef
 	color: #444 !important;
 }
 
-p > a, input:hover, input:focus, textarea:hover, textarea:focus {
+p.message, p > a, input:hover, input:focus, textarea:hover, textarea:focus {
     border-color: #444 !important;
 }
 
-*:hover > label, label:focus, p > a:focus, p > a:hover {
+p > a:focus, p > a:hover {
     color: #888 !important;
 }
 
-p.message, p > a:focus, p > a:hover{
+p > a:focus, p > a:hover{
 	border-color: #888 !important;
 }
 
@@ -43,7 +43,8 @@ p > a:focus, p > a:hover{
 
 /**********************/
 
-body.login {
+body.login,
+#wp-auth-check {
 	background-color: #FFF;
 }
 

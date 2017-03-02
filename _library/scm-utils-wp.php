@@ -482,17 +482,23 @@ function getURL( $url ){
         return wp_logout_url( $url );
     }
 
+    /*if( startsWith( $url, 'cal:' ) !== false )
+        return googleMapsLink( $url );*/
+    
     if( startsWith( $url, 'map:' ) !== false )
         return googleMapsLink( $url );
 
-    if( startsWith( $url, array( 'skype:', 'mailto:', 'tel:', 'callto:', 'fax:' ) ) !== false )
-        return encodeEmail( $url );
-
-    if( filter_var( $url, FILTER_VALIDATE_EMAIL ) )
+    if( startsWith( $url, 'mailto:' ) !== false || filter_var( $url, FILTER_VALIDATE_EMAIL ) )
         return 'mailto:' . encodeEmail( $url );
 
-    if ( is_numeric( $url ) )
-        return 'tel:' . ( startsWith( $url, '+' ) ? '' : '+' ) . $url;
+    if( startsWith( $url, array('tel:','+') ) !== false || is_numeric( str_replace(' ', '', $url ) ) )
+        return 'tel:' . encodePhone( $url );
+
+    if( startsWith( $url, 'fax:' ) !== false )
+        return 'fax:' . encodePhone( $url );
+
+    if( startsWith( $url, 'skype' ) !== false )
+        return 'skype:' . encodeSkype( $url );
 
     str_replace( array( 'http://#', 'https://#' ), '#', $url);
 
@@ -536,6 +542,12 @@ function linkExtend( $link, $name = '' ){
     }elseif( startsWith( $link['link'], 'tel:' ) ){
         $link['icon'] = 'phone';
         $link['type'] = 'phone';
+    }elseif( startsWith( $link['link'], 'fax:' ) ){
+        $link['icon'] = 'file-text-o';
+        $link['type'] = 'fax';
+    }elseif( startsWith( $link['link'], 'skype' ) ){
+        $link['icon'] = 'skype';
+        $link['type'] = 'skype';
     }elseif( startsWith( $link['link'], '#' ) ){
         $link['icon'] = 'hashtag';
         $link['type'] = 'page';
@@ -544,7 +556,9 @@ function linkExtend( $link, $name = '' ){
         $link['type'] = 'site';
     }else{
         $parse = urlExtend( $link['link'] );
-        if( $parse['sub'] == 'plus' && $parse['domain'] == 'google' )
+        if( $parse['sub'] == 'maps' && $parse['domain'] == 'google' )
+            $link['icon'] = $link['type'] = 'map-marker';
+        elseif( $parse['sub'] == 'plus' && $parse['domain'] == 'google' )
             $link['icon'] = $link['type'] = 'google-plus';
         elseif( scm_fa_exists( 'social', $parse['domain'] ) )
             $link['icon'] = $link['type'] = $parse['domain'];
@@ -577,6 +591,8 @@ function urlExtend( $url = '', $name = '' ){
 
         $domain = explode( '.', $domain );
 
+        $parse['sub'] = '';
+
         if( $points > 1 )
             $parse['sub'] = $domain[0];
 
@@ -602,8 +618,8 @@ function urlExtend( $url = '', $name = '' ){
  *
  * @return {string} String containing list of files.
  */
-function getLink( $link, $name = '', $indent = 0, $tag = 'div' ){
-    return getAttachment( 'link', $link, $name, $indent, $tag );
+function getLink( $link, $name = '', $indent = 0, $tag = 'div', $icon = '', $class = '' ){
+    return getAttachment( 'link', $link, $name, $indent, $tag, $icon, $class );
 }
 
 /**
@@ -613,8 +629,46 @@ function getLink( $link, $name = '', $indent = 0, $tag = 'div' ){
  *
  * @return {string} String containing list of files.
  */
-function getFile( $file, $name = '', $indent = 0, $tag = 'div' ){
-    return getAttachment( 'file', $file, $name, $indent, $tag );
+function getFile( $file, $name = '', $indent = 0, $tag = 'div', $icon = '', $class = '' ){
+    return getAttachment( 'file', $file, $name, $indent, $tag, $icon, $class );
+}
+
+/**
+ * [GET] Get Add to Calendar
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing Add to Calendar button.
+ */
+function getCalendar( $cal = 0, $name = '', $indent = 0, $tag = 'span', $icon = '', $class = '' ){
+    $contact = get_bloginfo();
+    $mail = scm_field( 'opt-staff-email', '', 'option' );
+    if( !$cal ){
+        global $post;
+        $cal = $post->ID;
+    }
+    $location = scm_field( 'luogo', '', $cal );
+    if( $location ){
+        $location = scm_utils_preset_address( $location );
+        $location = $location['inline'];
+    }
+    $ret = indent( $indent ) . '<' . $tag . ' class="addtocalendar" data-calendars="Google Calendar, iCalendar, Outlook">' . lbreak();
+        $ret .= getAttachment( 'cal', $cal, $name, $indent, 'a', $icon, 'disabled' . ( $class ? ' ' . $class : '' ) );
+        $ret .= '<var class="atc_event">';
+            $start = scm_field( 'start-date', '', $cal, 1);
+            $end = scm_field( 'end-date', '', $cal, 1);
+            if( $start ) $ret .= '<var class="atc_date_start">' . $start . ' 00:00:00</var>';
+            if( $end ) $ret .= '<var class="atc_date_end">' . $end . ' 23:59:59</var>';
+            $ret .= '<var class="atc_timezone">Europe/Rome</var>';
+            $ret .= '<var class="atc_title">' . get_the_title( $cal ) . '</var>';
+            //$ret .= scm_field( 'editor', '', $cal, '<var class="atc_description">', '</var>' );
+
+            if( $location ) $ret .= '<var class="atc_location">' . $location . '</var>';
+            $ret .= '<var class="atc_organizer">' . $contact . '</var>';
+            if( $mail ) $ret .= '<var class="atc_organizer_email">' . $mail . '</var>';
+        $ret .= '</var>';
+    $ret .= indent( $indent ) . '</' . $tag . '>' . lbreak();
+    return $ret;
 }
 
 /**
@@ -624,7 +678,7 @@ function getFile( $file, $name = '', $indent = 0, $tag = 'div' ){
  *
  * @return {string} String containing list of attachments.
  */
-function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div' ){
+function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div', $icon = '', $class = '' ){
 
     if( !$att || !$obj ) return '';
     $ret = '';
@@ -635,12 +689,21 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div' ){
     $iconB = '';
 
     switch ( $att ) {
+        case 'cal':
+            //$ext = linkExtend( $obj, $name );
+            $type = 'add';
+            //$href = ' data-href="' . $ext['link'] . '"';
+            $iconA = 'plus-circle';
+            $iconB = $icon ?: 'calendar';
+            $att .= ' atcb-link';
+        break;
+
         case 'link':
             $ext = linkExtend( $obj, $name );
             $type = $ext['type'];
             $href = ' data-href="' . $ext['link'] . '"';
             $iconA = 'chevron-circle-right';
-            $iconB = $ext['icon'];
+            $iconB = $icon ?: $ext['icon'];
         break;
 
         case 'file':
@@ -648,19 +711,19 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div' ){
             $type = $ext['icon'];
             $href = ' data-href="' . $ext['link'] . '"';
             $iconA = 'chevron-circle-down';
-            $iconB = $ext['icon'];
+            $iconB = $icon ?: $ext['icon'];
         break;
         
         default:
             $type = get_post_type( $obj );
             $href = scm_utils_link_post( array( 'arrows'=>true,'miniarrows'=>true,'counter'=>true,'color'=>'true','name'=>true,'list'=>true ), $obj );
             $iconA = 'plus-circle';
-            $iconB = ( $type == 'video' ? 'youtube-play' : ( $type == 'gallerie' ? 'picture-o' : 'link' ) );
+            $iconB = $icon ?: ( $type == 'video' ? 'youtube-play' : ( $type == 'gallerie' ? 'picture-o' : 'link' ) );
             $name = ( $name ?: get_the_title( $obj ) );
         break;
     }
 
-    $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . '"' . $href . '>' . lbreak();
+    $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . ( $class ? ' ' . $class : '' ) . '"' . $href . '>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<div class="icons">' . lbreak();
             $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconA . ' plus"></i>' . lbreak();
             $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconB . '"></i>' . lbreak();
@@ -715,7 +778,7 @@ function getGoogleMapsLatLng( $address = '', $country = '' ){
     }
     $country = ( $country ?: 'Italy' );
 
-    $google_address = str_replace(' ', '+', doublesp( $address ) );
+    $google_address = str_replace(' ', '+', multisp( $address ) );
     $latlng = array(
         'lat'   => 0,
         'lng'   => 0,

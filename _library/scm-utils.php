@@ -1453,7 +1453,7 @@ function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes 
         $attributes = str_replace( $url, getURL( $url ), $attributes);
     }
 
-    return str_replace( array( ' " ', '=" ', '< ', ' >', ' ">' ), array( '" ', '="', '<', '>', '">' ), '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . doublesp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
+    return str_replace( array( ' " ', '=" ', '< ', ' >', ' ">' ), array( '" ', '="', '<', '>', '">' ), '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . multisp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
 }
 
 /**
@@ -1485,15 +1485,15 @@ function closeTag( $tag = 'div', $app = '' ){
 }
 
 /**
- * [GET] Encode email address
+ * [GET] Encode google map
  *
  * @subpackage 1-Utilities/HTML
  *
- * @param {string=} email Email address to be encoded (default is '').
- * @return {string} Encoded email address.
+ * @param {string=} email Google map to be encoded (default is '').
+ * @return {string} Encoded google map.
  */
 function googleMapsLink( $address = '' ){
-    return 'https://maps.google.com/?q=' . str_replace( ' ', '+', str_replace( ' - ', '+', str_replace( 'map:', '', doublesp( $address ) ) ) ) ;
+    return 'https://maps.google.com/?q=' . str_replace( ' ', '+', str_replace( array( ' - ', ' , ', ', ', ',', ' + ' ), '+', str_replace( 'map:', '', multisp( $address ) ) ) ) ;
 }
 
 /**
@@ -1505,7 +1505,46 @@ function googleMapsLink( $address = '' ){
  * @return {string} Encoded email address.
  */
 function encodeEmail( $email = '' ){
-    return str_replace( '.', ',', str_replace( '@', '()', $email ) );
+    $email = explode( ':', $email );
+    $email = $email[ sizeof( $email ) - 1 ];
+    $email = explode( '?subject=', $email );
+    $subject = ( sizeof( $email ) > 1 ? '?subject=' . str_replace( ' ', "%20", $email[1] ) : '' );
+    $email = str_replace(' ', '', $email[0] );
+    return str_replace( '.', ',', str_replace( '@', '()', $email ) ) . $subject;
+}
+
+/**
+ * [GET] Encode phone/fax number
+ *
+ * @subpackage 1-Utilities/HTML
+ *
+ * @param {string=} phone Phone/fax to be encoded (default is '').
+ * @return {string} Encoded phone/fax number.
+ */
+function encodePhone( $phone = '' ){
+    $phone = explode( ':', str_replace( array( ' ', '+' ), '', $phone ) );
+    $phone = $phone[ sizeof( $phone ) - 1 ];
+    return '+' . preg_replace( '/\D+/', '', $phone );
+    //return '+' . preg_replace("/[^0-9,.]/", "", $phone );
+}
+
+/**
+ * [GET] Encode skype name/number
+ *
+ * @subpackage 1-Utilities/HTML
+ *
+ * @param {string=} skype Skype name/number to be encoded (default is '').
+ * @return {string} Encoded skype name/number.
+ */
+function encodeSkype( $skype = '', $action = 'chat' ){
+    $skype = explode( ':', str_replace(' ', '', $skype ) );
+    if( sizeof( $skype ) > 1 ){
+        $action = explode( '-', $skype[0] );
+        $action = ( sizeof( $action ) > 1 ? $action[1] : 'chat' );
+    }
+    $skype = $skype[ sizeof( $skype ) - 1 ];
+    if( is_numeric( $skype ) ) $skype = encodePhone( $skype );
+    return $skype . '?' . $action;
 }
 
 /**
@@ -1549,11 +1588,11 @@ function getHREF( $type = 'web', $link, $data = false ){
         break;
 
         case 'phone':
-            return ' ' . $data . 'href="tel:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_self"';
+            return ' ' . $data . 'href="tel:' . encodePhone( $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'fax':
-            return ' ' . $data . 'href="fax:+' . preg_replace( '/\D+/', '', $link ) . '" ' . $data . 'target="_self"';
+            return ' ' . $data . 'href="fax:' . encodePhone( $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'email':
@@ -1561,11 +1600,23 @@ function getHREF( $type = 'web', $link, $data = false ){
         break;
 
         case 'skype':
-            return ' ' . $data . 'href="skype:' . $link . '?chat" ' . $data . 'target="_self"';
+            return ' ' . $data . 'href="skype:' . encodeSkype( $link ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'skype-call':
-            return ' ' . $data . 'href="skype:' . $link . '?call" ' . $data . 'target="_self"';
+            return ' ' . $data . 'href="skype:' . encodeSkype( $link, 'call' ) . '" ' . $data . 'target="_self"';
+        break;
+
+        case 'skype-add':
+            return ' ' . $data . 'href="skype:' . encodeSkype( $link, 'add' ) . '" ' . $data . 'target="_self"';
+        break;
+
+        case 'skype-file':
+            return ' ' . $data . 'href="skype:' . encodeSkype( $link, 'sendfile' ) . '" ' . $data . 'target="_self"';
+        break;
+
+        case 'skype-info':
+            return ' ' . $data . 'href="skype:' . encodeSkype( $link, 'userinfo' ) . '" ' . $data . 'target="_self"';
         break;
 
         case 'skype-phone':
@@ -1774,11 +1825,13 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
     
     $file['filename'] = basename( $file['link'] );
     $file['name'] = ( $name ?: $file['filename'] );
-    
-    //
+
+    $file['uri'] = str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['url'] );
+
+    if( !file_exists( $file['uri'] ) ) return $file;
 
     //$file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0 ) );
-    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['url'] ) ) ?: 0 ) );
+    $file['modified'] = ex_attr($file, 'modified', date( $date, filemtime( $file['uri'] ) ?: 0 ) );
     
     /*$file['modified'] = ex_attr($file, 'modified', date( $date, filemtimeRemote( $file['URL'] ) ) );
     $ch = curl_init( $file['URL'] );
@@ -1790,7 +1843,7 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
 
     $file['date'] = ex_attr($file, 'date', $file['modified']);
     //$file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['URL'] ) ) ?: 0;
-    $file['bytes'] = filesize( str_replace( SCM_URI_UPLOADS, SCM_DIR_UPLOADS, $file['url'] ) ) ?: 0;
+    $file['bytes'] = filesize( $file['uri'] ) ?: 0;
     
     //
     
@@ -2084,21 +2137,20 @@ function svgLine( $attr = array(), $type = 'solid', $indent = 0 ) {
 // ------------------------------------------------------
 // 9.0 DATE and TIME
 // ------------------------------------------------------
-function dateBetween( $old, $new, $format = 'd/m/Y', $current = '' ) {
-    $old = DateTime::createFromFormat( $format, $old );
-    $new = DateTime::createFromFormat( $format, $new );
-    $current = DateTime::createFromFormat( $format, ( $current ?: date( $format ) ) );
-    $old = strtotime( $old->format('Y-m-d') );
-    $new = strtotime( $new->format('Y-m-d') );
-    $current = strtotime( $current->format('Y-m-d') );
+function dateFormat( $date, $from = 'Y-m-d', $to = 'd-m-Y' ) {
+    $date = DateTime::createFromFormat( $from, $date );
+    return $date->format( $to );
+}
+function dateBetween( $old, $new, $format = 'Y-m-d', $current = '' ) {
+    $old = strtotime( dateFormat( $old, $format, 'Y-m-d' ) );
+    $new = strtotime( dateFormat( $new, $format, 'Y-m-d' ) );
+    $current = strtotime( dateFormat( $current ?: date( $format ), $format, 'Y-m-d' ) );
     
     return $current >= $old && $current <= $new;
 }
-function datePast( $old, $format = 'd/m/Y', $current = '' ) {
-    $current = DateTime::createFromFormat( $format, ( $current ?: date( $format ) ) );
-    $current = strtotime( $current->format('Y-m-d') );
-    $old = DateTime::createFromFormat( $format, $old );
-    $old = strtotime( $old->format('Y-m-d') );
+function datePast( $old, $format = 'Y-m-d', $current = '' ) {
+    $current = strtotime( dateFormat( $current ?: date( $format ), $format, 'Y-m-d' ) );
+    $old = strtotime( dateFormat( $old, $format, 'Y-m-d' ) );
     
     return $current > $old;
 }

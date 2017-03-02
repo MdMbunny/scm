@@ -24,6 +24,8 @@ $args = array(
     'style' => '', // not used
     
     'login-type' => 'page',
+    'login-button' => 0,
+    'login-icon' => 'page',
     'login-redirect' => '',
 
     'login-buttons' => array(),
@@ -60,6 +62,7 @@ if ( is_user_logged_in() ) {
 
     foreach ( $buttons as $button ) {
         $b_type = ( isset( $button['type'] ) ? $button['type'] : 'logout' );
+        $b_icon = ( isset( $button['icon'] ) ? $button['icon'] : '' );
         $b_label = ( isset( $button['label'] ) ? $button['label'] : '' );
         $b_login = ( isset( $button['login'] ) ? $button['login'] : 'page' );
         $b_link = loginRedirect( $b_login, ( isset( $button['redirect'] ) ? $button['redirect'] : '' ) );
@@ -71,45 +74,54 @@ if ( is_user_logged_in() ) {
             $b_label = ( $b_label ?: __( 'Enter', SCM_THEME ) );
         }elseif( $b_type == 'logout' ){
             $b_link = getURL( 'logout:' . $b_link );
-            $b_label = ( $b_label ?: __( 'Log Out', SCM_THEME ) );
+            $b_label = ( $b_label ?: __( 'Sign Out', SCM_THEME ) );
         }
-        echo '<a class="scm-button shape column-layout" href="' . $b_link . '">' . $b_label . '</a>';
+        echo '<a class="scm-button shape column-layout" href="' . $b_link . '">' . ( $b_icon ? '<i class="fa ' . $b_icon . '"></i>' : '' ) . $b_label . '</a>';
     }
 
 }else{
 
-    // LOG IN FORM
+    if( $args['login-button'] ){
 
-    $login_id = $args['id'];
+        // SIGN IN BUTTON
 
-    $login_remember = $args['login-remember'];
-    
-    $value_remember = $args['login-value-remember'];
-    $value_user = $args['login-value-user'];
-    
-    $label_user = $args['login-label-user'];
-    $label_password = $args['login-label-password'];
-    $label_remember = $args['login-label-remember'];
-    $label_login = $args['login-send'];
-    
-    $attr = array(
-            'echo'           => true,
-            'redirect' 		 => $link,
-            'form_id'        => ( $login_id ?: 'loginform' ),
-            'label_username' => $label_user,
-            'label_password' => $label_password,
-            'label_remember' => $label_remember,
-            'label_log_in'   => $label_login,
-            'id_username'    => 'user_login',
-            'id_password'    => 'user_pass',
-            'id_remember'    => 'rememberme',
-            'id_submit'      => 'wp-submit',
-            'remember'       => $login_remember,
-            'value_username' => $value_user,
-            'value_remember' => $value_remember,
-    );
+        echo '<a class="scm-button shape column-layout" href="' . $link . '">' . ( $args['login-icon'] ? '<i class="fa ' . $args['login-icon'] . '"></i>' : '' ) . $args['login-send'] . '</a>';
 
-    wp_login_form( $attr );
+    }else{
+
+        // LOG IN FORM
+
+        $login_id = $args['id'];
+
+        $login_remember = $args['login-remember'];
+        
+        $value_remember = $args['login-value-remember'];
+        $value_user = $args['login-value-user'];
+        
+        $label_user = $args['login-label-user'];
+        $label_password = $args['login-label-password'];
+        $label_remember = $args['login-label-remember'];
+        $label_login = $args['login-send'];
+        
+        $attr = array(
+                'echo'           => true,
+                'redirect' 		 => $link,
+                'form_id'        => ( $login_id ?: 'loginform' ),
+                'label_username' => $label_user,
+                'label_password' => $label_password,
+                'label_remember' => $label_remember,
+                'label_log_in'   => $label_login,
+                'id_username'    => 'user_login',
+                'id_password'    => 'user_pass',
+                'id_remember'    => 'rememberme',
+                'id_submit'      => 'wp-submit',
+                'remember'       => $login_remember,
+                'value_username' => $value_user,
+                'value_remember' => $value_remember,
+        );
+
+        wp_login_form( $attr );
+    }
 }
 
 ?>

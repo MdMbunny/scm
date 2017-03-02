@@ -79,8 +79,9 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 	$fields[] = scm_acf_field_select( 'link', 'template_link-no', 34, 0, 0, multiText( array( 'Seleziona', 'Link' ) ) );
 
 	$fields[] = scm_acf_field_object( 'template', array( 
-        'type'=>'id-null', 
+        'type'=>'id', 
         'types'=>$slug . SCM_TEMPLATE_APP,
+        'null'=>1,
         'label'=>multiText( array( 'Seleziona', 'Modello' ) ),
     ), 33 );
 

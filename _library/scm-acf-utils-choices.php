@@ -131,10 +131,13 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 		foreach ( $menus as $location => $description )
 			$choices[$location] = $description;
 
-		$choices['auto'] = __( 'Menu Auto', SCM_THEME );
-		$choices['mono'] = __( 'Menu Mono', SCM_THEME );
-		$choices['mini'] = __( 'Menu Mini', SCM_THEME );
-		$choices['no'] = __( 'Nessun Menu', SCM_THEME );
+		if( strpos( $list, '_just' ) === false ){
+
+			$choices['auto'] = __( 'Menu Auto', SCM_THEME );
+			$choices['mono'] = __( 'Menu Mono', SCM_THEME );
+			$choices['mini'] = __( 'Menu Mini', SCM_THEME );
+			$choices['no'] = __( 'Nessun Menu', SCM_THEME );
+		}
 	
 	}elseif( strpos( $list, 'side_position' ) !== false ){
 		if( strpos( $list, 'side_position_no' ) !== false ){

@@ -18,6 +18,10 @@ $post_id = $post->ID;
 $args = array(
 	'element' => 0,
 	'zoom' => 10,
+	'control-drag' => 1,
+	'control-zoom' => 1,
+	'control-streetview' => 1,
+	'infowidth' => 500,
 	'both' => false,
 	'template' => '',
 	'id' => '',
@@ -70,9 +74,9 @@ $class = 'map scm-map scm-object object full' . $args['class'];
 $fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker', 'option' );
 $color = scm_utils_style_get_color( 'opt-tools-map-', 'option' );
 $icon = array( 'icon' => $fa, 'data' => $color );
-$marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '" ';
+$marker = ' data-icon="' . $fa . '"' . ( $color ? '" data-icon-color="' . $color . '" ' : '' );
 
-$attributes = ' data-zoom="' . ifexists( $args[ 'zoom' ], 10 ) . '" data-infowidth="' . ifexists( $args[ 'infowidth' ], 500 ) . '" ' . $marker . $args['attributes'];
+$attributes = ' data-control-drag="' . ex_attr( $args, 'control-drag', 1 ) . '" data-control-zoom="' . ex_attr( $args, 'control-zoom', 1 ) . '" data-control-streetview="' . ex_attr( $args, 'control-streetview', 1 ) . '" data-zoom="' . ex_attr( $args, 'zoom', 10 ) . '" data-infowidth="' . ex_attr( $args, 'infowidth', 500 ) . '" ' . $marker . $args['attributes'];
 $style = $args['style'];
 $id = $args['id'];
 $latlng = array();

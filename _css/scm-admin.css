@@ -1451,8 +1451,8 @@ input.acf-is-prepended {
 
 .acf-repeater{
 	border: 2px solid #e14d43;
-    overflow: hidden;
-    border-radius: 1em;
+    /*overflow: hidden;
+    border-radius: 1em;*/
 }
 .acf-repeater .acf-table{
 	margin: 0;

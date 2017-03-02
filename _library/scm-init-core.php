@@ -43,8 +43,10 @@ add_filter( 'body_class','scm_hook_body_class' );
 
 // QUERY
 add_filter( 'query_vars', 'scm_hook_query_vars' );
-add_action( 'wp_ajax_nopriv_load_content', 'scm_hook_load_content' );
-add_action( 'wp_ajax_load_content', 'scm_hook_load_content' );
+add_action( 'wp_ajax_nopriv_load_archive', 'scm_hook_load_archive' );
+add_action( 'wp_ajax_load_archive', 'scm_hook_load_archive' );
+add_action( 'wp_ajax_nopriv_load_single', 'scm_hook_load_single' );
+add_action( 'wp_ajax_load_single', 'scm_hook_load_single' );
 
 // REMOVE
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -518,21 +520,30 @@ function scm_hook_query_vars( $public_query_vars = array() ) {
 }
 
 /**
-* [GET] Load dynamic content
+* [GET] Load dynamic archive content
 *
-* Hooked by 'wp_ajax_nopriv_load_content'
-* Hooked by 'wp_ajax_load_content'
+* Hooked by 'wp_ajax_nopriv_load_archive'
+* Hooked by 'wp_ajax_load_archive'
 * @subpackage 4-Init/Core/4-QUERY
 *
 */
-function scm_hook_load_content() {
-    
-    $query_vars = json_decode( stripslashes( $_POST['query_vars'] ), true );
-    
+function scm_hook_load_archive() {
+        
     // ARCHIVE
     $archive = $_POST['archive'];
     if( !is_null( $archive ) )
         scm_post( $archive );
+    die;
+}
+/**
+* [GET] Load dynamic single content
+*
+* Hooked by 'wp_ajax_nopriv_load_single'
+* Hooked by 'wp_ajax_load_single'
+* @subpackage 4-Init/Core/4-QUERY
+*
+*/
+function scm_hook_load_single() {
 
     // SINGLE
     $single = $_POST['single'];
@@ -540,7 +551,6 @@ function scm_hook_load_content() {
 
     if( !is_null( $single ) )
         scm_post( (int)$single, (int)$template );
-    
     die;
 }
 

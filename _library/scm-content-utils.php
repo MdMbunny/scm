@@ -113,6 +113,7 @@ $link = apply_filters( 'scm_filter_object_after_link_{$type}', $link, $content, 
 function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     global $post, $SCM_types;
+    $old = $post;
 
     if( $id )
         $post = ( is_numeric( $id ) ? get_post( $id ) : $id );
@@ -158,10 +159,10 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     switch ( $link_type ) {
         case 'self':
-            $link = ' data-href="' . get_permalink( $id ) . ( $template ? '?template=' . $template : '' ) . '"';
+            $link = ' data-href="' . get_permalink( $id ) . ( $template ? '?template=' . $template : '' ) . '" data-target="_self"';
         break;
         case 'load':
-            $link = ' data-href="' . get_permalink( $id ) . '" data-load-single="' . $id . '" data-load-template="' . ( $template ?: '' ) . '"';
+            $link = ' data-href="' . get_permalink( $id ) . '" data-target="_self" data-load-single="' . $id . '" data-load-template="' . ( $template ?: '' ) . '"';
         break;
         case 'file':
         case 'attachment':
@@ -202,6 +203,9 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     }
 
     $link = apply_filters( 'scm_filter_object_after_link_' . $type, $link, $content, $id );
+
+    $post = $old;
+    //wp_reset_query();
 
     return $link;
 }
@@ -560,7 +564,7 @@ function scm_utils_style_get_color( $type = '', $target = 'option', $add = false
         $color = scm_field( is( $type, 'style-txt-' ) . 'rgba-color', '', $target, (bool)$type );
 	}
 
-    $color = hex2rgba( ( $color ?: '#000000' ), $alpha );
+    $color = hex2rgba( ( $color ?: '' ), $alpha );
     if( !$color ) return '';
 
 	/*if( !$color && ( $type || $target != 'option' ) )
@@ -861,25 +865,45 @@ function scm_utils_styles( $target = 'option', $add = false, $type = '' ) {
 *
 * @return {array} Array containing date attributes.
 */
-function scm_utils_preset_date( $start = '', $end = '', $lang = '' ) {
+function scm_utils_preset_dates( $obj = NULL, $start = '', $end = '', $format = 'd/m/Y', $lang = '' ) {
 
+    if( !is_null( $obj ) ){
+        $start = $start ?: 'start-date';
+        $end = $end ?: 'end-date';
+        $start = scm_field( $start, '', ( $obj === 0 ? NULL : $obj ) );
+        $end = scm_field( $end, '', ( $obj === 0 ? NULL : $obj ) );
+    }
     if( !$start ) return false;
     $date = array();
-    $current = (int)date("Ymd");
+    $current = (int)date('Ymd');
     $date['start'] = date( 'Ymd', strtotime( $start ) );
-    $date['end'] = ( $end ? date( 'Ymd', strtotime( $end ) ) : $start );
+    $date['end'] = ( $end ? date( 'Ymd', strtotime( $end ) ) : $date['start'] );
     $lang = ( $lang ?: ( function_exists( 'pll_current_language' ) ? pll_current_language($locale) : str_replace( '-', '_', substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 ) ) ) );
     setlocale( LC_ALL, $lang );
-    $date['same'] = $date['start'] == $date['end'];
+    $date['single'] = !$end || $date['start'] == $date['end'];
     $date['current'] = (int)$date['start'] < $current && (int)$date['end'] >= $current;
-    $date['old'] = (int)$date['end'] < $current;
+    $date['past'] = (int)$date['end'] < $current;
+    $date['next'] = (int)$date['start'] > $current;
     $date['after_date'] = strftime( '%d %B %Y', strtotime('+1 day', strtotime( $date['end'] ) ) );
     $date['before_date'] = strftime( '%d %B %Y', strtotime('-1 day', strtotime( $date['start'] ) ) );
     $date['start_date'] = strftime( '%d %B %Y', strtotime( $date['start'] ) );
     $date['end_date'] = strftime( '%d %B %Y', strtotime( $date['end'] ) );
+    $date['start_format'] = dateFormat( $date['start'], 'Ymd', $format );
+    $date['end_format'] = dateFormat( $date['end'], 'Ymd', $format );
+    $date['state'] = ( $date['next'] ? 'next' : ( $date['current'] ? 'current' : ( $date['past'] ? 'past' : 'unknown' ) ) );
 
     return $date;
 }
+// USED BY cittadelladanza > REPLACE WITH scm_utils_preset_dates
+function scm_utils_preset_date( $start = '', $end = '', $lang = '' ) {
+
+    $dates = scm_utils_preset_date( $start, $end, '/', $lang );
+    $dates['old'] = $dates['past'];
+    $dates['same'] = $dates['single'];
+
+    return $dates;
+}
+
 
 /**
 * [GET] Policies from preset
@@ -965,14 +989,15 @@ function scm_utils_preset_rgba( $color = '', $alpha = '', $fall = '', $fall2 = 1
 /**
 * [GET] Map marker from preset
 *
-* @param {post:luogo} location Location post.
-* @param {array=} fields Location fields (default is empty array).
+* @param {post:luogo} luogo ID Luogo.
+* @param {array=} fields Luogo fields (default is empty array).
 * @param {bool=} mark Marker instead of icon (default is false).
 * @return {array|string} Icon array or marker string if mark is true.
 */
-function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark = false ) {
+function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = false ) {
 
-    if( is_null( $location ) ) return '';
+    if( is_null( $luogo ) ) return '';
+    if( empty($fields) ) $fields = get_fields( $luogo );
 
     $marker = ( isset( $fields['luogo-map-icon'] ) ? $fields['luogo-map-icon'] : 'default' );
 
@@ -994,7 +1019,7 @@ function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark
         break;
 
         default:
-            $term = wp_get_post_terms( $location, 'luoghi-tip' );
+            $term = wp_get_post_terms( $luogo, 'luoghi-tip' );
 
             if( !$term || !sizeof( $term ) )
 
@@ -1042,6 +1067,65 @@ function scm_utils_preset_map_marker( $location = NULL, $fields = array(), $mark
         return $marker;
 
     return $icon;
+}
+
+/**
+* [GET] Luogo address
+*
+*/
+function scm_utils_get_region_name( $region = '' ) {
+    if( strlen( $region ) == 2 ){
+        if( class_exists( 'Locale' ) )
+            return Locale::getDisplayRegion('-' . $region, 'en') ?: '';
+    }
+    return '';
+}
+function scm_utils_preset_address_helper( $elem = '', $name = '', $separator = '', $old = '' ) {
+    if( $elem ){
+        if( $separator ){
+            return ( $old ? '<span class="separator">' . $separator . '</span>' : '' ) . '<span class="' . $name . '">' . $elem . '</span>';
+        }else{
+            return '<span class="float-none ' . $name . '">' . $elem . '</span>';
+        }
+    }
+    return '';
+}
+function scm_utils_preset_address( $luogo = NULL, $fields = array(), $title = '', $separator = '', $break = '<br>', $prepend = '', $append = '' ) {
+
+    if( is_null( $luogo ) || !$luogo ) return '';
+    if( empty($fields) ) $fields = get_fields( $luogo );
+
+    $arr = array();
+    $arr['name'] = $title ? get_the_title( $luogo ) : ex_attr( $fields, 'luogo-nome', '' );
+    $arr['street'] = ex_attr( $fields, 'luogo-indirizzo', '' );
+    $arr['town'] = ex_attr( $fields, 'luogo-frazione', '' );
+    $arr['city'] = ex_attr( $fields, 'luogo-citta', '' );
+        $arr['code'] = ex_attr( $fields, 'luogo-cap', '' );
+        $arr['province'] = ex_attr( $fields, 'luogo-provincia', '' );
+        $arr['city'] = trim( doublesp( $arr['code'] . ' ' . $arr['city'] . ' ' . ( $arr['province'] ?: '' ) ) );
+    $arr['region'] = ex_attr( $fields, 'luogo-regione', '' );
+    $arr['country'] = ex_attr( $fields, 'luogo-paese', '' ) ? scm_utils_get_region_name( $fields['luogo-paese'] ) : '';
+
+    $ret = '';
+    $ret .= $arr['street'] ?: '';
+    $ret .= $arr['town'] ? ( $ret ? ', ' : '' ) . $arr['town'] : '';
+    $ret .= $arr['city'] ? ( $ret ? ', ' : '' ) . $arr['city'] : '';
+    $ret .= $arr['region'] ? ( $ret ? ', ' : '' ) . $arr['region'] : '';
+    $ret .= $arr['country'] ? ( $ret ? ', ' : '' ) . $arr['country'] : '';
+    $arr['inline'] = $ret;
+
+    $name = ( $arr['name'] ? '<strong class="name">' . $arr['name'] . '</strong>' . ( $ret ? $break : '' ) : '' );
+
+    $html = ( $arr['street'] ? '<span class="street">' . $arr['street'] . '</span>' : '' );
+    $html .= scm_utils_preset_address_helper( $arr['town'], 'town', $separator, $html );
+    $html .= scm_utils_preset_address_helper( $arr['city'], 'city', $separator, $html );
+    $html .= scm_utils_preset_address_helper( $arr['region'], 'region', $separator, $html );
+    $html .= scm_utils_preset_address_helper( $arr['country'], 'country', $separator, $html );
+
+    $html = $prepend . $name . $html . $append;
+    $arr['html'] = $html;
+
+    return $arr;
 }
 
 ?>

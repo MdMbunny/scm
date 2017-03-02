@@ -47,6 +47,8 @@
 */
 function scm_content( $content = array(), $container = '' ) {
 
+    $template = ex_attr( $content, 'original-template', '' );
+
     if( isset( $content['sections'] ) ){
         if( isset( $content['page-menu'] ) )
             $container = 'section';
@@ -77,7 +79,7 @@ function scm_content( $content = array(), $container = '' ) {
         case 'column':
         case 'module':
 
-            scm_containers( $content, $container );
+            scm_containers( $content, $container, $template );
 
         break;
 
@@ -113,11 +115,12 @@ $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $actio
 * @param {string=} container Container name (default is 'module').
 * @param {string=} action Optional function name run at the end of the process (default is '').
 */
-function scm_containers( $build = array(), $container = 'module', $action = '' ) {
+//function scm_containers( $build = array(), $container = 'module', $action = '' ) {
+function scm_containers( $build = array(), $container = 'module', $template = '' ) {
 
     global $post, $SCM_indent;
 
-    $build = apply_filters( 'scm_filter_echo_containers', $build, $container, $action );
+    $build = apply_filters( 'scm_filter_echo_containers', $build, $container );
     $builder = array();
 
     if( !isset( $build ) || !$build ) return;
@@ -129,12 +132,12 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
     if( $container == 'post' ){
         $builder = $build;
+        $template =  ( isset( $build['original-template'] ) ? $build['original-template'] : '' );
         $current =  ( isset( $build['current'] ) ? $build['current'] : 0 );
         $counter =  ( isset( $build['counter'] ) ? $build['counter'] : 0 );
         $odd =  ( isset( $build['odd'] ) ? $build['odd'] : '' );
         $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
         $total =  ( isset( $build['total'] ) ? $build['total'] : sizeof( $build ) );
-        
     }else{
         $total = sizeof( $build );
     }
@@ -186,6 +189,7 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 'link-field' => '',
                 'link' => 'no',
                 'template' => 0,
+                'original-template' => '',
                 'url' => '#',
 
             );
@@ -204,6 +208,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
+            // -- TEMPLATE
+            $content['original-template'] = $template;
             // -- ID
             $content['original-id'] = $content['id'];
             $content['id'] = ( startsWith( $content['id'], 'field:' ) ? ( $content['id'] == 'field:slug' ? basename( get_permalink() ) : scm_field( str_replace( 'field:', '', $content['id'] ), '' ) ) : $content['id'] );
@@ -264,9 +270,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
 
                     // -- Content
                     scm_content( $content );
-
-                    if( function_exists( (string)$action ) )
-                        call_user_func( (string)$action, $content );
+                    /*if( $action && function_exists( (string)$action ) )
+                        call_user_func( (string)$action, $content );*/
 
                 do_action( 'scm_action_echo_container_' . $container, $content, $original );
 
@@ -274,6 +279,8 @@ function scm_containers( $build = array(), $container = 'module', $action = '' )
                 if( !$content['inherit'] )
                     indent( $SCM_indent, '</div>', 2 );
                     //indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
+
+                do_action( 'scm_action_echo_container_after_' . $container, $content, $original );
             //}
         }
     }
@@ -302,7 +309,9 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 
         $content['post_type'] = $post->post_type;
         $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
-        $content['attributes'] .= ' data-id="' . $post->ID . '" ' . ( $content['attributes'] ?: '' );
+        $content['attributes'] .= ' data-id="' . $post->ID . '"';
+        $content['attributes'] .= ' data-post-type="' . $content['post_type'] . '"';
+        $content['attributes'] .= ' data-post-title="' . $post->post_title . '"';
     
         $taxes = get_object_taxonomies( $post );
         if( !is_wp_error( $taxes ) && is_array( $taxes ) ){
@@ -315,7 +324,7 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
                     foreach( $terms as $key => $term ){
                         $content['class'] .= ' term-' . $term->slug;
                         $content['class'] .= ' ' . $tax . '-' . $term->slug;
-                        $content['attributes'] .= 'data-' . $term->slug . '="' . $term->name . '"';
+                        $content['attributes'] .= ' data-' . $term->slug . '="' . $term->name . '"';
                     }
                 }
             }
@@ -375,7 +384,7 @@ function scm_container_template( $content = array() ){
 
         $content['post-width'] = $content['post-column-width'];
 
-        if( isset( $content['archive'] ) && ifexists( $content['archive'], '' ) ){
+        if( ex_attr( $content, 'archive', '' ) ){
             global $post;
 
             $content['type'] = 'archive';
@@ -391,18 +400,19 @@ function scm_container_template( $content = array() ){
                     $value = $filter[1];
                 
                 $content['archive-field'] = $field;
+                $content['archive-compare'] = '=';
                 $content['archive-value'] = $value;
             }
-            if( isset( $content['query'] ) && !empty( $content['query'] ) ){
+            if( !empty( ex_attr( $content, 'query', array() ) ) ){
                 $query = array(
                     'relation' => ( $content['relation'] ?: 'AND' ),
                 );
                 foreach( $content['query'] as $meta ){
-                    if( isset( $meta['key'] ) && $meta['key'] ){
+                    if( ex_attr( $meta, 'key', '' ) ){
                         $query[] = array(
                             'key'=> $meta['key'],
-                            'value'=> ( $meta['value'] ?: $post->ID ),
-                            'compare'=> ( $meta['compare'] ?: '=' )
+                            'value'=> ex_attr( $meta, 'value', $post->ID ),
+                            'compare'=> ex_attr( $meta, 'compare', '=' )
                         );
                     }
                 }
@@ -410,7 +420,7 @@ function scm_container_template( $content = array() ){
             }
 
 
-        }elseif( isset( $content['post'] ) && ifexists( $content['post'], '' ) ){
+        }elseif( ex_attr( $content, 'post', '' ) ){
 
             $content['type'] = 'single';
 
@@ -452,6 +462,7 @@ function scm_container_section( $content = array(), $current = 0 ){
     global $post;
 
     // Sanitize the 'id' as anchor for SmoothScroll and AutoMenu functions.
+    //$content['original-id'] = $content['id'];
     $content['id'] = sanitize_title( $content['id'] );
 
     // Distinguish sub Sections (inside main Sections) from main Sections (inside Pages)
@@ -460,7 +471,7 @@ function scm_container_section( $content = array(), $current = 0 ){
     if( $content['container'] == 'sub-section' )
         $content['container'] = 'section';
     else
-        $content['id'] = is( $content['id'], ( $content['container'] == 'section' ? $post->post_name . '-' . $current : '' ) );
+        $content['id'] = is( $content['id'], ( $content['container'] == 'section' ? ( is_single() ? 'single' : $post->post_name ) . '-' . $current : '' ) );
 
     return $content;
 }
@@ -484,15 +495,17 @@ function scm_container_row( $content = array() ){
 
         if( $module ){
 
-            $mod_layout = ( isset( $content['layout'] ) ? $content['layout'] : '' );
-            $mod_id = ( isset( $content['id'] ) ? $content['id'] : '' );
-            $mod_class = ( isset( $content['class'] ) ? $content['class'] : '' );
+            $mod_layout = ex_attr( $content, 'layout', '' );
+            $mod_id = ex_attr( $content, 'id', '' );
+            $mod_class = ex_attr( $content, 'class', '' );
 
             $content = array_merge( $content, $module );
 
             $content['layout'] = ( $mod_layout && $mod_layout != 'default' ? $mod_layout : $content['layout'] );
             $content['layout'] = ( $content['layout'] != 'default' ? $content['layout'] : 'responsive' );
+            //$content['original-id'] = $mod_id;
             $content['id'] = is( $mod_id, $content['id'] );
+            //$content['id'] = sanitize_title( $mod_id );
             $content['class'] = $mod_class . ' ' . $content['class'];
 
             // ---------
@@ -698,7 +711,7 @@ function scm_contents( $content = NULL ) {
     foreach ( $content as $args ) {
 
         $args = scm_contents_single( $args );
-        $field = ex_attr( $args, 'field', str_replace('layout-', '', $args['acf_fc_layout']) );
+        //$field = ex_attr( $args, 'field', str_replace('layout-', '', $args['acf_fc_layout']) );
 
         do_action( 'scm_action_echo_content', $args, $SCM_indent );
         do_action( 'scm_action_echo_content_' . $type, $args, $SCM_indent );
@@ -750,6 +763,14 @@ function scm_contents_single( $args = array() ) {
         case 'layout-section':
 
             scm_containers( array( $args ), 'row' );
+
+        break;
+
+        case 'layout-menu':
+
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-menu.php', array(
+                'cont' => $args,
+            ));
 
         break;
 
@@ -839,10 +860,12 @@ function scm_contents_single( $args = array() ) {
 
         case 'layout-share':
 
-            if( !shortcode_exists('ssba') )
-                continue;
-
-            indent( $SCM_indent + 1, do_shortcode('[ssba]'), 2 );
+            if( shortcode_exists('ssba') )
+                indent( $SCM_indent + 1, do_shortcode('[ssba]'), 2 );
+            else
+                Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-share.php', array(
+                    'cont' => $args
+                ));
 
         break;
 
@@ -1052,21 +1075,23 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             }
         }
 
-        $complete = ( isset( $content['archive-complete'] ) ? $content['archive-complete'] === 'complete' : true );
-        $perpage = ( $complete ? -1 : ( isset( $content['archive-perpage'] ) ? $content['archive-perpage'] : get_option( 'posts_per_page' ) ) );
-        $pagination = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'yes' : false ) );
-        $more_button = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'more' : false ) );
-        $all_button = ( $complete ? false : ( isset( $content['archive-pagination'] ) ? $content['archive-pagination'] === 'all' : false ) );
-        $button = ( isset( $content['archive-pag-text'] ) && $content['archive-pag-text'] ? $content['archive-pag-text'] : '' );
-        $paginated = ( isset( $content['archive-paginated'] ) ? $content['archive-paginated'] : '' );
+        $complete = ex_attr( $content, 'archive-complete', '' ) == 'complete';
+        $perpage = ( $complete ? -1 : ex_attr( $content, 'archive-perpage', get_option( 'posts_per_page' ) ) );
+        $pagination = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'yes' );
+        $more_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'more' );
+        $all_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'all' );
+        $button = ex_attr( $content, 'archive-pag-text', '' );
+        $paginated = ex_attr( $content, 'archive-paginated', '' );
         $current = ( $pagination || $more_button ? ( !is_null( $page ) ? $page : (int)getQueryVar( $paginated, 1 ) ) : 1 );
         $paginated_more = $paginated . '-more';
         $more = ( $more_button ? ( !is_null( $more ) ? $more : getQueryVar( $paginated_more, array() ) ) : array() );
-        $orderby = ( isset( $content['archive-orderby'] ) ? $content['archive-orderby'] : 'date' );
-        $ordertype = ( isset( $content['archive-ordertype'] ) ? $content['archive-ordertype'] : 'DESC' );
-        $field = ( isset( $content['archive-field'] ) && $content['archive-field'] ? $content['archive-field'] : ( ( $orderby == 'meta_value' && isset( $content['archive-order'] ) ) ? $content['archive-order'] : '' ) );
-        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ( isset( $content['meta_query'] ) ? $content['meta_query'] : array() ) );
-        $value = ( isset( $content['archive-value'] ) && $content['archive-value'] ? $content['archive-value'] : ( isset( $content['archive-field'] ) && $content['archive-field'] ? $post->ID : '') );
+        $orderby = ex_attr( $content, 'archive-orderby', 'date' );
+        $ordertype = ex_attr( $content, 'archive-ordertype', 'DESC' );
+        $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
+        $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
+        $compare = ex_attr( $content, 'archive-compare', '=' );
+        
+        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );        
         
         $query = array(
             'post_type' => $type,
@@ -1077,8 +1102,9 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             'orderby' => $orderby,
             'paged' => $current,
             'meta_key' => $field,
-            'meta_query' => $meta,
             'meta_value' => $value,
+            'meta_compare' => $compare,
+            'meta_query' => $meta,
         );
 
     }else{
@@ -1089,6 +1115,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
                 'post_type' => $type,
                 'post__in' => ( $content['single'] ?: array() ),
                 'posts_per_page' => -1,
+                'orderby' => 'post__in',
             );
         }
     }
@@ -1108,16 +1135,22 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             //return;
     }
         
-    $template = array();
-    if( $template_id ){
-        $template = get_fields( $template_id );
-        if( !empty( $template ) ){
-            $template_post = get_post( $template_id );
-            $template_name = $template_post->post_name;
-            $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-            $template['attributes'] = 'data-template="' . $template_id . '" ';
-        }
-    }
+    $template = $template_id ? get_fields( $template_id ) : array();
+
+    if( !empty( $template ) ){
+        $template_post = get_post( $template_id );
+        $template_name = $template_post->post_name;
+        $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
+        $template['attributes'] = 'data-template="' . $template_id . '" ';
+        $template['original-template'] = $template_name;
+    }/*else{
+        $template = array( 'class' => '' );
+    }*/
+    
+    /*if( $archive )
+        $template['class'] .= ' archive-post';
+    else
+        $template['class'] .= ' single-post';*/
     
     $template['column-width'] = $width;
     $template['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );

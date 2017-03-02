@@ -57,9 +57,10 @@ function scm_acf_object_post( $type = '', $obj = 0 ) {
 		$fields[] = scm_acf_field_select( 'type', 'archive_mode', 100, 0, 0, __( 'Elementi', SCM_THEME ) );
 	
 		$fields[] = scm_acf_field_object( 'template', array( 
-            'type'=>'id', 
+            'type'=>'id',
             'types'=>$type . SCM_TEMPLATE_APP,
-            'label'=>'Modello'
+            'label'=>'Modello',
+            'null'=>1
         ), 50 );
 		$fields[] = scm_acf_field_select( 'width', array(
 			'type'=>'columns_width',
@@ -82,8 +83,9 @@ function scm_acf_object_post( $type = '', $obj = 0 ) {
             'label'=>$type,
         ), 100, $single );
 		$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', $type, $archive ) );
-		$fields[] = scm_acf_field_text( 'archive-field', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), 50 );
-		$fields[] = scm_acf_field_text( 'archive-value', array( 'placeholder'=>__( 'field-value (default = postID)', SCM_THEME ), 'prepend'=>__( 'Value', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_text( 'archive-field', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), 40 );
+		$fields[] = scm_acf_field_text( 'archive-compare', array( 'placeholder'=>__( '=', SCM_THEME ) ), 20 );
+		$fields[] = scm_acf_field_text( 'archive-value', array( 'placeholder'=>__( 'field-value (default = postID)', SCM_THEME ) ), 40 );
 	
 		// conditional
 		$fields[] = scm_acf_field_select( 'archive-complete', 'archive_complete', 34, $archive, 0, __( 'Opzione', SCM_THEME ) );
@@ -226,20 +228,23 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
         'label'=>'',
     ), 100, $page );
 
-	$fields[] = scm_acf_field_text( 'login-label-user', array( 'default'=>__( 'User', SCM_THEME ), 'prepend'=>__( 'User Label', SCM_THEME ) ), 50, 0 );
-	$fields[] = scm_acf_field_text( 'login-value-user', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Default User', SCM_THEME ) ), 50, 0 );
+    $fields[] = scm_acf_field_false( 'login-button', array( 'label'=>'Just Sign In Button' ), 100 );
+    $fields[] = scm_acf_field_icon_no( 'login-icon', array( 'width'=>100 ) );
+    $just = array( 'field' => 'login-button', 'operator' => '!=', 'value' => 1 );
+    $fields[] = scm_acf_field_text( 'login-send', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Submit Button Label', SCM_THEME ) ), 100, 0 );
 
-	$fields[] = scm_acf_field_text( 'login-label-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Label', SCM_THEME ) ), 100, 0 );
-	$fields[] = scm_acf_field_text( 'login-send', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Submit Button Label', SCM_THEME ) ), 100, 0 );
-
-	$fields[] = scm_acf_field_false( 'login-remember', array( 'label'=>'Remember Me' ), 20 );
+    $fields[] = scm_acf_field_text( 'login-label-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Label', SCM_THEME ) ), 100, $just );
+	$fields[] = scm_acf_field_text( 'login-label-user', array( 'default'=>__( 'User', SCM_THEME ), 'prepend'=>__( 'User Label', SCM_THEME ) ), 100, $just );
+	$fields[] = scm_acf_field_text( 'login-value-user', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Default User', SCM_THEME ) ), 100, $just );
+	$fields[] = scm_acf_field_false( 'login-remember', array( 'label'=>'Remember Me' ), 20, $just );
 	$remember = array( 'field' => 'login-remember', 'operator' => '==', 'value' => 1 );
-	$fields[] = scm_acf_field_text( 'login-label-remember', array( 'default'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Remember Me Label', SCM_THEME ) ), 40, $remember );
-	$fields[] = scm_acf_field_false( 'login-value-remember', array( 'label'=>'Default Remember Me' ), 40, $remember );
+	$fields[] = scm_acf_field_text( 'login-label-remember', array( 'default'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Remember Me Label', SCM_THEME ) ), 40, array( $just, $remember ) );
+	$fields[] = scm_acf_field_false( 'login-value-remember', array( 'label'=>'Default Remember Me' ), 40, array( $just, $remember ) );
 
 	$buttons = scm_acf_field_repeater( 'login-buttons', array( 'button'=>__( 'Aggiungi Pulsante', SCM_THEME ) ), 100 );
 		$buttons['sub_fields'][] = scm_acf_field_select( 'type', array( 'choices'=>array( 'edit'=>__( 'Edit', SCM_THEME ), 'enter'=>__( 'Enter', SCM_THEME ), 'logout'=>__( 'Log Out', SCM_THEME ) ) ) );
-		$buttons['sub_fields'][] = scm_acf_field_text( 'label', array( 'placeholder'=>__( 'Override default Label', SCM_THEME), 'prepend'=>__( 'Label', SCM_THEME ) ) );
+		$buttons['sub_fields'][] = scm_acf_field_icon_no( 'icon', array( 'width'=>100 ) );
+		$buttons['sub_fields'][] = scm_acf_field_text( 'label', array( 'placeholder'=>__( 'Override default Label', SCM_THEME), 'prepend'=>__( 'Label', SCM_THEME ), 'width'=>100 ) );
 		$buttons['sub_fields'][] = scm_acf_field_select( 'login', array( 
 			'type'=>'links_type', 
 			'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ), 'self' => __( 'Self', SCM_THEME ) ), 
@@ -257,6 +262,32 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
 	    ), 100, $pag );
 
 	$fields[] = $buttons;
+
+	return $fields;
+}
+
+/**
+* [GET] Object MENU
+*
+* @param {misc} default
+* @param {bool} obj
+* @param {misc} opt
+* @param {int} width
+* @param {array} logic
+* @param {bool} req
+* @return {array} Fields.
+*/
+function scm_acf_object_menu( $default = '', $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) {
+
+	$fields = array();
+	
+	if( !$obj ){
+
+		$fields[] = scm_acf_field_select( 'location', 'wp_menu_just' );
+		//$fields[] = scm_acf_field_text( 'location', array( 'default'=>'primary', 'placeholder'=>__( 'Theme Location', SCM_THEME ), 'prepend'=>__( 'Location', SCM_THEME ) ), 100, 0 );
+		$fields[] = scm_acf_field_text( 'menu', array( 'placeholder'=>__( 'Menu ID', SCM_THEME ), 'prepend'=>__( 'Menu', SCM_THEME ) ), 100, 0 );
+
+	}		
 
 	return $fields;
 }
@@ -348,6 +379,9 @@ function scm_acf_object_map( $default = '', $obj = 0, $opt = '', $width = 100, $
 	}
 
 	$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
+	$fields[] = scm_acf_field_true( 'control-drag', array( 'label'=>'Enable Drag', 'width'=>100 ) );
+	$fields[] = scm_acf_field_true( 'control-zoom', array( 'label'=>'Show Zoom Controls', 'width'=>50 ) );
+	$fields[] = scm_acf_field_true( 'control-streetview', array( 'label'=>'Show StreetView Controls', 'width'=>50 ) );
 	$fields[] = scm_acf_field_positive( 'infowidth', array( 'default'=>500, 'label'=>__( 'Infowindow width', SCM_THEME ), 'append'=> 'px' ), $width, $logic );
 	$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name in Infowindow' ) );
 	$fields[] = scm_acf_field_object( 'template', array( 

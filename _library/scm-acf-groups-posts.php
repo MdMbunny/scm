@@ -549,16 +549,15 @@ function scm_acf_fields_luoghi( $name = '' ) {
 
 		$fields[] = scm_acf_field_text( $name . 'luogo-nome', array( 'prepend'=>__( 'Nome', SCM_THEME ), 'placeholder'=>__( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) ), 100 );
 
-		$fields[] = scm_acf_field_text( $name . 'luogo-indirizzo', array( 'placeholder'=>'Corso Giulio Cesare 1', 'prepend'=>__( 'Indirizzo', SCM_THEME ) ), 70 );
-		$fields[] = scm_acf_field_text( $name . 'luogo-provincia', array( 'placeholder'=>'RM', 'prepend'=>__( 'Provincia', SCM_THEME ) ), 30 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-indirizzo', array( 'prepend'=>__( 'Indirizzo', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-frazione', array( 'prepend'=>__( 'Frazione', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-cap', array( 'prepend'=>__( 'CAP', SCM_THEME ) ), 20 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-citta', array( 'prepend'=>__( 'Comune', SCM_THEME ) ), 60 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-provincia', array( 'prepend'=>__( 'Provincia', SCM_THEME ) ), 20 );
 		
-		$fields[] = scm_acf_field_text( $name . 'luogo-citta', array( 'placeholder'=>'Roma', 'prepend'=>__( 'Città/Località', SCM_THEME ) ), 70 );
-		$fields[] = scm_acf_field_text( $name . 'luogo-cap', array( 'placeholder'=>'12345', 'prepend'=>__( 'CAP', SCM_THEME ) ), 30 );
-		
-		$fields[] = scm_acf_field_text( $name . 'luogo-frazione', array( 'placeholder'=>'S. Pietro', 'prepend'=>__( 'Frazione', SCM_THEME ) ), 70 );
-		$fields[] = scm_acf_field_text( $name . 'luogo-regione', array( 'placeholder'=>'Lazio', 'prepend'=>__( 'Regione', SCM_THEME ) ), 30 );
-		
-		$fields[] = scm_acf_field_text( $name . 'luogo-paese', array( 'placeholder'=>'Italy', 'prepend'=>__( 'Paese', SCM_THEME ) ), 70 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-regione', array( 'prepend'=>__( 'Regione', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_text( $name . 'luogo-paese', array( 'prepend'=>__( 'Paese', SCM_THEME ) ), 50 );
+
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( $name . 'luogo', 30 ) );
 
 	$fields[] = scm_acf_field_tab_left( $name . 'tab-contatti-luogo', array('label'=>__( 'Contatti', SCM_THEME ) ) );

@@ -17,10 +17,16 @@
 /*if( SCM_PAGE_EDIT )
     acf_form_head();*/
 
+// POST
+$classes = 'no-js scm-' . SCM_VERSION;
+if( is_single() ){
+    $classes .= " {$post->post_type}";
+}
+
 ?><!DOCTYPE html>
 
 <!--<html class="scm-<?php //echo SCM_VERSION; echo ( SCM_PAGE_EDIT ? ' edit' : '' ); ?> no-js" <?php language_attributes(); ?>> // ??? -->
-<html class="scm-<?php echo SCM_VERSION; ?> no-js" <?php language_attributes(); ?>>
+<html class="<?php echo $classes; ?>" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
@@ -110,6 +116,10 @@ $page_slider_terms = ( $page_slider_field ?: $page_slider_terms );
 
 $gmap = scm_field( 'opt-tools-map-api', '', 'option' );
 
+//consoleLog( SCM_POST_TEMPLATE );
+//consoleLog( SCM_POST_TYPE );
+//consoleLog( SCM_POST_PAGE );
+
 ?>
 
 <body <?php body_class(); ?> 
@@ -127,7 +137,8 @@ $gmap = scm_field( 'opt-tools-map-api', '', 'option' );
     data-smooth-page="<?php echo $smooth_page; ?>" 
     data-tofull="<?php echo $tofull; ?>" 
     data-tocolumn="<?php echo $tocolumn; ?>" 
-    data-gmap="<?php echo $gmap; ?>"
+    data-gmap="<?php echo $gmap; ?>" 
+    data-ajax="<?php echo admin_url( 'admin-ajax.php' ) ?>"
 >
 
 <?php

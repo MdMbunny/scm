@@ -262,6 +262,20 @@ function scm_acf_field_fa_preset( $group = '' ){
 						'fa-dropbox',
 					),
 				),
+				'email' => array(
+					'name' => 'Email',
+					'color' => '#4cb300',
+					'choices' => array(
+						'fa-envelope-o',
+						'fa-envelope',
+						'fa-envelope-square',
+						'fa-paper-plane-o',
+						'fa-paper-plane',
+						'fa-pencil-o',
+						'fa-pencil',
+						'fa-pencil-square',
+					),
+				),
 				'other' => array(
 					'name' => 'Altri',
 					'color' => '#333333',
