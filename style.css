@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.8.0
+Version:			v3.8.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -220,15 +220,46 @@ img {
 	max-width:100%;
 	max-height:100%;
 }
+.scm-image.image-banner img,
 .scm-image.full img{
-	min-width: 100%;
+	/*min-width: 100%;
 	max-height: initial;
-	height: auto;
+	height: auto;*/
+	max-width: initial;
+    max-height: initial;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    margin: auto;
+    /*left: -100%;
+    right: -100%;*/
+    left: -9999px;
+    right: -9999px;
+    top: -10%;
 }
 
-.scm-image.image-banner,
-.scm-image.image-banner img{
+.scm-image.image-banner{
 	position: relative;
+}
+.scm-image.image-banner img{
+    max-width: 100%;
+}
+.scm-image.image-banner.-middle img{
+	top: -100%;
+    bottom: -100%;
+}
+.scm-image.image-banner.-bottom img{
+	top: initial;
+    bottom: -10%;
+}
+.tofull .scm-image.image-banner img {
+    min-height: 100%;
+    max-width: initial;
+    width: auto;
+    left: -100%;
+    right: -100%;
 }
 .scm-image.image-banner span{
 	position: absolute;
@@ -798,6 +829,7 @@ blockquote .append{
 	max-width: 100%;
 }
 
+.site-content,
 .row,
 .scm-object{
 	position: relative;
@@ -867,10 +899,10 @@ blockquote .append{
 	display: inline-block;
 }
 
-.scm-archive{
+/*.scm-archive{
 	-webkit-transition: max-height .7s;
 	transition: max-height .7s;
-}
+}*/
 
 /* SCM WIDTH */
 
@@ -1175,6 +1207,14 @@ a:hover{
 	/*color: rgba(255,255,255,.5);*/
 }
 
+span.continue{
+	margin-left: .5em;
+	font-weight: bold;
+}
+span.continue .fa{
+	margin-left: .25em;
+}
+
 /*--------------------------------------------------------------
 3.2 Elements List and Buttons
 --------------------------------------------------------------*/
@@ -1436,6 +1476,15 @@ input[type="submit"]:active {
 
 .pagination-more .page-numbers{
 	width: auto;
+}
+
+.page-numbers.next{
+	margin: 0;
+	margin-right: -2em;
+}
+.page-numbers.prev{
+	margin: 0;
+	margin-left: -2em;
 }
 
 /* Loading */
@@ -2450,6 +2499,22 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 
 .scm-map{
 	height: 400px;
+	background-color: #DDD;
+	font-family: Fontawesome !important;
+}
+.scm-map:before {
+    content: "\f041";
+    position: relative;
+    top: 50%;
+    left: 50%;
+    font-size: 2em;
+    margin-left: -.5em;
+    margin-top: -.5em;
+    display: block;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    color: #FFF;
 }
 
 .scm-map + * {

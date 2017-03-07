@@ -68,6 +68,8 @@ add_action( 'admin_init', 'scm_hook_admin_ui_menu_classes', 999 );
 // UI - HIDE
 add_action( 'wp_dashboard_setup', 'scm_hook_admin_ui_hide_dashboard_widgets' );
 add_action( 'admin_head', 'scm_hook_admin_ui_hide_from_users' );
+add_action( 'admin_bar_menu', 'scm_hook_admin_ui_modify_tools_30', 31 );
+add_action( 'admin_bar_menu', 'scm_hook_admin_ui_modify_tools_70', 71 );
 add_action( 'admin_bar_menu', 'scm_hook_admin_ui_hide_tools', 999 );
 /** Always disable front end admin bar */
 add_filter('show_admin_bar', '__return_false');
@@ -373,33 +375,33 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
     $menu_order = array(
         //'separator1' => array( 'separator1' ),
         'scm' => array(
-            'index.php', // Dashboard
+            array( 'index.php', 'fa-tachometer' ), // Dashboard
         ),
         'separator1' => array( 'separator1' ),
         'pages' => array(
-            'edit.php?post_type=page', // Pages
+            array( 'edit.php?post_type=page', 'fa-window-maximize' ), // Pages
         ),
         'separator2' => array( 'separator2' ),
         'types' => array(
-            'edit.php', // Posts
+            array( 'edit.php', 'fa-thumb-tack' ), // Posts
         ),
         'separator3' => array( 'separator3' ),
         'media' => array(
-            'upload.php', // Media
+            array( 'upload.php', 'fa-files-o' ), // Media
         ),
         'separator4' => array( 'separator4' ),
         'contacts' => array(
             'edit-comments.php', // Comments
             'link-manager.php', // Links
-            'users.php', // Users
-            'wpcf7', // Forms
+            array( 'users.php', 'fa-user' ), // Users
+            array( 'wpcf7', 'fa-envelope' ), // Forms
         ),
         'separator5' => array( 'separator5' ),
         'settings' => array(
-            'themes.php', // Appearance
-            'plugins.php', // Plugins
-            'tools.php', // Tools
-            'options-general.php', // Settings
+            array( 'themes.php', 'fa-paint-brush' ), // Appearance
+            array( 'plugins.php', 'fa-plug' ), // Plugins
+            array( 'tools.php', 'fa-wrench' ), // Tools
+            array( 'options-general.php', 'fa-sliders' ), // Settings
         ),
         'separator-last' => array( 'separator-last' ),
     );
@@ -409,9 +411,14 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
 
     $SCM_admin_menu = $menu_order = apply_filters( 'scm_filter_admin_ui_menu_order', $menu_order );
 
-    //consoleLog($menu_order);
+    $menu_order = call_user_func_array( 'array_merge', $menu_order );
 
-    return call_user_func_array( 'array_merge', $menu_order );
+    foreach( $menu_order as $key => $value ){
+
+        if( is_array( $value ) ) $menu_order[$key] = $value[0];
+    }
+    
+    return $menu_order;
 }
 
 /**
@@ -424,20 +431,40 @@ function scm_hook_admin_ui_menu_classes(){
 
     global $menu, $SCM_admin_menu;
 
-    foreach ( $menu as $key => $value ) {
-        foreach ($SCM_admin_menu as $pos => $cont) {
-            $class = getByValue( $cont, $menu[$key][2] );
-            if( !is_null( $class ) ){
-                if( strpos( $pos, 'separator' ) === 0 )
-                    $menu[$key][4] .= ' scm-separator';
-                else
-                    $menu[$key][4] .= ' scm-item';
+    foreach( $menu as $key => $elem ){
 
-                $menu[$key][4] .= ' scm-' . $pos;
+        if( $elem[2] == 'upload.php' ) $menu[$key][0] = __( 'Libreria', SCM_THEME );
+
+        foreach( $SCM_admin_menu as $pos => $cont ){
+
+            foreach( $cont as $link ){
+                
+                $icon = '';
+                if( is_array( $link ) ){
+                    $icon = $link[1];
+                    $link = $link[0];
+                }
+                //$class = getByValue( $cont, $elem[2] );
+                $class = $link == $elem[2];
+
+                if( $class ){
+                    if( startsWith( $pos, 'separator' ) )
+                        $menu[$key][4] .= ' scm-separator';
+                    else
+                        $menu[$key][4] .= ' scm-item';
+
+                    $menu[$key][4] .= ' scm-' . $pos;
+
+                    if( $icon )
+                        $menu[$key][4] .= ' fa ' . $icon;
+
+                    continue(2);
+                }
             }
         }
     }
 }
+
 
 // ------------------------------------------------------
 // -HIDE
@@ -471,12 +498,30 @@ function scm_hook_admin_ui_hide_dashboard_widgets(){
 function scm_hook_admin_ui_hide_from_users(){
    
     if( SCM_LEVEL > 0 ){
-        echo '<style>#advanced-sortables{display: none !important;}</style>';
-        echo '<style>#screen-meta-links{display: none !important;}</style>';
+        echo '<style>#wpadminbar .wp-admin-bar-optimize, #advanced-sortables, #screen-meta-links{ display: none !important; }</style>';
         remove_action( 'admin_notices', 'update_nag', 3 );
     }
 }
 
+/**
+* [SET] Modify tools from toolbar
+*
+* Hooked by 'admin_bar_menu'
+* @subpackage 4-Init/Admin/4-MODIFY
+*/
+function scm_hook_admin_ui_modify_tools_30( $wp_admin_bar ) {
+    $current = $wp_admin_bar->get_node('site-name');
+    $wp_admin_bar->remove_node( 'site-name' );
+    $current->title = '';
+    $wp_admin_bar->add_node($current);
+}
+function scm_hook_admin_ui_modify_tools_70( $wp_admin_bar ) {
+    $current = $wp_admin_bar->get_node('new-content');
+    $wp_admin_bar->remove_node( 'new-content' );
+    $current->title = '';
+    $current->href = '';
+    $wp_admin_bar->add_node($current);
+}
 /**
 * [SET] Remove tools from toolbar
 *
@@ -490,6 +535,10 @@ function scm_hook_admin_ui_hide_tools( $wp_admin_bar ) {
     $wp_admin_bar->remove_node( 'new-media' );
     $wp_admin_bar->remove_node( 'new-page' );
     $wp_admin_bar->remove_node( 'view' );
+    $wp_admin_bar->remove_node( 'user-info' );
+    $wp_admin_bar->remove_node( 'edit-profile' );
+    $wp_admin_bar->remove_node( 'view-site' );
+    $wp_admin_bar->remove_node( 'archive' );
 }
 
 // ------------------------------------------------------
@@ -560,7 +609,6 @@ function scm_hook_admin_mail_from( $original ) {
 * @subpackage 4-Init/Admin/6-UPLOADS
 */
 function scm_admin_upload_media_default_tab() {
-//console.log(wp.media.view.settings);
     $script =   '<script type="text/javascript">
                     jQuery(document).ready(function($){
                         if(wp.media){
@@ -1124,6 +1172,7 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
 * @subpackage 4-Init/Admin/8-DEBUG
 */
 function scm_hook_admin_debug_hooks() {
+    do_action( 'scm_action_ready' );
     global $SCM_debug;
     if( $SCM_debug ){
         foreach( $GLOBALS['wp_actions'] as $action => $count )

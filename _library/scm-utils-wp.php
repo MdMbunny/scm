@@ -46,8 +46,26 @@ function consoleDebug( $var, $deb = SCM_DEBUG ){
  */
 function multiText( $var, $sep = ' ', $theme = SCM_THEME ){
     $txt = '';
-    foreach ( toArray( $var ) as $wrd) {
+    foreach ( toArray( $var ) as $wrd)
         $txt .= __( $wrd, $theme ) . $sep;
+    return trim( $txt, $sep );
+}
+
+/**
+ * [GET] Exploded phrase in multiple __( 'text', theme )
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string|array} var String or array of strings.
+ * @param {string=} sep Separator (default is ' ').
+ * @param {string=} theme Theme (default is SCM_THEME).
+ * @return {string} Combined strings.
+ */
+function phraseText( $var, $sep = ' ', $theme = SCM_THEME ){
+    $txt = '';
+    foreach ( toArray( $var ) as $prs) {
+        $phrase = explode( ' ', $prs );
+        $txt .= multiText( $phrase, ' ', $theme ) . $sep;
     }
     return trim( $txt, $sep );
 }
@@ -612,6 +630,39 @@ function urlExtend( $url = '', $name = '' ){
 }
 
 /**
+ * [GET] Get FA Icon
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing fa icon class.
+ */
+function getFAicon( $icon ){
+    return getIcon( $icon, 'fa' );
+}
+
+/**
+ * [GET] Get WP Icon
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing dashicons icon class.
+ */
+function getWPicon( $icon ){
+    return getIcon( $icon, 'dashicons' );
+}
+
+/**
+ * [GET] Get Icon
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @return {string} String containing icon class.
+ */
+function getIcon( $icon, $type = 'fa' ){
+    return startsWith( $icon, $type . '-' ) ? $icon : $type . '-' . $icon;
+}
+
+/**
  * [GET] Get Link
  *
  * @subpackage 1-Utilities/WP
@@ -715,18 +766,19 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div', $icon
         break;
         
         default:
+            global $SCM_types;
             $type = get_post_type( $obj );
             $href = scm_utils_link_post( array( 'arrows'=>true,'miniarrows'=>true,'counter'=>true,'color'=>'true','name'=>true,'list'=>true ), $obj );
             $iconA = 'plus-circle';
-            $iconB = $icon ?: ( $type == 'video' ? 'youtube-play' : ( $type == 'gallerie' ? 'picture-o' : 'link' ) );
+            $iconB = $icon ?: ( $SCM_types['settings'][ $type ]['fa-icon'] ?: 'link' );
             $name = ( $name ?: get_the_title( $obj ) );
         break;
     }
 
     $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . ( $class ? ' ' . $class : '' ) . '"' . $href . '>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<div class="icons">' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconA . ' plus"></i>' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="fa fa-' . $iconB . '"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="fa ' . getFAicon( $iconA, 'fa' ) . ' plus"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="fa ' . getFAicon( $iconB, 'fa' ) . '"></i>' . lbreak();
         $ret .= indent( $indent + 1 ) . '</div>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<span>' . $name . '</span>' . lbreak();
     $ret .= indent( $indent ) . '</' . $tag . '>' . lbreak();

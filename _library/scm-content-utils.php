@@ -15,12 +15,13 @@
 // 1.0 DATA
 // 2.0 CLASS
 // 3.0 LINK
-// 4.0 STYLE
-//      3.1 Set Style
-//      3.2 Get Style
-//      3.3 Get Specific Style
-//      3.4 Get All Styles
-// 5.0 PRESET
+// 4.0 TEMPLATE
+// 5.0 STYLE
+//      5.1 Set Style
+//      5.2 Get Style
+//      5.3 Get Specific Style
+//      5.4 Get All Styles
+// 6.0 PRESET
 //
 // ------------------------------------------------------
 
@@ -64,6 +65,22 @@ function scm_utils_data_column( $counter = 0, $size = 0 ) {
         return array( 'count' => 0, 'data' => 'last' );
     else
         return array( 'count' => $counter, 'data' => 'middle' );
+}
+
+/**
+* [GET] Row data
+*
+* @param {int=} current Current column (default is 0).
+* @param {int=} total Column total (default is 0).
+* @return {string} String row.
+*/
+function scm_utils_data_row( $current = 0, $total = 0, $count = 0 ) {
+
+    if( $current <= $count )
+        return 'first';
+    if( $current > $total - $count )
+        return 'last';
+    return '';
 }
 
 // ------------------------------------------------------
@@ -186,7 +203,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
             //$video = scm_field( $link_field, '', $id );
             $video = getYouTubeURL( scm_field( 'video-url', '', $id ) );
             //$video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
-            $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
+            $link = ' data-popup="' . htmlentities( json_encode( array( $video . '?autoplay=1' ) ) ) . '"';
             $link .= ' data-popup-type="video"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
         break;
@@ -294,10 +311,72 @@ function scm_utils_link_gallery_helper( $content, $attr, $fallback = 0 ){
 }
 
 // ------------------------------------------------------
-// 4.0 STYLE
+// 4.0 TEMPLATE
+// ------------------------------------------------------
+
+function scm_utils_get_template( $type = '', $template_id = 0 ){
+    
+    $template_post = 0;
+    $type = ( $type && is_string( $type ) ? $type : '' );
+
+    if( $template_id ){
+        
+        if( is_numeric($template_id) ){
+            
+            $template_id = (int)$template_id;
+            $template_post = get_post( $template_id );
+        
+        }elseif( $type && is_string( $template_id ) ){
+            
+            $template_post = get_page_by_path( $template_id, OBJECT, $type . SCM_TEMPLATE_APP );
+
+        }
+    }
+
+    if( $type && !$template_post ){
+        $templates = scm_field( $type . '-templates', '', 'option' );
+        if( !empty( $templates ) )
+            $template_post = get_post( (int)$templates[0]['id'] );
+    }
+
+    return $template_post;
+}
+
+function scm_utils_get_template_id( $type = '', $template_id = 0 ){
+    
+    $type = ( $type && is_string( $type ) ? $type : '' );
+
+    if( $template_id ){
+        
+        if( is_numeric($template_id) ){
+            
+            $template_id = (int)$template_id;
+        
+        }elseif( $type && is_string( $template_id ) ){
+            
+            $template_post = get_page_by_path( $template_id, OBJECT, $type . SCM_TEMPLATE_APP );
+            if( $template_post )
+                $template_id = $template_post->ID;
+            else
+                $template_id = 0;
+        }
+    }
+
+    if( !$template_id ){
+        $templates = scm_field( $type . '-templates', '', 'option' );
+        if( !empty( $templates ) )
+            $template_id = (int)$templates[0]['id'];
+        else
+            $template_id = 0;
+    }
+    return $template_id;
+}
+
+// ------------------------------------------------------
+// 5.0 STYLE
 // ------------------------------------------------------
 // ------------------------------------------------------
-// 4.1 SET STYLE
+// 5.1 SET STYLE
 // ------------------------------------------------------
 
 /**
@@ -321,7 +400,7 @@ function scm_utils_style_set( $target = '', $separator = '-' ) {
 }
 
 // ------------------------------------------------------
-// 4.2 GET STYLE
+// 5.2 GET STYLE
 // ------------------------------------------------------
 
 /**
@@ -452,7 +531,7 @@ function scm_utils_style_get( $option = NULL, $target = 'option', $add = false )
 }
 
 // ------------------------------------------------------
-// 4.3 GET SPECIFIC STYLE
+// 5.3 GET SPECIFIC STYLE
 // ------------------------------------------------------
 
 /**
@@ -792,7 +871,7 @@ function scm_utils_style_get_bg_color( $type = '', $target = 'option', $add = fa
 }
 
 // ------------------------------------------------------
-// 4.4 GET ALL STYLES
+// 5.4 GET ALL STYLES
 // ------------------------------------------------------
 
 /**
@@ -857,7 +936,7 @@ function scm_utils_styles( $target = 'option', $add = false, $type = '' ) {
 
 
 // ------------------------------------------------------
-// 5.0 PRESET
+// 6.0 PRESET
 // ------------------------------------------------------
 
 /**
@@ -1071,7 +1150,6 @@ function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = 
 
 /**
 * [GET] Luogo address
-*
 */
 function scm_utils_get_region_name( $region = '' ) {
     if( strlen( $region ) == 2 ){

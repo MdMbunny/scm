@@ -42,15 +42,18 @@ switch ($scm['template']) {
 
 // Content from Template
 	default:
+
 		do_action( 'scm_action_content_template', $scm['template'] );
 		indent( $SCM_indent + 1, '<div id="post-' . SCM_PAGE_ID . '" class="section scm-section object scm-object single-post full ' . SCM_SITE_ALIGN . '">', 2 );
 			//indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_field( 'field_5a82944c3680b94427d9e520c3b7b9fb454bc37d', 'left', 'option' ) . '">', 2 );
 			indent( $SCM_indent + 2, '<div class="row scm-row object scm-object responsive ' . scm_utils_style_get( 'align', 'option', 0 ) . '">', 2 );
 				$SCM_indent += 3;
+
 				if( $scm['template'] == 'function' )
 					call_user_func( $scm['part'] );
 				else
 					scm_contents( array( 'acf_fc_layout' => 'layout-' . str_replace( '-', '_', $scm['type'] ), 'template' => $scm['template'], 'type' => 'single', 'single' => array( SCM_PAGE_ID ) ) );
+
 				$SCM_indent -= 3;
 			indent( $SCM_indent + 2, '</div><!-- row -->', 2 );
 		indent( $SCM_indent + 1, '</div><!-- section -->', 2 );

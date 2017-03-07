@@ -9,23 +9,24 @@ if ( ! class_exists( 'Custom_Type' ) ) {
  *
 ```php
 $args = array(
-    'admin'             => 0,         // bool Admin (1) or Everyone (0) use
-    'add_cap'           => 1,         // bool Add (1) or Remove (0) capabilities for middle users
-    'public'            => 1,         // bool Public (1) or Private (0) use
-    'hidden'            => 0,         // bool Hide (1) or Show (0) from administration area
-    'post'              => 1,         // bool Post (1) or Page (0) type
-    'singular'          => '',        // string Type singular name
-    'plural'            => '',        // string Type plural name
-    'short-singular'    => '',        // string Type singular short name
-    'short-plural'      => '',        // string Type plural short name
-    'slug'              => '',        // string Type slug
-    'icon'              => 'f111',    // string Type icon ({@link https://developer.wordpress.org/resource/dashicons})
-    'orderby'           => 'title',   // string Type order by: title | date | modified | name | type | rand | meta_value
-    'ordertype'         => '',        // string Type order: ASC | DESC
-    'menu'              => '',        // string Type menu area: scm | pages | types | contacts | settings | '' [plugin area]
-    'menupos'           => 0,         // int Type menu position: To end (0), First position (1), Second position (2), ...
-    'description'       => '',        // string Type description
-    'theme'             => '',        // string Theme slug for translations
+    'admin'             => 0,                           // bool Admin (1) or Everyone (0) use
+    'add_cap'           => 1,                           // bool Add (1) or Remove (0) capabilities for middle users
+    'public'            => 1,                           // bool Public (1) or Private (0) use
+    'hidden'            => 0,                           // bool Hide (1) or Show (0) from administration area
+    'post'              => 1,                           // bool Post (1) or Page (0) type
+    'singular'          => '',                          // string Type singular name
+    'plural'            => '',                          // string Type plural name
+    'short-singular'    => '',                          // string Type singular short name
+    'short-plural'      => '',                          // string Type plural short name
+    'slug'              => '',                          // string Type slug
+    'icon'              => 'f111',                      // string Type icon ({@link https://developer.wordpress.org/resource/dashicons})
+    'fa-icon'           => 'fa-chevron-circle-right',   // string Type fa-icon
+    'orderby'           => 'title',                     // string Type order by: title | date | modified | name | type | rand | meta_value
+    'ordertype'         => '',                          // string Type order: ASC | DESC
+    'menu'              => '',                          // string Type menu area: scm | pages | types | contacts | settings | '' [plugin area]
+    'menupos'           => 0,                           // int Type menu position: To end (0), First position (1), Second position (2), ...
+    'description'       => '',                          // string Type description
+    'theme'             => '',                          // string Theme slug for translations
 );
  
 $type = new Custom_Type( $args );
@@ -64,6 +65,7 @@ $type = new Custom_Type( $args );
                 'short-plural'          => '',
                 'slug'                  => '',
                 'icon'                  => 'f111',
+                'fa-icon'               => 'fa-chevron-circle-right',
                 'orderby'               => 'title',
                 'ordertype'             => '',
                 'menupos'               => 0,
@@ -98,7 +100,8 @@ $type = new Custom_Type( $args );
             $this->short_singular = ( $attr['short-singular'] ?: $singular );
             $this->short_plural = ( $attr['short-plural'] ?: $plural );
             
-            $this->icon = ( strpos( $attr['icon'], 'dashicons-' ) === 0 ? $attr['icon'] : 'dashicons-' . $attr['icon'] );
+            $this->icon = ex_attr( $attr, 'icon', '' ) ? ( startsWith( $attr['icon'], 'dashicons-' ) ? $attr['icon'] : 'dashicons-' . $attr['icon'] ) : '';
+            $this->faicon = ex_attr( $attr, 'fa-icon', '' ) ? ( startsWith( $attr['fa-icon'], 'fa-' ) ? $attr['fa-icon'] : 'fa-' . $attr['fa-icon'] ) : '';
             $this->supports = array( 'title' );
             $this->orderby = ( $attr['orderby'] ?: 'title' );
             $this->order = $attr['ordertype'];
@@ -191,9 +194,13 @@ $type = new Custom_Type( $args );
 
             $scm_menu = ( $this->menu && is_array( $menu_order ) && is_array( $menu_order[ $this->menu ] ) ? $menu_order[ $this->menu ] : 0 );
             $this->menupos = ( $this->menupos ?: sizeof( $scm_menu ?: array() ) + 1 ) - 1;
+
+            $link = 'edit.php?post_type=' . $this->slug;
+            if( $this->faicon )
+                $link = array( $link, $this->faicon );
             
             if( $scm_menu )
-                $menu_order[ $this->menu ] = arr_insert( $menu_order[ $this->menu ], $this->menupos, 'edit.php?post_type=' . $this->slug );
+                $menu_order[ $this->menu ] = arr_insert( $menu_order[ $this->menu ], $this->menupos, $link );
 
             return $menu_order;
         }
@@ -345,7 +352,7 @@ $type = new Custom_Type( $args );
 
             global $submenu;
 
-            $sub = isset( $submenu[ 'edit.php?post_type=' . $this->slug ] ) ? $submenu[ 'edit.php?post_type=' . $this->slug ] : '';
+            $sub = ex_attr( $submenu, 'edit.php?post_type=' . $this->slug, '' );
             if( $sub ){
                 $subind = isset( $sub[10] ) ? $sub[10] : '';
                 if( $subind ){

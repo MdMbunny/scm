@@ -208,8 +208,10 @@ function scm_acf_layout_gallerie( $layouts = array(), $default = 0 ) {
 			
 			$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-thumb', array('label'=> __( 'Thumb', SCM_THEME ) ) );
 				$layout_thumb['sub_fields'][] = scm_acf_field_option( 'thumb', array( 'default'=>0, 'prepend'=>__( 'Thumb', SCM_THEME ) ) );
-				$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'width', '', '150', 'px', __( 'Larghezza', SCM_THEME ) ) );
-				$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'height', '', '120', 'px', __( 'Altezza', SCM_THEME ) ) );
+				
+				$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_object_immagine( '', 1 ) );
+				//$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'width', '', '150', 'px', __( 'Larghezza', SCM_THEME ) ) );
+				//$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_preset_size( 'height', '', '120', 'px', __( 'Altezza', SCM_THEME ) ) );
 
 			$layout_thumb['sub_fields'][] = scm_acf_field_tab( 'tab-nav', array('label'=> __( 'Navigation', SCM_THEME ) ) );
 				$layout_thumb['sub_fields'][] = scm_acf_field_false( 'arrows', 0, 33, 0, 0, __('Arrows', SCM_THEME) );
@@ -330,6 +332,7 @@ function scm_acf_layout_luoghi( $layouts = array(), $default = 0 ) {
 function scm_acf_layout_articoli( $layouts = array() ) {
 
 	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
+		$layout_img['sub_fields'] = scm_acf_object_immagine( '', 1 );
 
 	$layout_exc = scm_acf_layout( 'excerpt', 'block', __( 'Anteprima', SCM_THEME ) );
 		$layout_exc['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', '', __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
@@ -411,7 +414,9 @@ function scm_acf_layout_documenti( $layouts = array(), $default = 0 ) {
 * @return {array} Layouts
 */
 function scm_acf_layout_video( $layouts = array(), $default = 0 ) {
-	$layouts[] = scm_acf_layout( 'immagine', 'block', __( 'Thumb', SCM_THEME ) );
+	$layout_thumb = scm_acf_layout( 'immagine', 'block', __( 'Thumb', SCM_THEME ) );
+	$layout_thumb['sub_fields'] = array_merge( $layout_thumb['sub_fields'], scm_acf_object_immagine( '', 1 ) );
+	$layouts[] = $layout_thumb;
 	return $layouts;
 }
 

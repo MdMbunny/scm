@@ -98,6 +98,7 @@ function scm_acf_options_types() {
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-menu', array('label'=> __( 'Menu', SCM_THEME ) ) );
 			$types['sub_fields'][] = scm_acf_field_text( 'icon', array( 'default'=>'admin-site', 'placeholder'=>'admin-site (see below)', 'prepend'=>__( 'Icona', SCM_THEME ) ), 100, 0 );
+			$types['sub_fields'][] = scm_acf_field_text( 'fa-icon', array( 'default'=>'', 'placeholder'=>'fa-user', 'prepend'=>__( 'Icona FA', SCM_THEME ) ), 100, 0 );
 			$types['sub_fields'][] = scm_acf_field_text( 'menu', array( 'default'=>'types', 'placeholder'=>'menu-group (see below)', 'prepend'=>__( 'Zona Menu', SCM_THEME ) ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_positive( 'menupos', array( 'default'=>0, 'prepend'=>__( 'Posizione Menu', SCM_THEME ), 'min'=>0, 'max'=>91 ), 50, 0 );
 
@@ -578,11 +579,11 @@ function scm_acf_options_tools() {
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-fadecontent', array( 'label'=>'Content Fader' ) );
 		$fields[] = scm_acf_field_text( 'opt-tools-fadecontent', array( 'prepend' => 'Selectors', 'default'=>'.scm-section:not(.first) > .scm-row, .scm-image', 'placeholder'=>'.scm-section:not(.first) > .scm-row' ) );
 		$fields[] = scm_acf_field_percent( 'opt-tools-fadecontent-offset', array( 'prepend' => 'Trigger' ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-singlenav', array( 'label'=>'Single Page Nav' ) );
+	$fields[] = scm_acf_field_tab_left( 'tab-tools-singlenav', array( 'label'=>'Current Link' ) );
 		$fields[] = scm_acf_field( 'opt-tools-singlepagenav-activeclass', array( 'class', 'active', 'active', __( 'Active Class', SCM_THEME ) ), __( 'Active Class', SCM_THEME ) );
 		$fields[] = scm_acf_field( 'opt-tools-singlepagenav-interval', array( 'second', '', '500', __( 'Interval', SCM_THEME ) ), __( 'Interval', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_size( 'opt-tools-singlepagenav-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
-		$fields[] = scm_acf_field( 'opt-tools-singlepagenav-threshold', array( 'pixel', '', '150', __( 'Threshold', SCM_THEME ) ), __( 'Threshold', SCM_THEME ) );
+		$fields[] = scm_acf_field( 'opt-tools-singlepagenav-threshold', array( 'pixel', '', 0, __( 'Threshold', SCM_THEME ) ), __( 'Threshold', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-smooth', array( 'label'=>'Smooth Scroll' ) );
 		$fields[] = scm_acf_field( 'opt-tools-smoothscroll-duration', array( 'second-max', '', '0', __( 'Durata', SCM_THEME ) ), __( 'Durata', SCM_THEME ) );
 		$fields[] = scm_acf_field( 'opt-tools-smoothscroll-delay', array( 'second', '', '0', __( 'Delay', SCM_THEME ) ), __( 'Delay', SCM_THEME ) );

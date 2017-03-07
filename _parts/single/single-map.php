@@ -17,6 +17,8 @@ $post_id = $post->ID;
 
 $args = array(
 	'element' => 0,
+	'strongs' => array(),
+	'strings' => array(),
 	'zoom' => 10,
 	'control-drag' => 1,
 	'control-zoom' => 1,
@@ -35,6 +37,8 @@ if( isset( $this ) )
 
 $element = ( isset( $args[ 'element' ] ) ? $args[ 'element' ] : 0 );
 $cat = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
+$strongs = ( isset( $args[ 'strongs' ] ) ? $args[ 'strongs' ] : array() );
+$strings = ( isset( $args[ 'strings' ] ) ? $args[ 'strings' ] : array() );
 
 if( !$element ){
 
@@ -98,8 +102,8 @@ if( is( $element ) ){
 
 		$lat = get_post_meta( $luogo_id, 'latitude', true );//( isset( $fields['luogo-lat'] ) ? $fields['luogo-lat'] : 0 );
 		$lng = get_post_meta( $luogo_id, 'longitude', true );//( isset( $fields['luogo-lng'] ) ? $fields['luogo-lng'] : 0 );
-		$indirizzo = ( isset( $fields['luogo-indirizzo'] ) ? $fields['luogo-indirizzo'] : '' );
-		$citta = ( isset( $fields['luogo-citta'] ) ? $fields['luogo-citta'] : '' ) . ( isset($fields['luogo-paese']) ? ' (' . $fields['luogo-paese'] . ')' : '' );
+		$indirizzo = ex_attr( $fields, 'luogo-indirizzo', '' );
+		$citta = ex_attr( $fields, 'luogo-citta', '' ) . ex_attr( $fields, 'luogo-paese', '', ' (' , ')' );
 		$title = get_the_title( $luogo_id );
 		$name = ex_attr( $fields, 'luogo-nome', '' );
 		
@@ -109,10 +113,11 @@ if( is( $element ) ){
 
 		$template = $args['template'];
 //$strong = '<a href="' . scm_utils_link_post( array( 'link-type'=>'self', 'template'=>$template ), $luogo_id ) . '">' . $tit . '</a>';
+	
 		if( $template )
 			$strong = '<a href="' . get_permalink( $luogo_id ) . '?template=' . $template . '">' . $tit . '</a>';
 		else
-			$strong = '<strong>' . $tit . '</strong>';	
+			$strong = '<strong>' . $tit . '</strong>';
 		
 		if( $lat && $lng ){
 			$ind = getByValueKey( $latlng, $lat, 'lat' );
@@ -130,13 +135,22 @@ if( is( $element ) ){
 			$luogo['address'] = str_replace( array( ',', '-' ), '', $indirizzo ) . ( $citta ? ' ' . $citta : '' );
 		}
 		
-		$luogo['strongs'][] = $strong;
-		$luogo['strings'][] = '<span>' . $indirizzo . '</span>';
-		$luogo['strings'][] = '<span>' . $citta . '</span>';
+		if( ex_index( $strongs, $luogo_id, 0 ) )
+			$luogo['strongs'] = array_merge( $strongs[$luogo_id], array( $strong ) );
+		else
+			$luogo['strongs'][] = $strong;
+
+		if( ex_index( $strings, $luogo_id, 0 ) ){
+			$luogo['strings'][] = $strings[$luogo_id];
+		}else{
+			$luogo['strings'][] = '<span>' . $indirizzo . '</span>';
+			$luogo['strings'][] = '<span>' . $citta . '</span>';
+		}
 		
 		$luoghi[$luogo_id] = $luogo;
 	}
-	foreach( $luoghi as $luogo ){
+
+	foreach ($luoghi as $luogo_id => $luogo) {
 
 		$fields = get_fields( $luogo_id );
 

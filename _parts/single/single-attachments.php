@@ -19,76 +19,57 @@ $post_type = $post->post_type;
 $args = array(
 	'element' => 0,
 	'title' => '',
-	'files' => array(),
-	'links' => array(),
-	'objects' => array(),
+	'files' => '',
+	'links' => '',
+	'objects' => '',
+    'id' => '',
+    'class' => '',
+    'attributes' => '',
+    'style' => '',
 );
 
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
-$element = ( $args['element'] ?: $post_id );
+$class = 'attachments scm-attachments scm-object object ' . $args['class'];
 
-if( ( $args['files'] && !empty($args['files']) ) || ( $args['objects'] && !empty($args['objects']) ) || ( $args['links'] && !empty($args['links']) ) ){
+$attributes = $args['attributes'];
+$style = $args['style'];
+$id = $args['id'];
 
-	
+$post_type = ( $args['element'] ? get_post_type( $args['element'] ) : $post_type );
+$post_id = ( $args['element'] ?: $post_id );
+$files = ( $args['files'] ?: ( scm_field( 'files', '', $post_id ) ?: ( scm_field( $post_type . '-' . 'files', '', $post_id ) ?: array() ) ) );
+$links = ( $args['links'] ?: ( scm_field( 'links', '', $post_id ) ?: ( scm_field( $post_type . '-' . 'links', '', $post_id ) ?: array() ) ) );
+$objects = ( $args['objects'] ?: ( scm_field( 'objects', '', $post_id ) ?: ( scm_field( $post_type . '-' . 'objects', '', $post_id ) ?: array() ) ) );
 
-	indent( $SCM_indent + 1, openTag( 'ul', '', 'attachments' ), 2 );
+if( empty($files) && empty($objects) && empty($links) ) return;
 
-    if( $args['links'] && !empty($args['links']) ){
-        foreach ($args['links'] as $link) {
+indent( $SCM_indent + 1, openTag( 'ul', $id, $class, $style, $attributes ), 2 );
 
-            echo getLink( $link['link'], $link['name'], $indent = $SCM_indent + 2, $tag = 'li' );
-            
-            /*$ext = linkExtend( $link['link'], $link['name'] );            
-            indent( $SCM_indent + 2, '<li class="attachment link link-' . $ext['type'] . '" data-href="' . $ext['link'] . '">', 1 );
-                indent( $SCM_indent + 3, '<div class="icons">', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-chevron-circle-right plus"></i>', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-' . $ext['icon'] . '"></i>', 1 );
-                indent( $SCM_indent + 3, '</div>', 1 );
-                indent( $SCM_indent + 3, '<span>' . $ext['name'] . '</span>', 1 );
-            indent( $SCM_indent + 2, '</li>', 1 );*/
-        }
+if( !empty( $links ) ){
+    foreach ($links as $link) {
+
+        echo getLink( $link['link'], $link['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+        
     }
-    if( $args['files'] && !empty($args['files']) ){
-        foreach ($args['files'] as $file) {
-            
-            echo getFile( $file['file'], $file['name'], $indent = $SCM_indent + 2, $tag = 'li' );
-
-            /*$ext = fileExtend( $file['file'], $file['name'] );
-            indent( $SCM_indent + 2, '<li class="attachment file file-' . $ext['icon'] . '" data-href="' . $ext['link'] . '">', 1 );
-                indent( $SCM_indent + 3, '<div class="icons">', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-chevron-circle-down plus"></i>', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-' . $ext['icon'] . '"></i>', 1 );
-                indent( $SCM_indent + 3, '</div>', 1 );
-                indent( $SCM_indent + 3, '<span>' . $ext['name'] . '</span>', 1 );
-            indent( $SCM_indent + 2, '</li>', 1 );*/
-        }
-    }
-    if( $args['objects'] && !empty($args['objects']) ){
-        foreach ($args['objects'] as $media) {
-
-        	//$ext = fileExtend( $media['object'], $media['name'] );
-        	//consoleLog($ext);
-        	//$ext = linkExtend( $media['object'], $media['name'] );
-        	//consoleLog($ext);
-
-            echo getAttachment( 'media', $media['object'], $media['name'], $indent = $SCM_indent + 2, $tag = 'li' );
-            
-            /*$type = get_post_type( $media['object'] );
-            indent( $SCM_indent + 2, '<li class="attachment media media-' . $type . '"' . scm_utils_link_post( '', $media['object'] ) . '>', 1 );
-                indent( $SCM_indent + 3, '<div class="icons">', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-plus-circle plus"></i>', 1 );
-                    indent( $SCM_indent + 4, '<i class="fa fa-' . ( $type == 'video' ? 'youtube-play' : ( $type == 'gallerie' ? 'picture-o' : 'link' ) ) . '"></i>', 1 );
-                indent( $SCM_indent + 3, '</div>', 1 );
-                indent( $SCM_indent + 3, '<span>' . ( $media['name'] ?: get_the_title( $media['object'] ) ) . '</span>', 1 );
-            indent( $SCM_indent + 2, '</li>', 1 );*/
-
-        }
-    }
-
-    indent( $SCM_indent + 1, '</ul><!-- attachments -->', 2 );
-
 }
+if( !empty( $files ) ){
+    foreach ($files as $file) {
+        
+        echo getFile( $file['file'], $file['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+
+    }
+}
+if( !empty( $objects ) ){
+    foreach ($objects as $media) {
+
+        echo getAttachment( 'media', $media['object'], $media['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+
+    }
+}
+
+indent( $SCM_indent + 1, '</ul><!-- attachments -->', 2 );
+
 
 ?>

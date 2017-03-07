@@ -19,7 +19,7 @@ $args = array(
 	'acf_fc_layout' => 'layout-immagine',
 	'image' => '',
     'images' => '',
-	'format' => '',
+	'format' => 'norm',
 	'full-number' => '',
 	'full-units' => '',
 	'size-number' => '',
@@ -47,10 +47,11 @@ $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $po
 $images = ( $args[ 'images' ] ?: '' );
 $negative = $args['negative'] === 'on';
 $thumb = -2;
+$size = $args['thumb-size'] ?: 'full';
 
 if ( $layout == 'layout-thumbs' ) {
 
-    $args['thumb-size'] = 'medium';
+    $size = $args['thumb-size'] ?: 'medium';
     
     $thumb = ( $image ? intval( $image ) : 0 );
 
@@ -109,11 +110,34 @@ if ( $layout == 'layout-thumbs' ) {
     }elseif( $post->post_type === 'video' ){
 
         $id = getYouTubeID( scm_field( 'video-url', '', $post_id ) );
-        //$id = substr( $url, strpos( $url, 'watch?v=' ) + 8 );
         if( !$id )
             return;
+
+        $res = 'maxresdefault';
+
+        switch( $size ){
+            case 'thumbnail':
+            case 'small':
+                $res = 'default';
+            break;
+
+            case 'medium':
+                $res = 'mqdefault';
+            break;
+
+            case 'medium_large':
+                $res = 'hqdefault';
+            break;
+
+            case 'large':
+                $res = 'sddefault';
+            break;
+            
+            default:
+            break;
+        }
         
-        $image = 'https://img.youtube.com/vi/' . $id . '/hqdefault.jpg';
+        $image = 'https://img.youtube.com/vi/' . $id . '/' . $res . '.jpg';
 
     }else{
         return;
@@ -133,13 +157,14 @@ $title = '';
 switch ( $args[ 'format' ] ) {
     case 'full':
         $image_height = scm_utils_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
-        $style .= ' max-height:' . $image_height . ';';
+        $style .= ' height:' . $image_height . ';';
         $class .= ' mask full';
     break;
 
     case 'quad':
         $image_size = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 'auto' );
         $style .= ' width:' . $image_size . '; height:' . $image_size . ';';
+        $class .= ' mask full';
     break;
 
     case 'norm':
@@ -147,10 +172,13 @@ switch ( $args[ 'format' ] ) {
         $image_height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
 
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
+        $class .= ( $image_width != 'auto' && $image_height != 'auto' ? ' mask full' : '' );
     break;
     
     default:
         $class .= ' image-banner';
+        $align = ex_attr( $args, 'align', 'top' );
+        $class .= ' -' . $align;
         //$image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
         //$image_height = 'auto';
         if( $args['title'] )
@@ -167,7 +195,6 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
     $att = $attributes;
 
     $value = $image[$i];
-    $size = '';
 
     $id = ( $id && sizeof( $image ) > 1 ? $id . '-' . $key : $id );
 
@@ -183,7 +210,7 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
     }
 
     if( is_array( $value ) )
-        $value = wp_get_attachment_image( $value['ID'], $args['thumb-size'] );
+        $value = wp_get_attachment_image( $value['ID'], $size );
     elseif( $value )
         $value = '<img src="' . $value . '" alt="">';
     else

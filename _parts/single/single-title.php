@@ -87,6 +87,16 @@ if( !$text ){
             
             case 'layout-excerpt':
                 $text = scm_field( 'excerpt', '', $post_id );
+                if( !$text ){
+                    $text = scm_field( 'editor', '', $post_id );
+                    if( $text ){
+                        $text = substr( $text, 0, 250);
+                        $text = explode( ' ', $text );
+                        array_pop( $text );
+                        $text = implode( ' ', $text);
+                        $text .= '... <span class="continue">' . __( 'continua a leggere', SCM_THEME ) . '<i class="fa fa-chevron-circle-right"></i>';
+                    }
+                }
             break;
 
             default:
@@ -106,11 +116,12 @@ $text = ( startsWith( $text, '<p>' ) ? str_replace( '<p>', '', $text ) : $text )
 // VAI A RIVEDERE FUNZIONE endsWith in scm-utils.php
 $text = ( strpos( $text, '</p>' ) != false ? str_replace( '</p>', '', $text ) : $text );
 
+if( !$text )
+    return;
+
 $text = $prepend . $text . $append;
 
 $replaceArray = array(
-    '(space)' => ' ',
-
     '(c)'  => '&copy;',
     '(C)'  => '&copy;',
 

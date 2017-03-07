@@ -61,7 +61,7 @@ $slider = $args['slider'];
 if( !$slides ){
     if( $args['meta_key'] && $args['meta_value'] ){
         $slides = get_posts( array(
-            'order' => 'ASC',
+            'order' => 'DESC',
             'post_type' => 'slides',
             'posts_per_page' => -1,
             'meta_query' => array (
@@ -76,7 +76,7 @@ if( !$slides ){
         $slider = get_term( ( $args['slider'] ?: $args['slider-terms'] ), 'sliders' );
         // +++ todo:  diventa wp query? che poi chiama single-slide?
         $slides = get_posts( array(
-            'order' => 'ASC',
+            'order' => 'DESC',
             'post_type' => 'slides',
             'posts_per_page' => -1,
             'taxonomy' => 'sliders',
@@ -183,16 +183,17 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         $caption_class = 'slide-' . $post_id . ' nivo-html-caption count-' . $i;
 
         	$caption = indent( $indent + 2 ) . openTag( 'div', $caption_id, $caption_class ) . lbreak();
-            $caption .= indent( $indent + 3 ) . openTag( 'div', $slide_id, $slide_class, $slide_style, '' ) . lbreak();
+            
+            if( ex_attr( $slide, 'slide-caption', '' ) ){
 
-                if( !isset( $slide[ 'slide-caption' ] ) || !$slide[ 'slide-caption' ] ){
-                    $slide['slide-caption-title'] = $slide['slide-caption-cont'] = '';
-                }
+                $caption .= indent( $indent + 3 ) . openTag( 'div', $slide_id, $slide_class, $slide_style, '' ) . lbreak();
+                    
+                    $caption .= ( $slide['slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
+                    $caption .= indent( $indent + 4 ) . $slide['slide-caption-cont'];                
                 
-                $caption .= ( $slide['slide-caption-title'] ? indent( $indent + 4 ) . '<h3>' . $slide[ 'slide-caption-title' ] . '</h3>' . lbreak() : '' );
-                $caption .= indent( $indent + 4 ) . $slide['slide-caption-cont'];
-                
-            $caption .= indent( $indent + 3 ) . '</div>' . lbreak();
+                $caption .= indent( $indent + 3 ) . '</div>' . lbreak();
+            
+            }
 
             $caption .= indent( $indent + 2 ) . '</div>' . lbreak();
 

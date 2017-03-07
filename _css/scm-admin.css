@@ -80,6 +80,13 @@ body:not(.loaded) .acf-field{
 	background-color: #FFF !important
 }
 
+#wpadminbar .ab-top-menu>li.hover>.ab-item,
+#wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus,
+#wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus{
+	background-color: transparent !important;
+}
+
 .scm-edit #adminmenu > .scm-separator.active > .separator:after,
 #wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover>a, #wpadminbar .quicklinks .menupop ul li a:focus, #wpadminbar .quicklinks .menupop ul li a:focus strong, #wpadminbar .quicklinks .menupop ul li a:hover, #wpadminbar .quicklinks .menupop ul li a:hover strong, #wpadminbar .quicklinks .menupop.hover ul li a:focus, #wpadminbar .quicklinks .menupop.hover ul li a:hover, #wpadminbar li #adminbarsearch.adminbar-focused:before, #wpadminbar li .ab-item:focus:before, #wpadminbar li a:focus .ab-icon:before, #wpadminbar li.hover .ab-icon:before, #wpadminbar li.hover .ab-item:before, #wpadminbar li:hover #adminbarsearch:before, #wpadminbar li:hover .ab-icon:before, #wpadminbar li:hover .ab-item:before, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:focus, #wpadminbar.nojs .quicklinks .menupop:hover ul li a:hover,
 #wpadminbar .ab-top-menu>li.hover>.ab-item, #wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus, #wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item, #wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus,
@@ -135,6 +142,97 @@ input[type=checkbox]:checked:before,
 .scm-edit #adminmenu li.wp-has-current-submenu,
 .scm-edit #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu{
 	background-color: transparent !important;
+}
+
+#wpadminbar #wp-admin-bar-site-name > .ab-item:before{
+	font-family: Fontawesome !important;
+	content: "\f015" !important;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+}
+
+#wpadminbar #wp-admin-bar-new-content > .ab-item:before{
+	font-family: Fontawesome !important;
+	content: "\f067" !important;
+	-webkit-font-smoothing: antialiased;
+	color: #a0a5aa !important;
+	line-height: 1.2em;
+	margin: 0;
+}
+#wpadminbar #wp-admin-bar-new-content > .ab-item:hover:before{
+	color: #e14d43 !important;
+}
+
+#wpadminbar #wp-admin-bar-optimize > .ab-item{
+	overflow: hidden;
+	width: 1.2em;
+}
+#wpadminbar #wp-admin-bar-optimize > .ab-item:before{
+	font-family: Fontawesome !important;
+	content: "\f1c0" !important;
+	-webkit-font-smoothing: antialiased;
+	color: #a0a5aa !important;
+	line-height: 1.2em;
+	margin: 0;
+}
+#wpadminbar #wp-admin-bar-optimize > .ab-item:hover:before{
+	color: #e14d43 !important;
+}
+
+#wp-admin-bar-my-account > .ab-item:before{
+	font-family: Fontawesome !important;
+	content: "\f007" !important;
+	-webkit-font-smoothing: antialiased;
+}
+#wpadminbar:not(.mobile) .ab-top-menu>#wp-admin-bar-my-account > .ab-item{
+	overflow: hidden;
+  	width: 1.3em;
+  	padding: 0;
+  	display: inline-block !important;
+  	background-color: transparent !important;
+  	margin-right: 1em;  	
+}
+#wpadminbar:not(.mobile) .ab-top-menu>#wp-admin-bar-my-account > .ab-item:before{
+	color: #a0a5aa !important;
+}
+#wpadminbar:not(.mobile) .ab-top-menu>#wp-admin-bar-my-account > .ab-item:hover:before{
+	color: #e14d43 !important;
+}
+
+#wpadminbar .ab-top-secondary .menupop .ab-sub-wrapper {
+    display: inline-block;
+    position: static;
+    width: auto;
+    min-width: 0;
+    float: right;
+    background: transparent;
+    box-shadow: none;
+}
+#wpadminbar #wp-admin-bar-user-actions.ab-submenu {
+    padding: 0;
+}
+#wpadminbar #wp-admin-bar-user-actions>li {
+    margin: 0;
+}
+#wpadminbar #wp-admin-bar-user-actions>li > .ab-item{
+	min-width: 0;
+    height: 32px;
+    width: 1.5em;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
+    margin-right: 1em;    
+}
+
+#wpadminbar #wp-admin-bar-user-actions>li > .ab-item:before{
+	font-family: Fontawesome !important;
+	content: "\f08b" !important;
+	-webkit-font-smoothing: antialiased;
+	color: #a0a5aa !important;
+	line-height: 1.2em;
+}
+#wpadminbar #wp-admin-bar-user-actions>li > .ab-item:hover:before{
+	color: #e14d43 !important;
 }
 
 .wp-core-ui .button-primary{
@@ -223,11 +321,6 @@ body.loading *{
 
 .ui-front{
 	z-index: 9999;
-}
-
-#wp-admin-bar-my-account > .ab-item{
-	overflow: hidden;
-  	width: 32px;
 }
 
 #the-list .view,
@@ -329,20 +422,42 @@ body:not(.scm-edit) #adminmenu li.wp-menu-separator{
 }*/
 
 .scm-edit #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
-.scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "S - Sections"; }
-.scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "C - Contents"; }
+.scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "C - Contents"; }
+.scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "P - Posts"; }
 .scm-edit #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
 .scm-edit #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
-.scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "W - Settings"; }
-.scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugins"; }
+.scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "S - Settings"; }
+.scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "X - Extra"; }
 
 html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator0 > .separator:after { content: "T - Theme"; }
-html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "S - Sezioni"; }
-html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "C - Contenuti"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator1 > .separator:after { content: "C - Contenuti"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator2 > .separator:after { content: "P - Post"; }
 html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator3 > .separator:after { content: "M - Media"; }
 html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator4 > .separator:after { content: "N - Network"; }
-html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "W - Impostazioni"; }
-html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "P - Plugin"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator5 > .separator:after { content: "S - Impostazioni"; }
+html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after { content: "X - Extra"; }
+
+#adminmenu .fa{
+	font-family: inherit;
+    -webkit-font-smoothing: auto;
+}
+#adminmenu li.fa:before{
+	content: none;
+}
+#adminmenu a.fa:before{
+    font-family: Fontawesome !important;
+    float: left;
+    width: 36px;
+    height: 34px;
+    margin: 0;
+    line-height: 1.8em;
+    text-align: center;
+    font-size: 1.4em;
+    -webkit-font-smoothing: antialiased;
+}
+#adminmenu a.fa .wp-menu-image{
+	display: none !important;
+}
 
 /* Media */
 
@@ -715,9 +830,11 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	padding-left: 12px;
 }
 
-#edittag p.submit:hover,
-#postbox-container-1 .postbox #minor-publishing-actions > div:hover *,
-#postbox-container-1 .postbox #major-publishing-actions > div:hover *,
+#edittag p.submit input:hover,
+#postbox-container-1 .postbox #minor-publishing-actions input:hover,
+#postbox-container-1 .postbox #major-publishing-actions input:hover,
+#postbox-container-1 .postbox #minor-publishing-actions a:hover,
+#postbox-container-1 .postbox #major-publishing-actions a:hover,
 #postbox-container-1 .postbox .loading *{
 	opacity: .7;
 }

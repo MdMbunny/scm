@@ -39,6 +39,7 @@ function scm_acf_object( $type = '', $obj = 0 ) {
 	if( SCM_LEVEL === 0 ) consoleLog( 'Child is calling deprecated scm_acf_object() instead of scm_acf_object_post()' );
 	return scm_acf_object_post( $type, $obj );
 }
+
 /**
 * [GET] Object POST
 *
@@ -61,12 +62,7 @@ function scm_acf_object_post( $type = '', $obj = 0 ) {
             'types'=>$type . SCM_TEMPLATE_APP,
             'label'=>'Modello',
             'null'=>1
-        ), 50 );
-		$fields[] = scm_acf_field_select( 'width', array(
-			'type'=>'columns_width',
-			'choices'=>array( 'auto' => __( 'Larghezza', SCM_THEME ) ),
-			'label'=>__( 'Larghezza Elementi', SCM_THEME ),
-		), 50 );
+        ), 100 );		
 	
 	if( !$obj ){	
 		$single = array( 'field' => 'type', 'operator' => '==', 'value' => 'single' );
@@ -76,35 +72,48 @@ function scm_acf_object_post( $type = '', $obj = 0 ) {
 		$archive = 0;
 	}
 			
-	if( !$obj ){
-		$fields[] = scm_acf_field_objects( 'single', array( 
-            'type'=>'id', 
-            'types'=>$type,
-            'label'=>$type,
-        ), 100, $single );
-		$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', $type, $archive ) );
-		$fields[] = scm_acf_field_text( 'archive-field', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), 40 );
-		$fields[] = scm_acf_field_text( 'archive-compare', array( 'placeholder'=>__( '=', SCM_THEME ) ), 20 );
-		$fields[] = scm_acf_field_text( 'archive-value', array( 'placeholder'=>__( 'field-value (default = postID)', SCM_THEME ) ), 40 );
+	//if( !$obj ){
+	$fields[] = scm_acf_field_objects( 'single', array( 
+        'type'=>'id', 
+        'types'=>$type,
+        'label'=>__( 'Elementi', SCM_THEME ),
+    ), 100, $single );
+	$fields = array_merge( $fields, scm_acf_preset_taxonomies( 'archive', $type, $archive ) );
 	
-		// conditional
-		$fields[] = scm_acf_field_select( 'archive-complete', 'archive_complete', 34, $archive, 0, __( 'Opzione', SCM_THEME ) );
-		$fields[] = scm_acf_field_select( 'archive-orderby', 'orderby', 33, $archive, 0, __( 'Ordine per', SCM_THEME ) );
-		$fields[] = scm_acf_field_select( 'archive-ordertype', 'ordertype', 33, $archive, 0, __( 'Ordine', SCM_THEME ) );
-
-		$custom = array( 'field' => 'archive-orderby', 'operator' => '==', 'value' => 'meta_value' );
-			$fields[] = scm_acf_field_text( 'archive-order', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), 100, $custom );
-
-		$partial_cond = scm_acf_merge_conditions( array( 'field' => 'archive-complete', 'operator' => '==', 'value' => 'partial' ), $archive );
-
-			$fields[] = scm_acf_field_positive( 'archive-perpage', array( 'default'=>5, 'prepend'=>__( 'Per pagina', SCM_THEME ), 'min'=>1 ), 33, $partial_cond );
-			$fields[] = scm_acf_field_select( 'archive-pagination', 'archive_pagination', 33, $partial_cond );
-			$fields[] = scm_acf_field_text( 'archive-pag-text', array( 'placeholder'=>'', 'prepend'=>__( 'Button', SCM_THEME ) ), 34, $partial_cond );
-	}
+	$fields = array_merge( $fields, scm_acf_preset_archive( '', 100, $archive ) );
+	//}
 		
 	$fields[] = scm_acf_field_editor_basic( 'archive-fallback', array( 'default'=>__('No items available yet', SCM_THEME), 'label'=>__('Fallback Text', SCM_THEME) ), 100, $archive );
 			
 	return $fields;
+}
+
+/**
+* [GET] Object ARCHIVE
+*
+* @param {string} type
+* @param {bool} obj
+* @return {array} Fields.
+*/
+function scm_acf_object_archive( $type = '', $obj = 0 ) {
+
+	$fields = array();
+
+	$fields[] = scm_acf_field_text( 'archive-id', array( 'default'=>'mixed', 'prepend'=>'#' ), 100, 0, 1 );
+
+	/*$templates = scm_acf_field_repeater( 'template', array( 'button'=>__( '+', SCM_THEME ) ), 100 );
+		$templates['sub_fields'][] = scm_acf_field_text( 'type', array( 'prepend'=>'Type' ), 50 );
+		$templates['sub_fields'][] = scm_acf_field_text( 'template', array( 'prepend'=>'Template' ), 50 );*/
+
+	//$fields[] = $templates;
+
+	$fields[] = scm_acf_field_text( 'types', array( 'prepend'=>'Types', 'placeholder'=>'post_type, post_type' ), 100 );
+	$fields[] = scm_acf_field_text( 'template', array( 'prepend'=>'Template', 'placeholder'=>'template_slug' ), 100 );
+
+	$fields = array_merge( $fields, scm_acf_preset_archive() );
+
+	return $fields;
+
 }
 
 /**
@@ -817,7 +826,6 @@ function scm_acf_object_pulsanti( $default = '', $obj = 0, $opt = '', $width = 1
 	return $fields;
 }
 
-
 /**
 * [GET] Object ATTACHMENTS
 *
@@ -832,6 +840,26 @@ function scm_acf_object_pulsanti( $default = '', $obj = 0, $opt = '', $width = 1
 function scm_acf_object_allegati( $default = '', $obj = 0, $opt = array( 'rassegne-stampa', 'documenti', 'gallerie', 'video' ), $width = 100, $logic = 0, $req = 0 ) {
 	
 	$fields = scm_acf_preset_attachments( '', $opt );
+
+	return $fields;
+
+}
+
+/**
+* [GET] Object WP FILTER
+*
+* @param {misc} default
+* @param {bool} obj
+* @param {misc} opt
+* @param {int} width
+* @param {array} logic
+* @param {bool} req
+* @return {array} Fields.
+*/
+function scm_acf_object_wpfilter( $default = '', $obj = 0, $opt = '', $width = 100, $logic = 0, $req = 0 ) {
+	
+	$fields = array();
+	$fields[] = scm_acf_field_text( 'wpfilter', array( 'width'=>100, 'prepend'=>'Filter' ) );
 
 	return $fields;
 

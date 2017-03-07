@@ -108,14 +108,14 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 50 ) );
 				$fields[] = scm_acf_field_select( $second . 'selectors', '2-selectors', 50 );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
-				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 34, 33, 33 ), 'scm-options hidden' ) ); // deprecated, sistema tutti i siti quando puoi ed elimina
+				//$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 34, 33, 33 ), 'scm-options hidden' ) ); // deprecated, sistema tutti i siti quando puoi ed elimina
 				break;
 			default:
 				$fields = array_merge( $fields, scm_acf_preset_column_width( $name, 50 ) );
 				$fields[] = scm_acf_field_select( $second . 'selectors', '2-selectors', 50 );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 40 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 
-				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ), 'scm-options hidden' ) ); // deprecated, sistema tutti i siti quando puoi ed elimina
+				//$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_behaviour( $name, 25, 25, 25, 25 ), 'scm-options hidden' ) ); // deprecated, sistema tutti i siti quando puoi ed elimina
 				$fields[] = scm_field_add_class( scm_acf_field( $second . 'link', array( 'select-template_link', array( 'no' => __( 'Nessun Link', SCM_THEME ) ) ), '', 20 ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				break;
 		}
@@ -239,7 +239,7 @@ function scm_acf_preset_size( $name = 'size', $default = '', $pl1 = 'auto', $pl2
 	$name = ( $name ? $name . '-' : '');
 	$fields = scm_acf_preset_instructions( $instructions, ( $name ?: 'size' ), __( 'Impostazioni Dimensioni', SCM_THEME ) );
 
-	$fields[] = scm_acf_field_number( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1 ), $width*.5, $logic, $required );
+	$fields[] = scm_acf_field_number( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1, 'step'=>.1 ), $width*.5, $logic, $required );
 	//$fields[] = scm_acf_field_positive( $name . 'number', array( 'default'=>$default, 'placeholder'=>$pl1, 'prepend'=>$lb1 ), $width*.5, $logic, $required );
 	$fields[] = scm_acf_field_select( $name . 'units', array( 'type'=>'units', 'default'=>$pl2 ), $width*.5, $logic, $required );
 
@@ -516,6 +516,49 @@ function scm_acf_preset_map_icon( $name = '', $width = 100, $logic = 0, $require
 	return $fields;
 
 }
+
+/**
+* [GET] Preset archive
+*
+* @param {string} name
+* @param {int} width
+* @param {array} logic
+* @param {bool} required
+* @param {string} instructions
+* @return {array} Fields.
+*/
+function scm_acf_preset_archive( $name = '', $width = 100, $logic = 0, $required = 0, $instructions = '' ) {
+	
+	$name = ( $name ? $name . '-archive' : 'archive');
+	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Impostazioni Archivio', SCM_THEME ) );
+	
+	$fields[] = scm_acf_field_text( $name . '-field', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), $width * .4, 0, $required );
+	$fields[] = scm_acf_field_text( $name . '-compare', array( 'placeholder'=>__( '=', SCM_THEME ) ), $width * .2, 0, $required );
+	$fields[] = scm_acf_field_text( $name . '-value', array( 'placeholder'=>__( 'field-value (default = postID)', SCM_THEME ) ), $width * .4, 0, $required );
+
+	$fields[] = scm_acf_field_select( 'width', array(
+		'type'=>'columns_width',
+		'choices'=>array( 'auto' => __( 'Larghezza', SCM_THEME ) ),
+		'label'=>__( 'Larghezza Elementi', SCM_THEME ),
+	), $width, 0, $required );
+
+	// conditional
+	$fields[] = scm_acf_field_select( $name . '-complete', 'archive_complete', $width * .34, $logic, $required, __( 'Opzione', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-orderby', 'orderby', $width * .33, $logic, $required, __( 'Ordine per', SCM_THEME ) );
+	$fields[] = scm_acf_field_select( $name . '-ordertype', 'ordertype', $width * .33, $logic, $required, __( 'Ordine', SCM_THEME ) );
+
+	$custom = array( 'field' => $name . '-orderby', 'operator' => '==', 'value' => 'meta_value' );
+		$fields[] = scm_acf_field_text( $name . '-order', array( 'placeholder'=>__( 'field-name', SCM_THEME ), 'prepend'=>__( 'Field', SCM_THEME ) ), $width, $custom, $required );
+
+	$partial_cond = scm_acf_merge_conditions( array( 'field' => $name . '-complete', 'operator' => '==', 'value' => 'partial' ), $logic );
+
+		$fields[] = scm_acf_field_positive( $name . '-perpage', array( 'default'=>5, 'prepend'=>__( 'Per pagina', SCM_THEME ), 'min'=>1 ), $width * .33, $partial_cond, $required );
+		$fields[] = scm_acf_field_select( $name . '-pagination', 'archive_pagination', $width * .33, $partial_cond );
+		$fields[] = scm_acf_field_text( $name . '-pag-text', array( 'placeholder'=>'', 'prepend'=>__( 'Button', SCM_THEME ) ), $width * .34, $partial_cond, $required );
+
+	return $fields;
+}
+
 
 /**
 * [GET] Preset term
@@ -1324,6 +1367,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 	global $SCM_types;
 
 	$objects = array();
+	$objects[] = array( 'scm_acf_object_archive', __( 'Modello Misto', SCM_THEME ) );
 	$objects[] = array( 'scm_acf_object_slider', __( 'Slider', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_section', __( 'Section', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_module', __( 'Module', SCM_THEME ) );
@@ -1345,6 +1389,7 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
     $objects[] = array( 'scm_acf_object_login', __( 'Login Form', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_back_button', __( 'Back Button', SCM_THEME ) );
     $objects[] = array( 'scm_acf_object_menu', __( 'Menu', SCM_THEME ) );
+    $objects[] = array( 'scm_acf_object_wpfilter', __( 'WP Filter', SCM_THEME ) );
 
 	$fields = array();
 

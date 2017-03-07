@@ -75,18 +75,21 @@ function scm_front_init() {
                 $template = 'part';
             // If query arg ?template=XXX exists
             }elseif( !$page ){
+                
                 $template = get_query_var( 'template', 0 );
                 
                 // IF {$type}-templates exists - Pick up the first template from the list
                 if( !$template ){
 
-                    $template = scm_field( $type . '-templates', '', 'option' );
+                    $template = scm_utils_get_template_id( $type );
+
+                    /*$template = scm_field( $type . '-templates', '', 'option' );
                     
                     if( !empty( $template ) )
-                        $template = (int)$template[0]['id'];
+                        $template = (int)$template[0]['id'];*/
                     
                     // IF Template not exists - Load Home Page
-                    if( empty( $template ) ){
+                    if( !$template ){
                         if( function_exists( 'scm_echo_' . $type ) ){
                             $template = 'function';
                             $part = 'scm_echo_' . $type;

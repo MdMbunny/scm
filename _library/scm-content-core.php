@@ -127,6 +127,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
     
     $current = 0;
     $counter = 0;
+    $rows = '';
     $odd = '';
     $total = 0;
 
@@ -136,8 +137,10 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
         $current =  ( isset( $build['current'] ) ? $build['current'] : 0 );
         $counter =  ( isset( $build['counter'] ) ? $build['counter'] : 0 );
         $odd =  ( isset( $build['odd'] ) ? $build['odd'] : '' );
+        $rows =  ( isset( $build['rows'] ) ? $build['rows'] : '' );
         $build = ( isset( $build['posts'] ) ? $build['posts'] : array() );
         $total =  ( isset( $build['total'] ) ? $build['total'] : sizeof( $build ) );
+        unset( $builder['posts'] );
     }else{
         $total = sizeof( $build );
     }
@@ -199,6 +202,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
         // Post PRE
             $content = scm_container_post_pre( $content, $builder, $container );
 
+            $content = apply_filters( 'scm_filter_echo_container_before', $content, $container, $original );
             $content = apply_filters( 'scm_filter_echo_container_before_' . $container, $content, $original );
 
             // --------------------------------------------------------------------------
@@ -208,8 +212,9 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
-            // -- TEMPLATE
+
             $content['original-template'] = $template;
+
             // -- ID
             $content['original-id'] = $content['id'];
             $content['id'] = ( startsWith( $content['id'], 'field:' ) ? ( $content['id'] == 'field:slug' ? basename( get_permalink() ) : scm_field( str_replace( 'field:', '', $content['id'] ), '' ) ) : $content['id'] );
@@ -229,9 +234,10 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
         // -- Column
             $current++;
             $odd = ( $odd ? '' : 'odd' );
-            $column = scm_container_column( $content, $counter, $current, $total, $odd );
+            $column = scm_container_column( $content, $counter, $current, $total, $odd, $rows );
             $content = $column['content'];
             $counter = $column['counter'];
+            $rows = $column['rows'];
         // -- Class
             $content = scm_container_class( $content );
             $content['field'] = str_replace( 'layout-', '', $content['acf_fc_layout'] );
@@ -259,7 +265,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
                 // -- Open Container
                 if( !$content['inherit'] ){
 
-                    $content['class'] = $content['container'] . ' scm-' . $content['container'] . ' ' . $name . ' ' . $slug . ' object scm-object ' . $content['class'];
+                    $content['class'] = $content['container'] . ' scm-' . $content['container'] . ' ' . $name . ' ' . $slug . ( strpos( $slug, 'SCMTAX-' ) === 0 ? ' taxes' : '' ) . ' object scm-object ' . $content['class'];
 
                         indent( $SCM_indent, openTag( 'div', $content['id'], $content['class'], $content['style'], $content['attributes'] ), 1 );
 
@@ -299,7 +305,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
 function scm_container_post_pre( $content = array(), $builder = array(), $container = '' ){
 
     // If the element is a Post, adds Taxonomies and Terms to 'class'
-    // and 'data-id' attribute to Post ID.
+    // 'data-template' and 'data-id' attribute to Post ID.
     if( $container == 'post' ){
         global $post;
         $post = ( is_numeric( $content ) ? get_post( $content ) : $content );
@@ -307,8 +313,26 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 
         $content = $builder;
 
-        $content['post_type'] = $post->post_type;
-        $content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
+        $content['class'] = ex_attr( $content, 'class', '' );
+        $content['attributes'] = ex_attr( $content, 'attributes', '' );
+        $type = $content['post_type'] = $post->post_type;
+        
+        $template_id = ex_attr( $content, 'original-template', 0 );
+        $template_post = scm_utils_get_template( $type, $template_id );
+        $template_id = $template_post ? $template_post->ID : 0;
+            
+        $template = $template_id ? get_fields( $template_id ) : array();
+
+        if( !empty( $template ) ){
+            $content = array_merge( $content, $template );
+            $template_name = $template_post->post_name;
+            $content['class'] .= $type . ' template-' . $template_id . ' ' . $template_name;
+            $content['attributes'] .= 'data-template="' . $template_id . '" ';
+            $content['original-template'] = $template_name;
+        }
+
+        //$content['post_type'] = $post->post_type;
+        //$content['attributes'] = ( isset( $content['attributes'] ) ? $content['attributes'] : '' );
         $content['attributes'] .= ' data-id="' . $post->ID . '"';
         $content['attributes'] .= ' data-post-type="' . $content['post_type'] . '"';
         $content['attributes'] .= ' data-post-title="' . $post->post_title . '"';
@@ -345,6 +369,9 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 */
 function scm_container_post( $content = array() ){
 
+    if( $content['acf_fc_layout'] === 'layout-archive' )
+        $content['type'] = 'archive';
+
     if( isset( $content['type'] ) ){
 
         $slug = str_replace( 'layout-', '', $content['acf_fc_layout'] );
@@ -355,7 +382,7 @@ function scm_container_post( $content = array() ){
             
             if( $content['archive-complete'] != 'complete' ){
                 if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
-                    $content['id'] = ( $content['id'] ?: 'archive-' . $slug );
+                    $content['id'] = ( ex_attr( $content, 'archive-id', '', 'archive-' ) ?: ( $content['id'] ?: 'archive-' . $slug ) );
                     $content['archive-paginated'] = $content['id'];
                     $content['class'] .= ' paginated';
                 }
@@ -403,7 +430,8 @@ function scm_container_template( $content = array() ){
                 $content['archive-compare'] = '=';
                 $content['archive-value'] = $value;
             }
-            if( !empty( ex_attr( $content, 'query', array() ) ) ){
+            $queries = ex_attr( $content, 'query', array() );
+            if( !empty( $queries ) ){
                 $query = array(
                     'relation' => ( $content['relation'] ?: 'AND' ),
                 );
@@ -601,7 +629,7 @@ function scm_container_link( $content = array() ){
 * @param {string=} odd Current column odd (default is '').
 * @return {array} Array containing modified 'content' and 'counter'.
 */
-function scm_container_column( $content = array(), $counter = 0, $current = 0, $total = 0, $odd = '' ){
+function scm_container_column( $content = array(), $counter = 0, $current = 0, $total = 0, $odd = '', $rows = '' ){
 
     $layout = $content['column-width'];
     $slug = str_replace( 'layout-', '', $content['acf_fc_layout'] );
@@ -618,8 +646,10 @@ function scm_container_column( $content = array(), $counter = 0, $current = 0, $
             $counter += $size;
             $data = scm_utils_data_column( $counter, $size );
             $counter = $data['count'];
+            $rows = ( $data['data'] == 'first' ? ( $rows ? '' : 'row-odd' ) : $rows );
+            $row = scm_utils_data_row( $current, $total, 1/$size );
 
-            $content['attributes'] = ' data-column-width="' . $layout . '" data-column="' . $data['data'] . '" data-counter="' . $counter . '" data-total="' . $total . '" data-current="' . $current . '" data-odd="' . $odd . '" ' . $content['attributes'];
+            $content['attributes'] = ' data-column-width="' . $layout . '" data-row="' . $row . '" data-column="' . $data['data'] . '" data-counter="' . $counter . '" data-total="' . $total . '" data-current="' . $current . '" data-odd="' . $odd . '" data-row-odd="' . $rows . '" ' . $content['attributes'];
             $content['class'] .= ' ' . 'column-layout';
 
         }else{
@@ -628,10 +658,11 @@ function scm_container_column( $content = array(), $counter = 0, $current = 0, $
 
         }
     }
+    $content['class'] .= ' ' . $rows;
     $content['class'] .= ' ' . $odd;
     $content['class'] .= ' ' . scm_utils_class_count( $current, $total );
 
-    return array( 'content'=>$content, 'counter'=>$counter );
+    return array( 'content'=>$content, 'counter'=>$counter, 'rows'=>$rows );
 }
 
 /**
@@ -965,7 +996,7 @@ function scm_contents_single( $args = array() ) {
 
                 $tax = str_replace( 'layout-SCMTAX-', '', $element );
                 $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
-
+                $args['class'] .= ' tax';
                 $sep = $args['separator'];
 
                 $args['title'] = '';
@@ -981,7 +1012,10 @@ function scm_contents_single( $args = array() ) {
 
                     }
 
-                    $args['title'] = ( $args['title'] ?: '—' );
+                    if( !$args['title'] )
+                        return $args;
+
+                    //$args['title'] = ( $args['title'] ?: '—' );
 
                     Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-title.php', array(
                         'cont' => $args
@@ -1013,9 +1047,6 @@ function scm_contents_single( $args = array() ) {
 $before = apply_filters( 'scm_filter_archive_before_{post_type}}', $content, $posts );
 ```
 *
-* @todo 1 - Se non esiste il template dovresti aver pronte delle parts per i type di default, o meglio dei template fissi (single e archive)<br>
-*       mentre per i custom type tirar fuori almeno titolo, content e featured image (torna a quelli WP) ed eventuale link oggetto se archive
-*
 * @param {array} content Content array.
 */
 function scm_post( $content = array(), $page = NULL, $more = NULL ) {
@@ -1028,14 +1059,14 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $type = get_post_type( $content );
         $content = array( 'single' => array( $content ), 'template' => $page );
     }else{
-        $element = ( isset( $content[ 'acf_fc_layout' ] ) ? $content[ 'acf_fc_layout' ] : '' );
+        $element = ex_attr( $content, 'acf_fc_layout', '' );
         $type = str_replace( '_', '-', str_replace( 'layout-', '', $element) );
     }
 
-    if ( is_null( getByKey( $SCM_types['public'], $type ) ) )
+    if ( $type != 'archive' && is_null( getByKey( $SCM_types['public'], $type ) ) )
         return;
 
-    $archive = ( isset( $content['type'] ) ? $content['type'] === 'archive' : 0 );
+    $archive = ( $type == 'archive' || ex_attr( $content, 'type', '' ) === 'archive' );
     if( $archive && isset( $content['archive-paginated'] ) ){
         if( isset( $SCM_archives[ $content['archive-paginated'] ] ) )
             $content['archive-paginated'] .= '_' . sizeof($SCM_archives);
@@ -1043,14 +1074,33 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $content['id'] = $content['archive-paginated'];
         $SCM_archives[ $content['archive-paginated'] ] = $content;
     }
-    
-    $width = ( isset( $content['post-width'] ) ? $content['post-width'] : ( isset( $content['width'] ) ? $content['width'] : 'auto' ) );
+
     $query = array();
-    $loop = array( $post->ID );
-
-    $template_id = is_attr( $content, 'template', 0 );
-
     $pagination = false;
+    $template_id = is_attr( $content, 'template', 0 );
+    $types = is_attr( $content, 'types', '' );
+    $types = explode( ',', str_replace( ' ', '', $types ) );
+    $types = array_filter( $types );
+
+    if( empty( $types ) )
+        $types = $type;
+
+    $complete = ex_attr( $content, 'archive-complete', '' ) == 'complete';
+    $perpage = ( $complete ? -1 : ex_attr( $content, 'archive-perpage', get_option( 'posts_per_page' ) ) );
+    $pagination = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'yes' );
+    $more_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'more' );
+    $all_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'all' );
+    $button = ex_attr( $content, 'archive-pag-text', '' );
+    $paginated = ex_attr( $content, 'archive-paginated', '' );
+    $current = ( $pagination || $more_button ? ( !is_null( $page ) ? $page : (int)getQueryVar( $paginated, 1 ) ) : 1 );
+    $paginated_more = $paginated . '-more';
+    $more = ( $more_button ? ( !is_null( $more ) ? $more : getQueryVar( $paginated_more, array() ) ) : array() );
+    $orderby = ex_attr( $content, 'archive-orderby', 'date' );
+    $ordertype = ex_attr( $content, 'archive-ordertype', 'DESC' );
+    $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
+    $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
+    $compare = ex_attr( $content, 'archive-compare', '=' );
+
     if( $archive ){
 
         $tax = array();
@@ -1075,26 +1125,10 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             }
         }
 
-        $complete = ex_attr( $content, 'archive-complete', '' ) == 'complete';
-        $perpage = ( $complete ? -1 : ex_attr( $content, 'archive-perpage', get_option( 'posts_per_page' ) ) );
-        $pagination = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'yes' );
-        $more_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'more' );
-        $all_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'all' );
-        $button = ex_attr( $content, 'archive-pag-text', '' );
-        $paginated = ex_attr( $content, 'archive-paginated', '' );
-        $current = ( $pagination || $more_button ? ( !is_null( $page ) ? $page : (int)getQueryVar( $paginated, 1 ) ) : 1 );
-        $paginated_more = $paginated . '-more';
-        $more = ( $more_button ? ( !is_null( $more ) ? $more : getQueryVar( $paginated_more, array() ) ) : array() );
-        $orderby = ex_attr( $content, 'archive-orderby', 'date' );
-        $ordertype = ex_attr( $content, 'archive-ordertype', 'DESC' );
-        $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
-        $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
-        $compare = ex_attr( $content, 'archive-compare', '=' );
-        
-        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );        
+        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
         
         $query = array(
-            'post_type' => $type,
+            'post_type' => $types,
             'tax_query' => $tax,
             'posts_per_page' => $perpage,
             'post_status' => array( 'publish', 'private' ),
@@ -1111,19 +1145,30 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
         if( !empty( $content['single'] ) ){
 
+            $meta = apply_filters( 'scm_filter_single_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
+
             $query = array(
-                'post_type' => $type,
+                'post_type' => $types,
                 'post__in' => ( $content['single'] ?: array() ),
                 'posts_per_page' => -1,
                 'orderby' => 'post__in',
+                'meta_key' => $field,
+                'meta_value' => $value,
+                'meta_compare' => $compare,
+                'meta_query' => $meta,
             );
         }
     }
 
     $id = $post->ID;
+    $loop = array( $id );
 
-    // ++todo 1
-    if( !$template_id ){
+    if( !empty( $query ) )
+        $loop = new WP_Query( $query );
+
+// --------------
+
+    /*if( !$template_id ){
 
         $template_id = scm_field( $type . '-templates', '', 'option' );
                     
@@ -1132,49 +1177,85 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
         if( empty( $template_id ) )
             $template_id = 0;
-            //return;
+    }
+        
+    $posts = $template_id ? get_fields( $template_id ) : array();
+
+    if( !empty( $posts ) ){
+        $template_post = get_post( $template_id );
+        $template_name = $template_post->post_name;
+        $posts['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
+        $posts['attributes'] = 'data-template="' . $template_id . '" ';
+        $posts['original-template'] = $template_name;
+    }*/
+    
+    //$posts['column-width'] = $width;
+    //$posts['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
+
+// --------------
+
+    /*$content['class'] = ex_attr( $content, 'class', '' );
+    $content['attributes'] = ex_attr( $content, 'attributes', '' );
+    $type = $content['post_type'] = $post->post_type;
+    $template_id = ex_attr( $content, 'template', 0 );
+    $template_post = 0;
+
+    if( is_numeric($template_id) )
+        $template_id = (int)$template_id;
+    
+    if( is_string( $template_id ) ){
+        $template_post = get_page_by_path( $template_id, OBJECT, $type . SCM_TEMPLATE_APP );
+        if( $template_post )
+            $template_id = $template_post->ID;
+        else
+            $template_id = 0;
+    }
+
+    if( !$template_id ){
+        $templates = scm_field( $type . '-templates', '', 'option' );
+        if( !empty( $templates ) )
+            $template_id = (int)$templates[0]['id'];
+        else
+            $template_id = 0;
     }
         
     $template = $template_id ? get_fields( $template_id ) : array();
 
     if( !empty( $template ) ){
-        $template_post = get_post( $template_id );
+        $content = array_merge( $content, $template );
+        $template_post = $template_post ?: get_post( $template_id );
         $template_name = $template_post->post_name;
-        $template['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-        $template['attributes'] = 'data-template="' . $template_id . '" ';
-        $template['original-template'] = $template_name;
-    }/*else{
-        $template = array( 'class' => '' );
-    }*/
-    
-    /*if( $archive )
-        $template['class'] .= ' archive-post';
-    else
-        $template['class'] .= ' single-post';*/
-    
-    $template['column-width'] = $width;
-    $template['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
+        $content['class'] .= $type . ' template-' . $template_id . ' ' . $template_name;
+        $content['attributes'] .= 'data-template="' . $template_id . '" ';
+        //$content['original-template'] = $template_name;
+    } */ 
 
-    /*if ( empty( $template ) )
-        return;*/
+// --------------
 
-    if( !empty( $query ) )
-        $loop = new WP_Query( $query );
-
-    $template['posts'] = $loop->posts;
+    $posts = array();
+    $posts['original-template'] = $template_id;
+    $template_post = scm_utils_get_template( $types, $template_id );
+    if( $template_post ){
+        $posts['original-template'] = $template_post->post_name;
+    }
     
-    $template = array_merge( $template, ( $more ?: array() ) );
+    $posts['column-width'] = ex_attr( $content, 'post-width', 0 ) ?: ex_attr( $content, 'width', 'auto' );
+    $posts['fallback'] = ex_attr( $content, 'archive-fallback', '' ) ?: '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>';
+
+    $posts['posts'] = $loop->posts;
+    
+    $posts = array_merge( $posts, ( $more ?: array() ) );
 
     // Filter before
-    $before = apply_filters( 'scm_filter_archive_before_' . str_replace('-', '_', $type), '', $content, $template['posts'] );
+    $before = apply_filters( 'scm_filter_archive_before_' . str_replace('-', '_', $type), '', $content, $posts['posts'] );
     if( $before )
         indent( $SCM_indent, $before, 1 );
 
     // Content
-    scm_containers( $template, 'post' );
+    scm_containers( $posts, 'post' );
 
     // Pagination and button
-    if( $archive && sizeof( $template['posts'] ) > 0 ){
+    if( $archive && sizeof( $posts['posts'] ) > 0 ){
 
         if( $pagination ){
 
