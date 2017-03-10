@@ -387,18 +387,20 @@ function scm_acf_object_map( $default = '', $obj = 0, $opt = '', $width = 100, $
 		$fields = array_merge( $fields, scm_acf_preset_taxonomies( '', 'luoghi' ) );
 	}
 
-	$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
-	$fields[] = scm_acf_field_true( 'control-drag', array( 'label'=>'Enable Drag', 'width'=>100 ) );
-	$fields[] = scm_acf_field_true( 'control-zoom', array( 'label'=>'Show Zoom Controls', 'width'=>50 ) );
-	$fields[] = scm_acf_field_true( 'control-streetview', array( 'label'=>'Show StreetView Controls', 'width'=>50 ) );
-	$fields[] = scm_acf_field_positive( 'infowidth', array( 'default'=>500, 'label'=>__( 'Infowindow width', SCM_THEME ), 'append'=> 'px' ), $width, $logic );
-	$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name in Infowindow' ) );
-	$fields[] = scm_acf_field_object( 'template', array( 
-            'type'=>'id', 
-            'types'=>'luoghi' . SCM_TEMPLATE_APP,
-            'label'=>__( 'Link Infowindow', SCM_THEME ),
-            'null'=>1,
-        ), 100 );
+	if( !$opt ){
+		$fields[] = scm_acf_field_positive( 'zoom', array( 'default'=>10, 'prepend'=>__( 'Zoom', SCM_THEME ) ), $width, $logic );
+		$fields[] = scm_acf_field_true( 'control-drag', array( 'label'=>'Enable Drag', 'width'=>100 ) );
+		$fields[] = scm_acf_field_true( 'control-zoom', array( 'label'=>'Show Zoom Controls', 'width'=>50 ) );
+		$fields[] = scm_acf_field_true( 'control-streetview', array( 'label'=>'Show StreetView Controls', 'width'=>50 ) );
+		$fields[] = scm_acf_field_positive( 'infowidth', array( 'default'=>500, 'label'=>__( 'Infowindow width', SCM_THEME ), 'append'=> 'px' ), $width, $logic );
+		$fields[] = scm_acf_field_false( 'both', array( 'label'=>'Show both title and name in Infowindow' ) );
+		$fields[] = scm_acf_field_object( 'template', array( 
+	            'type'=>'id', 
+	            'types'=>'luoghi' . SCM_TEMPLATE_APP,
+	            'label'=>__( 'Link Infowindow', SCM_THEME ),
+	            'null'=>1,
+	        ), 100 );
+	}
 
 	return $fields;
 }
@@ -469,6 +471,8 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 		$norm = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'norm' ) );
 		$quad = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'quad' ) );
 		$full = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'full' ) );
+
+		$fields[] = scm_acf_field_select( 'align', 'vertical_alignment', 100, 0, 0, __( 'Allineamento' ) );
 
 		$imagew = scm_acf_preset_size( 'width', '', 'auto', '%', __( 'Larghezza', SCM_THEME ), $width, $norm );
 		$imageh = scm_acf_preset_size( 'height', '', 'auto', '%', __( 'Altezza', SCM_THEME ), $width, $norm );

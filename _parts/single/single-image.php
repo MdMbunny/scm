@@ -20,6 +20,7 @@ $args = array(
 	'image' => '',
     'images' => '',
 	'format' => 'norm',
+    'align' => 'top',
 	'full-number' => '',
 	'full-units' => '',
 	'size-number' => '',
@@ -154,6 +155,7 @@ $style = $args['style'];
 $id = $args['id'];
 $title = '';
 
+
 switch ( $args[ 'format' ] ) {
     case 'full':
         $image_height = scm_utils_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
@@ -177,18 +179,23 @@ switch ( $args[ 'format' ] ) {
     
     default:
         $class .= ' image-banner';
-        $align = ex_attr( $args, 'align', 'top' );
-        $class .= ' -' . $align;
-        //$image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
-        //$image_height = 'auto';
+        
+        $image_width = scm_utils_preset_size( $args[ 'width-number' ], $args[ 'width-units' ], 'auto' );
+        $image_height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 'auto' );
+
+        $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
+        $class .= ( $image_height != 'auto' ? ' mask' : '' );
+
         if( $args['title'] )
             $title = '<span>' . $args['title'] . '</span>';
         if( $args['link'] && $args['link'] != 'no' )
             $attributes .= ' data-href="' . $args['link'] . '"';
 
-        $style .= ' width:auto; height:auto;';
+        //$style .= ' width:auto; height:auto;';
     break;
 }
+$align = ex_attr( $args, 'align', 'top' );
+$class .= ' -' . $align;
 
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
