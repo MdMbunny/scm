@@ -279,6 +279,7 @@ function scm_types_install( $types = NULL ){
             }
         }
     }
+    //flush_rewrite_rules();
 }
 
 /**

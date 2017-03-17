@@ -266,7 +266,7 @@ function scm_hook_roles_post_caps( $type = '', $admin = false, $cap = false ){
 * @return {array} SCM roles list.
 */
 function scm_roles_list() {
-    return array( 
+    $roles = array( 
         'super'         => array( 0,        0,                              1 ),
         'administrator' => array( 10,       0,                              'update_core' ),
         'manager'       => array( 20,       __( 'Manager', SCM_THEME ),     array( 'edit_private_pages', 'edit_private_posts', 'edit_users', 'list_users', 'remove_users', 'delete_users', 'create_users', 'upload_files', 'manage_categories', 'read_private_pages', 'read_private_posts', 'read' ) ),
@@ -276,6 +276,8 @@ function scm_roles_list() {
         'iscritto'      => array( 60,       __( 'Subscriber', SCM_THEME ),  array('') ),
         'visitatore'    => array( 100,      0,                              0 ),
     );
+    $roles = apply_filters( 'scm_filter_roles_list', $roles );
+    return $roles;
 }
 
 /**
@@ -545,6 +547,9 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $adm = false, $cap = fa
     $member = $name == 'member';
     $staff = $name == 'staff';
     $manager = $name == 'manager';
+
+    $type = apply_filters( 'scm_filter_roles_caps', $type, $admin );
+    if( !$type ) return $role;
     
     if( $iscritto || ( !$admin && !$manager && !$staff && $adm ) )
         return $role;

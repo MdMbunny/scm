@@ -421,12 +421,12 @@ function scm_acf_fields_rassegne_stampa( $name = '' ) {
 * @param {string} name
 * @return {array} Fields.
 */
-function scm_acf_fields_documenti( $name = '' ) {
+function scm_acf_fields_documenti( $name = '', $type = 'documenti' ) {
 
 	$name = ( $name ? $name . '-' : '');
 
 	$fields = array();
-	$hastaxes = checkTaxes( 'documenti' );
+	$hastaxes = checkTaxes( $type );
 
 	$fields = apply_filters( 'scm_filter_fields_documento_before', $fields );
 	
@@ -437,8 +437,8 @@ function scm_acf_fields_documenti( $name = '' ) {
 
 	if( $hastaxes ){
 		$fields[] = scm_acf_field_tab_left( $name . 'tab-tax-documento', array('label'=>__( 'Categorie', SCM_THEME ) ) );
-			$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'documento', 'documenti' ) );
-			$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'documento', 'documenti' ) );
+			$fields = array_merge( $fields, scm_acf_preset_categories( $name . 'documento', $type ) );
+			$fields = array_merge( $fields, scm_acf_preset_tags( $name . 'documento', $type ) );
 	}
 
 	$fields = apply_filters( 'scm_filter_fields_documento', $fields );

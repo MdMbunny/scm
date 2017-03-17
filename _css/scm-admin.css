@@ -1612,8 +1612,8 @@ input.acf-is-prepended {
     box-shadow: none;
     text-shadow: none;
     opacity: 1 !important;
-	-webkit-transition: all .2s;
-	transition: all .2s;
+	/*-webkit-transition: all .2s;
+	transition: all .2s;*/
 }
 .acf-repeater > .acf-actions li .acf-button:hover{
 	font-size: 1.5em;
