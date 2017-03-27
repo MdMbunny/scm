@@ -1678,6 +1678,9 @@ input.acf-is-prepended {
 
 /* 4.3 Flexible Content */
 
+.acf-flexible-content .layout.-open{
+	z-index: 11;
+}
 
 .acf-flexible-content .layout .acf-fc-layout-controlls {
  	top: 10px;

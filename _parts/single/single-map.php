@@ -175,14 +175,19 @@ if( is( $element ) ){
 				}
 				
 				if( !empty( $contatti ) ){
-					indent( $SCM_indent+2, '<div class="map-contacts">' );
+					$open = 0;
 					foreach ($contatti as $contatto) {
 						if( $contatto['onmap'] ){
+							if( !$open ){
+								$open = 1;
+								indent( $SCM_indent+2, '<div class="map-contacts">' );
+							}
 							$href = getHREF( str_replace( 'layout-', '', $contatto['acf_fc_layout']), (string)$contatto['link'] );
 							indent( $SCM_indent+2, '<a ' . $href . '>' . ( $contatto['name'] ?: (string)$contatto['link'] ) . '</a>' );
 						}
 					}
-					indent( $SCM_indent+2, '</div>' );
+					if( $open )
+						indent( $SCM_indent+2, '</div>' );
 				}
 		indent( $SCM_indent+1, '</div>' );
 	}

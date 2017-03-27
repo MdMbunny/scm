@@ -160,7 +160,7 @@ switch ( $args[ 'format' ] ) {
     case 'full':
         $image_height = scm_utils_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
         $style .= ' height:' . $image_height . ';';
-        $class .= ' mask full';
+        $class .= ( $image_height=='initial' ? '' : ' mask' ) . ' full';
     break;
 
     case 'quad':

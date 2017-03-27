@@ -413,6 +413,8 @@ function scm_acf_options_nav_menu() {
 	$fields[] = scm_acf_field_select( 'menu-alignment', 'alignment', 50 );
 	
 	$fields = array_merge( $fields, scm_acf_preset_text_font( 'menu' ) );
+
+	$fields = array_merge( $fields, scm_acf_preset_rgba( 'menu' ) );
 	
 	return $fields;
 }

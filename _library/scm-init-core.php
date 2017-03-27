@@ -334,6 +334,7 @@ function scm_hook_site_register_styles_inline() {
     $body .= indent() . scm_utils_style_get( 'bg_color', 'option', 1 ) . lbreak();
 
     $menu_font = scm_utils_style_get( 'font', 'menu', 1 );
+    $menu_font .= scm_utils_style_get( 'color', 'menu', 1 );
 
     $top_bg = scm_utils_style_get( 'bg_color', 'opt-tools-topofpage-bg', 1 );
     $top_icon = scm_utils_style_get( 'text_color', 'opt-tools-topofpage-txt', 1 );
