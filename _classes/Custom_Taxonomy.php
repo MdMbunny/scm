@@ -100,6 +100,8 @@ $tax = new Custom_Taxonomy( $args );
                 'capabilities' => array(
                     'manage_terms' => $this->add_cap,
                 ),
+                'query_var' => true, 
+                'rewrite' => array( 'slug' => $this->slug, 'with_front' => false )
             );
         }
         public function Custom_Taxonomy( $build, $lang = '' ) {

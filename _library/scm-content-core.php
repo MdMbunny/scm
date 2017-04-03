@@ -272,7 +272,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
                     $content['id'] = $content['class'] = $content['style'] = $content['attributes'] = '';
                 }
 
-                do_action( 'scm_action_echo_container_before_' . $container, $content, $original );
+                do_action( 'scm_action_echo_container_before_' . $container, $content, $original, $counter, $current );
 
                     // -- Content
                     scm_content( $content );
@@ -312,6 +312,8 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
         setup_postdata( $post );
 
         $content = $builder;
+
+        $content['id'] = ( $content['id'] ?: $post->ID );
 
         $content['class'] = ex_attr( $content, 'class', '' );
         $content['attributes'] = ex_attr( $content, 'attributes', '' );
@@ -983,7 +985,7 @@ function scm_contents_single( $args = array() ) {
         // ++todo 3
         case 'layout-testo':
 
-            $text = ( isset( $args['editor'] ) ? $args['editor'] : ( isset( $args['editor-visual'] ) ? $args['editor-visual'] : scm_field( 'editor', '', get_the_ID() ) ) );
+            $text = ex_attr( $args, 'editor', ex_attr( $args, 'editor-basic', ex_attr( $args, 'editor-visual', scm_field( 'editor', '', get_the_ID() ) ) ) );
             if(!$text) continue;
 
             indent( $SCM_indent, $text, 1 );
@@ -995,7 +997,7 @@ function scm_contents_single( $args = array() ) {
             if( strpos( $element, 'layout-SCMTAX-' ) === 0 ){
 
                 $tax = str_replace( 'layout-SCMTAX-', '', $element );
-                $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(),  $tax ) ?: array() ) );
+                $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(), $tax ) ?: array() ) );
                 $args['class'] .= ' tax';
                 $sep = $args['separator'];
 

@@ -574,8 +574,8 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 	
 	}elseif( strpos( $list, 'main_layout' ) !== false ){
 		$choices = array(
-			'responsive'		=> 'Responsive',
-			'full'				=> 'Full Width',
+			'responsive'		=> 'Responsive Layout',
+			'full'				=> 'Full Width Layout',
 		);
 	
 	}elseif( strpos( $list, 'responsive_events' ) !== false ){

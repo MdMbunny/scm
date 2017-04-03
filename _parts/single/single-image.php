@@ -40,6 +40,8 @@ $args = array(
     'title' => '',
 );
 
+
+
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 

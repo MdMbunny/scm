@@ -254,6 +254,7 @@ function scm_acf_layout_gallerie( $layouts = array(), $default = 0 ) {
 function scm_acf_layout_soggetti( $layouts = array(), $default = 0 ) {
 		
 	$layout_logo = scm_acf_layout( 'logo', 'block', __( 'Logo', SCM_THEME ) );
+		$layout_logo['sub_fields'][] = scm_acf_field_select( 'thumb-size', 'image_sizes', 100, 0, 0, __( 'Seleziona Dimensioni', SCM_THEME ) );
 		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'width', '', 'auto', '%', __( 'Larghezza', SCM_THEME ) ) );
 		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'height', '', 'auto', '%', __( 'Altezza', SCM_THEME ) ) );
 		$layout_logo['sub_fields'][] = scm_acf_field_select( 'negative', 'positive_negative', 100, 0, 0, __( 'Scegli una versione', SCM_THEME ) );
@@ -305,6 +306,7 @@ function scm_acf_layout_soggetti( $layouts = array(), $default = 0 ) {
 function scm_acf_layout_luoghi( $layouts = array(), $default = 0 ) {
 
 	$layout_logo = scm_acf_layout( 'logo', 'block', __( 'Logo', SCM_THEME ) );
+		$layout_logo['sub_fields'][] = scm_acf_field_select( 'thumb-size', 'image_sizes', 100, 0, 0, __( 'Seleziona Dimensioni', SCM_THEME ) );
 		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'width', '', 'auto', '%', __( 'Larghezza', SCM_THEME ) ) );
 		$layout_logo['sub_fields'] = array_merge( $layout_logo['sub_fields'], scm_acf_preset_size( 'height', '', 'auto', '%', __( 'Altezza', SCM_THEME ) ) );
 		$layout_logo['sub_fields'][] = scm_acf_field_select( 'negative', 'positive_negative', 100, 0, 0, __( 'Scegli una versione', SCM_THEME ) );
@@ -348,7 +350,7 @@ function scm_acf_layout_articoli( $layouts = array() ) {
 }
 
 /**
-* [GET] Layout news
+* [GET] Layout eventi
 *
 * @param {array} layouts
 * @param {misc} default
@@ -357,6 +359,7 @@ function scm_acf_layout_articoli( $layouts = array() ) {
 function scm_acf_layout_eventi( $layouts = array(), $default = 0 ) {
 
 	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
+		$layout_img['sub_fields'] = scm_acf_object_immagine( '', 1 );
 	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'Contenuto', SCM_THEME ) );
 	$layout_dat = scm_acf_layout( 'dates', 'block', __( 'Date Evento', SCM_THEME ) );
 	$layout_map = scm_acf_layout( 'map', 'block', __( 'Mappa', SCM_THEME ), '', 1 );
@@ -378,6 +381,7 @@ function scm_acf_layout_eventi( $layouts = array(), $default = 0 ) {
 function scm_acf_layout_news( $layouts = array(), $default = 0 ) {
 
 	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
+		$layout_img['sub_fields'] = scm_acf_object_immagine( '', 1 );
 	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'Contenuto', SCM_THEME ) );
 	$layouts = array_merge( $layouts, array( $layout_img, $layout_mod ) );
 

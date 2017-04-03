@@ -109,6 +109,7 @@ $page_id = scm_field( 'page-selectors-id', '', SCM_PAGE_ID, 1, ' id="', '"' );
 $page_class .= scm_field( 'page-selectors-class', '', SCM_PAGE_ID, 1, ' ' );
     
 $page_slider = scm_field( 'main-slider-active', '', SCM_PAGE_ID );
+
 $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
 $page_slider_field = scm_field( 'main-slider-field', '', SCM_PAGE_ID );
 $page_slider_field = ( $page_slider_field ? scm_field( $page_slider_field, '' ) : '' );

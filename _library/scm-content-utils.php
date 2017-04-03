@@ -342,7 +342,7 @@ function scm_utils_get_template( $type = '', $template_id = 0 ){
     return $template_post;
 }
 
-function scm_utils_get_template_id( $type = '', $template_id = 0 ){
+function scm_utils_get_template_id( $type = '', $template_id = 0, $start = 0 ){
     
     $type = ( $type && is_string( $type ) ? $type : '' );
 
@@ -364,10 +364,15 @@ function scm_utils_get_template_id( $type = '', $template_id = 0 ){
 
     if( !$template_id ){
         $templates = scm_field( $type . '-templates', '', 'option' );
-        if( !empty( $templates ) )
+
+        if( !empty( $templates ) ){
+            $ind = 0;
+            if( $start && ex_index( $templates, 1, 0 ) )
+                $ind = 1;
             $template_id = (int)$templates[0]['id'];
-        else
+        }else{
             $template_id = 0;
+        }
     }
     return $template_id;
 }

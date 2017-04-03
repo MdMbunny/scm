@@ -118,6 +118,7 @@ define( 'SCM_URI_LIBRARY',      		SCM_URI . '_library/' );
 define( 'SCM_DIR_PARTS',			    '_parts/content' );
 define( 'SCM_DIR_PARTS_SINGLE',		    '_parts/single/single' );
 define( 'SCM_DIR_PARTS_ARCHIVE',	    '_parts/archive/archive' );
+define( 'SCM_DIR_PARTS_TAX',		    '_parts/tax/tax' );
 define( 'SCM_DIR_PARTS_FEED',		    '_parts/feed/feed' );
 define( 'SCM_DIR_SVG',      			SCM_DIR . '_svg/' );
 define( 'SCM_URI_SVG',      			SCM_URI . '_svg/' );

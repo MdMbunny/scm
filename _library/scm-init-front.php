@@ -48,65 +48,93 @@ function scm_front_init() {
 
     // INIT ------------------------------------------------------------------------
 
+    $id = $post->ID;
+
     $template = 'page';
     $type = get_post_type();
     $single = is_single();
     $archive = is_archive();
+    $istax = is_tax();
+    $tax = get_query_var( 'taxonomy' );
+    $term = get_query_var( 'term' );
+    $term_obj = ( $term && $tax ? get_term_by( 'slug', $term, $tax ) : 0 );
     $page = 0;
     $part = '';
+    $temp = '';
 
-    // INIT SINGLE or ARCHIVE ------------------------------------------------------------------------
+    // INIT SINGLE or ARCHIVE or TAXONOMY ---------------------------------------------------------------------------------
 
-    if( $single || $archive ){
+    if( $single || $archive || $istax ){
         // IF Post Type not public - Load Home Page
-        if( is_null( getByKey( $SCM_types['public'], $type ) ) ){
+        if( !$istax && is_null( getByKey( $SCM_types['public'], $type ) ) ){
             get_template_part( SCM_DIR_PARTS, 'none' );
         }else{
             
-            if( $single ){
+            if( $istax ){
+                $page = get_page_by_path( '_tax-' . $tax );
+                $part = SCM_DIR_PARTS_TAX;
+                $temp = 'tax';
+            }elseif( $single ){
                 $page = get_page_by_path( '_single-' . $type );
                 $part = SCM_DIR_PARTS_SINGLE;
+                $temp = 'single';
             }elseif( $archive ){
                 $page = get_page_by_path( '_archive-' . $type );
                 $part = SCM_DIR_PARTS_ARCHIVE;
+                $temp = 'archive';
             }
             // If a template file '_parts/single/single-{post_type}.php' | '_parts/archive/archive-{post_type}.php' exists
-            if( locate_template( $part . '-' . $type . '.php' ) ){
+            if( !$istax && locate_template( $part . '-' . $type . '.php' ) ){
                 $template = 'part';
+                $page = 0;
+            // If a template file '_parts/tax/tax-{taxonomy}.php' exists
+            }elseif( locate_template( $part . '-' . $tax . '.php' ) ){
+                $template = 'part-tax';
+                $page = 0;
             // If query arg ?template=XXX exists
             }elseif( !$page ){
                 
                 $template = get_query_var( 'template', 0 );
                 
                 // IF {$type}-templates exists - Pick up the first template from the list
-                if( !$template ){
+                //if( !$template ){
 
-                    $template = scm_utils_get_template_id( $type );
+                $template = scm_utils_get_template_id( $type, $template, !$single );
 
                     /*$template = scm_field( $type . '-templates', '', 'option' );
                     
                     if( !empty( $template ) )
                         $template = (int)$template[0]['id'];*/
                     
-                    // IF Template not exists - Load Home Page
-                    if( !$template ){
-                        if( function_exists( 'scm_echo_' . $type ) ){
-                            $template = 'function';
-                            $part = 'scm_echo_' . $type;
-                        }else{
-                            get_template_part( SCM_DIR_PARTS, 'none' );
-                        }
+                // IF Template not exists - Load Home Page
+                if( !$template ){
+                    if( function_exists( 'scm_echo_' . $type ) ){
+                        $template = 'function';
+                        $part = 'scm_echo_' . $type;
+                    }else{
+                        get_template_part( SCM_DIR_PARTS, 'none' );
                     }
+                }
 
                     // Possibilmente se non ci sono Template, tira fuori Titolo e se esiste content/editor
-                }
+                //}
+            }
+
+            if( $page ){
+                $id = $page->ID;
+            }elseif( $term_obj ){
+                $id = $term_obj->term_taxonomy_id . '-' . $term_obj->term_id;
+            }elseif( $temp == 'archive' ){
+                $id = $type;
+            }else{
+                $id = get_the_ID();
             }
         }
     }
 
     // INIT CONSTANTS ------------------------------------------------------------
 
-    define( 'SCM_PAGE_ID',              ( $page ? $page->ID : get_the_ID() ) );
+    define( 'SCM_PAGE_ID',              $id );
     //define( 'SCM_PAGE_EDIT',            ( scm_field( 'page-form', false ) ? ( is_user_logged_in() && SCM_LEVEL_EDIT ? ( get_query_var( 'action' ) != 'view' ? get_query_var( 'action' ) == 'edit' || get_option( 'scm-settings-edit-' . SCM_ID ) : 0 ) : 0 ) : 0 ) ); // ???
     define( 'SCM_SITE_ALIGN',           scm_field( 'layout-alignment', 'center', 'option' ) );
 
@@ -116,7 +144,7 @@ function scm_front_init() {
     else
         scm_hook_admin_ui_view_mode();*/
 
-    return array( 'template'=>$template, 'part'=>$part, 'type'=>$type );
+    return array( 'temp'=>$temp, 'template'=>$template, 'part'=>$part, 'type'=>$type, 'tax'=>$tax, 'term'=>$term, 'term_obj'=>$term_obj );
 }
 
 ?>

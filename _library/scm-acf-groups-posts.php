@@ -324,7 +324,7 @@ function scm_acf_fields_news( $name = '' ) {
 
 	$fields = apply_filters( 'scm_filter_fields_news_before', $fields );
 
-	$fields[] = scm_acf_field_image_url( $name . 'image' );
+	$fields[] = scm_acf_field_image( $name . 'image' );
 	$fields = array_merge( $fields, scm_acf_fields_modules( $name ) );
 
 	$fields = apply_filters( 'scm_filter_fields_news', $fields );
@@ -544,8 +544,10 @@ function scm_acf_fields_luoghi( $name = '' ) {
 
 	$fields[] = scm_acf_field_tab_left( $name . 'tab-set-luogo', array('label'=>__( 'Dati', SCM_THEME ) ) );
 		
-		$fields[] = scm_acf_field_image_url( $name . 'luogo-logo', array('label'=> __( 'Logo (per fondi chiari)', SCM_THEME ) ), 50 );
-		$fields[] = scm_acf_field_image_url( $name . 'luogo-logo-neg', array('label'=> __( 'Logo (per fondi scuri)', SCM_THEME ) ), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'luogo-logo', array('label'=> __( 'Logo (per fondi chiari)', SCM_THEME ) ), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'luogo-logo-neg', array('label'=> __( 'Logo (per fondi scuri)', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_image( $name . 'luogo-logo', array('label'=> __( 'Logo (per fondi chiari)', SCM_THEME ) ), 50 );
+		$fields[] = scm_acf_field_image( $name . 'luogo-logo-neg', array('label'=> __( 'Logo (per fondi scuri)', SCM_THEME ) ), 50 );
 
 		$fields[] = scm_acf_field_text( $name . 'luogo-nome', array( 'prepend'=>__( 'Nome', SCM_THEME ), 'placeholder'=>__( 'es. Sede Operativa, Distaccamento, …', SCM_THEME ) ), 100 );
 
@@ -625,16 +627,20 @@ function scm_acf_fields_soggetti( $name = '' ) {
 			__( 'Carica uno logo e/o un\'icona da utilizzare su fondi chiari.', SCM_THEME ),
 		), 'Versione in Positivo', 100 );
 
-		$fields[] = scm_acf_field_image_url( $name . 'soggetto-logo', array('label'=> __( 'Logo', SCM_THEME )), 50 );
-		$fields[] = scm_acf_field_image_url( $name . 'soggetto-icona', array('label'=> __( 'Icona', SCM_THEME )), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'soggetto-logo', array('label'=> __( 'Logo', SCM_THEME )), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'soggetto-icona', array('label'=> __( 'Icona', SCM_THEME )), 50 );
+		$fields[] = scm_acf_field_image( $name . 'soggetto-logo', array('label'=> __( 'Logo', SCM_THEME )), 50 );
+		$fields[] = scm_acf_field_image( $name . 'soggetto-icona', array('label'=> __( 'Icona', SCM_THEME )), 50 );
 		
 		$fields[] = scm_acf_field( $name . 'msg-soggetto-neg', array(
 			'message',
 			__( 'Carica uno logo e/o un\'icona da utilizzare su fondi scuri.', SCM_THEME ),
 		), __( 'Versione in Negativo', SCM_THEME ), 100 );
 		
-		$fields[] = scm_acf_field_image_url( $name . 'soggetto-logo-neg', array('label'=> __( 'Logo', SCM_THEME )), 50 );
-		$fields[] = scm_acf_field_image_url( $name . 'soggetto-icona-neg', array('label'=> __( 'Icona', SCM_THEME )), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'soggetto-logo-neg', array('label'=> __( 'Logo', SCM_THEME )), 50 );
+		//$fields[] = scm_acf_field_image_url( $name . 'soggetto-icona-neg', array('label'=> __( 'Icona', SCM_THEME )), 50 );
+		$fields[] = scm_acf_field_image( $name . 'soggetto-logo-neg', array('label'=> __( 'Logo', SCM_THEME )), 50 );
+		$fields[] = scm_acf_field_image( $name . 'soggetto-icona-neg', array('label'=> __( 'Icona', SCM_THEME )), 50 );
 
 	$fields[] = scm_acf_field_tab_left( $name . 'tab-soggetto-dati', array('label'=> __( 'Dati', SCM_THEME ) ) );
 		$fields[] = scm_acf_field_link( $name . 'soggetto-link' );

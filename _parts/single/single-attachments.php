@@ -50,21 +50,21 @@ indent( $SCM_indent + 1, openTag( 'ul', $id, $class, $style, $attributes ), 2 );
 if( !empty( $links ) ){
     foreach ($links as $link) {
 
-        echo getLink( $link['link'], $link['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+        echo getLink( $link['link'], $link['name'], $SCM_indent + 2, 'li' );
         
     }
 }
 if( !empty( $files ) ){
     foreach ($files as $file) {
         
-        echo getFile( $file['file'], $file['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+        echo getFile( $file['file'], $file['name'], $SCM_indent + 2, 'li' );
 
     }
 }
 if( !empty( $objects ) ){
     foreach ($objects as $media) {
 
-        echo getAttachment( 'media', $media['object'], $media['name'], $indent = $SCM_indent + 2, $tag = 'li' );
+        echo getAttachment( 'media', $media['object'], $media['name'], $SCM_indent + 2, 'li' );
 
     }
 }
