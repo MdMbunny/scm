@@ -115,6 +115,8 @@ $page_slider_field = scm_field( 'main-slider-field', '', SCM_PAGE_ID );
 $page_slider_field = ( $page_slider_field ? scm_field( $page_slider_field, '' ) : '' );
 $page_slider_terms = ( $page_slider_field ?: $page_slider_terms );
 
+$has_slider = $page_slider && $page_slider_terms && wp_script_is( $page_slider );
+
 $gmap = scm_field( 'opt-tools-map-api', '', 'option' );
 
 //consoleLog( SCM_POST_TEMPLATE );
@@ -139,7 +141,8 @@ $gmap = scm_field( 'opt-tools-map-api', '', 'option' );
     data-tofull="<?php echo $tofull; ?>" 
     data-tocolumn="<?php echo $tocolumn; ?>" 
     data-gmap="<?php echo $gmap; ?>" 
-    data-ajax="<?php echo admin_url( 'admin-ajax.php' ) ?>"
+    data-ajax="<?php echo admin_url( 'admin-ajax.php' ) ?>" 
+    data-has-slider="<?php echo $has_slider; ?>"
 >
 
 <?php
@@ -218,7 +221,7 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
                     do_action( 'scm_action_before_slider' );
 
                     // Page Header
-                    if( $page_slider && $page_slider_terms && wp_script_is( $page_slider ) ){
+                    if( $has_slider ){
 
                         indent( $SCM_indent, '<header class="header scm-header full ' . SCM_SITE_ALIGN . '">', 2 );
 

@@ -497,7 +497,6 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	box-shadow: 4px 4px 0px 0px rgba(0,0,0,.1);
 }
 
-
 .acf-field-true-false > .acf-label{
 	float: left;
 	margin-right: 1em;
@@ -1328,6 +1327,28 @@ ul.acf-radio-list li > input{
 	top: 5.5em;
 }
 
+.select2-selectors{
+	display: inline-flex !important;
+    flex-flow: row nowrap !important;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.select2-selectors > .acf-label,
+.select2-selectors > .acf-input{
+}
+
+.select2-selectors > .acf-label{
+	display: inline-block !important;
+	text-align: right;
+	padding-right: .5em;
+	width: 5%;
+}
+.select2-selectors > .acf-input{
+	display: inline-block !important;
+	width: 95%;
+}
+
 /* Input */
 
 input.acf-is-prepended {
@@ -1346,15 +1367,31 @@ input.acf-is-prepended {
 
 /* Font Awesome */
 
-.fa-live-preview {
+.acf-field-font-awesome .fa-field-wrapper{
+	position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.acf-field-font-awesome .fa-live-preview {
 	width: 15% !important;
 	display: inline-block;
 	font-size: 200%;
 	padding: 0 0 0 0;
 	margin-right: 5%;
+	height: auto;
 }
 
-.fa-field-wrapper > .select2-container{
+.acf-field-font-awesome .fa-live-preview .fa.no{
+	background-color: #EEE;
+    width: 1em;
+    height: 1em;
+    border-radius: 3px;
+}
+
+.acf-field-font-awesome .fa-field-wrapper > .select2-container{
 	margin: 0;
 	position: relative;
 	display: inline-block;
@@ -1495,7 +1532,7 @@ input.acf-is-prepended {
 	margin: 0;
 }
 
-.select2-selectors .acf-label,
+/*.select2-selectors .acf-label,*/
 .select-2-columns_width .acf-label{
 	display: none;
 }

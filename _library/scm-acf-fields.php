@@ -1120,7 +1120,7 @@ function scm_acf_field_select( $name = '', $field = 0, $width = 100, $logic = 0,
 		$type = $type . '-default';
 		$field = 0;
 	}elseif( is_array( $field ) && isset( $field['type'] ) && $field['type'] ){
-		$field['type'] = $type . '-' . $field['type'];
+		$field['type'] = $type . ( startsWith($field['type'], '2') ? '' : '-') . $field['type'];
 	}
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }

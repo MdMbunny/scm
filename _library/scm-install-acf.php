@@ -452,7 +452,6 @@ function scm_hook_acf_option_menu_order( $menu_order ) {
     $menu_order[ 'scm' ] = arr_insert( $menu_order[ 'scm' ], 3, 'scm-templates-general' );
 
     return $menu_order;
-
 }
 
 /**
