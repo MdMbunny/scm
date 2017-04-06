@@ -183,7 +183,7 @@ function scm_acf_preset_column_width( $name = '', $width = 100, $logic = 0, $req
 	$fields = scm_acf_preset_instructions( $instructions, $name, __( 'Aggiungi Larghezza Colonna', SCM_THEME ) );
 	
 	$fields[] = scm_acf_field_select( $name . 'column-width', array( 
-		'type'=>'2-columns_width',
+		'type'=>'columns_width',
 		'choices'=>array( '1/1' => __( 'Larghezza piena', SCM_THEME ), 'auto' => __( 'Auto', SCM_THEME ) ),
 	), $width, $logic, $required );
 

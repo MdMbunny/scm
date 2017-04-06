@@ -313,7 +313,7 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 
         $content = $builder;
 
-        $content['id'] = ( $content['id'] ?: $post->ID );
+        $content['id'] = ex_attr( $content, 'id', $post->ID );
 
         $content['class'] = ex_attr( $content, 'class', '' );
         $content['attributes'] = ex_attr( $content, 'attributes', '' );
