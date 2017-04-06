@@ -109,6 +109,8 @@ $page_id = scm_field( 'page-selectors-id', '', SCM_PAGE_ID, 1, ' id="', '"' );
 $page_class .= scm_field( 'page-selectors-class', '', SCM_PAGE_ID, 1, ' ' );
     
 $page_slider = scm_field( 'main-slider-active', '', SCM_PAGE_ID );
+$page_slider = ( $page_slider == 'yes' ? ( scm_field( 'opt-tools-nivo', '', 'option' ) ? 'nivo' : 'yes' ) : $page_slider );
+$page_slider = ( $page_slider == 'yes' ? ( scm_field( 'opt-tools-bx', '', 'option' ) ? 'bx' : '' ) : $page_slider );
 
 $page_slider_terms = scm_field( 'main-slider-terms', '', SCM_PAGE_ID );
 $page_slider_field = scm_field( 'main-slider-field', '', SCM_PAGE_ID );
