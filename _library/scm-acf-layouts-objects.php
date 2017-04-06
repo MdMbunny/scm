@@ -423,15 +423,16 @@ function scm_acf_object_separatore( $default = '', $obj = 0, $opt = '', $width =
 	// conditional
 	$fields[] = scm_acf_field_select( 'line', 'line_style', $width, $logic, $req, __( 'Stile', SCM_THEME ) );
 
-	if( !$opt ){
-
 		$all = array( 'field' => 'line', 'operator' => '!=', 'value' => 'no' );
 		$line = array( 'field' => 'line', 'operator' => '==', 'value' => 'line' );
 		$dash = array( 'field' => 'line', 'operator' => '==', 'value' => 'dashed' );
+	
+	$fields = array_merge( $fields, scm_acf_preset_size( 'height', 1, '1', 'px', __( 'Altezza', SCM_THEME ), $width ) );
+
+	if( !$opt ){
 
 		// +++ todo: aggiungere bg_image e tutte bg_cose
 
-		$height = scm_acf_preset_size( 'height', 0, '1', 'px', __( 'Altezza', SCM_THEME ), $width );
 		$position = scm_acf_preset_size( 'position', '', 50, '%', __( 'Posizione', SCM_THEME ), $width, $dash );
 		$size = scm_acf_preset_size( 'size', 0, '4', 'px', __( 'Spessore', SCM_THEME ), $width, $all );
 		$space = scm_acf_preset_size( 'space', 0, '26', 'px', __( 'Spazio', SCM_THEME ), $width, $dash );
@@ -440,7 +441,11 @@ function scm_acf_object_separatore( $default = '', $obj = 0, $opt = '', $width =
 		$cap = array( scm_acf_field_select( 'cap', 'line_cap', $width, $all, 0, __( 'Cap', SCM_THEME ) ) );
 		$color = scm_acf_preset_rgba( 'color', '', 1, $width, $all );
 			
-		$fields = array_merge( $fields, $height, $position, $cap, $size, $space, $weight, $color );
+		$fields = array_merge( $fields, $position, $cap, $size, $space, $weight, $color );
+
+	}else{
+
+		$fields[] = scm_acf_field_select( 'color-rgba-library', 'colors_library', 100, $all, 0, '' );
 
 	}
 

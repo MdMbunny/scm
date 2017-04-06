@@ -222,6 +222,10 @@ function scm_acf_layout( $name, $type = 'block', $label = 'Layout', $min = 0, $m
 	if( !$name )
 		return;
 
+	if( !empty( $subfields ) && ex_attr( $subfields[0], 'name', '' ) != 'layout-advanced' ){
+		$subfields = scm_fields_insert( $subfields, scm_field_add_class( scm_acf_field_select( 'layout-advanced', array( 'choices'=>array( 'show' => __( 'Visibile', SCM_THEME ), 'hide' => __( 'Nascondi', SCM_THEME ) ) ) ), '-option hidden' ) );
+	}
+
 	$layout = array (
 		'key' => $name,
 		'name' => 'layout-' . $name,

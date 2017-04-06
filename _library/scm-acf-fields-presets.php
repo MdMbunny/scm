@@ -1394,7 +1394,8 @@ function scm_acf_preset_flexible_elements( $name = '', $elements = '', $logic = 
 			$key = str_replace( 'scm_acf_object_', '', $el[0] );
 
 			$layout = scm_acf_layout( $key, 'block', $element );
-
+			$layout['sub_fields'][] = scm_field_add_class( scm_acf_field_select( 'layout-advanced', array( 'choices'=>array( 'show' => __( 'Visibile', SCM_THEME ), 'hide' => __( 'Nascondi', SCM_THEME ) ) ) ), '-option hidden' );
+			
 			if( $fun != 'scm_acf_object_post' && function_exists( $fun ) )
 				$layout['sub_fields'] = array_merge( $layout['sub_fields'], call_user_func( $fun ) ); // Call objects function in scm-acf-objects.php
 			else

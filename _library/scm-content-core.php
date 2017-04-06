@@ -202,6 +202,10 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
         // Post PRE
             $content = scm_container_post_pre( $content, $builder, $container );
 
+        // Module HIDE
+            $advanced = ex_attr( $content, 'layout-advanced', 'show' );
+            if( $advanced == 'hide' ) continue;
+
             $content = apply_filters( 'scm_filter_echo_container_before', $content, $container, $original );
             $content = apply_filters( 'scm_filter_echo_container_before_' . $container, $content, $original );
 
@@ -904,7 +908,7 @@ function scm_contents_single( $args = array() ) {
 
         case 'layout-separatore':
 
-            $height = scm_utils_preset_size( $args[ 'height-number' ], $args[ 'height-units' ], 1 );
+            $height = scm_utils_preset_size( ex_attr( $args, 'height-number', '' ), ex_attr( $args, 'height-units', '' ), 1 );
             $style = 'height:' . $height . ';';
 
             $line = ( $args['line'] ?: 'no' );
@@ -913,12 +917,12 @@ function scm_contents_single( $args = array() ) {
 
                 $svg_args = array();
                 $svg_args['height'] = $height;
-                $svg_args['y1'] = $svg_args['y2'] = scm_utils_preset_size( $args[ 'position-number' ], $args[ 'position-units' ], 50, '%' );
-                $svg_args['color'] = scm_utils_preset_rgba( $args['color-rgba-color'], $args['color-rgba-alpha'], '#ddd' );
-                $svg_args['stroke'] = scm_utils_preset_size( $args[ 'size-number' ], $args[ 'size-units' ], 5 );
-                $svg_args['cap'] = ( $args['cap'] ?: 'round' );
-                $svg_args['space'] = scm_utils_preset_size( $args[ 'space-number' ], $args[ 'space-units' ], 26 );
-                $svg_args['dash'] = scm_utils_preset_size( $args[ 'dash-number' ], $args[ 'dash-units' ], 8 );
+                $svg_args['y1'] = $svg_args['y2'] = scm_utils_preset_size( ex_attr( $args, 'position-number' ), ex_attr( $args, 'position-units' ), 50, '%' );
+                $svg_args['color'] = scm_utils_preset_rgba( $args, 'color', '#ddd' );
+                $svg_args['stroke'] = scm_utils_preset_size( ex_attr( $args, 'size-number' ), ex_attr( $args, 'size-units' ), 5 );
+                $svg_args['cap'] = ex_attr( $args, 'cap', 'round' );
+                $svg_args['space'] = scm_utils_preset_size( ex_attr( $args, 'space-number' ), ex_attr( $args, 'space-units' ), 26 );
+                $svg_args['dash'] = scm_utils_preset_size( ex_attr( $args, 'dash-number' ), ex_attr( $args, 'dash-units' ), 8 );
 
                 indent( $SCM_indent, svgLine( $svg_args, $line, $SCM_indent ), 2 );
 
