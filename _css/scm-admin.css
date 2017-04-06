@@ -537,7 +537,7 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	position: relative;
 }
 
-.acf-field-true-false .acf-input label{
+/*.acf-field-true-false .acf-input label{
 	display: block;
     line-height: 0;
     max-width: 100%;
@@ -547,7 +547,7 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
     z-index: 0;
     background: transparent;
     height: auto;
-}
+}*/
 
 .acf-field-true-false .acf-input label input{
 	margin: -1px 0 0 0 !important;
@@ -1826,6 +1826,10 @@ input.acf-is-prepended {
 
 
 /* 4.3 Flexible Content */
+
+body:not(.scm-advanced) [data-layout="layout-template"]{
+	display: none;
+}
 
 .acf-flexible-content .layout.-open{
 	z-index: 11;

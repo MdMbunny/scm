@@ -1261,7 +1261,7 @@ function scm_acf_preset_flexible_sections( $name = '', $logic = 0, $instructions
 		$flexible = scm_acf_field_flexible( 'rows', array( 
 			'button'=>'+',
 		), 100 );
-
+		
 			$template = scm_acf_layout( 'template', 'block', __( 'Template', SCM_THEME ) );
 				
 				$template['sub_fields'] = array_merge( $template['sub_fields'], scm_acf_preset_advanced_options( '', 'row' ) );

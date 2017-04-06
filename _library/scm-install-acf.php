@@ -363,22 +363,6 @@ function scm_acf_install_posts_fields() {
         }
     }
 
-    // + PAGE
-    $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
-    $page['location'][] = scm_acf_group_location( 'page' );
-    $page['fields'] = scm_acf_fields_page();
-    $groups[] = $page;
-
-    // + PAGE FOOTER
-    $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
-    $page_footer['location'][] = scm_acf_group_location( 'page' );
-    $page_footer['fields'][] = scm_acf_field_objects( 'page-footer', array( 
-        'type'=>'rel-id', 
-        'types'=>array('sections','modules'),
-        'label'=>__( 'Seleziona Sections', SCM_THEME ),
-    ) );
-    $groups[] = $page_footer;
-
     // + CUSTOM TYPES
     foreach ( ex_attr( $SCM_types, 'custom', array() ) as $slug => $title) {
 
@@ -401,6 +385,23 @@ function scm_acf_install_posts_fields() {
             $groups[] = $group;
         }
     }
+
+    // + PAGE
+    $page = scm_acf_group( __( 'Componi Pagina', SCM_THEME ), 'pages-single' );
+    $page['location'][] = scm_acf_group_location( 'page' );
+    $page['fields'] = scm_acf_fields_page();
+    $groups[] = $page;
+
+    // + PAGE FOOTER
+
+    $page_footer = scm_acf_group( __( 'Opzioni Footer', SCM_THEME ), 'footer-single' );
+    $page_footer['location'][] = scm_acf_group_location( 'page' );
+    $page_footer['fields'][] = scm_acf_field_objects( 'page-footer', array( 
+        'type'=>'rel-id', 
+        'types'=>array('sections','modules'),
+        'label'=>__( 'Seleziona Sections', SCM_THEME ),
+    ) );
+    $groups[] = $page_footer;
 
     // + TEMPLATES
     foreach ( ex_attr( $SCM_types, 'public', array() ) as $slug => $title) {

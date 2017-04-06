@@ -774,6 +774,12 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'bx' => 'BX Slider',
 		);
 
+	}elseif( strpos( $list, 'slider_active' ) !== false ){
+		$choices = array(
+			'no' => __( 'Disattiva', SCM_THEME ),
+			'yes' => __( 'Attiva', SCM_THEME ),
+		);
+
 	}elseif( strpos( $list, 'effect' ) !== false ){
 		if( strpos( $list, '_nivo' ) !== false ){
 			$choices = array(

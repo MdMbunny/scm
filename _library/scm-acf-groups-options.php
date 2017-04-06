@@ -182,16 +182,18 @@ function scm_acf_options_taxonomies() {
 * 
 * @return {array} Slider fields.
 */
-function scm_acf_options_slider( $default = '' ) {
+function scm_acf_options_slider( $default = '', $type = 0 ) {
 	
 	$fields = array();
+
+	$select = ( $type ? 'slider_model-no' : 'slider_active' ) . ( $default ? '-default' : '' );
 	
 	$fields[] = scm_acf_field_select( 'main-slider-active', array( 
-		'type'=>'slider_model-no' . ( $default ? '-default' : '' ),
-	), 100, 0, 0, __( 'Attiva Slider', SCM_THEME ) );
+		'type' => $select,
+	), 100, 0, 0, __( 'Slider', SCM_THEME ) );
 
         $slider_enabled = array( array( 'field' => 'main-slider-active', 'operator' => '!=', 'value' => 'no' ), array( 'field' => 'main-slider-active', 'operator' => '!=', 'value' => 'default' ) );
-            $fields[] = scm_acf_field_text( 'main-slider-field', array( 'placeholder'=>'[field name]' ), __( 'Slider', SCM_THEME ), $slider_enabled, 0, 0, 100 );
+            $fields[] = scm_field_add_class( scm_acf_field_text( 'main-slider-field', array( 'placeholder'=>'[field name]' ), __( 'Slider', SCM_THEME ), $slider_enabled, 0, 0, 100 ), SCM_ADVANCED_OPTIONS . ' hidden' );
             $fields = array_merge( $fields, scm_acf_preset_term( 'main-slider', 'sliders', __( 'Slider', SCM_THEME ), $slider_enabled, 0, 0, 100 ) );
 
     return $fields;
@@ -597,7 +599,7 @@ function scm_acf_options_tools() {
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-greensock', array( 'label'=>'Greensock' ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-greensock', 0, 20, 0, 0, __( 'Greensock', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-slider', array( 'label'=>'Main Slider' ) );
-		$fields = array_merge( $fields, scm_acf_options_slider() );
+		$fields = array_merge( $fields, scm_acf_options_slider( 0, 1 ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-nivo', 0, 20, 0, 0, __( 'Nivo Slider', SCM_THEME ) );
 		$fields[] = scm_acf_field_true( 'opt-tools-bx', 0, 20, 0, 0, __( 'BX Slider', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-parallax', array( 'label'=>'Parallax' ) );

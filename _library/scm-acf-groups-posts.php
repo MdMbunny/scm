@@ -170,12 +170,12 @@ function scm_acf_fields_sliders( $name = '' ) {
 
 	$fields = array();
 
-	$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', '', 'auto', 'px', __( 'Altezza', SCM_THEME ), 100 ) );
+	$fields = array_merge( $fields, scm_acf_preset_size( $name . 'height', '', 'auto', 'px', __( 'Altezza', SCM_THEME ), 99 ) );
 	//$fields[] = scm_acf_field_select( $name . 'theme', 'themes_nivo', 100, 0, 0, __( 'Tema', SCM_THEME ) );
-	$fields[] = scm_acf_field_select( $name . 'alignment', array( 'type'=>'vertical_alignment', 'default'=>'middle' ) );
+	$fields[] = scm_acf_field_select( $name . 'alignment', array( 'type'=>'vertical_alignment', 'default'=>'middle', 'label'=>'Allineamento verticale' ) );
 	
-		$fields[] = scm_acf_field_select( $name . 'effect', 'effect_nivo', 100, 0, 0, __( 'Effetto Slider', SCM_THEME ) );
-		$fields[] = scm_acf_field_number( $name . 'slices', array( 'default'=>10, 'prepend'=>__( 'Slices', SCM_THEME ), 'min'=>1, 'max'=>30 ) );
+		//$fields[] = scm_acf_field_select( $name . 'effect', 'effect_nivo', 100, 0, 0, __( 'Effetto Slider', SCM_THEME ) );
+		//$fields[] = scm_acf_field_number( $name . 'slices', array( 'default'=>10, 'prepend'=>__( 'Slices', SCM_THEME ), 'min'=>1, 'max'=>30 ) );
 		/*$fields[] = scm_acf_field_number( $name . 'cols', array( 'default'=>8, 'prepend'=>__( 'Colonne', SCM_THEME ), 'min'=>1, 'max'=>8 ) );
 		$fields[] = scm_acf_field_number( $name . 'rows', array( 'default'=>8, 'prepend'=>__( 'Righe', SCM_THEME ), 'min'=>1, 'max'=>100 ) );*/
 		$fields[] = scm_acf_field_number( $name . 'speed', array( 'default'=>1, 'prepend'=>__( 'Velocità', SCM_THEME ) ) );
