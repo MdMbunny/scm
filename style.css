@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.9.6
+Version:			v3.9.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -240,22 +240,27 @@ img {
     top: 0%;
 }
 
+.scm-image.image-banner,
 .scm-image.mask{
 	position: relative;
 }
 
+.image-banner img.landscape,
 .mask img.landscape{
     min-height: 100%;
     /*max-height: 100%;*/
 }
+.image-banner img.portrait,
 .mask img.portrait{
     min-width: 100%;
     /*max-width: 100%;*/
 }
+.image-banner.-middle img,
 .mask.-middle img{
 	top: -100%;
     bottom: -100%;
 }
+.image-banner.-bottom img,
 .mask.-bottom img{
 	top: initial;
     bottom: 0%;
