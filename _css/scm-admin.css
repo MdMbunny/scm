@@ -2456,8 +2456,8 @@ body:not(.scm-advanced) [data-layout="layout-template"]{
 .scm-advanced-options{
     background-color: #FFF !important;
 }
-.acf-field-repeater tr .acf-fields > .acf-field.-option,
-.acf-field-repeater tr .acf-fields > .acf-field.scm-advanced-options{
+.acf-field-repeater tr > .acf-fields > .acf-field.-option,
+.acf-field-repeater tr > .acf-fields > .acf-field.scm-advanced-options{
     background-color: #f3d8d7 !important;
     border: 0 !important;
 }

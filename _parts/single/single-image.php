@@ -41,7 +41,6 @@ $args = array(
 );
 
 
-
 if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
@@ -190,12 +189,13 @@ switch ( $args[ 'format' ] ) {
 
         if( $args['title'] )
             $title = '<span>' . $args['title'] . '</span>';
-        if( $args['link'] && $args['link'] != 'no' )
-            $attributes .= ' data-href="' . $args['link'] . '"';
-
         //$style .= ' width:auto; height:auto;';
     break;
 }
+
+if( $args['link'] && $args['link'] != 'no' )
+    $attributes .= ' data-href="' . $args['link'] . '"';
+
 $align = ex_attr( $args, 'align', 'top' );
 $class .= ' -' . $align;
 
@@ -220,6 +220,8 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
 
     if( is_array( $value ) )
         $value = wp_get_attachment_image( $value['ID'], $size );
+    elseif( is_numeric( $value ) )
+        $value = wp_get_attachment_image( $value, $size );
     elseif( $value )
         $value = '<img src="' . $value . '" alt="">';
     else
