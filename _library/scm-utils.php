@@ -242,6 +242,18 @@ function getQueryVar( $var = '', $fallback = '' ) {
 // ------------------------------------------------------
 
 /**
+ * [GET] Sanitize string
+ *
+ * @subpackage 1-Utilities/STRING
+ *
+ * @param {string} str String to sanitize.
+ * @return {string} Sanitized string.
+ */
+function sanitize_string( $str = '' ){
+    return strtolower( preg_replace('/[^a-zA-Z0-9-]/', '', str_replace( ' ', '-', $str ) ) );
+}
+
+/**
  * [GET] String ends at position
  *
  * Acts like strpos() {@link http://php.net/manual/en/function.strpos.php}
@@ -982,6 +994,27 @@ function asso_insert( $arr, $key = NULL, $value = NULL, $offset = '', $before = 
             return asso_insert_after( $arr, $offset, $key, $value );
     }
     return $arr;
+}
+
+/**
+ * [GET] Value by out-of-bounds index looping the array
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array where to look for.
+ * @param {int} index Index to look for.
+ * @return {misc} returns the value at index.
+ */
+function getByIndex( $arr, $index = 0 ){
+    
+    if( !isset( $arr ) || !is_arr( $arr ) || empty( $arr ) ) return NULL;
+
+    $tot = sizeof( $arr );
+    if( $index > $tot-1 ){
+        $val = floor( $index / $tot );
+        $index = $index - ( $tot * $val );
+    }
+    return $arr[$index];
 }
 
 /**
