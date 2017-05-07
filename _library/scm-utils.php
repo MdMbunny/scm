@@ -345,6 +345,30 @@ function endsWith($str, $needle = '') {
 
 }
 
+/**
+ * [GET] Get String between two characters
+ *
+ * @subpackage 1-Utilities/STRING
+ *
+ * @param {string} str String to check.
+ * @param {string=} start First character (default is '').
+ * @param {string=} end Second character (default is '').
+ * @return {string} String between start and end parameters.
+ */
+function getBetween( $str, $start = '', $end = '' ) {
+
+    if( !is_string( $str ) || !$start || !$end )
+        return '';
+
+    preg_match('~' . $start . '(.*?)' . $end . '~', $str, $output);
+
+    if( !empty( $output ) )
+        return ex_index( $output, 1, '' );
+    return '';
+
+}
+
+
 // ------------------------------------------------------
 // 4.0 ARRAY
 // ------------------------------------------------------

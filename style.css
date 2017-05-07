@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v3.9.8
+Version:			v3.9.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1151,17 +1151,28 @@ blockquote .append{
 --------------------------------------------------------------*/
 
 .disabled,
-.disabled *{
-	pointer-events: none !important;
+.disabled *:not(.enabled){
+	pointer-events: none;
+	/*pointer-events: none !important;*/
 }
 
-.enabled{
+.enabled,
+.disabled .enabled *{
 	pointer-events: auto;
 }
 
 /*.enabled *:not(.disabled){
 	pointer-events: auto;
 }*/
+
+a,
+a:focus,
+a:hover,
+a:visited
+a:active{
+	color: inherit;
+	text-decoration: inherit;
+}
 
 .toggle .toggle-button i,
 select,
