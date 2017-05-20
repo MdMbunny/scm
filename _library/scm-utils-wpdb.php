@@ -288,11 +288,11 @@ function wpdbIsAttachment( $value = '' ){
 function wpdbUpdateAttachments( $key = '', $value = '', $new_post = 0, $debug = false ){
 
     if( !is_array($value) ){
-        return attachmentFromURL( $value->guid, $new_post, false, $debug );
+        return attachmentFromURL( $value->guid, '', $new_post, false, $debug );
     }else{
         $arr = array();
         foreach ($value as $ind => $att)
-            $arr[] = attachmentFromURL( $att->guid, $new_post, false, $debug );
+            $arr[] = attachmentFromURL( $att->guid, '', $new_post, false, $debug );
         
         return $arr;
     }

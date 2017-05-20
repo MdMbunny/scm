@@ -204,13 +204,13 @@ function attachmentByFilename( $filename = '' ) {
  * @param {bool=} echo Echo File and Attachment data (default is false).
  * @return {int} New Attachment ID or 0.
  */
-function attachmentFromURL( $path = '', $postid = 0, $echo = false, $debug = 0 ) {
+function attachmentFromURL( $path = '', $name = '', $postid = 0, $echo = false, $debug = 0 ) {
 
     $attachment_id = 0;
     
     if( !$path ) return $attachment_id;
 
-    $filename = basename($path);
+    $filename = $name ?: basename($path);
     $exist = attachmentByFilename( $filename );
     $debug = (int)$debug;
 
@@ -219,7 +219,7 @@ function attachmentFromURL( $path = '', $postid = 0, $echo = false, $debug = 0 )
         if( $echo ) echo 'File Name Already Exists: ' . $filename;
         if( $debug > 1 ) consoleLog( $filename . ' EXISTS' );
         $attachment_id = $exist->ID;
-        if( !$exist->post_parent ){
+        if( !$exist->post_parent && $postid ){
             consoleLog( $filename . ' LINKED TO PARENT ' . $postid );
             if( !$debug ){
                 $attachment = array(
@@ -234,7 +234,7 @@ function attachmentFromURL( $path = '', $postid = 0, $echo = false, $debug = 0 )
 
         if( $echo ) echo 'File Name: ' . $filename;
 
-        consoleLog( $filename . ' NOT EXISTS' );
+        if( $debug > 1 ) consoleLog( $filename . ' NOT EXISTS' );
 
         if( !$debug ){
 

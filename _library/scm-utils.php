@@ -62,12 +62,14 @@ function alert( $str, $more = '', $divider = ': ' ){
  *
  * @param {misc} obj Item to print.
  */
-function consoleLog( $obj ){
-    ?>
-    <script type='text/javascript'>
-        console.log( <?php echo json_encode( $obj ); ?> );
-    </script>
-    <?php
+function consoleLog( $obj, $block = false ){
+    if( !$block ){
+        ?>
+        <script type='text/javascript'>
+            console.log( <?php echo json_encode( $obj ); ?> );
+        </script>
+        <?php
+    }
 }
 
 // ------------------------------------------------------
