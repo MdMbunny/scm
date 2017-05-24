@@ -375,6 +375,21 @@ function getBetween( $str, $start = '', $end = '' ) {
 // 4.0 ARRAY
 // ------------------------------------------------------
 
+
+/**
+ * [GET] Average between values
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array or Object to check.
+ * @return {number} Average
+ */
+function asso_equal( $a, $b ) {
+
+    $new = sizeof( array_intersect_key( $a, $b ) );
+    return $new !== sizeof( $a ) || $new !== sizeof( $b );
+}
+
 /**
  * [GET] Average between values
  *

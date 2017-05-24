@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.0.1
+Version:			v4.0.2
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1464,11 +1464,11 @@ input[type="submit"] {
 	-webkit-appearance: button; /* Corrects inability to style clickable 'input' types in iOS */
 }
 
-button:focus,
+button:not(.off):focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus,
-button:active,
+button:not(.off):active,
 input[type="button"]:active,
 input[type="reset"]:active,
 input[type="submit"]:active {

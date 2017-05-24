@@ -374,7 +374,7 @@ function getTermsId( $tax = '', $langs = array() ) {
  * @param {string} meta Post meta.
  * @param {misc=} value Post meta value for adding or updating, NULL for deleting (default is NULL).
  */
-function updatePostMeta( $id, $meta, $value = NULL ){
+/*function updatePostMeta( $id, $meta, $value = NULL ){
 
     if ( is_null( $value ) )
         delete_post_meta( $id, $meta );
@@ -382,7 +382,7 @@ function updatePostMeta( $id, $meta, $value = NULL ){
         add_post_meta( $id, $meta, $value );
     else
         update_post_meta( $id, $meta, $value );
-}
+}*/
 
 /**
  * [GET] Login Redirect
