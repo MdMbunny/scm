@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.0.2
+Version:			v4.0.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1164,7 +1164,7 @@ blockquote .append{
 }
 
 .enabled,
-.disabled .enabled *{
+.disabled .enabled *:not(.disabled){
 	pointer-events: auto;
 }
 
@@ -1332,11 +1332,11 @@ input[type="submit"],
 blockquote,
 .topofpage a,
 .nivo-directionNav a {
-	background: #444;
+	/*background: #444;*/
 	background-image: none;
 	border: 0;
 	width: auto;
-	color: #aaa;
+	/*color: #aaa;*/
 	text-decoration: none;
 	min-height: 3em;
 	min-width: 3em;

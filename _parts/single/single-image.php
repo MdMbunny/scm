@@ -156,6 +156,7 @@ $style = $args['style'];
 $id = $args['id'];
 $title = '';
 
+//consoleLog( $args );
 
 switch ( $args[ 'format' ] ) {
     case 'full':
@@ -187,10 +188,14 @@ switch ( $args[ 'format' ] ) {
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
         $class .= ( $image_height != 'auto' ? ' mask' : '' );
 
-        if( $args['title'] )
-            $title = '<span>' . $args['title'] . '</span>';
+        
         //$style .= ' width:auto; height:auto;';
     break;
+}
+
+if( $args['title'] ){
+    $title = '<span>' . $args['title'] . '</span>';
+    $class .= ' image-banner';
 }
 
 if( $args['link'] && $args['link'] != 'no' )

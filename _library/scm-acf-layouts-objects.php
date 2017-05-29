@@ -469,8 +469,11 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 
 	// conditional
 
-	if( $default !== 'banner' ){
-		$fields[] = scm_acf_field_select( 'thumb-size', 'image_sizes', $width, $logic, $req, __( 'Seleziona Dimensioni', SCM_THEME ) );
+	$fields = scm_acf_preset_column_width( '', 100 );
+
+	
+		if( $default != 'banner' )
+			$fields[] = scm_acf_field_select( 'thumb-size', 'image_sizes', $width, $logic, $req, __( 'Seleziona Dimensioni', SCM_THEME ) );
 		
 		$fields[] = scm_acf_field_select( 'format', 'image_format', $width, $logic, $req, __( 'Seleziona Formato', SCM_THEME ) );
 		$norm = array( $logic, array( 'field' => 'format', 'operator' => '==', 'value' => 'norm' ) );
@@ -485,12 +488,13 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 		$imageq = scm_acf_preset_size( 'size', '', 'auto', 'px', __( 'Dimensione', SCM_THEME ), $width, $quad );
 
 		$fields = array_merge( $fields, $imagew, $imageh, $imagef, $imageq );
-	}else{
-		$fields = array_merge( $fields, scm_acf_preset_column_width( '', 100 ) );
-		/*$fields = array_merge( $fields,  scm_acf_preset_size( 'width', '', 100, '%', __( 'Larghezza', SCM_THEME ) ) );*/
-		$fields[] = scm_acf_field_text( 'title' );
-		$fields[] = scm_acf_field_link( 'link' );
-	}
+
+		if( $default == 'banner' ){
+			$fields[] = scm_acf_field_text( 'title' );
+			$fields[] = scm_acf_field_link( 'link' );
+		}
+
+		
 	
 	if( !$obj )
 		$fields[] = scm_acf_field_image_all( 'image', 0, $width, $logic );

@@ -383,7 +383,14 @@ function scm_acf_layout_news( $layouts = array(), $default = 0 ) {
 	$layout_img = scm_acf_layout( 'immagine', 'block', __( 'Immagine', SCM_THEME ) );
 		$layout_img['sub_fields'] = scm_acf_object_immagine( '', 1 );
 	$layout_mod = scm_acf_layout( 'modules', 'block', __( 'Contenuto', SCM_THEME ) );
-	$layouts = array_merge( $layouts, array( $layout_img, $layout_mod ) );
+	
+
+	$layout_exc = scm_acf_layout( 'excerpt', 'block', __( 'Anteprima', SCM_THEME ) );
+		$layout_exc['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', '', __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
+		$layout_exc['sub_fields'] = array_merge( $layout_exc['sub_fields'], scm_acf_object_titolo( '', 1, 1, 50 ) );
+		$layout_exc['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', '', __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
+
+	$layouts = array_merge( $layouts, array( $layout_img, $layout_mod, $layout_exc ) );
 
 	return $layouts;
 }

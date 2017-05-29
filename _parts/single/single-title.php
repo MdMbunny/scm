@@ -90,7 +90,7 @@ if( !$text ){
                 if( !$text ){
                     $text = scm_field( 'editor', '', $post_id );
                     if( $text ){
-                        $text = substr( $text, 0, 250);
+                        $text = substr( strip_tags( $text ), 0, 250);
                         $text = explode( ' ', $text );
                         array_pop( $text );
                         $text = implode( ' ', $text);
