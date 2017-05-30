@@ -384,20 +384,6 @@ function getBetween( $str, $start = '', $end = '' ) {
  * @param {array} arr Array or Object to check.
  * @return {number} Average
  */
-function asso_equal( $a, $b ) {
-
-    $new = sizeof( array_intersect_key( $a, $b ) );
-    return $new !== sizeof( $a ) || $new !== sizeof( $b );
-}
-
-/**
- * [GET] Average between values
- *
- * @subpackage 1-Utilities/ARRAY
- *
- * @param {array} arr Array or Object to check.
- * @return {number} Average
- */
 function array_average( $arr ) {
     $tot = count( $arr );
     if (!$tot)
@@ -1038,6 +1024,20 @@ function asso_insert( $arr, $key = NULL, $value = NULL, $offset = '', $before = 
 }
 
 /**
+ * [GET] Comparsion between two associative arrays
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Object to check.
+ * @return {bool} Objects are equal
+ */
+function asso_equal( $a, $b ) {
+
+    $new = sizeof( array_intersect_key( $a, $b ) );
+    return $new !== sizeof( $a ) || $new !== sizeof( $b );
+}
+
+/**
  * [GET] Value by out-of-bounds index looping the array
  *
  * @subpackage 1-Utilities/ARRAY
@@ -1103,9 +1103,35 @@ print( $key ) // 'key'
 function getByValue( $arr, $value ){
     if( !isset( $arr ) || !is_array( $arr ) ) return NULL;
     foreach ($arr as $key => $elem) {
-        if( $elem == $value ) return $key;
+        if( $elem === $value ) return $key;
     }
     return NULL;
+}
+
+/**
+ * [GET] Key all by value
+ *
+ * Example usage:
+ *
+```php
+$arr = ['first'=>'value', 'second'=>'value', 'other'=>'element'];
+$keys = getAllByValue( $arr, 'value' );
+print( $keys ) // [ 'first', 'second' ]
+```
+ *
+ * @subpackage 1-Utilities/ARRAY
+ *
+ * @param {array} arr Array where to look for.
+ * @param {string} value Value to look for.
+ * @return {array} An array of keys.
+ */
+function getAllByValue( $arr, $value ){
+    $new = [];
+    if( !isset( $arr ) || !is_array( $arr ) ) return [];
+    foreach ($arr as $key => $elem) {
+        if( $elem === $value ) $new[] = $key;
+    }
+    return $new;
 }
 
 /**
