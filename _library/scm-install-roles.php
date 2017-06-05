@@ -51,7 +51,7 @@ function scm_hook_roles_install() {
         define( 'SCM_LEVEL', scm_role_level() );
     }else{
         define( 'SCM_ID', 0 );
-        define( 'SCM_ROLE', 'visitatore' );
+        define( 'SCM_ROLE', 'ospite' );
         define( 'SCM_LEVEL', 100 );
     }
 
@@ -274,7 +274,8 @@ function scm_roles_list() {
         'member'        => array( 40,       __( 'Member', SCM_THEME ),      array( 'upload_files', 'list_users', 'read_private_pages', 'read_private_posts', 'read' ) ),
         'utente'        => array( 50,       __( 'User', SCM_THEME ),        array( 'read_private_pages', 'read_private_posts' ) ),
         'iscritto'      => array( 60,       __( 'Subscriber', SCM_THEME ),  array('') ),
-        'visitatore'    => array( 100,      0,                              0 ),
+        'visitatore'    => array( 70,       __( 'Visitor', SCM_THEME ),     array('') ),
+        'ospite'        => array( 100,      0,                              0 ),
     );
     $roles = apply_filters( 'scm_filter_roles_list', $roles );
     return $roles;
@@ -542,6 +543,7 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $adm = false, $cap = fa
     $role->remove_cap( 'delete_published_' . $type );
 
     $admin = $name == 'administrator';
+    $visitatore = $name == 'visitatore';
     $iscritto = $name == 'iscritto';
     $utente = $name == 'utente';
     $member = $name == 'member';
@@ -551,7 +553,7 @@ function scm_role_post_caps( $role = NULL, $type = NULL, $adm = false, $cap = fa
     $type = apply_filters( 'scm_filter_roles_caps', $type, $admin );
     if( !$type ) return $role;
     
-    if( $iscritto || ( !$admin && !$manager && !$staff && $adm ) )
+    if( $visitatore || $iscritto || ( !$admin && !$manager && !$staff && $adm ) )
         return $role;
     
     $role->add_cap( 'read_private_' . $type );

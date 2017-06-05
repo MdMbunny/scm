@@ -18,6 +18,7 @@ global $SCM_indent;
 $scm = scm_front_init();
 
 do_action( 'scm_action_content', $_SERVER['REQUEST_URI'] );
+$scm = apply_filters( 'scm_filter_content', $scm );
 
 /*define( 'SCM_POST_TEMPLATE',			$scm['template'] );
 define( 'SCM_POST_TYPE',				$scm['type'] );

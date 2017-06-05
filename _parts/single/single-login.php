@@ -71,10 +71,10 @@ if ( is_user_logged_in() ) {
             //$b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
             //$b_label = ( SCM_PAGE_EDIT ? __( 'View', SCM_THEME ) : ( $b_label ?: __( 'Edit', SCM_THEME ) ) );
         }elseif( $b_type == 'enter' ){
-            $b_label = ( $b_label ?: __( 'Enter', SCM_THEME ) );
+            $b_label = ( $b_label ?: ( $b_icon ? '' : __( 'Enter', SCM_THEME ) ) );
         }elseif( $b_type == 'logout' ){
             $b_link = getURL( 'logout:' . $b_link );
-            $b_label = ( $b_label ?: __( 'Sign Out', SCM_THEME ) );
+            $b_label = ( $b_label ?: ( $b_icon ? '' : __( 'Sign Out', SCM_THEME ) ) );
         }
         echo '<a class="scm-button shape column-layout" href="' . $b_link . '">' . ( $b_icon ? '<i class="fa ' . $b_icon . '"></i>' : '' ) . $b_label . '</a>';
     }
@@ -101,7 +101,8 @@ if ( is_user_logged_in() ) {
         $label_user = $args['login-label-user'];
         $label_password = $args['login-label-password'];
         $label_remember = $args['login-label-remember'];
-        $label_login = $args['login-send'];
+        $label_login = $args['login-send'] ?: '_empty_label';
+        $label_icon = ( $args['login-icon'] ? '<i class="fa ' . $args['login-icon'] . '"></i>' : '' );
         
         $attr = array(
                 'echo'           => true,
