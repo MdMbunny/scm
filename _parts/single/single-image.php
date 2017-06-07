@@ -156,8 +156,6 @@ $style = $args['style'];
 $id = $args['id'];
 $title = '';
 
-//consoleLog( $args );
-
 switch ( $args[ 'format' ] ) {
     case 'full':
         $image_height = scm_utils_preset_size( $args[ 'full-number' ], $args[ 'full-units' ], 'initial' );
@@ -188,8 +186,6 @@ switch ( $args[ 'format' ] ) {
         $style .= ' width:' . $image_width . '; height:' . $image_height . ';';
         $class .= ( $image_height != 'auto' ? ' mask' : '' );
 
-        
-        //$style .= ' width:auto; height:auto;';
     break;
 }
 
@@ -198,11 +194,9 @@ if( $args['title'] ){
     $class .= ' image-banner';
 }
 
-if( $args['link'] && $args['link'] != 'no' )
-    $attributes .= ' data-href="' . $args['link'] . '"';
-
 $align = ex_attr( $args, 'align', 'top' );
 $class .= ' -' . $align;
+
 
 for ( $i = 0; $i < sizeof( $image ); $i++ ) { 
 
@@ -219,6 +213,8 @@ for ( $i = 0; $i < sizeof( $image ); $i++ ) {
 
         if( $args['link'] == 'self' )
             $att .= scm_utils_link_post( $args );
+        elseif ( $args['link'] && $args['link'] != 'no' )
+            $att .= ' data-href="' . $args['link'] . '"';
         
         $class .= ' thumb';
     }

@@ -142,26 +142,10 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
 
     $set = ex_attr( $SCM_types['settings'], $type, array( 'link'=>'self', 'link-field'=>'' ) );
-    $link_type = ex_attr( $content, 'link-type', $set['link'] );
-    $link_field = ex_attr( $content, 'link-field', $set['link-field'] );
+    $link_type = is_attr( $content, 'link-type', $set['link'] );
+    $link_field = is_attr( $content, 'link-field', $set['link-field'] );
     $template = ex_attr( $content, 'template', '' );
     
-    /*if( !$template ){
-        
-        $temp = ex_attr( $SCM_types['objects'], $type . SCM_TEMPLATE_APP, 0 );
-        if( $temp ){
-            $t = get_posts(array(
-                'post_type' => $type . SCM_TEMPLATE_APP,
-                'posts_per_page' => 1,
-                'post_status' => array( 'publish', 'private' ),
-                'order' => 'DESC',
-                'orderby' => 'date',
-            ));
-            $template = $t[0]->ID;
-            $content = array_merge( get_fields( $template ), ( $content ?: array() ) );
-        }
-    }*/
-
     if( is_asso( $link_field ) ){
         foreach ($link_field as $typ => $choices) {
             foreach ($choices as $choice => $field) {
@@ -200,9 +184,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
         break;
 
         case 'video':
-            //$video = scm_field( $link_field, '', $id );
             $video = getYouTubeURL( scm_field( 'video-url', '', $id ) );
-            //$video = ( strpos( $video, '/embed/' ) === false ? 'https://www.youtube.com/embed/' . substr( $video, strpos( $video, '=' ) + 1 ) : $video );
             $link = ' data-popup="' . htmlentities( json_encode( array( $video . '?autoplay=1' ) ) ) . '"';
             $link .= ' data-popup-type="video"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
