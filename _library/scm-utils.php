@@ -1126,8 +1126,8 @@ print( $keys ) // [ 'first', 'second' ]
  * @return {array} An array of keys.
  */
 function getAllByValue( $arr, $value ){
-    $new = [];
-    if( !isset( $arr ) || !is_array( $arr ) ) return [];
+    $new = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return array();
     foreach ($arr as $key => $elem) {
         if( $elem === $value ) $new[] = $key;
     }
