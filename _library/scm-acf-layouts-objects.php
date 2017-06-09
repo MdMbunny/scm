@@ -469,7 +469,7 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 
 	// conditional
 
-	$fields = scm_acf_preset_column_width( '', 100 );
+	$fields = scm_acf_preset_column_width( '', 50 );
 
 	
 		if( $default !== 'banner' )

@@ -1030,23 +1030,29 @@ function scm_utils_preset_size( $size, $units, $fall = '', $fall2 = 'px' ) {
 * @param {float=} fallback Alpha fallback (default is 1).
 * @return {string} Color value in RGBA form.
 */
-function scm_utils_preset_rgba( $color = '', $alpha = '', $fall = '', $fall2 = 1 ) {
+function scm_utils_preset_rgba( $col = '', $alp = '', $fall = '', $fall2 = 1 ) {
 
-    if( is_array($color) ){
+    $color = $col;
+    $alpha = $alp;
+
+    if( is_array($col) ){
         global $SCM_libraries;
-        $lib = $color[ $alpha . '-rgba-library' ];
+        $lib = $col[ $alp . '-rgba-library' ];
+        
         if( $lib && ex_attr( $SCM_libraries['colors'], $lib ) ){
             $alpha = $SCM_libraries['colors'][$lib]['alpha'];
             $color = $SCM_libraries['colors'][$lib]['color'];
             
         }else{
-            $alpha = $color[ $alpha . '-rgba-alpha' ];
-            $color = $color[ $alpha . '-rgba-color' ];
+
+            $color = $col[ $alp . '-rgba-color' ];
+            $alpha = $col[ $alp . '-rgba-alpha' ];
         }
     }else{
-        $alpha = isNumber( $alpha, $fall2 );
-        $color = is( $color, $fall );
+        $alpha = isNumber( $alp, $fall2 );
+        $color = is( $col, $fall );
     }
+
     $color = ifequal( $color, array( '', 'transparent', 'initial', 'inherit', 'none' ), hex2rgba( $color, $alpha ) );
 
     return $color;
@@ -1069,8 +1075,11 @@ function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = 
 
     $icon = array( 'icon' => 'fa-map-marker', 'data' => '#000000' );
 
+
+
     switch ( $marker ) {
         case 'icon':
+
             $fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker' );
             $color = scm_utils_preset_rgba( $fields, 'luogo-map' );//is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
             //$color = scm_utils_preset_rgba( $fields, 'luogo-map', '#e3695f', 1 );

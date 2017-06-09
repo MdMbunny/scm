@@ -569,6 +569,8 @@ function scm_auto_menu( $numbers = false ) {
 
     $pages = apply_filters( 'scm_filter_menu_auto', $pages );
 
+    $ret = apply_filters( 'scm_filter_menu_auto_first', $ret );
+
     $tot = sizeof( $pages );
     
     foreach ( $pages as $page ) {
@@ -594,6 +596,9 @@ function scm_auto_menu( $numbers = false ) {
         $ret .= scm_get_menu_item_close( $depth );
         
     }
+
+    $ret = apply_filters( 'scm_filter_menu_auto_last', $ret );
+
     return $ret;
 }
 
@@ -654,7 +659,7 @@ function scm_auto_menu_sub( $children, $depth = 0, $menu = 'main', $numbers = fa
 * @return {string} HTML tag.
 */
 function scm_auto_menu_sub_item( &$item, $depth = 0, $count = 0, $tot = 0, $menu = 'main', $numbers = false, $names = false ) {
-    if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) ) return '';
+    if( !$item || !is_asso( $item ) || !array_key_exists( 'id', $item ) || ex_attr( $item, 'nomenu', 0 ) === true ) return '';
     $id = $item['id'];
     $icon = ex_attr( $item, 'icon', '' );
     $sub = ex_attr( $item, 'sub', '' );

@@ -1736,7 +1736,7 @@ input.acf-is-prepended {
 
 }
 /*.acf-field-repeater tr > td.acf-fields:before {*/
-.acf-field-repeater tr > td.acf-fields:before,
+/*.acf-field-repeater tr > td.acf-fields:before,
 .acf-field-repeater tr > td.acf-fields:after{
     content: "";
     display: block;
@@ -1744,9 +1744,7 @@ input.acf-is-prepended {
     clear: both;
     width: 100%;
     height: 5px;
-    /*background-color: #FFF;*/
     background-color: #e14d43;
-    /*margin-bottom: -1px;*/
     z-index: 1;
     position: relative;
     left: 0;
@@ -1756,7 +1754,7 @@ input.acf-is-prepended {
 	background-color: #e14d43;
 	top: initial;
 	bottom: 0;
-}
+}*/
 
 
 .acf-field-repeater tr .acf-fields > .acf-field{
@@ -2201,7 +2199,7 @@ body:not(.scm-advanced) [data-layout="layout-template"]{
 	position: absolute;
     width: 10% !important;
     padding: 0;
-    line-height: 3em;
+    line-height: 3.2em;
     text-align: center !important;
     z-index: 1;
     background-color: transparent !important;
@@ -2221,15 +2219,15 @@ body:not(.scm-advanced) [data-layout="layout-template"]{
 
 
 /*.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > div:first-child:not(.acf-flexible-content){*/
-.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select-2-columns_width{
+.special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select-columns_width{
 	padding: 0px 1em 0 10% !important;
     border-radius: 0;
     height: 3em;
-    line-height: 3em;
+    line-height: 2.8em;
 }
 
 .special-repeater > .acf-input > .acf-repeater > table > tbody > .acf-row > .acf-fields > .select2-selectors{
-	padding: .25em 10% 0 1em !important;
+	padding: 0em 10% 0 1em !important;
     height: 3em;
 }
 

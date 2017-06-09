@@ -61,6 +61,11 @@ function scm_front_init() {
     $page = 0;
     $part = '';
     $temp = '';
+    $lang = '';
+
+    if( function_exists( 'pll_current_language' ) ){
+        $lang = ( pll_current_language() != pll_default_language() ? '-' . pll_current_language() : '' );
+    }
 
     // INIT SINGLE or ARCHIVE or TAXONOMY ---------------------------------------------------------------------------------
 
@@ -71,15 +76,15 @@ function scm_front_init() {
         }else{
             
             if( $istax ){
-                $page = get_page_by_path( '_tax-' . $tax );
+                $page = get_page_by_path( '_tax-' . $tax . $lang );
                 $part = SCM_DIR_PARTS_TAX;
                 $temp = 'tax';
             }elseif( $single ){
-                $page = get_page_by_path( '_single-' . $type );
+                $page = get_page_by_path( '_single-' . $type . $lang );
                 $part = SCM_DIR_PARTS_SINGLE;
                 $temp = 'single';
             }elseif( $archive ){
-                $page = get_page_by_path( '_archive-' . $type );
+                $page = get_page_by_path( '_archive-' . $type . $lang );
                 $part = SCM_DIR_PARTS_ARCHIVE;
                 $temp = 'archive';
             }

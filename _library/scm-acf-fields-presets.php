@@ -80,16 +80,19 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 			case 5:
 			case 'section':
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 0, 0, 0, 0, '', array( 'prepend'=>'Area', 'placeholder'=>__('Titolo',SCM_THEME) ) ), '-option hidden' ) );
-				$fields[] = scm_field_add_class( scm_acf_field_text( $second . 'sub', array( 'placeholder'=>__('Sottotitolo', SCM_THEME) ), 20 ), '-option hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'nomenu', 0, 10, 0, 0, __('No Menu', SCM_THEME) ), '-option hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_text( $second . 'sub', array( 'placeholder'=>__('Sottotitolo', SCM_THEME) ), 15 ), '-option hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_icon_no( $second . 'icon', 0, 20 ), '-option hidden' );
-				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', array( 'type' => '2-selectors', 'label' => '#' ), 40 ), '-option hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', array( 'type' => '2-selectors', 'label' => '#' ), 35 ), '-option hidden' );
 				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 30, 70 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 				break;
 			case 4:
 			case 'row':
-				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'layout', array( 'type'=>'main_layout', 'default'=>array( 'default'=>'Default Layout' ) ), 50 ), '-option hidden' );
-				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', array( 'type' => '2-selectors', 'label' => '#' ), 50 ), '-option hidden' );
-				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 20, 20, 60 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 30, 0, 0, 0, 0, '', array( 'prepend'=>'Area', 'placeholder'=>__('Titolo',SCM_THEME) ) ), '-option hidden' ) );
+				$fields[] = scm_field_add_class( scm_acf_field_true( $second . 'nomenu', 0, 10, 0, 0, __('No Menu', SCM_THEME) ), '-option hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'layout', array( 'type'=>'main_layout', 'default'=>array( 'default'=>'Default Layout' ) ), 25 ), '-option hidden' );
+				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', array( 'type' => '2-selectors', 'label' => '#' ), 35 ), '-option hidden' );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 30, 70 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
 				break;
 			case 3:
 			case 'module':

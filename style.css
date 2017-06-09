@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.0.8
+Version:			v4.0.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -212,6 +212,7 @@ ul {
 
 ol {
 	list-style: decimal;
+	padding-left: 1.5em;
 }
 
 dd {
@@ -225,6 +226,7 @@ img {
 .scm-image img {
 	max-width:100%;
 	max-height:100%;
+	width: auto;
 }
 .scm-image.image-banner img,
 .scm-image.mask img{
@@ -311,7 +313,7 @@ caption, th, td {
 .h0, h1, h2, h3, h4, h5, h6, .h7, .h8, .h9 {
 	font-weight: bold;
 	line-height: 1em;
-	color: #444;
+	/*color: #444;*/
 }
 
 b, strong, dt, th {
@@ -1536,12 +1538,13 @@ input[type="submit"]:active {
 	box-shadow: 1px 1px 2px 0px rgba(0,0,0,.5) inset;
 	background-clip: content-box;
 }
-
+.scm-loading.loading-icon{
+	color: #AAA;
+}
 .scm-loading.loading-icon .fa{
 	font-size: 1em;
 	width: 1em;
 	height: 1em;
-	color: #AAA;
 	line-height: initial;
 }
 
@@ -2159,7 +2162,7 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 
 
 .slider.nivo {
-	background:#fff url(_img/loading.gif) no-repeat 50% 50%;
+	background:#000 url(_img/loading.gif) no-repeat 50% 50%;
 }
 
 /*** IMAGES ***/
@@ -2802,7 +2805,8 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 	top: 10%;
 	/*left: 10%;*/
 	border-radius: 1em;
-	z-index: 99999;
+	z-index: 999;
+	/*z-index: 99999;*/
 	pointer-events: all;
 }
 .fancybox-wrap .dynamic * {
@@ -3006,13 +3010,14 @@ body.touch.smart .fancybox-overlay .fancybox-tools{
 }
 
 .fancybox-overlay .fancybox-tools a i{
-	-webkit-transition: color .2s;
-    transition: color .2s;
+	-webkit-transition: opacity .2s;
+    transition: opacity .2s;
 }
 
 body:not(.touch) .fancybox-overlay .fancybox-tools a:hover i,
 body:not(.touch).fancybox-overlay.white .fancybox-tools a:hover i{
-	color: #AAA;
+	/*color: #AAA;*/
+	opacity: .5;
 }
 
 /* Tools Float */

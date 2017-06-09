@@ -214,6 +214,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             // Merge defaults with arguments
             // Set $slug variable from Layout's name
             $content = ( is_array( $content ) ? array_merge( $args, $content ) : array() );
+
             $name = $content['acf_fc_layout'];
             $slug = str_replace( 'layout-', '', $name );
 
@@ -644,6 +645,10 @@ function scm_container_column( $content = array(), $counter = 0, $current = 0, $
     $content['inherit'] = ( $content['inherit'] ?: ( $layout === 'auto' && $content['container'] !== 'post' ) || ( $slug === 'immagine' && ( isset( $content['image'] ) && !$content['image'] ) ) );
 
     if( !$content['inherit'] ){
+
+        // Questa è una pezza per Deafal > Progetto > Partner/Finanziatori - verifica
+        if( is_array( $layout ) )
+            $layout = $layout[0];
 
         if( strpos( $layout, '/' ) !== false ){
 
