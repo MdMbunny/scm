@@ -21,6 +21,7 @@ $args = array(
 		array( 'social' => 'google', 		'icon' => 1, 		'color' => ''	 ),
 		array( 'social' => 'linkedin', 		'icon' => 0, 		'color' => ''	 ),
 		array( 'social' => 'email', 		'icon' => 0, 		'color' => ''	 ),
+		array( 'social' => 'link',	 		'icon' => 'fa-link', 	'color' => ''	 ),
 	),
 	'shape' => 'circle', // 'square, rounded, circle, round-petal, round-leaf, ...' see main style.css
 	'type' => 'fill', // 'fill, stroke'
@@ -53,19 +54,21 @@ $style .= $icon_size ? ' font-size:' . $icon_size . ';' : '';
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );
 
 $groups = scm_acf_field_fa_preset( 'social' );
-$current = SCM_SITE . '?p=' . $post_id;// get_permalink( $post_id );
+$current = SCM_SITE . '?p=' . $post_id;
+$permalink = get_permalink( $post_id );
 $title = get_the_title( $post_id );
 
 
 	foreach ($social as $value) {
 
 		$group = ex_attr( $groups, $value['social'], '' );
+		$url = '';
+
 		if( $group ){
 			$icons = $group['choices'];
 			$icon = is_string( $value['icon'] ) ? $value['icon'] : $icons[ $value['icon'] ];
 			$color = $value['color'] ?: $group['color'];
-			$name = $group['name'];
-			$url = '';
+			$name = 'Share on ' . $group['name'];
 
 			switch( $value['social'] ) {
 				case 'facebook': $url = 'http://www.facebook.com/sharer/sharer.php?u=' . $current; break;
@@ -78,10 +81,25 @@ $title = get_the_title( $post_id );
 				break;
 			}
 
-			indent( $SCM_indent + 2, '<a class="share-button share-' . $value['social'] . ' ' . $type . ' ' . $shape . '" title="Share on ' . $name . '" href="' . $url . '" target="_blank" style="background-color:' . $color . ';color:' . $color . ';border-color:' . $color . ';">', 1 );
-				indent( $SCM_indent + 3, '<i class="fa ' . $icon . '"></i>', 1 );
-			indent( $SCM_indent + 2, '</a>', 1 );
+			
+		}else{
+
+			$icon = is_string( $value['icon'] ) ? $value['icon'] : '';
+			$color = $value['color'] ?: '#AAA';
+			$name = 'Share URL';
+
+			switch( $value['social'] ) {
+				case 'link': $url = $permalink; break;
+				
+				default:
+				break;
+			}
+
 		}
+
+		indent( $SCM_indent + 2, '<a class="share-button share-' . $value['social'] . ' ' . $type . ' ' . $shape . '" title="' . $name . '" href="' . $url . '" target="_blank" style="background-color:' . $color . ';color:' . $color . ';border-color:' . $color . ';">', 1 );
+			indent( $SCM_indent + 3, '<i class="fa ' . $icon . '"></i>', 1 );
+		indent( $SCM_indent + 2, '</a>', 1 );
 	}
 
 indent( $SCM_indent, '</div><!-- icon -->' );

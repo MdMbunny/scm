@@ -550,14 +550,17 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 }*/
 
 .acf-field-true-false .acf-input label input{
-	margin: -1px 0 0 0 !important;
+	margin: -1px 0 0 -1em !important;
     padding: 2px !important;
     background: transparent;
     height: 2em;
     text-align: right;
     box-shadow: none;
     border-color: #eee;
-    width: 100%;
+}
+body:not(.browser-firefox) .acf-field-true-false .acf-input label input{
+	width: 100%;
+	margin-left: 0 !important;
 }
 
 .acf-field-true-false .acf-input label input:hover{
