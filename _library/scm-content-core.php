@@ -323,7 +323,7 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
         $content['class'] = ex_attr( $content, 'class', '' );
         $content['attributes'] = ex_attr( $content, 'attributes', '' );
         $type = $content['post_type'] = $post->post_type;
-        
+
         $template_id = ex_attr( $content, 'original-template', 0 );
         $template_post = scm_utils_get_template( $type, $template_id );
         $template_id = $template_post ? $template_post->ID : 0;
@@ -1111,6 +1111,15 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
     $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
     $compare = ex_attr( $content, 'archive-compare', '=' );
+    $typ = 'CHAR';
+
+    if( $value == 'true' ){
+        $value = true;
+        $typ = 'BOOLEAN';
+    }elseif( $value == 'false' ){
+        $value = false;
+        $typ = 'BOOLEAN';
+    }
 
     if( $archive ){
 
@@ -1137,7 +1146,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         }
 
         $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
-        
+
         $query = array(
             'post_type' => $types,
             'tax_query' => $tax,
@@ -1150,6 +1159,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             'meta_value' => $value,
             'meta_compare' => $compare,
             'meta_query' => $meta,
+            'meta_type' => $typ,
         );
 
     }else{
@@ -1167,6 +1177,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
                 'meta_value' => $value,
                 'meta_compare' => $compare,
                 'meta_query' => $meta,
+                'meta_type' => $typ,
             );
         }
     }
