@@ -2319,4 +2319,13 @@ function csv_insert_column( &$csv, $index, $head = '' ){
     }
 }
 
+function csv_remove_column( &$csv, $index = NULL ){
+    if( is_null( $index ) ) return;
+    for( $i = 0; $i < sizeof($csv); $i++ ){
+        unset( $csv[$i][$index] );
+        $csv[$i] = array_values( $csv[$i] );
+    }
+
+}
+
 ?>
