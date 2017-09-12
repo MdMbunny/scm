@@ -141,9 +141,9 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
     $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
 
-    $set = ex_attr( $SCM_types['settings'], $type, array( 'link'=>'self', 'link-field'=>'' ) );
-    $link_type = is_attr( $content, 'link-type', $set['link'] );
-    $link_field = is_attr( $content, 'link-field', $set['link-field'] );
+    $set = ex_attr( $SCM_types['settings'], $type, '' ) ?: array( 'link'=>'self', 'link-field'=>'' );
+    $link_type = ex_attr( $content, 'link-type', '' ) ?: $set['link'];
+    $link_field = ex_attr( $content, 'link-field', '' ) ?: $set['link-field'];
     $template = ex_attr( $content, 'template', '' );
     
     if( is_asso( $link_field ) ){
