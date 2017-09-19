@@ -723,6 +723,9 @@ body:not(.browser-firefox) .acf-field-true-false .acf-input label input{
 }*/
 
 /* Tab */
+.acf-fields > .acf-tab-wrap{
+	width: 100%;
+}
 .acf-tab-wrap .acf-tab-group li a{
 	color: #333 !important;
 }
@@ -1177,7 +1180,8 @@ body:not(.browser-firefox) .acf-field-true-false .acf-input label input{
 	line-height: 1.5em;
 	min-height: 16px !important;
 	max-width: 1920px;
-	padding: 20px 12px 20px !important;
+	padding: 20px 12px 20px;
+	/*padding: 20px 12px 20px !important;*/
 	border-left: 0 !important;
 	border-right: 0 !important;
 }

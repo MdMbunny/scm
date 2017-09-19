@@ -491,10 +491,8 @@ function scm_acf_object_immagine( $default = '', $obj = 0, $opt = '', $width = 1
 
 		if( $default === 'banner' ){
 			$fields[] = scm_acf_field_text( 'title' );
-			$fields[] = scm_acf_field_link( 'link' );
+			$fields[] = scm_acf_field_link( 'url' );
 		}
-
-		
 	
 	if( !$obj )
 		$fields[] = scm_acf_field_image_all( 'image', 0, $width, $logic );

@@ -870,7 +870,7 @@ function scm_acf_field_icon( $name = '', $field = 0, $width = 100, $logic = 0, $
 * @return {array} Field.
 */
 function scm_acf_field_icon_no( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	return scm_acf_helper( $name, $field, array('type' => 'icon-no','default'=>'no','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'icon-no','default'=>'','label' => $label, 'null' => 1), $width, $logic, $required );
 }
 
 // ------------------------------------------------------

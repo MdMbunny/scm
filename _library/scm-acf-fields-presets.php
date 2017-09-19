@@ -947,7 +947,6 @@ function scm_acf_preset_repeater_files( $name = '', $elements = '', $logic = 0, 
 		$files['sub_fields'][] = scm_acf_field_file( 'file', array( 'type'=>'file-all' ), 70, 0, 0, __( 'Seleziona un file', SCM_THEME) );
 		
 		
-		
 	$fields[] = $files;
 	
 	return $fields;

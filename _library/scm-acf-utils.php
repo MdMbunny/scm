@@ -503,6 +503,7 @@ function scm_acf_get_field( $elem ) {
 				'save_format' 				=> scm_acf_get_field_to3( $arg, 3, 'save', 'class' ),
 				'enqueue_fa' 				=> scm_acf_get_field_to3( $arg, 4, 'enqueue', 0 ),
 				'allow_null' 				=> scm_acf_get_field_to3( $arg, 5, 'null', 0 ),
+				'show_preview' 			    => scm_acf_get_field_to3( $arg, 6, 'preview', 1 ),
 				'fa_live_preview' 			=> scm_acf_get_field_to3( $arg, 6, 'preview', 1 ),
 				'filter_group' 				=> $filter_group,
 				'no_option' 				=> $no,

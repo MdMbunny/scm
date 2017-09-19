@@ -565,6 +565,7 @@ function scm_hook_acf_loadfield_hook_repeater_list( $field ){
 * @return {array} Filtered field.
 */
 function scm_hook_acf_loadfield_hook_fontawesome_list( $field ){
+    return $field;
 
     if ( is_plugin_active( 'advanced-custom-fields-font-awesome/acf-font-awesome.php' ) ) {
 
@@ -587,10 +588,10 @@ function scm_hook_acf_loadfield_hook_fontawesome_list( $field ){
         }
 
         if( isset($field['choices']) ){
-            foreach ( $field['choices'] as $key => $value) {
+            /*foreach ( $field['choices'] as $key => $value) {
                 if( isset( $field['choices'][ $key ] ) )
                     $field['choices'][ $key ] = substr( $value, strpos( $value, ' fa-' ) + 4 );
-            }
+            }*/
 
             if( isset( $field['no_option'] ) && $field['no_option'] )
                 $field['choices'] = array_merge( array( 'no' => 'No Icon' ), $field['choices'] );
