@@ -40,7 +40,7 @@ $style .= $icon_size ? ' font-size:' . $icon_size . ';' : '';
 
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );
 
-	indent( $SCM_indent + 2, '<i class="fa ' . $icon . '"></i>', 1 );
+	indent( $SCM_indent + 2, '<i class="fa ' . $icon . '"></i>', 1 );	
 
 indent( $SCM_indent, '</div><!-- icon -->' );
 

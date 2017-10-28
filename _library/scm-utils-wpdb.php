@@ -118,7 +118,7 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
     $new_post = 0;
     $skip = $old && !$update;
     $update = $old && $update;
-    $new = !$old;
+    $nw = !$old;
 
     $save = !$skip && !$debug;
     
@@ -129,10 +129,10 @@ function wpdbInsertPost( $post = NULL, $language = array(), $update = false, $de
 
     consoleLog($post['ID']);
 
-    if( $debug > 1 || $new ) consoleLog( $post['post_title'] );
+    if( $debug > 1 || $nw ) consoleLog( $post['post_title'] );
 
     if( $update ) consoleLog( '--> [ UPDATING ] - ' . $post['post_status'] );
-    elseif( $new ) consoleLog( '--> [ CREATING ] - ' . $post['post_status'] );
+    elseif( $nw ) consoleLog( '--> [ CREATING ] - ' . $post['post_status'] );
     elseif( $skip && $debug > 1 ) consoleLog( '--> [ ALREADY EXISTS ] - ' . $post['post_status'] );
 
     if( $debug || $save ){
@@ -298,18 +298,18 @@ function wpdbUpdateAttachments( $key = '', $value = '', $new_post = 0, $debug = 
     }
 }
 
-function wpdbNewCustomPosts( $old = '', $new = '', $attachments = array(), $fields = array(), $taxes = array(), $language = array(), $keepslug = false ){
+function wpdbNewCustomPosts( $old = '', $nw = '', $attachments = array(), $fields = array(), $taxes = array(), $language = array(), $keepslug = false ){
 
     $new_posts = array();
 
-    if( !$old || !$new ) return $new_posts;
+    if( !$old || !$nw ) return $new_posts;
 
     $old_posts = getPosts( $old, 'publish' );
     foreach ( $old_posts as $post) {
 
         $new_post = array(
             'featured' => get_post_thumbnail_id( $post->ID ),
-            'post_type' => $new,
+            'post_type' => $nw,
             'post_status' => $post->post_status,
             'post_title' => $post->post_title,
             'post_name' => ( !$keepslug ? sanitize_title( $post->post_title ) : $post->post_name ),

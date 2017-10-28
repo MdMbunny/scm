@@ -279,17 +279,17 @@ function scm_acf_key_and_condition( $key, $list ) {
 
 	for ( $i = 0; $i < sizeof( $list ); $i++ ) {
 
-		$new = $key . ( substr( $key, -1 ) != '_' ? '_' : '' ) . $list[$i]['key'];
-		$list[$i]['key'] = $new;
+		$nw = $key . ( substr( $key, -1 ) != '_' ? '_' : '' ) . $list[$i]['key'];
+		$list[$i]['key'] = $nw;
 
 		if( isset( $list[$i]['layouts'] ) ){
 			for ( $j = 0; $j < sizeof( $list[$i]['layouts'] ); $j++ ) {
-				$lay = $list[$i]['layouts'][$j]['key'] = scm_acf_get_key( $new . $list[$i]['layouts'][$j]['name'], 'layout_' );
+				$lay = $list[$i]['layouts'][$j]['key'] = scm_acf_get_key( $nw . $list[$i]['layouts'][$j]['name'], 'layout_' );
 				$list[$i]['layouts'][$j]['sub_fields'] = scm_acf_key_and_condition( $lay, $list[$i]['layouts'][$j]['sub_fields'] );
 			}
 
 		}else if( isset( $list[$i]['sub_fields'] ) ){
-			$list[$i]['sub_fields'] = scm_acf_key_and_condition( $new, $list[$i]['sub_fields'] );
+			$list[$i]['sub_fields'] = scm_acf_key_and_condition( $nw, $list[$i]['sub_fields'] );
 		}
 
 		$list[$i]['key'] = scm_acf_get_key( $list[$i]['key'] . $list[$i]['type'], 'field_' );
@@ -793,8 +793,8 @@ function scm_field_move( $group = array(), $name = '', $index = 0 ) {
 * @param {string|int=} index Index where new fileds are insered (default is 0, first array index).
 * @return {array} Modified Field Group.
 */
-function scm_fields_insert( $group = array(), $new = array(), $index = 0 ) {
-	$new = toArray( $new, true );
+function scm_fields_insert( $group = array(), $nw = array(), $index = 0 ) {
+	$nw = toArray( $nw, true );
 	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
 	if( !is_array( $fields ) || empty( $fields ) ) return $group;
 	reset( $fields );
@@ -802,7 +802,7 @@ function scm_fields_insert( $group = array(), $new = array(), $index = 0 ) {
 	if( is_string( $index ) )
 		$index = getByValueKey( $fields, $index );
 
-	foreach ( $new as $field) {
+	foreach ( $nw as $field) {
 
 		array_splice( $fields, $index, 0, array( $field ) );
 		

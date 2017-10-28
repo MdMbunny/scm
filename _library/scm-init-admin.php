@@ -387,7 +387,7 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
         ),
         'separator3' => array( 'separator3' ),
         'media' => array(
-            array( 'upload.php', 'fa-files-o' ), // Media
+            array( 'upload.php', 'fa-copy-s' ), // Media
         ),
         'separator4' => array( 'separator4' ),
         'contacts' => array(
@@ -658,8 +658,11 @@ function scm_hook_admin_upload_def_sizes( $sizes = array() ) {
 
     $sizes['thumbnail']['width'] = 300;
     $sizes['medium']['width'] = 1024;
+    $sizes['medium_large']['width'] = 0;
     $sizes['large']['width'] = 1200;
-    $sizes['thumbnail']['height'] = $sizes['medium']['height'] = $sizes['thumbnail']['large'] = 0;
+    $sizes['thumbnail']['height'] = $sizes['medium']['height'] = $sizes['large']['height'] = $sizes['medium_large']['height'] = 0;
+
+    $sizes = apply_filters( 'scm_filter_admin_upload_def_sizes', $sizes );
 
     return $sizes;
 }
@@ -673,6 +676,7 @@ function scm_hook_admin_upload_def_sizes( $sizes = array() ) {
 function scm_hook_admin_upload_custom_sizes(){
     add_image_size('small', 700, 0, false);
     //add_image_size('square', 300, 300, array( 'center', 'top' ));
+    do_action( 'scm_action_admin_upload_custom_sizes' );
 }
 
 /**
@@ -741,9 +745,13 @@ function scm_hook_admin_upload_dir( $img = array() ){
     
     $type = thePost('type');
     $dir = '';
+
+    //consoleLog($img);
+
+    $filter = apply_filters( 'scm_filter_admin_upload_dir', $type, $img );
     
     if( $type )
-        $dir .= '/' . $type;
+        $dir .= '/' . ( $filter ?: $type );
     else
         $dir = '/options';
 

@@ -487,13 +487,13 @@ function scm_acf_get_field( $elem ) {
     		$default = scm_acf_get_field_to3( $arg, 1, 'default', 'fa-star' );
     		$no = isset( $choices['no'] );
     		$filter_group = '';
-    		$new = '';
+    		$ico = '';
     		
     		$is_filter = strpos( $default, '_' );
     		if( $is_filter !== false ){
-    			$new = substr( $default, 0, $is_filter );
+    			$ico = substr( $default, 0, $is_filter );
     			$filter_group = substr( $default, $is_filter + 1 );
-    			$default = $new;
+    			$default = $ico;
     		}
 
     		$field = array(

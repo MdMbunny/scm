@@ -38,7 +38,8 @@ add_filter( 'acf/settings/show_admin', 'scm_hook_acf_admin_hide' );
 
 add_filter( 'acf/load_field', 'scm_hook_acf_loadfield_hook_choices_get', 100) ;
 add_filter( 'acf/load_field/type=repeater', 'scm_hook_acf_loadfield_hook_repeater_list', 100 );
-add_filter( 'acf/load_field/type=font-awesome', 'scm_hook_acf_loadfield_hook_fontawesome_list', 150 );
+//add_filter( 'acf/load_field/type=font-awesome', 'scm_hook_acf_loadfield_hook_fontawesome_list', 150 );
+add_filter( 'ACFFA_get_icons', 'scm_hook_acf_loadfield_hook_fontawesome_list', 150 );
 
 add_filter( 'acf/fields/post_object/query', 'scm_hook_acf_queryfield_hook_objects', 10, 3 );
 
@@ -565,12 +566,14 @@ function scm_hook_acf_loadfield_hook_repeater_list( $field ){
 * @return {array} Filtered field.
 */
 function scm_hook_acf_loadfield_hook_fontawesome_list( $field ){
+
+    //consoleLog( $field );
     return $field;
 
     if ( is_plugin_active( 'advanced-custom-fields-font-awesome/acf-font-awesome.php' ) ) {
 
         $choices = array();
-        $new = array();
+        $nw = array();
 
         if( isset( $field['filter_group'] ) && isset( $field['filter'] ) ){
             $choices = scm_acf_field_fa( $field['filter_group'], $field['filter'] );
@@ -580,11 +583,11 @@ function scm_hook_acf_loadfield_hook_fontawesome_list( $field ){
 
             foreach ( $choices as $key) {
                 if( isset( $field['choices'][$key] ) )
-                    $new[ $key ] = $field['choices'][$key];
+                    $nw[ $key ] = $field['choices'][$key];
             }
 
-            if( !empty( $new ) )
-                $field['choices'] = $new;
+            if( !empty( $nw ) )
+                $field['choices'] = $nw;
         }
 
         if( isset($field['choices']) ){

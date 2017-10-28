@@ -22,6 +22,7 @@
 // 8.0 SVG
 // 9.0 DATE and TIME
 //10.0 CSV
+//11.0 IMG
 //
 // ------------------------------------------------------
 
@@ -474,12 +475,12 @@ function array_to_asso( $arr ){
     if( !is_arr( $arr ) )
         return null;
 
-    $new = array();
+    $nw = array();
     foreach( $arr as $value ){
-        $new[ $value ] = $value;
+        $nw[ $value ] = $value;
     }
 
-    return $new;
+    return $nw;
 }
 
 /**
@@ -562,33 +563,33 @@ function is_attr( $var, $attr, $fall = '', $pre = '', $app = '' ){
 ```php
 // Anything to array
 $var = 'variable';
-$new = toArray( $var );
-print( $new ) // [ 'variable' ]
+$nw = toArray( $var );
+print( $nw ) // [ 'variable' ]
 
 // Empty to array
 $var = '';
-$new = toArray( $var );
-print( $new ) // ['']
+$nw = toArray( $var );
+print( $nw ) // ['']
 
 // Empty to array ($empty=true)
 $emp = '';
-$new = toArray( $emp, false, true );
-print( $new ) // ''
+$nw = toArray( $emp, false, true );
+print( $nw ) // ''
 
 // Indexed array to array
 $array = [ 'value' ];
-$new = toArray( $array );
-print( $new ) // [ 'value' ]
+$nw = toArray( $array );
+print( $nw ) // [ 'value' ]
 
 // Associative array to array
 $asso = [ 'key' => 'value' ];
-$new = toArray( $asso );
-print( $new ) // [ 'key' => 'value' ]
+$nw = toArray( $asso );
+print( $nw ) // [ 'key' => 'value' ]
 
 // Associative array to array ($asso=true)
 $asso = [ 'key' => 'value' ];
-$new = toArray( $asso, true );
-print( $new ) // [ [ 'key' => 'value' ] ]
+$nw = toArray( $asso, true );
+print( $nw ) // [ [ 'key' => 'value' ] ]
 ```
  *
  * @subpackage 1-Utilities/ARRAY
@@ -617,8 +618,8 @@ function toArray( $var = '', $asso = false, $empty = false ){
  *
 ```php
 $arr = [ 'name'=>'John', 'surname'=>'Smith', 'city'=>'New York' ];
-$new = delArray( $arr, [ 'surname' ] );
-print( $new ) // [ 'name'=>'John', 'city'=>'New York' ]
+$nw = delArray( $arr, [ 'surname' ] );
+print( $nw ) // [ 'name'=>'John', 'city'=>'New York' ]
 ```
  *
  * @subpackage 1-Utilities/ARRAY
@@ -628,17 +629,17 @@ print( $new ) // [ 'name'=>'John', 'city'=>'New York' ]
  * @return {array} Modified copy of the array.
  */
 function delArray( $arr, $elems ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
-    $new = copyArray( $arr );
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
+    $nw = copyArray( $arr );
     $elems = toArray( $elems );
     foreach ($elems as $k => $v) {
-        if( ( $key = array_search( $v, $new ) ) !== false ) {
-            unset($new[$k]);
+        if( ( $key = array_search( $v, $nw ) ) !== false ) {
+            unset($nw[$k]);
         }
     }
 
-    return $new;
+    return $nw;
 }
 
 /**
@@ -675,8 +676,8 @@ print( $sub )
  * @return {array} New subtracted array.
  */
 function subArray( $arr, $att_v = '', $att_k = '', $filter = array(), $exclude = false ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ( $arr as $key => $value ) {
         if ( !empty( $filter ) ) {
             foreach ( $filter as $k => $v ) {
@@ -691,9 +692,9 @@ function subArray( $arr, $att_v = '', $att_k = '', $filter = array(), $exclude =
         }
         $key = ( $att_k ? $value[$att_k] : $key );
         $value = ( $att_v ? $value[$att_v] : $value );
-        $new[$key] = $value;
+        $nw[$key] = $value;
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -710,15 +711,28 @@ function subArray( $arr, $att_v = '', $att_k = '', $filter = array(), $exclude =
  */
 function subObject( $arr, $key = '', $filter = NULL, $exclude = false ){
     if( !$key || !is_string( $key ) ) return $arr;
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ( $arr as $obj ) {
         if( property_exists( $obj, $key ) ){
-            if ( is_null( $filter ) || ( ( !$exclude && $obj->$key == $filter ) || ( $exclude && $obj->$key != $filter ) ) )
-                $new[] = $obj;
+            if ( is_null( $filter ) || ( ( !$exclude && $obj->$key === $filter ) || ( $exclude && $obj->$key !== $filter ) ) )
+                $nw[] = $obj;
         }
     }
-    return $new;
+    return $nw;
+}
+
+function extObject( $arr, $key = '', $filter = NULL, $exclude = false ){
+    if( !$key || !is_string( $key ) ) return $arr;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
+    foreach ( $arr as $obj ) {
+        if( property_exists( $obj, $key ) ){
+            if ( is_null( $filter ) || ( ( !$exclude && $obj->$key === $filter ) || ( $exclude && $obj->$key !== $filter ) ) )
+                $nw[] = $obj->$key;
+        }
+    }
+    return $nw;
 }
 
 /**
@@ -728,8 +742,8 @@ function subObject( $arr, $key = '', $filter = NULL, $exclude = false ){
  *
 ```php
 $arr = [ 'key'=>'value' ];
-$new = copyArray( $arr );
-print( $new ) // [ 'key'=>'value' ]
+$nw = copyArray( $arr );
+print( $nw ) // [ 'key'=>'value' ]
 ```
  *
  * @subpackage 1-Utilities/ARRAY
@@ -738,16 +752,31 @@ print( $new ) // [ 'key'=>'value' ]
  * @return {array} Copy of the array.
  */
 function copyArray( $arr ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ( $arr as $k => $v ) {
         if(is_asso($v))
-            $new[$k] = clone $v;
+            $nw[$k] = clone $v;
         else
-            $new[$k] = $v;
+            $nw[$k] = $v;
     }
 
-    return $new;
+    return $nw;
+}
+
+/**
+* [SET] Remove duplicate values from the array.
+*
+* @subpackage 1-Utilities/ARRAY
+*
+* @param {array=} $arr An array to insert in to (default is empty array).
+* @return {array} The new array.
+*
+*/
+function arr_unique( $arr = array() ){
+    $narr = array(); 
+    foreach( $arr as $key => $val ) $narr[$val] = true;
+    return array_keys($narr);
 }
 
 /**
@@ -948,13 +977,13 @@ function asso_push( $arr = array(), $key = NULL, $value = NULL ){
 */
 function asso_insert_before( $arr = array(), $offset, $key, $value ) {
     if ( array_key_exists( $offset, $arr ) ) {
-        $new = array();
+        $nw = array();
         foreach ( $arr as $k => $v ) {
             if ( $k === $offset )
-            $new[ $key ] = $value;
-            $new[ $k ] = $v;
+            $nw[ $key ] = $value;
+            $nw[ $k ] = $v;
         }
-        return $new;
+        return $nw;
     }
     return $arr;
 }
@@ -974,13 +1003,13 @@ function asso_insert_before( $arr = array(), $offset, $key, $value ) {
 */
 function asso_insert_after( $arr = array(), $offset, $key, $value ) {
     if ( array_key_exists( $offset, $arr ) ) {
-        $new = array();
+        $nw = array();
         foreach ( $arr as $k => $v ) {
-            $new[ $k ] = $v;
+            $nw[ $k ] = $v;
             if ( $k === $offset )
-            $new[ $key ] = $value;
+            $nw[ $key ] = $value;
         }
-        return $new;
+        return $nw;
     }
     return arr;
 }
@@ -1033,8 +1062,8 @@ function asso_insert( $arr, $key = NULL, $value = NULL, $offset = '', $before = 
  */
 function asso_equal( $a, $b ) {
 
-    $new = sizeof( array_intersect_key( $a, $b ) );
-    return $new !== sizeof( $a ) || $new !== sizeof( $b );
+    $nw = sizeof( array_intersect_key( $a, $b ) );
+    return $nw !== sizeof( $a ) || $nw !== sizeof( $b );
 }
 
 /**
@@ -1126,12 +1155,12 @@ print( $keys ) // [ 'first', 'second' ]
  * @return {array} An array of keys.
  */
 function getAllByValue( $arr, $value ){
-    $new = array();
+    $nw = array();
     if( !isset( $arr ) || !is_array( $arr ) ) return array();
     foreach ($arr as $key => $elem) {
-        if( $elem === $value ) $new[] = $key;
+        if( $elem === $value ) $nw[] = $key;
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -1194,12 +1223,12 @@ print( $val ) // ['my_value_1','my_value_2']
  * @return {array} Empty array if the needle is not found, otherwise it returns an array of values.
  */
 function getAllByString( $arr, $string, $key = false ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ($arr as $k => $v) {
-        if( strpos($k, $string) !== false ) $new[] = $v;
+        if( strpos($k, $string) !== false ) $nw[] = $v;
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -1272,17 +1301,17 @@ print( $arr1 ) // [ 'key_1'=>'my_value_1', 'key_2'=>'my_value_2' ]
  * @return {array} Empty array if the prefix is not found, otherwise it returns a filtered array (see top examples).
  */
 function getAllByPrefix( $arr, $prefix, $key = false ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ($arr as $k => $v) {
         if( strpos($k, $prefix) === 0 ){
-            if( $key === 1 ) $new[$k] = $v;
-            elseif( $key === 2 ) $new[str_replace($prefix, '', $k)] = $v;
-            elseif( $key === true ) $new[] = $k;
-            else $new[] = $v;
+            if( $key === 1 ) $nw[$k] = $v;
+            elseif( $key === 2 ) $nw[str_replace($prefix, '', $k)] = $v;
+            elseif( $key === true ) $nw[] = $k;
+            else $nw[] = $v;
         }
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -1342,17 +1371,17 @@ print( $res ) // [ [ 'name'=>'Jack', 'sur'=>'Black' ], [ 'name'=>'John', 'sur'=>
  * @return {array} Empty array if the value is not found, otherwise it returns the found elements.
  */
 function getAllByValueKey( $arr, $value, $key = 'name', $keep = false ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ($arr as $index => $elem) {
         if( is_array($elem) && isset( $elem[$key] ) && $elem[$key] == $value ){
             if( !$keep )
-                $new[] = $elem;
+                $nw[] = $elem;
             else
-                $new[$index] = $elem;
+                $nw[$index] = $elem;
         }
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -1380,12 +1409,12 @@ print( $res ) // [ [ 'name'=>'Jack', 'sur'=>'Mc Key' ], [ 'name'=>'John', 'sur'=
  * @return {array} Empty array if the prefix is not found, otherwise it returns the found elements.
  */
 function getAllByValuePrefixKey( $arr, $prefix, $key = 'name' ){
-    $new = array();
-    if( !isset( $arr ) || !is_array( $arr ) ) return $new;
+    $nw = array();
+    if( !isset( $arr ) || !is_array( $arr ) ) return $nw;
     foreach ($arr as $index => $elem) {
-        if( is_array($elem) && isset( $elem[$key] ) && strpos( $elem[$key], $prefix ) === 0 ) $new[] = $elem;
+        if( is_array($elem) && isset( $elem[$key] ) && strpos( $elem[$key], $prefix ) === 0 ) $nw[] = $elem;
     }
-    return $new;
+    return $nw;
 }
 
 /**
@@ -1802,6 +1831,19 @@ function hex2rgba( $hex = '', $alpha = 1, $toarr = false ){
     return '';
 }
 
+function color_inverse($color){
+    $color = str_replace( '#', '', (string)$color );
+    if(strlen( $color ) != 6 )
+        return '#000000';
+    $rgb = '';
+    for( $x = 0; $x < 3; $x++ ){
+        $c = 255 - hexdec( substr( $color, ( 2 * $x ), 2 ) );
+        $c = ( $c < 0 ) ? 0 : dechex( $c );
+        $rgb .= ( strlen( $c ) < 2 ) ? '0' . $c : $c;
+    }
+    return '#' . $rgb;
+}
+
 /**
  * [GET] Get webfont and family font as a correct string (just comma separated families, or css attribute ready)
  *
@@ -1858,6 +1900,21 @@ function fontSizeLimiter( $txt, $char, $size ){
 // ------------------------------------------------------
 // 7.0 FILE
 // ------------------------------------------------------
+
+/**
+ * [GET] New Directory
+ *
+ * @subpackage 1-Utilities/FILE
+ *
+ * @param {string} uri File URI
+ * @return {string} File date
+ */
+function newDir( $dirpath = '', $mode = 0777 ){
+    if( !is_dir( $dirpath ) )
+        mkdir( $dirpath, $mode, true);
+
+    return $dirpath;
+}
 
 /**
  * [GET] Get file date
@@ -2241,12 +2298,12 @@ function dateFormat( $date, $from = 'Y-m-d', $to = 'd-m-Y' ) {
     $date = DateTime::createFromFormat( $from, $date );
     return $date->format( $to );
 }
-function dateBetween( $old, $new, $format = 'Y-m-d', $current = '' ) {
+function dateBetween( $old, $nw, $format = 'Y-m-d', $current = '' ) {
     $old = strtotime( dateFormat( $old, $format, 'Y-m-d' ) );
-    $new = strtotime( dateFormat( $new, $format, 'Y-m-d' ) );
+    $nw = strtotime( dateFormat( $nw, $format, 'Y-m-d' ) );
     $current = strtotime( dateFormat( $current ?: date( $format ), $format, 'Y-m-d' ) );
     
-    return $current >= $old && $current <= $new;
+    return $current >= $old && $current <= $nw;
 }
 function datePast( $old, $format = 'Y-m-d', $current = '' ) {
     $current = strtotime( dateFormat( $current ?: date( $format ), $format, 'Y-m-d' ) );
@@ -2255,10 +2312,10 @@ function datePast( $old, $format = 'Y-m-d', $current = '' ) {
     return $current > $old;
 }
 
-function dayDiff( $old, $new, $ext = false ) {
+function dayDiff( $old, $nw, $ext = false ) {
     if( $ext ){
         $datetime1 = new DateTime( date( 'm/d/Y', $old ) );
-        $datetime2 = new DateTime( date( 'm/d/Y', $new ) );
+        $datetime2 = new DateTime( date( 'm/d/Y', $nw ) );
         $diff = $datetime1->diff($datetime2);
         $y = $diff->y;
         $m = $diff->m;
@@ -2269,7 +2326,7 @@ function dayDiff( $old, $new, $ext = false ) {
         return ( $y ? $y . ' ' . $yy . ( $m || $d ? ', ' : '' ) : '' ) . ( $m ? $m . ' ' . $mm . ( $d ? ', ' : '' ) : '' ) . ( $d ? $d . ' ' . $dd : '' );
         
     }
-    return floor( $new - $old / (60 * 60 * 24) );
+    return floor( $nw - $old / (60 * 60 * 24) );
 }
 
 function timeToSec($time) {
@@ -2313,8 +2370,17 @@ function csv_move_column( &$csv, $from, $to ){
 function csv_insert_column( &$csv, $index, $head = '' ){
     for( $i = 0; $i < sizeof($csv); $i++ ){
         $value = $head;
-        if( is_list( $head ) ) $value = ex_attr( $head, $i, '' );
-        array_splice( $csv[$i], $index, 0, $head );
+        if( is_list( $head ) ) $value = ex_index( $head, $i, '' );
+        array_splice( $csv[$i], $index, 0, $value );
+        if(!$i && !is_list( $head ) ) $head = '';
+    }
+}
+
+function csv_push_column( &$csv, $head = '' ){
+    for( $i = 0; $i < sizeof($csv); $i++ ){
+        $value = $head;
+        if( is_list( $head ) ) $value = ex_index( $head, $i, '' );
+        array_push( $csv[$i], $value );
         if(!$i && !is_list( $head ) ) $head = '';
     }
 }
@@ -2326,6 +2392,165 @@ function csv_remove_column( &$csv, $index = NULL ){
         $csv[$i] = array_values( $csv[$i] );
     }
 
+}
+
+// ------------------------------------------------------
+// 11.0 IMG
+// ------------------------------------------------------
+
+function copy_image( $image = '', $name = '', $options = [] ){
+    
+    $default = [
+        'width' => 0,
+        'height' => 0,
+        'crop' => false,
+        'pixel' => false,
+        'pwidth' => 0,
+        'pheight' => 0,
+        'quality' => 100,
+        'brightness' => 0, // -255 > 255
+        'contrast' => 0, // -100 < 100
+    ];
+
+    extract( array_merge( $default, $options ) );
+
+    $parse = parse_url($image);
+    $url = $image;
+    $image = $_SERVER['DOCUMENT_ROOT'] . $parse['path'];
+    if( !file_exists( $image ) )
+        return '';
+
+    $info = pathinfo( $image );
+    $ext = '.' . $info['extension'];
+    $filename = $info['filename'];
+    if( $ext == '.jpg' || $ext == '.jpeg' )
+        $img = imagecreatefromjpeg( $image );
+    elseif( $ext == '.png' )
+        $img = imagecreatefrompng( $image );
+    elseif( $ext == '.gif' )
+        $img = imagecreatefromgif( $image );
+    else
+        return '';
+
+    if( $brightness )
+        imagefilter( $img, IMG_FILTER_BRIGHTNESS, $brightness );
+    if( $contrast )
+        imagefilter( $img, IMG_FILTER_CONTRAST, $contrast );
+
+    //if( $width || $height )
+        $img = resize_image( $img, $width, $height, $crop, $pixel );
+
+    if( $pwidth && $pheight ){
+
+        $img = pixelate_image( $img, $pwidth, $pheight );
+        $ext = '.png';
+    }
+
+    if( startsWith( $name, '_' ) ) $name = $filename . $name;
+    elseif( !$name ) $name = $filename;
+
+    $url = dirname( $url ) . '/' . $name . $ext;
+    $name = $info['dirname'] . '/' . $name . $ext;
+
+    $ret = '';
+    if( $ext == '.gif' ){
+        $ret = imagegif( $img, $name );
+    }elseif( $ext == '.png' ){
+        
+        $ret = imagepng( $img, $name, $quality*.09 );
+    }else{
+        $ret = imagejpeg( $img, $name, $quality );
+    }
+    imagedestroy( $img );
+    if( $ret ) return $url;
+    return '';
+
+}
+
+function resize_image( $img = '', $w = 0, $h = 0, $crop = NULL, $pixel = false ) {
+    
+    $width = imagesx( $img );
+    $height = imagesy( $img );
+    $r = $width / $height;
+
+    $nWidth = $w ?: $width;
+    $nHeight = $h ?: $height;
+
+    if( $width != $nWidth || $height != $nHeight ){
+        if( $crop === true ){
+            if ($width > $height) {
+                $width = ceil($width-($width*abs($r-$w/$h)));
+            } else {
+                $height = ceil($height-($height*abs($r-$w/$h)));
+            }
+            $nWidth = $w;
+            $nHeight = $h;
+        }elseif( $crop === false ){
+            if ($w/$h > $r) {
+                $nWidth = $h*$r;
+                $nHeight = $h;
+            } else {
+                $nHeight = $w/$r;
+                $nWidth = $w;
+            }
+        }
+    }
+
+    $dst = imagecreatetruecolor($nWidth, $nHeight);
+    imagealphablending($dst, false);
+    imagesavealpha($dst,true);
+    $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+    imagefilledrectangle($dst, 0, 0, $nWidth, $nHeight, $transparent);
+
+    if( $width == $nWidth && $height == $nHeight )
+        imagecopy( $dst, $img, 0, 0, 0, 0, $width, $height );
+    elseif( $pixel )
+        imagecopyresized( $dst, $img, 0, 0, 0, 0, $nWidth, $nHeight, $width, $height );
+    else
+        imagecopyresampled( $dst, $img, 0, 0, 0, 0, $nWidth, $nHeight, $width, $height );
+
+    imagedestroy( $img );
+
+    return $dst;
+}
+function pixelate_image( $img = '', $pwidth = 20, $pheight = 20 ){
+
+    $width = imagesx( $img );
+    $height = imagesy( $img );
+
+    //$hx = floor( $pwidth * .5 );
+    //$hy = floor( $pheight * .5 );
+
+    $hw = $width*.5;
+    $hh = $height*.5;
+
+    $px = floor( $width / $pwidth )*$pwidth;
+    $py = floor( $height / $pheight )*$pheight;
+
+    if( $px != $width || $py != $height )
+        $img = resize_image( $img, $px, $py, NULL, true );
+
+    $ix = $pwidth / $px;
+    $iy = $pheight / $py;
+
+    $pwidth -= 1;
+    $pheight -= 1;
+    
+    for( $y = 0; $y < $height; $y += $pheight+1 ){
+
+        for( $x = 0; $x < $width; $x += $pwidth+1 ){
+
+            $jx = $x+$ix*$x;
+            $jy = $y+$iy*$y;
+
+            $rgb = imagecolorsforindex( $img, imagecolorat( $img, $jx, $jy ) );
+
+            $color = imagecolorclosestalpha( $img, $rgb['red'], $rgb['green'], $rgb['blue'], $rgb['alpha'] );
+            imagefilledrectangle( $img, $x, $y, $x+$pwidth, $y+$pheight, $color );
+        }
+    }
+    
+    return $img;
 }
 
 ?>

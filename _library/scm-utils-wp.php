@@ -204,23 +204,24 @@ function attachmentByFilename( $filename = '' ) {
  * @param {bool=} echo Echo File and Attachment data (default is false).
  * @return {int} New Attachment ID or 0.
  */
-function attachmentFromURL( $path = '', $name = '', $postid = 0, $echo = false, $debug = 0 ) {
+function attachmentFromURL( $path = '', $name = '', $postid = 0, $force = false, $echo = false, $debug = 0 ) {
 
     $attachment_id = 0;
     
     if( !$path ) return $attachment_id;
-
-    $filename = $name ?: basename($path);
+    $info = pathinfo( $path );
+    $ext = $info['extension'];
+    $filename = $name ? $name . '.' . $ext : basename($path);
     $exist = attachmentByFilename( $filename );
     $debug = (int)$debug;
 
-    if( $exist ){
+    if( $exist && !$force ){
 
         if( $echo ) echo 'File Name Already Exists: ' . $filename;
         if( $debug > 1 ) consoleLog( $filename . ' EXISTS' );
         $attachment_id = $exist->ID;
         if( !$exist->post_parent && $postid ){
-            consoleLog( $filename . ' LINKED TO PARENT ' . $postid );
+            if( $debug > 1 ) consoleLog( $filename . ' LINKED TO PARENT ' . $postid );
             if( !$debug ){
                 $attachment = array(
                     'ID' => $attachment_id,
@@ -273,6 +274,8 @@ function attachmentFromURL( $path = '', $name = '', $postid = 0, $echo = false, 
                 }else{
                     $attachment_id = 0;
                 }
+            }else{
+                return $upload_file['error'];
             }
 
             if( !empty( $new_post ) ) wp_reset_postdata();
