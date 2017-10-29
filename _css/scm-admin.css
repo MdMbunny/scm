@@ -162,14 +162,14 @@ input[type=checkbox]:checked:before,
 }
 
 #wpadminbar #wp-admin-bar-site-name > .ab-item:before{
-	font-family: Fontawesome !important;
+	font-family: 'Font Awesome 5 Solid' !important;
 	content: "\f015" !important;
 	-webkit-font-smoothing: antialiased;
 	margin: 0;
 }
 
 #wpadminbar #wp-admin-bar-new-content > .ab-item:before{
-	font-family: Fontawesome !important;
+	font-family: 'Font Awesome 5 Solid' !important;
 	content: "\f067" !important;
 	-webkit-font-smoothing: antialiased;
 	color: #a0a5aa !important;
@@ -185,7 +185,7 @@ input[type=checkbox]:checked:before,
 	width: 1.2em;
 }
 #wpadminbar #wp-admin-bar-optimize > .ab-item:before{
-	font-family: Fontawesome !important;
+	font-family: 'Font Awesome 5 Solid' !important;
 	content: "\f1c0" !important;
 	-webkit-font-smoothing: antialiased;
 	color: #a0a5aa !important;
@@ -197,13 +197,13 @@ input[type=checkbox]:checked:before,
 }
 
 #wp-admin-bar-my-account > .ab-item:before{
-	font-family: Fontawesome !important;
+	font-family: 'Font Awesome 5 Solid' !important;
 	content: "\f007" !important;
 	-webkit-font-smoothing: antialiased;
 }
 #wpadminbar:not(.mobile) .ab-top-menu>#wp-admin-bar-my-account > .ab-item{
 	overflow: hidden;
-  	width: 1.3em;
+  	width: 1.5em;
   	padding: 0;
   	display: inline-block !important;
   	background-color: transparent !important;
@@ -242,7 +242,7 @@ input[type=checkbox]:checked:before,
 }
 
 #wpadminbar #wp-admin-bar-user-actions>li > .ab-item:before{
-	font-family: Fontawesome !important;
+	font-family: 'Font Awesome 5 Solid' !important;
 	content: "\f08b" !important;
 	-webkit-font-smoothing: antialiased;
 	color: #a0a5aa !important;
@@ -467,7 +467,7 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	content: none;
 }
 #adminmenu a.faicon:before{
-    font-family: Fontawesome !important;
+    font-family: 'Font Awesome 5 Solid' !important;
     float: left;
     width: 36px;
     height: 34px;
@@ -1917,7 +1917,7 @@ body:not(.scm-advanced) [data-layout="layout-template"]{
 
 .acf-flexible-content > ul.acf-hl .button:before{
 	position: absolute;
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Solid';
     top: 0;
     left: 0;
     content: "\f067";

@@ -401,7 +401,7 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
             array( 'themes.php', 'fa-paint-brush' ), // Appearance
             array( 'plugins.php', 'fa-plug' ), // Plugins
             array( 'tools.php', 'fa-wrench' ), // Tools
-            array( 'options-general.php', 'fa-sliders' ), // Settings
+            array( 'options-general.php', 'fa-sliders-h' ), // Settings
         ),
         'separator-last' => array( 'separator-last' ),
     );
