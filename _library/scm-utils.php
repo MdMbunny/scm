@@ -360,14 +360,47 @@ function endsWith($str, $needle = '') {
  */
 function getBetween( $str, $start = '', $end = '' ) {
 
-    if( !is_string( $str ) || !$start || !$end )
+    consoleLog( 'getBetween() is deprecated. Switching to string_between().' );
+    consoleLog( debug_backtrace() );
+
+    return string_between( $str, $start, $end );
+
+    /*if( !is_string( $str ) || !$start || !$end )
         return '';
 
     preg_match('~' . $start . '(.*?)' . $end . '~', $str, $output);
 
     if( !empty( $output ) )
-        return ex_index( $output, 1, '' );
-    return '';
+        return ex_index( $output, 1, '' );*/
+    
+
+}
+
+function string_between( $string = '', $start = '', $end = '' ) {
+
+    if( !is_string( $string ) || !$start || !$end )
+        return '';
+
+    $first = strpos( $string, $start );
+    if( $first === false ) return '';
+    $port = substr( $string, $first + strlen( $start ) );
+    $second = strpos( $port, $end );
+    if( $second === false ) return '';
+    return substr( $port, 0, $second );
+
+}
+
+function string_extract( $string = '', $start = '', $end = '' ){
+
+    if( !is_string( $string ) || !$start || !$end )
+        return '';
+    
+    $first = strpos( $string, $start );
+    if( $first === false ) return '';
+    $port = substr( $string, $first );
+    $second = strpos( $port, $end );
+    if( $second === false ) return '';
+    return substr( $string, $first, $second + strlen($end) );
 
 }
 
@@ -1550,7 +1583,7 @@ function lbreak( $break = 1 ){
 function getTagContent( $string = '', $tagname = 'p' ){
     $pattern = "/<$tagname ?.*>(.*)<\/$tagname>/";
     preg_match($pattern, $string, $matches);
-    return $matches[1]; // Shouldn't be [0]?
+    return $matches[1];
 }
 
 /**
@@ -1569,7 +1602,7 @@ function getTagContent( $string = '', $tagname = 'p' ){
  * @param {string=} target Target attribute (default is '').
  * @return {string} String containing opened tag.
  */
-function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes = '', $href = '', $target = '' ){
+function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes = '', $href = '', $target = '', $name = '', $value = '', $type = '' ){
 
     $str = 'data-href="';
     $len = strlen( $str );
@@ -1582,7 +1615,7 @@ function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes 
         $attributes = str_replace( $url, getURL( $url ), $attributes);
     }
 
-    return str_replace( array( ' " ', '=" ', '< ', ' >', ' ">' ), array( '" ', '="', '<', '>', '">' ), '<' . $tag . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . multisp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' ? ' /' : '' ) . '>' );
+    return str_replace( array( ' " ', '=" ', '< ', ' >', ' ">' ), array( '" ', '="', '<', '>', '">' ), '<' . $tag . is( $type, '', ' type="', '"' ) . is( $value, '', ' value="', '"' ) . is( $name, '', ' name="', '"' ) . is( $href, '', ' href="', '"' ) . is( $target, '', ' target="', '"' ) . is( $id, '', ' id="', '"' ) . multisp( is( $class, '', ' class="', '"' ) ) . is( $style, '', ' style="', '"' ) . is( $attributes ) . ( $tag === 'hr' || $tag === 'input' || $tag === 'img' ? ' /' : '' ) . '>' );
 }
 
 /**
@@ -1597,7 +1630,7 @@ function openTag( $tag = 'div', $id = '', $class = '', $style = '', $attributes 
  * @return {string} String containing opened div tag.
  */
 function openDiv( $id = '', $class = '', $style = '', $attributes = '' ){
-    return getTag( 'div', $id, $class, $style, $attributes );
+    return openTag( 'div', $id, $class, $style, $attributes );
 }
 
 /**
@@ -1765,6 +1798,7 @@ function getHREF( $type = 'web', $link, $data = false ){
         break;
     }
 }
+
 
 // ------------------------------------------------------
 // 6.0 STYLE

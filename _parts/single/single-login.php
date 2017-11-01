@@ -54,7 +54,7 @@ $link = $args['login-redirect'];
 
 $link = loginRedirect( $redirect, $link );
 
-if ( is_user_logged_in() ) {
+if( is_user_logged_in() ){
 
     // LOGGED IN BUTTONS
 

@@ -21,6 +21,8 @@ wp_reset_postdata();
     $foot_layout = scm_field( 'layout-foot', 'full', 'option' );
     $foot_layout = ( scm_field( 'layout-page', 'full', 'option' ) === 'responsive' ? 'full ' : ( $foot_layout === 'full' ? 'full ' : 'responsive float-' ) );
 
+    $foot_topofpage = !scm_field( 'opt-tools-topofpage-disable', false, 'option' );
+
     $foot_id = 'site-footer';
     $foot_class = 'footer site-footer ' . $foot_layout . SCM_SITE_ALIGN;
 
@@ -134,7 +136,8 @@ wp_reset_postdata();
 
                 $SCM_indent -= 2;
 
-                scm_top_of_page();
+                if( $foot_topofpage )
+                    scm_top_of_page();
 
         indent( $SCM_indent+1, '</footer><!-- footer -->', 2 );
     indent( $SCM_indent, '</div><!-- page -->', 2 );

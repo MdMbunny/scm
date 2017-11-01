@@ -883,7 +883,8 @@ function scm_contents_single( $args = array() ) {
 
         case 'layout-login':
 
-            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-login.php', array(
+            //Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-login.php', array(
+            Get_Template_Part::get_part( SCM_DIR_PARTS_SINGLE . '-loginform.php', array(
                 'cont' => $args,
             ));
 

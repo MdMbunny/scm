@@ -224,31 +224,44 @@ function scm_acf_object_login( $default = '', $obj = 0, $opt = '', $width = 100,
 	$fields[] = scm_acf_field_select( 'login-type', array( 
 		'type'=>'links_type', 
 		'choices'=>array( 'admin' => __( 'Admin', SCM_THEME ), 'self' => __( 'Self', SCM_THEME ) ), 
-		'label'=>__( 'Redirect', SCM_THEME ),
-	), 100 );
+		//'label'=>__( 'Redirect', SCM_THEME ),
+	), 50 );
 
 	$link = array( 'field' => 'login-type', 'operator' => '!=', 'value' => 'page' );
 	$page = array( 'field' => 'login-type', 'operator' => '==', 'value' => 'page' );
 
-	$fields[] = scm_acf_field_link( 'login-redirect', 0, 100, $link );
+	$fields[] = scm_acf_field_link( 'login-redirect', 0, 50, $link );
 	$fields[] = scm_acf_field_object( 'login-redirect', array( 
         'type'=>'link', 
         'types'=>'page',
         'label'=>'',
-    ), 100, $page );
+    ), 50, $page );
 
     $fields[] = scm_acf_field_false( 'login-button', array( 'label'=>'Just Sign In Button' ), 100 );
-    $fields[] = scm_acf_field_icon_no( 'login-icon', array( 'width'=>100 ) );
+    $fields[] = scm_acf_field_icon_no( 'login-icon', array( 'width'=>50 ) );
     $just = array( 'field' => 'login-button', 'operator' => '!=', 'value' => 1 );
-    $fields[] = scm_acf_field_text( 'login-send', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Submit Button Label', SCM_THEME ) ), 100, 0 );
+    $fields[] = scm_acf_field_text( 'login-send', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Submit Button Label', SCM_THEME ) ), 50, 0 );
 
-    $fields[] = scm_acf_field_text( 'login-label-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Label', SCM_THEME ) ), 100, $just );
-	$fields[] = scm_acf_field_text( 'login-label-user', array( 'default'=>__( 'User', SCM_THEME ), 'prepend'=>__( 'User Label', SCM_THEME ) ), 100, $just );
-	$fields[] = scm_acf_field_text( 'login-value-user', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Default User', SCM_THEME ) ), 100, $just );
-	$fields[] = scm_acf_field_false( 'login-remember', array( 'label'=>'Remember Me' ), 20, $just );
+	$fields[] = scm_acf_field_text( 'login-label-user', array( 'default'=>__( 'Username', SCM_THEME ), 'prepend'=>__( 'User Label', SCM_THEME ) ), 50, $just );
+	$fields[] = scm_acf_field_text( 'login-placeholder-user', array( 'default'=>__( 'Username', SCM_THEME ), 'prepend'=>__( 'User Placeholder', SCM_THEME ) ), 50, $just );
+	//$fields[] = scm_acf_field_text( 'login-value-user', array( 'placeholder'=>__( 'email@address.com', SCM_THEME ), 'prepend'=>__( 'Default User', SCM_THEME ) ), 34, $just );
+	
+	$fields[] = scm_acf_field_text( 'login-label-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Label', SCM_THEME ) ), 50, $just );
+    $fields[] = scm_acf_field_text( 'login-placeholder-password', array( 'default'=>__( 'Password', SCM_THEME ), 'prepend'=>__( 'Password Placeholder', SCM_THEME ) ), 50, $just );
+
+    $fields[] = scm_acf_field_false( 'login-forgot', array( 'label'=>'Forgot Form' ), 100, $just );
+	$forgot = array( 'field' => 'login-forgot', 'operator' => '==', 'value' => 1 );
+	$fields[] = scm_acf_field_text( 'login-label-forgot', array( 'default'=>__( 'Forgot Password?', SCM_THEME ), 'prepend'=>__( 'Forgot Label', SCM_THEME ) ), 50, array( $just, $forgot ) );
+	$fields[] = scm_acf_field_text( 'login-label-back', array( 'default'=>__( 'Log In', SCM_THEME ), 'prepend'=>__( 'Back Button Label', SCM_THEME ) ), 50, array( $just, $forgot ) );
+	$fields[] = scm_acf_field_icon_no( 'login-forgot-icon', '', 50, array( $just, $forgot ) );
+	$fields[] = scm_acf_field_text( 'login-forgot-send', array( 'default'=>__( 'Send', SCM_THEME ), 'prepend'=>__( 'Send Button Label', SCM_THEME ) ), 50, array( $just, $forgot ) );
+	$fields[] = scm_acf_field_text( 'login-label-email', array( 'default'=>__( 'Username or Email', SCM_THEME ), 'prepend'=>__( 'Email Label', SCM_THEME ) ), 50, $just );
+	$fields[] = scm_acf_field_text( 'login-placeholder-email', array( 'default'=>__( 'Username or Email', SCM_THEME ), 'prepend'=>__( 'Email Placeholder', SCM_THEME ) ), 50, array( $just, $forgot ) );
+	
+    $fields[] = scm_acf_field_false( 'login-remember', array( 'label'=>'Remember Me' ), 100, $just );
 	$remember = array( 'field' => 'login-remember', 'operator' => '==', 'value' => 1 );
-	$fields[] = scm_acf_field_text( 'login-label-remember', array( 'default'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Remember Me Label', SCM_THEME ) ), 40, array( $just, $remember ) );
-	$fields[] = scm_acf_field_false( 'login-value-remember', array( 'label'=>'Default Remember Me' ), 40, array( $just, $remember ) );
+	$fields[] = scm_acf_field_text( 'login-label-remember', array( 'default'=>__( 'Remember me', SCM_THEME ), 'prepend'=>__( 'Remember Me Label', SCM_THEME ) ), 50, array( $just, $remember ) );
+	$fields[] = scm_acf_field_false( 'login-value-remember', array( 'label'=>'Default Remember Me' ), 50, array( $just, $remember ) );
 
 	$buttons = scm_acf_field_repeater( 'login-buttons', array( 'button'=>__( 'Aggiungi Pulsante', SCM_THEME ) ), 100 );
 		$buttons['sub_fields'][] = scm_acf_field_select( 'type', array( 'choices'=>array( 'edit'=>__( 'Edit', SCM_THEME ), 'enter'=>__( 'Enter', SCM_THEME ), 'logout'=>__( 'Log Out', SCM_THEME ) ) ) );

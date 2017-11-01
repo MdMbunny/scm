@@ -616,6 +616,7 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_text( 'opt-tools-map-api', 0, 100, 0, 0, __( 'Google Maps API Key', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-toppage', array( 'label'=>'Top Of Page' ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-topofpage-disable', 0, 50, 0, 0, __( 'Disable', SCM_THEME ) );
 		$fields[] = scm_acf_field_icon( 'opt-tools-topofpage-icon', array('default'=>'angle-up') );
 		$fields[] = scm_acf_field_text( 'opt-tools-topofpage-text', array( 'default'=>__( 'Inizio pagina', SCM_THEME ), 'placeholder'=>__( 'Titolo', SCM_THEME ), 'prepend'=>__( 'Titolo', SCM_THEME ) ) );
 		$fields[] = scm_acf_field_number( 'opt-tools-topofpage-offset', array( 'append'=>'px', 'default'=>200, 'placeholder'=>'0', 'prepend'=>__( 'Offset', SCM_THEME ) ) );
