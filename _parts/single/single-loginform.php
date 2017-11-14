@@ -300,7 +300,7 @@ if( is_user_logged_in() ){
 
                 $form = $tab . '<input type="checkbox" name="forgot" id="login-show-forgot" checked>' . lbreak() . $form;
 
-                $form = str_replace( '</form>', $tab . '<label class="scm-ui-label show-forgot" for="login-show-forgot">' . $label_forgot . '</label>' . lbreak() . '</form>', $form );
+                $form = str_replace( '</form>', $tab . '<div class="scm-ui-label show-forgot"><label for="login-show-forgot">' . $label_forgot . '</label></div>' . lbreak() . '</form>', $form );
 
                 $form .= $tab . '<form name="lostpasswordform" id="lostpasswordform" class="scm-ui-content -wrap" action="' . site_url('wp-login.php?action=lostpassword', 'login_post') . '" method="post">' . lbreak();
                 if( $label_email ) $form .= $tab . indent() . '<label for="user_login">' . $label_email . '</label>' . lbreak();
@@ -309,7 +309,7 @@ if( is_user_logged_in() ){
                 $form .= $tab . indent() . '</div>' . lbreak();
                 $form .= $tab . indent() . '<input type="hidden" name="redirect_to" value="' . SCM_SITE . '/login/?action=forgot&amp;success=1">' . lbreak();
                 $form .= $tab . indent() . '<button type="submit" name="wp-submit" id="wp-submit" class="scm-ui-button scm-ui-label submit-input' . ( $forgot_icon ? ' icon' : '' ) . '">' . $forgot_icon . $forgot_send . '</button>' . lbreak();
-                $form .= $tab . '<label class="scm-ui-label show-forgot" for="login-show-forgot">' . $label_back . '</label>' . lbreak();
+                $form .= $tab . indent() . '<div class="scm-ui-label show-forgot"><label for="login-show-forgot">' . $label_back . '</label></div>' . lbreak();
                 $form .= $tab . '</form>' . lbreak();
 
             }

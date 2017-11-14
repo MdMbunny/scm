@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.1.9
+Version:			v4.2.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -3874,12 +3874,15 @@ body.keyboard .scm-ui-label.button3d.focus,
 
 .scm-ui-content .scm-ui-label.show-forgot{
 	text-align: center;
-	cursor: pointer;
 	width: 100%;
 	background-color: transparent;
+	cursor: default;
+}
+.scm-ui-content .scm-ui-label.show-forgot label{
+	cursor: pointer;
 	color: #000;
 }
-.scm-ui-content .scm-ui-label.show-forgot:not(.disabled):hover{
+.scm-ui-content .scm-ui-label.show-forgot:not(.disabled) label:hover{
 	text-decoration: underline;
 }
 input#login-show-forgot,
