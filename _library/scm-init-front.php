@@ -147,6 +147,10 @@ function scm_front_init() {
     //define( 'SCM_PAGE_EDIT',            ( scm_field( 'page-form', false ) ? ( is_user_logged_in() && SCM_LEVEL_EDIT ? ( get_query_var( 'action' ) != 'view' ? get_query_var( 'action' ) == 'edit' || get_option( 'scm-settings-edit-' . SCM_ID ) : 0 ) : 0 ) : 0 ) ); // ???
     define( 'SCM_SITE_ALIGN',           scm_field( 'layout-alignment', 'center', 'option' ) );
 
+    define( 'SCM_ACTION', ( isset( $_GET['action'] ) ? $_GET['action'] : false ) );
+    define( 'SCM_SUCCESS', ( isset( $_GET['success'] ) ? $_GET['success'] : false ) );
+    define( 'SCM_FAILED', ( isset( $_GET['failed'] ) ? $_GET['failed'] : false ) );
+
     // ???
     /*if( SCM_PAGE_EDIT )
         scm_hook_admin_ui_edit_mode();
