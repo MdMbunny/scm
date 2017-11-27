@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.2.0
+Version:			v4.2.1
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1494,11 +1494,11 @@ input[type="submit"]{
 	-webkit-appearance: button; /* Corrects inability to style clickable 'input' types in iOS */
 }
 
-body.keyboard button:not(.off):not(.active):not(.no-button):focus,
+body.keyboard button:not(.off):not(.active):not(.no-button):not(.color-it):focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus,
-button:not(.off):not(.active):not(.no-button):active,
+button:not(.off):not(.active):not(.no-button):not(.color-it):active,
 input[type="button"]:active,
 input[type="reset"]:active,
 input[type="submit"]:active{
@@ -3637,12 +3637,12 @@ body.keyboard .atcb-item-link:focus{
 	transition: none;
 }
 
-.scm-ui-toggle:not(.off):not(.no-button):hover,
-.scm-ui-toggle:not(.off):not(.no-button):active,
-.scm-ui-button:hover,
-.scm-ui-button:active,
-body.keyboard .scm-ui-button:not(.off):focus,
-body.keyboard .scm-ui-button:not(.off).focus{
+.scm-ui-toggle:not(.off):not(.color-it):not(.no-button):hover,
+.scm-ui-toggle:not(.off):not(.color-it):not(.no-button):active,
+.scm-ui-button:not(.color-it):hover,
+.scm-ui-button:not(.color-it):active,
+body.keyboard .scm-ui-button:not(.off):not(.color-it):focus,
+body.keyboard .scm-ui-button:not(.off):not(.color-it).focus{
 	background-color: #ddd;
 }
 .scm-ui-button.no-button:hover,
@@ -3655,7 +3655,7 @@ body.keyboard .scm-ui-button.color-it:not(.off):focus,
 body.keyboard .scm-ui-button.color-it:not(.off).focus{
 	opacity: .8;
 }
-.scm-ui-label.on:active{
+.scm-ui-label.on:not(.color-it):active{
 	background-color: #DDD;
 }
 .scm-ui-label.off:hover,
@@ -3664,14 +3664,14 @@ body.keyboard .scm-ui-label.off:focus,
 body.keyboard .scm-ui-label.off.focus{
 	border-style: solid;
 }
-.scm-ui-label.off,
-.scm-ui-label.off:focus,
-.scm-ui-label.off.focus{
+.scm-ui-label.off:not(.color-it),
+.scm-ui-label.off:not(.color-it):focus,
+.scm-ui-label.off:not(.color-it).focus{
 	background-color: #000;
 	color: #FFF;
 	border-color: #FFF;
 }
-.scm-ui-label.off:active{
+.scm-ui-label.off:not(.color-it):active{
 	border-color: #333;
 	background-color: #444;
 }
@@ -3782,10 +3782,14 @@ body.keyboard .scm-ui-label.off.focus{
 .scm-ui-content .scm-ui-input input{
 	color: #000;
 }
-
 .scm-ui-content .scm-ui-select select{
 	color: #000;
 	background-color: transparent;
+}
+.scm-ui-content .scm-ui-input.disabled input,
+.scm-ui-content .scm-ui-select.disabled select{
+	background-color: transparent;
+	color: #FFF;
 }
 
 input.scm-ui-upload-input{
@@ -3849,13 +3853,11 @@ body:not( .disabled ) .scm-ui-tabs .scm-ui-tab{
 }
 
 .scm-ui-label.button3d.off{
-    margin: .45em .05em .05em .45em;
-    box-shadow: 0 0 0 0 #000;
+    /*margin: .45em .05em .05em .45em;*/
+    margin: .5em .0em .0em .5em;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0);
 }
-.scm-ui-label.button3d.off.color-it{
-    background-color: #000 !important;
-    color: #FFF !important;
-}
+
 body.keyboard .scm-ui-label.button3d.on:focus,
 body.keyboard .scm-ui-label.button3d.on.focus,
 .scm-ui-label.button3d.on:active{
@@ -3867,7 +3869,10 @@ body.keyboard .scm-ui-label.button3d.focus,
 .scm-ui-label.scm-ui-input.button3d.focus,
 .scm-ui-label.button3d:active{
     box-shadow: -1px -1px 0 0 #333;
-    margin: .5em .0em .0em .5em;
+    padding: .05em .45em 0 .5em;
+    margin: .55em -.0em 0em .55em;
+    height: 2.45em;
+    min-height: 2.45em;
 }
 
 /* Login Form */

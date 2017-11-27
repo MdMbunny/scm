@@ -1799,6 +1799,17 @@ function getHREF( $type = 'web', $link, $data = false ){
     }
 }
 
+function currentURL( $trim_query_string = false ){
+    $pageURL = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? 'https://' : 'http://';
+    $pageURL .= ( $_SERVER['SERVER_NAME'] != 'localhost' ? $_SERVER['SERVER_NAME'] : 'localhost:8888' ) . $_SERVER['REQUEST_URI'];
+    if( ! $trim_query_string ) {
+        return $pageURL;
+    } else {
+        $url = explode( '?', $pageURL );
+        return $url[0];
+    }
+}
+
 
 // ------------------------------------------------------
 // 6.0 STYLE

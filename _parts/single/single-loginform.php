@@ -169,7 +169,7 @@ if( is_user_logged_in() ){
                 $form .= indent( $SCM_indent ) . '<input type="text" name="confirm_email" id="confirm_email" class="input" value="">' . lbreak();
             $form .= indent( $SCM_indent ) . '</p>' . lbreak();
 
-            $form .= indent( $SCM_indent ) . '<input type="hidden" name="redirect_to" value="' . SCM_SITE . '/login/?action=register&amp;success=1" />' . lbreak();
+            $form .= indent( $SCM_indent ) . '<input type="hidden" name="redirect_to" value="' . currentURL( true ) . '?action=register&amp;success=1" />' . lbreak();
             $form .= indent( $SCM_indent ) . '<button type="submit" name="wp-submit" id="wp-submit" class="scm-ui-button scm-ui-label submit-input' . ( $label_icon ? ' icon' : '' ) . '" value="Register">' . $label_icon . '</button>' . lbreak();
         $form .= '</form>' . lbreak();
 
@@ -195,7 +195,7 @@ if( is_user_logged_in() ){
                 $form .= indent( $SCM_indent + 2 ) . '<input class="text-input" name="pass2" type="password" id="pass2" placeholder="Repeat Password">' . lbreak();
             $form .= indent( $SCM_indent ) . '</div>' . lbreak();
 
-            $form .= indent( $SCM_indent ) . '<input type="hidden" name="redirect_to" value="' . SCM_SITE . '/login/?action=resetpass&amp;success=1">' . lbreak();
+            $form .= indent( $SCM_indent ) . '<input type="hidden" name="redirect_to" value="' . currentURL( true ) . '?action=resetpass&amp;success=1">' . lbreak();
 
             $form .= indent( $SCM_indent ) . '<input type="hidden" name="rp_key" value="' . esc_attr( $rp_key ) . '">' . lbreak();
             $form .= indent( $SCM_indent ) . '<button type="submit" name="wp-submit" id="wp-submit" class="scm-ui-button scm-ui-label submit-input' . ( $label_icon ? ' icon' : '' ) . '">' . $label_icon . '</button>' . lbreak();
@@ -307,7 +307,7 @@ if( is_user_logged_in() ){
                 $form .= $tab . indent() . '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">' . lbreak();
                     $form .= $tab . indent(2) . '<input type="text" name="user_login" id="user_login" class="input" value="" placeholder="' . $placeholder_email . '">' . lbreak();
                 $form .= $tab . indent() . '</div>' . lbreak();
-                $form .= $tab . indent() . '<input type="hidden" name="redirect_to" value="' . SCM_SITE . '/login/?action=forgot&amp;success=1">' . lbreak();
+                $form .= $tab . indent() . '<input type="hidden" name="redirect_to" value="' . currentURL( true ) . '?action=forgot&amp;success=1">' . lbreak();
                 $form .= $tab . indent() . '<button type="submit" name="wp-submit" id="wp-submit" class="scm-ui-button scm-ui-label submit-input' . ( $forgot_icon ? ' icon' : '' ) . '">' . $forgot_icon . $forgot_send . '</button>' . lbreak();
                 $form .= $tab . indent() . '<div class="scm-ui-label show-forgot"><label for="login-show-forgot">' . $label_back . '</label></div>' . lbreak();
                 $form .= $tab . '</form>' . lbreak();
