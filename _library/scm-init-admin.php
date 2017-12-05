@@ -706,6 +706,7 @@ function scm_hook_admin_upload_custom_sizes_names( $sizes = array() ) {
 */
 function scm_hook_admin_upload_max_size( $params = array() ){
     if( !isset( $params['file'] ) ) return $params;
+    if( strpos( $params['type'], 'image') !== 0 ) return $params;
 
     $filePath = $params['file'];
     $image = wp_get_image_editor( $filePath );
