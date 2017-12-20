@@ -305,10 +305,10 @@ if( is_user_logged_in() ){
                 $form .= $tab . '<form name="lostpasswordform" id="lostpasswordform" class="scm-ui-content -wrap" action="' . site_url('wp-login.php?action=lostpassword', 'login_post') . '" method="post">' . lbreak();
                 if( $label_email ) $form .= $tab . indent() . '<label for="user_login">' . $label_email . '</label>' . lbreak();
                 $form .= $tab . indent() . '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">' . lbreak();
-                    $form .= $tab . indent(2) . '<input type="text" name="user_login" id="user_login" class="input" value="" placeholder="' . $placeholder_email . '">' . lbreak();
+                    $form .= $tab . indent(2) . '<input type="text" name="user_login" id="user_forgot" class="input" value="" placeholder="' . $placeholder_email . '">' . lbreak();
                 $form .= $tab . indent() . '</div>' . lbreak();
                 $form .= $tab . indent() . '<input type="hidden" name="redirect_to" value="' . currentURL( true ) . '?action=forgot&amp;success=1">' . lbreak();
-                $form .= $tab . indent() . '<button type="submit" name="wp-submit" id="wp-submit" class="scm-ui-button scm-ui-label submit-input' . ( $forgot_icon ? ' icon' : '' ) . '">' . $forgot_icon . $forgot_send . '</button>' . lbreak();
+                $form .= $tab . indent() . '<button type="submit" name="wp-submit" id="fg-submit" class="scm-ui-button scm-ui-label submit-input' . ( $forgot_icon ? ' icon' : '' ) . '">' . $forgot_icon . $forgot_send . '</button>' . lbreak();
                 $form .= $tab . indent() . '<div class="scm-ui-label show-forgot"><label for="login-show-forgot">' . $label_back . '</label></div>' . lbreak();
                 $form .= $tab . '</form>' . lbreak();
 
