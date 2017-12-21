@@ -1073,14 +1073,14 @@ function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = 
 
     $marker = ( isset( $fields['luogo-map-icon'] ) ? $fields['luogo-map-icon'] : 'default' );
 
-    $icon = array( 'icon' => 'fa-map-marker', 'data' => '#000000' );
+    $icon = array( 'icon' => 'fa-map-marker-alt', 'data' => '#000000' );
 
 
 
     switch ( $marker ) {
         case 'icon':
 
-            $fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker' );
+            $fa = is( $fields['luogo-map-icon-fa'], 'fa-map-marker-alt' );
             $color = scm_utils_preset_rgba( $fields, 'luogo-map' );//is( $fields['luogo-map-rgba-color'], '#e3695f' ), is( $fields['luogo-map-rgba-alpha'], 1 ) );
             //$color = scm_utils_preset_rgba( $fields, 'luogo-map', '#e3695f', 1 );
             $icon = array( 'icon' => $fa, 'data' => $color );
@@ -1102,7 +1102,7 @@ function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = 
             $marker = ( ( isset( $term_field ) && $term_field ) ? ( isset( $term_field['luogo-tip-map-icon'] ) ? $term_field['luogo-tip-map-icon'] : 'default' ) : 'default' );
             switch ( $marker ) {
                 case 'icon':
-                    $fa = is( $term_field['luogo-tip-map-icon-fa'], 'fa-map-marker' );
+                    $fa = is( $term_field['luogo-tip-map-icon-fa'], 'fa-map-marker-alt' );
                     $color = scm_utils_preset_rgba( $fields, 'luogo-map' );// is( $term_field['luogo-tip-map-rgba-color'], '#e3695f' ), is( $term_field['luogo-tip-map-rgba-alpha'], 1 ) );
                     $icon = array( 'icon' => $fa, 'data' => $color );
                     $marker = ' data-icon="' . $fa . '" data-icon-color="' . $color . '"';
@@ -1118,7 +1118,7 @@ function scm_utils_preset_map_marker( $luogo = NULL, $fields = array(), $mark = 
                     $marker = scm_field( 'opt-tools-map-icon', 'icon', 'option' );
                     switch ( $marker ) {
                         case 'icon':
-                            $fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker', 'option' );
+                            $fa = scm_field( 'opt-tools-map-icon-fa', 'fa-map-marker-alt', 'option' );
 
                             $color = scm_utils_style_get_color( 'opt-tools-map-', 'option' );
 

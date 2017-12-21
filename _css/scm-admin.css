@@ -1160,8 +1160,8 @@ body:not(.browser-firefox) .acf-field-true-false .acf-input label input{
 /*** 1.0 GENERAL ***/
 
 .acf-postbox > .inside{
-    display: flex;
-    flex-flow: row wrap;
+    /*display: flex;
+    flex-flow: row wrap;*/
 }
 
 /* Acf Field */

@@ -509,7 +509,7 @@ function scm_acf_preset_map_icon( $name = '', $width = 100, $logic = 0, $require
 	$img = array( 'field' => $name . '-icon', 'operator' => '==', 'value' => 'img' );
 	$img = ( $logic ? scm_acf_merge_conditions( $img, $logic ) : $img );
 		
-		$fields[] = scm_acf_field_icon( $name . '-icon-fa', array('default'=>'map-marker'), 100, $icon );
+		$fields[] = scm_acf_field_icon_no( $name . '-icon-fa', array('default'=>'map-marker-alt'), 100, $icon );
 		$fields = array_merge( $fields, scm_acf_preset_rgba( $name, '#e3695f', 1, 100, $icon ) );
 		$fields[] = scm_acf_field_image_url( $name . '-icon-img', array('label'=>__( 'Carica un\'immagine', SCM_THEME )), 100, $img );
 

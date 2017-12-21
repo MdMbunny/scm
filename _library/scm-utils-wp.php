@@ -578,7 +578,7 @@ function linkExtend( $link, $name = '' ){
     }else{
         $parse = urlExtend( $link['link'] );
         if( $parse['sub'] == 'maps' && $parse['domain'] == 'google' )
-            $link['icon'] = $link['type'] = 'map-marker';
+            $link['icon'] = $link['type'] = 'map-marker-alt';
         elseif( $parse['sub'] == 'plus' && $parse['domain'] == 'google' )
             $link['icon'] = $link['type'] = 'google-plus';
         elseif( scm_fa_exists( 'social', $parse['domain'] ) )
