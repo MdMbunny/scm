@@ -1758,7 +1758,7 @@ function getHREF( $type = 'web', $link, $data = false ){
         break;
 
         case 'email':
-            return ' ' . $data . 'href="mailto:' . encodeEmail( $link ) . '" ' . $data . 'target="_self"';
+            return ' ' . $data . 'href="mailto:' . encodeEmail( $link ) . '" ' . $data . 'target="_self" data-link-type="mail"';
         break;
 
         case 'skype':

@@ -349,7 +349,7 @@ function scm_hook_site_register_styles_inline() {
     $css .= '.site-content, .site-footer{ ' . $line_height . ' }' . lbreak();
     $css .= '.navigation ul li a { ' . $menu_font . ' }' . lbreak();
     $css .= '.topofpage a { ' . $top_bg . ' }' . lbreak();
-    $css .= '.topofpage a i { ' . $top_icon . ' }' . lbreak();
+    $css .= '.topofpage a .faicon { ' . $top_icon . ' }' . lbreak();
 
     // Responsive
 
