@@ -23,10 +23,6 @@ $forgot_success = __( 'Check your email for the instructions to get a new passwo
 $forgot_failed = ( $failed == 'invalidkey' ? __( 'The reset key is wrong. Please request a new one.', SCM_THEME ) : ( $failed == 'expiredkey' ? __( 'The reset key is expired. Please request a new one.', SCM_THEME ) : __( 'Sorry, we couldn\'t find any user with that username or email.', SCM_THEME ) ) );
 $login_failed = __( 'Invalid username or password. Please try again.', SCM_THEME );
 
-consoleLog( $action );
-consoleLog( $success );
-consoleLog( $failed );
-
 if( $action == 'resetpass' && $success ){
 
     alert( $reset_success );

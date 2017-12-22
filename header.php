@@ -25,13 +25,12 @@ if( is_single() ){
 
 ?><!DOCTYPE html>
 
-<!--<html class="scm-<?php //echo SCM_VERSION; echo ( SCM_PAGE_EDIT ? ' edit' : '' ); ?> no-js" <?php language_attributes(); ?>> // ??? -->
 <html class="<?php echo $classes; ?>" <?php language_attributes(); ?>>
 
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 
 <meta name="DC.creator" content="Studio Creativo M - www.studiocreativo-m.it" />
-<meta name="author" content="<?php bloginfo(); ?>'" />
+<meta name="author" content="<?php bloginfo(); ?>" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 

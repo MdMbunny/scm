@@ -473,7 +473,7 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 }
 #adminmenu a.faicon:before{
     font-family: 'Font Awesome 5 Pro' !important;
-    font-weight: 900 !important;
+    font-weight: 400;
     float: left;
     width: 36px;
     height: 34px;
@@ -482,6 +482,15 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
     text-align: center;
     font-size: 1.4em;
     -webkit-font-smoothing: antialiased;
+}
+#adminmenu a.faicon.fas:before{
+	font-weight: 900;
+}
+#adminmenu a.faicon.fal:before{
+	font-weight: 300;
+}
+#adminmenu a.faicon.fab:before{
+	font-family: 'Font Awesome 5 Brands' !important;
 }
 #adminmenu a.faicon .wp-menu-image{
 	display: none !important;

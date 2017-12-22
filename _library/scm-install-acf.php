@@ -40,6 +40,8 @@ add_filter( 'acf/load_field', 'scm_hook_acf_loadfield_hook_choices_get', 100) ;
 add_filter( 'acf/load_field/type=repeater', 'scm_hook_acf_loadfield_hook_repeater_list', 100 );
 //add_filter( 'acf/load_field/type=font-awesome', 'scm_hook_acf_loadfield_hook_fontawesome_list', 150 );
 add_filter( 'ACFFA_get_icons', 'scm_hook_acf_loadfield_hook_fontawesome_list', 150 );
+add_filter( 'ACFFA_admin_enqueue_fa', function(){ return false; } );
+
 
 add_filter( 'acf/fields/post_object/query', 'scm_hook_acf_queryfield_hook_objects', 10, 3 );
 
