@@ -2443,9 +2443,9 @@ function csv_remove_column( &$csv, $index = NULL ){
 // 11.0 IMG
 // ------------------------------------------------------
 
-function copy_image( $image = '', $name = '', $options = [] ){
+function copy_image( $image = '', $name = '', $options = array() ){
     
-    $default = [
+    $default = array(
         'width' => 0,
         'height' => 0,
         'crop' => false,
@@ -2455,7 +2455,7 @@ function copy_image( $image = '', $name = '', $options = [] ){
         'quality' => 100,
         'brightness' => 0, // -255 > 255
         'contrast' => 0, // -100 < 100
-    ];
+    );
 
     extract( array_merge( $default, $options ) );
 

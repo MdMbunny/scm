@@ -12,9 +12,15 @@
  * @since 1.0.0
  */
 
-$action = ( !empty( SCM_ACTION ) && ( SCM_ACTION == 'register' || SCM_ACTION == 'forgot' || SCM_ACTION == 'resetpass') ? SCM_ACTION : 'login' );
-$success = !empty( SCM_SUCCESS );
-$failed = !empty( SCM_FAILED ) ? SCM_FAILED : false;
+$action = 'login';
+if( defined( 'SCM_ACTION' ) && ( SCM_ACTION == 'register' || SCM_ACTION == 'forgot' || SCM_ACTION == 'resetpass') )
+    $action = SCM_ACTION;
+$success = false;
+if( defined( 'SCM_SUCCESS' ) && SCM_SUCCESS )
+    $success = true;
+$failed = false;
+if( defined( 'SCM_FAILED' ) )
+    $failed = SCM_FAILED;
 
 $register_success = __( 'An email has been sent to the new user.', SCM_THEME );
 $reset_success = __( 'The new password has been saved.', SCM_THEME );
