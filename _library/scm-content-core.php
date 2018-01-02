@@ -446,7 +446,7 @@ function scm_container_template( $content = array() ){
                     if( ex_attr( $meta, 'key', '' ) ){
                         $query[] = array(
                             'key'=> $meta['key'],
-                            'value'=> ex_attr( $meta, 'value', $post->ID ),
+                            'value'=> ex_attr( $meta, 'value' ) ?: $post->ID,
                             'compare'=> ex_attr( $meta, 'compare', '=' )
                         );
                     }
@@ -481,6 +481,7 @@ function scm_container_template( $content = array() ){
             $content['alignment'] = ( isset( $content['alignment'] ) && $content['alignment'] != 'default' ? $content['alignment'] : '' );
         }
     }
+
     return $content;
 }
 
