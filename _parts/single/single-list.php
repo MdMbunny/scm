@@ -152,7 +152,7 @@ if( is( $list ) ){
         $li_style = is( $txt_col, '', ' color:', ';' ) . is( $bg_col, '', ' background-color:', ';' );
 
         $li_class = 'scm-button button ' . $display . ' ' . $direction . ' ' . $button_layout . ' ' . str_replace( 'layout-', '', $button_layout ) . ( isset( $button['class'] ) ? ' ' . $button['class'] : '' );
-        $li_class .= ( $name ? '' : ' icon' ) . ' ' . ( $shape == 'no-shape' ? ' ' . $shape : ' shape' . $shape ) . ' ' . $shape_size . ' ' . $shape_angle;
+        $li_class .= ( $name ? '' : ' icon' ) . ' ' . ( $shape == 'no-shape' ? ' ' . $shape : ' shape ' . $shape ) . ' ' . $shape_size . ' ' . $shape_angle;
         $li_class .= ' ' . $align . ' ' . $odd;
 
         if( isset( $button['link'] ) && is( $button['link'] ) ){

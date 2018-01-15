@@ -193,11 +193,11 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
 
     $SCM_indent -= 1;
 
+    do_action( 'scm_action_append_header' );
+
         // Menu under head
     if ( $menu_position == 'bottom' )
         $just = scm_main_menu( $menu_align, $menu_position );
-
-    do_action( 'scm_action_append_header' );
 
     indent( $SCM_indent, '</header><!-- #site-header -->', 2 );
 

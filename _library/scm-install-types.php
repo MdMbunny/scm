@@ -172,7 +172,7 @@ function scm_hook_types_default(){
             'singular' => __('Evento', SCM_THEME),
             'plural' => __('Eventi', SCM_THEME),
             'slug' => 'eventi',
-            'fa-icon' => 'fa-thumb-tack-s',
+            'fa-icon' => 'fa-calendar-alt-s',
             'icon' => 'calendar-alt',
             'orderkey' => 'start-date', 
             'orderby' => 'meta_value',
