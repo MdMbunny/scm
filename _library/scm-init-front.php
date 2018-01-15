@@ -54,6 +54,7 @@ function scm_front_init() {
     $type = get_post_type();
     $single = is_single();
     $archive = is_archive();
+    $dup = get_page_by_path( $type );
     $istax = is_tax();
     $tax = get_query_var( 'taxonomy' );
     $term = get_query_var( 'term' );
@@ -65,6 +66,15 @@ function scm_front_init() {
 
     if( function_exists( 'pll_current_language' ) ){
         $lang = ( pll_current_language() != pll_default_language() ? '-' . pll_current_language() : '' );
+    }
+
+    if( $archive && $dup ){
+        $page = $dup;
+        $archive = false;
+        $type = 'page';
+        $id = $dup->ID;
+        setup_postdata( $dup );
+        $post = $dup;
     }
 
     // INIT SINGLE or ARCHIVE or TAXONOMY ---------------------------------------------------------------------------------

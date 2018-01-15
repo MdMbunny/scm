@@ -56,8 +56,6 @@ if( !empty( $links ) ){
 }
 if( !empty( $files ) ){
     foreach ($files as $file) {
-
-        consoleLog($file);
         
         echo getFile( $file['file'], $file['name'], $SCM_indent + 2, 'li' );
 

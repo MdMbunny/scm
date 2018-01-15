@@ -348,11 +348,11 @@ function scm_acf_fields_articoli( $name = '' ) {
 	$fields = apply_filters( 'scm_filter_fields_articolo_before', $fields );
 
 	if( $hastaxes )
-		$fields[] = scm_acf_field_tab_left( $name . 'tab-set-articolo', array('label'=>__( 'Impostazioni', SCM_THEME ) ) );
+		$fields[] = scm_acf_field_tab_left( $name . 'tab-set-articolo', array('label'=>__( 'Contenuto', SCM_THEME ) ) );
 		
 		$fields[] = scm_acf_field_image_url( $name . 'image' );
 		$fields[] = scm_acf_field_textarea( $name . 'excerpt', array( 'rows'=>5, 'label'=>__( 'Anteprima', SCM_THEME ) ) );
-		$fields[] = scm_acf_field_editor_basic( $name . 'editor' );
+		$fields[] = scm_acf_field_editor_media( $name . 'editor' );
 
 	if( $hastaxes ){
 		$fields[] = scm_acf_field_tab_left( $name . 'tab-tax-articolo', array('label'=>__( 'Categorie', SCM_THEME ) ) );

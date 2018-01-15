@@ -229,15 +229,14 @@ function scm_utils_link_gallery( $content = array(), $field = 'galleria-images',
     $slug = $post->post_name;
     $link = '';
 
-
-
     $init = scm_utils_link_gallery_helper( $content, 'thumb' );
     if( $init == -1 )
         return '';
+    $field = !isset( $field ) || !$field ? 'galleria-images' : $field;
     $stored = scm_field( $field, array(), $id );
     if( !$stored )
-        $stored = array();
-    
+        $stored = array();    
+
     $images = array();
     $path = ( sizeof( $stored ) ? substr( $stored[0]['url'], 0, strpos( $stored[0]['url'], '/' . $type . '/' ) + strlen($type) + 2 ) : '' );
 

@@ -466,7 +466,6 @@ function getURL( $url ){
         return 'http://localhost:8888/_scm/';
 
     if( startsWith( $url, array( 'page:' ) ) !== false || startsWith( $url, array( 'page/' ) ) !== false || startsWith( $url, array( 'http://page/', 'https://page/' ) ) !== false ){
-
         $url = str_replace( array( 'page:', 'page/', 'http://', 'https://' ), '', $url );
 
         if( strpos( $url, '#' ) === 0 ){

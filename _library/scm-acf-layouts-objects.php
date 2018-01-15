@@ -305,9 +305,26 @@ function scm_acf_object_menu( $default = '', $obj = 0, $opt = '', $width = 100, 
 	
 	if( !$obj ){
 
-		$fields[] = scm_acf_field_select( 'location', 'wp_menu_just' );
-		//$fields[] = scm_acf_field_text( 'location', array( 'default'=>'primary', 'placeholder'=>__( 'Theme Location', SCM_THEME ), 'prepend'=>__( 'Location', SCM_THEME ) ), 100, 0 );
-		$fields[] = scm_acf_field_text( 'menu', array( 'placeholder'=>__( 'Menu ID', SCM_THEME ), 'prepend'=>__( 'Menu', SCM_THEME ) ), 100, 0 );
+		$fields[] = scm_acf_field_select( 'menu', 'wp_menu' );
+		$fields[] = scm_acf_field_text( 'menu_id', array( 'placeholder'=>__( 'Menu ID', SCM_THEME ), 'prepend'=>__( 'Menu', SCM_THEME ) ), 100, 0 );
+		
+		// todo: DA AGGIUNGERE
+		
+		//'row_class'        => 'full',
+	    //'toggle_active'    => '',
+	    //'home_active'      => 0,
+	    //'image_active'     => 'no',
+	    //'menu'             => 'primary',
+	    //'menu_id'          => '',
+	    //'sticky'           => '',
+	    //'side'             => false,
+	    //'side_numbers'     => false,
+	    //'side_names'       => false,
+	    //'type'             => 'self',
+	    //'offset'           => 0,
+	    //'attach'           => 'nav-top',
+	    //'anim'             => 'top',
+	    //'numbers'          => false,
 
 	}		
 

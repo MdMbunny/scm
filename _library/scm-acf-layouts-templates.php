@@ -70,7 +70,7 @@ function scm_acf_fields_templates( $name = '', $logic = 0, $instructions = '', $
 * @param {misc} default
 * @return {array} Fields.
 */
-function scm_acf_fields_template( $type = '', $default = 0 ) {
+function scm_acf_fields_template( $type = '' ) {
 
 	$fields = array();
 
@@ -103,7 +103,7 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 		// TITLE
 		$layout_name = scm_acf_layout( 'titolo', 'block', __( 'Titolo', SCM_THEME ) );
 
-			$layout_name['sub_fields'] = scm_acf_object_titolo( $default, 1 );
+			$layout_name['sub_fields'] = scm_acf_object_titolo( 0, 1 );
 
 	// SCM Filter: Passing Title Fields and Type - Receiving Title Fields
 		//$layout_name = apply_filters( 'scm_filter_layout_title_' . $type, $layout_name );
@@ -117,8 +117,8 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 			//$layout_date = apply_filters( 'scm_filter_layout_date', $layout_date, $slug );
 
 			// +++ todo: va bene tag, ma devi almeno aggiungere le fields: flexible date ( day/month/year/week/hour => format )
-			$layout_date['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 50 );
-            $layout_date['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 50 );
+			$layout_date['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', '', 0, __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 50 );
+            $layout_date['sub_fields'][] = scm_acf_field( 'append', array( 'text', '', 0, __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 50 );
             $layout_date['sub_fields'] = array_merge( $layout_date['sub_fields'], scm_acf_object_data( '', 1 ) );			
 
 		$layout_taxes = array();
@@ -129,13 +129,26 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 			if( $key != 'language' && $key != 'post_translations' ){
 				$layout_tax = scm_acf_layout( 'SCMTAX-' . $value->name, 'block', $value->label, '', 1 );
 
-					$layout_tax['sub_fields'][] = scm_acf_field( 'prepend', array( 'text', $value->label . ': ', ( $default ? 'default' : '' ), __( 'Inizio', SCM_THEME ) ), __( 'Inizio', SCM_THEME ), 25 );
+					$layout_tax['sub_fields'][] = scm_acf_field_text( 'prepend', array(
+						'default' => $value->label . ': ',
+						'prepend' => __( 'Inizio', SCM_THEME ),
+					), 20 );
+					$layout_tax['sub_fields'][] = scm_acf_field_text( 'each', array(
+						'default' => '',
+						'prepend' => __( 'Precedi', SCM_THEME )
+					), 20 );
 					$layout_tax['sub_fields'][] = scm_acf_field_select( 'tag', array( 
 						'type'=>'headings_low',
 						'default'=>'span',
-					), 25 );
-					$layout_tax['sub_fields'][] = scm_acf_field( 'separator', array( 'text', ', ', ( $default ? 'default' : '' ), __( 'Separatore', SCM_THEME ) ), __( 'Separatore', SCM_THEME ), 25 );
-					$layout_tax['sub_fields'][] = scm_acf_field( 'append', array( 'text', '.', ( $default ? 'default' : '' ), __( 'Fine', SCM_THEME ) ), __( 'Fine', SCM_THEME ), 25 );
+					), 20 );
+					$layout_tax['sub_fields'][] = scm_acf_field_text( 'separator', array(
+						'default' => ', ',
+						'prepend' => __( 'Separatore', SCM_THEME )
+					), 20 );
+					$layout_tax['sub_fields'][] = scm_acf_field_text( 'append', array(
+						'default' => '.',
+						'prepend' => __( 'Fine', SCM_THEME )
+					), 20 );
 
 // SCM Filter: Passing Tax Fields and Type - Receiving Tax Fields
 					$layout_tax = apply_filters( 'scm_filter_layout_tax_' . $type, $layout_tax, $value->name ); // Perché era commentato?
@@ -147,22 +160,22 @@ function scm_acf_fields_template( $type = '', $default = 0 ) {
 		$layout_empty = array();
 		
 		$layout_tit = scm_acf_layout( 'titolo-empty', 'block', __( 'Titolo Vuoto', SCM_THEME ) );
-            $layout_tit['sub_fields'] = array_merge( $layout_tit['sub_fields'], scm_acf_object_titolo( $default ) );
+            $layout_tit['sub_fields'] = array_merge( $layout_tit['sub_fields'], scm_acf_object_titolo() );
 
         $layout_list = scm_acf_layout( 'pulsanti', 'block', __( 'Pulsanti', SCM_THEME ) );
-            $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti( $default ) );
+            $layout_list['sub_fields'] = array_merge( $layout_list['sub_fields'], scm_acf_object_pulsanti() );
 
         $layout_icon = scm_acf_layout( 'icona', 'block', __( 'Icona', SCM_THEME ) );
-            $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona( $default ) );
+            $layout_icon['sub_fields'] = array_merge( $layout_icon['sub_fields'], scm_acf_object_icona() );
 
         $layout_divider = scm_acf_layout( 'separatore', 'block', __( 'Divider', SCM_THEME ) );
-            $layout_divider['sub_fields'] = array_merge( $layout_divider['sub_fields'], scm_acf_object_separatore( $default ) );
+            $layout_divider['sub_fields'] = array_merge( $layout_divider['sub_fields'], scm_acf_object_separatore() );
 
         $layout_share = scm_acf_layout( 'share', 'block', __( 'Social share', SCM_THEME ) );
-            $layout_share['sub_fields'] = array_merge( $layout_share['sub_fields'], scm_acf_object_social_share( $default ) );
+            $layout_share['sub_fields'] = array_merge( $layout_share['sub_fields'], scm_acf_object_social_share() );
 
          $layout_back = scm_acf_layout( 'back-button', 'block', __( 'Back Button', SCM_THEME ) );
-            $layout_back['sub_fields'] = array_merge( $layout_back['sub_fields'], scm_acf_object_back_button( $default ) );
+            $layout_back['sub_fields'] = array_merge( $layout_back['sub_fields'], scm_acf_object_back_button() );
 
         $layout_empty[] = $layout_tit;
         $layout_empty[] = $layout_list;

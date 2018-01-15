@@ -533,8 +533,10 @@ function scm_hook_load_archive() {
         
     // ARCHIVE
     $archive = $_POST['archive'];
-    if( !is_null( $archive ) )
+    if( !is_null( $archive ) ){
+        $archive['archive-lang'] = $_POST['lang'] ? substr( $_POST['lang'], 0, 2 ) : '';
         scm_post( $archive );
+    }
     die;
 }
 /**

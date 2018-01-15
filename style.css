@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.3.1
+Version:			v4.3.2
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -146,6 +146,10 @@ body{
 	overflow: hidden !important;
 	overflow-x: hidden !important;
 	overflow-y: hidden !important;
+}
+
+.no-pad{
+	padding: 0 !important;
 }
 /*body.no-scroll,
 html.no-scroll{
@@ -1560,6 +1564,7 @@ input[type="submit"]:active{
 }
 .scm-loading.loading-icon{
 	color: #AAA;
+	z-index: 8030;
 }
 .scm-loading.loading-icon .fa,
 .scm-loading.loading-icon .fas,
@@ -1921,6 +1926,10 @@ body.mouse .sub-menu li:hover > ul{
 	opacity: 1 !important;
 }
 
+.navigation:not(.toggled) > .row > .toggle-button{
+	display: none;
+}
+
 .navigation.sticky .menu > .current > a:hover,
 .navigation.sticky .menu > .active > a:hover,
 .navigation.sticky .current > .toggle-button > a:hover,
@@ -1935,6 +1944,25 @@ body.mouse .sub-menu li:hover > ul{
 	text-align: center;
 	margin-bottom: 0 !important;
 	padding: 0;
+}
+.navigation.half-width{
+	display: flex;
+	z-index: 8000;
+}
+
+.navigation.half-width.toggle,
+.navigation.half-width,
+.navigation.half-width.toggle .row,
+.navigation.half-width .row{
+	text-align: left;
+	justify-content: flex-start;
+}
+.site-branding.half-width + .navigation.half-width.toggle,
+.site-branding.half-width + .navigation.half-width,
+.site-branding.half-width + .navigation.half-width.toggle .row,
+.site-branding.half-width + .navigation.half-width .row{
+	text-align: right;
+	justify-content: flex-end;
 }
 
 /*.navigation.toggle .row{
@@ -1984,7 +2012,8 @@ body.mouse .sub-menu li:hover > ul{
 }
 
 body:not(.enabled) .navigation > .row > div.toggle-button{
-	display: none;
+	/*display: none;*/
+	pointer-events: none;
 }
 
 
@@ -2066,6 +2095,7 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 }
 
 .navigation.sticky.affix .side-menu,
+#site-header:not(.sticked) .navigation:not(.sticky) .side-menu[data-active],
 #site-header.sticked #site-navigation .side-menu{
     opacity: 1;
 }
@@ -2077,7 +2107,6 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
     background-color: transparent;
     text-align: right;
 }
-
 
 #side-menu a{
 	overflow: hidden;
@@ -2101,8 +2130,9 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
     margin-right: 0em;
 }
 
-.navigation.sticky.affix #side-menu a,
-#site-header.sticked #site-navigation #side-menu a{
+.navigation.sticky.affix .side-menu a,
+#site-header:not(.sticked) .navigation:not(.sticky) .side-menu[data-active] a,
+#site-header.sticked #site-navigation .side-menu a{
     pointer-events: all;
 }
 
@@ -2479,6 +2509,10 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 
 .share-buttons{
 	text-align: center;
+	display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
 }
 .share-button{
     text-decoration: none;
@@ -2486,8 +2520,12 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
     width: 1.7em;
     height: 1.7em;
     display: inline-block;
-    line-height: 1.35em;
-    padding: .2em;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: .2em;
+
 }
 .share-button.fill{
 	color: #FFF !important;
@@ -2764,6 +2802,15 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 
 /* Dynamic Content */
 
+.tofull .fancybox-type-html + .fancybox-overlay{
+	z-index: 8035;
+	background: transparent !important;
+	pointer-events: none;
+}
+.tofull .fancybox-type-html + .fancybox-overlay > *{
+	pointer-events: all;
+}
+
 .fancybox-wrap .dynamic{
 	width: 800px;
 	max-width: 80%;
@@ -2979,6 +3026,9 @@ body.touch.smart .fancybox-overlay .fancybox-tools{
 	color: #FFF;
 	margin-left: .5em;
 	display: inline-block;
+}
+.tofull .fancybox-overlay.html .fancybox-tools a {
+    color: #000;
 }
 
 .fancybox-overlay .fancybox-tools a .faicon{

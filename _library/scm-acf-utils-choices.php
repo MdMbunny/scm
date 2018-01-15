@@ -134,6 +134,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 		if( strpos( $list, '_just' ) === false ){
 
 			$choices['auto'] = __( 'Menu Auto', SCM_THEME );
+			$choices['nosub'] = __( 'Menu Auto No Sub', SCM_THEME );
 			$choices['mono'] = __( 'Menu Mono', SCM_THEME );
 			//$choices['mini'] = __( 'Menu Mini', SCM_THEME );
 			$choices['no'] = __( 'Nessun Menu', SCM_THEME );

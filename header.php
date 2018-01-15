@@ -162,6 +162,8 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
     // Head
     indent( $SCM_indent, '<header id="' . $head_id . '" class="' . $head_class . '">', 2 );
 
+    do_action( 'scm_action_prepend_header' );
+
     $just = 0;
 
         // Menu above head
@@ -194,6 +196,8 @@ indent( $SCM_indent, '<div id="' . $wrap_id . '" class="' . $wrap_class . '"
         // Menu under head
     if ( $menu_position == 'bottom' )
         $just = scm_main_menu( $menu_align, $menu_position );
+
+    do_action( 'scm_action_append_header' );
 
     indent( $SCM_indent, '</header><!-- #site-header -->', 2 );
 

@@ -50,6 +50,7 @@ function scm_content( $content = array(), $container = '' ) {
     $template = ex_attr( $content, 'original-template', '' );
 
     if( isset( $content['sections'] ) ){
+
         if( isset( $content['page-menu'] ) )
             $container = 'section';
         else
@@ -261,7 +262,8 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             
             //}else{
 
-                // FILTER contents before echo            
+                // FILTER contents before echo 
+                
                 $content = apply_filters( 'scm_filter_echo_container', $content, $container, $original );
                 $content = apply_filters( 'scm_filter_echo_container_' . $container, $content, $original );
 
@@ -1011,6 +1013,7 @@ function scm_contents_single( $args = array() ) {
                 $terms = ( isset( $args[ 'categorie' ] ) ? $args[ 'categorie' ] : ( wp_get_object_terms( get_the_ID(), $tax ) ?: array() ) );
                 $args['class'] .= ' tax';
                 $sep = $args['separator'];
+                $prep = $args['each'];
 
                 $args['title'] = '';
 
@@ -1021,7 +1024,7 @@ function scm_contents_single( $args = array() ) {
                         $term = $terms[$i];
                         $href = ( $args['link'] == 'self' ? ' href="' . get_term_link( $term->slug, $tax ) . '"' : '' );
 
-                        $args['title'] .= indent( $SCM_indent + 1 ) . '<' . ( $href ? 'a' : 'span' ) . ' class="term"' . $href . '>' . esc_html( $term->name ) . '</' . ( $href ? 'a' : 'span' ) . '>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : '' ) . lbreak();
+                        $args['title'] .= indent( $SCM_indent + 1 ) . '<' . ( $href ? 'a' : 'span' ) . ' class="term"' . $href . '>' . ( $prep ?: '' ) . esc_html( $term->name ) . '</' . ( $href ? 'a' : 'span' ) . '>' . ( $i < sizeof( $terms ) - 1 ? ( $sep ? $sep . ' ' : '' ) : '' ) . lbreak();
 
                     }
 
@@ -1064,7 +1067,7 @@ $before = apply_filters( 'scm_filter_archive_before_{post_type}}', $content, $po
 */
 function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
-    global $post, $SCM_types, $SCM_indent, $SCM_archives;
+    global $post, $SCM_types, $SCM_indent, $SCM_archives, $SCM_agent;
 
     $type = '';
 
@@ -1115,6 +1118,9 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $compare = ex_attr( $content, 'archive-compare', '=' );
     $typ = 'CHAR';
 
+    $lang = ex_attr( $content, 'archive-lang', ( $SCM_agent['lang']['slug'] ?: '' ) );
+    
+
     if( $value == 'true' ){
         $value = true;
         $typ = 'BOOLEAN';
@@ -1162,6 +1168,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             'meta_compare' => $compare,
             'meta_query' => $meta,
             'meta_type' => $typ,
+            'lang' => $lang,
         );
 
     }else{
@@ -1180,6 +1187,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
                 'meta_compare' => $compare,
                 'meta_query' => $meta,
                 'meta_type' => $typ,
+                'lang' => $lang,
             );
         }
     }
@@ -1189,72 +1197,6 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
     if( !empty( $query ) )
         $loop = new WP_Query( $query );
-
-// --------------
-
-    /*if( !$template_id ){
-
-        $template_id = scm_field( $type . '-templates', '', 'option' );
-                    
-        if( !empty( $template_id ) )
-            $template_id = (int)$template_id[0]['id'];
-
-        if( empty( $template_id ) )
-            $template_id = 0;
-    }
-        
-    $posts = $template_id ? get_fields( $template_id ) : array();
-
-    if( !empty( $posts ) ){
-        $template_post = get_post( $template_id );
-        $template_name = $template_post->post_name;
-        $posts['class'] = $type . ' template-' . $template_id . ' ' . $template_name;
-        $posts['attributes'] = 'data-template="' . $template_id . '" ';
-        $posts['original-template'] = $template_name;
-    }*/
-    
-    //$posts['column-width'] = $width;
-    //$posts['fallback'] = ( isset( $content['archive-fallback'] ) ? $content['archive-fallback'] : '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>' );
-
-// --------------
-
-    /*$content['class'] = ex_attr( $content, 'class', '' );
-    $content['attributes'] = ex_attr( $content, 'attributes', '' );
-    $type = $content['post_type'] = $post->post_type;
-    $template_id = ex_attr( $content, 'template', 0 );
-    $template_post = 0;
-
-    if( is_numeric($template_id) )
-        $template_id = (int)$template_id;
-    
-    if( is_string( $template_id ) ){
-        $template_post = get_page_by_path( $template_id, OBJECT, $type . SCM_TEMPLATE_APP );
-        if( $template_post )
-            $template_id = $template_post->ID;
-        else
-            $template_id = 0;
-    }
-
-    if( !$template_id ){
-        $templates = scm_field( $type . '-templates', '', 'option' );
-        if( !empty( $templates ) )
-            $template_id = (int)$templates[0]['id'];
-        else
-            $template_id = 0;
-    }
-        
-    $template = $template_id ? get_fields( $template_id ) : array();
-
-    if( !empty( $template ) ){
-        $content = array_merge( $content, $template );
-        $template_post = $template_post ?: get_post( $template_id );
-        $template_name = $template_post->post_name;
-        $content['class'] .= $type . ' template-' . $template_id . ' ' . $template_name;
-        $content['attributes'] .= 'data-template="' . $template_id . '" ';
-        //$content['original-template'] = $template_name;
-    } */ 
-
-// --------------
 
     $posts = array();
     $posts['original-template'] = $template_id;
