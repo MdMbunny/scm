@@ -129,6 +129,9 @@ if( is_user_logged_in() ){
 
     $buttons = ex_attr( $args, 'login-buttons', 0 ) ?: array();
 
+    if( count( $buttons ) )
+        echo indent( $SCM_indent ) . '<div class="scm-ui-content -wrap login-buttons">' . lbreak();
+
     foreach ( $buttons as $button ) {
         $b_type = ( isset( $button['type'] ) ? $button['type'] : 'logout' );
         $b_icon = ( isset( $button['icon'] ) ? $button['icon'] : '' );
@@ -145,8 +148,11 @@ if( is_user_logged_in() ){
             $b_link = getURL( 'logout:' . $b_link );
             $b_label = ( $b_label ?: ( $b_icon ? '' : __( 'Sign Out', SCM_THEME ) ) );
         }
-        echo '<a class="scm-button shape column-layout" href="' . $b_link . '">' . ( $b_icon ? '<i class="fa ' . $b_icon . '"></i>' : '' ) . $b_label . '</a>';
+        echo indent( $SCM_indent + 1 ) . '<a class="scm-ui-label scm-ui-button" href="' . $b_link . '">' . ( $b_icon ? '<i class="fa ' . $b_icon . '"></i>' : '' ) . $b_label . '</a>' . lbreak();
     }
+
+    if( count( $buttons ) )
+        echo indent( $SCM_indent ) . '</div>' . lbreak();
 
 }else{
 

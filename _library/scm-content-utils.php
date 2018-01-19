@@ -139,6 +139,8 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
     $id = $post->ID;
     $link = '';
 
+    if( strpos( $content['acf_fc_layout'], 'layout-SCMTAX') !== false ) return '';
+
     $content = apply_filters( 'scm_filter_object_before_link_' . $type, $content, $id );
 
     $set = ex_attr( $SCM_types['settings'], $type, '' ) ?: array( 'link'=>'self', 'link-field'=>'' );
@@ -185,7 +187,7 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
 
         case 'video':
             $video = getYouTubeURL( scm_field( 'video-url', '', $id ) );
-            $link = ' data-popup="' . htmlentities( json_encode( array( $video . '?autoplay=1' ) ) ) . '"';
+            $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
             $link .= ' data-popup-type="video"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
         break;

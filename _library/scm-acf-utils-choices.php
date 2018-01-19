@@ -255,6 +255,7 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'yes' => __( 'Paginazione', SCM_THEME ),
 			'all' => __( 'Pulsante ALL', SCM_THEME ),
 			'more' => __( 'Pulsante MORE', SCM_THEME ),
+			'wp' => __( 'Paginazione WP', SCM_THEME ),
 			'no' => __( 'No paginazione', SCM_THEME ),
 		);
 	
@@ -615,6 +616,8 @@ function scm_acf_field_choices_preset( $list, $get = '' ){
 			'smartmin smartmid smart portrait notebook landscape'					=> 'Tablet Landscape',
 			'smartmin smartmid smart portrait notebook landscape desktop'			=> 'Desktop',
 			'smartmin smartmid smart portrait notebook landscape desktop wide'		=> 'Wide',
+			'is-mobile'																=> 'Mobile',
+			'touch'																	=> 'Touch',
 		);
 
 	}elseif( strpos( $list, 'responsive_down' ) !== false ){

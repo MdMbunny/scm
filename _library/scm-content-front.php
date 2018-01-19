@@ -51,7 +51,7 @@ function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = tr
         $pagination['add_args'] = array( 's' => urlencode( get_query_var( 's' ) ) );
 
     // Remove ajax call
-    $pagination['base'] = str_replace( SCM_AJAX, '', $pagination['base']);
+    $pagination['base'] = SCM_SITE . str_replace( SCM_AJAX, '', $pagination['base']);
 
     // Output
     $pag = '';

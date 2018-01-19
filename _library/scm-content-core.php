@@ -390,7 +390,7 @@ function scm_container_post( $content = array() ){
             $content['class'] = 'scm-archive archive archive-' . $slug . ' ' . $content['class'];
             
             if( $content['archive-complete'] != 'complete' ){
-                if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' ){
+                if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' || $content['archive-pagination'] == 'wp' ){
                     $content['id'] = ( ex_attr( $content, 'archive-id', '', 'archive-' ) ?: ( $content['id'] ?: 'archive-' . $slug ) );
                     $content['archive-paginated'] = $content['id'];
                     $content['class'] .= ' paginated';
@@ -1067,7 +1067,7 @@ $before = apply_filters( 'scm_filter_archive_before_{post_type}}', $content, $po
 */
 function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
-    global $post, $SCM_types, $SCM_indent, $SCM_archives, $SCM_agent;
+    global $post, $SCM_types, $SCM_indent, $SCM_archives, $SCM_agent, $wp_query;
 
     $type = '';
 
@@ -1101,14 +1101,17 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     if( empty( $types ) )
         $types = $type;
 
+    $is_query = !empty( $content['single'] ) && $content['single'] === 'wp_query';
+
     $complete = ex_attr( $content, 'archive-complete', '' ) == 'complete';
     $perpage = ( $complete ? -1 : ex_attr( $content, 'archive-perpage', get_option( 'posts_per_page' ) ) );
-    $pagination = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'yes' );
-    $more_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'more' );
-    $all_button = ( $complete ? false : ex_attr( $content, 'archive-pagination', '' ) == 'all' );
+    $choice = ex_attr( $content, 'archive-pagination', '' );
+    $pagination = ( $complete ? false : ( $choice == 'yes' || $choice == 'wp' ? $choice : false ) );
+    $more_button = ( $complete ? false : $choice == 'more' );
+    $all_button = ( $complete ? false : $choice == 'all' );
     $button = ex_attr( $content, 'archive-pag-text', '' );
-    $paginated = ex_attr( $content, 'archive-paginated', '' );
-    $current = ( $pagination || $more_button ? ( !is_null( $page ) ? $page : (int)getQueryVar( $paginated, 1 ) ) : 1 );
+    $paginated = ( $is_query ? 'paged' : ex_attr( $content, 'archive-paginated', '' ) );
+    $current = ( $pagination || $more_button ? ( $is_query ? get_query_var( $paginated ) : ( !is_null( $page ) ? $page : (int)getQueryVar( $paginated, 1 ) ) ) : 1 );
     $paginated_more = $paginated . '-more';
     $more = ( $more_button ? ( !is_null( $more ) ? $more : getQueryVar( $paginated_more, array() ) ) : array() );
     $orderby = ex_attr( $content, 'archive-orderby', 'date' );
@@ -1116,6 +1119,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
     $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
     $compare = ex_attr( $content, 'archive-compare', '=' );
+    $relation = ex_attr( $content, 'archive-relation', 'OR' );
     $typ = 'CHAR';
 
     $lang = ex_attr( $content, 'archive-lang', ( $SCM_agent['lang']['slug'] ?: '' ) );
@@ -1129,59 +1133,49 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         $typ = 'BOOLEAN';
     }
 
-    if( $archive ){
+    $posts = array();
+    $loop = array();
 
-        $tax = array();
+    if( $is_query ){
 
-        foreach ($content as $key => $terms) {
-
-            if( startsWith( $key, 'archive-' ) && endsWith( $key, '-terms' ) ){
-
-                $taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
-
-                if( isset( $terms ) && !empty( $terms ) ){
-                    $tax[ 'relation' ] = 'OR';
-                    foreach ( $terms as $term) {
-                        $tax[] = array( 
-                            'taxonomy' => $taxonomy,
-                            'field' => 'term_id',
-                            'terms' => array( $term ),
-                            'operator' => 'IN',
-                        );
-                    }
-                }
-            }
-        }
-
-        $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
-
-        $query = array(
-            'post_type' => $types,
-            'tax_query' => $tax,
-            'posts_per_page' => $perpage,
-            'post_status' => array( 'publish', 'private' ),
-            'order' => $ordertype,
-            'orderby' => $orderby,
-            'paged' => $current,
-            'meta_key' => $field,
-            'meta_value' => $value,
-            'meta_compare' => $compare,
-            'meta_query' => $meta,
-            'meta_type' => $typ,
-            'lang' => $lang,
-        );
+        $loop = $wp_query;
 
     }else{
 
-        if( !empty( $content['single'] ) ){
+        if( $archive ){
 
-            $meta = apply_filters( 'scm_filter_single_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
+            $tax = array();
+
+            foreach ($content as $key => $terms) {
+
+                if( startsWith( $key, 'archive-' ) && endsWith( $key, '-terms' ) ){
+
+                    $taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
+
+                    if( isset( $terms ) && !empty( $terms ) ){
+                        $tax[ 'relation' ] = $relation;
+                        foreach ( $terms as $term) {
+                            $tax[] = array( 
+                                'taxonomy' => $taxonomy,
+                                'field' => 'term_id',
+                                'terms' => array( $term ),
+                                'operator' => 'IN',
+                            );
+                        }
+                    }
+                }
+            }
+
+            $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
 
             $query = array(
                 'post_type' => $types,
-                'post__in' => ( $content['single'] ?: array() ),
-                'posts_per_page' => -1,
-                'orderby' => 'post__in',
+                'tax_query' => $tax,
+                'posts_per_page' => $perpage,
+                'post_status' => array( 'publish', 'private' ),
+                'order' => $ordertype,
+                'orderby' => $orderby,
+                'paged' => $current,
                 'meta_key' => $field,
                 'meta_value' => $value,
                 'meta_compare' => $compare,
@@ -1189,16 +1183,37 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
                 'meta_type' => $typ,
                 'lang' => $lang,
             );
+
+        }else{
+
+            if( !empty( $content['single'] ) ){
+
+                $meta = apply_filters( 'scm_filter_single_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
+
+                $query = array(
+                    'post_type' => $types,
+                    'post__in' => ( $content['single'] ?: array() ),
+                    'posts_per_page' => -1,
+                    'orderby' => 'post__in',
+                    'meta_key' => $field,
+                    'meta_value' => $value,
+                    'meta_compare' => $compare,
+                    'meta_query' => $meta,
+                    'meta_type' => $typ,
+                    'lang' => $lang,
+                );
+            }
         }
+
+        $id = $post->ID;
+        $loop = array( $id );
+
+        if( !empty( $query ) )
+            $loop = new WP_Query( $query );
+
     }
 
-    $id = $post->ID;
-    $loop = array( $id );
-
-    if( !empty( $query ) )
-        $loop = new WP_Query( $query );
-
-    $posts = array();
+    $posts['posts'] = $loop->posts;
     $posts['original-template'] = $template_id;
     $template_post = scm_utils_get_template( $types, $template_id );
     if( $template_post ){
@@ -1207,8 +1222,6 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     
     $posts['column-width'] = ex_attr( $content, 'post-width', 0 ) ?: ex_attr( $content, 'width', 'auto' );
     $posts['fallback'] = ex_attr( $content, 'archive-fallback', '' ) ?: '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>';
-
-    $posts['posts'] = $loop->posts;
     
     $posts = array_merge( $posts, ( $more ?: array() ) );
 
@@ -1223,15 +1236,17 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     // Pagination and button
     if( $archive && sizeof( $posts['posts'] ) > 0 ){
 
-        if( $pagination ){
+        $pages = scm_pagination( $loop, $current, $paginated, false );
+
+        if( $pagination && $pages ){
 
             if( $button )
                 indent( $SCM_indent, '<h5>' . $button . '</h5>', 1 );
 
-            indent( $SCM_indent, '<div class="scm-pagination pagination" data-load-content="' . $paginated . '" data-load-current="' . $current . '" data-load-type="replace">', 1 );
+            indent( $SCM_indent, '<div class="scm-pagination pagination"' . ( $pagination == 'yes' ? ' data-load-content="' . $paginated . '" data-load-current="' . $current . '" data-load-type="replace"' : '' ) . '>', 1 );
 
                 $SCM_indent++;
-                    scm_pagination( $loop, $current, $paginated );
+                    indent( $SCM_indent + 1, $pages, 1 );
                 $SCM_indent--;
 
             indent( $SCM_indent, '</div>', 1 );

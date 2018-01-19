@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.3.3
+Version:			v4.3.4
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1658,11 +1658,15 @@ ul.attachments{
 .attachment{
     padding: 1em 1em 0;
     margin-top: 1em;
-    display: inline-block;
     line-height: 1em;
     border-top: 1px solid #dedede;
     /*max-width: 50%;*/
     max-width: 100%;
+
+    /*display: inline-block;*/
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .tocolumn .attachment{
@@ -1796,20 +1800,20 @@ ul.attachments{
 
 /* Level 1 */
 
-.menu{
+ul.menu{
 	display: inline-block;
 	clear: both;
 	float: none;
 }
 
-.menu > li{
+ul.menu > li{
 	float: left;
 	/*position: relative;*/
 	display: inline-block;
 	vertical-align: top;
 }
 
-.toggle .menu{
+.toggle ul.menu{
 	padding: 0;
 }
 
@@ -1833,10 +1837,10 @@ ul.attachments{
 }
 
 
-body.mouse.keyboard .menu li a:focus + .sub-menu,
-body.mouse .menu li a:active + .sub-menu,
-body.mouse .menu li:hover .sub-menu,
-body.touch .menu li.toggled .sub-menu{
+body.mouse.keyboard ul.menu li a:focus + .sub-menu,
+body.mouse ul.menu li a:active + .sub-menu,
+body.mouse ul.menu li:hover .sub-menu,
+body.touch ul.menu li.toggled .sub-menu{
 	margin-left: 0;
 	opacity: 1;
 	/*-webkit-transition: all .3s;*/
@@ -1930,8 +1934,8 @@ body.mouse .sub-menu li:hover > ul{
 	display: none;
 }
 
-.navigation.sticky .menu > .current > a:hover,
-.navigation.sticky .menu > .active > a:hover,
+.navigation.sticky ul.menu > .current > a:hover,
+.navigation.sticky ul.menu > .active > a:hover,
 .navigation.sticky .current > .toggle-button > a:hover,
 .navigation.sticky .active > .toggle-button > a:hover{
 	cursor: pointer;
@@ -1969,14 +1973,14 @@ body.mouse .sub-menu li:hover > ul{
 	background-color: #DDD;
 }*/
 
-.navigation.toggle .menu a{
+.navigation.toggle ul.menu a{
     display: inline-block;
     font-size: 1.5em;
     padding: 1em;
     width: 100%;
 }
 
-.navigation.toggle .menu{
+.navigation.toggle ul.menu{
 	visibility: hidden;
 	overflow: hidden;
 	display: block;
@@ -1985,12 +1989,12 @@ body.mouse .sub-menu li:hover > ul{
 	transition: max-height .3s, visibility .3s;
 }
 
-.navigation.toggle.toggled .menu{
+.navigation.toggle.toggled ul.menu{
 	visibility: visible;
 	max-height: 1000px;
 }
  
-.navigation.toggle .menu > li{
+.navigation.toggle ul.menu > li{
 	margin: 0;
 	float: none;
 	position: static;
@@ -2047,8 +2051,8 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 	text-transform: initial;
 }
 
-.navigation .menu.mono a > .icon,
-.navigation .menu.mini a > .icon,
+.navigation ul.menu.mono a > .icon,
+.navigation ul.menu.mini a > .icon,
 .navigation .toggle-button > a > .icon{
 	display: block;
     margin-bottom: .3em;
@@ -2954,7 +2958,8 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 }
 .r940 .fancybox-overlay .fancybox-name,
 .smart .fancybox-overlay .fancybox-name{
-	padding: .5em 7em;
+	padding: .75em 7em;
+    font-size: 1.5em;
 }
 .smartmid .fancybox-overlay .fancybox-name{
 	padding: .5em 5em;
@@ -3380,7 +3385,7 @@ body:not( .touch ) .fancybox-overlay.white .fancybox-nav span{
     background: transparent !important;
 }
 .atcb-link{
-    display: block;
+    /*display: block;*/
     outline: none !important;
     cursor: pointer;
 }

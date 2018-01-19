@@ -67,7 +67,19 @@ wp_reset_postdata();
         
                     $repeater = scm_field( 'footer-sections', array(), 'option', 1 );
 
-                    foreach ($foot_page as $row) {
+                    if( function_exists( 'pll_current_language' ) ){
+                        $lang = pll_current_language();
+                        foreach( $repeater as $ind => $elem ){
+                            foreach( $elem['rows'] as $key => $pst ){
+                                $id = (int)$pst['row'];
+                                $plang = pll_get_post_language( $id );
+                                if( $plang && $plang != $lang )
+                                    $repeater[$ind]['rows'][$key]['row'] = pll_get_post($id);
+                            }
+                        }
+                    }
+
+                    foreach( $foot_page as $row ){
 
                         array_unshift( $repeater, array( 'rows' => array( array( 'acf_fc_layout' => 'layout-row', 'row' => $row , 'layout' => 'default') ) ) );
                     }
@@ -128,7 +140,35 @@ wp_reset_postdata();
                             $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>'Powered by SCM', 'attributes'=>' data-href="' . getURL( 'info@mdmbunny.com' ) . '" ', 'tag'=>'span', 'inherit'=>1 );
 
                             if( $foot_login )
-                                $fields[] = array( 'acf_fc_layout'=>'layout-login', 'login_type'=>'page', 'login-buttons'=>array( array( 'type'=>'edit' ), array( 'type'=>'logout' ) ), 'id'=>'scm-login-edit' );
+                                $fields[] = array(
+
+                                    'acf_fc_layout' => 'layout-login',
+                                    'id'=>'scm-login-edit',
+                                    
+                                    'login-type' => 'page',
+                                    'login-button' => 0,
+                                    
+                                    'login-redirect' => '',
+
+                                    'login-buttons' => array( array( 'type'=>'logout', 'icon'=>'fa-sign-out-s' ) ),
+
+                                    'login-icon' => 'fa-sign-in-s',
+                                    'login-send' => '',
+
+                                    'login-label-user' => '',
+                                    'login-placeholder-user' => __( 'USER', SCM_THEME ),
+                                    
+                                    'login-label-password' => '',
+                                    'login-placeholder-password' => __( 'PASSWORD', SCM_THEME ),
+
+                                    'login-forgot' => true,
+                                    'login-label-forgot' => __( 'Forgot Password?', SCM_THEME ),
+                                    'login-label-back' => __( 'Log In', SCM_THEME ),
+                                    'login-label-email' => '',
+                                    'login-placeholder-email' => __( 'USER or EMAIL', SCM_THEME ),
+                                    'login-forgot-send' => '',
+                                    'login-forgot-icon' => 'fa-envelope-r',
+                                );
 
                         scm_content( array( 'modules' => $fields ) );
 

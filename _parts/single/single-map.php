@@ -183,7 +183,7 @@ if( is( $element ) ){
 								indent( $SCM_indent+2, '<div class="map-contacts">' );
 							}
 							$href = getHREF( str_replace( 'layout-', '', $contatto['acf_fc_layout']), (string)$contatto['link'] );
-							indent( $SCM_indent+2, '<a ' . $href . '>' . ( $contatto['name'] ?: (string)$contatto['link'] ) . '</a>' );
+							indent( $SCM_indent+2, '<a ' . $href . '>' . ( $contatto['name'] ?: ( $contatto['icon'] ? '<i class="fa ' . $contatto['icon'] . '"></i>' : (string)$contatto['link'] ) ) . '</a>' );
 						}
 					}
 					if( $open )
