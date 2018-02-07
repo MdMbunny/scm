@@ -186,6 +186,9 @@ require_once( SCM_DIR_CLASSES . 'TGM_Plugin_Activation.php' );
 // Duplicate_Post Class, add duplicate functionality to any post.
 require_once( SCM_DIR_CLASSES . 'Duplicate_Post.php' );
 
+//require_once( SCM_DIR_CLASSES . 'ColorThief/ColorThief.php' );
+//require_once( SCM_DIR_CLASSES . 'GetMostCommonColors.php' );
+
 // ------------------------------------------------------
 // R.1 REQUIRE MODULES
 // ------------------------------------------------------
