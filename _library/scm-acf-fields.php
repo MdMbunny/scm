@@ -694,8 +694,7 @@ function scm_acf_field_editor( $name = '', $field = 0, $width = 100, $logic = 0,
 * @return {array} Field.
 */
 function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	//return scm_acf_helper( $name, $field, array('type' => 'editor-media-visual-basic','label' => $label), $width, $logic, $required );
-	return scm_acf_helper( $name, $field, array('type' => 'editor-media-basic','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'editor-media-visual-basic','label' => $label), $width, $logic, $required );
 }
 
 /**
@@ -721,8 +720,7 @@ function scm_acf_field_editor_media( $name = '', $field = 0, $width = 100, $logi
 * @return {array} Field.
 */
 function scm_acf_field_editor_basic( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-	//return scm_acf_helper( $name, $field, array('type' => 'editor-visual-basic','label' => $label), $width, $logic, $required );
-	return scm_acf_helper( $name, $field, array('type' => 'editor-basic','label' => $label), $width, $logic, $required );
+	return scm_acf_helper( $name, $field, array('type' => 'editor-visual-basic','label' => $label), $width, $logic, $required );
 }
 
 // ------------------------------------------------------

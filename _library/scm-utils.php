@@ -23,6 +23,7 @@
 // 9.0 DATE and TIME
 //10.0 CSV
 //11.0 IMG
+//12.0 JSON
 //
 // ------------------------------------------------------
 
@@ -153,6 +154,10 @@ function are_null( $arr = array(), $all = false ){
 function isNumber( $var = NULL, $fall = 0, $pre = 0, $app = 0 ){
     if( is_null( $var ) || !is_numeric( $var ) ) return $fall;
     return (int)$pre + $var - (int)$app;
+}
+
+function is_number( $var ){
+    return is_numeric( $var ) && !is_string( $var );
 }
 
 /**
@@ -2107,6 +2112,26 @@ function fileSizeConvert($bytes, $dec = 0){
     return $result;
 }
 
+function withinSize( $size = 0, $limit = 0 ){
+
+    return sizeToBytes( $size ) <= sizeToBytes( $limit );
+
+}
+function sizeToBytes( $size = 0 ){
+
+    if( !is_string( $size ) ) return $size;
+ 
+    $unit = strtolower($size);
+    $unit = preg_replace('/[^a-z]/', '', $unit);
+ 
+    $value = intval(preg_replace('/[^0-9]/', '', $size));
+ 
+    $units = array('b'=>0, 'kb'=>1, 'mb'=>2, 'gb'=>3, 'tb'=>4);
+    $exponent = isset($units[$unit]) ? $units[$unit] : 0;
+ 
+    return( $value * pow( 1024, $exponent ) );
+}
+
 /** 
  * [GET] Converts file extension to a general file type
  *
@@ -2596,6 +2621,20 @@ function pixelate_image( $img = '', $pwidth = 20, $pheight = 20 ){
     }
     
     return $img;
+}
+
+// ------------------------------------------------------
+// 12.0 JSON
+// ------------------------------------------------------
+
+function maybe_json( $string ) {
+    if( is_numeric( $string ) ) return (float)$string;
+    if( !is_string( $string ) ) return $string;
+    return is_json( $string ) ?: $string;
+}
+function is_json( $string ) {
+    $json = json_decode($string,true);
+    return ( json_last_error() == JSON_ERROR_NONE ? $json : '' );
 }
 
 ?>
