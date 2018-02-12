@@ -658,14 +658,14 @@ function scm_acf_object_testo( $default = '', $obj = 0, $opt = '', $width = 100,
 
 	if ( !$obj ){
 
-		$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );
+		//$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );
 
-		/*if( $opt === 1 )
+		if( $opt === 1 )
 			$fields[] = scm_acf_field_editor_media( 'editor', $default, $width, $logic );
 		else if( $opt === 2 )
 			$fields[] = scm_acf_field_editor_basic( 'editor', $default, $width, $logic );
 		else
-			$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );*/
+			$fields[] = scm_acf_field_editor( 'editor', $default, $width, $logic );
 
 	}
 
