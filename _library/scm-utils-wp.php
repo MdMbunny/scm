@@ -416,6 +416,56 @@ function loginRedirect( $type = 'page', $link = '' ){
     }        
 }
 
+function fixFacebookLang( $text ){
+    $str = 'https://connect.facebook.net/';
+    $fb = strpos( $text, $str );
+    if( $fb !== false ){
+        $lang = 'en_GB';
+        if( function_exists('pll_current_language') )
+            $lang = pll_current_language( 'locale' );
+        else
+            $lang = get_locale();
+
+        $check = substr( $text, $fb + strlen($str), 5 );
+        if( count( explode( '_', $check ) ) === 2 ){
+            $text = str_replace( $check, $lang, $text );
+        }
+    }
+    return $text;
+}
+
+/**
+ * [GET] Get Facebook Video ID
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered ID.
+ */
+function getVideoType( $url ){
+
+    $parse = parse_url( $url );
+    if( strpos( $parse['host'], 'youtu.be' ) !== false || strpos( $parse['host'], 'youtube.' ) !== false ) return 'youtube';
+    if( strpos( $parse['host'], 'facebook' ) !== false ) return 'facebook';
+    return '';
+
+}
+
+/**
+ * [GET] Get Facebook Video ID
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered ID.
+ */
+function getFacebookVideoID( $url ){
+
+    preg_match("~/videos/(?:t\.\d+/)?(\d+)~i", $url, $matches);
+    return ( isset($matches[1]) ? $matches[1] : '' );
+
+}
+
 /**
  * [GET] Get YouTube Video ID
  *
@@ -435,6 +485,103 @@ function getYouTubeID( $url ){
 }
 
 /**
+ * [GET] Get YouTube or Facebook Video ID
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered ID.
+ */
+function getVideoID( $url ){
+
+    $type = getVideoType( $url );
+    $id = '';
+    switch( $type ){
+        case 'youtube':
+            $id = getYouTubeID( $url );
+        break;
+        case 'facebook':
+            $id = getFacebookVideoID( $url );
+        break;
+        default:
+            $id = '';
+        break;
+    }
+    return $id;
+
+}
+
+/**
+ * [GET] Get YouTube or Facebook Video ID
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered ID.
+ */
+function getVideoThumb( $url, $size ){
+
+    $type = getVideoType( $url );
+    $id = getVideoID( $url );
+    if( !$id ) return '';
+    $image = '';
+    switch( $type ){
+        case 'youtube':           
+
+            $res = 'maxresdefault';
+
+            switch( $size ){
+                case 'thumbnail':
+                case 'small':
+                    $res = 'default';
+                break;
+
+                case 'medium':
+                    $res = 'mqdefault';
+                break;
+
+                case 'medium_large':
+                    $res = 'hqdefault';
+                break;
+
+                case 'large':
+                    $res = 'sddefault';
+                break;
+                
+                default:
+                break;
+            }
+            
+            $image = 'https://img.youtube.com/vi/' . $id . '/' . $res . '.jpg';
+        break;
+        case 'facebook':
+            //$fb = file_get_contents( 'https://graph.facebook.com/' . $id);
+            //consoleLog( json_decode($fb) );
+            $image = 'https://graph.facebook.com/' . $id . '/picture';
+        break;
+        default:
+        break;
+    }
+
+    return $image;
+
+}
+
+/**
+ * [GET] Get Facebook Video URL
+ *
+ * @subpackage 1-Utilities/WP
+ *
+ * @param {string} url URL to be filtered.
+ * @return {string} Filtered URL.
+ */
+function getFacebookURL( $url ){
+
+    return 'https://www.facebook.com/plugins/video.php?href=' . urlencode( $url );
+
+}
+
+/**
  * [GET] Get YouTube Video URL
  *
  * @subpackage 1-Utilities/WP
@@ -446,6 +593,22 @@ function getYouTubeURL( $url ){
 
     return 'https://www.youtube.com/embed/' . getYouTubeID( $url );
 
+}
+
+function getVideoURL( $url ){
+
+    $type = getVideoType( $url );
+    switch( $type ){
+        case 'youtube':
+            $url = getYouTubeURL( $url );
+        break;
+        case 'facebook':
+            $url = getFacebookURL( $url );
+        break;
+        default:
+        break;
+    }
+    return $url;
 }
 
 /**

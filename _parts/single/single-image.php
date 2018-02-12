@@ -16,20 +16,20 @@ global $post, $SCM_indent;
 $post_id = $post->ID;
 
 $args = array(
-	'acf_fc_layout' => 'layout-immagine',
-	'image' => '',
+    'acf_fc_layout' => 'layout-immagine',
+    'image' => '',
     'images' => '',
-	'format' => 'norm',
+    'format' => 'norm',
     'align' => 'top',
-	'full-number' => '',
-	'full-units' => '',
-	'size-number' => '',
-	'size-units' => '',
-	'width-number' => '',
-	'width-units' => '',
-	'height-number' => '',
-	'height-units' => '',
-	'id' => '',
+    'full-number' => '',
+    'full-units' => '',
+    'size-number' => '',
+    'size-units' => '',
+    'width-number' => '',
+    'width-units' => '',
+    'height-number' => '',
+    'height-units' => '',
+    'id' => '',
     'class' => '',
     'attributes' => '',
     'style' => '',
@@ -42,7 +42,7 @@ $args = array(
 
 
 if( isset( $this ) )
-	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
+    $args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 $layout = $args['acf_fc_layout'];
 $image = ( $args[ 'image' ] ?: ( $args[ 'thumb' ] ?: scm_field( 'image', '', $post_id ) ) );
@@ -111,35 +111,11 @@ if ( $layout == 'layout-thumbs' ) {
 
     }elseif( $post->post_type === 'video' ){
 
-        $id = getYouTubeID( scm_field( 'video-url', '', $post_id ) );
-        if( !$id )
-            return;
+        $vurl = scm_field( 'video-url', '', $post_id );
 
-        $res = 'maxresdefault';
-
-        switch( $size ){
-            case 'thumbnail':
-            case 'small':
-                $res = 'default';
-            break;
-
-            case 'medium':
-                $res = 'mqdefault';
-            break;
-
-            case 'medium_large':
-                $res = 'hqdefault';
-            break;
-
-            case 'large':
-                $res = 'sddefault';
-            break;
-            
-            default:
-            break;
-        }
+        $image = getVideoThumb( $vurl, $size );
         
-        $image = 'https://img.youtube.com/vi/' . $id . '/' . $res . '.jpg';
+        if( !$image ) return;
 
     }else{
         return;

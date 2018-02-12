@@ -186,9 +186,13 @@ function scm_utils_link_post( $content = array(), $id = 0 ) {
         break;
 
         case 'video':
-            $video = getYouTubeURL( scm_field( 'video-url', '', $id ) );
+            $vurl = scm_field( 'video-url', '', $id );
+            $vtype = getVideoType( $vurl );
+            $video = getVideoURL( $vurl );
+            
             $link = ' data-popup="' . htmlentities( json_encode( array( $video ) ) ) . '"';
             $link .= ' data-popup-type="video"';
+            $link .= ' data-popup-video-type="' . $vtype . '"';
             $link .= ' data-popup-title="' . get_the_title( $id ) . '"';
         break;
 

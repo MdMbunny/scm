@@ -172,6 +172,8 @@ wp_reset_postdata();
 
                         scm_content( array( 'modules' => $fields ) );
 
+                        do_action( 'scm_filter_credits_append' );
+
                     indent( $SCM_indent+1, '</div>', 2 );
 
                 $SCM_indent -= 2;

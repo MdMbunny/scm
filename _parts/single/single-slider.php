@@ -200,7 +200,7 @@ indent( $indent + 2, openTag( 'div', $id, $class, $style, $attributes ), 2 );
         $title = ( sizeof( $slides ) > 1 ? ' title="#' . $caption_id . '"' : '' );
         
         $images .= indent( $indent + 3 );
-        $images .= ( $link ? '<a href="' . $link . '">' : '' );
+        $images .= ( $link ? '<a href="' . $link . '" target="' . ( $slide[ 'slide-internal' ] ? '_self' : '_blank' ) . '">' : '' );
             $images .= ( $img ? '<img class="slide-image" src="' . $img . '" alt="" ' . $title . '>' : '' );
         $images .= ( $link ? '</a>' : '' );
         $images .= lbreak();

@@ -1001,6 +1001,8 @@ function scm_contents_single( $args = array() ) {
             $text = ex_attr( $args, 'editor', ex_attr( $args, 'editor-basic', ex_attr( $args, 'editor-visual', scm_field( 'editor', '', get_the_ID() ) ) ) );
             if(!$text) continue;
 
+            $text = fixFacebookLang( $text );
+
             indent( $SCM_indent, $text, 1 );
 
         break;
