@@ -139,7 +139,7 @@ $replaceArray = array(
 
 $text = strtr( $text, $replaceArray );
 
-if( $icon )
+if( $icon && $icon != 'fa-' )
     $text = '<i class="fa ' . $icon . '"></i>' . $text;
 
 indent( $SCM_indent, openTag( $tag, $id, $class, $style, $attributes ) . (string)$text . '</' . $tag . '><!-- title -->', 1 );

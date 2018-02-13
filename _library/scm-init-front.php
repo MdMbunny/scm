@@ -68,7 +68,7 @@ function scm_front_init() {
         $lang = ( pll_current_language() != pll_default_language() ? '-' . pll_current_language() : '' );
     }
 
-    if( $archive && $dup ){
+    if( $archive && $dup && !( $tax && locate_template( 'taxonomy-' . $tax . '.php' ) ) ){
         $page = $dup;
         $archive = false;
         $type = 'page';

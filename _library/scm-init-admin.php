@@ -1073,21 +1073,22 @@ function scm_hook_admin_plugins_tgm_plugin_activation() {
 
         array(
             'name'               => 'WP Database Backup',
-            'slug'               => 'wp-db-backup',
+            'slug'               => 'wp-database-backup',
             'required'           => false,
             'force_activation'   => false,
             'force_deactivation' => false,
         ),
 
         array(
-            'name'               => 'Share Buttons',
-            'slug'               => 'simple-share-buttons-adder',
+            'name'               => 'WP Control',
+            'slug'               => 'wp-control',
             'required'           => false,
             'force_activation'   => false,
             'force_deactivation' => false,
         ),
 
     // PLUS
+
         array(
             'name'               => 'PLUS - Role Editor',
             'slug'               => 'user-role-editor',
