@@ -641,16 +641,24 @@ function getURL( $url ){
             $add = '#' . $add[1];
         }
 
+        $slug = $url;
+
         if( !is_numeric( $url ) ){
-            $page = get_page_by_path( $url );
-            $id = $page->ID;
+            if( startsWith( $url, '_tax-' ) ){
+
+                $arr = explode( '-', $url );
+                $slug = $arr[1];
+                if( isset($arr[2]) ) $slug += '/' . $arr[2];
+                
+            }else{
+                $page = get_page_by_path( $url );
+                if( $page ) $slug = $page->post_name;
+            }
+        
         }else{
-            $id = $url;
-            $page = get_post( $id );
+            $page = get_post( $url );
         }
 
-        $slug = $page->post_name;
-        //$link = get_page_link( $id );
         $link = SCM_SITE . '/' . $slug . '/';
 
         if( $link === get_the_permalink() && $add ) // toccato

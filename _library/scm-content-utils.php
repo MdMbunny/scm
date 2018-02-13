@@ -949,7 +949,7 @@ function scm_utils_preset_dates( $obj = NULL, $start = '', $end = '', $format = 
     $current = (int)date('Ymd');
     $date['start'] = date( 'Ymd', strtotime( $start ) );
     $date['end'] = ( $end ? date( 'Ymd', strtotime( $end ) ) : $date['start'] );
-    $lang = ( $lang ?: ( function_exists( 'pll_current_language' ) ? pll_current_language($locale) : str_replace( '-', '_', substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 ) ) ) );
+    $lang = ( $lang ?: ( function_exists( 'pll_current_language' ) ? pll_current_language('locale') : str_replace( '-', '_', substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5 ) ) ) );
     setlocale( LC_ALL, $lang );
     $date['single'] = !$end || $date['start'] == $date['end'];
     $date['current'] = (int)$date['start'] < $current && (int)$date['end'] >= $current;

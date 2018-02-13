@@ -1270,8 +1270,10 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         }
     }
 
-    $post = get_post( $id );
-    setup_postdata( $post );
+    if( isset($id) ){
+        $post = get_post( $id );
+        setup_postdata( $post );
+    }
     echo '<!-- RESET POST -->';
 }
 

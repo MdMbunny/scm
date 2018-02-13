@@ -137,8 +137,8 @@ function scm_front_init() {
 
             if( $page ){
                 $id = $page->ID;
-            }elseif( $term_obj ){
-                $id = $term_obj->term_taxonomy_id . '-' . $term_obj->term_id;
+            }elseif( $tax || $term_obj ){
+                $id = '_tax-' . $tax . ( $term_obj ? '-' . $term_obj->slug : '' );
             }elseif( $temp == 'archive' ){
                 $id = $type;
             }else{
