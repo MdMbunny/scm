@@ -495,7 +495,7 @@ function scm_acf_fields_video( $name = '' ) {
 	if( $hastaxes )
 		$fields[] = scm_acf_field_tab_left( $name . 'tab-set-video', array('label'=>__( 'Impostazioni', SCM_THEME ) ) );
 		
-		$fields[] = scm_acf_field( $name . 'video-url', 'video', __( 'Link a YouTube', SCM_THEME ) );
+		$fields[] = scm_acf_field( $name . 'video-url', 'video', __( 'Link YouTube o Facebook', SCM_THEME ) );
 
 	if( $hastaxes ){
 		$fields[] = scm_acf_field_tab_left( $name . 'tab-tax-video', array('label'=>__( 'Categorie', SCM_THEME ) ) );
