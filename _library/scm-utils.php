@@ -12,8 +12,9 @@
 
 // ------------------------------------------------------
 //
-// 1.0 DEBUG
-// 2.0 MISC
+// 0.0 DEBUG
+// 1.0 MISC
+// 2.0 NUMBER
 // 3.0 STRING
 // 4.0 ARRAY
 // 5.0 HTML
@@ -28,7 +29,7 @@
 // ------------------------------------------------------
 
 // ------------------------------------------------------
-// 1.0 DEBUG
+// 0.0 DEBUG
 // ------------------------------------------------------
 
 /**
@@ -75,7 +76,7 @@ function consoleLog( $obj, $block = false ){
 }
 
 // ------------------------------------------------------
-// 2.0 MISC
+// 1.0 MISC
 // ------------------------------------------------------
 
 /**
@@ -243,6 +244,40 @@ function compare($a = NULL, $op = '==', $b = NULL) {
  */
 function getQueryVar( $var = '', $fallback = '' ) {
     return isset( $_GET[ $var ] ) ? $_GET[ $var ] : ( isset( $_POST[ $var ] ) ? $_POST[ $var ] : $fallback );
+}
+
+// ------------------------------------------------------
+// 2.0 NUMBER
+// ------------------------------------------------------
+
+/**
+ * [GET] Rounds a Number UP (ceil extension)
+ *
+ * @subpackage 1-Utilities/NUMBER
+ *
+ * @param {float=} value Number (default is 0).
+ * @param {int=} decimals Decimals (default is 0).
+ * @return {float} value rounded up with decimals.
+ */
+function round_ceil( $value = 0, $dec = 0 ){
+  $dec = !$dec || $dec < 0 ? 0 : $dec;
+  $mult = pow( 10, $dec );
+  return ceil( $value * $mult ) / $mult;
+}
+
+/**
+ * [GET] Rounds a Number DOWN (floor extension)
+ *
+ * @subpackage 1-Utilities/NUMBER
+ *
+ * @param {float=} value Number (default is 0).
+ * @param {int=} decimals Decimals (default is 0).
+ * @return {float} value rounded down with decimals.
+ */
+function round_floor( $value, $dec = 0 ){
+  $dec = !$dec || $dec < 0 ? 0 : $dec;
+  $mult = pow( 10, $dec );
+  return ( $value >= 0 ? ceil( $value * $mult ) : floor( $value * $mult ) ) / $mult;
 }
 
 // ------------------------------------------------------
@@ -2076,46 +2111,84 @@ function fileExtend( $file, $name = '', $date = 'F d Y H:i:s'){
  * @param {int=} dec Round decimal (default is 0).
  * @return {string} Human readable file size (2,87 МB).
  */ 
-function fileSizeConvert($bytes, $dec = 0){
+function fileSizeConvert( $bytes, $decimals = 2 ){
+    bytesToSize( $bytes, $decimals );
+}
+function bytesToSize( $bytes, $decimals = 2, $round = 'round', $specific = NULL, $ext = true, $dec = NULL, $tho = NULL, $zeros = true ){
+    
     $result = 0;
-    $bytes = floatval( $bytes );
-        $arBytes = array(
-            0 => array(
-                "UNIT" => "TB",
-                "VALUE" => pow( 1024, 4 )
-            ),
-            1 => array(
-                "UNIT" => "GB",
-                "VALUE" => pow( 1024, 3 )
-            ),
-            2 => array(
-                "UNIT" => "MB",
-                "VALUE" => pow( 1024, 2 )
-            ),
-            3 => array(
-                "UNIT" => "KB",
-                "VALUE" => 1024
-            ),
-            4 => array(
-                "UNIT" => "B",
-                "VALUE" => 1
-            ),
-        );
+    $unit = '';
 
-    foreach ( $arBytes as $arItem ) {
-        if ( $bytes >= $arItem[ 'VALUE' ] ) {
-            $result = $bytes / $arItem[ 'VALUE' ];
-            $result = str_replace( '.', ',', strval( round( $result, $dec ) ) ) . ' ' . $arItem[ 'UNIT' ];
+    $bytes = floatval( $bytes );
+    $div = $decimals < 1 ? ( 1 / $decimals ) : 0;
+    $decimals = $div ? 1 : ( $decimals ?: 0 );
+    $round = $round ?: 'round';
+    
+    $arr = array(
+        0 => array(
+            'unit' => 'TB',
+            'value' => pow( 1024, 4 )
+        ),
+        1 => array(
+            'unit' => 'GB',
+            'value' => pow( 1024, 3 )
+        ),
+        2 => array(
+            'unit' => 'MB',
+            'value' => pow( 1024, 2 )
+        ),
+        3 => array(
+            'unit' => 'KB',
+            'value' => 1024
+        ),
+        4 => array(
+            'unit' => 'B',
+            'value' => 1
+        ),
+    );
+    $specific = is_string( $specific ) ? getByValueKey( $arr, strtoupper( $specific ), 'unit' ) : $specific;    
+    if( !is_null( $specific ) && is_int( $specific ) )
+        $arr = [ $arr[ min( count($arr)-1, $specific ) ] ];
+
+    foreach( $arr as $elem ){
+        if( count( $arr ) == 1 || $bytes >= $elem[ 'value' ] ){
+            $unit = $elem[ 'unit' ];
+            $result = $bytes / $elem[ 'value' ];
+            switch( $round ){
+                case 'floor':
+                    $result = !$div ? round_floor( $result, $decimals ) : floor( $result * $div ) / $div;
+                break;
+                case 'ceil':
+
+                    $result = !$div ? round_ceil( $result, $decimals ) : ceil( $result * $div ) / $div;
+                break;                
+                default:
+                    $result = !$div ? round( $result, $decimals ) : round( $result * $div ) / $div;
+                break;
+            }
             break;
         }
     }
-    return $result;
+
+    if( $result ){
+        $dec = !is_null( $dec ) ? $dec : ( $ext && $decimals ? ',' : '' );
+        $tho = !is_null( $tho ) ? $tho : ( $ext || $dec ? '.' : '' );
+        
+        if( $ext || $dec || $tho ){
+            $result = number_format( $result, $decimals, $dec, $tho );
+            if( !$zeros && $decimals && $dec ){
+                for( $j = 1; $j <= $decimals; $j++ ){
+                    if( !(int)substr( $result, -1 ) ) $result = rtrim( $result, '0' );
+                    else break;
+                }
+            }
+            $result = rtrim( $result, $dec ) . ( $ext ? ' ' . $unit : '' );
+        }
+    }
+    return $ext || $dec || $tho ? (string)$result : floatval( $result );
 }
-
-function withinSize( $size = 0, $limit = 0 ){
-
-    return sizeToBytes( $size ) <= sizeToBytes( $limit );
-
+function bytesToBlocks( $bytes = 0, $unit = .5, $round = 'ceil' ){
+    return bytesToSize( $bytes, $unit, $round, 'kb', false );
 }
 function sizeToBytes( $size = 0 ){
 
@@ -2130,6 +2203,26 @@ function sizeToBytes( $size = 0 ){
     $exponent = isset($units[$unit]) ? $units[$unit] : 0;
  
     return( $value * pow( 1024, $exponent ) );
+}
+function withinSize( $size = 0, $limit = 0 ){
+    return sizeToBytes( $size ) <= sizeToBytes( $limit );
+}
+
+function stringToBytes( $string = '' ){
+    return strlen( utf8_decode( (string)$string ) );
+}
+function stringToSize( $string = '', $decimals = 2, $round = 'round', $specific = 0, $ext = true, $dec = NULL, $tho = NULL, $zeros = true ){
+    return bytesToSize( stringToBytes( $string ), $decimals, $round, $specific, $ext, $dec, $tho, $zeros );
+}
+
+function metaToBytes( $string = '' ){
+    return stringToBytes( is_arr( $string ) ? maybe_serialize( $string ) : $string );
+}
+function jsonMeta( $meta ){
+    return is_arr( $meta ) && count( $meta ) ? str_replace( '\\', '\\\\', json_encode($meta) ) : $meta;
+}
+function jsonMetaToBytes( $meta ){
+    return metaToBytes( jsonMeta( $meta ) );
 }
 
 /** 
