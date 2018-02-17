@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.4.4
+Version:			v4.4.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -386,12 +386,9 @@ sup{
 .fal,
 .fab{
 	font-size: 1em;
-	/*line-height: inherit;
-	vertical-align: middle;*/
 	display: inline-block;
 	line-height: 0;
   	vertical-align: initial;
-  	/*font-family: 'Font Awesome 5 Solid' !important;*/
 }
 
 .fa:before,
@@ -492,7 +489,7 @@ input[type="radio"]{
 
 /*input[type="checkbox"]:before,*/
 input[type="checkbox"]:after{
-	font-family: 'Font Awesome 5 Solid' !important;
+    font-family: Font Awesome\ 5 Pro !important;
 	content: "";
     font-size: 1em;
     position: absolute;

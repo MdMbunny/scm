@@ -270,25 +270,48 @@ if( is_user_logged_in() ){
 
             $user = string_extract( $form, '<p class="login-username">', '</p>' );
             $luser = string_extract( $user, '<label for="user_login">', '</label>' );
-            if( !getTagContent( $luser, 'label' ) ) $luser = '';
-            $nuser = str_replace( $luser, '', $user );
+            if( !getTagContent( $luser, 'label' ) ){
+                $nuser = str_replace( $luser, '', $user );
+                $luser = '';
+            }
             $nuser = str_replace( '<p class="login-username">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">', $nuser );
             $nuser = str_replace( '</p>', '</div>', $nuser );
             if( $placeholder_user ) $nuser = str_replace( '<input type="text" name="log"', '<input type="text" name="log" placeholder="' . $placeholder_user . '"', $nuser );
 
             $pass = string_extract( $form, '<p class="login-password">', '</p>' );
             $lpass = string_extract( $pass, '<label for="user_pass">', '</label>' );
-            if( !getTagContent( $lpass, 'label' ) ) $lpass = '';
-            $npass = str_replace( $lpass, '', $pass );
+            if( !getTagContent( $lpass, 'label' ) ){
+                $npass = str_replace( $lpass, '', $pass );
+                $lpass = '';
+            }
             $npass = str_replace( '<p class="login-password">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp password-input">', $npass );
             $npass = str_replace( '</p>', '</div>', $npass );
             if( $placeholder_password ) $npass = str_replace( '<input type="password" name="pwd"', '<input type="password" name="pwd" placeholder="' . $placeholder_password . '"', $npass );
-            
+
+            if( $login_remember ){
+
+                $remember = string_extract( $form, '<p class="login-remember">', '</p>' );
+                $lremember = string_extract( $remember, '<label>', '</label>' );
+                $cremember = getTagContent( $lremember, 'label' );
+                $nremember = str_replace( '<label>', '', $lremember );
+                $nremember = str_replace( '</label>', '', $nremember );
+                $nremember = str_replace( '<input name="rememberme"', '<input name="rememberme" class="checkbox-input"', $nremember );
+                $nremember = str_replace( $lremember, $nremember, $remember );
+                $nremember = str_replace( '<p class="login-remember">', '<div class="scm-ui-label scm-ui-button text remember-input">', $nremember );
+                $nremember = str_replace( $cremember, '<label>' . $cremember . '</label>' , $nremember );
+                $nremember = str_replace( '</p>', '</div>', $nremember );
+
+                $form = str_replace( $remember, $nremember, $form );
+
+            }
+                        
             $form = str_replace( $user, $luser . $nuser, $form );
             $form = str_replace( $pass, $lpass . $npass, $form );
             $form = str_replace( array( '<p class="login-submit">', '</p>', ' size="20"'), '', $form );
 
             $form = str_replace( '<form name="' . $login_id . '"', '<form name="' . $login_id . '" class="scm-ui-content -wrap"', $form ) . lbreak();
+
+
 
             // FORGOT FORM
 
