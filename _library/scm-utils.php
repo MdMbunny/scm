@@ -2146,7 +2146,7 @@ function bytesToSize( $bytes, $decimals = 2, $round = 'round', $specific = NULL,
             'value' => 1
         ),
     );
-    $specific = is_string( $specific ) ? getByValueKey( $arr, strtoupper( $specific ), 'unit' ) : $specific;    
+    $specific = is_string( $specific ) && !$specific ? NULL : ( is_string( $specific ) ? getByValueKey( $arr, strtoupper( $specific ), 'unit' ) : $specific );
     if( !is_null( $specific ) && is_int( $specific ) )
         $arr = [ $arr[ min( count($arr)-1, $specific ) ] ];
 
@@ -2187,8 +2187,8 @@ function bytesToSize( $bytes, $decimals = 2, $round = 'round', $specific = NULL,
     }
     return $ext || $dec || $tho ? (string)$result : floatval( $result );
 }
-function bytesToBlocks( $bytes = 0, $unit = .5, $round = 'ceil' ){
-    return bytesToSize( $bytes, $unit, $round, 'kb', false );
+function bytesToBlocks( $bytes = 0, $div = .2, $dec = .5, $round = 'ceil' ){
+    return bytesToSize( $bytes, $dec, $round, 'kb', false )/$div;
 }
 function sizeToBytes( $size = 0 ){
 
@@ -2726,7 +2726,7 @@ function maybe_json( $string ) {
     return is_json( $string ) ?: $string;
 }
 function is_json( $string ) {
-    $json = json_decode($string,true);
+    $json = json_decode( $string, true );
     return ( json_last_error() == JSON_ERROR_NONE ? $json : '' );
 }
 

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.4.5
+Version:			v4.4.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -3544,11 +3544,11 @@ body.keyboard .atcb-item-link:focus{
 	-webkit-transition-property: margin-top;
     -webkit-transition-duration: .2s;
     -webkit-transition-timing-function: ease;
-    -webkit-transition-delay: 0;
+    -webkit-transition-delay: 0s;
     transition-property: margin-top;
     transition-duration: .2s;
     transition-timing-function: ease;
-    transition-delay: 0;
+    transition-delay: 0s;
 }
 
 .scm-ui.-bottom{
@@ -3558,11 +3558,11 @@ body.keyboard .atcb-item-link:focus{
     -webkit-transition-property: margin-bottom;
     -webkit-transition-duration: .2s;
     -webkit-transition-timing-function: ease;
-    -webkit-transition-delay: 0;
+    -webkit-transition-delay: 0s;
     transition-property: margin-bottom;
     transition-duration: .2s;
     transition-timing-function: ease;
-    transition-delay: 0;
+    transition-delay: 0s;
 }
 
 .scm-ui.-left{
