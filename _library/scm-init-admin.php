@@ -431,6 +431,8 @@ function scm_hook_admin_ui_menu_classes(){
 
     global $menu, $SCM_admin_menu;
 
+    if( !isset( $menu ) || !$menu ) return;
+
     foreach( $menu as $key => $elem ){
 
         if( $elem[2] == 'upload.php' ) $menu[$key][0] = __( 'Libreria', SCM_THEME );
