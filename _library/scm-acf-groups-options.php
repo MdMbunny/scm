@@ -304,7 +304,9 @@ function scm_acf_options_general() {
 
 		$fields[] = scm_acf_field_select( 'layout-tofull', 'responsive_events', 34, 0, 0, __( 'Responsive to Full', SCM_THEME ) );
 		$fields[] = scm_acf_field_select( 'layout-tocolumn', 'responsive_events', 33, 0, 0, __( 'Responsive Columns', SCM_THEME ) );
-		$fields[] = scm_acf_field_select( 'layout-max', 'responsive_layouts', 33, 0, 0, __( 'Max Responsive Width', SCM_THEME ) );	
+		$fields[] = scm_acf_field_select( 'layout-max', 'responsive_layouts', 33, 0, 0, __( 'Max Responsive Width', SCM_THEME ) );
+
+		$fields[] = scm_acf_field_false( 'layout-fullheight', 0, 100, 0, 0, __( 'Full Height Sections', SCM_THEME ) );
 
 	$fields[] = scm_acf_field_tab_left( 'tab-branding-settings', array('label'=> __( 'Favicon', SCM_THEME )) );
 		$fields[] = scm_acf_field_image_url( 'opt-branding-ico', array('label'=>__( 'ICO 16', SCM_THEME )), 33 );

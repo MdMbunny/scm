@@ -807,7 +807,7 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
     //if( !$depth ) $ind = $SCM_indent + 2;
 
     $type = 'site';
-    $data = '';
+    $attr = '';
     $class = ( $current ? $class . ' current' : $class );    
     if( $current ) $url = '#top';
     if( strpos( $url, '#') === 0 )
@@ -823,12 +823,15 @@ function scm_get_menu_item_open( $depth = 0, $url = '#', $content = '', $has_chi
     $link .= '</a>';
     
     if( $has_children ){
-        $data = 'data-toggle="true" ';
+        $attr = 'data-toggle="true" ';
         $class .= ' has-children toggle no-toggled';
         $link = lbreak() . indent( $ind + $depth + 1 ) . '<div class="toggle-button">' . $link . '</div>';
     }    
 
-    $ret = indent( $ind + $depth ) . '<li class="' . ( $count ? 'item-' . $count . ' ' : '' ) . /*sanitize_title( $content ) .*/ 'menu-item link-' . $type . ' ' . $class . ' depth-' . $depth . '"' . ( $data ? ' ' . $data : '' ) . ' data-menu-item-width="1' . $tot . '">' . $link;
+    $class = apply_filters( 'scm_filter_menu_item_class', $class, $depth, $count, $content, $has_children, $menu );
+    $attr = apply_filters( 'scm_filter_menu_item_attr', $attr, $depth, $count, $content, $has_children, $menu );
+
+    $ret = indent( $ind + $depth ) . '<li class="' . ( $count ? 'item-' . $count . ' ' : '' ) . /*sanitize_title( $content ) .*/ 'menu-item link-' . $type . ' ' . $class . ' depth-' . $depth . '"' . ( $attr ? ' ' . $attr : '' ) . ' data-menu-item-width="1' . $tot . '">' . $link;
     return $ret;
 
 }

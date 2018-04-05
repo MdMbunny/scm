@@ -259,7 +259,7 @@ function scm_hook_site_libraries(){
                 $choices[$family['slug']] = $family['name'];
                 $SCM_libraries['fonts'][ $family['slug'] ] = array(
                     'family' => $family['name'],
-                    'style' => $family['style'],
+                    //'style' => $family['style'],
                     'type' => 'adobe'
                 );
             }

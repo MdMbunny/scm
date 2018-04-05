@@ -1244,11 +1244,11 @@ function scm_acf_field_objects( $name = '', $field = 0, $width = 100, $logic = 0
 * @return {array} Field.
 */
 function scm_acf_field_taxonomy( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
-		$type = 'taxonomy';
+	$type = 'taxonomy';
 	if( is_string( $field ) ){
 		$type = $type . '-' . $field;
 		$field = 0;
-	}elseif( is_array( $field ) && $field['type'] ){
+	}elseif( is_array( $field ) && isset( $field['type'] ) ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
@@ -1278,9 +1278,10 @@ function scm_acf_field_taxonomies( $name = '', $field = 0, $width = 100, $logic 
 	if( is_string( $field ) ){
 		$type = $type . '-' . $field;
 		$field = 0;
-	}elseif( is_array( $field ) && $field['type'] ){
+	}elseif( is_array( $field ) && isset( $field['type'] ) ){
 		$type = $field['type'] = $type . '-' . $field['type'];
 	}
+
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
 }
 
@@ -1321,6 +1322,20 @@ function scm_acf_field_repeater( $name = '', $field = 0, $width = 100, $logic = 
 	}
 
 	return scm_acf_helper( $name, $field, array( 'type'=>$type, 'label'=>$label ), $width, $logic, $required );
+}
+
+function scm_acf_field_table( $name = '', $field = 0, $width = 100, $logic = 0, $required = 0, $label = '' ) {
+
+	$field = $field ?: [ 'type'=>'table' ];
+	$sub = ex_attr( $field, 'sub', [] );
+	$columns = count( $sub ) ?: ex_attr( $field, 'columns', 2 );
+	if( !count( $sub ) ){
+		for( $i = 0; $i < $columns; $i++ )
+			$sub[] = scm_acf_field_text( 'column-' . ($i+1), 0, floor(100/$columns) );
+	}
+	$field['sub'] = $sub;
+
+	return scm_acf_field_repeater( $name, $field, $width, $logic, $required, $label );
 }
 
 // ------------------------------------------------------

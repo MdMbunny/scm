@@ -325,7 +325,7 @@ function scm_acf_condition( $elem, $list ) {
 		for ( $j = 0; $j < sizeof( $cond[$i] ); $j++ ) {
 			$name = $cond[$i][$j]['field'];
 			$field = getByValueKey( $list, $name );
-			if( $field !== false )
+			if( $field !== NULL )
 				$cond[$i][$j]['field'] = $list[$field]['key'];
 		}
 	}
@@ -842,6 +842,50 @@ function scm_fields_modify( $group = array(), $names = array(), $attr = array() 
 
 	$group['fields'] = $fields;
 	return $group;
+}
+
+/**
+* [SET] Modify fields width
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {array=} group List of fields or Field Group containing a 'fields' attribute containing a list of fields (default is empty array).
+* @param {array=} names Single field name or list of names (default is empty array).
+* @param {string=} width Width value to set (default is NULL).
+* @return {array} Modified Field Group.
+*/
+function scm_fields_modify_width( $group = array(), $names = array(), $width = NULL ){
+	$names = toArray( $names );
+	$fields = ( isset( $group['fields'] ) ? $group['fields'] : $group );
+	if( !is_array( $fields ) || empty( $fields ) ) return $group;
+	foreach ( $names as $name){
+		$ind = getByValueKey( $fields, $name );
+		if( !is_null( $ind ) )
+			$fields[$ind] = scm_field_modify_width( $fields[$ind], $width );
+	}
+	
+	if( !isset( $group['fields'] ) )
+		return $fields;
+
+	$group['fields'] = $fields;
+	return $group;
+}
+
+/**
+* [SET] Modify field width
+*
+* @subpackage 2-ACF/FUNCTIONS
+*
+* @param {object=} field Field (default is empty array).
+* @param {string=} width Width value to set (default is NULL).
+* @return {object} Modified Field.
+*/
+function scm_field_modify_width( $field = array(), $width = NULL ) {
+
+	if( !isset( $field['wrapper'] ) || !isset( $field['wrapper']['width'] ) || is_null( $width ) ) return $field;
+	$field['wrapper']['width'] = $width;
+
+	return $field;
 }
 
 /**

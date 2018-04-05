@@ -73,7 +73,8 @@ function scm_acf_preset_advanced_options( $name = '', $opt = 0 ) {
 				$fields[] = scm_field_add_class( scm_acf_field_icon_no( $second . 'icon', 0, 20 ), '-option hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'layout', array( 'type'=>'main_layout', 'default'=>array( 'default'=>'Default Layout' ) ), 20 ), '-option hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'menu', array( 'type'=>'wp_menu', 'default'=>array( 'default'=>'Default Menu' ) ), 20 ), '-option hidden' );
-				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 30, 70 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
+				$fields = array_merge( $fields, scm_fields_add_class( scm_acf_preset_selectors( $name, 0, 20, 60 ), SCM_ADVANCED_OPTIONS . ' hidden' ) );
+				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'fullheight', 0, 20, 0, 0, __( 'Full Height Sections', SCM_THEME ) ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_select( $second . 'selectors', array( 'type' => '2-selectors', 'label' => '#' ), 60 ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				$fields[] = scm_field_add_class( scm_acf_field_false( $second . 'form', 0, 40, 0, 0, __( 'Attiva ACF Form', SCM_THEME ) ), SCM_ADVANCED_OPTIONS . ' hidden' );
 				break;

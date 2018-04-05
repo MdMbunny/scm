@@ -59,6 +59,8 @@ $wrap_layout = ( $wrap_layout === 'full' ? 'full ' : 'responsive float-' );
 $wrap_class = scm_field( 'page-class', '', SCM_PAGE_ID, true );
 $wrap_class = 'site-page hfeed site ' . $wrap_layout . SCM_SITE_ALIGN . ( $sticky_header == 'head' ? ' sticky-header' : '' ) . ( $wrap_class ? ' ' . $wrap_class : '' ) . ' ' . implode( ' ', $wrap_selectors );
 
+$full_height = scm_field( 'page-fullheight', scm_field( 'layout-fullheight', false, 'option' ), SCM_PAGE_ID );
+
 $fade_in = scm_field( 'opt-tools-fade-in', 0, 'option' );
 $fade_out = scm_field( 'opt-tools-fade-out', 0, 'option' );
 $fade_opacity = scm_field( 'opt-tools-fade-opacity', 0, 'option' );
@@ -142,8 +144,9 @@ $gmap = scm_field( 'opt-tools-map-api', '', 'option' );
     data-tofull="<?php echo $tofull; ?>" 
     data-tocolumn="<?php echo $tocolumn; ?>" 
     data-gmap="<?php echo $gmap; ?>" 
-    data-ajax="<?php echo admin_url( 'admin-ajax.php' ) ?>" 
+    data-ajax="<?php echo admin_url( 'admin-ajax.php' ); ?>" 
     data-has-slider="<?php echo $has_slider; ?>"
+    data-fullheight="<?php echo $full_height; ?>"
 >
 
 <?php

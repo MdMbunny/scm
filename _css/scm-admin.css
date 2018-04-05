@@ -1744,8 +1744,8 @@ input.acf-is-prepended{
 
 .acf-field-repeater tr > td.acf-fields{
 	border: 0 !important;
-	/*border-bottom: 1px solid #9C9C9C !important;*/
-	border-bottom: 20px solid #FFF !important;
+	border-bottom: 1px solid #9C9C9C !important;
+	/*border-bottom: 20px solid #FFF !important;*/
 
 	/*border-top: 5px solid #e14d43 !important;
 	border-bottom: 5px solid #e14d43 !important;*/
@@ -1808,7 +1808,8 @@ input.acf-is-prepended{
     color: #FFF !important;
     border-color: #e14d43 transparent #FFF !important;
     text-shadow: none !important;
-    border-width: 5px 0 20px 0 !important;
+    /*border-width: 5px 0 20px 0 !important;*/
+    border-width: 5px 0 1px 0 !important;
 }
 .acf-repeater tr.ui-sortable-helper .acf-row-handle{
 	border-bottom: 0 !important;

@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.4.7
+Version:			v4.4.8
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -580,6 +580,7 @@ h6{ font-size: 1.2em; }
 .small,
 .text-small{
 	font-size: 85%;
+	line-height: 150%;
 }
 
 .normal,
@@ -1814,6 +1815,10 @@ ul.menu > li{
 	padding: 0;
 }
 
+ul.nosub > li .sub {
+	display: none;
+}
+
 /* Level 2 */ 
 
 .sub-menu{
@@ -2087,18 +2092,27 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 .smartmicro #side-menu{
 	display: none !important;
 }
-
+#side-menu{
+	pointer-events: none;
+}
 .side-menu{
 	opacity: 0;
 	-webkit-transition: opacity .5s;
     transition: opacity .5s;
     text-align: right;
+    pointer-events: none;
+}
+.side-menu *{
+	pointer-events: none;
+	cursor: pointer;
 }
 
-.navigation.sticky.affix .side-menu,
-#site-header:not(.sticked) .navigation:not(.sticky) .side-menu[data-active],
-#site-header.sticked #site-navigation .side-menu{
+.side-menu[data-active]{
     opacity: 1;
+}
+.side-menu[data-active],
+.side-menu[data-active] *{
+    pointer-events: all;
 }
 
 #side-menu li{
@@ -2114,7 +2128,7 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 	width: 1.5em;
     text-align: left;
     padding: 0em !important;
-    pointer-events: none;
+    /*pointer-events: none;*/
     white-space: nowrap;
     -webkit-transition: all .3s;
     transition: all .3s;
@@ -2129,12 +2143,6 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 
 #side-menu.no-name a > .icon{
     margin-right: 0em;
-}
-
-.navigation.sticky.affix .side-menu a,
-#site-header:not(.sticked) .navigation:not(.sticky) .side-menu[data-active] a,
-#site-header.sticked #site-navigation .side-menu a{
-    pointer-events: all;
 }
 
 .tofull #side-menu, .smart #side-menu{
@@ -2554,7 +2562,8 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 }
 .scm-map:before{
     content: "\f041";
-    position: relative;
+    /*position: relative;*/
+    position: absolute;
     top: 50%;
     left: 50%;
     font-size: 2em;
@@ -2711,7 +2720,7 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 
 .post.gallerie > .layout-thumbs:after,
 .post.video > .layout-immagine:after{
-	font-family: 'fontawesome';
+	font-family: Font Awesome\ 5 Pro;
 	font-size: 4em;
 	line-height: 2em;
     text-align: center;
@@ -2719,7 +2728,7 @@ body:not(.touch) .scm-map .gm-style-iw + div{
     opacity: 0;
     position: absolute;
     display: block;
-    z-index: 1000;    
+    z-index: 1000;
     margin: auto;
     height: 2em;
     top: 0;

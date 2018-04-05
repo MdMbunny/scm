@@ -210,6 +210,8 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             $content = apply_filters( 'scm_filter_echo_container_before', $content, $container, $original );
             $content = apply_filters( 'scm_filter_echo_container_before_' . $container, $content, $original );
 
+            if( !$content ) continue;
+
             // --------------------------------------------------------------------------
 
             // Merge defaults with arguments
@@ -263,11 +265,21 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             //}else{
 
                 // FILTER contents before echo 
+
+                $type = ex_attr( $content, 'post_type' );
+                $temp = ex_attr( $content, 'original-template' );
                 
                 $content = apply_filters( 'scm_filter_echo_container', $content, $container, $original );
                 $content = apply_filters( 'scm_filter_echo_container_' . $container, $content, $original );
+                if( $container === 'post' && $type ){
+                    $content = apply_filters( 'scm_filter_echo_container_' . $type, $content, $original );
+                    if( $temp )
+                        $content = apply_filters( 'scm_filter_echo_container_' . $type . '_' . $temp, $content, $original );
+                }
 
                 if( is_null( $content ) || !$content ) continue;
+
+                do_action( 'scm_action_echo_before_' . $container, $content, $original, $counter, $current );
                 
                 // -- Open Container
                 if( !$content['inherit'] ){
@@ -280,12 +292,22 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
                 }
 
                 do_action( 'scm_action_echo_container_before_' . $container, $content, $original, $counter, $current );
+                if( $container === 'post' && $type ){
+                    $content = apply_filters( 'scm_action_echo_before_' . $type, $content, $original );
+                    if( $temp )
+                        $content = apply_filters( 'scm_action_echo_before_' . $type . '_' . $temp, $content, $original );
+                }
 
                     // -- Content
                     scm_content( $content );
                     /*if( $action && function_exists( (string)$action ) )
                         call_user_func( (string)$action, $content );*/
 
+                if( $container === 'post' && $type ){
+                    $content = apply_filters( 'scm_action_echo_after_' . $type, $content, $original );
+                    if( $temp )
+                        $content = apply_filters( 'scm_action_echo_after_' . $type . '_' . $temp, $content, $original );
+                }
                 do_action( 'scm_action_echo_container_' . $container, $content, $original );
 
                 // -- Close Container
@@ -293,7 +315,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
                     indent( $SCM_indent, '</div>', 2 );
                     //indent( $SCM_indent, '</div><!-- ' . $content['container'] . ' -->', 2 );
 
-                do_action( 'scm_action_echo_container_after_' . $container, $content, $original );
+                do_action( 'scm_action_echo_after_' . $container, $content, $original, $counter, $current );
             //}
         }
     }
@@ -1187,7 +1209,6 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
             );
 
         }else{
-
             if( !empty( $content['single'] ) ){
 
                 $meta = apply_filters( 'scm_filter_single_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );

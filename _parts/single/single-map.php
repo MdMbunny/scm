@@ -36,7 +36,8 @@ if( isset( $this ) )
 	$args = ( isset( $this->cont ) ? array_merge( $args, toArray( $this->cont ) ) : array() );
 
 $element = ( isset( $args[ 'element' ] ) ? $args[ 'element' ] : 0 );
-$cat = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
+$tags = ( isset( $args[ 'luoghi-cat-terms' ] ) ? $args[ 'luoghi-cat-terms' ] : array() );
+$tips = ( isset( $args[ 'luoghi-tip-terms' ] ) ? $args[ 'luoghi-tip-terms' ] : array() );
 $strongs = ( isset( $args[ 'strongs' ] ) ? $args[ 'strongs' ] : array() );
 $strings = ( isset( $args[ 'strings' ] ) ? $args[ 'strings' ] : array() );
 
@@ -50,14 +51,17 @@ if( !$element ){
 		$element = scm_field( 'luoghi', 0, $post_id );
 
 	if( !$element && post_type_exists('luoghi') ){
-		if( empty($cat) ) {
+		if( empty($tags) && empty($tips) ) {
 			$element = get_posts( array( 'post_type' => 'luoghi', 'posts_per_page' => -1 ) );
 		}else{
+			$query = array();
+			if( !empty($tags) ) $query[] = array( 'taxonomy' => 'luoghi-cat', 'field' => 'term_id', 'terms' => $tags );
+			if( !empty($tips) ) $query[] = array( 'taxonomy' => 'luoghi-tip', 'field' => 'term_id', 'terms' => $tips );
 			$element = get_posts(
 				array( 
 					'posts_per_page' => -1,
 					'post_type' => 'luoghi',
-				    'tax_query' => array( array( 'taxonomy' => 'luoghi-cat', 'field' => 'term_id', 'terms' => $cat ) )
+				    'tax_query' => $query,
 				)
 			);
 		}
