@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v4.4.8
+Version:			v4.4.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -2715,7 +2715,7 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 }
 
 .post.video > .layout-immagine:after{
-	content: "\f16a";
+	content: "\f167";
 }
 
 .post.gallerie > .layout-thumbs:after,

@@ -1,2 +1,0 @@
-[09-May-2015 01:38:09 UTC] PHP Fatal error:  Call to undefined function consoleLog() in /home/agricult/public_html/test/wp-content/themes/scm/_library/scm-get-galleries.php on line 7
-[09-May-2015 01:38:45 UTC] PHP Fatal error:  Call to undefined function consoleLog() in /home/agricult/public_html/test/wp-content/themes/scm/_library/scm-get-galleries.php on line 7
