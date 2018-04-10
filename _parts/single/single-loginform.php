@@ -277,13 +277,10 @@ if( is_user_logged_in() ){
                 $nuser = str_replace( $luser, '', $user );
                 $luser = '';
             }*/
-            consoleLog($nuser);
             $nuser = str_replace( '<p class="login-username">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">', $user );
             $nuser = str_replace( '</p>', '</div>', $nuser );
             
             if( $placeholder_user ) $nuser = str_replace( '<input type="text" name="log"', '<input type="text" name="log" placeholder="' . $placeholder_user . '"', $nuser );
-
-
 
             $pass = string_extract( $form, '<p class="login-password">', '</p>' );
             //$lpass = string_extract( $pass, '<label for="user_pass">', '</label>' ) || '';
