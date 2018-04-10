@@ -138,7 +138,7 @@ if( is_user_logged_in() ){
         $b_icon = ( isset( $button['icon'] ) ? $button['icon'] : '' );
         $b_label = ( isset( $button['label'] ) ? $button['label'] : '' );
         $b_login = ( isset( $button['login'] ) ? $button['login'] : 'page' );
-        $b_link = loginRedirect( $b_login, ( is_numeric( ex_attr( $button, 'redirect' ) ) ? intval( $button['redirect'] ) : $button['redirect'] ) );
+        $b_link = loginRedirect( $b_login, ( is_numeric( ex_attr( $button, 'redirect' ) ) ? intval( $button['redirect'] ) : ex_attr( $button, 'redirect' ) ) );
         if( $b_type == 'edit' ){
             // ???
             //$b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
