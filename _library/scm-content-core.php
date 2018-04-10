@@ -228,7 +228,7 @@ function scm_containers( $build = array(), $container = 'module', $template = ''
             $content['id'] = ( startsWith( $content['id'], 'field:' ) ? ( $content['id'] == 'field:slug' ? basename( get_permalink() ) : scm_field( str_replace( 'field:', '', $content['id'] ), '' ) ) : $content['id'] );
 
             // --------------------------------------------------------------------------
-            
+
         // -- Post
             $content = scm_container_post( $content );
         // -- Post Template
@@ -400,6 +400,8 @@ function scm_container_post_pre( $content = array(), $builder = array(), $contai
 */
 function scm_container_post( $content = array() ){
 
+    global $SCM_archives;
+
     if( $content['acf_fc_layout'] === 'layout-archive' )
         $content['type'] = 'archive';
 
@@ -413,8 +415,14 @@ function scm_container_post( $content = array() ){
             
             if( $content['archive-complete'] != 'complete' ){
                 if( $content['archive-pagination'] == 'yes' || $content['archive-pagination'] == 'more' || $content['archive-pagination'] == 'wp' ){
+                
                     $content['id'] = ( ex_attr( $content, 'archive-id', '', 'archive-' ) ?: ( $content['id'] ?: 'archive-' . $slug ) );
+
+                    if( isset( $SCM_archives[ $content['id'] ] ) )
+                        $content['id'] .= '_' . sizeof($SCM_archives);
+
                     $content['archive-paginated'] = $content['id'];
+                    $SCM_archives[ $content['id'] ] = $content;
                     $content['class'] .= ' paginated';
                 }
             }
@@ -1107,13 +1115,12 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
         return;
 
     $archive = ( $type == 'archive' || ex_attr( $content, 'type', '' ) === 'archive' );
-    if( $archive && isset( $content['archive-paginated'] ) ){
+    /*if( $archive && isset( $content['archive-paginated'] ) ){
         if( isset( $SCM_archives[ $content['archive-paginated'] ] ) )
             $content['archive-paginated'] .= '_' . sizeof($SCM_archives);
-
-        $content['id'] = $content['archive-paginated'];
+        //$content['id'] = $content['archive-paginated'];
         $SCM_archives[ $content['archive-paginated'] ] = $content;
-    }
+    }*/
 
     $query = array();
     $pagination = false;
@@ -1245,6 +1252,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     
     $posts['column-width'] = ex_attr( $content, 'post-width', 0 ) ?: ex_attr( $content, 'width', 'auto' );
     $posts['fallback'] = ex_attr( $content, 'archive-fallback', '' ) ?: '<p>' . __( 'Nessun elemento', SCM_THEME ) . '</p>';
+    //$posts['id'] = ex_attr( $content, 'id', '' );
     
     $posts = array_merge( $posts, ( $more ?: array() ) );
 
