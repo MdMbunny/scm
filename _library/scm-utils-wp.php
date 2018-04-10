@@ -399,6 +399,7 @@ function getTermsId( $tax = '', $langs = array() ) {
 function loginRedirect( $type = 'page', $link = '' ){
     switch( $type ){
         case 'page':
+
             return ( !$link ? getURL( 'page:' . SCM_PAGE_ID ) : ( is_int( $link ) || ( (int)$link > 1 ) ? getURL( 'page:' . $link ) : $link ) );
         break;
 
@@ -657,6 +658,7 @@ function getURL( $url ){
         
         }else{
             $page = get_post( $url );
+            $slug = $page->post_name;
         }
 
         $link = SCM_SITE . '/' . $slug . '/';

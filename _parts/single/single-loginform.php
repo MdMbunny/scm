@@ -133,11 +133,12 @@ if( is_user_logged_in() ){
         echo indent( $SCM_indent ) . '<div class="scm-ui-content -wrap login-buttons">' . lbreak();
 
     foreach ( $buttons as $button ) {
+        
         $b_type = ( isset( $button['type'] ) ? $button['type'] : 'logout' );
         $b_icon = ( isset( $button['icon'] ) ? $button['icon'] : '' );
         $b_label = ( isset( $button['label'] ) ? $button['label'] : '' );
         $b_login = ( isset( $button['login'] ) ? $button['login'] : 'page' );
-        $b_link = loginRedirect( $b_login, ( isset( $button['redirect'] ) ? $button['redirect'] : '' ) );
+        $b_link = loginRedirect( $b_login, ( is_numeric( ex_attr( $button, 'redirect' ) ) ? intval( $button['redirect'] ) : $button['redirect'] ) );
         if( $b_type == 'edit' ){
             // ???
             //$b_link = ( SCM_PAGE_EDIT ? $b_link . '?action=view' : $b_link . '?action=edit' );
@@ -256,6 +257,8 @@ if( is_user_logged_in() ){
 
             $form = wp_login_form( $attr );
 
+            
+
             if( $label_icon ){
                 
                 $input = string_extract( $form, '<input type="submit"', '/>' );
@@ -269,22 +272,26 @@ if( is_user_logged_in() ){
             }
 
             $user = string_extract( $form, '<p class="login-username">', '</p>' );
-            $luser = string_extract( $user, '<label for="user_login">', '</label>' );
-            if( !getTagContent( $luser, 'label' ) ){
+            //$luser = string_extract( $user, '<label for="user_login">', '</label>' ) || '';
+            /*if( !getTagContent( $luser, 'label' ) ){
                 $nuser = str_replace( $luser, '', $user );
                 $luser = '';
-            }
-            $nuser = str_replace( '<p class="login-username">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">', $nuser );
+            }*/
+            consoleLog($nuser);
+            $nuser = str_replace( '<p class="login-username">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp user-input">', $user );
             $nuser = str_replace( '</p>', '</div>', $nuser );
+            
             if( $placeholder_user ) $nuser = str_replace( '<input type="text" name="log"', '<input type="text" name="log" placeholder="' . $placeholder_user . '"', $nuser );
 
+
+
             $pass = string_extract( $form, '<p class="login-password">', '</p>' );
-            $lpass = string_extract( $pass, '<label for="user_pass">', '</label>' );
-            if( !getTagContent( $lpass, 'label' ) ){
+            //$lpass = string_extract( $pass, '<label for="user_pass">', '</label>' ) || '';
+            /*if( !getTagContent( $lpass, 'label' ) ){
                 $npass = str_replace( $lpass, '', $pass );
                 $lpass = '';
-            }
-            $npass = str_replace( '<p class="login-password">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp password-input">', $npass );
+            }*/
+            $npass = str_replace( '<p class="login-password">', '<div class="scm-ui-label scm-ui-button scm-ui-input scm-ui-comp password-input">', $pass );
             $npass = str_replace( '</p>', '</div>', $npass );
             if( $placeholder_password ) $npass = str_replace( '<input type="password" name="pwd"', '<input type="password" name="pwd" placeholder="' . $placeholder_password . '"', $npass );
 
@@ -304,9 +311,11 @@ if( is_user_logged_in() ){
                 $form = str_replace( $remember, $nremember, $form );
 
             }
+
+
                         
-            $form = str_replace( $user, $luser . $nuser, $form );
-            $form = str_replace( $pass, $lpass . $npass, $form );
+            $form = str_replace( $user,/* $luser .*/ $nuser, $form );
+            $form = str_replace( $pass,/* $lpass .*/ $npass, $form );
             $form = str_replace( array( '<p class="login-submit">', '</p>', ' size="20"'), '', $form );
 
             $form = str_replace( '<form name="' . $login_id . '"', '<form name="' . $login_id . '" class="scm-ui-content -wrap"', $form ) . lbreak();

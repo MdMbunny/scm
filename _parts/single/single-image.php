@@ -54,11 +54,12 @@ $size = $args['thumb-size'] ?: 'full';
 if ( $layout == 'layout-thumbs' ) {
 
     $size = $args['thumb-size'] ?: 'medium';
-    
-    $thumb = ( $image ? intval( $image ) : 0 );
 
     if( !$images )
         $images = ( $images ?: scm_field( 'galleria-images', array(), $post_id ) );
+
+    $thumb = ( $image ? intval( $image ) : 0 );
+    if( !$image ) $thumb = rand( 0, count( $images )-1 );
 
     if( $thumb >= 0 )
         $image = ( isset( $images[$thumb] ) ? $images[$thumb] : array() );
