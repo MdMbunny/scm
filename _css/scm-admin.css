@@ -207,7 +207,7 @@ input[type=checkbox]:checked:before,
 }
 #wpadminbar:not(.mobile) .ab-top-menu>#wp-admin-bar-my-account > .ab-item{
 	overflow: hidden;
-  	width: 1.5em;
+  	/*width: 1.5em;*/
   	padding: 0;
   	display: inline-block !important;
   	background-color: transparent !important;
@@ -233,7 +233,7 @@ input[type=checkbox]:checked:before,
     padding: 0;
 }
 #wpadminbar #wp-admin-bar-user-actions>li{
-    margin: 0;
+    margin: 0 !important;
 }
 #wpadminbar #wp-admin-bar-user-actions>li > .ab-item{
 	min-width: 0;
