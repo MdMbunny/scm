@@ -86,7 +86,12 @@ add_filter( 'wp_mail_from_name', 'scm_hook_admin_mail_from_name' );
 //add_action( 'admin_footer-post-new.php', 'scm_admin_upload_media_default_tab' );
 //add_action( 'admin_footer-post.php', 'scm_admin_upload_media_default_tab' );
 //add_action( 'wp_head', 'scm_admin_upload_media_default_tab' );
-add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10, 2 );
+
+
+// Probabilmente non serve più
+//add_filter( 'wp_calculate_image_sizes', 'scm_hook_admin_upload_adjust_sizes', 10, 2 );
+
+
 add_filter( 'wp_handle_upload', 'scm_hook_admin_upload_max_size', 3 );
 add_filter( 'intermediate_image_sizes_advanced', 'scm_hook_admin_upload_def_sizes' );
 add_action( 'admin_init', 'scm_hook_admin_upload_custom_sizes' );
