@@ -1148,8 +1148,8 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
     $orderby = ex_attr( $content, 'archive-orderby', 'date' );
     $ordertype = ex_attr( $content, 'archive-ordertype', 'DESC' );
     $field = ex_attr( $content, 'archive-field', '' ) ?: ( $orderby == 'meta_value' ? ex_attr( $content, 'archive-order', '' ) : '' );
-    $value = ex_attr( $content, 'archive-value', ( $field ? $post->ID : '' ) );
-    $compare = ex_attr( $content, 'archive-compare', '=' );
+    $value = ex_attr( $content, 'archive-value', '' ) ?: ( $field ? $post->ID : '' );
+    $compare = ex_attr( $content, 'archive-compare', '' ) ?: ( $field ? '=' : '' );
     $relation = ex_attr( $content, 'archive-relation', 'OR' );
     $typ = 'CHAR';
 
