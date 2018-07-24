@@ -136,6 +136,7 @@ switch ($scm['template']) {
                     	$contents['archive-paginated'] = $id;
 						
 						if( $scm['temp'] == 'tax' && $scm['term_obj'] ){
+							$contents['archive-relation'] = 'AND';
 							$archive = 'archive-' . $scm['tax'] . '-terms';
 							$contents[$archive] = array( $scm['term_obj']->term_id );
 						}

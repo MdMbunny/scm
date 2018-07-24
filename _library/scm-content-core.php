@@ -1184,7 +1184,7 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
                     $taxonomy = str_replace( 'archive-', '', str_replace( '-terms', '', $key) );
 
                     if( isset( $terms ) && !empty( $terms ) ){
-                        //$tax[ 'relation' ] = $relation; <---------- CHECK THIS OUT!
+                        $tax[ 'relation' ] = $relation;
                         foreach ( $terms as $term) {
                             $tax[] = array( 
                                 'taxonomy' => $taxonomy,
