@@ -2007,6 +2007,9 @@ body:not(.scm-advanced) [data-layout="layout-template"]{
 .acf-flexible-content .layout.-collapsed .acf-fc-layout-handle{
 	background-color: #bdffd2 !important;
 }
+.acf-flexible-content .layout .acf-fc-layout-controls{
+	z-index: 10;
+}
 /*.acf-flexible-content .layout:not(.-collapsed),
 .acf-flexible-content .layout .acf-fc-layout-handle:hover{
 	opacity: 1;
