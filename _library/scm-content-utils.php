@@ -991,11 +991,12 @@ function scm_utils_preset_policies() {
     
     if( sizeof( $policies ) >= 1 && function_exists( 'pll_current_language' ) ){
         $current = pll_current_language();
+
         foreach ( $policies as $key=>$policy ) {
         
             if( $policy['lang'] === $current ){
                 $index = $key;
-                continue;
+                break;
             }
 
             if( $policy['lang'] === $lang ){
