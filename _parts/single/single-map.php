@@ -161,6 +161,7 @@ if( is( $element ) ){
 		//$luogo_id = $luogo['id'];
 
 		$contatti = ( isset( $fields['luogo-contatti'] ) ? $fields['luogo-contatti'] : array() );
+		$contatti = apply_filters( 'scm_filter_map_contatti', $contatti, $fields );
 		$marker = scm_utils_preset_map_marker( $luogo_id, $fields, 1 );
 
 		if( isset( $luogo['lat'] ) && isset( $luogo['lng'] ) ){
@@ -184,14 +185,17 @@ if( is( $element ) ){
 						if( $contatto['onmap'] ){
 							if( !$open ){
 								$open = 1;
+								
 								indent( $SCM_indent+2, '<div class="map-contacts">' );
 							}
 							$href = getHREF( str_replace( 'layout-', '', $contatto['acf_fc_layout']), (string)$contatto['link'] );
 							indent( $SCM_indent+2, '<a ' . $href . '>' . ( $contatto['name'] ?: ( $contatto['icon'] ? '<i class="fa ' . $contatto['icon'] . '"></i>' : (string)$contatto['link'] ) ) . '</a>' );
 						}
 					}
-					if( $open )
+					if( $open ){
+						do_action( 'scm_filter_echo_map_contatti', $fields );
 						indent( $SCM_indent+2, '</div>' );
+					}
 				}
 		indent( $SCM_indent+1, '</div>' );
 	}

@@ -1199,11 +1199,14 @@ function scm_post( $content = array(), $page = NULL, $more = NULL ) {
 
             $meta = apply_filters( 'scm_filter_archive_meta_query_' . $type, ex_attr( $content, 'meta_query', array() ) );
 
+            //$status = array( 'publish' );
+            //if( is_user_logged_in() && SCM_LEVEL <= 50 ) $status[] = 'private';
+
             $query = array(
                 'post_type' => $types,
                 'tax_query' => $tax,
                 'posts_per_page' => $perpage,
-                'post_status' => array( 'publish', 'private' ),
+                'post_status' => array( 'publish', 'private' ),//$status,
                 'order' => $ordertype,
                 'orderby' => $orderby,
                 'paged' => $current,
