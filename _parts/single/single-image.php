@@ -113,8 +113,9 @@ if ( $layout == 'layout-thumbs' ) {
     }elseif( $post->post_type === 'video' ){
 
         $vurl = scm_field( 'video-url', '', $post_id );
+        $vimg = scm_field( 'video-image', '', $post_id );
 
-        $image = getVideoThumb( $vurl, $size );
+        $image = $vimg ?: getVideoThumb( $vurl, $size );
         
         if( !$image ) return;
 
