@@ -22,6 +22,7 @@ $classes = 'no-js scm-' . SCM_VERSION;
 if( is_single() ){
     $classes .= " {$post->post_type}";
 }
+$social_type = SCM_POST_TYPE == 'page' ? 'website' : 'article';
 $social_facebook = scm_field( 'opt-staff-facebook', '', 'option' );
 $social_twitter = scm_field( 'opt-staff-twitter', '', 'option' );
 $social_title = scm_field( 'socialmediacard-title', get_the_title( SCM_PAGE_ID ), SCM_PAGE_ID );
@@ -31,8 +32,8 @@ $social_image_full = $social_image ? $social_image['url'] : '';
 $social_image_large = $social_image ? ex_attr( $social_image['sizes'], 'large', '' ) : '';
 $social_image_small = $social_image ? ex_attr( $social_image['sizes'], 'smaller', '' ) : '';
 $social_post = get_post( SCM_PAGE_ID );
-$social_date = $social_post->post_date;
-$social_modified = $social_post->post_modified;
+$social_date = $social_type == 'article' ? $social_post->post_date : '';
+$social_modified = $social_type == 'article' ? $social_post->post_modified : '';
 $social_url = $social_post->guid;
 $social_site = SCM_SITENAME;
 
@@ -61,14 +62,14 @@ if( $social_twitter ) indent( 1, '<meta name="twitter:creator" content="@' . $so
 if( $social_image_small ) indent( 1, '<meta name="twitter:image:src" content="' . $social_image_small . '" />', 1 );
 
 indent( 1, '<meta property="og:title" content="' . $social_title . '" />', 1 );
-indent( 1, '<meta property="og:type" content="article" />', 1 );
+indent( 1, '<meta property="og:type" content="' . $social_type . '" />', 1 );
 indent( 1, '<meta property="og:url" content="' . $social_url . '" />', 1 );
 if( $social_image ) indent( 1, '<meta property="og:image" content="' . $social_image_large . '" />', 1 );
 if( $social_description ) indent( 1, '<meta property="og:description" content="' . $social_description . '" />', 1 );
 indent( 1, '<meta property="og:site_name" content="' . $social_site . '" />', 1 );
 
-indent( 1, '<meta property="article:published_time" content="' . $social_date . '" />', 1 );
-indent( 1, '<meta property="article:modified_time" content="' . $social_modified . '" />', 1 );
+if( $social_date ) indent( 1, '<meta property="article:published_time" content="' . $social_date . '" />', 1 );
+if( $social_modified ) indent( 1, '<meta property="article:modified_time" content="' . $social_modified . '" />', 1 );
 
 if( $social_facebook ) indent( 1, '<meta property="fb:admins" content="' . $social_facebook . '">', 1 );
 
