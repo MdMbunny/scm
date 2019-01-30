@@ -27,9 +27,9 @@ $social_twitter = scm_field( 'opt-staff-twitter', '', 'option' );
 $social_title = scm_field( 'socialmediacard-title', get_the_title( SCM_PAGE_ID ), SCM_PAGE_ID );
 $social_description = scm_field( 'socialmediacard-description', '', SCM_PAGE_ID );
 $social_image = scm_field( 'socialmediacard-image', '', SCM_PAGE_ID );
-$social_image_full = $social_image['url'];
-$social_image_large = $social_image['sizes']['large'];
-$social_image_small = $social_image['sizes']['smaller'];
+$social_image_full = $social_image ? $social_image['url'] : '';
+$social_image_large = $social_image ? ex_attr( $social_image['sizes'], 'large', '' ) : '';
+$social_image_small = $social_image ? ex_attr( $social_image['sizes'], 'smaller', '' ) : '';
 $social_post = get_post( SCM_PAGE_ID );
 $social_date = $social_post->post_date;
 $social_modified = $social_post->post_modified;
@@ -53,24 +53,24 @@ indent( 1, '<meta itemprop="name" content="' . $social_title . '" />', 1 );
 if( $social_description ) indent( 1, '<meta itemprop="description" content="' . $social_description . '" />', 1 );
 if( $social_image ) indent( 1, '<meta itemprop="image" content="' . $social_image_large . '" />', 1 );
 
-indent( 1, '<meta name="twitter:card" content="summary_large_image">', 1 );
-if( $social_twitter ) indent( 1, '<meta name="twitter:site" content="@' . $social_twitter . '">', 1 );
-indent( 1, '<meta name="twitter:title" content="' . $social_title . '">', 1 );
+indent( 1, '<meta name="twitter:card" content="summary_large_image" />', 1 );
+if( $social_twitter ) indent( 1, '<meta name="twitter:site" content="@' . $social_twitter . '" />', 1 );
+indent( 1, '<meta name="twitter:title" content="' . $social_title . '" />', 1 );
 if( $social_description ) indent( 1, '<meta name="twitter:description" content="' . $social_description . '" />', 1 );
-if( $social_twitter ) indent( 1, '<meta name="twitter:creator" content="@' . $social_twitter . '">', 1 );
-if( $social_image_small ) indent( 1, '<meta name="twitter:image:src" content="' . $social_image_small . '">', 1 );
+if( $social_twitter ) indent( 1, '<meta name="twitter:creator" content="@' . $social_twitter . '" />', 1 );
+if( $social_image_small ) indent( 1, '<meta name="twitter:image:src" content="' . $social_image_small . '" />', 1 );
 
-indent( 1, '<meta name="og:title" content="' . $social_title . '">', 1 );
-indent( 1, '<meta name="og:type" content="article">', 1 );
-indent( 1, '<meta name="og:url" content="' . $social_url . '">', 1 );
-if( $social_image ) indent( 1, '<meta name="og:image" content="' . $social_image_large . '" />', 1 );
-if( $social_description ) indent( 1, '<meta name="og:description" content="' . $social_description . '" />', 1 );
-indent( 1, '<meta name="og:site_name" content="' . $social_site . '">', 1 );
+indent( 1, '<meta property="og:title" content="' . $social_title . '" />', 1 );
+indent( 1, '<meta property="og:type" content="article" />', 1 );
+indent( 1, '<meta property="og:url" content="' . $social_url . '" />', 1 );
+if( $social_image ) indent( 1, '<meta property="og:image" content="' . $social_image_large . '" />', 1 );
+if( $social_description ) indent( 1, '<meta property="og:description" content="' . $social_description . '" />', 1 );
+indent( 1, '<meta property="og:site_name" content="' . $social_site . '" />', 1 );
 
-indent( 1, '<meta name="article:published_time" content="' . $social_date . '">', 1 );
-indent( 1, '<meta name="article:modified_time" content="' . $social_modified . '">', 1 );
+indent( 1, '<meta property="article:published_time" content="' . $social_date . '" />', 1 );
+indent( 1, '<meta property="article:modified_time" content="' . $social_modified . '" />', 1 );
 
-if( $social_facebook ) indent( 1, '<meta name="fb:admins" content="' . $social_facebook . '">', 1 );
+if( $social_facebook ) indent( 1, '<meta property="fb:admins" content="' . $social_facebook . '">', 1 );
 
 ?>
 
