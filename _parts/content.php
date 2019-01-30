@@ -20,9 +20,11 @@ $scm = scm_front_init();
 do_action( 'scm_action_content', $_SERVER['REQUEST_URI'] );
 $scm = apply_filters( 'scm_filter_content', $scm );
 
-/*define( 'SCM_POST_TEMPLATE',			$scm['template'] );
+define( 'SCM_POST_TEMPLATE',			$scm['template'] );
 define( 'SCM_POST_TYPE',				$scm['type'] );
-define( 'SCM_POST_PAGE',				$scm['part'] );*/
+define( 'SCM_POST_TEMP',				$scm['temp'] );
+define( 'SCM_POST_TAX',					$scm['tax'] );
+define( 'SCM_POST_PAGE',				$scm['part'] );
 
 // Header
 get_header();

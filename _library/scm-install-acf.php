@@ -377,8 +377,8 @@ function scm_acf_install_posts_fields() {
         }
 
         $fun = 'scm_acf_fields_' . str_replace( '-', '_', $slug );
+        $obj = $SCM_types['objects'][$slug];
         if( function_exists( $fun ) ){
-            $obj = $SCM_types['objects'][$slug];
             $group = scm_acf_group( __( 'Opzioni '. $obj->singular, SCM_THEME ), $slug . '-single' );
             $group['location'][] = scm_acf_group_location( $slug );
             $group['fields'] = call_user_func( $fun );
@@ -387,6 +387,15 @@ function scm_acf_install_posts_fields() {
             $group = apply_filters( 'scm_filter_register_' . str_replace( '-', '_', $slug ), $group );
             $groups[] = $group;
         }
+        if( $obj->social ){
+            $group = scm_acf_group( __( 'Social Media Card', SCM_THEME ), $slug . '-social' );
+            $group['location'][] = scm_acf_group_location( $slug );
+            $group['fields'] = scm_acf_preset_socialmediacard();
+            // SCM Filter SOCIAL MEDIA CARD TYPE
+            $group = apply_filters( 'scm_filter_register_' . str_replace( '-', '_', $slug ) . '_social', $group );
+            $groups[] = $group;
+        }
+
     }
 
     // + PAGE
@@ -405,6 +414,13 @@ function scm_acf_install_posts_fields() {
         'label'=>__( 'Seleziona Sections', SCM_THEME ),
     ) );
     $groups[] = $page_footer;
+
+    // + PAGE SOCIAL MEDIA CARD
+
+    $page_social = scm_acf_group( __( 'Social Media Card', SCM_THEME ), 'pages-social' );
+    $page_social['location'][] = scm_acf_group_location( 'page' );
+    $page_social['fields'] = scm_acf_preset_socialmediacard();
+    $groups[] = $page_social;
 
     // + TEMPLATES
     foreach ( ex_attr( $SCM_types, 'public', array() ) as $slug => $title) {

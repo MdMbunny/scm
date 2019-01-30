@@ -682,6 +682,8 @@ function scm_hook_admin_upload_def_sizes( $sizes = array() ) {
 */
 function scm_hook_admin_upload_custom_sizes(){
     add_image_size('small', 700, 0, false);
+    add_image_size('smaller', 280, 0, false);
+    //add_image_size('opengraph', 1200, 0, false);
     //add_image_size('square', 300, 300, array( 'center', 'top' ));
     do_action( 'scm_action_admin_upload_custom_sizes' );
 }
@@ -698,6 +700,8 @@ function scm_hook_admin_upload_custom_sizes(){
 function scm_hook_admin_upload_custom_sizes_names( $sizes = array() ) {
     return array_merge( $sizes, array(
         'small' => __( 'Small', SCM_THEME ),
+        'smaller' => __( 'Smaller', SCM_THEME ),
+        //'opengraph' => __( 'Open Graph', SCM_THEME ),
         //'square' => __( 'Square', SCM_THEME ),
     ) );
 }

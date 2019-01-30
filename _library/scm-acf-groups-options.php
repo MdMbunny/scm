@@ -85,11 +85,12 @@ function scm_acf_options_types() {
 
 	
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-admin', array('label'=> __( 'Admin', SCM_THEME ) ) );
-			$types['sub_fields'][] = scm_acf_field_false( 'admin', 0, 20, 0, 0, __( 'Admin', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_false( 'public', 0, 20, 0, 0, __( 'Archivi', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_false( 'add_cap', 0, 20, 0, 0, __( 'Capabilities', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_false( 'hidden', 0, 20, 0, 0, __( 'Hidden', SCM_THEME ) );
-			$types['sub_fields'][] = scm_acf_field_false( 'post', 0, 20, 0, 0, __( 'Post', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'admin', 0, 33, 0, 0, __( 'Admin', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'public', 0, 33, 0, 0, __( 'Archivi', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'add_cap', 0, 33, 0, 0, __( 'Capabilities', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'hidden', 0, 33, 0, 0, __( 'Hidden', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'post', 0, 33, 0, 0, __( 'Post', SCM_THEME ) );
+			$types['sub_fields'][] = scm_acf_field_false( 'social', 0, 33, 0, 0, __( 'Social', SCM_THEME ) );
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-archive', array('label'=> __( 'Archivi', SCM_THEME ) ) );
 			$types['sub_fields'][] = scm_acf_field_select( 'orderby', 'orderby', 50, 0, 0, __( 'Ordina per', SCM_THEME ) );
@@ -103,14 +104,12 @@ function scm_acf_options_types() {
 			$types['sub_fields'][] = scm_acf_field_positive( 'menupos', array( 'default'=>0, 'prepend'=>__( 'Posizione Menu', SCM_THEME ), 'min'=>0, 'max'=>91 ), 50, 0 );
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-labels', array('label'=> __( 'Labels', SCM_THEME ) ) );
-			
 			$types['sub_fields'][] = scm_acf_field_name( 'singular', array( 'placeholder'=>__( 'Produzione', SCM_THEME ), 'prepend'=>__( 'Singolare', SCM_THEME ), 'max'=>40 ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'slug', array( 'placeholder'=>__( 'produzioni', SCM_THEME ), 'prepend'=>__( 'Slug', SCM_THEME ), 'max'=>40 ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'short-singular', array( 'placeholder'=>__( 'Prod.', SCM_THEME ), 'prepend'=>__( 'Singolare Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'short-plural', array( 'placeholder'=>__( 'Prods.', SCM_THEME ), 'prepend'=>__( 'Plurale Corto', SCM_THEME ), 'max'=>18 ), 50, 0 );
 
 		$types['sub_fields'][] = scm_acf_field_tab( 'tab-link', array('label'=> __( 'Object Link', SCM_THEME ) ) );
-
 			$types['sub_fields'][] = scm_acf_field_name( 'link', array( 'placeholder'=>__( 'link', SCM_THEME ), 'prepend'=>__( 'Link Type', SCM_THEME ) ), 50, 0 );
 			$types['sub_fields'][] = scm_acf_field_name( 'link-field', array( 'placeholder'=>__( 'post-link', SCM_THEME ), 'prepend'=>__( 'Link Field', SCM_THEME ) ), 50, 0 );
 
@@ -241,7 +240,9 @@ function scm_acf_options_general() {
 	$fields = array();
 
 	$fields[] = scm_acf_field_tab_left( 'tab-opt-staff', array( 'label'=> __( 'Staff', SCM_THEME ) ) );
-		$fields[] = scm_acf_field_email( 'opt-staff-email', 0, 50 );
+		$fields[] = scm_acf_field_email( 'opt-staff-email', 0, 60 );
+		$fields[] = scm_acf_field_text( 'opt-staff-facebook', array( 'prepend'=>__( 'Facebook ID', SCM_THEME ) ), 60 );
+		$fields[] = scm_acf_field_text( 'opt-staff-twitter', array( 'prepend'=>__( 'Twitter User Name', SCM_THEME ) ), 60 );
 		$fields[] = scm_acf_field_image_url( 'opt-staff-logo', array( 'label'=>'' ) );
 		
 	$fields[] = scm_acf_field_tab_left( 'tab-opt-footer', array( 'label'=> __( 'Footer', SCM_THEME ) ) );
@@ -598,22 +599,10 @@ function scm_acf_options_tools() {
 		$fields = array_merge( $fields, scm_acf_preset_size( 'opt-tools-smoothscroll-offset', 0, '0', 'px', __( 'Offset', SCM_THEME ) ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-smoothscroll-head', 0, 100, 0, 0, __( 'Includi altezza Sticky Header', SCM_THEME ) );
 		$fields[] = scm_acf_field_select( 'opt-tools-smoothscroll-ease', 'ease', 100, 0, 0, __( 'Ease', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-greensock', array( 'label'=>'Greensock' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-greensock', 0, 20, 0, 0, __( 'Greensock', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-slider', array( 'label'=>'Main Slider' ) );
 		$fields = array_merge( $fields, scm_acf_options_slider( 0, 1 ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-nivo', 0, 20, 0, 0, __( 'Nivo Slider', SCM_THEME ) );
 		$fields[] = scm_acf_field_true( 'opt-tools-bx', 0, 20, 0, 0, __( 'BX Slider', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-parallax', array( 'label'=>'Parallax' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-parallax', 0, 20, 0, 0, __( 'Parallax', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-fancybox', array( 'label'=>'Fancybox' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-fancybox', 0, 20, 0, 0, __( 'Fancybox', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-tooltip', array( 'label'=>'Tooltip' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-tooltip', 0, 20, 0, 0, __( 'Tooltip', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-cursor', array( 'label'=>'Cursor' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-cursor', 0, 20, 0, 0, __( 'Cursor', SCM_THEME ) );
-	$fields[] = scm_acf_field_tab_left( 'tab-tools-tables', array( 'label'=>'Tables' ) );
-		$fields[] = scm_acf_field_false( 'opt-tools-tables', 0, 20, 0, 0, __( 'Tables', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-gmaps', array( 'label'=>'Google Maps' ) );
 		$fields[] = scm_acf_field_text( 'opt-tools-map-api', 0, 100, 0, 0, __( 'Google Maps API Key', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
@@ -624,6 +613,17 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_number( 'opt-tools-topofpage-offset', array( 'append'=>'px', 'default'=>200, 'placeholder'=>'0', 'prepend'=>__( 'Offset', SCM_THEME ) ) );
 		$fields = array_merge( $fields, scm_acf_preset_rgba( 'opt-tools-topofpage-txt', '#000000', 1, 100, 0, __( 'Trasparenza Icona', SCM_THEME ), __( 'Colore Icona', SCM_THEME )) );
 		$fields = array_merge( $fields, scm_acf_preset_rgba( 'opt-tools-topofpage-bg', '#DDDDDD', 1, 100, 0, __( 'Trasparenza Fondo', SCM_THEME ), __( 'Colore Fondo', SCM_THEME ) ) );
+	$fields[] = scm_acf_field_tab_left( 'tab-tools-parallax', array( 'label'=>'Tools' ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-parallax', 0, 100, 0, 0, __( 'Parallax', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-fancybox', 0, 100, 0, 0, __( 'Fancybox', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-tooltip', 0, 100, 0, 0, __( 'Tooltip', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-cursor', 0, 100, 0, 0, __( 'Cursor', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-colors', 0, 100, 0, 0, __( 'Colors', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-greensock', 0, 100, 0, 0, __( 'Greensock', SCM_THEME ) );
+	$fields[] = scm_acf_field_tab_left( 'tab-tools-tables', array( 'label'=>'SCM Tools' ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-tables', 0, 100, 0, 0, __( 'Tables', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-panels', 0, 100, 0, 0, __( 'Panels', SCM_THEME ) );
+		$fields[] = scm_acf_field_false( 'opt-tools-ui', 0, 100, 0, 0, __( 'UI', SCM_THEME ) );
 
 
 	return $fields;

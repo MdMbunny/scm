@@ -109,7 +109,7 @@ function scm_acf_get_value( $arr = NULL, $par = NULL, $fallback = NULL ) {
 	'email':			$prepend = '@' 				$placeholder = 'info@.website.com'
 	'user':			 	$prepend = 'User' 			$placeholder = 'user name'
 	'phone':			$prepend = 'N.' 			$placeholder = '+39 123 4567'
-	'video':			$prepend = 'Link Video' 		$placeholder = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
+	'video':			$prepend = 'Link Video' 	$placeholder = 'https://www.youtube.com/watch?v=BVKXzNV6Z0c&list=PL4F1941886E6F2A16'
 	'-read'				$read = true
 	'-disabled'			$disabled = true
 

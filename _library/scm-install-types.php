@@ -137,6 +137,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'pages',
+            'social' => 0,
         ),
         'banners'               => array(
             'admin' => 0,
@@ -158,6 +159,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'pages',
+            'social' => 0,
         ),
         'eventi'                => array(
             'admin' => 0,
@@ -179,6 +181,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'types',
+            'social' => 1,
         ),
         'news'                  => array(
             'admin' => 0,
@@ -200,6 +203,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'types',
+            'social' => 1,
         ),
         'articoli'              => array(
             'admin' => 0,
@@ -221,6 +225,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'types',
+            'social' => 1,
         ),
         'slides'                => array(
             'admin' => 0,
@@ -242,6 +247,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'media',
+            'social' => 0,
         ),
         'gallerie'              => array(
             'admin' => 0,
@@ -263,6 +269,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'media',
+            'social' => 0,
         ),
         'video'                 => array(
             'admin' => 0,
@@ -284,6 +291,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'media',
+            'social' => 0,
         ),
         'documenti'             => array(
             'admin' => 0,
@@ -305,6 +313,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'media',
+            'social' => 0,
         ),
         'rassegne-stampa'       => array(
             'admin' => 0,
@@ -326,6 +335,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 0,
             'menu' => 'media',
+            'social' => 0,
             'short-singular' => __('Rassegna', SCM_THEME),
             'short-plural' => __('Rassegne', SCM_THEME),
         ),
@@ -349,6 +359,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 1,
             'menu' => 'contacts',
+            'social' => 1,
         ),
         'luoghi'                => array(
             'admin' => 0,
@@ -370,6 +381,7 @@ function scm_hook_types_default(){
             'ordertype' => '',
             'menupos' => 1,
             'menu' => 'contacts',
+            'social' => 1,
         ),
     );
 
@@ -502,6 +514,7 @@ function scm_types_install( $types = NULL ){
         $type['active'] = (int)is_attr( $type, 'active', 0 );
         $type['public'] = (int)is_attr( $type, 'public', 0 );
         $type['hidden'] = (int)is_attr( $type, 'hidden', 0 );
+        $type['social'] = (int)is_attr( $type, 'social', 0 );
         $type['orderby'] = is_attr( $type, 'orderby', 'title' );
         $type['orderby'] = ( $type['orderby'] == 'meta_value' ? is_attr( $type, 'orderkey', 'title' ) : $type['orderby'] );
         $type['ordertype'] = is_attr( $type, 'ordertype', 'ASC' );
@@ -530,6 +543,7 @@ function scm_types_install( $types = NULL ){
                 $type['menupos'] = 0;
                 $type['menu'] = 0;
                 $type['post'] = 0;
+                $type['social'] = 0;
 
                 $temp = $SCM_types['objects'][ $type['slug'] ] = new Custom_Type( $type, SCM_THEME );
                 $temp->register();
