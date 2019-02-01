@@ -22,18 +22,28 @@ $classes = 'no-js scm-' . SCM_VERSION;
 if( is_single() ){
     $classes .= " {$post->post_type}";
 }
+/*consoleLog( get_post( SCM_PAGE_ID ) );
+consoleLog( get_post( $post->ID ) );
+consoleLog( SCM_POST_TEMPLATE );
+consoleLog( SCM_POST_TYPE );
+consoleLog( SCM_POST_TEMP );
+consoleLog( SCM_POST_TAX );
+consoleLog( SCM_POST_PAGE );*/
+
+$id = $post->ID;
+
 $social_facebook = scm_field( 'opt-staff-facebook', '', 'option' );
 $social_twitter = scm_field( 'opt-staff-twitter', '', 'option' );
-$social_title = scm_field( 'socialmediacard-title', get_the_title( SCM_PAGE_ID ), SCM_PAGE_ID );
-$social_description = scm_field( 'socialmediacard-description', '', SCM_PAGE_ID );
-$social_image = scm_field( 'socialmediacard-image', '', SCM_PAGE_ID );
+$social_title = scm_field( 'socialmediacard-title', get_the_title( $id ), $id );
+$social_description = scm_field( 'socialmediacard-description', '', $id );
+$social_image = scm_field( 'socialmediacard-image', '', $id );
 $social_image_full = $social_image ? $social_image['url'] : '';
 $social_image_large = $social_image ? ex_attr( $social_image['sizes'], 'large', $social_image ) : '';
 $social_image_small = $social_image ? ex_attr( $social_image['sizes'], 'smaller', $social_image_large ) : '';
-$social_post = get_post( SCM_PAGE_ID );
+$social_post = get_post( $id );
 $social_date = $social_post->post_date;
 $social_modified = $social_post->post_modified;
-$social_url = is_front_page() ? SCM_URL : get_permalink( SCM_PAGE_ID );
+$social_url = is_front_page() ? SCM_URL : get_permalink( $id );
 $social_site = SCM_SITENAME;
 
 ?><!DOCTYPE html>

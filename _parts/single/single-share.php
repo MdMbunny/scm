@@ -54,10 +54,10 @@ $style .= $icon_size ? ' font-size:' . $icon_size . ';' : '';
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );
 
 $groups = scm_acf_field_fa_preset( 'social' );
-$current = SCM_SITE . '?p=' . $post_id;
+//$current = SCM_SITE . '?p=' . $post_id;
 $permalink = get_permalink( $post_id );
 $title = get_the_title( $post_id );
-
+$current = urlencode($permalink);
 
 	foreach ($social as $value) {
 
@@ -71,10 +71,10 @@ $title = get_the_title( $post_id );
 			$name = 'Share on ' . $group['name'];
 
 			switch( $value['social'] ) {
-				case 'facebook': $url = 'http://www.facebook.com/sharer/sharer.php?u=' . $current; break;
-				case 'twitter': $url = 'http://twitter.com/share?url=' . $current . '&text=' . $title; break;
+				case 'facebook': $url = 'https://www.facebook.com/sharer.php?u=' . $current; break;
+				case 'twitter': $url = 'https://twitter.com/intent/tweet?url=' . $current . '&text=' . $title; break;
 				case 'google': $url = 'https://plus.google.com/share?url=' . $current; break;
-				case 'linkedin': $url = 'http://www.linkedin.com/shareArticle?url=' . $current . '&title=' . $title; break;
+				case 'linkedin': $url = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $current . '&title=' . $title; break;
 				case 'email': $url = 'mailto:?subject=' . $title . '&body=' . $current; break;
 				
 				default:
