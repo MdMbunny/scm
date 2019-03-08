@@ -186,6 +186,10 @@ function scm_hook_site_register_webfonts_google() {
 */
 function scm_hook_site_register_styles() {
 
+    // RESET
+    wp_register_style( 'reset', 'https://mdmbunny.github.io/reset-1.0.2.min.css', false, NULL );
+    wp_enqueue_style( 'reset' );
+
     // SCM
     wp_register_style( 'global', SCM_URI . 'style.css', false, NULL );
     wp_enqueue_style( 'global' );

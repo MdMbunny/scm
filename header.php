@@ -84,17 +84,6 @@ if( $social_facebook ) indent( 1, '<meta property="fb:admins" content="' . $soci
 
 ?>
 
-<!--<meta property="og:image:secure_url" content="https://www.mdmbunny.com/test.jpg" />-->
-<!--<meta property="og:image:type" content="image/jpeg" />-->
-<!--<meta property="og:image:width" content="1200" />-->
-<!--<meta property="og:image:height" content="630" />-->
-
-<!--<meta property="article:section" content="Page/Article Title" />-->
-<!--<meta property="article:tag" content="Page/Article Tag" />-->
-<!--<meta property="article:tag" content="Page/Article Tag" />-->
-
-<!--<meta property="fb:app_id" content="" />-->
-
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="alternate" type="application/rss+xml" title="SCM Feed" href="/feed.xml">
