@@ -190,6 +190,10 @@ function scm_hook_site_register_styles() {
     wp_register_style( 'reset', 'https://mdmbunny.github.io/css/reset' . scm_field( 'opt-tools-reset', '', 'option', false, '-' ) . '.css', false, NULL );
     wp_enqueue_style( 'reset' );
 
+    // CLASSES
+    wp_register_style( 'classes', 'https://mdmbunny.github.io/css/classes' . scm_field( 'opt-tools-classes', '', 'option', false, '-' ) . '.css', false, NULL );
+    wp_enqueue_style( 'classes' );
+
     // SCM
     wp_register_style( 'global', SCM_URI . 'style.css', false, NULL );
     wp_enqueue_style( 'global' );

@@ -622,6 +622,7 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_false( 'opt-tools-greensock', 0, 100, 0, 0, __( 'Greensock', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-tables', array( 'label'=>'SCM Tools' ) );
 		$fields[] = scm_acf_field_text( 'opt-tools-reset', 0, 100, 0, 0, __( 'Reset Ver.', SCM_THEME ) );
+		$fields[] = scm_acf_field_text( 'opt-tools-classes', 0, 100, 0, 0, __( 'Classes Ver.', SCM_THEME ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-tables', 0, 100, 0, 0, __( 'Tables', SCM_THEME ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-panels', 0, 100, 0, 0, __( 'Panels', SCM_THEME ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-ui', 0, 100, 0, 0, __( 'UI', SCM_THEME ) );
