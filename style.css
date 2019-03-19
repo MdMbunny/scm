@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.0.2
+Version:			v5.0.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1207,7 +1207,7 @@ Plugins Google Map
 .scm-map{
 	height: 400px;
 	background-color: #DDD;
-	font-family: Font Awesome\ 5 Pro !important;
+	font-family: "Font Awesome\ 5 Po !important";
 }
 .scm-map:before{
     content: "\f041";
@@ -1232,6 +1232,8 @@ Plugins Google Map
 .scm-map button{
 	min-height: 0;
 	min-width: 0;
+	top: 0 !important;
+    right: 0 !important;
 }
 .scm-map .gm-style-iw > div{
 	width: auto !important;
@@ -1324,7 +1326,7 @@ Plugins Fancybox
 }
 .post.gallerie > .layout-thumbs:after,
 .post.video > .layout-immagine:after{
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Pro";
 	font-size: 4em;
 	line-height: 2em;
     text-align: center;
