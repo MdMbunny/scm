@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.0.4
+Version:			v5.0.5
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -256,6 +256,7 @@ blockquote,
 .bullet.float-left + span,
 span + .bullet.float-right{
 	margin-left: .5em;
+	line-height: 1.3em;
 }
 .scm-list .button{
 	display: inline-block;
@@ -888,7 +889,7 @@ Plugins Slider
 	width: 100%;
 	max-width: none;
 	position: absolute !important;
-	left:0;
+	/*left:0;*/
 	display:none;
 	transition: all 0s;
 	-webkit-transition: all 0s;
