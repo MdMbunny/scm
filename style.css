@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.0.6
+Version:			v5.0.7
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -66,7 +66,8 @@ body{
 .scm-object{
 	position: relative;
 }
-.scm-object.column-layout,  .scm-object.full,  .scm-object.responsive{
+/*.scm-object.column-layout,  .scm-object.full,  .scm-object.responsive{*/
+.column-layout,  .full,  .responsive{
 	display: inline-block;
 	vertical-align: top;
 }

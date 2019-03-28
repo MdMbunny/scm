@@ -106,7 +106,7 @@ if( !is_admin() ){
 * Hooked by 'wp_head'
 * @subpackage 4-Init/Core/1-ENQUEUE
 */
-nction scm_hook_site_policies() {
+function scm_hook_site_policies() {
 
     $siteid = scm_field( 'opt-policies-id', 0, 'option' );
     $policy = scm_utils_preset_policies();

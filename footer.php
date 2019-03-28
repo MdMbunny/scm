@@ -116,8 +116,10 @@ wp_reset_postdata();
                                         $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                                     
                                     $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>__( 'Privacy Policy', SCM_THEME ), 'attributes'=>' data-href="' . $link . '" data-target="_blank"', 'tag'=>'span', 'inherit'=>1 );
-                                    if( $policy )
+                                    if( $policy ){
+                                        $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>$foot_separator, 'tag'=>'span', 'inherit'=>1, 'class'=>'separator' );
                                         $fields[] = array( 'acf_fc_layout'=>'layout-titolo', 'title'=>__( 'Cookies Policy', SCM_THEME ), 'attributes'=>' data-href="' . $link . '/cookie-policy" data-target="_blank"', 'tag'=>'span', 'inherit'=>1 );
+                                    }
                                 }else{
                                     $foot_policy = 0;
                                 }
