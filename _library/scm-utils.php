@@ -2333,7 +2333,7 @@ function fileExtensionToIcon( $ext ){
         case 'gif':
         case 'png':
 
-            $name = 'file-image-o';
+            $name = 'file-image';
 
         break;
 
@@ -2341,7 +2341,7 @@ function fileExtensionToIcon( $ext ){
         case 'pptx':
         case 'keynote':
 
-            $name = 'file-powerpoint-o';
+            $name = 'file-powerpoint';
 
         break;
 
@@ -2349,14 +2349,14 @@ function fileExtensionToIcon( $ext ){
         case 'docx':
         case 'pages':
 
-            $name = 'file-word-o';
+            $name = 'file-word';
 
         break;
 
         case 'txt':
         case 'rtf':
 
-            $name = 'file-text-o';
+            $name = 'file-text';
 
         break;
 
@@ -2364,20 +2364,20 @@ function fileExtensionToIcon( $ext ){
         case 'xlsx':
         case 'numbers':
 
-            $name = 'file-excel-o';
+            $name = 'file-excel';
 
         break;
 
         case 'pdf':
 
-            $name = 'file-pdf-o';
+            $name = 'file-pdf';
 
         break;
 
         case 'zip':
         case 'rar':
 
-            $name = 'file-archive-o';
+            $name = 'file-archive';
 
         break;
 
@@ -2385,7 +2385,7 @@ function fileExtensionToIcon( $ext ){
         case 'avi':
         case 'wmv':
 
-            $name = 'file-video-o';
+            $name = 'file-video';
 
         break;
 
@@ -2396,12 +2396,12 @@ function fileExtensionToIcon( $ext ){
         case 'wav':
         case 'wma':
 
-            $name = 'file-audio-o';
+            $name = 'file-audio';
 
         break;
 
         default:
-            $name = 'file-o';
+            $name = 'file';
         break;
     }
 
