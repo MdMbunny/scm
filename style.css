@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.0.8
+Version:			v5.0.9
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -489,6 +489,7 @@ Elements Navigation
 	z-index: 7500;
 	line-height: 1em;
 	font-size: .7em;
+	position: static;
 }
 .navigation.float-right{
 	text-align: right;
@@ -744,6 +745,10 @@ body:not(.enabled) .navigation > .row > div.toggle-button{
 }
 
 /*** Extra Menu ***/
+
+.navigation li > .toggle-button{
+	position: static;
+}
 
 .navigation li.current > .toggle-button > a, .navigation li.current > .toggle-button > a *{
     cursor: default;
