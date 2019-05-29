@@ -24,6 +24,8 @@
 // ACTIONS AND FILTERS
 // ------------------------------------------------------
 
+add_filter('xmlrpc_enabled', '__return_false');
+
 // ENQUEUE
 add_action( 'wp_head', 'scm_hook_site_policies' );
 add_action( 'wp_enqueue_scripts', 'scm_hook_site_register_webfonts_adobe' );
