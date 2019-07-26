@@ -62,6 +62,7 @@
 	border-top: 0 !important;
 }
 
+#screen-meta-links,
 body:not(.scm-advanced) .edit-post-header__settings .edit-post-more-menu,
 .edit-post-sidebar__panel-tabs .edit-post-sidebar__panel-tab,
 .edit-post-header .edit-post-header-toolbar,
