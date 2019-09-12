@@ -998,7 +998,7 @@ function getRoles(){
  * @param {string=} country Country string (default is '').
  * @return {array} Array containing 'lat' and 'lng' attributes.
  */
-function getGoogleMapsLatLng( $address = '', $country = '' ){
+function getGoogleMapsLatLng( $address = '', $country = '', $api = '' ){
 
     if( str_replace( ' ', '', $address ) === '' ){
         $address = 'Roma';
@@ -1011,9 +1011,7 @@ function getGoogleMapsLatLng( $address = '', $country = '' ){
         'lng'   => 0,
     );
 
-    //consoleLog( 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDdHFl9264Pzyfjcx4rQpmMxAXMLY9rM_Q&address=' . $google_address . '&sensor=false' . ( $country ? '&region=' . $country . '' : '' ) );
-
-    $json = wp_remote_fopen( 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDdHFl9264Pzyfjcx4rQpmMxAXMLY9rM_Q&address=' . $google_address . '&sensor=false' . ( $country ? '&region=' . $country . '' : '' ) );
+    $json = wp_remote_fopen( 'https://maps.googleapis.com/maps/api/geocode/json?key=' . $api .'&address=' . $google_address . '&sensor=false' . ( $country ? '&region=' . $country . '' : '' ) );
     $json = json_decode( $json );
 
     if( is_wp_error( $json ) || $json->status == 'ZERO_RESULTS' )
