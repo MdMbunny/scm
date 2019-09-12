@@ -952,8 +952,8 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div', $icon
 
     $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . ( $class ? ' ' . $class : '' ) . '"' . $href . '>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<div class="icons">' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="fa ' . getFAicon( $iconA, 'fa' ) . ' plus"></i>' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="fa ' . getFAicon( $iconB, 'fa' ) . '"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="far ' . getFAicon( $iconA, 'fa' ) . ' plus"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="far ' . getFAicon( $iconB, 'fa' ) . '"></i>' . lbreak();
         $ret .= indent( $indent + 1 ) . '</div>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<span>' . $name . '</span>' . lbreak();
     $ret .= indent( $indent ) . '</' . $tag . '>' . lbreak();

@@ -94,7 +94,7 @@ if( !$text ){
                         $text = explode( ' ', $text );
                         array_pop( $text );
                         $text = implode( ' ', $text);
-                        $text .= '... <span class="continue">' . __( 'continua a leggere', SCM_THEME ) . '<i class="fa fa-chevron-circle-right"></i>';
+                        $text .= '... <span class="continue">' . __( 'continua a leggere', SCM_THEME ) . '<i class="fas fa-chevron-circle-right"></i>';
                     }
                 }
             break;
