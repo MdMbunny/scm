@@ -519,9 +519,15 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
 	font-family: inherit;
     -webkit-font-smoothing: auto;
 }
-#adminmenu li.faicon:before{
+#adminmenu li.faicon:before,
+#adminmenu li.faicon:after{
 	content: none;
 }
+#adminmenu a.faicon{
+	padding-left: 3em;
+}
+#adminmenu .wp-menu-open a.faicon:before,
+#adminmenu a.fad.faicon:after,
 #adminmenu a.faicon:before{
     font-family: 'Font Awesome 5 Pro' !important;
     font-weight: 400;
@@ -533,16 +539,28 @@ html[lang="it-IT"] .scm-edit #adminmenu > .scm-separator-last > .separator:after
     text-align: center;
     font-size: 1.4em;
     -webkit-font-smoothing: antialiased;
+    position: absolute;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    border: 0;
 }
+#adminmenu a.faicon.fad:after,
+#adminmenu li:not(.wp-menu-open) a.faicon.fad:before{
+    font-family: 'Font Awesome 5 Duotone' !important;
+}
+#adminmenu a.faicon.fab:before{
+	font-family: 'Font Awesome 5 Brands' !important;
+}
+#adminmenu a.faicon.fad:before,
 #adminmenu a.faicon.fas:before{
 	font-weight: 900;
 }
 #adminmenu a.faicon.fal:before{
 	font-weight: 300;
 }
-#adminmenu a.faicon.fab:before{
-	font-family: 'Font Awesome 5 Brands' !important;
-}
+
 #adminmenu a.faicon .wp-menu-image{
 	display: none !important;
 }
@@ -1482,7 +1500,8 @@ ul.acf-radio-list li > input{
 }
 
 .select2-selectors > .acf-label{
-	display: inline-block !important;
+	/*display: inline-block !important;*/
+	display: none !important;
 	text-align: center;
 	width: 8%;
 	font-size: 13px;

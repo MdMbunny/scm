@@ -104,7 +104,7 @@ $type = new Custom_Type( $args );
             $this->short_plural = ( $attr['short-plural'] ?: $plural );
             
             $this->icon = ex_attr( $attr, 'icon', '' ) ? ( startsWith( $attr['icon'], 'dashicons-' ) ? $attr['icon'] : 'dashicons-' . $attr['icon'] ) : '';
-            $this->faicon = ex_attr( $attr, 'fa-icon', '' ) ? ( startsWith( $attr['fa-icon'], 'fa-' ) ? $attr['fa-icon'] : 'fa-' . $attr['fa-icon'] ) : '';
+            $this->faicon = ex_attr( $attr, 'fa-icon', '' );// ? ( startsWith( $attr['fa-icon'], 'fa-' ) ? $attr['fa-icon'] : 'fa-' . $attr['fa-icon'] ) : '';
             $this->supports = array( 'title' );
             $this->orderby = ( $attr['orderby'] ?: 'title' );
             $this->order = $attr['ordertype'];

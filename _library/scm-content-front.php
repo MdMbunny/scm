@@ -42,8 +42,8 @@ function scm_pagination( $query = NULL, $current = 1, $var = 'paged', $echo = tr
             'format'    => '?' . $var . '=%#%',
             'current'   => max( 1, $current ),
             'total'     => $wp_query->max_num_pages,
-            'prev_text' => '<i class="fa fa-chevron-left"></i>',
-            'next_text' => '<i class="fa fa-chevron-right"></i>',
+            'prev_text' => '<i class="far fa-chevron-left"></i>',
+            'next_text' => '<i class="far fa-chevron-right"></i>',
         );
 
     // Search page
@@ -884,7 +884,7 @@ function scm_top_of_page() {
     global $SCM_indent;
 
     $id = 'site-topofpage';
-    $icon = scm_field( 'opt-tools-topofpage-icon', 'fa-angle-up', 'option' );
+    $icon = scm_field( 'opt-tools-topofpage-icon', 'fas fa-angle-up', 'option' );
     $text = scm_field( 'opt-tools-topofpage-title', __( 'Inizio Pagina', SCM_THEME ), 'option' );
     $offset = scm_field( 'opt-tools-topofpage-offset', 0, 'option' );
     $title = $text;

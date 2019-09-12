@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.1.2
+Version:			v5.1.3
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -249,7 +249,8 @@ blockquote,
 .button:not(.scm-ui-label).icon .fas,
 .button:not(.scm-ui-label).icon .far,
 .button:not(.scm-ui-label).icon .fal,
-.button:not(.scm-ui-label).icon .fab{
+.button:not(.scm-ui-label).icon .fab,
+.button:not(.scm-ui-label).icon .fad{
 	text-align: center;
 	width: 1em;
 	height: 1em;
@@ -345,7 +346,8 @@ span + .bullet.float-right{
 .scm-loading.loading-icon .fas,
 .scm-loading.loading-icon .far,
 .scm-loading.loading-icon .fal,
-.scm-loading.loading-icon .fab{
+.scm-loading.loading-icon .fab,
+.scm-loading.loading-icon .fad{
 	font-size: 1em;
 	width: 1em;
 	height: 1em;
@@ -355,7 +357,8 @@ span + .bullet.float-right{
 .scm-loading.loading-icon.middle .fas,
 .scm-loading.loading-icon.middle .far,
 .scm-loading.loading-icon.middle .fal,
-.scm-loading.loading-icon.middle .fab{
+.scm-loading.loading-icon.middle .fab,
+.scm-loading.loading-icon.middle .fad{
 	position: absolute;
     margin: auto;
     top: 50%;
@@ -460,7 +463,8 @@ ul.attachments{
 .attachment .fas,
 .attachment .far,
 .attachment .fal,
-.attachment .fab{
+.attachment .fab,
+.attachment .fad{
     display: flex;
     line-height: 1.5em;
     vertical-align: middle;

@@ -380,33 +380,33 @@ function scm_hook_admin_ui_menu_order( $menu_ord ) {
     $menu_order = array(
         //'separator1' => array( 'separator1' ),
         'scm' => array(
-            array( 'index.php', 'fa-tachometer' ), // Dashboard
+            array( 'index.php', 'fas fa-tachometer' ), // Dashboard
         ),
         'separator1' => array( 'separator1' ),
         'pages' => array(
-            array( 'edit.php?post_type=page', 'fa-window-maximize' ), // Pages
+            array( 'edit.php?post_type=page', 'fas fa-window-maximize' ), // Pages
         ),
         'separator2' => array( 'separator2' ),
         'types' => array(
-            array( 'edit.php', 'fa-thumb-tack' ), // Posts
+            array( 'edit.php', 'fas fa-thumb-tack' ), // Posts
         ),
         'separator3' => array( 'separator3' ),
         'media' => array(
-            array( 'upload.php', 'fa-copy-s' ), // Media
+            array( 'upload.php', 'fas fa-copy' ), // Media
         ),
         'separator4' => array( 'separator4' ),
         'contacts' => array(
             'edit-comments.php', // Comments
             'link-manager.php', // Links
-            array( 'users.php', 'fa-user' ), // Users
-            array( 'wpcf7', 'fa-envelope' ), // Forms
+            array( 'users.php', 'fas fa-user' ), // Users
+            array( 'wpcf7', 'fas fa-envelope' ), // Forms
         ),
         'separator5' => array( 'separator5' ),
         'settings' => array(
-            array( 'themes.php', 'fa-paint-brush' ), // Appearance
-            array( 'plugins.php', 'fa-plug' ), // Plugins
-            array( 'tools.php', 'fa-wrench' ), // Tools
-            array( 'options-general.php', 'fa-sliders-h' ), // Settings
+            array( 'themes.php', 'fas fa-paint-brush' ), // Appearance
+            array( 'plugins.php', 'fas fa-plug' ), // Plugins
+            array( 'tools.php', 'fas fa-wrench' ), // Tools
+            array( 'options-general.php', 'fas fa-sliders-h' ), // Settings
         ),
         'separator-last' => array( 'separator-last' ),
     );
