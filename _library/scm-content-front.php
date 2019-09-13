@@ -88,7 +88,7 @@ function scm_pagination_more( $query = NULL, $current = 1, $button = '', $var = 
             'mid_size'  => 1,
             'prev_text' => '',
             'type'      => 'array',
-            'next_text' => ( $button ?: '<i class="fa fa-chevron-down"></i>' ),
+            'next_text' => ( $button ?: '<i class="far fa-chevron-down"></i>' ),
         );
     
     // Remove ajax call
@@ -430,8 +430,8 @@ function scm_get_menu( $id = 'site-navigation', $class = 'navigation full' , $ro
             $toggle_top = scm_field( 'menu-toggle-top', false, 'option' );
             $toggle_home = scm_field( 'menu-toggle-home', false, 'option' );
             $toggle_link = ( $toggle_top && !$toggle_home ? '#top' : ( !$toggle_top && $toggle_home ? $home : ( $toggle_top && $toggle_home ? ( $sticky ? '#top' : $home ) : '' ) ) );
-            $toggle_open = 'fa ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
-            $toggle_close = 'fa ' . scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' );
+            $toggle_open = 'fa far ' . scm_field( 'menu-toggle-icon-open', 'fa-bars', 'option' );
+            $toggle_close = 'fa far ' . scm_field( 'menu-toggle-icon-close', 'fa-arrow-circle-close', 'option' );
             
             $wrap .= indent( $in + 2 ) . '<div class="toggle-button" data-switch="' . $toggle_active . '">' . lbreak(2);
 
@@ -549,7 +549,7 @@ function scm_auto_menu_item_number( $ret = '' ) {
     if( $ret ){
         $icon = $ret;
         $ret = '<span class="icon stack fa-stack fa-3x">';
-        $ret .= '<i class="fa fa-circle fa-stack-2x"></i>';
+        $ret .= '<i class="fas fa-circle fa-stack-2x"></i>';
         $ret .= '<strong class="fa-stack-1x fa-stack-text fa-inverse">' . $icon . '</strong>';
         $ret .= '</span>';
     }

@@ -16,12 +16,12 @@ global $post, $SCM_indent;
 
 $args = array(
 	'social' => array(
-		array( 'social' => 'facebook', 		'icon' => 1, 		'color' => ''	 ),
-		array( 'social' => 'twitter', 		'icon' => 0, 		'color' => ''	 ),
-		array( 'social' => 'google', 		'icon' => 1, 		'color' => ''	 ),
-		array( 'social' => 'linkedin', 		'icon' => 0, 		'color' => ''	 ),
-		array( 'social' => 'email', 		'icon' => 0, 		'color' => ''	 ),
-		array( 'social' => 'link',	 		'icon' => 'fa-link', 	'color' => ''	 ),
+		array( 'social' => 'facebook', 		'icon' => 'fab fa-facebook-f', 		'color' => '#3b5998'	 ),
+		array( 'social' => 'twitter', 		'icon' => 'fab fa-twitter', 		'color' => '#55acee'	 ),
+		//array( 'social' => 'google', 		'icon' => 1, 		'color' => ''	 ),
+		array( 'social' => 'linkedin', 		'icon' => 'fab fa-linkedin-in', 		'color' => '#4875B4'	 ),
+		array( 'social' => 'email', 		'icon' => 'fas fa-envelope', 		'color' => '#4cb300'	 ),
+		array( 'social' => 'link',	 		'icon' => 'fas fa-link', 	'color' => '#AAA'	 ),
 	),
 	'shape' => 'circle', // 'square, rounded, circle, round-petal, round-leaf, ...' see main style.css
 	'type' => 'fill', // 'fill, stroke'
@@ -53,7 +53,7 @@ $style .= $icon_size ? ' font-size:' . $icon_size . ';' : '';
 
 indent( $SCM_indent + 1, openTag( 'div', $id, $class, $style, $attributes ), 1 );
 
-$groups = scm_acf_field_fa_preset( 'social' );
+//$groups = scm_acf_field_fa_preset( 'social' );
 //$current = SCM_SITE . '?p=' . $post_id;
 $permalink = get_permalink( $post_id );
 $title = get_the_title( $post_id );
@@ -61,41 +61,43 @@ $current = urlencode($permalink);
 
 	foreach ($social as $value) {
 
-		$group = ex_attr( $groups, $value['social'], '' );
+		//$group = ex_attr( $groups, $value['social'], '' );
 		$url = '';
 
-		if( $group ){
-			$icons = $group['choices'];
-			$icon = is_string( $value['icon'] ) ? $value['icon'] : $icons[ $value['icon'] ];
-			$color = $value['color'] ?: $group['color'];
-			$name = 'Share on ' . $group['name'];
+		//if( $group ){
+			//$icons = $group['choices'];
+			//$icon = is_string( $value['icon'] ) ? $value['icon'] : $icons[ $value['icon'] ];
+			$icon = is_string( $value['icon'] ) ? $value['icon'] : '';
+			$color = $value['color'] ?: '#AAA';// $group['color'];
+			//$name = 'Share on ' . $group['name'];
+			$name = 'Share';
 
 			switch( $value['social'] ) {
-				case 'facebook': $url = 'https://www.facebook.com/sharer.php?u=' . $current; break;
-				case 'twitter': $url = 'https://twitter.com/intent/tweet?url=' . $current . '&text=' . $title; break;
-				case 'google': $url = 'https://plus.google.com/share?url=' . $current; break;
-				case 'linkedin': $url = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $current . '&title=' . $title; break;
-				case 'email': $url = 'mailto:?subject=' . $title . '&body=' . $current; break;
-				
+				case 'facebook': $name = $name . ' on Facebook'; $url = 'https://www.facebook.com/sharer.php?u=' . $current; break;
+				case 'twitter': $name = $name . ' on Twitter'; $url = 'https://twitter.com/intent/tweet?url=' . $current . '&text=' . $title; break;
+				case 'google': $name = $name . ' on Google Plus'; $url = 'https://plus.google.com/share?url=' . $current; break;
+				case 'linkedin': $name = $name . ' on LinkedIn'; $url = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $current . '&title=' . $title; break;
+				case 'email': $name = $name . ' on Email'; $url = 'mailto:?subject=' . $title . '&body=' . $current; break;
+				case 'link': $name = $name . ' URL'; $url = $permalink; break;
 				default:
 				break;
 			}
 
 			
-		}else{
+		/*}else{
 
 			$icon = is_string( $value['icon'] ) ? $value['icon'] : '';
 			$color = $value['color'] ?: '#AAA';
 			$name = 'Share URL';
 
 			switch( $value['social'] ) {
-				case 'link': $url = $permalink; break;
+				
 				
 				default:
 				break;
 			}
 
-		}
+		}*/
 
 		indent( $SCM_indent + 2, '<a class="share-button share-' . $value['social'] . ' ' . $type . ' ' . $shape . '" title="' . $name . '" href="' . $url . '" target="_blank" style="background-color:' . $color . ';color:' . $color . ';border-color:' . $color . ';">', 1 );
 			indent( $SCM_indent + 3, '<i class="fa ' . $icon . '"></i>', 1 );

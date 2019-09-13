@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.1.5
+Version:			v5.1.6
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -457,7 +457,7 @@ ul.attachments{
     line-height: 1.5em;
     font-weight: normal;
     display: inline-block;
-    vertical-align: sub;
+    /*vertical-align: sub;*/
 }
 .attachment .fa,
 .attachment .fas,
@@ -1359,9 +1359,9 @@ Plugins Fancybox
 	content: "\f03e";
 }
 .post.video > .layout-immagine:after{
-	font-family: Font Awesome\ 5 Brands;
-	font-weight: 400;
-	content: "\f167";
+	/*font-family: Font Awesome\ 5 Brands;*/
+	font-weight: 900;
+    content: "\f144";
 }
 .gallerie:hover > .layout-thumbs:after,
 .video:hover > .layout-immagine:after{

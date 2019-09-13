@@ -328,7 +328,7 @@ function scm_hook_types_default(){
             'singular' => __('Rassegna Stampa', SCM_THEME),
             'plural' => __('Rassegne Stampa', SCM_THEME),
             'slug' => 'rassegne-stampa',
-            'fa-icon' => 'fas fa-file-text',
+            'fa-icon' => 'fas fa-file-alt',
             'icon' => 'id',
             'orderkey' => '',
             'orderby' => 'date',

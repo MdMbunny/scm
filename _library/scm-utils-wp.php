@@ -726,35 +726,39 @@ function linkExtend( $link, $name = '' ){
 
     $link['link'] = getURL( $link['url'] );
     $link['name'] = ( $name ?: $link['url'] );
-    $link['icon'] = 'globe';
+    $link['icon'] = 'fas fa-globe';
     $link['type'] = 'external';
     
     if( startsWith( $link['link'], 'mailto:' ) ){
-        $link['icon'] = 'envelope';
+        $link['icon'] = 'fas fa-envelope';
         $link['type'] = 'mail';
     }elseif( startsWith( $link['link'], 'tel:' ) ){
-        $link['icon'] = 'phone';
+        $link['icon'] = 'fas fa-phone';
         $link['type'] = 'phone';
     }elseif( startsWith( $link['link'], 'fax:' ) ){
-        $link['icon'] = 'file-text-o';
+        $link['icon'] = 'fas fa-fax';
         $link['type'] = 'fax';
     }elseif( startsWith( $link['link'], 'skype' ) ){
-        $link['icon'] = 'skype';
+        $link['icon'] = 'fab fa-skype';
         $link['type'] = 'skype';
     }elseif( startsWith( $link['link'], '#' ) ){
-        $link['icon'] = 'hashtag';
+        $link['icon'] = 'fas fa-hashtag';
         $link['type'] = 'page';
     }elseif( startsWith( $link['link'], SCM_SITE ) ){
-        $link['icon'] = 'link';
+        $link['icon'] = 'fas fa-link';
         $link['type'] = 'site';
     }else{
         $parse = urlExtend( $link['link'] );
-        if( $parse['sub'] == 'maps' && $parse['domain'] == 'google' )
-            $link['icon'] = $link['type'] = 'map-marker-alt';
-        elseif( $parse['sub'] == 'plus' && $parse['domain'] == 'google' )
-            $link['icon'] = $link['type'] = 'google-plus';
-        elseif( scm_fa_exists( 'social', $parse['domain'] ) )
-            $link['icon'] = $link['type'] = $parse['domain'];
+        if( $parse['sub'] == 'maps' && $parse['domain'] == 'google' ){
+            $link['icon'] = 'fas fa-map-marker-alt';
+            $link['type'] = 'map';
+        }elseif( $parse['sub'] == 'plus' && $parse['domain'] == 'google' ){
+            $link['icon'] = 'fab fa-google-plus';
+            $link['type'] = 'google-plus';
+        }else/*if( scm_fa_exists( 'social', $parse['domain'] ) )*/{
+            $link['icon'] = 'fab fa-' . $parse['domain'];
+            $link['type'] = $parse['domain'];
+        }
     }
 
     return $link;
@@ -919,8 +923,8 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div', $icon
             //$ext = linkExtend( $obj, $name );
             $type = 'add';
             //$href = ' data-href="' . $ext['link'] . '"';
-            $iconA = 'plus-circle';
-            $iconB = $icon ?: 'calendar';
+            $iconA = 'fas fa-plus-circle';
+            $iconB = $icon ?: 'fas fa-calendar';
             $att .= ' atcb-link';
         break;
 
@@ -928,32 +932,32 @@ function getAttachment( $att, $obj, $name = '', $indent = 0, $tag = 'div', $icon
             $ext = linkExtend( $obj, $name );
             $type = $ext['type'];
             $href = ' data-href="' . $ext['link'] . '"';
-            $iconA = 'chevron-circle-right';
+            $iconA = 'fas fa-chevron-circle-right';
             $iconB = $icon ?: $ext['icon'];
         break;
 
         case 'file':
             $ext = fileExtend( $obj, $name );
-            $type = $ext['icon'];
+            $type = $ext['type'];
             $href = ' data-href="' . $ext['link'] . '"';
-            $iconA = 'chevron-circle-down';
-            $iconB = $icon ?: $ext['icon'];
+            $iconA = 'fas fa-chevron-circle-down';
+            $iconB = $icon ?: 'fas fa-' . $ext['icon'];
         break;
         
         default:
             global $SCM_types;
             $type = get_post_type( $obj );
             $href = scm_utils_link_post( array( 'arrows'=>true,'miniarrows'=>true,'counter'=>true,'color'=>'true','name'=>true,'list'=>true ), $obj );
-            $iconA = 'plus-circle';
-            $iconB = $icon ?: ( $SCM_types['settings'][ $type ]['fa-icon'] ?: 'link' );
+            $iconA = 'fas fa-plus-circle';
+            $iconB = $icon ?: ( $SCM_types['settings'][ $type ]['fa-icon'] ?: 'fas fa-link' );
             $name = ( $name ?: get_the_title( $obj ) );
         break;
     }
 
     $ret .= indent( $indent ) . '<' . $tag . ' class="attachment ' . $att . ' ' . $att . '-' . $type . ( $class ? ' ' . $class : '' ) . '"' . $href . '>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<div class="icons">' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="far ' . getFAicon( $iconA, 'fa' ) . ' plus"></i>' . lbreak();
-            $ret .= indent( $indent + 2 ) . '<i class="far ' . getFAicon( $iconB, 'fa' ) . '"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="' . /*getFAicon(*/$iconA/*)*/ . ' plus"></i>' . lbreak();
+            $ret .= indent( $indent + 2 ) . '<i class="' . /*getFAicon(*/$iconB/*)*/ . '"></i>' . lbreak();
         $ret .= indent( $indent + 1 ) . '</div>' . lbreak();
         $ret .= indent( $indent + 1 ) . '<span>' . $name . '</span>' . lbreak();
     $ret .= indent( $indent ) . '</' . $tag . '>' . lbreak();
