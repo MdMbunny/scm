@@ -748,11 +748,12 @@ function scm_hook_acf_savedpost_hook( $post_id ) {
         if( $type == 'luoghi' ){
 
             $api = scm_field( 'opt-tools-map-api', '', 'option' );
+            $geo = scm_field( 'opt-tools-geo-api', '', 'option' );
             
             $address = str_replace( array( ',', '-', '/' ), '', scm_field( 'luogo-indirizzo', '', $post_id ) . scm_field( 'luogo-cap', '', $post_id, true, ' ' ) . scm_field( 'luogo-paese', '', $post_id, true, ' ' ) . scm_field( 'luogo-citta', '', $post_id, true, ' ' ) . scm_field( 'luogo-provincia', '', $post_id, true, ' ' ) );
             add_post_meta( $post_id, 'inlineaddress', $address, true ) or
             update_post_meta( $post_id, 'inlineaddress', $address );
-            $latlng = getGoogleMapsLatLng( $address, '', $api );
+            $latlng = getGoogleMapsLatLng( $address, '', $geo );
             add_post_meta( $post_id, 'latitude', $latlng['lat'], true ) or
             update_post_meta( $post_id, 'latitude', $latlng['lat'] );
             add_post_meta( $post_id, 'longitude', $latlng['lng'], true ) or

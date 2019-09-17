@@ -133,7 +133,7 @@ if( is( $list ) ){
         $txt_col = $color;
         $bg_col = $bg;
 
-        if( is( $args['color-filter'] ) ){
+        /*if( is( $args['color-filter'] ) ){
             if( !$color || !$bg ){
                 foreach( scm_acf_field_fa_preset( $args['color-filter'] ) as $value ) {
                     if( !is_null( getByValue( $value['choices'], $button['icon'] ) ) ){
@@ -145,7 +145,7 @@ if( is( $list ) ){
                     }
                 }
             }
-        }
+        }*/
 
         $button_layout = ( isset( $button['acf_fc_layout'] ) ? is( $button['acf_fc_layout'], $layout ) : $layout );
 

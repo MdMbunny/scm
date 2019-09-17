@@ -605,6 +605,7 @@ function scm_acf_options_tools() {
 		$fields[] = scm_acf_field_true( 'opt-tools-bx', 0, 20, 0, 0, __( 'BX Slider', SCM_THEME ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-gmaps', array( 'label'=>'Google Maps' ) );
 		$fields[] = scm_acf_field_text( 'opt-tools-map-api', 0, 100, 0, 0, __( 'Google Maps API Key', SCM_THEME ) );
+		$fields[] = scm_acf_field_text( 'opt-tools-geo-api', 0, 100, 0, 0, __( 'Google Geocoding API Key', SCM_THEME ) );
 		$fields = array_merge( $fields, scm_acf_preset_map_icon( 'opt-tools' ) );
 	$fields[] = scm_acf_field_tab_left( 'tab-tools-toppage', array( 'label'=>'Top Of Page' ) );
 		$fields[] = scm_acf_field_false( 'opt-tools-topofpage-disable', 0, 50, 0, 0, __( 'Disable', SCM_THEME ) );

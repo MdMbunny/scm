@@ -155,9 +155,9 @@ wp_reset_postdata();
                                     
                                     'login-redirect' => '',
 
-                                    'login-buttons' => array( array( 'type'=>'logout', 'icon'=>'fa-sign-out-s' ) ),
+                                    'login-buttons' => array( array( 'type'=>'logout', 'icon'=>'fas fa-sign-out' ) ),
 
-                                    'login-icon' => 'fa-sign-in-s',
+                                    'login-icon' => 'fas fa-sign-in',
                                     'login-send' => '',
 
                                     'login-label-user' => '',
@@ -172,7 +172,7 @@ wp_reset_postdata();
                                     'login-label-email' => '',
                                     'login-placeholder-email' => __( 'USER or EMAIL', SCM_THEME ),
                                     'login-forgot-send' => '',
-                                    'login-forgot-icon' => 'fa-envelope-r',
+                                    'login-forgot-icon' => 'fas fa-envelope',
                                 );
 
                         scm_content( array( 'modules' => $fields ) );
