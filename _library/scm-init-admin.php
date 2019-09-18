@@ -42,7 +42,7 @@ $SCM_agent = array();
 add_action( 'admin_enqueue_scripts', 'scm_hook_admin_register_assets', 998 );
 add_action( 'login_enqueue_scripts', 'scm_hook_admin_login_register_assets', 10 );
 add_filter( 'login_headerurl', 'scm_hook_admin_login_logo_url' );
-add_filter( 'login_headertitle', 'scm_hook_admin_login_logo_url_title' );
+add_filter( 'login_headertext', 'scm_hook_admin_login_logo_url_title' );
 
 // THEME
 add_action( 'after_setup_theme', 'scm_hook_admin_theme_load_textdomain' );

@@ -1187,7 +1187,8 @@ function scm_utils_preset_address( $luogo = NULL, $fields = array(), $title = ''
     $arr['country'] = ex_attr( $fields, 'luogo-paese', '' ) ? scm_utils_get_region_name( $fields['luogo-paese'] ) : '';
 
     $ret = '';
-    $ret .= $arr['street'] ?: '';
+    $ret .= $arr['name'] ?: '';
+    $ret .= $arr['street'] ? ( $ret ? ', ' : '' ) . $arr['street'] : '';
     $ret .= $arr['town'] ? ( $ret ? ', ' : '' ) . $arr['town'] : '';
     $ret .= $arr['city'] ? ( $ret ? ', ' : '' ) . $arr['city'] : '';
     $ret .= $arr['region'] ? ( $ret ? ', ' : '' ) . $arr['region'] : '';
