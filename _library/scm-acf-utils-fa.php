@@ -137,7 +137,7 @@ function scm_acf_field_fa_preset( $group = '' ){
 					'name' => 'Facebook',
 					'color' => '#3b5998',
 					'choices' => array(
-						'fa-facebook-official',
+						'fa-facebook-f',
 						'fa-facebook',
 						'fa-facebook-square',
 					),

@@ -755,8 +755,11 @@ function linkExtend( $link, $name = '' ){
         }elseif( $parse['sub'] == 'plus' && $parse['domain'] == 'google' ){
             $link['icon'] = 'fab fa-google-plus';
             $link['type'] = 'google-plus';
-        }else/*if( scm_fa_exists( 'social', $parse['domain'] ) )*/{
+        }elseif( scm_fa_exists( 'social', $parse['domain'] ) ){
             $link['icon'] = 'fab fa-' . $parse['domain'];
+            $link['type'] = $parse['domain'];
+        }else{
+            $link['icon'] = 'fas fa-link';
             $link['type'] = $parse['domain'];
         }
     }
