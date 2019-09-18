@@ -1,7 +1,7 @@
 /*
 Theme Name:			SCM
 Theme URI:			http://studiocreativo-m.it/
-Version:			v5.1.9
+Version:			v5.2.0
 License: 			GNU General Public License v2 or later
 License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
 Description:		SCM Main Theme
@@ -1292,9 +1292,9 @@ body:not(.touch) .scm-map .gm-style-iw + div{
 	opacity: .7 !important;
 }
 .scm-map .labels{
+	overflow: visible;
 	font-size: 45px;
-    padding: 20px;
-    margin: -45px 0 0 -36px !important;
+    margin-left: -17px !important;
 }
 .scm-map .gm-style > div:first-child + div{
   display: none;
